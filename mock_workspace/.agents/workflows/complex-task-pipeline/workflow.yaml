@@ -1,0 +1,113 @@
+name: complex-task-pipeline
+description: End-to-end pipeline for handling complex, multi-step tasks requiring coordination between multiple agents.
+version: 2.0.0
+status: active
+
+trigger:
+  type: manual
+  inputs:
+    - name: task_description
+      type: string
+      required: true
+    - name: priority
+      type: string
+      enum: [low, medium, high, critical]
+      default: medium
+    - name: deadline
+      type: datetime
+      required: false
+
+stages:
+  - name: planning
+    description: Plan and decompose the task
+    agent: planner
+    skill: planning
+    inputs:
+      project_description: "{{ trigger.task_description }}"
+      granularity: detailed
+    outputs:
+      - plan
+      - tasks
+      - dependencies
+    timeout: 300
+    
+  - name: research
+    description: Gather necessary information
+    agent: researcher
+    skill: information-retrieval
+    inputs:
+      topics: "{{ stages.planning.outputs.tasks | map('name') }}"
+    outputs:
+      - research_findings
+    timeout: 600
+    parallel: true
+    
+  - name: implementation
+    description: Execute the implementation tasks
+    agent: coder
+    inputs:
+      tasks: "{{ stages.planning.outputs.tasks | selectattr('type', 'equalto', 'implementation') }}"
+      context: "{{ stages.research.outputs.research_findings }}"
+    outputs:
+      - code_changes
+      - tests
+    timeout: 1800
+    
+  - name: review
+    description: Review the implementation
+    agent: reviewer
+    skill: code-review
+    inputs:
+      files: "{{ stages.implementation.outputs.code_changes | map('path') }}"
+      focus_areas: [correctness, style, security]
+    outputs:
+      - review_report
+      - issues
+    timeout: 600
+    
+  - name: synthesis
+    description: Synthesize results and create final output
+    agent: orchestrator
+    skill: synthesis
+    inputs:
+      sources:
+        - "{{ stages.planning.outputs.plan }}"
+        - "{{ stages.implementation.outputs }}"
+        - "{{ stages.review.outputs.review_report }}"
+      output_format: report
+    outputs:
+      - final_report
+    timeout: 300
+
+error_handling:
+  retry_policy:
+    max_attempts: 3
+    backoff: exponential
+    initial_delay: 30
+  fallback:
+    - condition: "stage.name == 'implementation' && error.type == 'timeout'"
+      action: notify_and_continue
+    - condition: "stage.name == 'review' && error.type == 'validation'"
+      action: retry_with_feedback
+
+notifications:
+  - event: stage_complete
+    channel: slack
+    template: stage-complete
+  - event: workflow_complete
+    channel: email
+    template: workflow-summary
+  - event: error
+    channel: slack
+    template: error-alert
+
+metadata:
+  author: asw-team
+  created: 2024-11-20
+  updated: 2025-05-30
+  tags:
+    - pipeline
+    - multi-agent
+    - coordination
+  avg_duration_minutes: 45
+  success_rate: 0.92
