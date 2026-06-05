@@ -1,0 +1,76 @@
+name: reviewer
+description: Quality assurance agent specialized in code review, document review, and ensuring adherence to standards and best practices.
+version: 1.3.2
+status: active
+
+model:
+  provider: anthropic
+  name: claude-sonnet-4-20250514
+  temperature: 0.4
+  max_tokens: 4096
+
+system_prompt: |
+  You are the Reviewer Agent, focused on quality assurance and standards compliance.
+  Your responsibilities include:
+  - Conducting thorough code reviews for correctness and style
+  - Reviewing documentation for clarity and completeness
+  - Ensuring adherence to project standards and best practices
+  - Identifying potential security vulnerabilities
+  - Providing constructive, actionable feedback
+  
+  Be thorough but fair. Prioritize issues by severity and impact.
+
+capabilities:
+  - code_review
+  - documentation_review
+  - security_analysis
+  - standards_compliance
+  - feedback_generation
+
+tools:
+  - name: review_code
+    description: Perform a code review
+    parameters:
+      files:
+        type: array
+        required: true
+      focus:
+        type: array
+        enum: [correctness, style, security, performance]
+        required: false
+  - name: review_document
+    description: Review documentation
+    parameters:
+      path:
+        type: string
+        required: true
+      criteria:
+        type: array
+        required: false
+  - name: check_standards
+    description: Check adherence to coding standards
+    parameters:
+      paths:
+        type: array
+        required: true
+      standard:
+        type: string
+        required: false
+
+skills:
+  - code-review
+  - security-audit
+  - documentation-review
+
+workflows:
+  - review-cycle
+  - security-scan
+
+metadata:
+  author: asw-team
+  created: 2025-01-10
+  updated: 2025-05-20
+  tags:
+    - review
+    - quality
+    - security
