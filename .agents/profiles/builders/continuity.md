@@ -2,7 +2,7 @@
 type: index
 index_of: continuity
 auto_generated: true
-last_rebuilt: 2026-06-08T19:18:12
+last_rebuilt: 2026-06-08T23:30:37
 ---
 
 # 🔄 Continuity Index
@@ -10,10 +10,11 @@ last_rebuilt: 2026-06-08T19:18:12
 > Session handoffs, state snapshots, and focus tracking
 >
 > **Auto-generated** by `rebuild-index.py`. Do not edit manually.
-> Total entries: 8
+> Total entries: 9
 
 | Date | Title | File |
 |:-----|:------|:-----|
+| 2026-06-08 | fonts-installed-namespace-drift-fixed | [continuity-260608233037-fonts-installed-namespace-drift-fixed.md](continuity-260608233037-fonts-installed-namespace-drift-fixed.md) |
 | 2026-06-08 | Task 1111 Cybercore Expansion Decision | [continuity-260608203000-task-1111-cybercore-expansion-decision.md](continuity-260608203000-task-1111-cybercore-expansion-decision.md) |
 | 2026-06-08 | Task 1114 Log Viewer Component Complete | [continuity-260608200000-task-1114-log-viewer-component-complete.md](continuity-260608200000-task-1114-log-viewer-component-complete.md) |
 | 2026-06-08 | all-open-tasks-dispatched-complete | [continuity-260608191812-all-open-tasks-dispatched-complete.md](continuity-260608191812-all-open-tasks-dispatched-complete.md) |

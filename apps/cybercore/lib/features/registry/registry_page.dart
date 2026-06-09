@@ -4,8 +4,8 @@ import '../../data/fixtures/fixtures.dart';
 
 /// CyberCore Registry route — capabilities & providers catalog.
 ///
-/// Displays agents, skills, and workflows using DSDataTable with
-/// DSStatusCell renderers from warp_prism_ui.
+/// Displays agents, skills, and workflows using PrismDataTable with
+/// PrismStatusCell renderers from warp_prism_ui.
 /// All data is loaded from fixtures — no live API calls.
 class RegistryPage extends StatefulWidget {
   const RegistryPage({super.key});
@@ -63,14 +63,14 @@ class _RegistryPageState extends State<RegistryPage>
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return const DSStateSurface.loading(
+      return const PrismStateSurface.loading(
         title: 'Loading registry...',
         subtitle: 'Fetching capabilities, providers, and workflows from fixtures',
       );
     }
 
     if (_error != null) {
-      return DSStateSurface.error(
+      return PrismStateSurface.error(
         title: 'Failed to load registry',
         subtitle: _error,
         onAction: () {
@@ -83,7 +83,7 @@ class _RegistryPageState extends State<RegistryPage>
       );
     }
 
-    return DSErrorBoundary(
+    return PrismErrorBoundary(
       child: Column(
         children: [
           // Tab bar
@@ -146,17 +146,17 @@ class _RegistryPageState extends State<RegistryPage>
   }
 
   Widget _buildAgentsTable() {
-    return DSDataTable(
+    return PrismDataTable(
       columns: const [
-        DSDataColumn(id: 'name', label: 'Agent', sortable: true),
-        DSDataColumn(id: 'mode', label: 'Mode', sortable: true, width: 100),
-        DSDataColumn(id: 'model', label: 'Model', width: 200),
-        DSDataColumn(id: 'skills', label: 'Skills'),
-        DSDataColumn(id: 'status', label: 'Status', width: 120),
+        PrismDataColumn(id: 'name', label: 'Agent', sortable: true),
+        PrismDataColumn(id: 'mode', label: 'Mode', sortable: true, width: 100),
+        PrismDataColumn(id: 'model', label: 'Model', width: 200),
+        PrismDataColumn(id: 'skills', label: 'Skills'),
+        PrismDataColumn(id: 'status', label: 'Status', width: 120),
       ],
       rows: _agents!.map((agent) {
         final state = _parseOperationalState(agent.operationalState);
-        return DSDataRow(
+        return PrismDataRow(
           id: agent.id,
           cells: {
             'name': agent.name,
@@ -173,15 +173,15 @@ class _RegistryPageState extends State<RegistryPage>
   }
 
   Widget _buildSkillsTable() {
-    return DSDataTable(
+    return PrismDataTable(
       columns: const [
-        DSDataColumn(id: 'name', label: 'Skill', sortable: true),
-        DSDataColumn(id: 'triggers', label: 'Triggers'),
-        DSDataColumn(id: 'subSkills', label: 'Sub-skills'),
-        DSDataColumn(id: 'canonicality', label: 'Canonicality', width: 140),
+        PrismDataColumn(id: 'name', label: 'Skill', sortable: true),
+        PrismDataColumn(id: 'triggers', label: 'Triggers'),
+        PrismDataColumn(id: 'subSkills', label: 'Sub-skills'),
+        PrismDataColumn(id: 'canonicality', label: 'Canonicality', width: 140),
       ],
       rows: _skills!.map((skill) {
-        return DSDataRow(
+        return PrismDataRow(
           id: skill.id,
           cells: {
             'name': skill.name,
@@ -197,16 +197,16 @@ class _RegistryPageState extends State<RegistryPage>
   }
 
   Widget _buildWorkflowsTable() {
-    return DSDataTable(
+    return PrismDataTable(
       columns: const [
-        DSDataColumn(id: 'name', label: 'Workflow', sortable: true),
-        DSDataColumn(id: 'kind', label: 'Kind', sortable: true, width: 120),
-        DSDataColumn(id: 'skills', label: 'Skills'),
-        DSDataColumn(id: 'agents', label: 'Agents'),
-        DSDataColumn(id: 'triggers', label: 'Triggers'),
+        PrismDataColumn(id: 'name', label: 'Workflow', sortable: true),
+        PrismDataColumn(id: 'kind', label: 'Kind', sortable: true, width: 120),
+        PrismDataColumn(id: 'skills', label: 'Skills'),
+        PrismDataColumn(id: 'agents', label: 'Agents'),
+        PrismDataColumn(id: 'triggers', label: 'Triggers'),
       ],
       rows: _workflows!.map((workflow) {
-        return DSDataRow(
+        return PrismDataRow(
           id: workflow.id,
           cells: {
             'name': workflow.name,
@@ -222,10 +222,10 @@ class _RegistryPageState extends State<RegistryPage>
     );
   }
 
-  DSOperationalState _parseOperationalState(String state) {
-    return DSOperationalState.values.firstWhere(
+  PrismOperationalState _parseOperationalState(String state) {
+    return PrismOperationalState.values.firstWhere(
       (s) => s.name == state,
-      orElse: () => DSOperationalState.healthy,
+      orElse: () => PrismOperationalState.healthy,
     );
   }
 }

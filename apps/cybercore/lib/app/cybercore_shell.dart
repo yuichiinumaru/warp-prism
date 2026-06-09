@@ -20,31 +20,31 @@ class CyberCoreShell extends StatelessWidget {
 
   /// Navigation items for the CyberCore sidebar.
   static const navItems = [
-    DSSidebarItem(
+    PrismSidebarItem(
       id: 'dashboard',
       label: 'Dashboard',
       icon: Icons.dashboard_outlined,
       color: DSColors.accentCyan,
     ),
-    DSSidebarItem(
+    PrismSidebarItem(
       id: 'registry',
       label: 'Registry',
       icon: Icons.hub_outlined,
       color: DSColors.accentViolet,
     ),
-    DSSidebarItem(
+    PrismSidebarItem(
       id: 'tasks',
       label: 'Tasks',
       icon: Icons.play_circle_outline,
       color: DSColors.accentGold,
     ),
-    DSSidebarItem(
+    PrismSidebarItem(
       id: 'audit',
       label: 'Audit',
       icon: Icons.history_outlined,
       color: DSColors.accentCyan,
     ),
-    DSSidebarItem(
+    PrismSidebarItem(
       id: 'governance',
       label: 'Governance',
       icon: Icons.gavel_outlined,
@@ -108,21 +108,21 @@ class CyberCoreShell extends StatelessWidget {
       );
     }
 
-    return DSShellResponsive(
-      sidebar: DSSidebar(
+    return PrismShellResponsive(
+      sidebar: PrismSidebar(
         items: navItems,
         selectedId: navItems[currentIndex].id,
         onItemTap: _onNavItemTap,
         header: const _CyberCoreHeader(expanded: true),
       ),
-      collapsedSidebar: DSSidebar(
+      collapsedSidebar: PrismSidebar(
         items: navItems,
         selectedId: navItems[currentIndex].id,
         onItemTap: _onNavItemTap,
         expanded: false,
         header: const _CyberCoreHeader(expanded: false),
       ),
-      topbar: DSTopbar(
+      topbar: PrismTopbar(
         title: _titleByIndex[currentIndex] ?? 'CyberCore',
       ),
       content: navigationShell,
@@ -164,7 +164,7 @@ class _CyberCoreHeader extends StatelessWidget {
                 borderRadius: BorderRadius.circular(DSRadii.sm),
               ),
               child: const Center(
-                child: DSIcon(
+                child: PrismIcon(
                   Icons.shield_outlined,
                   color: DSColors.white,
                   size: 18,
@@ -178,11 +178,11 @@ class _CyberCoreHeader extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    DSText.labelLarge(
+                    PrismText.labelLarge(
                       'CyberCore',
                       color: DSColors.textPrimary,
                     ),
-                    DSText.labelSmall(
+                    PrismText.labelSmall(
                       'Read-Only Observatory',
                       color: DSColors.textTertiary,
                     ),
@@ -218,7 +218,7 @@ class _CompactShell extends StatelessWidget {
     return Scaffold(
       backgroundColor: DSColors.obsidianDeep,
       appBar: AppBar(
-        title: DSText.headingMedium(title),
+        title: PrismText.headingMedium(title),
         backgroundColor: DSColors.obsidianBase,
         foregroundColor: DSColors.textPrimary,
         elevation: 0,

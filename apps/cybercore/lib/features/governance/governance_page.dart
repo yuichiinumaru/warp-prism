@@ -4,8 +4,8 @@ import '../../data/fixtures/fixtures.dart';
 
 /// CyberCore Governance route — diagnostics & compliance.
 ///
-/// Displays governance diagnostics using DSStoryPanel, DSMetricTile,
-/// and DSDataTable from warp_prism_ui.
+/// Displays governance diagnostics using PrismStoryPanel, PrismMetricTile,
+/// and PrismDataTable from warp_prism_ui.
 /// All data is loaded from fixtures.
 class GovernancePage extends StatefulWidget {
   const GovernancePage({super.key});
@@ -47,14 +47,14 @@ class _GovernancePageState extends State<GovernancePage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return const DSStateSurface.loading(
+      return const PrismStateSurface.loading(
         title: 'Loading governance...',
         subtitle: 'Computing diagnostics from fixture data',
       );
     }
 
     if (_error != null) {
-      return DSStateSurface.error(
+      return PrismStateSurface.error(
         title: 'Failed to load governance',
         subtitle: _error,
         onAction: () {
@@ -70,7 +70,7 @@ class _GovernancePageState extends State<GovernancePage> {
     final diag = _diagnostics!;
     final hasIssues = diag.totalIssues > 0;
 
-    return DSErrorBoundary(
+    return PrismErrorBoundary(
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(DSSpacing.lg),
         child: Column(
@@ -78,13 +78,13 @@ class _GovernancePageState extends State<GovernancePage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             // Summary story panel
-            DSStoryPanel(
+            PrismStoryPanel(
               title: 'Governance Overview',
               subtitle: 'Compliance diagnostics — ${diag.totalIssues} issue${diag.totalIssues == 1 ? '' : 's'} detected',
               icon: Icons.gavel_outlined,
               accentColor: hasIssues ? DSColors.statusWarning : DSColors.statusSuccess,
               insights: [
-                DSStoryInsight(
+                PrismStoryInsight(
                   text: '${diag.orphanWorkflows.length} orphan workflow${diag.orphanWorkflows.length == 1 ? '' : 's'}',
                   detail: diag.orphanWorkflows.isEmpty
                       ? 'All workflows have agent or skill references'
@@ -92,7 +92,7 @@ class _GovernancePageState extends State<GovernancePage> {
                   value: '${diag.orphanWorkflows.length}',
                   color: diag.orphanWorkflows.isNotEmpty ? DSColors.statusWarning : DSColors.statusSuccess,
                 ),
-                DSStoryInsight(
+                PrismStoryInsight(
                   text: '${diag.noTriggerSkills.length} skill${diag.noTriggerSkills.length == 1 ? '' : 's'} without triggers',
                   detail: diag.noTriggerSkills.isEmpty
                       ? 'All skills have trigger definitions'
@@ -100,7 +100,7 @@ class _GovernancePageState extends State<GovernancePage> {
                   value: '${diag.noTriggerSkills.length}',
                   color: diag.noTriggerSkills.isNotEmpty ? DSColors.statusWarning : DSColors.statusSuccess,
                 ),
-                DSStoryInsight(
+                PrismStoryInsight(
                   text: '${diag.unverifiedTasks.length} unverified high-priority task${diag.unverifiedTasks.length == 1 ? '' : 's'}',
                   detail: diag.unverifiedTasks.isEmpty
                       ? 'All high-priority tasks have proof'
@@ -108,7 +108,7 @@ class _GovernancePageState extends State<GovernancePage> {
                   value: '${diag.unverifiedTasks.length}',
                   color: diag.unverifiedTasks.isNotEmpty ? DSColors.statusError : DSColors.statusSuccess,
                 ),
-                DSStoryInsight(
+                PrismStoryInsight(
                   text: '${diag.fanInHotspots.length} fan-in hotspot${diag.fanInHotspots.length == 1 ? '' : 's'}',
                   detail: diag.fanInHotspots.isEmpty
                       ? 'No skill has excessive incoming references'
@@ -122,7 +122,7 @@ class _GovernancePageState extends State<GovernancePage> {
             const SizedBox(height: DSSpacing.lg),
 
             // Canonicality boundary metrics
-            const DSText.headingMedium(
+            const PrismText.headingMedium(
               'Canonicality Boundary',
               color: DSColors.textPrimary,
             ),
@@ -132,7 +132,7 @@ class _GovernancePageState extends State<GovernancePage> {
               spacing: DSSpacing.md,
               runSpacing: DSSpacing.md,
               children: diag.canonicalityBoundary.entries.map((entry) {
-                return DSMetricTile(
+                return PrismMetricTile(
                   label: entry.key,
                   value: '${entry.value}',
                   icon: _canonicalityIcon(entry.key),
@@ -145,19 +145,19 @@ class _GovernancePageState extends State<GovernancePage> {
 
             // Fan-in hotspots
             if (diag.fanInHotspots.isNotEmpty) ...[
-              const DSText.headingMedium(
+              const PrismText.headingMedium(
                 'Fan-in Hotspots',
                 color: DSColors.textPrimary,
               ),
               const SizedBox(height: DSSpacing.md),
-              DSDataTable(
+              PrismDataTable(
                 columns: const [
-                  DSDataColumn(id: 'skill', label: 'Skill', sortable: true),
-                  DSDataColumn(id: 'refs', label: 'References', sortable: true, width: 120),
-                  DSDataColumn(id: 'risk', label: 'Risk', width: 100),
+                  PrismDataColumn(id: 'skill', label: 'Skill', sortable: true),
+                  PrismDataColumn(id: 'refs', label: 'References', sortable: true, width: 120),
+                  PrismDataColumn(id: 'risk', label: 'Risk', width: 100),
                 ],
                 rows: diag.fanInHotspots.map((hotspot) {
-                  return DSDataRow(
+                  return PrismDataRow(
                     id: hotspot.skillName,
                     cells: {
                       'skill': hotspot.skillName,
@@ -173,26 +173,26 @@ class _GovernancePageState extends State<GovernancePage> {
 
             // Unverified high-priority tasks
             if (diag.unverifiedTasks.isNotEmpty) ...[
-              const DSText.headingMedium(
+              const PrismText.headingMedium(
                 'Unverified High-Priority Tasks',
                 color: DSColors.textPrimary,
               ),
               const SizedBox(height: DSSpacing.md),
-              DSDataTable(
+              PrismDataTable(
                 columns: const [
-                  DSDataColumn(id: 'taskId', label: 'Task ID', width: 100),
-                  DSDataColumn(id: 'title', label: 'Title'),
-                  DSDataColumn(id: 'priority', label: 'Priority', width: 100),
-                  DSDataColumn(id: 'status', label: 'Status', width: 100),
+                  PrismDataColumn(id: 'taskId', label: 'Task ID', width: 100),
+                  PrismDataColumn(id: 'title', label: 'Title'),
+                  PrismDataColumn(id: 'priority', label: 'Priority', width: 100),
+                  PrismDataColumn(id: 'status', label: 'Status', width: 100),
                 ],
                 rows: diag.unverifiedTasks.map((task) {
-                  return DSDataRow(
+                  return PrismDataRow(
                     id: task.taskId,
                     cells: {
                       'taskId': task.taskId,
                       'title': task.title,
                       'priority': task.priority,
-                      'status': DSOperationalState.unverified,
+                      'status': PrismOperationalState.unverified,
                     },
                   );
                 }).toList(),
@@ -203,7 +203,7 @@ class _GovernancePageState extends State<GovernancePage> {
             // All clear state
             if (!hasIssues) ...[
               const SizedBox(height: DSSpacing.lg),
-              const DSStateSurface.empty(
+              const PrismStateSurface.empty(
                 icon: Icons.verified_outlined,
                 title: 'All systems compliant',
                 subtitle: 'No governance issues detected in the workspace',

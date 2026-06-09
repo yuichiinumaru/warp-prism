@@ -4,7 +4,7 @@ import '../../data/fixtures/fixtures.dart';
 
 /// CyberCore Tasks route — execution board.
 ///
-/// Displays tasks in a lane board using DSLaneBoard with DSTaskCard
+/// Displays tasks in a lane board using PrismLaneBoard with PrismTaskCard
 /// from warp_prism_ui. All data is loaded from fixtures.
 class TasksPage extends StatefulWidget {
   const TasksPage({super.key});
@@ -46,14 +46,14 @@ class _TasksPageState extends State<TasksPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return const DSStateSurface.loading(
+      return const PrismStateSurface.loading(
         title: 'Loading task board...',
         subtitle: 'Fetching execution lanes from fixtures',
       );
     }
 
     if (_error != null) {
-      return DSStateSurface.error(
+      return PrismStateSurface.error(
         title: 'Failed to load tasks',
         subtitle: _error,
         onAction: () {
@@ -68,7 +68,7 @@ class _TasksPageState extends State<TasksPage> {
 
     final lanes = _buildLanes();
 
-    return DSErrorBoundary(
+    return PrismErrorBoundary(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -79,17 +79,17 @@ class _TasksPageState extends State<TasksPage> {
             ),
             child: Row(
               children: [
-                const DSText.headingMedium(
+                const PrismText.headingMedium(
                   'Execution Board',
                   color: DSColors.textPrimary,
                 ),
                 const SizedBox(width: DSSpacing.md),
-                DSBadge.count(
+                PrismBadge.count(
                   _tasks!.length,
                   color: DSColors.accentCyan,
                 ),
                 const Spacer(),
-                const DSText.bodySmall(
+                const PrismText.bodySmall(
                   'Read-only — drag disabled',
                   color: DSColors.textTertiary,
                 ),
@@ -99,7 +99,7 @@ class _TasksPageState extends State<TasksPage> {
 
           // Lane board
           Expanded(
-            child: DSLaneBoard(
+            child: PrismLaneBoard(
               lanes: lanes,
               onTaskTap: (_) {
                 // Read-only: no task selection action
@@ -111,7 +111,7 @@ class _TasksPageState extends State<TasksPage> {
     );
   }
 
-  List<DSLane> _buildLanes() {
+  List<PrismLane> _buildLanes() {
     final laneOrder = [
       '00-planning',
       '01-open',
@@ -131,7 +131,7 @@ class _TasksPageState extends State<TasksPage> {
     return laneOrder.map((laneId) {
       final laneTasks = _tasks!
           .where((t) => t.lane == laneId)
-          .map((t) => DSLaneTask(
+          .map((t) => PrismLaneTask(
                 id: int.tryParse(t.id.replaceAll(RegExp(r'[^0-9]'), '')) ?? 0,
                 title: t.title,
                 priority: t.priority,
@@ -143,7 +143,7 @@ class _TasksPageState extends State<TasksPage> {
               ))
           .toList();
 
-      return DSLane(
+      return PrismLane(
         id: laneId,
         label: laneLabels[laneId] ?? laneId,
         tasks: laneTasks,

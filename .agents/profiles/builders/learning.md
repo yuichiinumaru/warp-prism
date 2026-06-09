@@ -2,7 +2,7 @@
 type: index
 index_of: learning
 auto_generated: true
-last_rebuilt: 2026-06-08T19:18:12
+last_rebuilt: 2026-06-08T23:30:37
 ---
 
 # 💡 Learning Index

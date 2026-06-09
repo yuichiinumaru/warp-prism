@@ -4,7 +4,7 @@ import '../../data/fixtures/fixtures.dart';
 
 /// CyberCore Audit route — audit trail timeline.
 ///
-/// Displays changelog entries as a timeline using DSTimeline
+/// Displays changelog entries as a timeline using PrismTimeline
 /// from warp_prism_ui. All data is loaded from fixtures.
 class AuditPage extends StatefulWidget {
   const AuditPage({super.key});
@@ -53,14 +53,14 @@ class _AuditPageState extends State<AuditPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return const DSStateSurface.loading(
+      return const PrismStateSurface.loading(
         title: 'Loading audit trail...',
         subtitle: 'Fetching audit events from fixtures',
       );
     }
 
     if (_error != null) {
-      return DSStateSurface.error(
+      return PrismStateSurface.error(
         title: 'Failed to load audit trail',
         subtitle: _error,
         onAction: () {
@@ -75,7 +75,7 @@ class _AuditPageState extends State<AuditPage> {
 
     final filtered = _filteredEvents;
 
-    return DSErrorBoundary(
+    return PrismErrorBoundary(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -86,17 +86,17 @@ class _AuditPageState extends State<AuditPage> {
             ),
             child: Row(
               children: [
-                const DSText.headingMedium(
+                const PrismText.headingMedium(
                   'Audit Trail',
                   color: DSColors.textPrimary,
                 ),
                 const SizedBox(width: DSSpacing.md),
-                DSBadge.count(
+                PrismBadge.count(
                   _events!.length,
                   color: DSColors.accentCyan,
                 ),
                 const Spacer(),
-                const DSText.bodySmall(
+                const PrismText.bodySmall(
                   'Read-only — append-only timeline',
                   color: DSColors.textTertiary,
                 ),
@@ -109,7 +109,7 @@ class _AuditPageState extends State<AuditPage> {
             padding: const EdgeInsets.fromLTRB(
               DSSpacing.lg, DSSpacing.md, DSSpacing.lg, 0,
             ),
-            child: DSFilterChipGroup(
+            child: PrismFilterChipGroup(
               options: _buildFilterOptions(),
               selected: _filterType != null ? {_filterType!} : {},
               onToggle: (value) {
@@ -122,8 +122,8 @@ class _AuditPageState extends State<AuditPage> {
 
           // Timeline
           Expanded(
-            child: DSTimeline(
-              entries: filtered.map((e) => DSTimelineEntry(
+            child: PrismTimeline(
+              entries: filtered.map((e) => PrismTimelineEntry(
                 id: e.id,
                 date: e.displayDate,
                 title: e.body ?? '${e.type}: ${e.task}',
@@ -140,14 +140,14 @@ class _AuditPageState extends State<AuditPage> {
     );
   }
 
-  List<DSFilterOption> _buildFilterOptions() {
+  List<PrismFilterOption> _buildFilterOptions() {
     final typeCounts = <String, int>{};
     for (final event in _events!) {
       typeCounts[event.type] = (typeCounts[event.type] ?? 0) + 1;
     }
 
     return typeCounts.entries.map((entry) {
-      return DSFilterOption(
+      return PrismFilterOption(
         value: entry.key,
         label: entry.key,
         count: entry.value,

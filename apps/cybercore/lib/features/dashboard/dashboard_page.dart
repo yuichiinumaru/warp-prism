@@ -4,8 +4,8 @@ import '../../data/fixtures/fixtures.dart';
 
 /// CyberCore Dashboard route — system health overview.
 ///
-/// Displays aggregated workspace metrics using DSMetricTile,
-/// DSStatusGrid, and DSStoryPanel components from warp_prism_ui.
+/// Displays aggregated workspace metrics using PrismMetricTile,
+/// PrismStatusGrid, and PrismStoryPanel components from warp_prism_ui.
 /// All data is loaded from fixtures — no live API calls.
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -47,14 +47,14 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) {
-      return const DSStateSurface.loading(
+      return const PrismStateSurface.loading(
         title: 'Loading dashboard...',
         subtitle: 'Aggregating workspace metrics from fixtures',
       );
     }
 
     if (_error != null) {
-      return DSStateSurface.error(
+      return PrismStateSurface.error(
         title: 'Failed to load dashboard',
         subtitle: _error,
         onAction: () {
@@ -69,7 +69,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
     final summary = _summary!;
 
-    return DSErrorBoundary(
+    return PrismErrorBoundary(
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(DSSpacing.lg),
         child: Column(
@@ -77,37 +77,37 @@ class _DashboardPageState extends State<DashboardPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             // Health overview story panel
-            DSStoryPanel(
+            PrismStoryPanel(
               title: 'System Health',
               subtitle: 'CyberCore workspace overview — fixture-backed read-only mirror',
               icon: Icons.health_and_safety_outlined,
               accentColor: DSColors.accentCyan,
               insights: [
-                DSStoryInsight(
+                PrismStoryInsight(
                   text: '${summary.agentMetrics.total} agents registered',
                   detail: '${summary.agentMetrics.healthy} healthy, ${summary.agentMetrics.degraded} degraded',
                   value: '${summary.agentMetrics.total}',
                   color: DSColors.statusSuccess,
                 ),
-                DSStoryInsight(
+                PrismStoryInsight(
                   text: '${summary.skillMetrics.total} capabilities catalogued',
                   detail: '${summary.skillMetrics.withTriggers} with triggers, ${summary.skillMetrics.noTriggers} without',
                   value: '${summary.skillMetrics.total}',
                   color: DSColors.accentViolet,
                 ),
-                DSStoryInsight(
+                PrismStoryInsight(
                   text: '${summary.workflowMetrics.total} workflow definitions',
                   detail: '${summary.workflowMetrics.active} active, ${summary.workflowMetrics.orphaned} orphaned',
                   value: '${summary.workflowMetrics.total}',
                   color: DSColors.accentGold,
                 ),
-                DSStoryInsight(
+                PrismStoryInsight(
                   text: '${summary.executionMetrics.totalTasks} tasks across 5 lanes',
                   detail: '${summary.executionMetrics.completed} completed, ${summary.executionMetrics.doing} in progress',
                   value: '${summary.executionMetrics.totalTasks}',
                   color: DSColors.accentCyan,
                 ),
-                DSStoryInsight(
+                PrismStoryInsight(
                   text: '${summary.recentActivity.total} audit events recorded',
                   detail: '${summary.recentActivity.lastWeek} in the last week',
                   value: '${summary.recentActivity.lastWeek}',
@@ -119,7 +119,7 @@ class _DashboardPageState extends State<DashboardPage> {
             const SizedBox(height: DSSpacing.lg),
 
             // Metric tiles grid
-            const DSText.headingMedium(
+            const PrismText.headingMedium(
               'Key Metrics',
               color: DSColors.textPrimary,
             ),
@@ -138,61 +138,61 @@ class _DashboardPageState extends State<DashboardPage> {
                   crossAxisSpacing: DSSpacing.md,
                   childAspectRatio: 1.4,
                   children: [
-                    DSMetricTile(
+                    PrismMetricTile(
                       label: 'Agents',
                       value: '${summary.agentMetrics.total}',
                       icon: Icons.smart_toy_outlined,
                       health: summary.agentMetrics.degraded > 0
-                          ? DSMetricTileHealth.degraded
-                          : DSMetricTileHealth.healthy,
+                          ? PrismMetricTileHealth.degraded
+                          : PrismMetricTileHealth.healthy,
                       subtitle: '${summary.agentMetrics.healthy} healthy',
                     ),
-                    DSMetricTile(
+                    PrismMetricTile(
                       label: 'Skills',
                       value: '${summary.skillMetrics.total}',
                       icon: Icons.extension_outlined,
                       health: summary.skillMetrics.noTriggers > 0
-                          ? DSMetricTileHealth.degraded
-                          : DSMetricTileHealth.healthy,
+                          ? PrismMetricTileHealth.degraded
+                          : PrismMetricTileHealth.healthy,
                       subtitle: '${summary.skillMetrics.withTriggers} with triggers',
                     ),
-                    DSMetricTile(
+                    PrismMetricTile(
                       label: 'Workflows',
                       value: '${summary.workflowMetrics.total}',
                       icon: Icons.account_tree_outlined,
                       health: summary.workflowMetrics.orphaned > 0
-                          ? DSMetricTileHealth.degraded
-                          : DSMetricTileHealth.healthy,
+                          ? PrismMetricTileHealth.degraded
+                          : PrismMetricTileHealth.healthy,
                       subtitle: '${summary.workflowMetrics.orphaned} orphaned',
                     ),
-                    DSMetricTile(
+                    PrismMetricTile(
                       label: 'Tasks',
                       value: '${summary.executionMetrics.totalTasks}',
                       icon: Icons.task_outlined,
-                      health: DSMetricTileHealth.healthy,
+                      health: PrismMetricTileHealth.healthy,
                       subtitle: '${summary.executionMetrics.completed} completed',
                     ),
-                    DSMetricTile(
+                    PrismMetricTile(
                       label: 'Audit Events',
                       value: '${summary.recentActivity.total}',
                       icon: Icons.shield_outlined,
                       subtitle: '${summary.recentActivity.lastWeek} this week',
                     ),
-                    DSMetricTile(
+                    PrismMetricTile(
                       label: 'In Progress',
                       value: '${summary.executionMetrics.doing}',
                       icon: Icons.trending_up,
                       color: DSColors.accentGold,
                       subtitle: 'Active execution',
                     ),
-                    DSMetricTile(
+                    PrismMetricTile(
                       label: 'In Review',
                       value: '${summary.executionMetrics.review}',
                       icon: Icons.rate_review_outlined,
                       color: DSColors.accentCyan,
                       subtitle: 'Awaiting approval',
                     ),
-                    DSMetricTile(
+                    PrismMetricTile(
                       label: 'Planned',
                       value: '${summary.executionMetrics.planning + summary.executionMetrics.open}',
                       icon: Icons.schedule_outlined,
@@ -207,7 +207,7 @@ class _DashboardPageState extends State<DashboardPage> {
             const SizedBox(height: DSSpacing.lg),
 
             // Activity type breakdown
-            const DSText.headingMedium(
+            const PrismText.headingMedium(
               'Activity Breakdown',
               color: DSColors.textPrimary,
             ),
@@ -218,7 +218,7 @@ class _DashboardPageState extends State<DashboardPage> {
               runSpacing: DSSpacing.sm,
               children: summary.recentActivity.types.entries.map((entry) {
                 final color = _typeColor(entry.key);
-                return DSMetricTileCompact(
+                return PrismMetricTileCompact(
                   label: entry.key,
                   value: '${entry.value}',
                   color: color,
@@ -229,47 +229,47 @@ class _DashboardPageState extends State<DashboardPage> {
             const SizedBox(height: DSSpacing.lg),
 
             // Status grid for entity health
-            const DSText.headingMedium(
+            const PrismText.headingMedium(
               'Entity Health Grid',
               color: DSColors.textPrimary,
             ),
             const SizedBox(height: DSSpacing.md),
 
-            DSStatusGrid(
+            PrismStatusGrid(
               items: [
-                DSHealthCardData(
+                PrismHealthCardData(
                   serviceName: 'Agent Registry',
                   operationalState: summary.agentMetrics.degraded > 0
-                      ? DSOperationalState.degraded
-                      : DSOperationalState.healthy,
+                      ? PrismOperationalState.degraded
+                      : PrismOperationalState.healthy,
                   uptimePercent: summary.agentMetrics.healthy / summary.agentMetrics.total,
                   trendData: [0.8, 0.85, 0.9, 0.88, 0.92],
                 ),
-                DSHealthCardData(
+                PrismHealthCardData(
                   serviceName: 'Skill Catalog',
                   operationalState: summary.skillMetrics.noTriggers > 0
-                      ? DSOperationalState.degraded
-                      : DSOperationalState.healthy,
+                      ? PrismOperationalState.degraded
+                      : PrismOperationalState.healthy,
                   uptimePercent: summary.skillMetrics.withTriggers / summary.skillMetrics.total,
                   trendData: [0.7, 0.75, 0.8, 0.82, 0.85],
                 ),
-                DSHealthCardData(
+                PrismHealthCardData(
                   serviceName: 'Workflow Engine',
                   operationalState: summary.workflowMetrics.orphaned > 0
-                      ? DSOperationalState.stale
-                      : DSOperationalState.healthy,
+                      ? PrismOperationalState.stale
+                      : PrismOperationalState.healthy,
                   uptimePercent: summary.workflowMetrics.active / summary.workflowMetrics.total,
                   trendData: [0.6, 0.65, 0.7, 0.72, 0.75],
                 ),
-                DSHealthCardData(
+                PrismHealthCardData(
                   serviceName: 'Task Execution',
-                  operationalState: DSOperationalState.running,
+                  operationalState: PrismOperationalState.running,
                   uptimePercent: summary.executionMetrics.completed / summary.executionMetrics.totalTasks,
                   trendData: [0.5, 0.55, 0.6, 0.65, 0.7],
                 ),
-                const DSHealthCardData(
+                const PrismHealthCardData(
                   serviceName: 'Audit Trail',
-                  operationalState: DSOperationalState.healthy,
+                  operationalState: PrismOperationalState.healthy,
                   uptimePercent: 1.0,
                   trendData: [0.95, 0.96, 0.97, 0.98, 0.99],
                 ),
