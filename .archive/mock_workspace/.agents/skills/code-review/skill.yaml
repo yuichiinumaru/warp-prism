@@ -1,0 +1,68 @@
+name: code-review
+description: Comprehensive code review skill for analyzing code quality, identifying issues, and providing actionable feedback.
+version: 2.0.1
+
+inputs:
+  - name: files
+    type: array
+    description: List of file paths to review
+    required: true
+  - name: focus_areas
+    type: array
+    description: Specific areas to focus on (correctness, style, security, performance)
+    required: false
+    default: [correctness, style]
+  - name: severity_threshold
+    type: string
+    description: Minimum severity level to report
+    enum: [info, warning, error, critical]
+    default: info
+
+outputs:
+  - name: issues
+    type: array
+    description: List of identified issues with location, severity, and description
+  - name: summary
+    type: object
+    description: Summary statistics of the review
+  - name: suggestions
+    type: array
+    description: Improvement suggestions
+
+steps:
+  - name: parse_files
+    action: parse
+    description: Parse the input files for analysis
+    
+  - name: static_analysis
+    action: analyze
+    description: Perform static code analysis
+    config:
+      rules:
+        - no-unused-vars
+        - no-console
+        - prefer-const
+        - type-safety
+        
+  - name: security_scan
+    action: security_check
+    description: Scan for security vulnerabilities
+    condition: "'security' in inputs.focus_areas"
+    
+  - name: generate_report
+    action: report
+    description: Generate the review report
+    template: review-report
+
+metadata:
+  author: asw-team
+  created: 2024-11-01
+  updated: 2025-05-25
+  tags:
+    - review
+    - quality
+    - analysis
+  used_by:
+    - coder
+    - reviewer
+    - orchestrator

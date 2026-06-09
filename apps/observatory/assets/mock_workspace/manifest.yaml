@@ -1,0 +1,75 @@
+## Mock Workspace Manifest
+## Reference: docs/mock-workspace-corpus-contract.md
+## Task: 0001 — Mock Workspace Contract Baseline
+
+counts:
+  agents: 9
+  skills: 13
+  workflows: 11
+  tasks: 22
+  changelog_entries: 36
+  task_lanes: 5
+
+required_agents:
+  - architect-orchestrator
+  - builder-orchestrator
+  - reviewer-orchestrator
+  - gt-harness-architect
+  - gt-code-quality-reviewer
+  - gt-security-reviewer
+  - gt-external-intelligence-analyst
+  - gt-task-architect
+  - gt-wave-orchestrator
+
+required_skills:
+  - harness-architecture
+  - project-management
+  - development-methodologies
+  - code-quality-harness
+  - coding-execution-harness
+  - agent-wiki
+  - indexing-skills
+  - external-intelligence
+  - frontend-quality-harness
+  - design-system-harness
+  - browser-harness
+  - remediation-harness
+  - agent-cli-delegation
+
+required_workflows:
+  - gt-ganthritor-onboard
+  - architect-orchestration
+  - builder-orchestration
+  - reviewer-orchestration
+  - gt-create-tasks
+  - plan-evidence-to-tasks
+  - audit-tasks
+  - gt-harness-architecture
+  - gt-code-review
+  - gt-verify-task-completion
+  - gt-research-orchestration
+
+task_lanes:
+  - id: 00-planning
+    description: Planning tasks from RF8 methodology
+  - id: 01-open
+    description: Open/backlog tasks ready to start
+  - id: 02-doing
+    description: Active in-progress tasks
+  - id: 03-review
+    description: Tasks in review stage
+  - id: 04-completed
+    description: Done tasks with completion evidence
+
+required_changelog_entries: 36
+changelog_frontmatter_schema:
+  - id
+  - date
+  - project
+  - task
+  - type
+  - impact
+  - skills
+
+archive_destination: .archive/
+archive_policy: All 18 legacy files move to warp-prism/archive/mock_workspace/ preserving directory structure. No destructive deletion.

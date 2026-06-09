@@ -1,0 +1,90 @@
+[
+  {
+    "id": "workflow:onboard",
+    "name": "onboard",
+    "kind": "ritual",
+    "skills": ["development-methodologies", "agent-wiki"],
+    "agents": ["builders", "planner"],
+    "triggers": ["task-start", "session-start"]
+  },
+  {
+    "id": "workflow:build-and-test",
+    "name": "build-and-test",
+    "kind": "ritual",
+    "skills": ["flutter-harness", "code-quality-harness"],
+    "agents": ["builders"],
+    "triggers": ["implement", "test"]
+  },
+  {
+    "id": "workflow:review-flow",
+    "name": "review-flow",
+    "kind": "ritual",
+    "skills": ["code-quality-harness"],
+    "agents": ["reviewer", "flutter-expert"],
+    "triggers": ["review", "quality-gate"]
+  },
+  {
+    "id": "workflow:changelog-update",
+    "name": "changelog-update",
+    "kind": "maintenance",
+    "skills": ["changelog-engine"],
+    "agents": ["documenter"],
+    "triggers": ["task-complete"]
+  },
+  {
+    "id": "workflow:task-decompose",
+    "name": "task-decompose",
+    "kind": "planning",
+    "skills": ["development-methodologies", "task-governance"],
+    "agents": ["planner"],
+    "triggers": ["new-epic", "scope-change"]
+  },
+  {
+    "id": "workflow:design-review",
+    "name": "design-review",
+    "kind": "ritual",
+    "skills": ["design-system", "flutter-harness"],
+    "agents": ["designer"],
+    "triggers": ["ui-change", "visual-review"]
+  },
+  {
+    "id": "workflow:debug-session",
+    "name": "debug-session",
+    "kind": "troubleshoot",
+    "skills": ["flutter-harness"],
+    "agents": ["debugger"],
+    "triggers": ["bug-report", "test-failure"]
+  },
+  {
+    "id": "workflow:report-generation",
+    "name": "report-generation",
+    "kind": "maintenance",
+    "skills": ["report-generator"],
+    "agents": ["scribe"],
+    "triggers": ["audit-request", "sprint-end"]
+  },
+  {
+    "id": "workflow:golden-snapshot",
+    "name": "golden-snapshot",
+    "kind": "quality",
+    "skills": ["golden-test", "flutter-harness"],
+    "agents": ["builders", "reviewer"],
+    "triggers": ["visual-change"]
+  },
+  {
+    "id": "workflow:dependency-review",
+    "name": "dependency-review",
+    "kind": "maintenance",
+    "skills": ["dependency-audit", "melos-workspace"],
+    "agents": ["reviewer"],
+    "triggers": []
+  },
+  {
+    "id": "workflow:multi-agent-sync",
+    "name": "multi-agent-sync",
+    "kind": "orchestration",
+    "skills": ["task-governance"],
+    "agents": ["orchestrator"],
+    "triggers": ["parallel-task", "handoff"]
+  }
+]

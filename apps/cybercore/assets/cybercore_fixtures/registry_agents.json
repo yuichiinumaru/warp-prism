@@ -1,0 +1,92 @@
+[
+  {
+    "id": "agent:builders",
+    "name": "builders",
+    "model": "claude-sonnet-4-20250514",
+    "mode": "code",
+    "description": "Primary implementation agent for Warp Prism tasks",
+    "skills": ["flutter-harness", "code-quality-harness", "development-methodologies"],
+    "workflows": ["onboard", "build-and-test"],
+    "operationalState": "healthy"
+  },
+  {
+    "id": "agent:flutter-expert",
+    "name": "flutter-expert",
+    "model": "claude-sonnet-4-20250514",
+    "mode": "review",
+    "description": "Framework-level Flutter/Dart specialist",
+    "skills": ["flutter-harness"],
+    "workflows": ["review-flow"],
+    "operationalState": "healthy"
+  },
+  {
+    "id": "agent:planner",
+    "name": "planner",
+    "model": "claude-sonnet-4-20250514",
+    "mode": "planning",
+    "description": "Task decomposition and planning agent",
+    "skills": ["development-methodologies"],
+    "workflows": ["onboard", "task-decompose"],
+    "operationalState": "healthy"
+  },
+  {
+    "id": "agent:reviewer",
+    "name": "reviewer",
+    "model": "claude-sonnet-4-20250514",
+    "mode": "review",
+    "description": "Independent code review agent",
+    "skills": ["code-quality-harness"],
+    "workflows": ["review-flow"],
+    "operationalState": "healthy"
+  },
+  {
+    "id": "agent:documenter",
+    "name": "documenter",
+    "model": "claude-sonnet-4-20250514",
+    "mode": "docs",
+    "description": "Documentation and changelog maintenance agent",
+    "skills": ["development-methodologies"],
+    "workflows": ["changelog-update"],
+    "operationalState": "healthy"
+  },
+  {
+    "id": "agent:designer",
+    "name": "designer",
+    "model": "claude-sonnet-4-20250514",
+    "mode": "design",
+    "description": "Visual design and UX evaluation agent",
+    "skills": ["flutter-harness", "code-quality-harness"],
+    "workflows": ["design-review"],
+    "operationalState": "healthy"
+  },
+  {
+    "id": "agent:debugger",
+    "name": "debugger",
+    "model": "claude-sonnet-4-20250514",
+    "mode": "debug",
+    "description": "Runtime debugging and diagnostics agent",
+    "skills": ["flutter-harness"],
+    "workflows": ["debug-session"],
+    "operationalState": "degraded"
+  },
+  {
+    "id": "agent:orchestrator",
+    "name": "orchestrator",
+    "model": "claude-sonnet-4-20250514",
+    "mode": "orchestration",
+    "description": "Multi-agent coordination and task routing agent",
+    "skills": ["development-methodologies", "code-quality-harness"],
+    "workflows": ["onboard", "build-and-test", "review-flow"],
+    "operationalState": "healthy"
+  },
+  {
+    "id": "agent:scribe",
+    "name": "scribe",
+    "model": "claude-sonnet-4-20250514",
+    "mode": "writing",
+    "description": "Technical writing and report generation agent",
+    "skills": ["development-methodologies"],
+    "workflows": ["report-generation"],
+    "operationalState": "degraded"
+  }
+]

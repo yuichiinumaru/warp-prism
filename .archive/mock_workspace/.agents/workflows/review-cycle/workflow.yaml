@@ -1,0 +1,104 @@
+name: review-cycle
+description: Iterative review and improvement cycle for ensuring quality outputs through feedback loops.
+version: 1.5.0
+status: active
+
+trigger:
+  type: manual
+  inputs:
+    - name: artifact_path
+      type: string
+      required: true
+      description: Path to the artifact to review
+    - name: artifact_type
+      type: string
+      enum: [code, document, design]
+      required: true
+    - name: quality_threshold
+      type: number
+      default: 0.85
+      description: Minimum quality score to pass
+
+stages:
+  - name: initial_review
+    description: Perform initial review of the artifact
+    agent: reviewer
+    skill: "{{ 'code-review' if trigger.artifact_type == 'code' else 'documentation-review' }}"
+    inputs:
+      files: ["{{ trigger.artifact_path }}"]
+      severity_threshold: warning
+    outputs:
+      - issues
+      - quality_score
+      - suggestions
+    timeout: 600
+    
+  - name: check_quality
+    description: Check if quality threshold is met
+    type: decision
+    condition: "stages.initial_review.outputs.quality_score >= trigger.quality_threshold"
+    branches:
+      pass: complete
+      fail: improvement
+      
+  - name: improvement
+    description: Implement improvements based on review feedback
+    agent: coder
+    inputs:
+      artifact: "{{ trigger.artifact_path }}"
+      issues: "{{ stages.initial_review.outputs.issues }}"
+      suggestions: "{{ stages.initial_review.outputs.suggestions }}"
+    outputs:
+      - updated_artifact
+      - changes_made
+    timeout: 900
+    
+  - name: re_review
+    description: Re-review after improvements
+    agent: reviewer
+    skill: "{{ 'code-review' if trigger.artifact_type == 'code' else 'documentation-review' }}"
+    inputs:
+      files: ["{{ stages.improvement.outputs.updated_artifact }}"]
+      previous_issues: "{{ stages.initial_review.outputs.issues }}"
+    outputs:
+      - issues
+      - quality_score
+      - improvement_delta
+    timeout: 600
+    
+  - name: final_check
+    description: Final quality check
+    type: decision
+    condition: "stages.re_review.outputs.quality_score >= trigger.quality_threshold"
+    branches:
+      pass: complete
+      fail: escalate
+      
+  - name: escalate
+    description: Escalate for human review
+    type: notification
+    channel: slack
+    message: |
+      Review cycle for {{ trigger.artifact_path }} did not meet quality threshold.
+      Current score: {{ stages.re_review.outputs.quality_score }}
+      Required: {{ trigger.quality_threshold }}
+      Please review manually.
+    
+  - name: complete
+    description: Mark review as complete
+    type: output
+    data:
+      artifact: "{{ stages.improvement.outputs.updated_artifact or trigger.artifact_path }}"
+      final_score: "{{ stages.re_review.outputs.quality_score or stages.initial_review.outputs.quality_score }}"
+      iterations: "{{ 1 if not stages.improvement else 2 }}"
+
+metadata:
+  author: asw-team
+  created: 2025-01-05
+  updated: 2025-05-15
+  tags:
+    - review
+    - quality
+    - iteration
+  avg_duration_minutes: 20
+  success_rate: 0.88

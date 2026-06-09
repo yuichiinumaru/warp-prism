@@ -1,0 +1,93 @@
+[
+  {
+    "id": "skill:flutter-harness",
+    "name": "flutter-harness",
+    "triggers": ["flutter", "dart", "widget", "state management"],
+    "subSkills": ["flutter-test", "flutter-analyze"],
+    "canonicality": "parentCanonical"
+  },
+  {
+    "id": "skill:code-quality-harness",
+    "name": "code-quality-harness",
+    "triggers": ["review", "quality", "lint", "analyze"],
+    "subSkills": ["static-analysis", "complexity-check"],
+    "canonicality": "parentCanonical"
+  },
+  {
+    "id": "skill:development-methodologies",
+    "name": "development-methodologies",
+    "triggers": ["tdd", "bdd", "agile", "methodology"],
+    "subSkills": ["tdd-cycle", "sprint-planning"],
+    "canonicality": "parentCanonical"
+  },
+  {
+    "id": "skill:agent-wiki",
+    "name": "agent-wiki",
+    "triggers": ["wiki", "profile", "continuity"],
+    "subSkills": [],
+    "canonicality": "parentCanonical"
+  },
+  {
+    "id": "skill:customize-opencode",
+    "name": "customize-opencode",
+    "triggers": ["opencode", "config", "agent"],
+    "subSkills": [],
+    "canonicality": "parentCanonical"
+  },
+  {
+    "id": "skill:git-operations",
+    "name": "git-operations",
+    "triggers": ["git", "commit", "branch", "merge"],
+    "subSkills": [],
+    "canonicality": "childLocal"
+  },
+  {
+    "id": "skill:dependency-audit",
+    "name": "dependency-audit",
+    "triggers": ["audit", "dependency", "security"],
+    "subSkills": [],
+    "canonicality": "childLocal"
+  },
+  {
+    "id": "skill:changelog-engine",
+    "name": "changelog-engine",
+    "triggers": [],
+    "subSkills": [],
+    "canonicality": "parentCanonical"
+  },
+  {
+    "id": "skill:golden-test",
+    "name": "golden-test",
+    "triggers": ["golden", "visual", "regression"],
+    "subSkills": [],
+    "canonicality": "childLocal"
+  },
+  {
+    "id": "skill:melos-workspace",
+    "name": "melos-workspace",
+    "triggers": ["melos", "monorepo", "workspace"],
+    "subSkills": [],
+    "canonicality": "childLocal"
+  },
+  {
+    "id": "skill:task-governance",
+    "name": "task-governance",
+    "triggers": ["task", "governance", "workflow"],
+    "subSkills": [],
+    "canonicality": "parentCanonical"
+  },
+  {
+    "id": "skill:design-system",
+    "name": "design-system",
+    "triggers": [],
+    "subSkills": ["atomic-design", "token-system"],
+    "canonicality": "childLocal"
+  },
+  {
+    "id": "skill:report-generator",
+    "name": "report-generator",
+    "triggers": ["report", "generate", "summary"],
+    "subSkills": [],
+    "canonicality": "childLocal"
+  }
+]

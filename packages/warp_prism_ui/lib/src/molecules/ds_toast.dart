@@ -1,0 +1,295 @@
+import 'package:flutter/material.dart';
+import '../tokens/tokens.dart';
+import '../atoms/atoms.dart';
+
+/// ASW Observatory Molecule - Toast
+///
+/// Individual toast notification widget with severity coloring,
+/// glass-panel styling, and optional action button.
+///
+/// This widget is a pure renderer — it holds no timers and manages no
+/// overlay entries. Pair it with [DSToastManager] for stacking,
+/// auto-dismiss, and overlay management.
+///
+/// Usage:
+/// ```dart
+/// DSToast(
+///   entry: DSToastEntry(
+///     id: '1',
+///     severity: DSToastSeverity.success,
+///     title: 'Task completed',
+///     message: 'All proofs verified',
+///   ),
+///   onDismiss: () => manager.dismiss('1'),
+/// )
+/// ```
+class DSToast extends StatelessWidget {
+  /// The toast entry data.
+  final DSToastEntry entry;
+
+  /// Called when the close button is tapped.
+  final VoidCallback? onDismiss;
+
+  /// Called when the action button is tapped.
+  final VoidCallback? onAction;
+
+  /// Whether this toast is currently hovered (for pause-on-hover).
+  final bool hovered;
+
+  const DSToast({
+    super.key,
+    required this.entry,
+    this.onDismiss,
+    this.onAction,
+    this.hovered = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final severityColor = entry.severity.color;
+    final severityIcon = entry.severity.icon;
+
+    return Semantics(
+      liveRegion: true,
+      label: '${entry.severity.label}: ${entry.title}',
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 400),
+        child: DSGlassPanel(
+          variant: DSGlassPanelVariant.elevated,
+          radius: DSRadii.md,
+          backgroundColor: DSColors.obsidianElevated.withValues(alpha: 0.95),
+          borderColor: DSColors.borderDefault,
+          padding: EdgeInsets.zero,
+          child: Row(
+            children: [
+              // Severity accent bar (4px left edge)
+              Container(
+                width: 4,
+                height: double.infinity,
+                decoration: BoxDecoration(
+                  color: severityColor,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(DSRadii.md),
+                    bottomLeft: Radius.circular(DSRadii.md),
+                  ),
+                ),
+              ),
+
+              // Severity icon
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: DSSpacing.md,
+                  top: DSSpacing.md,
+                  bottom: DSSpacing.md,
+                ),
+                child: DSIcon(
+                  severityIcon,
+                  color: severityColor,
+                  size: 20,
+                  semanticLabel: entry.severity.label,
+                ),
+              ),
+
+              // Content
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: DSSpacing.sm,
+                    vertical: DSSpacing.md,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        entry.title,
+                        style: DSTypography.labelLarge.copyWith(
+                          color: DSColors.textPrimary,
+                        ),
+                      ),
+                      if (entry.message != null) ...[
+                        const SizedBox(height: DSSpacing.xxs),
+                        Text(
+                          entry.message!,
+                          style: DSTypography.bodySmall.copyWith(
+                            color: DSColors.textTertiary,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ),
+
+              // Action button
+              if (entry.actionLabel != null)
+                Padding(
+                  padding: const EdgeInsets.only(right: DSSpacing.xs),
+                  child: TextButton(
+                    onPressed: onAction,
+                    style: TextButton.styleFrom(
+                      foregroundColor: severityColor,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: DSSpacing.sm,
+                        vertical: DSSpacing.xs,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(DSRadii.sm),
+                      ),
+                    ),
+                    child: Text(
+                      entry.actionLabel!,
+                      style: DSTypography.labelMedium.copyWith(
+                        color: severityColor,
+                      ),
+                    ),
+                  ),
+                ),
+
+              // Dismiss button
+              if (onDismiss != null)
+                Padding(
+                  padding: const EdgeInsets.only(right: DSSpacing.xs),
+                  child: Semantics(
+                    label: 'Dismiss notification',
+                    button: true,
+                    child: SizedBox(
+                      width: DSSpacing.iconButtonSizeCompact,
+                      height: DSSpacing.iconButtonSizeCompact,
+                      child: IconButton(
+                        onPressed: onDismiss,
+                        icon: const DSIcon.small(
+                          DSIcons.close,
+                          color: DSColors.textTertiary,
+                        ),
+                        padding: EdgeInsets.zero,
+                        splashRadius: DSSpacing.iconButtonSizeCompact / 2,
+                        tooltip: 'Dismiss',
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Severity levels for [DSToast].
+///
+/// Each severity maps to a distinct [DSColors] color and [DSIcons] icon.
+enum DSToastSeverity {
+  /// Informational — neutral blue.
+  info(
+    color: DSColors.statusInfo,
+    icon: DSIcons.info,
+    label: 'Info',
+  ),
+
+  /// Success — green.
+  success(
+    color: DSColors.statusSuccess,
+    icon: DSIcons.success,
+    label: 'Success',
+  ),
+
+  /// Warning — amber.
+  warning(
+    color: DSColors.statusWarning,
+    icon: DSIcons.warning,
+    label: 'Warning',
+  ),
+
+  /// Error — red.
+  error(
+    color: DSColors.statusError,
+    icon: DSIcons.error,
+    label: 'Error',
+  );
+
+  const DSToastSeverity({
+    required this.color,
+    required this.icon,
+    required this.label,
+  });
+
+  /// The accent color for this severity.
+  final Color color;
+
+  /// The icon for this severity.
+  final IconData icon;
+
+  /// Human-readable label for accessibility.
+  final String label;
+}
+
+/// Immutable data class representing a single toast notification entry.
+///
+/// Used by [DSToast] for rendering and by [DSToastManager] for lifecycle
+/// management.
+///
+/// The [id] field must be unique within a manager's active entry list.
+/// Use [createdAt] for ordering and auto-dismiss calculations.
+class DSToastEntry {
+  /// Unique identifier for this toast.
+  final String id;
+
+  /// Severity level that determines color and icon.
+  final DSToastSeverity severity;
+
+  /// Primary message (required).
+  final String title;
+
+  /// Optional secondary description.
+  final String? message;
+
+  /// Optional action button label (e.g., "Undo", "View").
+  final String? actionLabel;
+
+  /// How long this toast should remain visible before auto-dismiss.
+  ///
+  /// Defaults to 4 seconds. Set to [Duration.zero] to disable auto-dismiss.
+  final Duration duration;
+
+  /// Timestamp when this entry was created.
+  ///
+  /// Used for auto-dismiss timer calculation and stacking order.
+  final DateTime createdAt;
+
+  DSToastEntry({
+    required this.id,
+    required this.severity,
+    required this.title,
+    this.message,
+    this.actionLabel,
+    this.duration = const Duration(seconds: 4),
+    DateTime? createdAt,
+  }) : createdAt = createdAt ?? DateTime.now();
+
+  /// Creates a copy with optional overrides.
+  DSToastEntry copyWith({
+    String? id,
+    DSToastSeverity? severity,
+    String? title,
+    String? message,
+    bool clearMessage = false,
+    String? actionLabel,
+    bool clearActionLabel = false,
+    Duration? duration,
+    DateTime? createdAt,
+  }) {
+    return DSToastEntry(
+      id: id ?? this.id,
+      severity: severity ?? this.severity,
+      title: title ?? this.title,
+      message: clearMessage ? null : (message ?? this.message),
+      actionLabel: clearActionLabel ? null : (actionLabel ?? this.actionLabel),
+      duration: duration ?? this.duration,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
+}

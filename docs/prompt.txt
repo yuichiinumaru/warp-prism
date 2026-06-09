@@ -1,0 +1,784 @@
+You are building a Flutter application prototype called **ASW Observatory**.
+
+The app is a **desktop-first, read-only observability console** for an agentic project workspace. It visualizes a mocked Agent System Workspace containing agents, skills, workflows, tasks, and changelog entries.
+
+You do **not** have access to my real files and you must not ask for them. Instead, create a realistic mock workspace inside the project and build the app around that mock data.
+
+## Non-negotiable execution rule
+
+Before building the actual frontend screens, you must first create a complete **Atomic Design System in Flutter**, then use that design system to build every screen.
+
+Do not hardcode visual styles directly in feature screens. Feature screens must compose tokens, atoms, molecules, organisms, templates, and pages from the design system.
+
+## Visual direction
+
+Look and feel: **ultradark obsidian glass**, with subtle **5% hacker** and **5% protoss** influence.
+
+Interpret this as:
+
+* near-black obsidian background
+* glass-like dark panels, but not excessive blur
+* subtle cyan/violet/gold energy accents
+* thin luminous borders
+* precise typography
+* dense but readable information architecture
+* futuristic, serious, command-center feel
+* no childish neon overload
+* no generic SaaS pastel dashboard
+* no Material default look without customization
+
+Accessibility remains mandatory: readable contrast, keyboard-friendly navigation, visible focus states, and clear semantic status colors.
+
+## Product concept
+
+Build one unified system with four top-level areas:
+
+1. **Map** — what exists and how assets relate.
+2. **Operate** — active tasks, lanes, review state, blockers.
+3. **History** — changelog timeline and change stories.
+4. **Governance** — canonical/generated/archive/provenance/staleness visibility.
+
+The app should show two connected domains:
+
+### A. Harness visibility
+
+Read mocked `.agents/` data:
+
+```text
+.agents/
+  agents/
+  skills/
+  workflows/
+```
+
+Show:
+
+* agents
+* skills
+* super-skills
+* sub-skills
+* skill-local workflows
+* global workflows
+* scripts/references/assets attached to skills
+* inter-references between agents, skills, workflows, tasks, and changelog entries
+
+### B. Execution visibility
+
+Read mocked `docs/` data:
+
+```text
+docs/
+  tasks/
+    00-planning/
+    01-open/
+    02-doing/
+    03-review/
+    04-completed/
+  changelog/
+```
+
+Show:
+
+* task lanes
+* task detail pages
+* changelog timeline
+* evidence/readiness/proof status
+* links between changelog entries and tasks
+* links between tasks and skills/workflows
+
+## Domain model
+
+Model everything as graphable assets.
+
+Create a normalized model similar to:
+
+```dart
+enum AssetKind {
+  agent,
+  skill,
+  subskill,
+  workflow,
+  task,
+  changelog,
+  script,
+  reference,
+  rule,
+}
+
+enum EdgeKind {
+  contains,
+  routesTo,
+  dependsOn,
+  references,
+  changedBy,
+  proves,
+  uses,
+}
+
+enum Canonicality {
+  parentCanonical,
+  childLocal,
+  generated,
+  appendOnly,
+  archive,
+  mock,
+}
+
+class WorkspaceAsset {
+  final String id;
+  final AssetKind kind;
+  final String name;
+  final String path;
+  final String description;
+  final Canonicality canonicality;
+  final Map<String, dynamic> frontmatter;
+  final List<String> tags;
+  final List<String> triggers;
+  final List<WorkspaceEdge> edges;
+}
+```
+
+Adapt as needed, but keep the idea: one normalized graph backbone powers all screens.
+
+## Mock data requirement
+
+Create realistic mock files in the project, preferably under:
+
+```text
+assets/mock_workspace/
+  .agents/
+    agents/
+    skills/
+    workflows/
+  docs/
+    tasks/
+      00-planning/
+      01-open/
+      02-doing/
+      03-review/
+      04-completed/
+    changelog/
+```
+
+These files should be real `.md` files with valid YAML frontmatter, then markdown body content.
+
+The app should parse these mock files or load equivalent structured mock data generated from them. Prefer actual markdown files plus a parser layer if feasible.
+
+## Required mock agents
+
+Create at least these mocked agents:
+
+```text
+architect-orchestrator.md
+builder-orchestrator.md
+reviewer-orchestrator.md
+gt-harness-architect.md
+gt-code-quality-reviewer.md
+gt-security-reviewer.md
+gt-external-intelligence-analyst.md
+gt-task-architect.md
+gt-wave-orchestrator.md
+```
+
+Example valid frontmatter:
+
+```yaml
+---
+name: architect-orchestrator
+model: omniroute/architect
+mode: primary
+description: Main-session architect orchestrator for PRD, requirements, planning conversion, task audit, and harness governance.
+skills:
+  - project-management
+  - harness-architecture
+  - development-methodologies
+workflows:
+  - gt-ganthritor-onboard
+  - architect-orchestration
+  - plan-evidence-to-tasks
+---
+```
+
+## Required mock skills
+
+Create at least these mocked skills:
+
+```text
+harness-architecture/
+project-management/
+development-methodologies/
+code-quality-harness/
+coding-execution-harness/
+agent-wiki/
+indexing-skills/
+external-intelligence/
+frontend-quality-harness/
+design-system-harness/
+browser-harness/
+remediation-harness/
+agent-cli-delegation/
+```
+
+Each super-skill should have:
+
+```text
+SKILL.md
+sub-skills/
+workflows/
+references/
+scripts/
+```
+
+Not every directory needs many files, but enough to demonstrate hierarchy and graph relationships.
+
+Important concepts to represent:
+
+* `harness-architecture` creates/governs agents, skills, workflows, and tools.
+* `project-management` governs tasks, tasklist sync, changelog, handoff, and agent memory.
+* `development-methodologies` contains RF8: Goal → Domain → Feature → Representation → Specs → Behaviour → Test → Eval.
+* `code-quality-harness` handles review, audit, proof, verification, security, and scoring.
+* `agent-wiki` stores continuity, learnings, decisions, errors, reviews, fixes, and audits.
+* `indexing-skills` regenerates indexes for agents, skills, and workflows.
+
+Example skill frontmatter:
+
+```yaml
+---
+name: harness-architecture
+description: Meta-cognition for Agent System Workspace asset creation. READ THIS FIRST when creating agents, skills, workflows, or tools.
+triggers:
+  - create agent
+  - create skill
+  - create workflow
+  - harness governance
+sub_skills:
+  - create-agent
+  - create-skill
+  - create-workflow
+  - harness-management
+canonicality: parentCanonical
+tags:
+  - harness
+  - governance
+  - meta-harness
+---
+```
+
+## Required mock workflows
+
+Create at least these mocked workflows:
+
+```text
+gt-ganthritor-onboard.md
+architect-orchestration.md
+builder-orchestration.md
+reviewer-orchestration.md
+gt-create-tasks.md
+plan-evidence-to-tasks.md
+audit-tasks.md
+gt-harness-architecture.md
+gt-code-review.md
+gt-verify-task-completion.md
+gt-research-orchestration.md
+```
+
+Each workflow must include valid frontmatter:
+
+```yaml
+---
+name: gt-code-review
+description: Multi-tiered code review workflow with deterministic checks, adversarial review, scoring, and task routing.
+uses_skills:
+  - code-quality-harness
+  - project-management
+  - agent-wiki
+kind: review
+---
+```
+
+## Required mock tasks
+
+Create at least 20 mock tasks spread across:
+
+```text
+docs/tasks/00-planning/
+docs/tasks/01-open/
+docs/tasks/02-doing/
+docs/tasks/03-review/
+docs/tasks/04-completed/
+```
+
+Each task must have valid frontmatter:
+
+```yaml
+---
+id: 7521
+title: Build ASW Observatory mock parser
+status: 02-doing
+priority: P1
+owner: builder-orchestrator
+created: 2026-06-01
+updated: 2026-06-05
+skills:
+  - project-management
+  - harness-architecture
+  - code-quality-harness
+workflows:
+  - builder-orchestration
+  - gt-verify-task-completion
+depends_on:
+  - 7518
+proof_state: partial
+review_score: null
+---
+```
+
+Markdown body should include sections like:
+
+````markdown
+# Task 7521 — Build ASW Observatory mock parser
+
+## Goal
+...
+
+## Scope
+...
+
+## Exit Conditions
+- [ ] ...
+
+## Verification Commands
+```bash
+flutter test
+````
+
+## Completion Evidence
+
+...
+
+````
+
+Mock task categories should include:
+
+- feature implementation
+- review returned task
+- completed task with evidence
+- planning task from RF8
+- changelog repair task
+- index regeneration task
+- governance audit task
+- frontend design-system task
+- graph visualization task
+- data parser task
+
+## Required mock changelog entries
+
+Create at least 12 changelog markdown files under:
+
+```text
+docs/changelog/
+````
+
+Use valid frontmatter:
+
+```yaml
+---
+id: 2026-06-05-7521-asw-parser
+date: 2026-06-05
+project: asw-observatory
+task: 7521
+type: feature
+impact:
+  - harness-map
+  - parser
+  - graph-model
+skills:
+  - harness-architecture
+  - project-management
+---
+```
+
+Markdown body should tell a concise story:
+
+```markdown
+# ASW parser mock data added
+
+Implemented mock parsing layer for agent, skill, workflow, task, and changelog assets.
+
+## Why
+...
+
+## Changed
+...
+
+## Evidence
+...
+```
+
+## Design system architecture
+
+Create the design system before product screens.
+
+Suggested structure:
+
+```text
+lib/
+  design_system/
+    tokens/
+      ds_colors.dart
+      ds_typography.dart
+      ds_spacing.dart
+      ds_radii.dart
+      ds_shadows.dart
+      ds_motion.dart
+      ds_semantics.dart
+    atoms/
+      ds_text.dart
+      ds_icon.dart
+      ds_badge.dart
+      ds_chip.dart
+      ds_divider.dart
+      ds_status_dot.dart
+      ds_glow_border.dart
+      ds_glass_panel.dart
+    molecules/
+      ds_search_bar.dart
+      ds_filter_chip_group.dart
+      ds_asset_card.dart
+      ds_metric_tile.dart
+      ds_provenance_pill.dart
+      ds_evidence_row.dart
+      ds_timeline_marker.dart
+    organisms/
+      ds_shell.dart
+      ds_sidebar.dart
+      ds_topbar.dart
+      ds_graph_canvas.dart
+      ds_lane_board.dart
+      ds_timeline.dart
+      ds_detail_inspector.dart
+      ds_story_panel.dart
+    templates/
+      map_template.dart
+      operate_template.dart
+      history_template.dart
+      governance_template.dart
+    pages/
+      design_system_gallery_page.dart
+```
+
+Also create an in-app **Design System Gallery** route that demonstrates:
+
+* color tokens
+* typography
+* spacing
+* status semantics
+* badges
+* chips
+* cards
+* panels
+* task cards
+* asset cards
+* timeline items
+* graph node cards
+* empty states
+* loading states
+* error states
+
+This gallery is mandatory. It proves the design system exists before the app screens.
+
+## Recommended Flutter stack
+
+Use Flutter with Material 3, but customize heavily.
+
+Preferred packages if available:
+
+* `go_router` for routing
+* `flutter_riverpod` for state management
+* `yaml` for parsing frontmatter
+* `markdown` or equivalent for markdown parsing/rendering
+* `fl_chart` for charts
+* a graph visualization package such as `graphview`, or implement a simple custom graph if package constraints prevent it
+
+Do not overcomplicate. This is a functional prototype, but the architecture should be clean.
+
+## Required app architecture
+
+Use a layered structure:
+
+```text
+lib/
+  app/
+    app.dart
+    router.dart
+  core/
+    models/
+    parsing/
+    repositories/
+    services/
+  features/
+    map/
+    operate/
+    history/
+    governance/
+    asset_detail/
+  design_system/
+  mock_workspace/
+```
+
+The feature UI must consume repositories/view models, not directly parse files inside widgets.
+
+## Required screens
+
+### 1. Dashboard / Overview
+
+Show:
+
+* total agents
+* total skills
+* total sub-skills
+* total workflows
+* total tasks by lane
+* total changelog entries
+* active blockers
+* review queue count
+* governance warnings
+
+Include a “current story” panel summarizing the mock workspace.
+
+### 2. Map
+
+A harness map view with:
+
+* tabs: Agents, Skills, Workflows, Graph
+* searchable/filterable catalog
+* graph visualization of relationships
+* asset cards with canonicality/status/triggers
+* detail inspector on selection
+
+Graph modes:
+
+* containment graph: skill → subskills → workflows
+* operational graph: agent → workflows → skills
+* evidence graph: task → changelog → skill/workflow
+
+### 3. Operate
+
+A task lane board with columns:
+
+```text
+00-planning
+01-open
+02-doing
+03-review
+04-completed
+```
+
+Task cards should show:
+
+* ID
+* title
+* priority
+* lane
+* owner
+* proof state
+* review score
+* linked skills/workflows
+* blockers/dependencies
+
+Task detail should show:
+
+* frontmatter metadata
+* markdown content
+* exit conditions
+* verification commands
+* completion evidence
+* related changelog entries
+* related skills/workflows
+
+### 4. History
+
+A changelog timeline with:
+
+* chronological entries
+* filters by project/type/skill/task
+* grouped “story mode”
+* impact path: changelog → task → skill/workflow
+* concise data storytelling panels
+
+### 5. Governance
+
+Show diagnostic panels:
+
+* orphan workflows
+* skills with no triggers
+* tasks without verification commands
+* changelog entries without linked task
+* generated vs canonical vs append-only assets
+* possible stale references
+* high fan-in skills
+* review queue pressure
+
+These can be computed from the mock graph.
+
+### 6. Asset Detail
+
+A universal detail page/drawer for any asset kind.
+
+For a selected skill, show:
+
+* identity
+* triggers
+* subskills
+* local workflows
+* scripts/references
+* incoming links
+* outgoing links
+* related tasks
+* related changelog entries
+
+For a selected task, show:
+
+* metadata
+* lane
+* dependencies
+* proof/evidence status
+* linked workflows/skills
+* related changelog
+
+For a selected agent, show:
+
+* role
+* model/mode
+* skills
+* workflows
+* task involvement
+
+## UX requirements
+
+The app should help users understand:
+
+1. What exists.
+2. What matters right now.
+3. Why something changed.
+4. What is blocked, stale, orphaned, or risky.
+5. How agents, skills, workflows, tasks, and changelog entries connect.
+
+Use data storytelling, not just tables.
+
+Examples:
+
+* “This review queue is dominated by code-quality and project-management tasks.”
+* “These workflows are global but may belong inside a skill-local workflow folder.”
+* “This skill has many incoming references and should be treated as governance-critical.”
+* “This changelog entry changed a skill used by three active tasks.”
+
+## Interaction requirements
+
+Implement:
+
+* search
+* filters
+* clickable chips
+* graph node selection
+* detail drawer or split-pane inspector
+* responsive layout
+* keyboard focus states
+* empty/loading/error states
+* mock data refresh/reload button
+* route/deep link support for asset detail where possible
+
+Desktop layout:
+
+* left rail navigation
+* central content
+* right inspector panel
+
+Small layout:
+
+* bottom navigation or collapsible nav
+* detail view becomes full-screen
+
+## Performance rules
+
+Do not create excessive nested blur/glass effects.
+
+Use glass panels sparingly:
+
+* shell background
+* major cards
+* selected inspector
+* modal/story panels
+
+Avoid making every component a blurred container.
+
+Use lazy lists for catalogs and tasks.
+
+Keep animations subtle and fast.
+
+## Acceptance criteria
+
+The prototype is complete only if:
+
+1. A reusable Flutter Atomic Design System exists.
+2. All feature screens use the design system.
+3. There is a Design System Gallery route.
+4. Mock `.agents/` and `docs/` workspace files exist.
+5. Mock markdown files use valid YAML frontmatter.
+6. App loads and visualizes mocked agents, skills, workflows, tasks, and changelog entries.
+7. The app has Map, Operate, History, Governance, and Asset Detail surfaces.
+8. Task lanes show the five required folders.
+9. Changelog timeline links entries to tasks and skills.
+10. Skill detail shows subskills, local workflows, scripts/references, and incoming/outgoing links.
+11. The app visually matches ultradark obsidian glass with restrained hacker/protoss accents.
+12. The app remains readable and accessible.
+13. The first implemented milestone must be the design system, not product screens.
+
+## Delivery order
+
+Follow this order strictly:
+
+### Phase 1 — Atomic Design System
+
+Create tokens, atoms, molecules, organisms, templates, and Design System Gallery.
+
+### Phase 2 — Mock Workspace
+
+Create the mock `.agents/` and `docs/` markdown file corpus with valid frontmatter.
+
+### Phase 3 — Data Layer
+
+Create parsers, models, repositories, and graph normalization.
+
+### Phase 4 — Product Shell
+
+Create navigation, routing, overview dashboard, and layout templates.
+
+### Phase 5 — Feature Screens
+
+Create Map, Operate, History, Governance, and Asset Detail.
+
+### Phase 6 — Polish
+
+Improve responsiveness, story panels, accessibility, visual polish, and demo coherence.
+
+## Important conceptual framing
+
+This is not a generic task manager.
+
+It is an **Agent System Workspace Observatory**.
+
+It should make a governed agentic workspace visible:
+
+```text
+agents = institutional roles
+skills = routable capabilities
+subskills = executable capability units
+workflows = operational rites
+tasks = governed work contracts
+changelog = append-only historical ledger
+graph = causality and dependency map
+governance = visibility into drift, canonicality, proof, and risk
+```
+
+Build the prototype to demonstrate that concept clearly.

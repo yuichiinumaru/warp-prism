@@ -1,0 +1,3749 @@
+{
+  "policy": "SQLite is prohibited for runtime state across Ganthritor-family projects. PostgreSQL for durable state, Redis for cache/ephemeral.",
+  "policy_doc": ".agents/rules/sqlite-abolition-policy.md",
+  "audit_script": ".agents/rules/scripts/audit-sqlite-abolition.sh",
+  "scanner_script": "OmniRoute/scripts/sqlite-abolition-scanner.ts",
+  "last_audit": "2026-06-03",
+  "exceptions": [
+    {
+      "path": "khala-code.db",
+      "owner": "builders",
+      "reason": "Root-level Khala Code local database artifact detected by SQLite abolition scanner; tracked as migration residue pending removal/export decision.",
+      "removal_task": "7510",
+      "expiry": "Temporary — remove after Khala Code state is migrated/exported or confirmed disposable",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "sqlite_artifact",
+          "line": 1,
+          "code": "khala-code.db"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/backup/omniroute-backup-2026-05-02T15-08-06-482Z.sqlite",
+      "owner": "omniroute",
+      "reason": "Pre-existing SQLite backup artifact tracked as migration residue; scanner must see it but not classify it as new runtime persistence.",
+      "removal_task": "7510",
+      "expiry": "Temporary — remove or archive after PostgreSQL backup/export replacement is complete",
+      "reviewer": "builder",
+      "scopes": [{ "kind": "sqlite_artifact", "line": 1, "code": "omniroute-backup-2026-05-02T15-08-06-482Z.sqlite" }]
+    },
+    {
+      "path": "OmniRoute/backup/omniroute-backup-2026-05-03T22-09-11-051Z.sqlite",
+      "owner": "omniroute",
+      "reason": "Pre-existing SQLite backup artifact tracked as migration residue; scanner must see it but not classify it as new runtime persistence.",
+      "removal_task": "7510",
+      "expiry": "Temporary — remove or archive after PostgreSQL backup/export replacement is complete",
+      "reviewer": "builder",
+      "scopes": [{ "kind": "sqlite_artifact", "line": 1, "code": "omniroute-backup-2026-05-03T22-09-11-051Z.sqlite" }]
+    },
+    {
+      "path": "OmniRoute/backup/omniroute-backup-2026-05-04T16-57-33-860Z.sqlite",
+      "owner": "omniroute",
+      "reason": "Pre-existing SQLite backup artifact tracked as migration residue; scanner must see it but not classify it as new runtime persistence.",
+      "removal_task": "7510",
+      "expiry": "Temporary — remove or archive after PostgreSQL backup/export replacement is complete",
+      "reviewer": "builder",
+      "scopes": [{ "kind": "sqlite_artifact", "line": 1, "code": "omniroute-backup-2026-05-04T16-57-33-860Z.sqlite" }]
+    },
+    {
+      "path": "OmniRoute/backup/omniroute-backup-2026-05-05T13-13-16-494Z.sqlite",
+      "owner": "omniroute",
+      "reason": "Pre-existing SQLite backup artifact tracked as migration residue; scanner must see it but not classify it as new runtime persistence.",
+      "removal_task": "7510",
+      "expiry": "Temporary — remove or archive after PostgreSQL backup/export replacement is complete",
+      "reviewer": "builder",
+      "scopes": [{ "kind": "sqlite_artifact", "line": 1, "code": "omniroute-backup-2026-05-05T13-13-16-494Z.sqlite" }]
+    },
+    {
+      "path": "OmniRoute/backup/omniroute-backup-2026-05-05T13-13-16-494Z.sqlite-shm",
+      "owner": "omniroute",
+      "reason": "Pre-existing SQLite shared-memory backup artifact tracked as migration residue.",
+      "removal_task": "7510",
+      "expiry": "Temporary — remove or archive after PostgreSQL backup/export replacement is complete",
+      "reviewer": "builder",
+      "scopes": [{ "kind": "sqlite_artifact", "line": 1, "code": "omniroute-backup-2026-05-05T13-13-16-494Z.sqlite-shm" }]
+    },
+    {
+      "path": "OmniRoute/backup/omniroute-backup-2026-05-05T13-13-16-494Z.sqlite-wal",
+      "owner": "omniroute",
+      "reason": "Pre-existing SQLite WAL backup artifact tracked as migration residue.",
+      "removal_task": "7510",
+      "expiry": "Temporary — remove or archive after PostgreSQL backup/export replacement is complete",
+      "reviewer": "builder",
+      "scopes": [{ "kind": "sqlite_artifact", "line": 1, "code": "omniroute-backup-2026-05-05T13-13-16-494Z.sqlite-wal" }]
+    },
+    {
+      "path": "OmniRoute/scripts/scratch/test-migrations.ts",
+      "owner": "omniroute",
+      "reason": "Scratch migration residue explicitly scoped until disposable migration scratch code is removed.",
+      "removal_task": "7510",
+      "expiry": "Temporary — remove scratch migration residue",
+      "reviewer": "builder",
+      "scopes": [{ "kind": "js_ts_import", "line": 1, "code": "import Database from \"better-sqlite3\";" }]
+    },
+    {
+      "path": "OmniRoute/src/app/api/db-backups/export/route.ts",
+      "owner": "omniroute",
+      "reason": "Existing DB backup export route still bridges SQLite during PostgreSQL migration; scoped so new/moved usage fails closed.",
+      "removal_task": "7510",
+      "expiry": "Temporary — replace with PostgreSQL-native export",
+      "reviewer": "builder",
+      "scopes": [{ "kind": "js_ts_import", "line": 57, "code": "const db = getDbInstance();" }]
+    },
+    {
+      "path": "OmniRoute/src/app/api/db-backups/exportAll/route.ts",
+      "owner": "omniroute",
+      "reason": "Existing DB backup export-all route still bridges SQLite during PostgreSQL migration; scoped so new/moved usage fails closed.",
+      "removal_task": "7510",
+      "expiry": "Temporary — replace with PostgreSQL-native export-all",
+      "reviewer": "builder",
+      "scopes": [{ "kind": "js_ts_import", "line": 48, "code": "const db = getDbInstance();" }]
+    },
+    {
+      "path": "OmniRoute/src/app/api/logs/export/route.ts",
+      "owner": "omniroute",
+      "reason": "Existing logs export route still bridges SQLite during PostgreSQL migration; scoped so new/moved usage fails closed.",
+      "removal_task": "7510",
+      "expiry": "Temporary — replace with PostgreSQL-native logs export",
+      "reviewer": "builder",
+      "scopes": [{ "kind": "js_ts_import", "line": 20, "code": "const db = getDbInstance();" }]
+    },
+    {
+      "path": "OmniRoute/src/app/api/oauth/cursor/auto-import/route.ts",
+      "owner": "omniroute",
+      "reason": "Cursor auto-import reads an external Cursor SQLite database, not OmniRoute runtime state; scoped as external compatibility residue.",
+      "removal_task": null,
+      "expiry": "Permanent while Cursor external DB import remains supported",
+      "reviewer": "builder",
+      "scopes": [{ "kind": "js_ts_import", "line": 5, "code": "import Database from \"better-sqlite3\";" }]
+    },
+    {
+      "path": "OmniRoute/src/app/api/settings/import-json/route.ts",
+      "owner": "omniroute",
+      "reason": "Existing settings import JSON route bridges SQLite during PostgreSQL migration; scoped so new/moved usage fails closed.",
+      "removal_task": "7510",
+      "expiry": "Temporary — replace with PostgreSQL-native settings import",
+      "reviewer": "builder",
+      "scopes": [
+        { "kind": "js_ts_import", "line": 175, "code": "return (getDbInstance().prepare(\"SELECT id, data, sort_order FROM combos\").all() as unknown[])" },
+        { "kind": "js_ts_import", "line": 186, "code": "return (getDbInstance().prepare(\"SELECT name FROM combos\").all() as Array<{ name?: unknown }>)" },
+        { "kind": "js_ts_import", "line": 547, "code": "const db = getDbInstance();" }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/jsonMigration.ts",
+      "owner": "omniroute",
+      "reason": "Existing JSON migration helper retains SQLite typing during PostgreSQL migration; scoped so new/moved usage fails closed.",
+      "removal_task": "7510",
+      "expiry": "Temporary — retire after JSON migration is PostgreSQL-native or removed",
+      "reviewer": "builder",
+      "scopes": [{ "kind": "js_ts_import", "line": 14, "code": "import type Database from \"better-sqlite3\";" }]
+    },
+    {
+      "path": "OmniRoute/src/lib/usage/migrations.ts",
+      "owner": "omniroute",
+      "reason": "Existing usage migration helper retains SQLite access during PostgreSQL migration; scoped so new/moved usage fails closed.",
+      "removal_task": "7510",
+      "expiry": "Temporary — replace with PostgreSQL-native usage migration",
+      "reviewer": "builder",
+      "scopes": [{ "kind": "js_ts_import", "line": 325, "code": "const db = getDbInstance();" }]
+    },
+    {
+      "path": "OmniRoute/bin/reset-password.mjs",
+      "owner": "omniroute",
+      "reason": "Desktop-only ops tool supporting both SQLite (local dev) and PostgreSQL (server) backends",
+      "removal_task": null,
+      "expiry": "Permanent — dual-backend by design for local dev",
+      "reviewer": "builder",
+      "scopes": []
+    },
+    {
+      "path": "OmniRoute/open-sse/utils/cursorVersionDetector.ts",
+      "owner": "omniroute",
+      "reason": "Reads Cursor IDE's local SQLite DB (readonly) to detect version — external DB, not OmniRoute state",
+      "removal_task": null,
+      "expiry": "Permanent — reads external app DB",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 43,
+          "code": "const Database = esmRequire(\"better-sqlite3\");"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/adapter/sqliteAdapter.ts",
+      "owner": "omniroute",
+      "reason": "SQLite adapter for local desktop-only mode. Blocked in server mode by enforcement gate in core.ts",
+      "removal_task": "omni-0642",
+      "expiry": "Until desktop mode is fully deprecated",
+      "reviewer": "builder",
+      "scopes": []
+    },
+    {
+      "path": "OmniRoute/src/lib/db/core.ts",
+      "owner": "omniroute",
+      "reason": "Contains shouldBlockSqliteInitialization() enforcement gate — references SQLite to block it",
+      "removal_task": null,
+      "expiry": "Permanent — enforcement code",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 7,
+          "code": "import Database from \"better-sqlite3\";"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 22,
+          "code": "type SqliteDatabase = import(\"better-sqlite3\").Database;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 424,
+          "code": "var __omnirouteDb: import(\"better-sqlite3\").Database | undefined;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 446,
+          "code": "// SAFETY: better-sqlite3 transaction helpers expose these mode functions dynamically on the"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 1093,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 1101,
+          "code": "export function getDbInstance(): SqliteDatabase {"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/backup.ts",
+      "owner": "omniroute",
+      "reason": "Backup logic with SQLite no-op path in Postgres mode (task 0661)",
+      "removal_task": "omni-0661",
+      "expiry": "Until SQLite backup code is fully removed",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 5,
+          "code": "import Database from \"better-sqlite3\";"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 6,
+          "code": "import type { Database as SqliteDatabase } from \"better-sqlite3\";"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 317,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 405,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 432,
+          "code": "const db = getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/sqliteToPostgresMigration.ts",
+      "owner": "omniroute",
+      "reason": "Migration tool — reads SQLite to write PostgreSQL",
+      "removal_task": null,
+      "expiry": "Permanent — migration utility",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 1,
+          "code": "import Database from \"better-sqlite3\";"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/app/api/db-backups/import/route.ts",
+      "owner": "omniroute",
+      "reason": "Import route supporting SQLite-to-Postgres migration path",
+      "removal_task": null,
+      "expiry": "Until migration path is no longer needed",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 2,
+          "code": "import Database from \"better-sqlite3\";"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 577,
+          "code": "const db = getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/scripts/audit-sqlite-residue.ts",
+      "owner": "omniroute",
+      "reason": "Audit script — references SQLite to detect it",
+      "removal_task": null,
+      "expiry": "Permanent — audit tool",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 46,
+          "code": "* Any unlisted src/lib/db/*.ts module calling getDbInstance() will fail the gate."
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 111,
+          "code": "// These call getDbInstance() directly without checking the backend."
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/scripts/sqlite-abolition-scanner.ts",
+      "owner": "omniroute",
+      "reason": "Repo-wide SQLite abolition scanner — references SQLite patterns to detect forbidden usage",
+      "removal_task": null,
+      "expiry": "Permanent — enforcement scanner",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 6,
+          "code": "*   - JS/TS: better-sqlite3, bun:sqlite, dbInstance call sites, sqlx-sqlite imports"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 10,
+          "code": "*   - Manifests: package.json better-sqlite3 deps, Cargo.toml rusqlite/sqlx deps"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 206,
+          "code": "pattern: /better-sqlite3/,"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 211,
+          "code": "pattern: /bun:sqlite/,"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 214,
+          "code": "{ kind: \"js_ts_import\", pattern: /\\brequire\\s*\\(\\s*['\"]better-sqlite3['\"]\\s*\\)/ },"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 217,
+          "code": "pattern: /\\brequire\\s*\\(\\s*['\"]better-sqlite3['\"]\\s*\\)/,"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 303,
+          "code": "pattern: /\"better-sqlite3\"\\s*:/,"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 308,
+          "code": "pattern: /\"@types\\/better-sqlite3\"\\s*:/,"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 313,
+          "code": "pattern: /\"bun:sqlite\"/,"
+        }
+      ]
+    },
+    {
+      "path": "khala-code/src/storage/sqlite-db.ts",
+      "owner": "khala-code",
+      "reason": "Khala Code's own storage layer — separate subproject with its own migration timeline",
+      "removal_task": "khala-code-sqlite-migration",
+      "expiry": "When Khala Code migrates to SurrealDB (task 7496)",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 9,
+          "code": "import Database from 'better-sqlite3';"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 1431,
+          "code": "// Convert named parameters to positional parameters for better-sqlite3"
+        }
+      ]
+    },
+    {
+      "path": "khala-code/src/storage/migrations.ts",
+      "owner": "khala-code",
+      "reason": "Khala Code migration system",
+      "removal_task": "khala-code-sqlite-migration",
+      "expiry": "When Khala Code migrates to SurrealDB",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 9,
+          "code": "import Database from 'better-sqlite3';"
+        }
+      ]
+    },
+    {
+      "path": "khala-code/src/services/vector-migrator.ts",
+      "owner": "khala-code",
+      "reason": "Vector data migration utility",
+      "removal_task": null,
+      "expiry": "Permanent — migration utility",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 9,
+          "code": "import Database from 'better-sqlite3';"
+        }
+      ]
+    },
+    {
+      "path": "khala-code/src/services/transaction-manager.ts",
+      "owner": "khala-code",
+      "reason": "Khala Code transaction layer — separate subproject",
+      "removal_task": "khala-code-sqlite-migration",
+      "expiry": "When Khala Code migrates to SurrealDB",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 9,
+          "code": "import Database from 'better-sqlite3';"
+        }
+      ]
+    },
+    {
+      "path": "ganthritor-rs/crates/ganthritor-memory/src/session.rs",
+      "owner": "ganthritor-rs",
+      "reason": "Rust memory crate — separate migration timeline",
+      "removal_task": "ganthritor-rs-sqlite-migration",
+      "expiry": "When ganthritor-rs memory layer migrates",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "rust_crate_usage",
+          "line": 7,
+          "code": "use rusqlite::Connection;"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 49,
+          "code": "let result = stmt.query_row(rusqlite::params![session_id.0.to_string()], |row| {"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 72,
+          "code": "Err(rusqlite::Error::QueryReturnedNoRows) => Ok(None),"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 90,
+          "code": "rusqlite::params!["
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 111,
+          "code": "rusqlite::params![session_id.0.to_string()],"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 125,
+          "code": "rusqlite::params![agent_id.0.to_string()],"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 139,
+          "code": "rusqlite::params![agent_id.0.to_string()],"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 210,
+          "code": "rusqlite::params![label, Utc::now().to_rfc3339(), session_id.0.to_string()],"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 233,
+          "code": "let result = stmt.query_row(rusqlite::params![agent_id.0.to_string(), label], |row| {"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 256,
+          "code": "Err(rusqlite::Error::QueryReturnedNoRows) => Ok(None),"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 276,
+          "code": ".query_map(rusqlite::params![agent_id.0.to_string()], |row| {"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 376,
+          "code": "let result = stmt.query_row(rusqlite::params![agent_id.0.to_string()], |row| {"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 396,
+          "code": "Err(rusqlite::Error::QueryReturnedNoRows) => {"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 505,
+          "code": "rusqlite::params!["
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 626,
+          "code": "let conn = Connection::open_in_memory().unwrap();"
+        }
+      ]
+    },
+    {
+      "path": "ganthritor-rs/crates/ganthritor-memory/src/migration.rs",
+      "owner": "ganthritor-rs",
+      "reason": "Rust memory migration utilities",
+      "removal_task": null,
+      "expiry": "Permanent — migration utility",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "rust_crate_usage",
+          "line": 5,
+          "code": "use rusqlite::Connection;"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 11,
+          "code": "pub fn run_migrations(conn: &Connection) -> Result<(), rusqlite::Error> {"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 70,
+          "code": "fn set_schema_version(conn: &Connection, version: u32) -> Result<(), rusqlite::Error> {"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 75,
+          "code": "fn migrate_v1(conn: &Connection) -> Result<(), rusqlite::Error> {"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 189,
+          "code": "fn migrate_v2(conn: &Connection) -> Result<(), rusqlite::Error> {"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 216,
+          "code": "fn migrate_v3(conn: &Connection) -> Result<(), rusqlite::Error> {"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 231,
+          "code": "fn migrate_v4(conn: &Connection) -> Result<(), rusqlite::Error> {"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 255,
+          "code": "fn migrate_v5(conn: &Connection) -> Result<(), rusqlite::Error> {"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 274,
+          "code": "fn migrate_v6(conn: &Connection) -> Result<(), rusqlite::Error> {"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 287,
+          "code": "fn migrate_v7(conn: &Connection) -> Result<(), rusqlite::Error> {"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 307,
+          "code": "fn migrate_v8(conn: &Connection) -> Result<(), rusqlite::Error> {"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 337,
+          "code": "let conn = Connection::open_in_memory().unwrap();"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 359,
+          "code": "let conn = Connection::open_in_memory().unwrap();"
+        }
+      ]
+    },
+    {
+      "path": "ganthritor-rs/crates/ganthritor-memory/src/substrate.rs",
+      "owner": "ganthritor-rs",
+      "reason": "Rust memory substrate layer",
+      "removal_task": "ganthritor-rs-sqlite-migration",
+      "expiry": "When ganthritor-rs memory layer migrates",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "rust_crate_usage",
+          "line": 22,
+          "code": "use rusqlite::Connection;"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 43,
+          "code": "let conn = Connection::open(db_path).map_err(|e| OpenFangError::Memory(e.to_string()))?;"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 64,
+          "code": "Connection::open_in_memory().map_err(|e| OpenFangError::Memory(e.to_string()))?;"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 336,
+          "code": "rusqlite::params![device_id, display_name, platform, paired_at, last_seen, push_token],"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 349,
+          "code": "rusqlite::params![device_id],"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 461,
+          "code": "rusqlite::params![id, &created_by, &title, b\"\", now, title, description, assigned_to, created_by],"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 486,
+          "code": "let result = stmt.query_row(rusqlite::params![agent_id], |row| {"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 502,
+          "code": "rusqlite::params![id, agent_id],"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 515,
+          "code": "Err(rusqlite::Error::QueryReturnedNoRows) => Ok(None),"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 534,
+          "code": "rusqlite::params![task_id, result, now],"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 552,
+          "code": "let (sql, params): (&str, Vec<Box<dyn rusqlite::types::ToSql>>) = match &status {"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 564,
+          "code": "let params_refs: Vec<&dyn rusqlite::types::ToSql> = params.iter().map(|p| p.as_ref()).collect();"
+        }
+      ]
+    },
+    {
+      "path": "ganthritor-rs/crates/ganthritor-memory/src/structured.rs",
+      "owner": "ganthritor-rs",
+      "reason": "Rust structured memory storage",
+      "removal_task": "ganthritor-rs-sqlite-migration",
+      "expiry": "When ganthritor-rs memory layer migrates",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "rust_crate_usage",
+          "line": 6,
+          "code": "use rusqlite::Connection;"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 30,
+          "code": "let result = stmt.query_row(rusqlite::params![agent_id.0.to_string(), key], |row| {"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 40,
+          "code": "Err(rusqlite::Error::QueryReturnedNoRows) => Ok(None),"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 62,
+          "code": "rusqlite::params![agent_id.0.to_string(), key, blob, now],"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 76,
+          "code": "rusqlite::params![agent_id.0.to_string(), key],"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 92,
+          "code": ".query_map(rusqlite::params![agent_id.0.to_string()], |row| {"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 145,
+          "code": "rusqlite::params!["
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 179,
+          "code": "let result = stmt.query_row(rusqlite::params![agent_id.0.to_string()], |row| {"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 237,
+          "code": "Err(rusqlite::Error::QueryReturnedNoRows) => Ok(None),"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 250,
+          "code": "rusqlite::params![agent_id.0.to_string()],"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 408,
+          "code": "rusqlite::params![new_blob, id_str],"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 449,
+          "code": "let conn = Connection::open_in_memory().unwrap();"
+        }
+      ]
+    },
+    {
+      "path": "ganthritor-rs/crates/ganthritor-memory/src/consolidation.rs",
+      "owner": "ganthritor-rs",
+      "reason": "Rust memory consolidation with rusqlite — separate migration timeline",
+      "removal_task": "ganthritor-rs-sqlite-migration",
+      "expiry": "When ganthritor-rs memory layer migrates",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "rust_crate_usage",
+          "line": 9,
+          "code": "use rusqlite::Connection;"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 42,
+          "code": "rusqlite::params![decay_factor, cutoff],"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 62,
+          "code": "let conn = Connection::open_in_memory().unwrap();"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 83,
+          "code": "rusqlite::params![old_date],"
+        }
+      ]
+    },
+    {
+      "path": "ganthritor-rs/crates/ganthritor-memory/src/knowledge.rs",
+      "owner": "ganthritor-rs",
+      "reason": "Rust knowledge graph storage with rusqlite — separate migration timeline",
+      "removal_task": "ganthritor-rs-sqlite-migration",
+      "expiry": "When ganthritor-rs memory layer migrates",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "rust_crate_usage",
+          "line": 10,
+          "code": "use rusqlite::Connection;"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 47,
+          "code": "rusqlite::params![id, entity_type_str, entity.name, props_str, now],"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 68,
+          "code": "rusqlite::params!["
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 99,
+          "code": "let mut params: Vec<Box<dyn rusqlite::types::ToSql>> = Vec::new();"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 128,
+          "code": "let param_refs: Vec<&dyn rusqlite::types::ToSql> ="
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 280,
+          "code": "let conn = Connection::open_in_memory().unwrap();"
+        }
+      ]
+    },
+    {
+      "path": "ganthritor-rs/crates/ganthritor-memory/src/semantic.rs",
+      "owner": "ganthritor-rs",
+      "reason": "Rust semantic memory with rusqlite — separate migration timeline",
+      "removal_task": "ganthritor-rs-sqlite-migration",
+      "expiry": "When ganthritor-rs memory layer migrates",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "rust_crate_usage",
+          "line": 14,
+          "code": "use rusqlite::Connection;"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 68,
+          "code": "rusqlite::params!["
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 119,
+          "code": "let mut params: Vec<Box<dyn rusqlite::types::ToSql>> = Vec::new();"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 162,
+          "code": "let param_refs: Vec<&dyn rusqlite::types::ToSql> ="
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 272,
+          "code": "rusqlite::params![Utc::now().to_rfc3339(), frag.id.0.to_string()],"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 287,
+          "code": "rusqlite::params![id.0.to_string()],"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 302,
+          "code": "rusqlite::params![bytes, id.0.to_string()],"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 353,
+          "code": "let conn = Connection::open_in_memory().unwrap();"
+        }
+      ]
+    },
+    {
+      "path": "ganthritor-rs/crates/ganthritor-memory/src/usage.rs",
+      "owner": "ganthritor-rs",
+      "reason": "Rust usage tracking with rusqlite — separate migration timeline",
+      "removal_task": "ganthritor-rs-sqlite-migration",
+      "expiry": "When ganthritor-rs memory layer migrates",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "rust_crate_usage",
+          "line": 6,
+          "code": "use rusqlite::Connection;"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 93,
+          "code": "rusqlite::params!["
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 118,
+          "code": "rusqlite::params![agent_id.0.to_string()],"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 135,
+          "code": "rusqlite::params![agent_id.0.to_string()],"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 152,
+          "code": "rusqlite::params![agent_id.0.to_string()],"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 200,
+          "code": "let (sql, params): (&str, Vec<Box<dyn rusqlite::types::ToSql>>) = match agent_id {"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 215,
+          "code": "let params_refs: Vec<&dyn rusqlite::types::ToSql> ="
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 360,
+          "code": "let conn = Connection::open_in_memory().unwrap();"
+        }
+      ]
+    },
+    {
+      "path": "ganthritor-rs/crates/ganthritor-runtime/src/audit.rs",
+      "owner": "ganthritor-rs",
+      "reason": "Rust runtime audit module with rusqlite — separate migration timeline",
+      "removal_task": "ganthritor-rs-sqlite-migration",
+      "expiry": "When ganthritor-rs runtime migrates to PostgreSQL",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "rust_crate_usage",
+          "line": 11,
+          "code": "use rusqlite::Connection;"
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 218,
+          "code": "rusqlite::params!["
+        },
+        {
+          "kind": "rust_crate_usage",
+          "line": 377,
+          "code": "let conn = Connection::open_in_memory().unwrap();"
+        }
+      ]
+    },
+    {
+      "path": "ganthritor-rs/crates/ganthritor-memory/Cargo.toml",
+      "owner": "ganthritor-rs",
+      "reason": "Cargo.toml with rusqlite workspace dependency — tracked for migration",
+      "removal_task": "ganthritor-rs-sqlite-migration",
+      "expiry": "When ganthritor-rs migrates to PostgreSQL",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "rust_cargo_dep",
+          "line": 14,
+          "code": "rusqlite = { workspace = true }"
+        }
+      ]
+    },
+    {
+      "path": "ganthritor-rs/crates/ganthritor-runtime/Cargo.toml",
+      "owner": "ganthritor-rs",
+      "reason": "Cargo.toml with rusqlite workspace dependency — tracked for migration",
+      "removal_task": "ganthritor-rs-sqlite-migration",
+      "expiry": "When ganthritor-rs migrates to PostgreSQL",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "rust_cargo_dep",
+          "line": 33,
+          "code": "rusqlite = { workspace = true }"
+        }
+      ]
+    },
+    {
+      "path": "ganthritor-rs/crates/ganthritor-services/Cargo.toml",
+      "owner": "ganthritor-rs",
+      "reason": "Cargo.toml with rusqlite workspace dependency — tracked for migration",
+      "removal_task": "ganthritor-rs-sqlite-migration",
+      "expiry": "When ganthritor-rs migrates to PostgreSQL",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "rust_cargo_dep",
+          "line": 19,
+          "code": "rusqlite = { workspace = true }"
+        }
+      ]
+    },
+    {
+      "path": "ganthritor-rs/Cargo.toml",
+      "owner": "ganthritor-rs",
+      "reason": "Workspace Cargo.toml defining rusqlite dependency — tracked for migration",
+      "removal_task": "ganthritor-rs-sqlite-migration",
+      "expiry": "When ganthritor-rs migrates to PostgreSQL",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "rust_cargo_dep",
+          "line": 70,
+          "code": "rusqlite = { version = \"0.31\", features = [\"bundled\", \"serde_json\"] }"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/compliance/index.ts",
+      "owner": "omniroute",
+      "reason": "Compliance/audit log module with SQLite backend — migration to Postgres pending",
+      "removal_task": "omni-compliance-postgres-migration",
+      "expiry": "When compliance audit log migrates to PostgreSQL",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 24,
+          "code": "/** @returns {import(\"better-sqlite3\").Database | null} */"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 27,
+          "code": "return getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 174,
+          "code": "function ensureAuditLogSchema(db: import(\"better-sqlite3\").Database) {"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 439,
+          "code": "function ensureNoLogColumn(db: import(\"better-sqlite3\").Database) {"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/semanticCache.ts",
+      "owner": "omniroute",
+      "reason": "Semantic cache with SQLite fallback — Redis migration tracked in 0640",
+      "removal_task": "omni-0640",
+      "expiry": "When semantic cache fully uses Redis",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 17,
+          "code": "import type { Database as SqliteDatabase } from \"better-sqlite3\";"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 32,
+          "code": "return sqliteCoreModule.getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/memory/store.ts",
+      "owner": "omniroute",
+      "reason": "Memory store with SQLite backend — migration pending",
+      "removal_task": "omni-memory-postgres-migration",
+      "expiry": "When memory store migrates to PostgreSQL",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 228,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 356,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 396,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 464,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 500,
+          "code": "const db = getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/memory/retrieval.ts",
+      "owner": "omniroute",
+      "reason": "Memory retrieval with SQLite references — migration pending",
+      "removal_task": "omni-memory-postgres-migration",
+      "expiry": "When memory store migrates to PostgreSQL",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 87,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 200,
+          "code": "const db = getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/usage/callLogs.ts",
+      "owner": "omniroute",
+      "reason": "Call log storage with dual SQLite/Postgres backend",
+      "removal_task": "omni-usage-sqlite-cleanup",
+      "expiry": "When SQLite call log path is removed",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 433,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 491,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 565,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 606,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 706,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 734,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 806,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 820,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 830,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 859,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 876,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 890,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 906,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 925,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 944,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 966,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 980,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 999,
+          "code": "const db = getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/usage/usageHistory.ts",
+      "owner": "omniroute",
+      "reason": "Usage analytics with SQLite query path",
+      "removal_task": "omni-usage-sqlite-cleanup",
+      "expiry": "When SQLite usage path is removed",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 573,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 606,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 686,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 719,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 738,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 789,
+          "code": "const db = getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/healthCheck.ts",
+      "owner": "omniroute",
+      "reason": "Health check references SQLite for backend detection and diagnostics",
+      "removal_task": null,
+      "expiry": "Permanent — diagnostic code",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 8,
+          "code": "type SqliteDatabase = import(\"better-sqlite3\").Database;"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/config/hotReload.ts",
+      "owner": "omniroute",
+      "reason": "Config hot-reload with SQLite backend awareness",
+      "removal_task": "omni-config-postgres-migration",
+      "expiry": "When config persistence fully uses PostgreSQL",
+      "reviewer": "builder",
+      "scopes": []
+    },
+    {
+      "path": "OmniRoute/open-sse/mcp-server/audit.ts",
+      "owner": "omniroute",
+      "reason": "MCP server audit module with SQLite references",
+      "removal_task": "omni-mcp-audit-postgres",
+      "expiry": "When MCP audit log migrates to PostgreSQL",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 266,
+          "code": "const Database = (await import(\"better-sqlite3\")).default as unknown as new ("
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/app/api/db-backups/postgres-preflight/route.ts",
+      "owner": "omniroute",
+      "reason": "Postgres preflight check — references SQLite for comparison/migration context",
+      "removal_task": null,
+      "expiry": "Permanent — migration utility",
+      "reviewer": "builder",
+      "scopes": []
+    },
+    {
+      "path": "khala-code/benchmarks/suites/storage-comparison.ts",
+      "owner": "khala-code",
+      "reason": "Benchmark comparing SQLite vs other storage backends",
+      "removal_task": null,
+      "expiry": "Permanent — benchmark/test utility",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 13,
+          "code": "import { SQLiteDatabase } from '../../src/storage/sqlite-db.js';"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 189,
+          "code": "const Database = require('better-sqlite3');"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 636,
+          "code": "'SQLite concurrent writes use synchronized worker_threads so each worker opens a separate better-sqlite3 connection against the same database file before the timed write burst starts.',"
+        }
+      ]
+    },
+    {
+      "path": "khala-code/src/mcp-server/server.ts",
+      "owner": "khala-code",
+      "reason": "Khala Code MCP server with SQLite storage backend",
+      "removal_task": "khala-code-sqlite-migration",
+      "expiry": "When Khala Code migrates to SurrealDB",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 44,
+          "code": "import { SQLiteDatabase } from '../storage/sqlite-db.js';"
+        }
+      ]
+    },
+    {
+      "path": "khala-code/src/mcp-server/tools/intelligence-tools.ts",
+      "owner": "khala-code",
+      "reason": "Khala Code intelligence tools using SQLite storage",
+      "removal_task": "khala-code-sqlite-migration",
+      "expiry": "When Khala Code migrates to SurrealDB",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 29,
+          "code": "import { SQLiteDatabase, type SemanticConcept } from '../../storage/sqlite-db.js';"
+        }
+      ]
+    },
+    {
+      "path": "khala-code/src/services/symbol-graph-service.ts",
+      "owner": "khala-code",
+      "reason": "Symbol graph service with SQLite storage",
+      "removal_task": "khala-code-sqlite-migration",
+      "expiry": "When Khala Code migrates to SurrealDB",
+      "reviewer": "builder",
+      "scopes": []
+    },
+    {
+      "path": "OmniRoute/electron/main.js",
+      "owner": "omniroute",
+      "reason": "Electron desktop app entry point — desktop-only SQLite usage, blocked in server mode",
+      "removal_task": null,
+      "expiry": "Permanent — desktop-only code path",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 96,
+          "code": "// Electron-builder installs native modules like better-sqlite3 under"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 139,
+          "code": "const Database = require(\"better-sqlite3\");"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/package.json",
+      "owner": "omniroute",
+      "reason": "better-sqlite3 runtime dependency required by SQLite adapter for desktop/local mode — blocked in server mode",
+      "removal_task": "omni-0642",
+      "expiry": "Until desktop mode SQLite adapter is fully removed",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "manifest_dep",
+          "line": 136,
+          "code": "\"better-sqlite3\": \"^12.6.2\","
+        },
+        {
+          "kind": "manifest_dep",
+          "line": 183,
+          "code": "\"@types/better-sqlite3\": \"^7.6.13\","
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/bin/omniroute.mjs",
+      "owner": "omniroute",
+      "reason": "CLI startup diagnostics mention better-sqlite3 native-module recovery for local/desktop installs",
+      "removal_task": "omni-cli-sqlite-diagnostics-cleanup",
+      "expiry": "When CLI packaging no longer ships SQLite local-mode diagnostics",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 174,
+          "code": "const Database = require(\"better-sqlite3\");"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 272,
+          "code": "Workaround:  npm rebuild better-sqlite3\\x1b[0m"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 307,
+          "code": "\"better-sqlite3\","
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 314,
+          "code": "\"\\x1b[31m✖ better-sqlite3 native module is incompatible with this platform.\\x1b[0m\""
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 316,
+          "code": "console.error(`  Run: cd ${APP_DIR} && npm rebuild better-sqlite3`);"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/electron/package.json",
+      "owner": "omniroute",
+      "reason": "Electron desktop packaging depends on local SQLite adapter for desktop-only mode",
+      "removal_task": "omni-electron-sqlite-cleanup",
+      "expiry": "When desktop mode no longer includes SQLite local persistence",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "manifest_dep",
+          "line": 25,
+          "code": "\"better-sqlite3\": \"^12.8.0\","
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/next.config.mjs",
+      "owner": "omniroute",
+      "reason": "Build configuration carries better-sqlite3 native packaging exceptions for local/desktop adapter support",
+      "removal_task": "omni-build-sqlite-cleanup",
+      "expiry": "When better-sqlite3 is removed from OmniRoute packaging",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 136,
+          "code": "\"better-sqlite3\","
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/scripts/bootstrap-env.mjs",
+      "owner": "omniroute",
+      "reason": "Local environment bootstrap references SQLite for desktop/local setup compatibility",
+      "removal_task": "omni-scripts-sqlite-cleanup",
+      "expiry": "When desktop/local SQLite bootstrap is retired",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 75,
+          "code": "const Database = require(\"better-sqlite3\");"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 223,
+          "code": "const Database = require(\"better-sqlite3\");"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/scripts/postinstall.mjs",
+      "owner": "omniroute",
+      "reason": "Postinstall native dependency handling for better-sqlite3 local/desktop support",
+      "removal_task": "omni-scripts-sqlite-cleanup",
+      "expiry": "When better-sqlite3 is removed from OmniRoute package installs",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 16,
+          "code": "*   - better-sqlite3 (SQLite bindings)"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 40,
+          "code": "\"better-sqlite3\","
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 48,
+          "code": "\"better-sqlite3\","
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 55,
+          "code": "if (!existsSync(join(ROOT, \"app\", \"node_modules\", \"better-sqlite3\"))) {"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 71,
+          "code": "console.log(`\\n  🔧 Fixing better-sqlite3 binary for ${process.platform}-${process.arch}...`);"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 113,
+          "code": "cwd: join(ROOT, \"app\", \"node_modules\", \"better-sqlite3\"),"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 141,
+          "code": "? \"npm install better-sqlite3 --build-from-source --force\""
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 142,
+          "code": ": \"npm rebuild better-sqlite3\";"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 162,
+          "code": "console.warn(\"\\n  ⚠️  Could not fix better-sqlite3 native module automatically.\");"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 167,
+          "code": "console.warn(`       cd \"${join(ROOT, \"app\", \"node_modules\", \"better-sqlite3\")}\"`);"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 170,
+          "code": "console.warn(`       cd \"${join(ROOT, \"app\")}\" && npm rebuild better-sqlite3`);"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 174,
+          "code": "console.warn(`     cd ${join(ROOT, \"app\")} && npm rebuild better-sqlite3`);"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 177,
+          "code": "console.warn(`     cd ${join(ROOT, \"app\")} && npm rebuild better-sqlite3`);"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/scripts/prepare-electron-standalone.mjs",
+      "owner": "omniroute",
+      "reason": "Electron standalone packaging handles better-sqlite3 for desktop-only local persistence",
+      "removal_task": "omni-electron-sqlite-cleanup",
+      "expiry": "When desktop mode no longer includes SQLite local persistence",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 155,
+          "code": "if (dir.startsWith(\"better-sqlite3\") || dir.startsWith(\"keytar\")) {"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/scripts/scratch/delete_iflow.cjs",
+      "owner": "omniroute",
+      "reason": "Scratch maintenance script retained as migration residue, not runtime server path",
+      "removal_task": "omni-scratch-sqlite-cleanup",
+      "expiry": "When scratch SQLite maintenance scripts are archived",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 1,
+          "code": "const Database = require('better-sqlite3');"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/scripts/scratch/fix_route.ts",
+      "owner": "omniroute",
+      "reason": "Scratch maintenance script retained as migration residue, not runtime server path",
+      "removal_task": "omni-scratch-sqlite-cleanup",
+      "expiry": "When scratch SQLite maintenance scripts are archived",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 22,
+          "code": "const db = getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/scripts/scratch/query_db.js",
+      "owner": "omniroute",
+      "reason": "Scratch database inspection script retained as migration residue, not runtime server path",
+      "removal_task": "omni-scratch-sqlite-cleanup",
+      "expiry": "When scratch SQLite maintenance scripts are archived",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 1,
+          "code": "const Database = require(\"better-sqlite3\");"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/scripts/sync-env.mjs",
+      "owner": "omniroute",
+      "reason": "Environment sync script references SQLite defaults for desktop/local compatibility",
+      "removal_task": "omni-scripts-sqlite-cleanup",
+      "expiry": "When desktop/local SQLite defaults are retired",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 64,
+          "code": "const Database = require(\"better-sqlite3\");"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 83,
+          "code": "// If we can't open the DB (e.g. missing better-sqlite3 during install),"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/app/api/system/version/route.ts",
+      "owner": "omniroute",
+      "reason": "System diagnostics route reports better-sqlite3/package state for local/desktop support",
+      "removal_task": "omni-diagnostics-sqlite-cleanup",
+      "expiry": "When SQLite diagnostics are removed from server runtime surfaces",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 318,
+          "code": "// Step 2: Rebuild native modules (critical for better-sqlite3)"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 322,
+          "code": "message: \"Rebuilding native modules (better-sqlite3)...\","
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 328,
+          "code": "await execFileAsync(\"npm\", [\"rebuild\", \"better-sqlite3\"], {"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/instrumentation-node.ts",
+      "owner": "omniroute",
+      "reason": "Node instrumentation includes SQLite bootstrap/probe compatibility for local mode",
+      "removal_task": "omni-instrumentation-sqlite-cleanup",
+      "expiry": "When SQLite bootstrap path is fully retired",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 5,
+          "code": "* does not trace into Node.js-only modules (fs, path, os, better-sqlite3, etc.)"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/container.ts",
+      "owner": "omniroute",
+      "reason": "Container/service wiring still exposes legacy SQLite-backed providers pending full adapter migration",
+      "removal_task": "omni-container-postgres-migration",
+      "expiry": "When container wiring no longer references direct SQLite modules",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 98,
+          "code": "return getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/adapter/factory.ts",
+      "owner": "omniroute",
+      "reason": "Adapter factory enforces/warns on SQLite server mode and instantiates local SQLite adapter",
+      "removal_task": "omni-0642",
+      "expiry": "Until desktop mode SQLite adapter is fully removed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 2,
+          "code": "import { createSqliteDbAdapter } from \"./sqliteAdapter\";"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/memory/summarization.ts",
+      "owner": "omniroute",
+      "reason": "Memory summarization still reads legacy SQLite-backed memory tables pending Postgres migration",
+      "removal_task": "omni-memory-postgres-migration",
+      "expiry": "When memory summarization uses PostgreSQL-backed adapter APIs",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 86,
+          "code": "const db = getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/modelsDevSync.ts",
+      "owner": "omniroute",
+      "reason": "Model dev sync still writes through legacy SQLite domain module pending adapter migration",
+      "removal_task": "omni-models-postgres-migration",
+      "expiry": "When model sync is adapter/PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 474,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 501,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 526,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 539,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 592,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 642,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 661,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 720,
+          "code": "const db = getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/pricingSync.ts",
+      "owner": "omniroute",
+      "reason": "Pricing sync still writes through legacy SQLite domain module pending adapter migration",
+      "removal_task": "omni-pricing-postgres-migration",
+      "expiry": "When pricing sync is adapter/PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 184,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 207,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 227,
+          "code": "const db = getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/proxyLogger.ts",
+      "owner": "omniroute",
+      "reason": "Proxy logger still uses legacy SQLite-backed detailed log path pending Postgres migration",
+      "removal_task": "omni-proxy-logs-postgres-migration",
+      "expiry": "When proxy logs are PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 67,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 134,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 223,
+          "code": "const db = getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/skills/executor.ts",
+      "owner": "omniroute",
+      "reason": "Skills executor still uses legacy SQLite-backed skills registry pending Postgres migration",
+      "removal_task": "omni-skills-postgres-migration",
+      "expiry": "When skills execution state is PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 56,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 141,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 160,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 186,
+          "code": "const db = getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/skills/registry.ts",
+      "owner": "omniroute",
+      "reason": "Skills registry still uses legacy SQLite-backed storage pending Postgres migration",
+      "removal_task": "omni-skills-postgres-migration",
+      "expiry": "When skills registry state is PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 56,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 106,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 138,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 263,
+          "code": "const db = getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/mitm/server.cjs",
+      "owner": "omniroute",
+      "reason": "MITM utility references local SQLite support pending adapter migration review",
+      "removal_task": "omni-mitm-sqlite-cleanup",
+      "expiry": "When MITM utility no longer references SQLite-backed state",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 145,
+          "code": "* Falls back to null if better-sqlite3 is unavailable."
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 150,
+          "code": "const Database = require(\"better-sqlite3\");"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 156,
+          "code": "// better-sqlite3 not available in this process"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/apiKeys.ts",
+      "owner": "omniroute",
+      "reason": "Legacy SQLite domain module covered by adapter/server-mode enforcement while Postgres parity migration continues",
+      "removal_task": "omni-db-domain-postgres-migration",
+      "expiry": "When apiKeys domain persistence is adapter/PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 284,
+          "code": "const db = getDbInstance() as ApiKeysDbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 303,
+          "code": "const db = getDbInstance() as ApiKeysDbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 421,
+          "code": "const db = getDbInstance() as ApiKeysDbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 473,
+          "code": "const db = getDbInstance() as ApiKeysDbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 592,
+          "code": "const db = getDbInstance() as ApiKeysDbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 615,
+          "code": "const db = getDbInstance() as ApiKeysDbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 635,
+          "code": "const db = getDbInstance() as ApiKeysDbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 675,
+          "code": "const db = getDbInstance() as ApiKeysDbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 738,
+          "code": "const db = getDbInstance() as ApiKeysDbLike;"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/batches.ts",
+      "owner": "omniroute",
+      "reason": "Legacy SQLite domain module covered by adapter/server-mode enforcement while Postgres parity migration continues",
+      "removal_task": "omni-db-domain-postgres-migration",
+      "expiry": "When batches domain persistence is adapter/PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 78,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 112,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 119,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 142,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 172,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 182,
+          "code": "const db = getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/cliToolState.ts",
+      "owner": "omniroute",
+      "reason": "Legacy SQLite domain module covered by adapter/server-mode enforcement while Postgres parity migration continues",
+      "removal_task": "omni-db-domain-postgres-migration",
+      "expiry": "When CLI tool state persistence is adapter/PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 55,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 69,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 84,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 103,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 119,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 140,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 154,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/combos.ts",
+      "owner": "omniroute",
+      "reason": "Legacy SQLite domain module covered by adapter/server-mode enforcement while Postgres parity migration continues",
+      "removal_task": "omni-db-domain-postgres-migration",
+      "expiry": "When combo persistence is adapter/PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 151,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 158,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 177,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 185,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 193,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 229,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 268,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 339,
+          "code": "const db = getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/compression.ts",
+      "owner": "omniroute",
+      "reason": "Legacy SQLite domain module covered by adapter/server-mode enforcement while Postgres parity migration continues",
+      "removal_task": "omni-db-domain-postgres-migration",
+      "expiry": "When compression settings persistence is adapter/PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 359,
+          "code": "const db = backend === \"sqlite\" ? getDbInstance() : undefined;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 512,
+          "code": "const db = getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/compressionAnalytics.ts",
+      "owner": "omniroute",
+      "reason": "Legacy SQLite domain module covered by adapter/server-mode enforcement while Postgres parity migration continues",
+      "removal_task": "omni-db-domain-postgres-migration",
+      "expiry": "When compression analytics persistence is adapter/PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 61,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 125,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 188,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 233,
+          "code": "const db = getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/compressionCacheStats.ts",
+      "owner": "omniroute",
+      "reason": "Legacy SQLite domain module covered by adapter/server-mode enforcement while Postgres parity migration continues",
+      "removal_task": "omni-db-domain-postgres-migration",
+      "expiry": "When compression cache stats persistence is adapter/PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 22,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 48,
+          "code": "const db = getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/compressionCombos.ts",
+      "owner": "omniroute",
+      "reason": "Legacy SQLite domain module covered by adapter/server-mode enforcement while Postgres parity migration continues",
+      "removal_task": "omni-db-domain-postgres-migration",
+      "expiry": "When compression combo persistence is adapter/PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 81,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 113,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 219,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 229,
+          "code": "const row = getDbInstance().prepare(\"SELECT * FROM compression_combos WHERE id = ?\").get(id);"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 236,
+          "code": "const row = getDbInstance()"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 246,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 284,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 315,
+          "code": "const result = getDbInstance().prepare(\"DELETE FROM compression_combos WHERE id = ?\").run(id);"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 323,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 338,
+          "code": "return getDbInstance()"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 352,
+          "code": "const row = getDbInstance()"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 369,
+          "code": "getDbInstance()"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 385,
+          "code": "const result = getDbInstance()"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 398,
+          "code": "const db = getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/contextHandoffs.ts",
+      "owner": "omniroute",
+      "reason": "Legacy SQLite domain module covered by adapter/server-mode enforcement while Postgres parity migration continues",
+      "removal_task": "omni-db-domain-postgres-migration",
+      "expiry": "When context handoff persistence is adapter/PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 79,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 118,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 134,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 147,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 155,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/creditBalance.ts",
+      "owner": "omniroute",
+      "reason": "Legacy SQLite domain module covered by adapter/server-mode enforcement while Postgres parity migration continues",
+      "removal_task": "omni-db-domain-postgres-migration",
+      "expiry": "When credit balance persistence is adapter/PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 47,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 64,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 82,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/detailedLogs.ts",
+      "owner": "omniroute",
+      "reason": "Legacy SQLite domain module covered by adapter/server-mode enforcement while Postgres parity migration continues",
+      "removal_task": "omni-db-domain-postgres-migration",
+      "expiry": "When detailed log persistence is adapter/PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 60,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 90,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 123,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 141,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 152,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 170,
+          "code": "const db = getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/domainState.ts",
+      "owner": "omniroute",
+      "reason": "Legacy SQLite domain module covered by adapter/server-mode enforcement while Postgres parity migration continues",
+      "removal_task": "omni-db-domain-postgres-migration",
+      "expiry": "When domain state persistence is adapter/PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 86,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 276,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 293,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 312,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 342,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 363,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 442,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 484,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 517,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 583,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 610,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 658,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 691,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 730,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 759,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 785,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 818,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 842,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 867,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 901,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 918,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 946,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 966,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 1019,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 1042,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 1078,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 1110,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 1130,
+          "code": "const db = getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/evals.ts",
+      "owner": "omniroute",
+      "reason": "Legacy SQLite domain module covered by adapter/server-mode enforcement while Postgres parity migration continues",
+      "removal_task": "omni-db-domain-postgres-migration",
+      "expiry": "When eval persistence is adapter/PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 431,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 494,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 552,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 606,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 714,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/files.ts",
+      "owner": "omniroute",
+      "reason": "Legacy SQLite domain module covered by adapter/server-mode enforcement while Postgres parity migration continues",
+      "removal_task": "omni-db-domain-postgres-migration",
+      "expiry": "When file metadata persistence is adapter/PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 22,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 38,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 46,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 62,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 100,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 119,
+          "code": "const db = getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/modelComboMappings.ts",
+      "owner": "omniroute",
+      "reason": "Legacy SQLite domain module covered by adapter/server-mode enforcement while Postgres parity migration continues",
+      "removal_task": "omni-db-domain-postgres-migration",
+      "expiry": "When model-combo mapping persistence is adapter/PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 54,
+          "code": "function ensureModelComboMappingsTable(db = getDbInstance()): void {"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 75,
+          "code": "function hasModelComboMappingsTable(db = getDbInstance()): boolean {"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 158,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 177,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 202,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 250,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 282,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 298,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 397,
+          "code": "const db = getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/models.ts",
+      "owner": "omniroute",
+      "reason": "Legacy SQLite domain module now explicitly covered by scanner after live-tree coverage fix",
+      "removal_task": "omni-db-domain-postgres-migration",
+      "expiry": "When model catalog persistence is adapter/PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 135,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 150,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 281,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 295,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 303,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 311,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 330,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 340,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 361,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 389,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 441,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 522,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 630,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 651,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 675,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 708,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 733,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 747,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 838,
+          "code": "const db = getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/oneproxy.ts",
+      "owner": "omniroute",
+      "reason": "Legacy SQLite domain module covered by adapter/server-mode enforcement while Postgres parity migration continues",
+      "removal_task": "omni-db-domain-postgres-migration",
+      "expiry": "When oneproxy persistence is adapter/PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 95,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 125,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 168,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 231,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 240,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 249,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 258,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 281,
+          "code": "const db = getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/prompts.ts",
+      "owner": "omniroute",
+      "reason": "Legacy SQLite domain module covered by adapter/server-mode enforcement while Postgres parity migration continues",
+      "removal_task": "omni-db-domain-postgres-migration",
+      "expiry": "When prompt persistence is adapter/PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 95,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 132,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 190,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 202,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 214,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 230,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 254,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/providerLimits.ts",
+      "owner": "omniroute",
+      "reason": "Legacy SQLite domain module covered by adapter/server-mode enforcement while Postgres parity migration continues",
+      "removal_task": "omni-db-domain-postgres-migration",
+      "expiry": "When provider limits persistence is adapter/PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 62,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 72,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 92,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 105,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 122,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/providers.ts",
+      "owner": "omniroute",
+      "reason": "Legacy SQLite domain module covered by adapter/server-mode enforcement while Postgres parity migration continues",
+      "removal_task": "omni-db-domain-postgres-migration",
+      "expiry": "When provider persistence is adapter/PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 37,
+          "code": "// SAFETY: getDbInstance() returns the active SQLite DB handle for this module,"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 41,
+          "code": "return getDbInstance() as unknown as DbLike;"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/proxies.ts",
+      "owner": "omniroute",
+      "reason": "Legacy SQLite domain module covered by adapter/server-mode enforcement while Postgres parity migration continues",
+      "removal_task": "omni-db-domain-postgres-migration",
+      "expiry": "When proxy persistence is adapter/PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 143,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 156,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 168,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 204,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 222,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 270,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 306,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 327,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 365,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 391,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 472,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 543,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 637,
+          "code": "const db = getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/quotaSnapshots.ts",
+      "owner": "omniroute",
+      "reason": "Legacy SQLite domain module covered by adapter/server-mode enforcement while Postgres parity migration continues",
+      "removal_task": "omni-db-domain-postgres-migration",
+      "expiry": "When quota snapshots persistence is adapter/PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 19,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 56,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 94,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 165,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/readCache.ts",
+      "owner": "omniroute",
+      "reason": "Legacy SQLite read-cache module remains while Redis/Postgres cache migration completes",
+      "removal_task": "omni-read-cache-redis-migration",
+      "expiry": "When read cache uses Redis/PostgreSQL exclusively",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 4,
+          "code": "* SQLite reads are already fast since better-sqlite3 is synchronous and"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/reasoningCache.ts",
+      "owner": "omniroute",
+      "reason": "Legacy SQLite reasoning-cache module remains while Redis/Postgres cache migration completes",
+      "removal_task": "omni-reasoning-cache-redis-migration",
+      "expiry": "When reasoning cache uses Redis/PostgreSQL exclusively",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 82,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 100,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 115,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 124,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 136,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 151,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 227,
+          "code": "const db = getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/registeredKeys.ts",
+      "owner": "omniroute",
+      "reason": "Legacy SQLite domain module covered by adapter/server-mode enforcement while Postgres parity migration continues",
+      "removal_task": "omni-db-domain-postgres-migration",
+      "expiry": "When registered key persistence is adapter/PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 128,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 230,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 318,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 331,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 351,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 369,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 408,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 424,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 449,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 471,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 479,
+          "code": "const db = getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/secrets.ts",
+      "owner": "omniroute",
+      "reason": "Legacy SQLite secrets module covered by adapter/server-mode enforcement while Postgres parity migration continues",
+      "removal_task": "omni-db-domain-postgres-migration",
+      "expiry": "When secret persistence is adapter/PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 9,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 21,
+          "code": "const db = getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/semanticCacheEntries.ts",
+      "owner": "omniroute",
+      "reason": "Legacy SQLite semantic-cache entry module remains while Redis/Postgres cache migration completes",
+      "removal_task": "omni-0640",
+      "expiry": "When semantic cache uses Redis/PostgreSQL exclusively",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 64,
+          "code": "// SAFETY: getDbInstance() returns a better-sqlite3 Database which satisfies"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 66,
+          "code": "// through `unknown` is needed because better-sqlite3's typing is more specific"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 68,
+          "code": "return getDbInstance() as unknown as DbLike;"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/settings.ts",
+      "owner": "omniroute",
+      "reason": "Legacy SQLite domain module covered by adapter/server-mode enforcement while Postgres parity migration continues",
+      "removal_task": "omni-db-domain-postgres-migration",
+      "expiry": "When settings persistence is adapter/PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 45,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 92,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 204,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 248,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 284,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 322,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 331,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 345,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 354,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 412,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 457,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 499,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 556,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 589,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 774,
+          "code": "const db = getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/skills.ts",
+      "owner": "omniroute",
+      "reason": "Legacy SQLite skills domain module remains while skills registry migrates to PostgreSQL",
+      "removal_task": "omni-skills-postgres-migration",
+      "expiry": "When skills persistence is PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 56,
+          "code": "getDbInstance()"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/syncTokens.ts",
+      "owner": "omniroute",
+      "reason": "Legacy SQLite sync-token module covered by adapter/server-mode enforcement while Postgres parity migration continues",
+      "removal_task": "omni-db-domain-postgres-migration",
+      "expiry": "When sync-token persistence is adapter/PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 72,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 86,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 93,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 104,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 139,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 157,
+          "code": "const db = getDbInstance() as unknown as DbLike;"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/upstreamProxy.ts",
+      "owner": "omniroute",
+      "reason": "Legacy SQLite upstream-proxy module covered by adapter/server-mode enforcement while Postgres parity migration continues",
+      "removal_task": "omni-db-domain-postgres-migration",
+      "expiry": "When upstream proxy persistence is adapter/PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 100,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 108,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 124,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 161,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 204,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 212,
+          "code": "const db = getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/versionManager.ts",
+      "owner": "omniroute",
+      "reason": "Legacy SQLite version-manager module remains for schema compatibility during migration",
+      "removal_task": "omni-version-manager-postgres-migration",
+      "expiry": "When schema version state is PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 143,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 149,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 174,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 225,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 272,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 278,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 292,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 305,
+          "code": "const db = getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/src/lib/db/webhooks.ts",
+      "owner": "omniroute",
+      "reason": "Legacy SQLite webhook module covered by adapter/server-mode enforcement while Postgres parity migration continues",
+      "removal_task": "omni-db-domain-postgres-migration",
+      "expiry": "When webhook persistence is adapter/PostgreSQL-backed",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 44,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 50,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 56,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 67,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 89,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 126,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 132,
+          "code": "const db = getDbInstance();"
+        },
+        {
+          "kind": "js_ts_import",
+          "line": 145,
+          "code": "const db = getDbInstance();"
+        }
+      ]
+    },
+    {
+      "path": "khala-code/benchmarks/suites/search.ts",
+      "owner": "khala-code",
+      "reason": "Khala Code benchmark imports SQLite storage while migration task tracks backend replacement",
+      "removal_task": "khala-code-sqlite-migration",
+      "expiry": "When Khala Code migrates storage away from SQLite",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 11,
+          "code": "import { SQLiteDatabase } from '../../src/storage/sqlite-db.js';"
+        }
+      ]
+    },
+    {
+      "path": "khala-code/package.json",
+      "owner": "khala-code",
+      "reason": "Khala Code package manifest still declares better-sqlite3 during separate migration timeline",
+      "removal_task": "khala-code-sqlite-migration",
+      "expiry": "When Khala Code migrates storage away from SQLite",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "manifest_dep",
+          "line": 85,
+          "code": "\"better-sqlite3\": \"^12.4.1\","
+        },
+        {
+          "kind": "manifest_dep",
+          "line": 117,
+          "code": "\"@types/better-sqlite3\": \"^7.6.13\","
+        }
+      ]
+    },
+    {
+      "path": "khala-code/src/cli/debug-tools.ts",
+      "owner": "khala-code",
+      "reason": "Khala Code CLI uses SQLite storage during separate migration timeline",
+      "removal_task": "khala-code-sqlite-migration",
+      "expiry": "When Khala Code migrates storage away from SQLite",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 3,
+          "code": "import { SQLiteDatabase } from '../storage/sqlite-db.js';"
+        }
+      ]
+    },
+    {
+      "path": "khala-code/src/cli/interactive-setup.ts",
+      "owner": "khala-code",
+      "reason": "Khala Code CLI setup uses SQLite storage during separate migration timeline",
+      "removal_task": "khala-code-sqlite-migration",
+      "expiry": "When Khala Code migrates storage away from SQLite",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 6,
+          "code": "import { SQLiteDatabase } from '../storage/sqlite-db.js';"
+        }
+      ]
+    },
+    {
+      "path": "khala-code/src/engines/feature-engine.ts",
+      "owner": "khala-code",
+      "reason": "Khala Code engine imports SQLite storage during separate migration timeline",
+      "removal_task": "khala-code-sqlite-migration",
+      "expiry": "When Khala Code migrates storage away from SQLite",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 32,
+          "code": "import { SQLiteDatabase } from '../storage/sqlite-db.js';"
+        }
+      ]
+    },
+    {
+      "path": "khala-code/src/engines/file-engine.ts",
+      "owner": "khala-code",
+      "reason": "Khala Code engine imports SQLite storage during separate migration timeline",
+      "removal_task": "khala-code-sqlite-migration",
+      "expiry": "When Khala Code migrates storage away from SQLite",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 25,
+          "code": "import { SQLiteDatabase } from '../storage/sqlite-db.js';"
+        }
+      ]
+    },
+    {
+      "path": "khala-code/src/engines/pattern-engine.ts",
+      "owner": "khala-code",
+      "reason": "Khala Code engine imports SQLite storage during separate migration timeline",
+      "removal_task": "khala-code-sqlite-migration",
+      "expiry": "When Khala Code migrates storage away from SQLite",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 5,
+          "code": "import { SQLiteDatabase, DeveloperPattern } from '../storage/sqlite-db.js';"
+        }
+      ]
+    },
+    {
+      "path": "khala-code/src/engines/semantic-engine.ts",
+      "owner": "khala-code",
+      "reason": "Khala Code engine imports SQLite storage during separate migration timeline",
+      "removal_task": "khala-code-sqlite-migration",
+      "expiry": "When Khala Code migrates storage away from SQLite",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 11,
+          "code": "import { SQLiteDatabase, SemanticConcept } from '../storage/sqlite-db.js';"
+        }
+      ]
+    },
+    {
+      "path": "khala-code/src/index.ts",
+      "owner": "khala-code",
+      "reason": "Khala Code entrypoint wires SQLite storage during separate migration timeline",
+      "removal_task": "khala-code-sqlite-migration",
+      "expiry": "When Khala Code migrates storage away from SQLite",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 27,
+          "code": "import { SQLiteDatabase } from './storage/sqlite-db.js';"
+        }
+      ]
+    },
+    {
+      "path": "khala-code/src/mcp-server/tools/automation-tools.ts",
+      "owner": "khala-code",
+      "reason": "Khala Code MCP tool imports SQLite storage during separate migration timeline",
+      "removal_task": "khala-code-sqlite-migration",
+      "expiry": "When Khala Code migrates storage away from SQLite",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 5,
+          "code": "import { SQLiteDatabase } from '../../storage/sqlite-db.js';"
+        }
+      ]
+    },
+    {
+      "path": "khala-code/src/mcp-server/tools/core-analysis.ts",
+      "owner": "khala-code",
+      "reason": "Khala Code MCP tool imports SQLite storage during separate migration timeline",
+      "removal_task": "khala-code-sqlite-migration",
+      "expiry": "When Khala Code migrates storage away from SQLite",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 26,
+          "code": "import { SQLiteDatabase } from '../../storage/sqlite-db.js';"
+        }
+      ]
+    },
+    {
+      "path": "khala-code/src/mcp-server/tools/monitoring-tools.ts",
+      "owner": "khala-code",
+      "reason": "Khala Code MCP tool imports SQLite storage during separate migration timeline",
+      "removal_task": "khala-code-sqlite-migration",
+      "expiry": "When Khala Code migrates storage away from SQLite",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 5,
+          "code": "import { SQLiteDatabase } from '../../storage/sqlite-db.js';"
+        }
+      ]
+    },
+    {
+      "path": "khala-code/src/mcp-server/tools/session-context.ts",
+      "owner": "khala-code",
+      "reason": "Khala Code MCP tool references SQLite storage types during separate migration timeline",
+      "removal_task": "khala-code-sqlite-migration",
+      "expiry": "When Khala Code migrates storage away from SQLite",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 16,
+          "code": "import type { SQLiteDatabase } from '../../storage/sqlite-db.js';"
+        }
+      ]
+    },
+    {
+      "path": "khala-code/src/services/file-indexer.ts",
+      "owner": "khala-code",
+      "reason": "Khala Code service imports SQLite storage during separate migration timeline",
+      "removal_task": "khala-code-sqlite-migration",
+      "expiry": "When Khala Code migrates storage away from SQLite",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 24,
+          "code": "import { SQLiteDatabase } from '../storage/sqlite-db.js';"
+        }
+      ]
+    },
+    {
+      "path": "khala-code/src/services/learning-service.ts",
+      "owner": "khala-code",
+      "reason": "Khala Code service imports SQLite storage during separate migration timeline",
+      "removal_task": "khala-code-sqlite-migration",
+      "expiry": "When Khala Code migrates storage away from SQLite",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 29,
+          "code": "import { SQLiteDatabase } from '../storage/sqlite-db.js';"
+        }
+      ]
+    },
+    {
+      "path": "khala-code/src/services/prescan-service.ts",
+      "owner": "khala-code",
+      "reason": "Khala Code service references SQLite storage types during separate migration timeline",
+      "removal_task": "khala-code-sqlite-migration",
+      "expiry": "When Khala Code migrates storage away from SQLite",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 15,
+          "code": "import type { PreScanFile, PreScanResult } from '../storage/sqlite-db.js';"
+        }
+      ]
+    },
+    {
+      "path": "khala-code/src/watchers/change-analyzer.ts",
+      "owner": "khala-code",
+      "reason": "Khala Code watcher imports SQLite storage during separate migration timeline",
+      "removal_task": "khala-code-sqlite-migration",
+      "expiry": "When Khala Code migrates storage away from SQLite",
+      "reviewer": "reviewers",
+      "scopes": [
+        {
+          "kind": "js_ts_import",
+          "line": 5,
+          "code": "import { SQLiteDatabase } from '../storage/sqlite-db.js';"
+        }
+      ]
+    },
+    {
+      "path": "ganthritor-rs/khala-code.db",
+      "owner": "khala-code",
+      "reason": "Existing Khala Code local SQLite artifact detected during scanner hardening; tracked as migration residue, not approved runtime state",
+      "removal_task": "khala-code-sqlite-migration",
+      "expiry": "When Khala Code migrates storage away from SQLite artifacts",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "sqlite_artifact",
+          "line": 1,
+          "code": "khala-code.db"
+        }
+      ]
+    },
+    {
+      "path": "khala-code/.crush/crush.db",
+      "owner": "khala-code",
+      "reason": "Existing Crush local SQLite artifact detected during scanner hardening; tracked as migration residue, not approved runtime state",
+      "removal_task": "khala-code-sqlite-migration",
+      "expiry": "When Khala Code/Crush local artifacts are removed or migrated",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "sqlite_artifact",
+          "line": 1,
+          "code": "crush.db"
+        }
+      ]
+    },
+    {
+      "path": "khala-code/khala-code.db",
+      "owner": "khala-code",
+      "reason": "Existing Khala Code local SQLite artifact detected during scanner hardening; tracked as migration residue, not approved runtime state",
+      "removal_task": "khala-code-sqlite-migration",
+      "expiry": "When Khala Code migrates storage away from SQLite artifacts",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "sqlite_artifact",
+          "line": 1,
+          "code": "khala-code.db"
+        }
+      ]
+    },
+    {
+      "path": "OmniRoute/khala-code.db",
+      "owner": "khala-code",
+      "reason": "Existing Khala Code local SQLite artifact inside OmniRoute detected during scanner hardening; tracked as migration residue, not approved OmniRoute runtime state",
+      "removal_task": "khala-code-sqlite-migration",
+      "expiry": "When Khala Code migrates storage away from SQLite artifacts",
+      "reviewer": "builder",
+      "scopes": [
+        {
+          "kind": "sqlite_artifact",
+          "line": 1,
+          "code": "khala-code.db"
+        }
+      ]
+    }
+  ]
+}

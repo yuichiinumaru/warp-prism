@@ -1,33 +1,126 @@
-# warp-prism
+# Warp Prism
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [v0](https://v0.app).
+**ASW Observatory** — Agent System Workspace visibility console built with Flutter.
 
-## Built with v0
+Warp Prism is a Flutter application that provides a visual console for inspecting and navigating an agent-based workspace. It renders agents, skills, workflows, tasks, and changelog entries from a markdown-frontmatter corpus, presenting them through a design-system-driven UI with lane boards, graph visualization, and detail inspectors.
 
-This repository is linked to a [v0](https://v0.app) project. You can continue developing by visiting the link below -- start new chats to make changes, and v0 will push commits directly to this repo. Every merge to `main` will automatically deploy.
+## Stack
 
-[Continue working on v0 →](https://v0.app/chat/projects/prj_7QJmABwWOetEEtUAlgHUe4UW7gOw)
+| Layer | Technology |
+|-------|-----------|
+| Framework | Flutter (Dart SDK >=3.0.0 <4.0.0) |
+| Routing | go_router ^14.0.0 |
+| State Management | flutter_riverpod ^2.5.0 |
+| Graph Visualization | graphview ^1.2.0 |
+| Charts | fl_chart ^0.68.0 |
+| Data Format | YAML frontmatter in markdown files |
 
-## Getting Started
+## Project Structure
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+```
+warp-prism/
+  lib/
+    main.dart                   ← app entrypoint (Task 0011 — pending)
+    app/
+      app.dart                  ← root widget (Task 0011 — pending)
+      router.dart               ← GoRouter config (Task 0011 — pending)
+    design_system/
+      tokens/                   ← DSColors, DSTypography, DSSpacing, DSRadii, DSShadows, DSMotion, DSSemantics
+      atoms/                    ← DSText, DSIcon, DSBadge, DSChip, DSStatusDot, DSDivider, DSGlowBorder, DSGlassPanel
+      molecules/                ← DSSearchBar, DSFilterChipGroup, DSAssetCard, DSMetricTile, DSProvenancePill, DSTaskCard, DSEvidenceRow, DSTimelineMarker
+      organisms/                ← DSShell, DSSidebar, DSTopbar, DSLaneBoard, DSTimeline, DSDetailInspector, DSStoryPanel, DSGraphCanvas
+      templates/                ← MasterDetailTemplate
+    data/
+      models/                   ← data models
+      parsers/                  ← workspace and frontmatter parsers
+  assets/
+    mock_workspace/             ← markdown-frontmatter corpus (agents, skills, workflows, tasks, changelog)
+  test/                         ← test directory (pending Task 0011 bootstrap)
+  docs/
+    tasks/                      ← real task tracking (not mock)
+    reports/                    ← audit and analysis reports
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Setup
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# From the warp-prism/ directory:
 
-## Learn More
+# 1. Install dependencies
+flutter pub get
 
-To learn more, take a look at the following resources:
+# 2. Run the app
+flutter run
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-- [v0 Documentation](https://v0.app/docs) - learn about v0 and how to use it.
+**Prerequisites**: Flutter SDK must be installed. See [flutter.dev](https://flutter.dev/docs/get-started/install) for installation instructions.
+
+## Validation
+
+These are the canonical validation commands for this project. Run them from the `warp-prism/` directory.
+
+```bash
+# Static analysis
+flutter analyze
+
+# Run tests
+flutter test
+```
+
+### Validation Baseline
+
+> **BLOCKER**: Flutter SDK is not installed in the current execution environment.
+> `flutter analyze` and `flutter test` cannot be executed until the SDK is available.
+> The baseline below is based on source inspection only (Task 0010 audit).
+
+**Expected state after Tasks 0011-0012 complete**:
+
+| Command | Expected State | Notes |
+|---------|---------------|-------|
+| `flutter analyze` | PASS (zero errors) | After `main.dart`, `app.dart`, `router.dart` are created by Task 0011 |
+| `flutter test` | PASS (zero failures) | After test directory is created and initial tests added |
+
+**Known blockers before baseline can close**:
+1. `lib/main.dart` does not exist — no Flutter entrypoint (Task 0011)
+2. `lib/app/app.dart` does not exist — no root widget (Task 0011)
+3. `lib/app/router.dart` does not exist — no routing (Task 0011)
+4. `test/` directory does not exist — no tests at all
+5. Flutter SDK not installed in current environment
+
+**Current code quality**: Source inspection (Task 0010) confirmed that all 40 Dart files in `lib/` use consistent `DS*` naming conventions. No `Ds*` (lowercase) naming was found. Parameter naming (`content:`, `selectedId:`, `onItemTap:`) is consistent across organisms and templates.
+
+### What is NOT in scope
+
+- The compile gate does **not** verify that application screens are complete or functional
+- The compile gate does **not** verify visual correctness or accessibility
+- The compile gate does **not** require full test coverage — only that `flutter test` passes with zero failures
+
+## Design System
+
+The project follows an atomic design system hierarchy:
+
+- **Tokens**: `DSColors`, `DSTypography`, `DSSpacing`, `DSRadii`, `DSShadows`, `DSMotion`, `DSSemantics`
+- **Atoms**: `DSText`, `DSIcon`, `DSBadge`, `DSChip`, `DSStatusDot`, `DSDivider`, `DSGlowBorder`, `DSGlassPanel`
+- **Molecules**: `DSSearchBar`, `DSFilterChipGroup`, `DSAssetCard`, `DSMetricTile`, `DSProvenancePill`, `DSTaskCard`, `DSEvidenceRow`, `DSTimelineMarker`
+- **Organisms**: `DSShell`, `DSSidebar`, `DSTopbar`, `DSLaneBoard`, `DSTimeline`, `DSDetailInspector`, `DSStoryPanel`, `DSGraphCanvas`
+- **Templates**: `MasterDetailTemplate`
+
+All design system classes use the `DS` prefix (uppercase). The main shell uses `content:` parameter (not `body:`). Sidebar uses `selectedId:` and `onItemTap:` (not `selectedIndex:` / `onItemSelected:`).
+
+## Mock Workspace Corpus
+
+The `assets/mock_workspace/` directory contains a markdown-frontmatter corpus used by the app to render workspace data:
+
+- **9 agents** — orchestrator and reviewer roles
+- **13 skills** — organized as super-skills with sub-skills, workflows, references, and scripts
+- **11 workflows** — orchestration and governance pipelines
+- **20+ tasks** — distributed across 5 lanes (planning, open, doing, review, completed)
+- **12+ changelog entries** — with frontmatter metadata and evidence sections
+
+See `docs/mock-workspace-corpus-contract.md` for the full corpus specification.
+
+## Documentation
+
+- `docs/mock-workspace-corpus-contract.md` — mock workspace corpus migration contract
+- `docs/reports/0010-warp-prism-foundation-audit-analyzer-baseline.md` — foundation audit report
+- `docs/tasks/` — real task tracking (not the mock corpus)

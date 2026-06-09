@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1.0.0",
+  "orphanWorkflows": [
+    "dependency-review",
+    "golden-snapshot",
+    "multi-agent-sync"
+  ],
+  "noTriggerSkills": [
+    "changelog-engine",
+    "design-system"
+  ],
+  "unverifiedTasks": [
+    {
+      "taskId": "T004",
+      "title": "Melos monorepo migration",
+      "priority": "P0"
+    },
+    {
+      "taskId": "T006",
+      "title": "API contract inventory for read-only surfaces",
+      "priority": "P1"
+    },
+    {
+      "taskId": "T007",
+      "title": "Fixture schema definition",
+      "priority": "P1"
+    }
+  ],
+  "canonicalityBoundary": {
+    "parentCanonical": 5,
+    "childLocal": 8,
+    "mock": 3
+  },
+  "fanInHotspots": [
+    {
+      "skillName": "flutter-harness",
+      "referenceCount": 8
+    },
+    {
+      "skillName": "development-methodologies",
+      "referenceCount": 6
+    },
+    {
+      "skillName": "code-quality-harness",
+      "referenceCount": 5
+    }
+  ]
+}

@@ -13,3 +13,20 @@ __v0_jsx-dev-runtime.ts
 node_modules
 .next/
 .DS_Store
+
+# Flutter/Dart
+.dart_tool/
+.packages
+build/
+pubspec.lock
+**/pubspec_overrides.yaml
+*.iml
+.idea/
+.vscode/
+
+# Melos
+.melos/
+
+# Generated files
+*.g.dart
+*.freezed.dart
