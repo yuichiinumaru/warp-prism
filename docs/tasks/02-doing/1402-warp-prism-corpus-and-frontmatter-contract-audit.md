@@ -1,6 +1,7 @@
 # Task 1402: Corpus and Frontmatter Contract Audit
 
 > **Status**: `[x]` Done
+> **Review State**: Builder Done — corpus/frontmatter audit evidence filled; gate verification pending
 > **Priority**: 🔴 P0
 > **Type**: `verification`
 > **Origin**: EPIC-14, stabilization wave, parser failures may stem from corpus mismatch.

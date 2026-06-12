@@ -1,7 +1,7 @@
 # Task 1302: Public Barrel Audit
 
 > **Status**: `[x]` Done (pending review)
-> **Review State**: Open — unstarted task; lane mismatch (should be in 01-open/)
+> **Review State**: Builder Done — public barrel audit evidence filled; gate verification pending
 > **Priority**: 🟡 P1
 > **Type**: `governance`
 > **Origin**: EPIC-13, stabilization wave, barrel exports both DS* and Prism* names.

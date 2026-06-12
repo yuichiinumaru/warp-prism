@@ -1,6 +1,7 @@
 # Task 1406: History and Operate Feature Flow Reconciliation
 
 > **Status**: `[ ]` Open
+> **Review State**: Open — unstarted task; lane mismatch (should be in 01-open/)
 > **Priority**: 🟡 P1
 > **Type**: `remediation`
 > **Origin**: EPIC-14, stabilization wave, failures in `history_story_modes_test`

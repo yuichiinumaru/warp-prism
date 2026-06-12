@@ -1,6 +1,7 @@
 # Task 1403: Parser and Task Projection Reconciliation
 
 > **Status**: `[ ]` Open
+> **Review State**: Builder Done — parser reconciliation evidence filled; status marker is stale
 > **Priority**: 🔴 P0
 > **Type**: `remediation`
 > **Origin**: EPIC-14, stabilization wave, `workspace_task_projection_parser_test` failures.

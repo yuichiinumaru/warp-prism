@@ -1,6 +1,7 @@
 # Task 1304: Gallery Compile Boundary Cleanup
 
 > **Status**: `[x]` Builder Done
+> **Review State**: Package Gate Failed — gallery compile boundary blocker documented by failure baseline; full package gate not verified
 > **Priority**: 🔴 P0
 > **Type**: `remediation`
 > **Origin**: EPIC-13, stabilization wave, `design_system_gallery_sections.dart`

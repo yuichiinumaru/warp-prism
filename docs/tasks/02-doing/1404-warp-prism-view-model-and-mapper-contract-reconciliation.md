@@ -1,6 +1,7 @@
 # Task 1404: View-model and Mapper Contract Reconciliation
 
 > **Status**: `[x]` Builder Done
+> **Review State**: Package Gate Failed — observatory pre-existing failures remain; full package gate not green
 > **Priority**: 🟡 P1
 > **Type**: `remediation`
 > **Origin**: EPIC-14, stabilization wave, failures in providers, repositories,

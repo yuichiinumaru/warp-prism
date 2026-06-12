@@ -1,7 +1,7 @@
 # Task 1401: Observatory Failure Baseline Inventory
 
 > **Status**: `[x]` Builder Done
-> **Review State**: Open — unstarted task; lane mismatch (should be in 01-open/)
+> **Review State**: Builder Done — observatory failure inventory evidence filled; gate verification pending
 > **Priority**: 🔴 P0
 > **Type**: `governance`
 > **Origin**: EPIC-14, stabilization wave, 64 failures in `apps/observatory/`.

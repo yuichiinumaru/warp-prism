@@ -1,6 +1,7 @@
 # Task 1405: Detail Variant and Responsive Shell Reconciliation
 
 > **Status**: `[ ]` Open
+> **Review State**: Package Gate Failed — detail reconciliation evidence filled; observatory package gate not green
 > **Priority**: 🟡 P1
 > **Type**: `remediation`
 > **Origin**: EPIC-14, stabilization wave, failures in `extended_detail_variants_test`,

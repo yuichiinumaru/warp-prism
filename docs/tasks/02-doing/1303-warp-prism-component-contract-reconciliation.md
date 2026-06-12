@@ -1,7 +1,7 @@
 # Task 1303: Component Contract Reconciliation
 
 > **Status**: `[x]` Builder Done
-> **Review State**: Open — unstarted task; lane mismatch (should be in 01-open/)
+> **Review State**: Builder Done — component contract evidence filled; full package gate not rerun in this refresh
 > **Priority**: 🔴 P0
 > **Type**: `remediation`
 > **Origin**: EPIC-13, stabilization wave, 8 failures in molecules_contract_test,

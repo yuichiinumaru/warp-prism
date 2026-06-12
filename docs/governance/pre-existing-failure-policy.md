@@ -1,7 +1,7 @@
 # Pre-existing Failure Classification Policy
 
 > **Authority**: Canonical governance reference for pre-existing failure handling.
-> **Source rule**: `.agents/rules/pre-existing-failure-policy.md` (mirror)
+> **Source rule**: `.agents/rules/pre-existing-failure-policy.md` (builder source rule)
 > **Scope**: All executable tasks under `docs/tasks/`.
 > **Created**: 2026-06-09
 > **Task origin**: Task 1206
@@ -185,8 +185,9 @@ This policy adds:
 - The reviewer checklist (how to verify claims).
 - The anti-gaming rules (what "must be classified" prevents).
 
-The promotion state model should reference this policy for pre-existing failure
-handling.
+The promotion state model references this policy for pre-existing failure
+handling in both `.agents/rules/promotion-state-model.md` and
+`docs/governance/promotion-state-model.md`.
 
 ---
 
@@ -196,7 +197,8 @@ handling.
   (Task 1201)
 - **Promotion state model**: `docs/governance/promotion-state-model.md`
   (Task 1202)
-- **Source rule**: `.agents/rules/promotion-state-model.md`
+- **Source rule**: `.agents/rules/pre-existing-failure-policy.md`
+- **Builder promotion state model**: `.agents/rules/promotion-state-model.md`
 - **Failure taxonomy**: Promotion state model §3 (Failure Taxonomy table)
 - **EPIC-14 tasks**: 1401-1408 (Observatory pre-existing failure remediation)
 - **Wave 4 regression owners**: Tasks 1303, 1304, 1307, 1309

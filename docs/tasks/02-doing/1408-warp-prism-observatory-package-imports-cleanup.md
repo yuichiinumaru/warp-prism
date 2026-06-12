@@ -1,6 +1,7 @@
 # Task 1408: Observatory Package Imports Cleanup
 
 > **Status**: `[x]` Done
+> **Review State**: Package Gate Failed — observatory pre-existing failures remain; import cleanup evidence filled
 > **Priority**: 🟡 P1
 > **Type**: `housekeeping`
 > **Origin**: EPIC-14, stabilization wave, ~29 fragile relative imports in Observatory.

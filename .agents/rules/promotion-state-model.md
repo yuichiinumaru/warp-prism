@@ -35,8 +35,9 @@ existing task files are reconciled; it is not a distinct promotion state.
 1. **Never mark a task `Promoted` if the package gate is red.** Package-level
    `flutter test` passing is a minimum requirement for promotion.
 2. **`pre-existing failure` is not a promotion bypass.** Pre-existing failures
-   must be classified per the failure taxonomy (EPIC-12, Task 1201/1206) and the
-   [Pre-existing Failure Classification Policy](../../docs/governance/pre-existing-failure-policy.md).
+   must be classified per the failure taxonomy (EPIC-12, Task 1201/1206), the
+   builder source rule `.agents/rules/pre-existing-failure-policy.md`, and the
+   canonical [Pre-existing Failure Classification Policy](../../docs/governance/pre-existing-failure-policy.md).
    A task touching an area with related pre-existing failures cannot be promoted
    until those failures are resolved or explicitly justified with reviewer sign-off.
 3. **`Builder Done` is the default initial completion state.** When a builder
@@ -72,13 +73,14 @@ existing task files are reconciled; it is not a distinct promotion state.
 | Async/flaky | Timer, overlay, or lifecycle fragility | Yes, until deterministic |
 | Semantics drift | Labels, roles, or accessibility expectations stale | Yes, if interactive component |
 | Missing fixture | Test data absent or malformed | Yes, if parser/test depends on it |
-| Pre-existing (unrelated) | Failure existed before and task did not touch the area. See [Pre-existing Failure Policy](../../docs/governance/pre-existing-failure-policy.md). | No, but must be classified |
+| Pre-existing (unrelated) | Failure existed before and task did not touch the area. See `.agents/rules/pre-existing-failure-policy.md` and [Pre-existing Failure Policy](../../docs/governance/pre-existing-failure-policy.md). | No, but must be classified |
 
 ## Reference
 
 This model is consumed by:
 - `.agents/rules/task-governance.md` (task lane rules)
 - `docs/tasks/000-template.md` (task template)
-- `docs/governance/pre-existing-failure-policy.md` (pre-existing failure classification — Task 1206)
+- `.agents/rules/pre-existing-failure-policy.md` (builder source rule — Task 1206)
+- `docs/governance/pre-existing-failure-policy.md` (canonical governance policy — Task 1206)
 - EPIC-12 tasks (1201-1207)
 - All future executable tasks promoted after this rule becomes active.

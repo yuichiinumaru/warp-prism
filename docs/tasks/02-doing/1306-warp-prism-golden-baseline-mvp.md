@@ -1,6 +1,7 @@
 # Task 1306: Golden Baseline MVP
 
 > **Status**: `[~]` In Progress (awaiting review)
+> **Review State**: Doing — legacy In Progress marker; golden baseline work claimed but full gate verification pending
 > **Priority**: 🟡 P1
 > **Type**: `testing`
 > **Origin**: EPIC-13, stabilization wave, zero golden tests despite policy requiring them.

@@ -1,6 +1,7 @@
 # Task 1305: Catalog Contract Expansion
 
 > **Status**: `[x]` Builder Done
+> **Review State**: Blocked — depends on Task 1304 gallery compile boundary cleanup; package gate not verified
 > **Priority**: 🟡 P1
 > **Type**: `feature`
 > **Origin**: EPIC-13, stabilization wave, catalog test is smoke-only (1 pass, near-irrelevant).

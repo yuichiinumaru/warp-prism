@@ -1,6 +1,7 @@
 # Task 1407: Legacy Test Retirement or Rewrite Audit
 
 > **Status**: `[ ]` Open
+> **Review State**: Open — unstarted task; lane mismatch (should be in 01-open/)
 > **Priority**: 🟡 P1
 > **Type**: `governance`
 > **Origin**: EPIC-14, stabilization wave, some tests may be testing outdated

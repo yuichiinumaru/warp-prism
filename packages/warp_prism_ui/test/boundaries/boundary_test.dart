@@ -1,170 +1,296 @@
-// Copyright (c) 2026 Ganthritor — Warp Prism
-// Boundary test harness — architectural enforcement via grep.
-//
-// These tests enforce package purity and namespace rules across the
-// Warp Prism monorepo. They are deterministic, filesystem-based, and
-// do not require network access or Flutter widget pumping.
-//
-// Reference:
-//   docs/architecture/warp-prism-melos-monorepo-architecture.md §5.5
-//   docs/design/prism-namespace-remediation-report.md (Task 1301)
-
 import 'dart:io';
 
-import 'package:flutter_test/flutter_test.dart';
+void main([List<String> args = const []]) {
+  final repoRoot = _resolveRepoRoot(args);
+  final harness = BoundaryHarness(repoRoot: repoRoot);
+  final result = harness.run();
 
-/// Repo root relative to this test file's CWD during `flutter test`.
-///
-/// `flutter test` runs from the package root (`packages/warp_prism_ui/`),
-/// so the repo root is two levels up.
-final Directory _repoRoot = Directory.current.parent.parent;
-
-/// Recursively collect all `.dart` files under [dir].
-List<File> _dartFiles(Directory dir) {
-  if (!dir.existsSync()) return const [];
-  return dir
-      .listSync(recursive: true)
-      .whereType<File>()
-      .where((f) => f.path.endsWith('.dart'))
-      .toList();
+  _printResults(result);
+  exitCode = result.hasFailures ? 1 : 0;
 }
 
-/// Scan [files] for lines matching [pattern].
-///
-/// Returns a list of `relativePath:lineNumber:line` strings for every match.
-List<String> _findMatches(List<File> files, RegExp pattern, {Directory? root}) {
-  final base = root ?? _repoRoot;
-  final results = <String>[];
-  for (final file in files) {
-    final relativePath = file.path.replaceFirst('${base.path}/', '');
-    final lines = file.readAsLinesSync();
-    for (var i = 0; i < lines.length; i++) {
-      if (pattern.hasMatch(lines[i])) {
-        results.add('$relativePath:${i + 1}:${lines[i].trim()}');
+Directory _resolveRepoRoot(List<String> args) {
+  String? explicitRoot;
+
+  for (var i = 0; i < args.length; i++) {
+    final arg = args[i];
+    if (arg == '--repo-root') {
+      if (i + 1 >= args.length) {
+        stderr.writeln('Missing value for --repo-root.');
+        exit(2);
       }
+      explicitRoot = args[++i];
+    } else if (arg.startsWith('--repo-root=')) {
+      explicitRoot = arg.substring('--repo-root='.length);
+    } else if (arg == '--help' || arg == '-h') {
+      stdout.writeln(_usage);
+      exit(0);
+    } else {
+      stderr.writeln('Unknown argument: $arg');
+      stderr.writeln(_usage);
+      exit(2);
     }
   }
-  return results;
-}
 
-/// Scan all `.dart` files under [dir] for lines matching [pattern].
-List<String> _scanDir(Directory dir, RegExp pattern) {
-  return _findMatches(_dartFiles(dir), pattern, root: dir);
-}
+  if (explicitRoot != null) {
+    final dir = Directory(explicitRoot);
+    if (!dir.existsSync()) {
+      throw StateError('Repository root does not exist: ${dir.path}');
+    }
+    return dir.absolute;
+  }
 
-void main() {
-  group('Boundary Test Harness', () {
-    // ── Check 1: No DS* component types in apps/cybercore/lib/ ──────────
-    //
-    // Task 1301 migrated all DS* references to Prism* in CyberCore.
-    // This check enforces zero regression. Observers (apps/observatory/)
-    // are NOT checked here — that migration is deferred.
-    test(
-      'CyberCore contains zero DS* references (Prism* migration complete)',
-      () {
-        final cybercoreLib = Directory('${_repoRoot.path}/apps/cybercore/lib');
+  var candidates = <Directory>[Directory.current, Directory.current.parent];
 
-        if (!cybercoreLib.existsSync()) {
-          // If CyberCore doesn't exist yet, nothing to enforce.
-          return;
+  try {
+    candidates = [
+      ...candidates,
+      File(Platform.script.toFilePath()).parent,
+      File(Platform.script.toFilePath()).parent.parent,
+    ];
+  } on UnsupportedError {
+    // Platform.script may be a data URI under some test runners.
+  }
+
+  for (final candidate in candidates) {
+    var dir = candidate.absolute;
+    while (true) {
+      final pubspec = File('${dir.path}/pubspec.yaml');
+      if (pubspec.existsSync()) {
+        final text = pubspec.readAsStringSync();
+        // Prefer the monorepo root (name: warp_prism) over package pubspec
+        if (text.contains('name: warp_prism') &&
+            !text.contains('name: warp_prism_ui') &&
+            !text.contains('name: warp_prism_observatory') &&
+            !text.contains('name: warp_prism_catalog') &&
+            !text.contains('name: warp_prism_cybercore')) {
+          return dir.absolute;
         }
-
-        final violations = _scanDir(cybercoreLib, RegExp(r'DS[A-Z]'));
-
-        expect(
-          violations,
-          isEmpty,
-          reason:
-              'Found ${violations.length} DS* reference(s) in CyberCore. '
-              'These should have been migrated to Prism* by Task 1301.\n'
-              '${violations.take(10).join('\n')}',
-        );
-      },
-    );
-
-    // ── Check 2: No `src/` imports from consumer apps ───────────────────
-    //
-    // Consumer apps must import `warp_prism_ui` through its public barrel
-    // (`package:warp_prism_ui/warp_prism_ui.dart`). Importing `src/`
-    // subpaths couples consumers to internal implementation details.
-    test('Consumer apps do not import warp_prism_ui src/ paths', () {
-      final appsDir = Directory('${_repoRoot.path}/apps');
-
-      if (!appsDir.existsSync()) return;
-
-      final violations = <String>[];
-      for (final appDir in appsDir.listSync().whereType<Directory>()) {
-        final libDir = Directory('${appDir.path}/lib');
-        if (!libDir.existsSync()) continue;
-        violations.addAll(
-          _scanDir(
-            libDir,
-            RegExp(r'''import\s+['"]package:warp_prism_ui/src/'''),
-          ),
-        );
       }
 
-      expect(
-        violations,
-        isEmpty,
-        reason:
-            'Found ${violations.length} src/ import(s) from consumer apps. '
-            'Use the barrel export instead.\n'
-            '${violations.take(10).join('\n')}',
-      );
-    });
+      final parent = dir.parent;
+      if (parent.path == dir.path) {
+        break;
+      }
+      dir = parent;
+    }
+  }
 
-    // ── Check 3: No Riverpod or GoRouter in warp_prism_ui ───────────────
-    //
-    // The ADS package must be framework-agnostic. Riverpod and GoRouter
-    // are application-level concerns; the ADS must not depend on them.
-    test('warp_prism_ui does not import Riverpod or GoRouter', () {
-      final uiLib = Directory('${_repoRoot.path}/packages/warp_prism_ui/lib');
+  throw StateError(
+    'Could not locate Warp Prism repository root. Pass --repo-root explicitly.',
+  );
+}
 
-      if (!uiLib.existsSync()) return;
+const _usage = '''
+Usage: dart packages/warp_prism_ui/test/boundaries/boundary_test.dart [--repo-root <path>]
 
-      final violations = _scanDir(
-        uiLib,
-        RegExp(
-          r'''import\s+['"]package:(flutter_riverpod|riverpod|go_router)''',
+Pure Dart boundary harness for Warp Prism package namespace rules.
+''';
+
+class BoundaryHarness {
+  BoundaryHarness({required this.repoRoot});
+
+  final Directory repoRoot;
+
+  List<BoundaryCheck> get checks => [
+    BoundaryCheck(
+      name: 'CyberCore contains zero DS* references',
+      run: _checkCyberCoreDsReferences,
+    ),
+    BoundaryCheck(
+      name: 'Consumer apps do not import warp_prism_ui src/ paths',
+      run: _checkConsumerSrcImports,
+    ),
+    BoundaryCheck(
+      name: 'warp_prism_ui does not import Riverpod or GoRouter',
+      run: _checkUiFrameworkImports,
+    ),
+    BoundaryCheck(
+      name: 'warp_prism_ui does not import app-specific packages',
+      run: _checkUiAppImports,
+    ),
+  ];
+
+  BoundaryRunResult run() {
+    final results = checks
+        .map((check) {
+          try {
+            return BoundaryCheckResult(
+              name: check.name,
+              violations: check.run(),
+            );
+          } catch (error, stackTrace) {
+            return BoundaryCheckResult(
+              name: check.name,
+              error: '$error\n$stackTrace',
+            );
+          }
+        })
+        .toList(growable: false);
+
+    return BoundaryRunResult(results);
+  }
+
+  List<String> _checkCyberCoreDsReferences() {
+    final dir = _childDir('apps/cybercore/lib');
+    final missing = _missingDirectory(dir, 'apps/cybercore/lib');
+    if (missing != null) return missing;
+
+    return _scanDartFiles(dir, RegExp(r'DS[A-Z]'));
+  }
+
+  List<String> _checkConsumerSrcImports() {
+    final appsDir = _childDir('apps');
+    final missing = _missingDirectory(appsDir, 'apps');
+    if (missing != null) return missing;
+
+    final violations = <String>[];
+    final appDirs =
+        appsDir.listSync(followLinks: false).whereType<Directory>().toList()
+          ..sort((a, b) => a.path.compareTo(b.path));
+
+    for (final appDir in appDirs) {
+      final libDir = Directory('${appDir.path}/lib');
+      if (!libDir.existsSync()) continue;
+
+      violations.addAll(
+        _scanDartFiles(
+          libDir,
+          RegExp(r'''import\s+['"]package:warp_prism_ui/src/'''),
         ),
       );
+    }
 
-      expect(
-        violations,
-        isEmpty,
-        reason:
-            'Found ${violations.length} Riverpod/GoRouter import(s) in '
-            'warp_prism_ui. The ADS must be framework-agnostic.\n'
-            '${violations.take(10).join('\n')}',
-      );
-    });
+    return violations;
+  }
 
-    // ── Check 4: No app-specific imports in warp_prism_ui ───────────────
-    //
-    // The ADS package must not depend on any specific consumer app.
-    // References to observatory, cybercore, or catalog internals would
-    // create a circular dependency.
-    test('warp_prism_ui does not import app-specific packages', () {
-      final uiLib = Directory('${_repoRoot.path}/packages/warp_prism_ui/lib');
+  List<String> _checkUiFrameworkImports() {
+    final uiLib = _childDir('packages/warp_prism_ui/lib');
+    final missing = _missingDirectory(uiLib, 'packages/warp_prism_ui/lib');
+    if (missing != null) return missing;
 
-      if (!uiLib.existsSync()) return;
+    return _scanDartFiles(
+      uiLib,
+      RegExp(r'''import\s+['"]package:(flutter_riverpod|riverpod|go_router)'''),
+    );
+  }
 
-      final violations = _scanDir(
-        uiLib,
-        RegExp(
-          r'''import\s+['"]package:warp_prism_(observatory|cybercore|catalog)''',
-        ),
-      );
+  List<String> _checkUiAppImports() {
+    final uiLib = _childDir('packages/warp_prism_ui/lib');
+    final missing = _missingDirectory(uiLib, 'packages/warp_prism_ui/lib');
+    if (missing != null) return missing;
 
-      expect(
-        violations,
-        isEmpty,
-        reason:
-            'Found ${violations.length} app-specific import(s) in '
-            'warp_prism_ui. The ADS must not depend on consumer apps.\n'
-            '${violations.take(10).join('\n')}',
-      );
-    });
+    return _scanDartFiles(
+      uiLib,
+      RegExp(
+        r'''import\s+['"]package:warp_prism_(observatory|cybercore|catalog)''',
+      ),
+    );
+  }
+
+  Directory _childDir(String relativePath) =>
+      Directory('${repoRoot.path}/$relativePath');
+
+  List<String>? _missingDirectory(Directory dir, String label) {
+    if (dir.existsSync()) return null;
+    return ['Missing required directory: $label (${dir.path})'];
+  }
+
+  List<String> _scanDartFiles(Directory dir, RegExp pattern) {
+    final results = <String>[];
+    final files =
+        dir
+            .listSync(recursive: true, followLinks: false)
+            .whereType<File>()
+            .where((file) => file.path.endsWith('.dart'))
+            .toList()
+          ..sort((a, b) => a.path.compareTo(b.path));
+
+    for (final file in files) {
+      final lines = file.readAsLinesSync();
+      for (var i = 0; i < lines.length; i++) {
+        if (pattern.hasMatch(lines[i])) {
+          results.add('${_relativePath(file)}:${i + 1}:${lines[i].trim()}');
+        }
+      }
+    }
+
+    return results;
+  }
+
+  String _relativePath(File file) {
+    final rootPath = repoRoot.path;
+    final path = file.path;
+    if (path == rootPath) return '.';
+
+    final prefix = rootPath.endsWith('/') ? rootPath : '$rootPath/';
+    if (path.startsWith(prefix)) {
+      return path.substring(prefix.length);
+    }
+
+    return path;
+  }
+}
+
+class BoundaryCheck {
+  const BoundaryCheck({required this.name, required this.run});
+
+  final String name;
+  final List<String> Function() run;
+}
+
+class BoundaryCheckResult {
+  const BoundaryCheckResult({
+    required this.name,
+    this.violations = const [],
+    this.error,
   });
+
+  final String name;
+  final List<String> violations;
+  final String? error;
+
+  bool get passed => error == null && violations.isEmpty;
+}
+
+class BoundaryRunResult {
+  const BoundaryRunResult(this.checks);
+
+  final List<BoundaryCheckResult> checks;
+
+  bool get hasFailures => checks.any((check) => !check.passed);
+  int get passedCount => checks.where((check) => check.passed).length;
+  int get failedCount => checks.where((check) => !check.passed).length;
+  int get violationCount {
+    return checks.fold<int>(
+      0,
+      (count, check) =>
+          count + check.violations.length + (check.error == null ? 0 : 1),
+    );
+  }
+}
+
+void _printResults(BoundaryRunResult result) {
+  stdout.writeln('Boundary Test Harness (pure Dart)');
+  stdout.writeln('Checks: ${result.passedCount}/${result.checks.length} PASS');
+
+  for (final check in result.checks) {
+    stdout.writeln('[${check.passed ? 'PASS' : 'FAIL'}] ${check.name}');
+
+    final error = check.error;
+    if (error != null) {
+      stderr.writeln('  ERROR: $error');
+    }
+
+    for (final violation in check.violations) {
+      stdout.writeln('  - $violation');
+    }
+  }
+
+  stdout.writeln(
+    'Boundary harness: '
+    '${result.passedCount}/${result.checks.length} PASS, '
+    '${result.failedCount} FAIL, '
+    '${result.violationCount} violation(s)',
+  );
 }

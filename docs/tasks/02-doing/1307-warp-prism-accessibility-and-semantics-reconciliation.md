@@ -1,6 +1,7 @@
 # Task 1307: Accessibility and Semantics Reconciliation
 
 > **Status**: `[x]` Builder Done
+> **Review State**: Package Gate Failed — accessibility/semantics failures documented by failure baseline; full package gate not verified
 > **Priority**: 🟡 P1
 > **Type**: `remediation`
 > **Origin**: EPIC-13, stabilization wave, failures in `design_system_accessibility_test.dart`.

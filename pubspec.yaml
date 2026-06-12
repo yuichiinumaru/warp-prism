@@ -19,46 +19,40 @@ melos:
   scripts:
     analyze:
       description: Run flutter analyze across all packages and apps.
-      run: melos exec -- flutter analyze
-      packageFilters:
-        dirExists: lib
+      run: dart run melos exec --dir-exists=lib -- flutter analyze
 
     format:
       description: Check Dart formatting across all packages and apps.
-      run: melos exec -- dart format --set-exit-if-changed .
-      packageFilters:
-        dirExists: lib
+      run: dart run melos exec --dir-exists=lib -- dart format --set-exit-if-changed .
 
     test:
       description: Run flutter test across all packages and apps.
-      run: melos exec -- flutter test
-      packageFilters:
-        dirExists: test
+      run: dart run melos exec --dir-exists=test -- flutter test
 
     test-ui:
       description: Run tests for warp_prism_ui only.
-      run: melos exec --scope warp_prism_ui -- flutter test
+      run: dart run melos exec --scope warp_prism_ui -- flutter test
 
     test-observatory:
       description: Run tests for the Observatory app only.
-      run: melos exec --scope warp_prism_observatory -- flutter test
+      run: dart run melos exec --scope warp_prism_observatory -- flutter test
 
     test-catalog:
       description: Run tests for the Catalog app only.
-      run: melos exec --scope warp_prism_catalog -- flutter test
+      run: dart run melos exec --scope warp_prism_catalog -- flutter test
 
     test-cybercore:
       description: Run tests for the CyberCore app only.
-      run: melos exec --scope warp_prism_cybercore -- flutter test
+      run: dart run melos exec --scope warp_prism_cybercore -- flutter test
 
     test-boundaries:
-      description: Run boundary test harness — architectural enforcement.
-      run: melos exec --scope warp_prism_ui -- flutter test test/boundaries/boundary_test.dart
+      description: Run pure Dart boundary test harness - architectural enforcement.
+      run: dart run packages/warp_prism_ui/test/boundaries/boundary_test.dart --repo-root .
 
     test-fast:
-      description: Quick local gate — test-ui and test-cybercore.
-      run: melos exec --scope warp_prism_ui,warp_prism_cybercore -- flutter test
+      description: Quick local gate - test-ui and test-cybercore.
+      run: dart run melos run test-ui && dart run melos run test-cybercore
 
     validate:
-      description: Full CI gate — format, analyze, and test all packages.
-      run: melos run format && melos run analyze && melos run test
+      description: Full CI gate - format, analyze, and test all packages.
+      run: dart run melos run format && dart run melos run analyze && dart run melos run test

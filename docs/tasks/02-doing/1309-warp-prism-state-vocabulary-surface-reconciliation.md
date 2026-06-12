@@ -1,6 +1,7 @@
 # Task 1309: State Vocabulary Surface Reconciliation
 
 > **Status**: `[ ]` Open
+> **Review State**: Doing — EPIC-13 stabilization task with filled evidence; status marker is stale
 > **Priority**: 🟡 P1
 > **Type**: `remediation`
 > **Origin**: EPIC-13, stabilization wave, DSStateSurface expanded from 3 to 7

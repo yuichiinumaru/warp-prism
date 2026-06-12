@@ -170,7 +170,7 @@ the issue before re-gating.
 | Async/flaky | Timer, overlay, or lifecycle fragility | Yes, until deterministic |
 | Semantics drift | Labels, roles, or accessibility expectations stale | Yes, if interactive component |
 | Missing fixture | Test data absent or malformed | Yes, if parser/test depends on it |
-| Pre-existing (unrelated) | Failure existed before, task did not touch the area | No, but must be classified |
+| Pre-existing (unrelated) | Failure existed before, task did not touch the area. See `docs/governance/pre-existing-failure-policy.md` and `.agents/rules/pre-existing-failure-policy.md`. | No, but must be classified |
 
 ---
 
@@ -201,8 +201,9 @@ infer it from context.
 
 The following examples reconcile the promotion state model with the live lanes.
 Task 0001 is documented as a pre-existing `03-review/`/`Builder Done` governance
-defect. The remaining five examples are current `02-doing/` examples and do not
-include Task 0001.
+defect. Task 1201 and Task 1205 are now documented as current `03-review/`/`Ready
+For Review` examples. The remaining examples are current `02-doing/` examples and
+include Task 1101 as the current `Open` lane mismatch example.
 
 ### Task 0001 — Mock Workspace Contract Baseline (pre-existing lane-state defect)
 
@@ -253,15 +254,33 @@ include Task 0001.
   package proof + app-specific consumer proof + boundary test. Without
   documented gate passes and a review packet, it remains Builder Done.
 
-### Task 1201 — Test Failure Baseline Inventory
+### Task 1101 — Charter And Naming Convergence
 
-- **Current lane**: `docs/tasks/02-doing/1201-warp-prism-test-failure-baseline-inventory.md`
+- **Current lane**: `docs/tasks/02-doing/1101-warp-prism-charter-and-naming-convergence.md`
 - **Current status**: `[ ]` Open
 - **Promotion state**: **Open**
-- **Rationale**: This governance task is in `02-doing/` but has `[ ]` Open
-  status — meaning it was placed in the doing lane before work started.
-  Under the promotion model, it should be in `01-open/` until a builder
-  picks it up. This is a lane/state mismatch that the model surfaces.
+- **Rationale**: This task is in `02-doing/` but its header still says
+  `Review State: Open — unstarted task; lane mismatch (should be in 01-open/)`.
+  Under the promotion model, it should be in `01-open/` until a builder picks it
+  up. This is the current lane/state mismatch example that the model surfaces.
+
+### Task 1205 — Boundary Test Harness
+
+- **Current lane**: `docs/tasks/03-review/1205-warp-prism-boundary-test-harness.md`
+- **Current status**: `[x]` Ready For Review
+- **Promotion state**: **Ready For Review**
+- **Rationale**: This task is in `03-review/` and its header says
+  `Review State: Ready For Review`. It is no longer a `02-doing/` lane mismatch
+  example; earlier evidence that described Task 1205 as `Open` is superseded.
+
+### Task 1201 — Test Failure Baseline Inventory
+
+- **Current lane**: `docs/tasks/03-review/1201-warp-prism-test-failure-baseline-inventory.md`
+- **Current status**: `[x]` Ready For Review
+- **Promotion state**: **Ready For Review**
+- **Rationale**: This governance task is in `03-review/` and its header says
+  `Review State: Ready For Review`. It is no longer a `02-doing/` lane mismatch
+  example; earlier evidence that described Task 1201 as `Open` is superseded.
 
 
 ---
@@ -271,9 +290,11 @@ include Task 0001.
 1. **Never mark a task `Promoted` if the package gate is red.** Package-level
    `flutter test` passing is a minimum requirement for promotion.
 2. **`pre-existing failure` is not a promotion bypass.** Pre-existing failures
-   must be classified per the failure taxonomy. A task touching an area with
-   related pre-existing failures cannot be promoted until those failures are
-   resolved or explicitly justified.
+   must be classified per the failure taxonomy, `.agents/rules/pre-existing-failure-policy.md`
+   (builder source rule), and `docs/governance/pre-existing-failure-policy.md`
+   (canonical policy). A task touching an area with related pre-existing failures
+   cannot be promoted until those failures are resolved or explicitly justified
+   with reviewer sign-off.
 3. **`Builder Done` is the default initial completion state.** When a builder
    finishes work, the task enters `Builder Done`. Promotion requires additional
    gates per the gate matrix.
@@ -293,6 +314,7 @@ include Task 0001.
 ## 7. References
 
 - **Source rule**: `.agents/rules/promotion-state-model.md`
+- **Pre-existing failure policy**: `.agents/rules/pre-existing-failure-policy.md` (builder source rule), `docs/governance/pre-existing-failure-policy.md` (canonical policy)
 - **Task template**: `docs/tasks/000-template.md` (includes `Review State` field)
 - **Task governance**: `.agents/rules/task-governance.md`
 - **Definition of Done**: `.agents/rules/definition-of-done.md`
