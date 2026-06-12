@@ -37,21 +37,27 @@ melos:
 
     test-ui:
       description: Run tests for warp_prism_ui only.
-      run: flutter test
-      packageFilters:
-        scope: warp_prism_ui
+      run: melos exec --scope warp_prism_ui -- flutter test
 
     test-observatory:
       description: Run tests for the Observatory app only.
-      run: flutter test
-      packageFilters:
-        scope: warp_prism_observatory
+      run: melos exec --scope warp_prism_observatory -- flutter test
 
     test-catalog:
       description: Run tests for the Catalog app only.
-      run: flutter test
-      packageFilters:
-        scope: warp_prism_catalog
+      run: melos exec --scope warp_prism_catalog -- flutter test
+
+    test-cybercore:
+      description: Run tests for the CyberCore app only.
+      run: melos exec --scope warp_prism_cybercore -- flutter test
+
+    test-boundaries:
+      description: Run boundary test harness — architectural enforcement.
+      run: melos exec --scope warp_prism_ui -- flutter test test/boundaries/boundary_test.dart
+
+    test-fast:
+      description: Quick local gate — test-ui and test-cybercore.
+      run: melos exec --scope warp_prism_ui,warp_prism_cybercore -- flutter test
 
     validate:
       description: Full CI gate — format, analyze, and test all packages.

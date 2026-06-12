@@ -1,6 +1,7 @@
 # Task 0512: Map graph modes and projection adapters
 
 > **Status**: `[x]` Done
+> **Review State**: Blocked — Flutter SDK not installed; validation commands cannot execute
 > **Priority**: 🟡 P1
 > **Type**: `feature`
 > **Origin**: `EPIC-05-warp-prism-map-surface.md` candidate stories for containment, operational, and evidence graph modes

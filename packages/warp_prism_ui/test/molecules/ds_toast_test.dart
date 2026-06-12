@@ -10,21 +10,14 @@ import 'package:warp_prism_ui/warp_prism_ui.dart';
 
 /// Helper: wraps a widget under test with MaterialApp + Scaffold.
 Widget _wrapInApp(Widget child) {
-  return MaterialApp(
-    home: Scaffold(
-      body: child,
-    ),
-  );
+  return MaterialApp(home: Scaffold(body: child));
 }
 
 /// Helper: wraps a widget with DSToastManager for overlay tests.
 Widget _wrapWithManager(Widget child, {int maxVisible = 5}) {
   return MaterialApp(
     home: Scaffold(
-      body: DSToastManager(
-        maxVisible: maxVisible,
-        child: child,
-      ),
+      body: DSToastManager(maxVisible: maxVisible, child: child),
     ),
   );
 }
@@ -233,8 +226,9 @@ void main() {
       expect(find.byType(Text), findsOneWidget);
     });
 
-    testWidgets('renders action button when actionLabel is set',
-        (tester) async {
+    testWidgets('renders action button when actionLabel is set', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         _wrapInApp(
           DSToast(
@@ -252,8 +246,9 @@ void main() {
       expect(find.text('View'), findsOneWidget);
     });
 
-    testWidgets('does not render action button when actionLabel is null',
-        (tester) async {
+    testWidgets('does not render action button when actionLabel is null', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         _wrapInApp(
           DSToast(
@@ -270,8 +265,7 @@ void main() {
       expect(find.byType(TextButton), findsNothing);
     });
 
-    testWidgets('renders close button when onDismiss provided',
-        (tester) async {
+    testWidgets('renders close button when onDismiss provided', (tester) async {
       await tester.pumpWidget(
         _wrapInApp(
           DSToast(
@@ -342,10 +336,27 @@ void main() {
         ),
       );
 
-      expect(
-        find.bySemanticsLabel('Error: Parse error'),
-        findsOneWidget,
+      expect(find.bySemanticsLabel('Error: Parse error'), findsOneWidget);
+    });
+
+    testWidgets('exposes action and dismiss semantics', (tester) async {
+      await tester.pumpWidget(
+        _wrapInApp(
+          DSToast(
+            entry: DSToastEntry(
+              id: 't1',
+              severity: DSToastSeverity.info,
+              title: 'Info',
+              actionLabel: 'Undo',
+              duration: Duration.zero,
+            ),
+            onDismiss: () {},
+          ),
+        ),
       );
+
+      expect(find.bySemanticsLabel('Undo'), findsOneWidget);
+      expect(find.bySemanticsLabel('Dismiss notification'), findsOneWidget);
     });
   });
 
@@ -354,11 +365,7 @@ void main() {
   // ==========================================================================
   group('DSToastManager', () {
     testWidgets('renders child widget', (tester) async {
-      await tester.pumpWidget(
-        _wrapWithManager(
-          const Text('Main content'),
-        ),
-      );
+      await tester.pumpWidget(_wrapWithManager(const Text('Main content')));
 
       expect(find.text('Main content'), findsOneWidget);
     });
@@ -399,9 +406,7 @@ void main() {
     testWidgets('dismiss removes the toast', (tester) async {
       final managerKey = GlobalKey<_ManagerTestHelperState>();
       await tester.pumpWidget(
-        _wrapWithManager(
-          _ManagerTestHelper(key: managerKey),
-        ),
+        _wrapWithManager(_ManagerTestHelper(key: managerKey)),
       );
 
       // Show a toast.
@@ -426,9 +431,7 @@ void main() {
     testWidgets('auto-dismiss fires after duration', (tester) async {
       final managerKey = GlobalKey<_ManagerTestHelperState>();
       await tester.pumpWidget(
-        _wrapWithManager(
-          _ManagerTestHelper(key: managerKey),
-        ),
+        _wrapWithManager(_ManagerTestHelper(key: managerKey)),
       );
 
       // Show a toast with 1-second duration.
@@ -451,9 +454,7 @@ void main() {
     testWidgets('clear removes all toasts', (tester) async {
       final managerKey = GlobalKey<_ManagerTestHelperState>();
       await tester.pumpWidget(
-        _wrapWithManager(
-          _ManagerTestHelper(key: managerKey),
-        ),
+        _wrapWithManager(_ManagerTestHelper(key: managerKey)),
       );
 
       // Show 3 toasts.
@@ -479,10 +480,7 @@ void main() {
     testWidgets('maxVisible limits visible toasts', (tester) async {
       final managerKey = GlobalKey<_ManagerTestHelperState>();
       await tester.pumpWidget(
-        _wrapWithManager(
-          _ManagerTestHelper(key: managerKey),
-          maxVisible: 2,
-        ),
+        _wrapWithManager(_ManagerTestHelper(key: managerKey), maxVisible: 2),
       );
 
       // Show 3 toasts (exceeding max of 2).
@@ -501,9 +499,7 @@ void main() {
     testWidgets('show with same id replaces existing toast', (tester) async {
       final managerKey = GlobalKey<_ManagerTestHelperState>();
       await tester.pumpWidget(
-        _wrapWithManager(
-          _ManagerTestHelper(key: managerKey),
-        ),
+        _wrapWithManager(_ManagerTestHelper(key: managerKey)),
       );
 
       // Show a toast.
@@ -524,6 +520,115 @@ void main() {
       await tester.pump(DSMotion.slow);
       expect(find.text('Original'), findsNothing);
       expect(find.text('Replaced'), findsOneWidget);
+    });
+
+    testWidgets('action button fires onAction callback', (tester) async {
+      var actionFired = false;
+      await tester.pumpWidget(
+        _wrapInApp(
+          DSToast(
+            entry: DSToastEntry(
+              id: 't1',
+              severity: DSToastSeverity.info,
+              title: 'Info',
+              actionLabel: 'Undo',
+              duration: Duration.zero,
+            ),
+            onAction: () => actionFired = true,
+            onDismiss: () {},
+          ),
+        ),
+      );
+
+      await tester.tap(find.text('Undo'));
+      expect(actionFired, isTrue);
+    });
+
+    testWidgets('dismiss button has minimum 48x48 touch target', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        _wrapInApp(
+          DSToast(
+            entry: DSToastEntry(
+              id: 't1',
+              severity: DSToastSeverity.info,
+              title: 'Info',
+              duration: Duration.zero,
+            ),
+            onDismiss: () {},
+          ),
+        ),
+      );
+
+      final dismissButton = find.byIcon(Icons.close);
+      expect(dismissButton, findsOneWidget);
+
+      final dismissTarget = find.ancestor(
+        of: dismissButton,
+        matching: find.byType(SizedBox),
+      );
+      expect(dismissTarget, findsOneWidget);
+
+      final size = tester.getSize(dismissTarget);
+      expect(size.width, greaterThanOrEqualTo(48));
+      expect(size.height, greaterThanOrEqualTo(48));
+    });
+
+    testWidgets('manager action tap dismisses toast', (tester) async {
+      final managerKey = GlobalKey<_ManagerTestHelperState>();
+      await tester.pumpWidget(
+        _wrapWithManager(_ManagerTestHelper(key: managerKey)),
+      );
+
+      // Show a toast with action.
+      managerKey.currentState!.showToastWith(
+        id: 'toast-action',
+        title: 'Action Toast',
+        actionLabel: 'Action',
+      );
+      await tester.pump();
+      await tester.pump(DSMotion.slow);
+
+      expect(find.text('Action Toast'), findsOneWidget);
+      expect(find.text('Action'), findsOneWidget);
+
+      // Tap the action button.
+      await tester.tap(find.text('Action'));
+      await tester.pump();
+      await tester.pump(DSMotion.slow);
+      await tester.pump(const Duration(milliseconds: 100));
+
+      expect(find.text('Action Toast'), findsNothing);
+    });
+
+    testWidgets('two toasts - dismiss one leaves other visible', (
+      tester,
+    ) async {
+      final managerKey = GlobalKey<_ManagerTestHelperState>();
+      await tester.pumpWidget(
+        _wrapWithManager(_ManagerTestHelper(key: managerKey)),
+      );
+
+      // Show two toasts.
+      managerKey.currentState!.showToastWith(id: 'toast-1', title: 'Toast 1');
+      managerKey.currentState!.showToastWith(id: 'toast-2', title: 'Toast 2');
+      await tester.pump();
+      await tester.pump(DSMotion.slow);
+
+      expect(find.text('Toast 1'), findsOneWidget);
+      expect(find.text('Toast 2'), findsOneWidget);
+
+      // Dismiss the first toast.
+      managerKey.currentState!.dismissToast('toast-1');
+      await tester.pump();
+      // Animated out.
+      await tester.pump(DSMotion.slow);
+      await tester.pump(const Duration(milliseconds: 100));
+
+      // Toast 1 should be gone, Toast 2 should remain.
+      expect(find.text('Toast 1'), findsNothing);
+      expect(find.text('Toast 2'), findsOneWidget);
     });
   });
 }
@@ -557,6 +662,7 @@ class _ManagerTestHelperState extends State<_ManagerTestHelper> {
   void showToastWith({
     required String id,
     String? title,
+    String? actionLabel,
     Duration duration = Duration.zero,
   }) {
     DSToastManager.of(context).show(
@@ -564,6 +670,7 @@ class _ManagerTestHelperState extends State<_ManagerTestHelper> {
         id: id,
         severity: DSToastSeverity.success,
         title: title ?? 'Toast $id',
+        actionLabel: actionLabel,
         duration: duration,
       ),
     );

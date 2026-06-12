@@ -58,15 +58,13 @@ void main() {
     });
 
     group('High-frequency surfaces use simple panels', () {
-      testWidgets('DSStoryCardQuick renders without BackdropFilter',
-          (tester) async {
+      testWidgets('DSStoryCardQuick renders without BackdropFilter', (
+        tester,
+      ) async {
         await tester.pumpWidget(
           const MaterialApp(
             home: Scaffold(
-              body: DSStoryCardQuick(
-                title: 'Test',
-                value: '42',
-              ),
+              body: DSStoryCardQuick(title: 'Test', value: '42'),
             ),
           ),
         );
@@ -76,15 +74,13 @@ void main() {
         expect(find.byType(DSGlassPanelSimple), findsOneWidget);
       });
 
-      testWidgets('DSMetricTile renders without BackdropFilter',
-          (tester) async {
+      testWidgets('DSMetricTile renders without BackdropFilter', (
+        tester,
+      ) async {
         await tester.pumpWidget(
           const MaterialApp(
             home: Scaffold(
-              body: DSMetricTile(
-                label: 'Test Metric',
-                value: '100',
-              ),
+              body: DSMetricTile(label: 'Test Metric', value: '100'),
             ),
           ),
         );
@@ -93,15 +89,13 @@ void main() {
         expect(find.byType(BackdropFilter), findsNothing);
       });
 
-      testWidgets('DSAssetCard renders without any glass panel',
-          (tester) async {
+      testWidgets('DSAssetCard renders without any glass panel', (
+        tester,
+      ) async {
         await tester.pumpWidget(
           const MaterialApp(
             home: Scaffold(
-              body: DSAssetCard(
-                name: 'test-skill',
-                kind: 'skill',
-              ),
+              body: DSAssetCard(name: 'test-skill', kind: 'skill'),
             ),
           ),
         );
@@ -112,16 +106,11 @@ void main() {
         expect(find.byType(DSGlassPanelSimple), findsNothing);
       });
 
-      testWidgets('DSTaskCard renders without any glass panel',
-          (tester) async {
+      testWidgets('DSTaskCard renders without any glass panel', (tester) async {
         await tester.pumpWidget(
           const MaterialApp(
             home: Scaffold(
-              body: DSTaskCard(
-                id: 1,
-                title: 'Test task',
-                lane: '02-doing',
-              ),
+              body: DSTaskCard(id: 1, title: 'Test task', lane: '02-doing'),
             ),
           ),
         );
@@ -134,15 +123,13 @@ void main() {
     });
 
     group('Story panel retains justified blur', () {
-      testWidgets('DSStoryPanel uses DSGlassPanel.elevated (blur justified)',
-          (tester) async {
+      testWidgets('DSStoryPanel uses DSGlassPanel.elevated (blur justified)', (
+        tester,
+      ) async {
         await tester.pumpWidget(
           const MaterialApp(
             home: Scaffold(
-              body: DSStoryPanel(
-                title: 'Test Story',
-                insights: [],
-              ),
+              body: DSStoryPanel(title: 'Test Story', insights: []),
             ),
           ),
         );
@@ -154,25 +141,25 @@ void main() {
     });
 
     group('No blur nesting', () {
-      testWidgets('DSStoryPanel does not nest BackdropFilter inside BackdropFilter',
-          (tester) async {
-        await tester.pumpWidget(
-          const MaterialApp(
-            home: Scaffold(
-              body: DSStoryPanel(
-                title: 'Test',
-                insights: [
-                  DSStoryInsight(text: 'Insight 1'),
-                ],
+      testWidgets(
+        'DSStoryPanel does not nest BackdropFilter inside BackdropFilter',
+        (tester) async {
+          await tester.pumpWidget(
+            const MaterialApp(
+              home: Scaffold(
+                body: DSStoryPanel(
+                  title: 'Test',
+                  insights: [DSStoryInsight(text: 'Insight 1')],
+                ),
               ),
             ),
-          ),
-        );
+          );
 
-        // Should have exactly 1 BackdropFilter (from DSGlassPanel.elevated),
-        // not 2+ (which would indicate nesting).
-        expect(find.byType(BackdropFilter), findsOneWidget);
-      });
+          // Should have exactly 1 BackdropFilter (from DSGlassPanel.elevated),
+          // not 2+ (which would indicate nesting).
+          expect(find.byType(BackdropFilter), findsOneWidget);
+        },
+      );
     });
 
     group('Budget surface classification', () {
@@ -187,7 +174,10 @@ void main() {
         // If this test fails after your change, update:
         //   1. docs/reports/epic-10-glass-performance-budget.md
         //   2. This test file
-        expect(true, isTrue); // placeholder — real checks are in widget tests above
+        expect(
+          true,
+          isTrue,
+        ); // placeholder — real checks are in widget tests above
       });
     });
   });

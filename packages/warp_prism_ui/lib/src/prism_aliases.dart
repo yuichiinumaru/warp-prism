@@ -52,7 +52,15 @@ import 'organisms/markdown_renderer/ds_markdown_renderer.dart';
 import 'organisms/split_pane/ds_split_pane.dart';
 import 'organisms/tab_bar/ds_tab_bar.dart';
 import 'organisms/virtual_scroll/ds_virtual_scroll.dart';
+import 'tokens/ds_breakpoints.dart';
+import 'tokens/ds_colors.dart';
+import 'tokens/ds_motion.dart';
 import 'tokens/ds_operational_state.dart';
+import 'tokens/ds_radii.dart';
+import 'tokens/ds_semantics.dart';
+import 'tokens/ds_shadows.dart';
+import 'tokens/ds_spacing.dart';
+import 'tokens/ds_typography.dart';
 
 // =============================================================================
 // TOKENS — Operational State
@@ -72,6 +80,49 @@ typedef PrismOperationalCategory = DSOperationalCategory;
 
 /// Note: [DSOperationalStateUI] is an extension on [DSOperationalState].
 /// Consumer apps access it via `PrismOperationalState.running.color` etc.
+
+/// Public alias for [DSColors].
+///
+/// Design token palette: obsidian backgrounds, energy accents,
+/// semantic status, governance, text, border, lane, and asset-kind colors.
+typedef PrismColors = DSColors;
+
+/// Public alias for [DSSpacing].
+///
+/// Design token spacing scale: base increments and semantic spacing
+/// for cards, lists, sections, sidebar, topbar, and inspector.
+typedef PrismSpacing = DSSpacing;
+
+/// Public alias for [DSTypography].
+///
+/// Design token type styles: display, heading, body, label, code,
+/// and numeric styles for dense information architecture.
+typedef PrismTypography = DSTypography;
+
+/// Public alias for [DSBreakpoints].
+///
+/// Responsive breakpoint contract for shell, templates, and organisms.
+typedef PrismBreakpoints = DSBreakpoints;
+
+/// Public alias for [DSRadii].
+///
+/// Border radius scale for the glass/obsidian aesthetic.
+typedef PrismRadii = DSRadii;
+
+/// Public alias for [DSShadows].
+///
+/// Shadow and glow effects for depth in the ultradark theme.
+typedef PrismShadows = DSShadows;
+
+/// Public alias for [DSMotion].
+///
+/// Animation curves and durations for consistent motion design.
+typedef PrismMotion = DSMotion;
+
+/// Public alias for [DSSemantics].
+///
+/// Pre-composed semantic styles combining colors, typography, and meaning.
+typedef PrismSemantics = DSSemantics;
 
 // =============================================================================
 // ATOMS

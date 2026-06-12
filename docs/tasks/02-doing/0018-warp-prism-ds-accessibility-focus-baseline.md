@@ -1,6 +1,7 @@
 # Task 0018: Warp Prism DS Accessibility and Focus Baseline
 
 > **Status**: `[x]` Done
+> **Review State**: Blocked — Flutter SDK not installed; validation commands cannot execute
 > **Priority**: 🟡 P1
 > **Type**: `feature`
 > **Origin**: `EPIC-01-warp-prism-atomic-design-system.md` candidate story `Accessibility/focus state baseline for components`

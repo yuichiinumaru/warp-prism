@@ -12,7 +12,7 @@
 library;
 
 import 'package:flutter/foundation.dart';
-import '../../../data/models/task_contracts.dart';
+import 'package:warp_prism_observatory/data/models/task_contracts.dart';
 import 'task_projection.dart';
 
 // ---------------------------------------------------------------------------
@@ -141,14 +141,14 @@ class OperateStoryDiagnostics {
 
   /// An empty diagnostics with no signals.
   const OperateStoryDiagnostics.empty()
-      : reviewQueueCount = 0,
-        blockerClusters = const [],
-        blockedTaskCount = 0,
-        proofRiskCount = 0,
-        proofRiskTaskIds = const [],
-        laneMismatches = const [],
-        insights = const [],
-        overallRiskLevel = StoryRiskLevel.none;
+    : reviewQueueCount = 0,
+      blockerClusters = const [],
+      blockedTaskCount = 0,
+      proofRiskCount = 0,
+      proofRiskTaskIds = const [],
+      laneMismatches = const [],
+      insights = const [],
+      overallRiskLevel = StoryRiskLevel.none;
 
   /// Whether there are any signals to show.
   bool get hasSignals =>
@@ -180,66 +180,71 @@ OperateStoryDiagnostics deriveOperateStoryDiagnostics(
   final insights = <OperateInsight>[];
 
   // ---- Review Queue Pressure ----
-  final reviewTasks =
-      tasks.where((t) => t.lane == TaskLane.review).toList();
+  final reviewTasks = tasks.where((t) => t.lane == TaskLane.review).toList();
   final reviewQueueCount = reviewTasks.length;
 
   if (reviewQueueCount > 0) {
     final risk = reviewQueueCount >= 5
         ? StoryRiskLevel.high
         : reviewQueueCount >= 3
-            ? StoryRiskLevel.medium
-            : StoryRiskLevel.low;
-    insights.add(OperateInsight(
-      title: 'Review queue pressure',
-      detail: reviewQueueCount == 1
-          ? '1 task awaiting review'
-          : '$reviewQueueCount tasks awaiting review',
-      riskLevel: risk,
-      value: reviewQueueCount,
-      involvedAssetIds: reviewTasks.map((t) => t.id).toList(),
-    ));
+        ? StoryRiskLevel.medium
+        : StoryRiskLevel.low;
+    insights.add(
+      OperateInsight(
+        title: 'Review queue pressure',
+        detail: reviewQueueCount == 1
+            ? '1 task awaiting review'
+            : '$reviewQueueCount tasks awaiting review',
+        riskLevel: risk,
+        value: reviewQueueCount,
+        involvedAssetIds: reviewTasks.map((t) => t.id).toList(),
+      ),
+    );
   }
 
   // ---- Blocker Clusters ----
-  final blockedTasks =
-      tasks.where((t) => t.dependsOn.isNotEmpty).toList();
+  final blockedTasks = tasks.where((t) => t.dependsOn.isNotEmpty).toList();
   final blockerMap = <String, List<TaskProjection>>{};
   for (final task in blockedTasks) {
     for (final dep in task.dependsOn) {
       blockerMap.putIfAbsent(dep, () => []).add(task);
     }
   }
-  final blockerClusters = blockerMap.entries
-      .where((e) => e.value.isNotEmpty)
-      .map((e) => BlockerCluster(
-            dependencyId: e.key,
-            blockedTasks: e.value,
-            dependencyExists:
-                tasks.any((t) => t.id == e.key),
-          ))
-      .toList()
-    ..sort((a, b) => b.size.compareTo(a.size));
+  final blockerClusters =
+      blockerMap.entries
+          .where((e) => e.value.isNotEmpty)
+          .map(
+            (e) => BlockerCluster(
+              dependencyId: e.key,
+              blockedTasks: e.value,
+              dependencyExists: tasks.any((t) => t.id == e.key),
+            ),
+          )
+          .toList()
+        ..sort((a, b) => b.size.compareTo(a.size));
 
   if (blockerClusters.isNotEmpty) {
     final totalBlocked = blockedTasks.length;
-    final missingDeps =
-        blockerClusters.where((c) => !c.dependencyExists).length;
+    final missingDeps = blockerClusters
+        .where((c) => !c.dependencyExists)
+        .length;
 
-    insights.add(OperateInsight(
-      title: 'Blocker clusters',
-      detail: totalBlocked == 1
-          ? '1 task has unresolved dependencies'
-          : '$totalBlocked tasks have unresolved dependencies'
-              '${missingDeps > 0 ? ' ($missingDeps missing dependencies)' : ''}',
-      riskLevel: missingDeps > 0
-          ? StoryRiskLevel.high
-          : totalBlocked >= 5
-              ? StoryRiskLevel.medium
-              : StoryRiskLevel.low,
-      value: totalBlocked,
-      involvedAssetIds: blockedTasks.map((t) => t.id).toList(),
-    ));
+    insights.add(
+      OperateInsight(
+        title: 'Blocker clusters',
+        detail: totalBlocked == 1
+            ? '1 task has unresolved dependencies'
+            : '$totalBlocked tasks have unresolved dependencies'
+                  '${missingDeps > 0 ? ' ($missingDeps missing dependencies)' : ''}',
+        riskLevel: missingDeps > 0
+            ? StoryRiskLevel.high
+            : totalBlocked >= 5
+            ? StoryRiskLevel.medium
+            : StoryRiskLevel.low,
+        value: totalBlocked,
+        involvedAssetIds: blockedTasks.map((t) => t.id).toList(),
+      ),
+    );
   }
 
   // ---- Proof-Risk Tasks ----
@@ -252,22 +257,23 @@ OperateStoryDiagnostics deriveOperateStoryDiagnostics(
   }).toList();
 
   if (proofRiskTasks.isNotEmpty) {
-    final noProof =
-        proofRiskTasks.where((t) => t.proofState == ProofState.none).length;
+    final noProof = proofRiskTasks
+        .where((t) => t.proofState == ProofState.none)
+        .length;
     final partialProof = proofRiskTasks.length - noProof;
 
-    insights.add(OperateInsight(
-      title: 'Proof-risk tasks',
-      detail: proofRiskTasks.length == 1
-          ? '1 task in review/completed without full proof'
-          : '${proofRiskTasks.length} tasks in review/completed without full proof'
-              ' ($noProof missing, $partialProof partial)',
-      riskLevel: noProof > 0
-          ? StoryRiskLevel.high
-          : StoryRiskLevel.medium,
-      value: proofRiskTasks.length,
-      involvedAssetIds: proofRiskTasks.map((t) => t.id).toList(),
-    ));
+    insights.add(
+      OperateInsight(
+        title: 'Proof-risk tasks',
+        detail: proofRiskTasks.length == 1
+            ? '1 task in review/completed without full proof'
+            : '${proofRiskTasks.length} tasks in review/completed without full proof'
+                  ' ($noProof missing, $partialProof partial)',
+        riskLevel: noProof > 0 ? StoryRiskLevel.high : StoryRiskLevel.medium,
+        value: proofRiskTasks.length,
+        involvedAssetIds: proofRiskTasks.map((t) => t.id).toList(),
+      ),
+    );
   }
 
   // ---- Lane/Status Mismatches ----
@@ -275,32 +281,36 @@ OperateStoryDiagnostics deriveOperateStoryDiagnostics(
   for (final task in tasks) {
     // Detect tasks with high-priority but stuck in planning/open
     if (task.priority == 'P0' && task.lane == TaskLane.planning) {
-      laneMismatches.add(LaneMismatch(
-        task: task,
-        description:
-            'P0 task "${task.title}" still in planning lane',
-      ));
+      laneMismatches.add(
+        LaneMismatch(
+          task: task,
+          description: 'P0 task "${task.title}" still in planning lane',
+        ),
+      );
     }
     // Detect review tasks with no review score
     if (task.lane == TaskLane.review && task.reviewScore == null) {
-      laneMismatches.add(LaneMismatch(
-        task: task,
-        description:
-            'Task "${task.title}" in review with no review score',
-      ));
+      laneMismatches.add(
+        LaneMismatch(
+          task: task,
+          description: 'Task "${task.title}" in review with no review score',
+        ),
+      );
     }
   }
 
   if (laneMismatches.isNotEmpty) {
-    insights.add(OperateInsight(
-      title: 'Lane mismatches',
-      detail: laneMismatches.length == 1
-          ? '1 task has a lane/status mismatch'
-          : '${laneMismatches.length} tasks have lane/status mismatches',
-      riskLevel: StoryRiskLevel.medium,
-      value: laneMismatches.length,
-      involvedAssetIds: laneMismatches.map((m) => m.task.id).toList(),
-    ));
+    insights.add(
+      OperateInsight(
+        title: 'Lane mismatches',
+        detail: laneMismatches.length == 1
+            ? '1 task has a lane/status mismatch'
+            : '${laneMismatches.length} tasks have lane/status mismatches',
+        riskLevel: StoryRiskLevel.medium,
+        value: laneMismatches.length,
+        involvedAssetIds: laneMismatches.map((m) => m.task.id).toList(),
+      ),
+    );
   }
 
   // ---- Overall Risk Level ----

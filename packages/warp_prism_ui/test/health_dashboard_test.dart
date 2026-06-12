@@ -19,10 +19,12 @@ void main() {
   // DSOperationalState
   // ===========================================================================
   group('DSOperationalState contract', () {
-    test('has 15 values covering lifecycle, health, verification, governance',
-        () {
-      expect(DSOperationalState.values.length, 15);
-    });
+    test(
+      'has 15 values covering lifecycle, health, verification, governance',
+      () {
+        expect(DSOperationalState.values.length, 15);
+      },
+    );
 
     test('every state has a non-empty label', () {
       for (final state in DSOperationalState.values) {
@@ -89,11 +91,7 @@ void main() {
     testWidgets('renders with empty data gracefully', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: SizedBox(
-            width: 200,
-            height: 40,
-            child: DSSparkline(data: []),
-          ),
+          home: SizedBox(width: 200, height: 40, child: DSSparkline(data: [])),
         ),
       );
       expect(find.byType(DSSparkline), findsOneWidget);
@@ -133,10 +131,7 @@ void main() {
           home: SizedBox(
             width: 200,
             height: 40,
-            child: DSSparkline(
-              data: [1, 2, 3],
-              color: Colors.red,
-            ),
+            child: DSSparkline(data: [1, 2, 3], color: Colors.red),
           ),
         ),
       );
@@ -154,9 +149,7 @@ void main() {
         ),
       );
       expect(
-        find.bySemanticsLabel(
-          'Trend chart: 3 points, range 10.0 to 30.0',
-        ),
+        find.bySemanticsLabel('Trend chart: 3 points, range 10.0 to 30.0'),
         findsOneWidget,
       );
     });
@@ -164,11 +157,7 @@ void main() {
     testWidgets('empty data has "no data" semantic label', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: SizedBox(
-            width: 200,
-            height: 40,
-            child: DSSparkline(data: []),
-          ),
+          home: SizedBox(width: 200, height: 40, child: DSSparkline(data: [])),
         ),
       );
       expect(find.bySemanticsLabel('Trend chart: no data'), findsOneWidget);
@@ -180,10 +169,7 @@ void main() {
           home: SizedBox(
             width: 200,
             height: 40,
-            child: DSSparkline(
-              data: [1, 2],
-              semanticLabel: 'Custom label',
-            ),
+            child: DSSparkline(data: [1, 2], semanticLabel: 'Custom label'),
           ),
         ),
       );
@@ -256,10 +242,7 @@ void main() {
           home: SizedBox(
             width: 200,
             height: 24,
-            child: DSUptimeBar(
-              uptimePercent: 0.99,
-              showLabel: false,
-            ),
+            child: DSUptimeBar(uptimePercent: 0.99, showLabel: false),
           ),
         ),
       );
@@ -274,10 +257,7 @@ void main() {
           home: SizedBox(
             width: 200,
             height: 24,
-            child: DSUptimeBar(
-              uptimePercent: 0.50,
-              color: Colors.purple,
-            ),
+            child: DSUptimeBar(uptimePercent: 0.50, color: Colors.purple),
           ),
         ),
       );
@@ -374,8 +354,9 @@ void main() {
       expect(find.text('2.5s'), findsOneWidget);
     });
 
-    testWidgets('displays uptime bar when uptimePercent provided',
-        (tester) async {
+    testWidgets('displays uptime bar when uptimePercent provided', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: SizedBox(
@@ -586,7 +567,9 @@ void main() {
       expect(find.text('Service C'), findsNothing);
     });
 
-    testWidgets('shows empty state when filter matches nothing', (tester) async {
+    testWidgets('shows empty state when filter matches nothing', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: SizedBox(
@@ -604,17 +587,15 @@ void main() {
       expect(find.text('No services match filter'), findsOneWidget);
     });
 
-    testWidgets('renders filter bar when showFilterBar is true',
-        (tester) async {
+    testWidgets('renders filter bar when showFilterBar is true', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: SizedBox(
             width: 800,
             height: 600,
-            child: DSStatusGrid(
-              items: testItems,
-              showFilterBar: true,
-            ),
+            child: DSStatusGrid(items: testItems, showFilterBar: true),
           ),
         ),
       );

@@ -19,11 +19,7 @@ class SkillDetailView extends StatelessWidget {
   final AssetDetailDescriptor descriptor;
   final VoidCallback? onClose;
 
-  const SkillDetailView({
-    super.key,
-    required this.descriptor,
-    this.onClose,
-  });
+  const SkillDetailView({super.key, required this.descriptor, this.onClose});
 
   @override
   Widget build(BuildContext context) {

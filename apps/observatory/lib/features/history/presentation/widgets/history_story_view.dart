@@ -36,7 +36,8 @@ class HistoryStoryView extends StatelessWidget {
       return DSStateSurface.empty(
         icon: Icons.auto_stories_outlined,
         title: 'No project stories',
-        subtitle: 'Project story groups will appear once changelog entries exist',
+        subtitle:
+            'Project story groups will appear once changelog entries exist',
       );
     }
 
@@ -89,10 +90,13 @@ class _ProjectStoryCard extends StatelessWidget {
     final insights = <DSStoryInsight>[];
 
     // Entry count insight
-    insights.add(DSStoryInsight(
-      text: '${group.entries.length} changelog entr${group.entries.length == 1 ? 'y' : 'ies'} recorded',
-      detail: 'Grouped by project to show cumulative progress',
-    ));
+    insights.add(
+      DSStoryInsight(
+        text:
+            '${group.entries.length} changelog entr${group.entries.length == 1 ? 'y' : 'ies'} recorded',
+        detail: 'Grouped by project to show cumulative progress',
+      ),
+    );
 
     // Type breakdown
     final typeCounts = <String, int>{};
@@ -100,19 +104,23 @@ class _ProjectStoryCard extends StatelessWidget {
       typeCounts[entry.type.name] = (typeCounts[entry.type.name] ?? 0) + 1;
     }
     for (final tc in typeCounts.entries) {
-      insights.add(DSStoryInsight(
-        text: '${tc.value} ${tc.key} change${tc.value == 1 ? '' : 's'}',
-        value: tc.value.toString(),
-      ));
+      insights.add(
+        DSStoryInsight(
+          text: '${tc.value} ${tc.key} change${tc.value == 1 ? '' : 's'}',
+          value: tc.value.toString(),
+        ),
+      );
     }
 
     // Impact tags
     final allTags = group.entries.expand((e) => e.impact).toSet();
     if (allTags.isNotEmpty) {
-      insights.add(DSStoryInsight(
-        text: 'Impact areas: ${allTags.join(', ')}',
-        detail: 'Tags from frontmatter impact field',
-      ));
+      insights.add(
+        DSStoryInsight(
+          text: 'Impact areas: ${allTags.join(', ')}',
+          detail: 'Tags from frontmatter impact field',
+        ),
+      );
     }
 
     return insights;
@@ -121,19 +129,14 @@ class _ProjectStoryCard extends StatelessWidget {
   Widget _buildTaskList(ProjectStoryGroup group) {
     final taskIds = group.taskIds;
     if (taskIds.isEmpty) {
-      return DSText.bodySmall(
-        'No linked tasks',
-        color: DSColors.textTertiary,
-      );
+      return DSText.bodySmall('No linked tasks', color: DSColors.textTertiary);
     }
 
     return Wrap(
       spacing: DSSpacing.xs,
       runSpacing: DSSpacing.xs,
       children: taskIds.map((taskId) {
-        return DSChip(
-          label: 'Task $taskId',
-        );
+        return DSChip(label: 'Task $taskId');
       }).toList(),
     );
   }

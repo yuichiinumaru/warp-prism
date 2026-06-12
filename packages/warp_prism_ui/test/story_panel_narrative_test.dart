@@ -100,7 +100,10 @@ void main() {
       );
       expect(insight.text, isNotEmpty); // insight layer
       expect(insight.evidence, isNotNull); // evidence layer
-      expect(insight.riskLevel, equals(InsightRiskLevel.critical)); // risk layer
+      expect(
+        insight.riskLevel,
+        equals(InsightRiskLevel.critical),
+      ); // risk layer
       expect(insight.connection, isNotNull); // connection layer
     });
   });
@@ -140,10 +143,7 @@ void main() {
     });
 
     test('accepts empty insights list', () {
-      const panel = DSStoryPanel(
-        title: 'Empty',
-        insights: [],
-      );
+      const panel = DSStoryPanel(title: 'Empty', insights: []);
       expect(panel.insights, isEmpty);
     });
 

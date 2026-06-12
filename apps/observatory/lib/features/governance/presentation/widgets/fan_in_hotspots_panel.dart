@@ -7,7 +7,7 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
-import '../../../../data/models/governance_diagnostics.dart';
+import 'package:warp_prism_observatory/data/models/governance_diagnostics.dart';
 
 /// A ranked fan-in hotspot entry.
 @immutable
@@ -45,20 +45,23 @@ class FanInHotspot {
   static List<FanInHotspot> fromDiagnostics(
     List<GovernanceDiagnostic> diagnostics,
   ) {
-    final hotspots = diagnostics
-        .where((d) => d.category == DiagnosticCategory.brokenEdge)
-        .map((d) {
-      final ctx = d.context;
-      return FanInHotspot(
-        assetId: d.assetId,
-        assetName: ctx['assetName']?.toString() ?? d.assetId,
-        assetKind: ctx['assetKind']?.toString() ?? 'unknown',
-        incomingEdgeCount: (ctx['incomingEdgeCount'] as num?)?.toInt() ?? 0,
-        threshold: (ctx['threshold'] as num?)?.toInt() ?? 3,
-        severity: d.severity,
-      );
-    }).toList()
-      ..sort((a, b) => b.incomingEdgeCount.compareTo(a.incomingEdgeCount));
+    final hotspots =
+        diagnostics
+            .where((d) => d.category == DiagnosticCategory.brokenEdge)
+            .map((d) {
+              final ctx = d.context;
+              return FanInHotspot(
+                assetId: d.assetId,
+                assetName: ctx['assetName']?.toString() ?? d.assetId,
+                assetKind: ctx['assetKind']?.toString() ?? 'unknown',
+                incomingEdgeCount:
+                    (ctx['incomingEdgeCount'] as num?)?.toInt() ?? 0,
+                threshold: (ctx['threshold'] as num?)?.toInt() ?? 3,
+                severity: d.severity,
+              );
+            })
+            .toList()
+          ..sort((a, b) => b.incomingEdgeCount.compareTo(a.incomingEdgeCount));
     return hotspots;
   }
 }
@@ -94,7 +97,10 @@ class FanInHotspotsPanel extends StatelessWidget {
                     color: DSColors.statusWarning.withOpacity(0.15),
                     borderRadius: BorderRadius.circular(DSRadii.md),
                   ),
-                  child: DSIcon(Icons.hub_outlined, color: DSColors.statusWarning),
+                  child: DSIcon(
+                    Icons.hub_outlined,
+                    color: DSColors.statusWarning,
+                  ),
                 ),
                 const SizedBox(width: DSSpacing.md),
                 Expanded(
@@ -126,10 +132,7 @@ class FanInHotspotsPanel extends StatelessWidget {
             _buildHealthyState()
           else
             ...hotspots.asMap().entries.map((entry) {
-              return _HotspotRow(
-                rank: entry.key + 1,
-                hotspot: entry.value,
-              );
+              return _HotspotRow(rank: entry.key + 1, hotspot: entry.value);
             }),
 
           const SizedBox(height: DSSpacing.sm),
@@ -143,8 +146,11 @@ class FanInHotspotsPanel extends StatelessWidget {
       padding: const EdgeInsets.all(DSSpacing.lg),
       child: Row(
         children: [
-          Icon(Icons.check_circle_outline,
-              size: 16, color: DSColors.statusSuccess),
+          Icon(
+            Icons.check_circle_outline,
+            size: 16,
+            color: DSColors.statusSuccess,
+          ),
           const SizedBox(width: DSSpacing.sm),
           Expanded(
             child: DSText.bodySmall(
@@ -181,9 +187,7 @@ class _HotspotRow extends StatelessWidget {
         decoration: BoxDecoration(
           color: DSColors.obsidianBase,
           borderRadius: BorderRadius.circular(DSRadii.sm),
-          border: Border(
-            left: BorderSide(color: severityColor, width: 3),
-          ),
+          border: Border(left: BorderSide(color: severityColor, width: 3)),
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -197,10 +201,7 @@ class _HotspotRow extends StatelessWidget {
                 color: severityColor.withOpacity(0.15),
                 borderRadius: BorderRadius.circular(DSRadii.sm),
               ),
-              child: DSText.labelSmall(
-                rank.toString(),
-                color: severityColor,
-              ),
+              child: DSText.labelSmall(rank.toString(), color: severityColor),
             ),
             const SizedBox(width: DSSpacing.sm),
 
@@ -234,10 +235,7 @@ class _HotspotRow extends StatelessWidget {
                   variant: DSTextVariant.numericMedium,
                   color: severityColor,
                 ),
-                DSText.labelSmall(
-                  'incoming',
-                  color: DSColors.textTertiary,
-                ),
+                DSText.labelSmall('incoming', color: DSColors.textTertiary),
               ],
             ),
           ],
@@ -261,8 +259,10 @@ class _SeverityBadge extends StatelessWidget {
         color: color.withOpacity(0.15),
         borderRadius: BorderRadius.circular(DSRadii.sm),
       ),
-      child: DSText.labelSmall('$count hotspot${count == 1 ? '' : 's'}',
-          color: color),
+      child: DSText.labelSmall(
+        '$count hotspot${count == 1 ? '' : 's'}',
+        color: color,
+      ),
     );
   }
 }

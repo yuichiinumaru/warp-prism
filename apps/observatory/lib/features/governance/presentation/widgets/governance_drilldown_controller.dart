@@ -7,7 +7,7 @@
 library;
 
 import 'package:flutter/foundation.dart';
-import '../../../../data/models/governance_diagnostics.dart';
+import 'package:warp_prism_observatory/data/models/governance_diagnostics.dart';
 import 'fan_in_hotspots_panel.dart';
 
 // ---------------------------------------------------------------------------
@@ -59,8 +59,7 @@ GovernanceDrilldownTarget? resolveDiagnosticDrilldown(
   return GovernanceDrilldownTarget(
     assetId: assetId,
     routePath: '/assets/$assetId',
-    sourceLabel:
-        '${diagnostic.category.name}: ${diagnostic.message}',
+    sourceLabel: '${diagnostic.category.name}: ${diagnostic.message}',
     category: diagnostic.category,
   );
 }
@@ -70,7 +69,8 @@ GovernanceDrilldownTarget resolveHotspotDrilldown(FanInHotspot hotspot) {
   return GovernanceDrilldownTarget(
     assetId: hotspot.assetId,
     routePath: '/assets/${hotspot.assetId}',
-    sourceLabel: 'Fan-in hotspot: ${hotspot.assetName} '
+    sourceLabel:
+        'Fan-in hotspot: ${hotspot.assetName} '
         '(${hotspot.incomingEdgeCount} incoming)',
   );
 }

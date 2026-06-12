@@ -147,9 +147,7 @@ class AssetSelectionController extends Notifier<AssetSelectionState> {
 
     if (graph == null || graph.isEmpty) {
       // No graph available — mark as unresolved
-      state = state.copyWith(
-        status: AssetSelectionStatus.unresolved,
-      );
+      state = state.copyWith(status: AssetSelectionStatus.unresolved);
       return;
     }
 
@@ -170,8 +168,7 @@ class AssetSelectionController extends Notifier<AssetSelectionState> {
   }
 
   /// Build the canonical detail route path for an asset ID.
-  static String detailRoute(String assetId) =>
-      '/assets/$assetId';
+  static String detailRoute(String assetId) => '/assets/$assetId';
 
   void _resolveFromGraph(String assetId, WorkspaceGraphResult graph) {
     final asset = graph.getAsset(assetId);
@@ -199,8 +196,8 @@ class AssetSelectionController extends Notifier<AssetSelectionState> {
 /// The asset selection controller provider.
 final assetSelectionControllerProvider =
     NotifierProvider<AssetSelectionController, AssetSelectionState>(
-  AssetSelectionController.new,
-);
+      AssetSelectionController.new,
+    );
 
 /// Convenience provider: the currently selected asset (null if none).
 final selectedAssetDetailProvider = Provider<WorkspaceAsset?>((ref) {

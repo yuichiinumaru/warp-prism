@@ -1,0 +1,875 @@
+Resolving dependencies...
+Downloading packages...
+  cli_util 0.4.2 (0.5.1 available)
+  fl_chart 0.68.0 (1.2.0 available)
+  flutter_lints 4.0.0 (6.0.0 available)
+  flutter_riverpod 2.6.1 (3.3.2 available)
+  go_router 14.8.1 (17.3.0 available)
+  intl 0.19.0 (0.20.2 available)
+  lints 4.0.0 (6.1.0 available)
+  matcher 0.12.19 (0.12.20 available)
+  melos 7.8.1 (7.8.2 available)
+  meta 1.18.0 (1.18.3 available)
+  mustache_template 2.0.4 (2.0.5 available)
+  riverpod 2.6.1 (3.3.2 available)
+  test_api 0.7.11 (0.7.12 available)
+  vector_math 2.2.0 (2.4.0 available)
+Got dependencies!
+14 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+00:00 +0: loading /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/accessibility/design_system_accessibility_test.dart
+00:00 +0: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/accessibility/design_system_accessibility_test.dart: DSChip — Focus & Semantics has Semantics with label, button, and selected
+00:01 +1: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/atoms/atoms_contract_test.dart: DSText contract default constructor uses bodyMedium variant
+00:01 +2: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders without errors
+00:01 +3: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders without errors
+00:01 +4: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders without errors
+00:02 +5: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders without errors
+00:02 +6: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders without errors
+00:02 +7: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders without errors
+00:02 +8: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders without errors
+00:02 +9: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders without errors
+00:02 +10: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders without errors
+00:02 +11: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders without errors
+00:02 +12: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders without errors
+00:02 +13: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/molecules/molecules_contract_test.dart: DSSearchBar contract renders with placeholder text
+00:02 +14: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/molecules/molecules_contract_test.dart: DSSearchBar contract renders with placeholder text
+00:03 +15: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/molecules/molecules_contract_test.dart: DSSearchBar contract renders with placeholder text
+00:03 +16: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/molecules/molecules_contract_test.dart: DSSearchBar contract renders with placeholder text
+00:03 +17: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/molecules/ds_drag_drop_test.dart: DSDraggableCard renders DSTaskCard within a LongPressDraggable
+00:03 +18: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/molecules/ds_drag_drop_test.dart: DSDraggableCard renders DSTaskCard within a LongPressDraggable
+00:03 +19: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/molecules/ds_drag_drop_test.dart: DSDraggableCard renders DSTaskCard within a LongPressDraggable
+00:03 +20: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/molecules/ds_drag_drop_test.dart: DSDraggableCard renders DSTaskCard within a LongPressDraggable
+00:03 +21: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/molecules/ds_drag_drop_test.dart: DSDraggableCard renders DSTaskCard within a LongPressDraggable
+00:03 +22: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/molecules/ds_drag_drop_test.dart: DSDraggableCard renders DSTaskCard within a LongPressDraggable
+00:03 +23: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/molecules/ds_drag_drop_test.dart: DSDraggableCard renders DSTaskCard within a LongPressDraggable
+00:03 +24: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/molecules/ds_drag_drop_test.dart: DSDraggableCard renders DSTaskCard within a LongPressDraggable
+00:03 +25: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/molecules/ds_drag_drop_test.dart: DSDraggableCard renders DSTaskCard within a LongPressDraggable
+00:03 +26: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/molecules/ds_drag_drop_test.dart: DSDraggableCard renders DSTaskCard within a LongPressDraggable
+00:03 +27: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/molecules/ds_drag_drop_test.dart: DSDraggableCard renders DSTaskCard within a LongPressDraggable
+00:03 +28: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/molecules/ds_drag_drop_test.dart: DSDraggableCard renders DSTaskCard within a LongPressDraggable
+00:03 +29: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/molecules/ds_drag_drop_test.dart: DSDraggableCard renders DSTaskCard within a LongPressDraggable
+00:03 +30: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/molecules/ds_drag_drop_test.dart: DSDraggableCard renders DSTaskCard within a LongPressDraggable
+00:03 +31: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/molecules/ds_drag_drop_test.dart: DSDraggableCard renders DSTaskCard within a LongPressDraggable
+00:03 +32: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/molecules/ds_drag_drop_test.dart: DSDraggableCard renders DSTaskCard within a LongPressDraggable
+00:03 +33: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/molecules/ds_drag_drop_test.dart: DSDraggableCard renders DSTaskCard within a LongPressDraggable
+00:03 +34: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/molecules/ds_drag_drop_test.dart: DSDraggableCard renders DSTaskCard within a LongPressDraggable
+00:03 +35: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/molecules/ds_drag_drop_test.dart: DSDraggableCard renders DSTaskCard within a LongPressDraggable
+00:03 +36: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/molecules/ds_drag_drop_test.dart: DSDraggableCard renders DSTaskCard within a LongPressDraggable
+00:03 +37: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/molecules/ds_drag_drop_test.dart: DSDraggableCard renders DSTaskCard within a LongPressDraggable
+00:03 +38: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/molecules/ds_drag_drop_test.dart: DSDraggableCard renders DSTaskCard within a LongPressDraggable
+00:03 +39: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/molecules/ds_drag_drop_test.dart: DSDraggableCard renders DSTaskCard within a LongPressDraggable
+00:03 +40: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/molecules/ds_drag_drop_test.dart: DSDraggableCard renders DSTaskCard within a LongPressDraggable
+00:03 +41: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/molecules/ds_drag_drop_test.dart: DSDraggableCard renders DSTaskCard within a LongPressDraggable
+00:03 +42: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/molecules/ds_drag_drop_test.dart: DSDraggableCard renders DSTaskCard within a LongPressDraggable
+00:04 +43: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/molecules/ds_shimmer_test.dart: DSShimmer renders without errors
+00:04 +44: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:04 +45: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:04 +46: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:04 +47: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:04 +48: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:04 +49: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:04 +50: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:04 +51: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:04 +52: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:04 +53: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:04 +54: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:04 +55: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:04 +56: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:04 +57: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:04 +58: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:05 +59: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:05 +60: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:05 +61: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:05 +62: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:05 +63: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:05 +64: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:05 +65: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:05 +66: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:05 +67: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:05 +68: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:05 +69: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:05 +70: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:05 +71: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:05 +72: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:05 +73: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:05 +74: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:05 +75: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:05 +76: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:05 +77: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:05 +78: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:05 +79: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:06 +80: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:06 +81: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:06 +82: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:06 +83: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:06 +84: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:06 +85: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:06 +86: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:06 +87: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:06 +88: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:06 +89: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:06 +90: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:06 +91: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:06 +92: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:06 +93: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:06 +94: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:06 +95: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:06 +96: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:06 +97: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:06 +98: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:06 +99: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:06 +100: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:06 +101: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:07 +102: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:07 +103: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:07 +104: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:07 +105: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:07 +106: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:07 +107: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:07 +108: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:07 +109: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:07 +110: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:07 +111: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:07 +112: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:07 +113: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:07 +114: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:07 +115: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:07 +116: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:07 +117: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:07 +118: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:07 +119: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:08 +120: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:08 +121: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:08 +122: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:08 +123: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:08 +124: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:08 +125: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:08 +126: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:08 +127: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:08 +128: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:08 +129: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:08 +130: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:08 +131: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:08 +132: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:08 +133: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:08 +134: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:08 +135: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:08 +136: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:08 +137: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:08 +138: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:08 +139: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:08 +140: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:08 +141: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:08 +142: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:09 +143: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:09 +144: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:09 +145: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:09 +146: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:09 +147: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:09 +148: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:09 +149: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:09 +150: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:09 +151: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:09 +152: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:09 +153: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:09 +154: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:09 +155: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:09 +156: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:10 +157: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:10 +158: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:10 +159: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:10 +160: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:10 +161: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:10 +162: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:10 +163: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:10 +164: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:10 +165: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:10 +166: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:10 +167: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:10 +168: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:10 +169: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:10 +170: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:11 +171: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:11 +172: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:11 +173: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:11 +174: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:11 +175: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:11 +176: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:11 +177: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:11 +178: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:11 +179: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:11 +180: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:11 +181: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:11 +182: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:11 +183: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:11 +184: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:11 +185: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:11 +186: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:11 +187: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:11 +188: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:11 +189: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:11 +190: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:11 +191: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:11 +192: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:11 +193: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:11 +194: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:11 +195: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:12 +196: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:12 +197: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:12 +198: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:12 +199: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:12 +200: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:12 +201: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:12 +202: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:12 +203: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:12 +204: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:12 +205: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:12 +206: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:12 +207: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:12 +208: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:12 +209: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:12 +210: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:12 +211: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:12 +212: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:12 +213: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:12 +214: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:12 +215: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:12 +216: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:12 +217: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:12 +218: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:12 +219: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:12 +220: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:12 +221: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:12 +222: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:13 +223: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:13 +224: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:13 +225: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:13 +226: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:13 +227: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:13 +228: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:13 +229: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:13 +230: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:13 +231: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:13 +232: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:14 +233: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:14 +234: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:14 +235: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:14 +236: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:14 +237: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:14 +238: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:14 +239: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:14 +240: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:14 +241: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:14 +242: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:14 +243: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:14 +244: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:14 +245: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:14 +246: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:14 +247: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:14 +248: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:14 +249: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:14 +250: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:14 +251: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:14 +252: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:14 +253: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:14 +254: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:14 +255: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:15 +256: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:15 +257: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:15 +258: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:15 +259: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:15 +260: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:15 +261: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:15 +262: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:15 +263: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:15 +264: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:15 +265: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:15 +266: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:15 +267: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:15 +268: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:15 +269: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:15 +270: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:15 +271: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:15 +272: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:15 +273: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:15 +274: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:15 +275: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:16 +276: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:16 +277: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:16 +278: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:16 +279: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:16 +280: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:16 +281: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:16 +282: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:16 +283: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:16 +284: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:16 +285: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:16 +286: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:16 +287: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:16 +288: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:16 +289: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:16 +290: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:16 +291: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:16 +292: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:16 +293: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:16 +294: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:16 +295: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:16 +296: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:17 +297: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:17 +298: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:17 +299: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:17 +300: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:17 +301: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:17 +302: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:17 +303: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:17 +304: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:17 +305: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:17 +306: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:17 +307: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:17 +308: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:17 +309: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:17 +310: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:17 +311: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:17 +312: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:17 +313: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:18 +314: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:18 +315: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:18 +316: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:18 +317: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:18 +318: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:18 +319: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:18 +320: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:18 +321: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:18 +322: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:18 +323: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:18 +324: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:18 +325: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:18 +326: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:18 +327: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:18 +328: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:18 +329: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:18 +330: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:18 +331: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:18 +332: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:18 +333: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:18 +334: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:18 +335: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:18 +336: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:20 +337: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:20 +338: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:20 +339: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:20 +340: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders all five atomic layer sections
+00:20 +341: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/command_palette_test.dart: DSCommandPalette — open/close renders the palette with search field
+00:20 +342: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/command_palette_test.dart: DSCommandPalette — open/close renders the palette with search field
+00:20 +343: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/command_palette_test.dart: DSCommandPalette — open/close renders the palette with search field
+00:20 +344: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/command_palette_test.dart: DSCommandPalette — open/close renders the palette with search field
+00:20 +345: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/command_palette_test.dart: DSCommandPalette — open/close renders the palette with search field
+00:20 +346: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/command_palette_test.dart: DSCommandPalette — open/close renders the palette with search field
+00:20 +347: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:20 +348: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:20 +349: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:20 +350: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:21 +351: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:21 +352: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:21 +353: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:21 +354: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:21 +355: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:21 +356: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:21 +357: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:21 +358: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:21 +359: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:21 +360: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:21 +361: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:21 +362: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:21 +363: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:21 +364: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:21 +365: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:21 +366: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:21 +367: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:21 +368: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:21 +369: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:21 +370: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:22 +371: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:22 +372: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:22 +373: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:22 +374: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:22 +375: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:22 +376: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:22 +377: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:22 +378: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:22 +379: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:22 +380: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:22 +381: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:22 +382: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:22 +383: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:22 +384: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:23 +385: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:23 +386: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:23 +387: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/split_pane_test.dart: DSSplitPane renders both panes horizontally
+00:23 +388: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/data_table/ds_data_table_test.dart: DSDataTable default rendering renders column headers
+00:23 +389: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/data_table/ds_data_table_test.dart: DSDataTable default rendering renders column headers
+00:23 +390: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/data_table/ds_data_table_test.dart: DSDataTable default rendering renders column headers
+00:23 +391: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/data_table/ds_data_table_test.dart: DSDataTable default rendering renders column headers
+00:23 +392: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/data_table/ds_data_table_test.dart: DSDataTable default rendering renders column headers
+00:23 +393: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/data_table/ds_data_table_test.dart: DSDataTable default rendering renders column headers
+00:23 +394: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/data_table/ds_data_table_test.dart: DSDataTable default rendering renders column headers
+00:23 +395: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/data_table/ds_data_table_test.dart: DSDataTable default rendering renders column headers
+00:23 +396: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/data_table/ds_data_table_test.dart: DSDataTable default rendering renders column headers
+00:23 +397: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/data_table/ds_data_table_test.dart: DSDataTable default rendering renders column headers
+00:23 +398: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/data_table/ds_data_table_test.dart: DSDataTable default rendering renders column headers
+00:23 +399: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/data_table/ds_data_table_test.dart: DSDataTable default rendering renders column headers
+00:23 +400: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/data_table/ds_data_table_test.dart: DSDataTable default rendering renders column headers
+00:23 +401: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/data_table/ds_data_table_test.dart: DSDataTable default rendering renders column headers
+00:23 +402: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/data_table/ds_data_table_test.dart: DSDataTable default rendering renders column headers
+00:24 +403: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/data_table/ds_data_table_test.dart: DSDataTable default rendering renders column headers
+00:24 +404: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/data_table/ds_data_table_test.dart: DSDataTable default rendering renders column headers
+00:24 +405: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:24 +406: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:24 +407: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:24 +408: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:24 +409: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:24 +410: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:24 +411: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:24 +412: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:24 +413: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:24 +414: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:24 +415: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:24 +416: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:24 +417: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:24 +418: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:25 +419: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:25 +420: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:25 +421: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:25 +422: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:25 +423: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:25 +424: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:25 +425: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:25 +426: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:25 +427: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:25 +428: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:26 +429: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:26 +430: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:26 +431: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:26 +432: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:26 +433: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:26 +434: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:26 +435: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:27 +436: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:27 +437: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:27 +438: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:27 +439: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:27 +440: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:27 +441: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:27 +442: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:27 +443: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:27 +444: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:27 +445: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:27 +446: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:27 +447: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:27 +448: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:27 +449: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:27 +450: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:27 +451: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:27 +452: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:27 +453: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:27 +454: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:27 +455: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:27 +456: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:27 +457: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:27 +458: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:27 +459: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:27 +460: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:27 +461: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:27 +462: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:27 +463: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:27 +464: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:27 +465: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:27 +466: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:27 +467: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:27 +468: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:27 +469: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:28 +470: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:28 +471: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:28 +472: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:28 +473: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:28 +474: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:28 +475: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:28 +476: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:28 +477: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:28 +478: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:28 +479: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:28 +480: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:28 +481: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:28 +482: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:28 +483: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:28 +484: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders organism previews
+00:28 +485: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/templates/templates_contract_test.dart: MasterDetailTemplate composition renders shell with sidebar, topbar, and master content
+00:28 +486: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/templates/templates_contract_test.dart: MasterDetailTemplate composition renders shell with sidebar, topbar, and master content
+00:28 +487: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/command_palette_test.dart: DSCommandPalette — fuzzy search matches description text
+00:28 +488: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/command_palette_test.dart: DSCommandPalette — fuzzy search matches description text
+00:28 +489: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/command_palette_test.dart: DSCommandPalette — fuzzy search matches description text
+00:28 +490: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/command_palette_test.dart: DSCommandPalette — fuzzy search matches description text
+00:28 +491: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/data_table/ds_data_table_test.dart: DSDataTable pagination pagination fires onPageChanged callback
+00:28 +492: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/data_table/ds_data_table_test.dart: DSDataTable pagination pagination fires onPageChanged callback
+00:29 +493: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/data_table/ds_data_table_test.dart: DSDataTable pagination pagination fires onPageChanged callback
+00:29 +494: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/data_table/ds_data_table_test.dart: DSDataTable pagination pagination fires onPageChanged callback
+00:29 +495: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/data_table/ds_data_table_test.dart: DSDataTable pagination pagination fires onPageChanged callback
+00:29 +496: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/data_table/ds_data_table_test.dart: DSDataTable pagination pagination fires onPageChanged callback
+00:29 +497: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/data_table/ds_data_table_test.dart: DSDataTable pagination pagination fires onPageChanged callback
+00:29 +498: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/data_table/ds_data_table_test.dart: DSDataTable pagination pagination fires onPageChanged callback
+00:29 +499: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/data_table/ds_data_table_test.dart: DSDataTable pagination pagination fires onPageChanged callback
+00:29 +500: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/data_table/ds_data_table_test.dart: DSDataTable pagination pagination fires onPageChanged callback
+00:29 +501: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/data_table/ds_data_table_test.dart: DSDataTable pagination pagination fires onPageChanged callback
+00:29 +502: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/data_table/ds_data_table_test.dart: DSDataTable pagination pagination fires onPageChanged callback
+00:29 +503: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/data_table/ds_data_table_test.dart: DSDataTable pagination pagination fires onPageChanged callback
+00:29 +504: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/data_table/ds_data_table_test.dart: DSDataTable pagination pagination fires onPageChanged callback
+00:29 +505: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/organisms/data_table/ds_data_table_test.dart: DSDataTable pagination pagination fires onPageChanged callback
+00:29 +506: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +507: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +508: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +509: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +510: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +511: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +512: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +513: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +514: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +515: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +516: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +517: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +518: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +519: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +520: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +521: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +522: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +523: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +524: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +525: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +526: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +527: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +528: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +529: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +530: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +531: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +532: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +533: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +534: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +535: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +536: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +537: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +538: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +539: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +540: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +541: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +542: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +543: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +544: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +545: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:29 +546: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:30 +547: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:30 +548: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:30 +549: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:30 +550: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:30 +551: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:30 +552: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:30 +553: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:31 +554: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:31 +555: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:31 +556: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:31 +557: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:31 +558: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:31 +559: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:31 +560: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:31 +561: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:31 +562: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:31 +563: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:31 +564: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:31 +565: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:31 +566: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:31 +567: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:31 +568: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:31 +569: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:31 +570: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:31 +571: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:31 +572: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:31 +573: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:31 +574: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:31 +575: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:31 +576: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:31 +577: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:31 +578: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:31 +579: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:31 +580: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:31 +581: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:31 +582: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:31 +583: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:32 +584: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:32 +585: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:32 +586: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:32 +587: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:32 +588: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:32 +589: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:32 +590: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:32 +591: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:32 +592: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:32 +593: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:32 +594: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:32 +595: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:32 +596: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:32 +597: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:32 +598: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:32 +599: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:32 +600: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:32 +601: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:32 +602: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:32 +603: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:32 +604: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:32 +605: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:32 +606: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:32 +607: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:32 +608: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:33 +609: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:33 +610: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:33 +611: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:33 +612: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:33 +613: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:33 +614: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:33 +615: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:34 +616: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:34 +617: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:34 +618: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:34 +619: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:34 +620: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:34 +621: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:34 +622: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:34 +623: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:34 +624: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:34 +625: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:34 +626: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:34 +627: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +628: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +629: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +630: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +631: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +632: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +633: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +634: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +635: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +636: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +637: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +638: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +639: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +640: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +641: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +642: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +643: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +644: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +645: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +646: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +647: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +648: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +649: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +650: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +651: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +652: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +653: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +654: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +655: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +656: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +657: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +658: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +659: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +660: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +661: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +662: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +663: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +664: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +665: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +666: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:35 +667: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:36 +668: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:36 +669: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:36 +670: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:36 +671: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:36 +672: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:36 +673: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:36 +674: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:36 +675: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:36 +676: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:36 +677: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:36 +678: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:36 +679: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:36 +680: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:36 +681: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:36 +682: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:36 +683: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:36 +684: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:36 +685: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:36 +686: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:36 +687: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:36 +688: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:36 +689: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:36 +690: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:36 +691: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:37 +692: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:37 +693: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:37 +694: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:37 +695: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:37 +696: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:37 +697: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:37 +698: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:37 +699: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:37 +700: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:37 +701: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:37 +702: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:37 +703: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:37 +704: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:37 +705: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:37 +706: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:38 +707: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:38 +708: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:38 +709: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:38 +710: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders template descriptions
+00:38 +711: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer empty state shows empty state when no entries
+00:38 +712: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer empty state shows empty state when no entries
+00:38 +713: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer empty state shows empty state when no entries
+00:39 +714: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer empty state shows empty state when no entries
+00:39 +715: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer empty state shows empty state when no entries
+00:39 +716: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer empty state shows empty state when no entries
+00:39 +717: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer empty state shows empty state when no entries
+00:39 +718: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer empty state shows empty state when no entries
+00:39 +719: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer empty state shows empty state when no entries
+00:39 +720: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer empty state shows empty state when no entries
+00:39 +721: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer empty state shows empty state when no entries
+00:39 +722: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer empty state shows empty state when no entries
+00:39 +723: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer empty state shows empty state when no entries
+00:39 +724: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer empty state shows empty state when no entries
+00:39 +725: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer empty state shows empty state when no entries
+00:39 +726: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer empty state shows empty state when no entries
+00:39 +727: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer empty state shows empty state when no entries
+00:39 +728: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer empty state shows empty state when no entries
+00:39 +729: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer empty state shows empty state when no entries
+00:39 +730: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer empty state shows empty state when no entries
+00:39 +731: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer empty state shows empty state when no entries
+00:39 +732: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:39 +733: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:40 +734: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:40 +735: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:40 +736: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:40 +737: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:40 +738: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:40 +739: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:41 +740: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:41 +741: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:41 +742: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:41 +743: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:41 +744: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:41 +745: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:41 +746: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:41 +747: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:41 +748: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:41 +749: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:41 +750: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:42 +751: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:42 +752: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:42 +753: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:42 +754: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:42 +755: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:42 +756: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:42 +757: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:42 +758: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:42 +759: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:42 +760: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:42 +761: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:42 +762: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:43 +763: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:43 +764: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:43 +765: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:43 +766: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:43 +767: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:43 +768: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:43 +769: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:43 +770: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:43 +771: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:43 +772: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:43 +773: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:43 +774: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:43 +775: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:43 +776: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:43 +777: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:44 +778: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:44 +779: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:44 +780: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:44 +781: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:44 +782: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:44 +783: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:44 +784: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:44 +785: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:44 +786: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:44 +787: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:44 +788: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:44 +789: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:44 +790: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:44 +791: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:44 +792: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:44 +793: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:44 +794: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:44 +795: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:44 +796: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:44 +797: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:44 +798: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:44 +799: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:44 +800: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:45 +801: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:45 +802: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:45 +803: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:45 +804: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:45 +805: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:45 +806: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:45 +807: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:45 +808: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:45 +809: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:45 +810: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DesignSystemGalleryPage renders footer
+00:45 +811: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer severity filter toggling severity filter off shows all entries
+00:45 +812: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/goldens/ds_status_dot_golden_test.dart: DSStatusDot golden — operational states renders exposed state
+00:45 +813: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/health_dashboard_test.dart: DSStatusGrid contract renders a grid of health cards
+00:45 +814: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/health_dashboard_test.dart: DSStatusGrid contract renders a grid of health cards
+00:45 +815: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/goldens/ds_glass_panel_golden_test.dart: DSGlassPanel golden — variants with blur renders modal variant
+00:45 +816: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/goldens/ds_glass_panel_golden_test.dart: DSGlassPanel golden — variants with blur renders modal variant
+00:45 +817: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/goldens/ds_badge_golden_test.dart: DSBadge golden — operational state badges renders all operational state badges in a row
+00:45 +818: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/goldens/ds_badge_golden_test.dart: DSBadge golden — operational state badges renders all operational state badges in a row
+00:45 +819: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer severity filter filtering by multiple severities
+00:45 +820: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer severity filter filtering by multiple severities
+00:45 +821: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer severity filter filtering by multiple severities
+00:46 +822: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer severity filter filtering by multiple severities
+00:46 +823: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer severity filter filtering by multiple severities
+00:46 +824: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer severity filter filtering by multiple severities
+00:46 +825: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer severity filter filtering by multiple severities
+00:46 +826: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer severity filter filtering by multiple severities
+00:46 +827: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer severity filter filtering by multiple severities
+00:46 +828: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer severity filter filtering by multiple severities
+00:46 +829: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer severity filter filtering by multiple severities
+00:46 +830: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer severity filter filtering by multiple severities
+00:46 +831: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer severity filter filtering by multiple severities
+00:46 +832: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer severity filter filtering by multiple severities
+00:46 +833: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DSGallerySections buildOrganismsSection renders independently
+00:46 +834: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DSGallerySections buildOrganismsSection renders independently
+00:46 +835: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DSGallerySections buildOrganismsSection renders independently
+00:46 +836: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DSGallerySections buildOrganismsSection renders independently
+00:47 +837: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart: DSGallerySections buildOrganismsSection renders independently
+00:47 +838: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer text search search filters entries by message content
+00:47 +839: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer text search search filters entries by message content
+00:47 +840: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer text search search is case-insensitive
+00:47 +841: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer text search search matches source names
+00:48 +842: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer text search empty search shows all entries
+00:48 +843: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer expand/collapse entries with detail can be expanded
+00:49 +844: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer expand/collapse expanded entry can be collapsed
+00:49 +845: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer expand/collapse entries without detail do not expand
+00:49 +846: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer empty results after filtering shows empty state when search has no matches
+00:50 +847: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer empty results after filtering shows empty state when severity filter has no matches
+00:50 +848: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer auto-scroll shows count summary
+00:50 +849: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer auto-scroll auto-scroll button not shown by default
+00:50 +850: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer showFilters flag hides filter bar when showFilters is false
+00:50 +851: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer timestamps shows HH:mm:ss format by default
+00:50 +852: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer Semantics log viewer has semantic label
+00:51 +853: /home/sephiroth/working/ganthritor/warp-prism/packages/warp_prism_ui/test/log_viewer_test.dart: DSLogViewer Semantics entries have semantic labels
+00:51 +854: All tests passed!

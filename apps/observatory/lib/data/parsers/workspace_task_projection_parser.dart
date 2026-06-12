@@ -86,24 +86,19 @@ class WorkspaceTaskProjectionParser {
     // Sort within each lane: by priority (P0 first), then by creation date
     for (final entry in laneMap.entries) {
       entry.value.sort((a, b) {
-        final priorityCompare = _priorityWeight(a.priority)
-            .compareTo(_priorityWeight(b.priority));
+        final priorityCompare = _priorityWeight(
+          a.priority,
+        ).compareTo(_priorityWeight(b.priority));
         if (priorityCompare != 0) return priorityCompare;
         return a.created.compareTo(b.created);
       });
     }
 
     final lanes = TaskLane.values
-        .map((lane) => TaskLaneProjection(
-              lane: lane,
-              tasks: laneMap[lane]!,
-            ))
+        .map((lane) => TaskLaneProjection(lane: lane, tasks: laneMap[lane]!))
         .toList();
 
-    return OperateProjection(
-      lanes: lanes,
-      totalTasks: allTasks.length,
-    );
+    return OperateProjection(lanes: lanes, totalTasks: allTasks.length);
   }
 
   /// Try to parse without throwing. Returns null on failure.
@@ -138,7 +133,10 @@ class WorkspaceTaskProjectionParser {
   /// Extract verification commands from fenced code blocks in the body.
   static List<String> _extractVerificationCommands(String body) {
     final commands = <String>[];
-    final codeBlockRegex = RegExp(r'```(?:bash|sh)?\s*\n(.*?)```', dotAll: true);
+    final codeBlockRegex = RegExp(
+      r'```(?:bash|sh)?\s*\n(.*?)```',
+      dotAll: true,
+    );
     for (final match in codeBlockRegex.allMatches(body)) {
       final block = match.group(1)?.trim();
       if (block != null && block.isNotEmpty) {
@@ -163,15 +161,13 @@ class WorkspaceTaskProjectionParser {
     for (final line in section.split('\n')) {
       final trimmed = line.trim();
       if (trimmed.startsWith('- [x]') || trimmed.startsWith('- [X]')) {
-        conditions.add(ExitCondition(
-          text: trimmed.substring(5).trim(),
-          isComplete: true,
-        ));
+        conditions.add(
+          ExitCondition(text: trimmed.substring(5).trim(), isComplete: true),
+        );
       } else if (trimmed.startsWith('- [ ]')) {
-        conditions.add(ExitCondition(
-          text: trimmed.substring(5).trim(),
-          isComplete: false,
-        ));
+        conditions.add(
+          ExitCondition(text: trimmed.substring(5).trim(), isComplete: false),
+        );
       }
     }
     return conditions;
@@ -179,15 +175,15 @@ class WorkspaceTaskProjectionParser {
 
   /// Extract a named section from markdown body.
   static String? _extractSection(String body, String sectionName) {
-    final regex = RegExp(
-      '^##\\s+$sectionName\\s*\$',
-      multiLine: true,
-    );
+    final regex = RegExp('^##\\s+$sectionName\\s*\$', multiLine: true);
     final match = regex.firstMatch(body);
     if (match == null) return null;
 
     final afterMatch = body.substring(match.end);
-    final nextHeading = RegExp(r'^##\s', multiLine: true).firstMatch(afterMatch);
+    final nextHeading = RegExp(
+      r'^##\s',
+      multiLine: true,
+    ).firstMatch(afterMatch);
     final section = nextHeading != null
         ? afterMatch.substring(0, nextHeading.start)
         : afterMatch;
@@ -205,7 +201,11 @@ class WorkspaceTaskProjectionParser {
   }
 
   static String _titleFromPath(String path) {
-    return path.split('/').last.replaceAll('.md', '').replaceAll(RegExp(r'^T\d+-'), '');
+    return path
+        .split('/')
+        .last
+        .replaceAll('.md', '')
+        .replaceAll(RegExp(r'^T\d+-'), '');
   }
 
   static String _normalizePriority(String? value) {

@@ -1,6 +1,7 @@
 # Task 1116: Warp Prism Notification Toast System
 
 > **Status**: `[/]` In Progress
+> **Review State**: Package Gate Failed — implementation complete; pre-existing gallery compilation errors block full package gate
 > **Priority**: 🟡 P1
 > **Type**: `feature` | `design-system`
 > **Origin**: EPIC-11 gap analysis (IMPORTANT GAP-I3)

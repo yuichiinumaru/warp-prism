@@ -44,8 +44,10 @@ class DSLaneBoard extends StatelessWidget {
           final totalLanes = lanes.length;
           final availableWidth = constraints.maxWidth - (DSSpacing.lg * 2);
           final gapWidth = DSSpacing.md * (totalLanes - 1);
-          final laneWidth = ((availableWidth - gapWidth) / totalLanes)
-              .clamp(minLaneWidth, maxLaneWidth);
+          final laneWidth = ((availableWidth - gapWidth) / totalLanes).clamp(
+            minLaneWidth,
+            maxLaneWidth,
+          );
 
           return SingleChildScrollView(
             scrollDirection: Axis.horizontal,
@@ -112,20 +114,24 @@ class _LaneColumn extends StatelessWidget {
                 if (payload.sourceLaneId == lane.id) {
                   // Same lane reorder
                   if (payload.sourceIndex != targetIndex) {
-                    onReorder?.call(DSDragReorderEvent(
-                      laneId: lane.id,
-                      oldIndex: payload.sourceIndex,
-                      newIndex: targetIndex,
-                    ));
+                    onReorder?.call(
+                      DSDragReorderEvent(
+                        laneId: lane.id,
+                        oldIndex: payload.sourceIndex,
+                        newIndex: targetIndex,
+                      ),
+                    );
                   }
                 } else {
                   // Cross-lane move
-                  onMove?.call(DSDragMoveEvent(
-                    sourceLaneId: payload.sourceLaneId,
-                    targetLaneId: lane.id,
-                    taskId: payload.taskId,
-                    targetIndex: targetIndex,
-                  ));
+                  onMove?.call(
+                    DSDragMoveEvent(
+                      sourceLaneId: payload.sourceLaneId,
+                      targetLaneId: lane.id,
+                      taskId: payload.taskId,
+                      targetIndex: targetIndex,
+                    ),
+                  );
                 }
               },
               child: lane.tasks.isEmpty
@@ -161,8 +167,7 @@ class _LaneColumn extends StatelessWidget {
                               linkedSkills: task.linkedSkills,
                               dependencyCount: task.dependencyCount,
                               selected: task.id.toString() == selectedTaskId,
-                              onTap: () =>
-                                  onTaskTap?.call(task.id.toString()),
+                              onTap: () => onTaskTap?.call(task.id.toString()),
                             ),
                           ),
                         );
@@ -202,9 +207,7 @@ class _LaneHeader extends StatelessWidget {
           children: [
             DSIcon.small(DSIcons.forLane(lane.id), color: color),
             const SizedBox(width: DSSpacing.sm),
-            Expanded(
-              child: DSText.labelLarge(lane.label, color: color),
-            ),
+            Expanded(child: DSText.labelLarge(lane.label, color: color)),
             DSBadge.count(lane.tasks.length, color: color),
           ],
         ),
@@ -218,11 +221,7 @@ class DSLane {
   final String label;
   final List<DSLaneTask> tasks;
 
-  const DSLane({
-    required this.id,
-    required this.label,
-    required this.tasks,
-  });
+  const DSLane({required this.id, required this.label, required this.tasks});
 }
 
 class DSLaneTask {

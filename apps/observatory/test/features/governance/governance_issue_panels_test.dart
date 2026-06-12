@@ -73,52 +73,57 @@ void main() {
   group('GovernanceIssueGroup', () {
     testWidgets('renders group title', (tester) async {
       final groups = buildIssueGroups(_mixedDiagnostics());
-      await tester.pumpWidget(_wrapInApp(
-        GovernanceIssueGroup(group: groups.first),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(GovernanceIssueGroup(group: groups.first)),
+      );
       expect(find.text('Orphan Assets'), findsOneWidget);
     });
 
     testWidgets('renders issue count', (tester) async {
       final groups = buildIssueGroups(_mixedDiagnostics());
-      await tester.pumpWidget(_wrapInApp(
-        GovernanceIssueGroup(group: groups.first),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(GovernanceIssueGroup(group: groups.first)),
+      );
       expect(find.textContaining('1 issue'), findsOneWidget);
     });
 
     testWidgets('renders issue message', (tester) async {
       final groups = buildIssueGroups(_mixedDiagnostics());
-      await tester.pumpWidget(_wrapInApp(
-        GovernanceIssueGroup(group: groups.first),
-      ));
-      expect(find.text('Skill has no incoming or outgoing edges'), findsOneWidget);
+      await tester.pumpWidget(
+        _wrapInApp(GovernanceIssueGroup(group: groups.first)),
+      );
+      expect(
+        find.text('Skill has no incoming or outgoing edges'),
+        findsOneWidget,
+      );
     });
 
     testWidgets('renders asset id', (tester) async {
       final groups = buildIssueGroups(_mixedDiagnostics());
-      await tester.pumpWidget(_wrapInApp(
-        GovernanceIssueGroup(group: groups.first),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(GovernanceIssueGroup(group: groups.first)),
+      );
       expect(find.text('skill:orphan-skill'), findsOneWidget);
     });
 
-    testWidgets('renders empty state when no issues in category',
-        (tester) async {
+    testWidgets('renders empty state when no issues in category', (
+      tester,
+    ) async {
       final emptyGroups = buildIssueGroups([]);
-      await tester.pumpWidget(_wrapInApp(
-        GovernanceIssueGroup(group: emptyGroups.first),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(GovernanceIssueGroup(group: emptyGroups.first)),
+      );
       expect(find.textContaining('No orphan assets found'), findsOneWidget);
     });
 
     testWidgets('renders severity badges', (tester) async {
       final groups = buildIssueGroups(_mixedDiagnostics());
-      final proofGroup =
-          groups.firstWhere((g) => g.category == DiagnosticCategory.proofGap);
-      await tester.pumpWidget(_wrapInApp(
-        GovernanceIssueGroup(group: proofGroup),
-      ));
+      final proofGroup = groups.firstWhere(
+        (g) => g.category == DiagnosticCategory.proofGap,
+      );
+      await tester.pumpWidget(
+        _wrapInApp(GovernanceIssueGroup(group: proofGroup)),
+      );
       // proof gaps group has 2 issues: 1 error + 1 warning
       expect(find.textContaining('error'), findsOneWidget);
       expect(find.textContaining('warn'), findsOneWidget);
@@ -126,13 +131,10 @@ void main() {
 
     testWidgets('renders description text', (tester) async {
       final groups = buildIssueGroups(_mixedDiagnostics());
-      await tester.pumpWidget(_wrapInApp(
-        GovernanceIssueGroup(group: groups.first),
-      ));
-      expect(
-        find.textContaining('isolated in the graph'),
-        findsOneWidget,
+      await tester.pumpWidget(
+        _wrapInApp(GovernanceIssueGroup(group: groups.first)),
       );
+      expect(find.textContaining('isolated in the graph'), findsOneWidget);
     });
   });
 
@@ -153,14 +155,18 @@ void main() {
 
     test('distributes diagnostics into correct groups', () {
       final groups = buildIssueGroups(_mixedDiagnostics());
-      final orphanGroup =
-          groups.firstWhere((g) => g.category == DiagnosticCategory.orphanAsset);
-      final staleGroup = groups
-          .firstWhere((g) => g.category == DiagnosticCategory.staleReference);
-      final proofGroup =
-          groups.firstWhere((g) => g.category == DiagnosticCategory.proofGap);
-      final fanInGroup =
-          groups.firstWhere((g) => g.category == DiagnosticCategory.brokenEdge);
+      final orphanGroup = groups.firstWhere(
+        (g) => g.category == DiagnosticCategory.orphanAsset,
+      );
+      final staleGroup = groups.firstWhere(
+        (g) => g.category == DiagnosticCategory.staleReference,
+      );
+      final proofGroup = groups.firstWhere(
+        (g) => g.category == DiagnosticCategory.proofGap,
+      );
+      final fanInGroup = groups.firstWhere(
+        (g) => g.category == DiagnosticCategory.brokenEdge,
+      );
 
       expect(orphanGroup.count, 1);
       expect(staleGroup.count, 1);
@@ -170,8 +176,9 @@ void main() {
 
     test('counts errors and warnings correctly', () {
       final groups = buildIssueGroups(_mixedDiagnostics());
-      final proofGroup =
-          groups.firstWhere((g) => g.category == DiagnosticCategory.proofGap);
+      final proofGroup = groups.firstWhere(
+        (g) => g.category == DiagnosticCategory.proofGap,
+      );
       expect(proofGroup.errorCount, 1);
       expect(proofGroup.warningCount, 1);
     });
@@ -188,7 +195,10 @@ void main() {
       final state = GovernanceFilterState(
         selectedCategories: {DiagnosticCategory.orphanAsset},
       );
-      expect(state.matches(_diag(category: DiagnosticCategory.orphanAsset)), isTrue);
+      expect(
+        state.matches(_diag(category: DiagnosticCategory.orphanAsset)),
+        isTrue,
+      );
       expect(
         state.matches(_diag(category: DiagnosticCategory.staleReference)),
         isFalse,
@@ -200,7 +210,10 @@ void main() {
         selectedSeverities: {DiagnosticSeverity.error},
       );
       expect(state.matches(_diag(severity: DiagnosticSeverity.error)), isTrue);
-      expect(state.matches(_diag(severity: DiagnosticSeverity.warning)), isFalse);
+      expect(
+        state.matches(_diag(severity: DiagnosticSeverity.warning)),
+        isFalse,
+      );
     });
 
     test('filters by both category and severity', () {
@@ -209,26 +222,32 @@ void main() {
         selectedSeverities: {DiagnosticSeverity.error},
       );
       expect(
-        state.matches(_diag(
-          category: DiagnosticCategory.proofGap,
-          severity: DiagnosticSeverity.error,
-        )),
+        state.matches(
+          _diag(
+            category: DiagnosticCategory.proofGap,
+            severity: DiagnosticSeverity.error,
+          ),
+        ),
         isTrue,
       );
       // Wrong category
       expect(
-        state.matches(_diag(
-          category: DiagnosticCategory.orphanAsset,
-          severity: DiagnosticSeverity.error,
-        )),
+        state.matches(
+          _diag(
+            category: DiagnosticCategory.orphanAsset,
+            severity: DiagnosticSeverity.error,
+          ),
+        ),
         isFalse,
       );
       // Wrong severity
       expect(
-        state.matches(_diag(
-          category: DiagnosticCategory.proofGap,
-          severity: DiagnosticSeverity.warning,
-        )),
+        state.matches(
+          _diag(
+            category: DiagnosticCategory.proofGap,
+            severity: DiagnosticSeverity.warning,
+          ),
+        ),
         isFalse,
       );
     });
@@ -261,12 +280,14 @@ void main() {
 
   group('GovernanceIssueFilters', () {
     testWidgets('renders category filter labels', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        GovernanceIssueFilters(
-          filterState: const GovernanceFilterState(),
-          onFilterChanged: (_) {},
+      await tester.pumpWidget(
+        _wrapInApp(
+          GovernanceIssueFilters(
+            filterState: const GovernanceFilterState(),
+            onFilterChanged: (_) {},
+          ),
         ),
-      ));
+      );
       expect(find.text('Orphans'), findsOneWidget);
       expect(find.text('Stale'), findsOneWidget);
       expect(find.text('Proof Gaps'), findsOneWidget);
@@ -274,12 +295,14 @@ void main() {
     });
 
     testWidgets('renders severity filter labels', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        GovernanceIssueFilters(
-          filterState: const GovernanceFilterState(),
-          onFilterChanged: (_) {},
+      await tester.pumpWidget(
+        _wrapInApp(
+          GovernanceIssueFilters(
+            filterState: const GovernanceFilterState(),
+            onFilterChanged: (_) {},
+          ),
         ),
-      ));
+      );
       expect(find.text('Error'), findsOneWidget);
       expect(find.text('Warning'), findsOneWidget);
       expect(find.text('Info'), findsOneWidget);
@@ -287,12 +310,14 @@ void main() {
 
     testWidgets('tapping filter chip triggers callback', (tester) async {
       GovernanceFilterState? captured;
-      await tester.pumpWidget(_wrapInApp(
-        GovernanceIssueFilters(
-          filterState: const GovernanceFilterState(),
-          onFilterChanged: (state) => captured = state,
+      await tester.pumpWidget(
+        _wrapInApp(
+          GovernanceIssueFilters(
+            filterState: const GovernanceFilterState(),
+            onFilterChanged: (state) => captured = state,
+          ),
         ),
-      ));
+      );
 
       await tester.tap(find.text('Orphans'));
       expect(captured, isNotNull);
@@ -302,27 +327,31 @@ void main() {
       );
     });
 
-    testWidgets('clear all button appears when filters active',
-        (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        GovernanceIssueFilters(
-          filterState: GovernanceFilterState(
-            selectedCategories: {DiagnosticCategory.orphanAsset},
+    testWidgets('clear all button appears when filters active', (tester) async {
+      await tester.pumpWidget(
+        _wrapInApp(
+          GovernanceIssueFilters(
+            filterState: GovernanceFilterState(
+              selectedCategories: {DiagnosticCategory.orphanAsset},
+            ),
+            onFilterChanged: (_) {},
           ),
-          onFilterChanged: (_) {},
         ),
-      ));
+      );
       expect(find.text('Clear all filters'), findsOneWidget);
     });
 
-    testWidgets('clear all button hidden when no filters active',
-        (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        GovernanceIssueFilters(
-          filterState: const GovernanceFilterState(),
-          onFilterChanged: (_) {},
+    testWidgets('clear all button hidden when no filters active', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        _wrapInApp(
+          GovernanceIssueFilters(
+            filterState: const GovernanceFilterState(),
+            onFilterChanged: (_) {},
+          ),
         ),
-      ));
+      );
       expect(find.text('Clear all filters'), findsNothing);
     });
   });

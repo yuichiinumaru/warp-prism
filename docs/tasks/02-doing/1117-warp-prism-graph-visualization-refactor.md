@@ -1,6 +1,7 @@
 # Task 1117: Warp Prism Graph Visualization Refactor — Model/Layout/Painter Split
 
 > **Status**: `[x]` Complete (pending review)
+> **Review State**: Package Gate Failed — implementation complete; pre-existing gallery compilation errors block full package gate
 > **Priority**: 🟡 P1
 > **Type**: `feature` | `design-system`
 > **Origin**: EPIC-11 gap analysis (IMPORTANT GAP-I1) — phase 1 of 2: refactor-only, no new features.

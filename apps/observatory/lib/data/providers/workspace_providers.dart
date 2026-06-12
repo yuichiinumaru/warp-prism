@@ -41,7 +41,9 @@ final workspaceRootPathProvider = Provider<String>((ref) => _workspaceRoot);
 /// Uses [MockWorkspaceRepository] for now; swap for a real repository
 /// when the live workspace source is ready.
 final workspaceRepositoryProvider = Provider<WorkspaceRepository>((ref) {
-  return MockWorkspaceRepository(rootPath: ref.watch(workspaceRootPathProvider));
+  return MockWorkspaceRepository(
+    rootPath: ref.watch(workspaceRootPathProvider),
+  );
 });
 
 /// Lightweight mock that uses [PresetLocalWorkspaceSource] internally.
@@ -63,10 +65,7 @@ class MockWorkspaceRepository implements WorkspaceRepository {
       if (snapshot.allAssets.isEmpty) {
         return WorkspaceLoadState.empty(rootPath: rootPath);
       }
-      return WorkspaceLoadState.success(
-        snapshot: snapshot,
-        rootPath: rootPath,
-      );
+      return WorkspaceLoadState.success(snapshot: snapshot, rootPath: rootPath);
     } catch (e) {
       return WorkspaceLoadState.error(
         message: e.toString(),
@@ -83,8 +82,7 @@ class MockWorkspaceRepository implements WorkspaceRepository {
 /// Async notifier that loads the workspace snapshot via the repository.
 ///
 /// Exposes loading, empty, error, and success states to consumers.
-class WorkspaceSnapshotAsyncNotifier
-    extends AsyncNotifier<WorkspaceLoadState> {
+class WorkspaceSnapshotAsyncNotifier extends AsyncNotifier<WorkspaceLoadState> {
   @override
   Future<WorkspaceLoadState> build() async {
     final repo = ref.read(workspaceRepositoryProvider);
@@ -104,8 +102,8 @@ class WorkspaceSnapshotAsyncNotifier
 /// loading/empty/error/success semantics.
 final workspaceSnapshotAsyncProvider =
     AsyncNotifierProvider<WorkspaceSnapshotAsyncNotifier, WorkspaceLoadState>(
-  WorkspaceSnapshotAsyncNotifier.new,
-);
+      WorkspaceSnapshotAsyncNotifier.new,
+    );
 
 // ---------------------------------------------------------------------------
 // Graph Provider
@@ -120,11 +118,10 @@ const _graphBuilder = WorkspaceGraphBuilder();
 /// graph is only available after a successful snapshot load.
 final workspaceGraphAsyncProvider =
     AsyncNotifierProvider<WorkspaceGraphAsyncNotifier, WorkspaceGraphResult>(
-  WorkspaceGraphAsyncNotifier.new,
-);
+      WorkspaceGraphAsyncNotifier.new,
+    );
 
-class WorkspaceGraphAsyncNotifier
-    extends AsyncNotifier<WorkspaceGraphResult> {
+class WorkspaceGraphAsyncNotifier extends AsyncNotifier<WorkspaceGraphResult> {
   @override
   Future<WorkspaceGraphResult> build() async {
     final loadState = await ref.watch(workspaceSnapshotAsyncProvider.future);
@@ -153,10 +150,11 @@ const _metricsService = WorkspaceMetricsService();
 /// Computes [WorkspaceMetricsSummary] from the normalized graph.
 ///
 /// Returns an empty summary during loading or when the graph is empty.
-final workspaceMetricsAsyncProvider = AsyncNotifierProvider<
-    WorkspaceMetricsAsyncNotifier, WorkspaceMetricsSummary>(
-  WorkspaceMetricsAsyncNotifier.new,
-);
+final workspaceMetricsAsyncProvider =
+    AsyncNotifierProvider<
+      WorkspaceMetricsAsyncNotifier,
+      WorkspaceMetricsSummary
+    >(WorkspaceMetricsAsyncNotifier.new);
 
 class WorkspaceMetricsAsyncNotifier
     extends AsyncNotifier<WorkspaceMetricsSummary> {
@@ -179,8 +177,8 @@ const _diagnosticsService = WorkspaceDiagnosticsService();
 /// Returns an empty report during loading or when the graph is empty.
 final workspaceDiagnosticsAsyncProvider =
     AsyncNotifierProvider<WorkspaceDiagnosticsAsyncNotifier, DiagnosticsReport>(
-  WorkspaceDiagnosticsAsyncNotifier.new,
-);
+      WorkspaceDiagnosticsAsyncNotifier.new,
+    );
 
 class WorkspaceDiagnosticsAsyncNotifier
     extends AsyncNotifier<DiagnosticsReport> {

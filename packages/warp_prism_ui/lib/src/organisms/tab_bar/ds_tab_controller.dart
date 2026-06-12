@@ -23,11 +23,9 @@ class DSTabController extends ChangeNotifier {
 
   /// Creates a controller with an initial list of [tabs] and optional
   /// [activeIndex] (defaults to 0 if tabs is non-empty).
-  DSTabController({
-    required List<DSTab> tabs,
-    int activeIndex = 0,
-  })  : _tabs = List.of(tabs),
-        _activeIndex = tabs.isEmpty ? 0 : activeIndex.clamp(0, tabs.length - 1);
+  DSTabController({required List<DSTab> tabs, int activeIndex = 0})
+    : _tabs = List.of(tabs),
+      _activeIndex = tabs.isEmpty ? 0 : activeIndex.clamp(0, tabs.length - 1);
 
   // ---------------------------------------------------------------------------
   // READ-ONLY ACCESSORS

@@ -31,8 +31,7 @@ class DSLogFilterBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final activeFilterCount =
-        activeSeverities.length + activeSources.length;
+    final activeFilterCount = activeSeverities.length + activeSources.length;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -45,8 +44,7 @@ class DSLogFilterBar extends StatelessWidget {
           onChanged: onSearchChanged,
           onClear: () => onSearchChanged?.call(''),
           showFilter: false,
-          activeFilterCount:
-              activeFilterCount > 0 ? activeFilterCount : null,
+          activeFilterCount: activeFilterCount > 0 ? activeFilterCount : null,
         ),
         const SizedBox(height: DSSpacing.sm),
 

@@ -15,8 +15,8 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
-import '../../../data/models/task_contracts.dart';
-import '../../../data/models/workspace_graph.dart';
+import 'package:warp_prism_observatory/data/models/task_contracts.dart';
+import 'package:warp_prism_observatory/data/models/workspace_graph.dart';
 import 'workspace_snapshot_provider.dart';
 import 'widgets/agent_list_panel.dart';
 import 'widgets/skill_list_panel.dart';
@@ -89,18 +89,15 @@ class WorkspaceSnapshotPage extends ConsumerWidget {
                     title: 'Empty workspace',
                     subtitle: 'No assets found in $rootPath',
                     actionLabel: 'Rescan',
-                    onAction: () => ref
-                        .read(workspaceSnapshotProvider.notifier)
-                        .reload(),
+                    onAction: () =>
+                        ref.read(workspaceSnapshotProvider.notifier).reload(),
                   );
                 }
 
                 return Row(
                   children: [
                     // Main content area
-                    Expanded(
-                      child: _SnapshotBody(snapshot: snapshot),
-                    ),
+                    Expanded(child: _SnapshotBody(snapshot: snapshot)),
 
                     // Detail inspector (if asset selected)
                     if (selectedAsset != null)
@@ -195,7 +192,10 @@ class _SnapshotBodyState extends ConsumerState<_SnapshotBody>
         // Search bar
         Padding(
           padding: const EdgeInsets.fromLTRB(
-            DSSpacing.lg, DSSpacing.md, DSSpacing.lg, 0,
+            DSSpacing.lg,
+            DSSpacing.md,
+            DSSpacing.lg,
+            0,
           ),
           child: Row(
             children: [
@@ -215,7 +215,10 @@ class _SnapshotBodyState extends ConsumerState<_SnapshotBody>
         // Filter chips
         const Padding(
           padding: EdgeInsets.fromLTRB(
-            DSSpacing.lg, DSSpacing.sm, DSSpacing.lg, 0,
+            DSSpacing.lg,
+            DSSpacing.sm,
+            DSSpacing.lg,
+            0,
           ),
           child: WorkspaceFilterChips(),
         ),
@@ -343,10 +346,7 @@ class _ContentTab extends ConsumerWidget {
           const SizedBox(height: DSSpacing.lg),
 
           // Derived metrics
-          DSText.labelMedium(
-            'DERIVED METRICS',
-            color: DSColors.textSecondary,
-          ),
+          DSText.labelMedium('DERIVED METRICS', color: DSColors.textSecondary),
           const SizedBox(height: DSSpacing.sm),
           const WorkspaceDerivedMetrics(),
 
@@ -358,7 +358,9 @@ class _ContentTab extends ConsumerWidget {
           const SizedBox(height: DSSpacing.xl),
 
           // Filtered content
-          if (query.isNotEmpty || kindFilters.isNotEmpty || laneFilters.isNotEmpty) ...[
+          if (query.isNotEmpty ||
+              kindFilters.isNotEmpty ||
+              laneFilters.isNotEmpty) ...[
             _FilteredResults(assets: filteredAssets),
           ] else ...[
             // Full content sections
@@ -398,23 +400,26 @@ class _FilteredResults extends StatelessWidget {
           color: DSColors.textSecondary,
         ),
         const SizedBox(height: DSSpacing.sm),
-        ...assets.map((asset) => Padding(
-              padding: const EdgeInsets.only(bottom: DSSpacing.sm),
-              child: DSAssetCard(
-                name: asset.name,
-                kind: asset.kind.name,
-                description:
-                    asset.description.isNotEmpty ? asset.description : null,
-                canonicality: asset.canonicality.name,
-                tags: asset.tags.isNotEmpty ? asset.tags : null,
-                edgeCount: asset.edges.length,
-                onTap: () {
-                  final container = ProviderScope.containerOf(context);
-                  container.read(selectedAssetIdProvider.notifier).state =
-                      asset.id;
-                },
-              ),
-            )),
+        ...assets.map(
+          (asset) => Padding(
+            padding: const EdgeInsets.only(bottom: DSSpacing.sm),
+            child: DSAssetCard(
+              name: asset.name,
+              kind: asset.kind.name,
+              description: asset.description.isNotEmpty
+                  ? asset.description
+                  : null,
+              canonicality: asset.canonicality.name,
+              tags: asset.tags.isNotEmpty ? asset.tags : null,
+              edgeCount: asset.edges.length,
+              onTap: () {
+                final container = ProviderScope.containerOf(context);
+                container.read(selectedAssetIdProvider.notifier).state =
+                    asset.id;
+              },
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -487,9 +492,7 @@ class _FullContentSections extends StatelessWidget {
             count: snapshot.changelogEntries.length,
           ),
           const SizedBox(height: DSSpacing.sm),
-          ChangelogListPanel(
-            changelogEntries: snapshot.changelogEntries,
-          ),
+          ChangelogListPanel(changelogEntries: snapshot.changelogEntries),
         ],
       ],
     );
@@ -558,8 +561,9 @@ class _LaneSummary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tasksByLane = snapshot.tasksByLane as Map<TaskLane, int>;
-    final nonEmptyLanes =
-        tasksByLane.entries.where((e) => e.value > 0).toList();
+    final nonEmptyLanes = tasksByLane.entries
+        .where((e) => e.value > 0)
+        .toList();
 
     if (nonEmptyLanes.isEmpty) return const SizedBox.shrink();
 

@@ -107,7 +107,8 @@ class GraphPainter extends CustomPainter {
       final screenTarget = (targetPos * scale) + panOffset + center;
 
       // Determine if this edge should be highlighted
-      final isHighlighted = hoveredNodeId == edge.sourceId ||
+      final isHighlighted =
+          hoveredNodeId == edge.sourceId ||
           hoveredNodeId == edge.targetId ||
           selectedNodeId == edge.sourceId ||
           selectedNodeId == edge.targetId;
@@ -150,17 +151,13 @@ class GraphPainter extends CustomPainter {
     final path = Path()
       ..moveTo(arrowPoint.dx, arrowPoint.dy)
       ..lineTo(
-        arrowPoint.dx -
-            config.arrowSize * math.cos(direction - math.pi / 6),
-        arrowPoint.dy -
-            config.arrowSize * math.sin(direction - math.pi / 6),
+        arrowPoint.dx - config.arrowSize * math.cos(direction - math.pi / 6),
+        arrowPoint.dy - config.arrowSize * math.sin(direction - math.pi / 6),
       )
       ..moveTo(arrowPoint.dx, arrowPoint.dy)
       ..lineTo(
-        arrowPoint.dx -
-            config.arrowSize * math.cos(direction + math.pi / 6),
-        arrowPoint.dy -
-            config.arrowSize * math.sin(direction + math.pi / 6),
+        arrowPoint.dx - config.arrowSize * math.cos(direction + math.pi / 6),
+        arrowPoint.dy - config.arrowSize * math.sin(direction + math.pi / 6),
       );
 
     canvas.drawPath(path, paint..style = PaintingStyle.stroke);

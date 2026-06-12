@@ -75,9 +75,6 @@ final appRouter = GoRouter(
       ],
     ),
     // Root redirect
-    GoRoute(
-      path: '/',
-      redirect: (context, state) => '/dashboard',
-    ),
+    GoRoute(path: '/', redirect: (context, state) => '/dashboard'),
   ],
 );

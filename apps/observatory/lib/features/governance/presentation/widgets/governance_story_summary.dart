@@ -8,7 +8,7 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
-import '../../../../data/models/governance_diagnostics.dart';
+import 'package:warp_prism_observatory/data/models/governance_diagnostics.dart';
 import 'fan_in_hotspots_panel.dart';
 import 'governance_drilldown_controller.dart';
 
@@ -81,20 +81,26 @@ List<GovernanceRiskStory> deriveGovernanceRiskStories({
     final canonical = boundaryCounts['parentCanonical'] ?? 0;
     final ratio = totalAssets > 0 ? canonical / totalAssets : 0.0;
     if (ratio < 0.5 && totalAssets > 2) {
-      stories.add(GovernanceRiskStory(
-        title: 'Canonical coverage below 50%',
-        narrative: '$canonical of $totalAssets assets are canonical sources '
-            'of truth. Consider reviewing non-canonical surfaces for '
-            'consolidation or archival.',
-        severity: GovernanceStorySeverity.warning,
-      ));
+      stories.add(
+        GovernanceRiskStory(
+          title: 'Canonical coverage below 50%',
+          narrative:
+              '$canonical of $totalAssets assets are canonical sources '
+              'of truth. Consider reviewing non-canonical surfaces for '
+              'consolidation or archival.',
+          severity: GovernanceStorySeverity.warning,
+        ),
+      );
     } else if (totalAssets > 0) {
-      stories.add(GovernanceRiskStory(
-        title: 'Boundary overview',
-        narrative: '$canonical of $totalAssets assets are canonical. '
-            'Workspace boundary health is within normal range.',
-        severity: GovernanceStorySeverity.healthy,
-      ));
+      stories.add(
+        GovernanceRiskStory(
+          title: 'Boundary overview',
+          narrative:
+              '$canonical of $totalAssets assets are canonical. '
+              'Workspace boundary health is within normal range.',
+          severity: GovernanceStorySeverity.healthy,
+        ),
+      );
     }
   }
 
@@ -103,8 +109,9 @@ List<GovernanceRiskStory> deriveGovernanceRiskStories({
       .where((d) => d.category == DiagnosticCategory.proofGap)
       .toList();
   if (proofGaps.isNotEmpty) {
-    final errors =
-        proofGaps.where((d) => d.severity == DiagnosticSeverity.error).length;
+    final errors = proofGaps
+        .where((d) => d.severity == DiagnosticSeverity.error)
+        .length;
     final warnings = proofGaps.length - errors;
     final assetIds = proofGaps.map((d) => d.assetId).toList();
 
@@ -112,16 +119,18 @@ List<GovernanceRiskStory> deriveGovernanceRiskStories({
         ? GovernanceStorySeverity.critical
         : GovernanceStorySeverity.warning;
 
-    stories.add(GovernanceRiskStory(
-      title: 'Proof integrity at risk',
-      narrative: proofGaps.length == 1
-          ? '1 task lacks required proof for its lane position.'
-          : '${proofGaps.length} tasks lack required proof '
-              '($errors missing, $warnings partial). '
-              'Claims of completion cannot be verified.',
-      severity: severity,
-      involvedAssetIds: assetIds,
-    ));
+    stories.add(
+      GovernanceRiskStory(
+        title: 'Proof integrity at risk',
+        narrative: proofGaps.length == 1
+            ? '1 task lacks required proof for its lane position.'
+            : '${proofGaps.length} tasks lack required proof '
+                  '($errors missing, $warnings partial). '
+                  'Claims of completion cannot be verified.',
+        severity: severity,
+        involvedAssetIds: assetIds,
+      ),
+    );
   }
 
   // ---- Orphan Assets Story ----
@@ -129,16 +138,18 @@ List<GovernanceRiskStory> deriveGovernanceRiskStories({
       .where((d) => d.category == DiagnosticCategory.orphanAsset)
       .toList();
   if (orphans.isNotEmpty) {
-    stories.add(GovernanceRiskStory(
-      title: 'Orphan assets detected',
-      narrative: orphans.length == 1
-          ? '1 asset is isolated in the graph with no connections.'
-          : '${orphans.length} assets are isolated in the graph. '
-              'These invisible nodes cannot be reached by workflows '
-              'that depend on connectivity.',
-      severity: GovernanceStorySeverity.warning,
-      involvedAssetIds: orphans.map((d) => d.assetId).toList(),
-    ));
+    stories.add(
+      GovernanceRiskStory(
+        title: 'Orphan assets detected',
+        narrative: orphans.length == 1
+            ? '1 asset is isolated in the graph with no connections.'
+            : '${orphans.length} assets are isolated in the graph. '
+                  'These invisible nodes cannot be reached by workflows '
+                  'that depend on connectivity.',
+        severity: GovernanceStorySeverity.warning,
+        involvedAssetIds: orphans.map((d) => d.assetId).toList(),
+      ),
+    );
   }
 
   // ---- Stale References Story ----
@@ -146,34 +157,38 @@ List<GovernanceRiskStory> deriveGovernanceRiskStories({
       .where((d) => d.category == DiagnosticCategory.staleReference)
       .toList();
   if (staleRefs.isNotEmpty) {
-    stories.add(GovernanceRiskStory(
-      title: 'Broken references found',
-      narrative: staleRefs.length == 1
-          ? '1 edge points to a non-existent target.'
-          : '${staleRefs.length} edges point to assets that no longer '
-              'exist. These broken links indicate outdated metadata.',
-      severity: GovernanceStorySeverity.critical,
-      involvedAssetIds: staleRefs.map((d) => d.assetId).toList(),
-    ));
+    stories.add(
+      GovernanceRiskStory(
+        title: 'Broken references found',
+        narrative: staleRefs.length == 1
+            ? '1 edge points to a non-existent target.'
+            : '${staleRefs.length} edges point to assets that no longer '
+                  'exist. These broken links indicate outdated metadata.',
+        severity: GovernanceStorySeverity.critical,
+        involvedAssetIds: staleRefs.map((d) => d.assetId).toList(),
+      ),
+    );
   }
 
   // ---- Fan-In Hotspot Story ----
   if (hotspots.isNotEmpty) {
     final top = hotspots.first;
-    stories.add(GovernanceRiskStory(
-      title: 'Structural hotspots',
-      narrative: hotspots.length == 1
-          ? '${top.assetName} has ${top.incomingEdgeCount} incoming '
-              'references (threshold: ${top.threshold}). '
-              'Changes to this asset will cascade widely.'
-          : '${hotspots.length} assets exceed fan-in thresholds. '
-              '${top.assetName} leads with ${top.incomingEdgeCount} '
-              'incoming references.',
-      severity: top.incomingEdgeCount >= top.threshold * 2
-          ? GovernanceStorySeverity.critical
-          : GovernanceStorySeverity.warning,
-      involvedAssetIds: hotspots.map((h) => h.assetId).toList(),
-    ));
+    stories.add(
+      GovernanceRiskStory(
+        title: 'Structural hotspots',
+        narrative: hotspots.length == 1
+            ? '${top.assetName} has ${top.incomingEdgeCount} incoming '
+                  'references (threshold: ${top.threshold}). '
+                  'Changes to this asset will cascade widely.'
+            : '${hotspots.length} assets exceed fan-in thresholds. '
+                  '${top.assetName} leads with ${top.incomingEdgeCount} '
+                  'incoming references.',
+        severity: top.incomingEdgeCount >= top.threshold * 2
+            ? GovernanceStorySeverity.critical
+            : GovernanceStorySeverity.warning,
+        involvedAssetIds: hotspots.map((h) => h.assetId).toList(),
+      ),
+    );
   }
 
   // If no issues at all, add a healthy summary
@@ -184,7 +199,8 @@ List<GovernanceRiskStory> deriveGovernanceRiskStories({
         0,
         GovernanceRiskStory(
           title: 'Governance is clean',
-          narrative: 'No diagnostics detected. All $totalAssets assets '
+          narrative:
+              'No diagnostics detected. All $totalAssets assets '
               'are within governance thresholds.',
           severity: GovernanceStorySeverity.healthy,
         ),
@@ -265,10 +281,9 @@ class GovernanceStorySummary extends StatelessWidget {
           if (stories.isEmpty)
             _buildEmptyState()
           else
-            ...stories.map((story) => _StoryRow(
-                  story: story,
-                  onDrilldown: onDrilldown,
-                )),
+            ...stories.map(
+              (story) => _StoryRow(story: story, onDrilldown: onDrilldown),
+            ),
 
           const SizedBox(height: DSSpacing.sm),
         ],
@@ -281,7 +296,11 @@ class GovernanceStorySummary extends StatelessWidget {
       padding: const EdgeInsets.all(DSSpacing.lg),
       child: Row(
         children: [
-          Icon(Icons.check_circle_outline, size: 16, color: DSColors.statusSuccess),
+          Icon(
+            Icons.check_circle_outline,
+            size: 16,
+            color: DSColors.statusSuccess,
+          ),
           const SizedBox(width: DSSpacing.sm),
           Expanded(
             child: DSText.bodySmall(
@@ -317,9 +336,7 @@ class _StoryRow extends StatelessWidget {
         decoration: BoxDecoration(
           color: DSColors.obsidianBase,
           borderRadius: BorderRadius.circular(DSRadii.sm),
-          border: Border(
-            left: BorderSide(color: color, width: 3),
-          ),
+          border: Border(left: BorderSide(color: color, width: 3)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -329,14 +346,9 @@ class _StoryRow extends StatelessWidget {
               children: [
                 Icon(icon, size: 16, color: color),
                 const SizedBox(width: DSSpacing.sm),
-                Expanded(
-                  child: DSText.labelMedium(story.title, color: color),
-                ),
+                Expanded(child: DSText.labelMedium(story.title, color: color)),
                 if (story.severity != GovernanceStorySeverity.healthy)
-                  _StorySeverityBadge(
-                    label: story.severity.name,
-                    color: color,
-                  ),
+                  _StorySeverityBadge(label: story.severity.name, color: color),
               ],
             ),
             const SizedBox(height: DSSpacing.xs),

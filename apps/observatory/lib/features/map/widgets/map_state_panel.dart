@@ -125,7 +125,9 @@ class MapStatePanel extends StatelessWidget {
           icon: Icons.search_off_outlined,
           title: title,
           subtitle: subtitle,
-          actionLabel: actionLabel ?? ((hasQuery || hasFilters) ? 'Clear filters' : null),
+          actionLabel:
+              actionLabel ??
+              ((hasQuery || hasFilters) ? 'Clear filters' : null),
           onAction: onAction,
         );
 

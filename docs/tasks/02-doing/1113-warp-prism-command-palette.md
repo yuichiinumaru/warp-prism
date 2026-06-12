@@ -1,6 +1,7 @@
 # Task 1113: Warp Prism Command Palette
 
 > **Status**: `[x]` Complete — awaiting review
+> **Review State**: Package Gate Failed — implementation complete; pre-existing gallery compilation errors block full package gate
 > **Priority**: 🔴 P0
 > **Type**: `feature` | `design-system`
 > **Origin**: EPIC-11 gap analysis (CRITICAL GAP-C2)

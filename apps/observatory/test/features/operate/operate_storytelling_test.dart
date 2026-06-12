@@ -182,7 +182,10 @@ void main() {
       final result = deriveOperateStoryDiagnostics(tasks);
 
       expect(result.laneMismatches, isNotEmpty);
-      expect(result.laneMismatches.first.description, contains('no review score'));
+      expect(
+        result.laneMismatches.first.description,
+        contains('no review score'),
+      );
     });
 
     test('overall risk level matches highest insight', () {

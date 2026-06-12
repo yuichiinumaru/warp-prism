@@ -1,6 +1,7 @@
 # Task 0813: Warp-Prism Governance Drill-Down And Storytelling
 
 > **Status**: `[x]` Done
+> **Review State**: Blocked — Flutter SDK not installed; validation commands cannot execute
 > **Priority**: 🟡 P1
 > **Type**: `feature`
 > **Origin**: User request to promote executable tasks from `EPIC-08-warp-prism-governance-surface.md`

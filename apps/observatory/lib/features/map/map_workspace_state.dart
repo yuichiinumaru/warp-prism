@@ -139,13 +139,12 @@ class MapWorkspaceState {
   List<WorkspaceAsset> get assetsForTab {
     switch (activeSubview) {
       case MapSubview.agents:
-        return catalogAssets
-            .where((a) => a.kind == AssetKind.agent)
-            .toList();
+        return catalogAssets.where((a) => a.kind == AssetKind.agent).toList();
       case MapSubview.skills:
         return catalogAssets
-            .where((a) =>
-                a.kind == AssetKind.skill || a.kind == AssetKind.subskill)
+            .where(
+              (a) => a.kind == AssetKind.skill || a.kind == AssetKind.subskill,
+            )
             .toList();
       case MapSubview.workflows:
         return catalogAssets
@@ -229,9 +228,14 @@ class MapWorkspaceState {
           catalogAssets.length == other.catalogAssets.length;
 
   @override
-  int get hashCode =>
-      Object.hash(activeSubview, query, selectedAssetId, isLoading, error,
-          catalogAssets.length);
+  int get hashCode => Object.hash(
+    activeSubview,
+    query,
+    selectedAssetId,
+    isLoading,
+    error,
+    catalogAssets.length,
+  );
 
   @override
   String toString() =>

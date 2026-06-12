@@ -1,6 +1,7 @@
 # Task 0312: Warp-Prism Read-Only Mock Workspace Repository
 
 > **Status**: `[x]` Completed
+> **Review State**: `Builder Done` — see `docs/governance/promotion-state-model.md`
 > **Priority**: 🟡 P1
 > **Type**: `feature`
 > **Origin**: EPIC 03 promotion from `warp-prism/docs/tasks/00-planning/EPIC-03-warp-prism-data-layer-graph-backbone.md`

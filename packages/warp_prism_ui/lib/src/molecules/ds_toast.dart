@@ -50,6 +50,8 @@ class DSToast extends StatelessWidget {
     final severityIcon = entry.severity.icon;
 
     return Semantics(
+      container: true,
+      explicitChildNodes: true,
       liveRegion: true,
       label: '${entry.severity.label}: ${entry.title}',
       child: ConstrainedBox(
@@ -63,9 +65,15 @@ class DSToast extends StatelessWidget {
           child: Row(
             children: [
               // Severity accent bar (4px left edge)
+              //
+              // height cannot be double.infinity because the toast may live
+              // inside an overlay with unconstrained height constraints.
+              // Using kMinInteractiveDimension (48) ensures a consistent,
+              // accessible minimum height while keeping the bar visually
+              // proportional to the content.
               Container(
                 width: 4,
-                height: double.infinity,
+                height: kMinInteractiveDimension,
                 decoration: BoxDecoration(
                   color: severityColor,
                   borderRadius: const BorderRadius.only(
@@ -76,17 +84,21 @@ class DSToast extends StatelessWidget {
               ),
 
               // Severity icon
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: DSSpacing.md,
-                  top: DSSpacing.md,
-                  bottom: DSSpacing.md,
-                ),
-                child: DSIcon(
-                  severityIcon,
-                  color: severityColor,
-                  size: 20,
-                  semanticLabel: entry.severity.label,
+              // Exclude from semantics — the outer Semantics(label: ...)
+              // already encodes the severity+title combination.
+              ExcludeSemantics(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: DSSpacing.md,
+                    top: DSSpacing.md,
+                    bottom: DSSpacing.md,
+                  ),
+                  child: DSIcon(
+                    severityIcon,
+                    color: severityColor,
+                    size: 20,
+                    semanticLabel: entry.severity.label,
+                  ),
                 ),
               ),
 
@@ -97,28 +109,30 @@ class DSToast extends StatelessWidget {
                     horizontal: DSSpacing.sm,
                     vertical: DSSpacing.md,
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        entry.title,
-                        style: DSTypography.labelLarge.copyWith(
-                          color: DSColors.textPrimary,
-                        ),
-                      ),
-                      if (entry.message != null) ...[
-                        const SizedBox(height: DSSpacing.xxs),
+                  child: ExcludeSemantics(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
                         Text(
-                          entry.message!,
-                          style: DSTypography.bodySmall.copyWith(
-                            color: DSColors.textTertiary,
+                          entry.title,
+                          style: DSTypography.labelLarge.copyWith(
+                            color: DSColors.textPrimary,
                           ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
                         ),
+                        if (entry.message != null) ...[
+                          const SizedBox(height: DSSpacing.xxs),
+                          Text(
+                            entry.message!,
+                            style: DSTypography.bodySmall.copyWith(
+                              color: DSColors.textTertiary,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
                       ],
-                    ],
+                    ),
                   ),
                 ),
               ),
@@ -127,22 +141,28 @@ class DSToast extends StatelessWidget {
               if (entry.actionLabel != null)
                 Padding(
                   padding: const EdgeInsets.only(right: DSSpacing.xs),
-                  child: TextButton(
-                    onPressed: onAction,
-                    style: TextButton.styleFrom(
-                      foregroundColor: severityColor,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: DSSpacing.sm,
-                        vertical: DSSpacing.xs,
+                  child: Semantics(
+                    label: entry.actionLabel,
+                    button: true,
+                    child: TextButton(
+                      onPressed: onAction,
+                      style: TextButton.styleFrom(
+                        foregroundColor: severityColor,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: DSSpacing.sm,
+                          vertical: DSSpacing.xs,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(DSRadii.sm),
+                        ),
                       ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(DSRadii.sm),
-                      ),
-                    ),
-                    child: Text(
-                      entry.actionLabel!,
-                      style: DSTypography.labelMedium.copyWith(
-                        color: severityColor,
+                      child: ExcludeSemantics(
+                        child: Text(
+                          entry.actionLabel!,
+                          style: DSTypography.labelMedium.copyWith(
+                            color: severityColor,
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -156,8 +176,8 @@ class DSToast extends StatelessWidget {
                     label: 'Dismiss notification',
                     button: true,
                     child: SizedBox(
-                      width: DSSpacing.iconButtonSizeCompact,
-                      height: DSSpacing.iconButtonSizeCompact,
+                      width: kMinInteractiveDimension,
+                      height: kMinInteractiveDimension,
                       child: IconButton(
                         onPressed: onDismiss,
                         icon: const DSIcon.small(
@@ -165,7 +185,7 @@ class DSToast extends StatelessWidget {
                           color: DSColors.textTertiary,
                         ),
                         padding: EdgeInsets.zero,
-                        splashRadius: DSSpacing.iconButtonSizeCompact / 2,
+                        splashRadius: kMinInteractiveDimension / 2,
                         tooltip: 'Dismiss',
                       ),
                     ),
@@ -184,11 +204,7 @@ class DSToast extends StatelessWidget {
 /// Each severity maps to a distinct [DSColors] color and [DSIcons] icon.
 enum DSToastSeverity {
   /// Informational — neutral blue.
-  info(
-    color: DSColors.statusInfo,
-    icon: DSIcons.info,
-    label: 'Info',
-  ),
+  info(color: DSColors.statusInfo, icon: DSIcons.info, label: 'Info'),
 
   /// Success — green.
   success(
@@ -205,11 +221,7 @@ enum DSToastSeverity {
   ),
 
   /// Error — red.
-  error(
-    color: DSColors.statusError,
-    icon: DSIcons.error,
-    label: 'Error',
-  );
+  error(color: DSColors.statusError, icon: DSIcons.error, label: 'Error');
 
   const DSToastSeverity({
     required this.color,

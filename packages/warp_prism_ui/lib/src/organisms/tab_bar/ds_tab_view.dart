@@ -29,11 +29,7 @@ class DSTabView extends StatefulWidget {
   /// Defaults to [DSColors.obsidianDeep].
   final Color? backgroundColor;
 
-  const DSTabView({
-    super.key,
-    required this.controller,
-    this.backgroundColor,
-  });
+  const DSTabView({super.key, required this.controller, this.backgroundColor});
 
   @override
   State<DSTabView> createState() => _DSTabViewState();
@@ -78,10 +74,7 @@ class _DSTabViewState extends State<DSTabView> {
         index: widget.controller.activeIndex,
         children: [
           for (final tab in tabs)
-            KeyedSubtree(
-              key: ValueKey(tab.id),
-              child: tab.content(context),
-            ),
+            KeyedSubtree(key: ValueKey(tab.id), child: tab.content(context)),
         ],
       ),
     );

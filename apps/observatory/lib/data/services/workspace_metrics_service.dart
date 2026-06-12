@@ -71,18 +71,18 @@ class WorkspaceMetricsSummary {
 
   /// An empty summary with all zeroes.
   const WorkspaceMetricsSummary.empty()
-      : totalAssets = 0,
-        assetsByKind = const {},
-        tasksByLane = const {},
-        blockedTaskCount = 0,
-        reviewQueueCount = 0,
-        proofGapCount = 0,
-        tasksWithoutVerification = 0,
-        changelogWithTaskLink = 0,
-        changelogWithoutTaskLink = 0,
-        totalEdges = 0,
-        skillsWithNoTriggers = 0,
-        orphanWorkflowCount = 0;
+    : totalAssets = 0,
+      assetsByKind = const {},
+      tasksByLane = const {},
+      blockedTaskCount = 0,
+      reviewQueueCount = 0,
+      proofGapCount = 0,
+      tasksWithoutVerification = 0,
+      changelogWithTaskLink = 0,
+      changelogWithoutTaskLink = 0,
+      totalEdges = 0,
+      skillsWithNoTriggers = 0,
+      orphanWorkflowCount = 0;
 
   @override
   String toString() =>

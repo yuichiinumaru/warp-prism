@@ -38,7 +38,10 @@ void main() {
     });
 
     test('defines all verification states', () {
-      expect(DSOperationalState.values, contains(DSOperationalState.unverified));
+      expect(
+        DSOperationalState.values,
+        contains(DSOperationalState.unverified),
+      );
       expect(DSOperationalState.values, contains(DSOperationalState.exposed));
       expect(DSOperationalState.values, contains(DSOperationalState.redacted));
     });
@@ -119,7 +122,10 @@ void main() {
     });
 
     test('unverified uses textTertiary', () {
-      expect(DSOperationalState.unverified.color, equals(DSColors.textTertiary));
+      expect(
+        DSOperationalState.unverified.color,
+        equals(DSColors.textTertiary),
+      );
     });
 
     test('exposed uses statusError', () {
@@ -152,7 +158,10 @@ void main() {
     });
 
     test('approved uses check_circle_outline icon', () {
-      expect(DSOperationalState.approved.icon, equals(Icons.check_circle_outline));
+      expect(
+        DSOperationalState.approved.icon,
+        equals(Icons.check_circle_outline),
+      );
     });
 
     test('rejected uses error_outline icon', () {
@@ -164,15 +173,24 @@ void main() {
     });
 
     test('archived uses inventory_2_outlined icon', () {
-      expect(DSOperationalState.archived.icon, equals(Icons.inventory_2_outlined));
+      expect(
+        DSOperationalState.archived.icon,
+        equals(Icons.inventory_2_outlined),
+      );
     });
 
     test('healthy uses check_circle_outline icon', () {
-      expect(DSOperationalState.healthy.icon, equals(Icons.check_circle_outline));
+      expect(
+        DSOperationalState.healthy.icon,
+        equals(Icons.check_circle_outline),
+      );
     });
 
     test('degraded uses warning_amber_outlined icon', () {
-      expect(DSOperationalState.degraded.icon, equals(Icons.warning_amber_outlined));
+      expect(
+        DSOperationalState.degraded.icon,
+        equals(Icons.warning_amber_outlined),
+      );
     });
 
     test('disabled uses block icon', () {
@@ -184,7 +202,10 @@ void main() {
     });
 
     test('exposed uses warning_amber_outlined icon', () {
-      expect(DSOperationalState.exposed.icon, equals(Icons.warning_amber_outlined));
+      expect(
+        DSOperationalState.exposed.icon,
+        equals(Icons.warning_amber_outlined),
+      );
     });
 
     test('redacted uses home_outlined icon', () {
@@ -192,7 +213,10 @@ void main() {
     });
 
     test('stale uses warning_amber_outlined icon', () {
-      expect(DSOperationalState.stale.icon, equals(Icons.warning_amber_outlined));
+      expect(
+        DSOperationalState.stale.icon,
+        equals(Icons.warning_amber_outlined),
+      );
     });
 
     test('excluded uses block icon', () {
@@ -210,11 +234,17 @@ void main() {
     });
 
     test('non-terminal states are not terminal', () {
-      final nonTerminal = DSOperationalState.values
-          .where((s) => s != DSOperationalState.archived && s != DSOperationalState.excluded);
+      final nonTerminal = DSOperationalState.values.where(
+        (s) =>
+            s != DSOperationalState.archived &&
+            s != DSOperationalState.excluded,
+      );
       for (final state in nonTerminal) {
-        expect(state.isTerminal, isFalse,
-            reason: '${state.label} should not be terminal');
+        expect(
+          state.isTerminal,
+          isFalse,
+          reason: '${state.label} should not be terminal',
+        );
       }
     });
 
@@ -236,42 +266,94 @@ void main() {
         DSOperationalState.stale,
       ];
       for (final state in warningStates) {
-        expect(state.showsWarning, isTrue,
-            reason: '${state.label} should show warning');
+        expect(
+          state.showsWarning,
+          isTrue,
+          reason: '${state.label} should show warning',
+        );
       }
     });
 
     test('non-warning states do not show warning', () {
-      final nonWarning = DSOperationalState.values
-          .where((s) => ![
-                DSOperationalState.rejected,
-                DSOperationalState.degraded,
-                DSOperationalState.error,
-                DSOperationalState.exposed,
-                DSOperationalState.stale,
-              ].contains(s));
+      final nonWarning = DSOperationalState.values.where(
+        (s) => ![
+          DSOperationalState.rejected,
+          DSOperationalState.degraded,
+          DSOperationalState.error,
+          DSOperationalState.exposed,
+          DSOperationalState.stale,
+        ].contains(s),
+      );
       for (final state in nonWarning) {
-        expect(state.showsWarning, isFalse,
-            reason: '${state.label} should not show warning');
+        expect(
+          state.showsWarning,
+          isFalse,
+          reason: '${state.label} should not show warning',
+        );
       }
     });
 
     test('severity classifications are correct', () {
-      expect(DSOperationalState.pending.severity, equals(DSOperationalSeverity.info));
-      expect(DSOperationalState.running.severity, equals(DSOperationalSeverity.info));
-      expect(DSOperationalState.approved.severity, equals(DSOperationalSeverity.success));
-      expect(DSOperationalState.rejected.severity, equals(DSOperationalSeverity.error));
-      expect(DSOperationalState.promoted.severity, equals(DSOperationalSeverity.success));
-      expect(DSOperationalState.archived.severity, equals(DSOperationalSeverity.info));
-      expect(DSOperationalState.healthy.severity, equals(DSOperationalSeverity.success));
-      expect(DSOperationalState.degraded.severity, equals(DSOperationalSeverity.warning));
-      expect(DSOperationalState.error.severity, equals(DSOperationalSeverity.error));
-      expect(DSOperationalState.disabled.severity, equals(DSOperationalSeverity.info));
-      expect(DSOperationalState.unverified.severity, equals(DSOperationalSeverity.info));
-      expect(DSOperationalState.exposed.severity, equals(DSOperationalSeverity.error));
-      expect(DSOperationalState.redacted.severity, equals(DSOperationalSeverity.warning));
-      expect(DSOperationalState.stale.severity, equals(DSOperationalSeverity.warning));
-      expect(DSOperationalState.excluded.severity, equals(DSOperationalSeverity.info));
+      expect(
+        DSOperationalState.pending.severity,
+        equals(DSOperationalSeverity.info),
+      );
+      expect(
+        DSOperationalState.running.severity,
+        equals(DSOperationalSeverity.info),
+      );
+      expect(
+        DSOperationalState.approved.severity,
+        equals(DSOperationalSeverity.success),
+      );
+      expect(
+        DSOperationalState.rejected.severity,
+        equals(DSOperationalSeverity.error),
+      );
+      expect(
+        DSOperationalState.promoted.severity,
+        equals(DSOperationalSeverity.success),
+      );
+      expect(
+        DSOperationalState.archived.severity,
+        equals(DSOperationalSeverity.info),
+      );
+      expect(
+        DSOperationalState.healthy.severity,
+        equals(DSOperationalSeverity.success),
+      );
+      expect(
+        DSOperationalState.degraded.severity,
+        equals(DSOperationalSeverity.warning),
+      );
+      expect(
+        DSOperationalState.error.severity,
+        equals(DSOperationalSeverity.error),
+      );
+      expect(
+        DSOperationalState.disabled.severity,
+        equals(DSOperationalSeverity.info),
+      );
+      expect(
+        DSOperationalState.unverified.severity,
+        equals(DSOperationalSeverity.info),
+      );
+      expect(
+        DSOperationalState.exposed.severity,
+        equals(DSOperationalSeverity.error),
+      );
+      expect(
+        DSOperationalState.redacted.severity,
+        equals(DSOperationalSeverity.warning),
+      );
+      expect(
+        DSOperationalState.stale.severity,
+        equals(DSOperationalSeverity.warning),
+      );
+      expect(
+        DSOperationalState.excluded.severity,
+        equals(DSOperationalSeverity.info),
+      );
     });
   });
 
@@ -288,8 +370,11 @@ void main() {
         DSOperationalState.promoted,
         DSOperationalState.archived,
       ]) {
-        expect(state.category, equals(DSOperationalCategory.lifecycle),
-            reason: '${state.label} should be lifecycle');
+        expect(
+          state.category,
+          equals(DSOperationalCategory.lifecycle),
+          reason: '${state.label} should be lifecycle',
+        );
       }
     });
 
@@ -300,8 +385,11 @@ void main() {
         DSOperationalState.error,
         DSOperationalState.disabled,
       ]) {
-        expect(state.category, equals(DSOperationalCategory.health),
-            reason: '${state.label} should be health');
+        expect(
+          state.category,
+          equals(DSOperationalCategory.health),
+          reason: '${state.label} should be health',
+        );
       }
     });
 
@@ -311,8 +399,11 @@ void main() {
         DSOperationalState.exposed,
         DSOperationalState.redacted,
       ]) {
-        expect(state.category, equals(DSOperationalCategory.verification),
-            reason: '${state.label} should be verification');
+        expect(
+          state.category,
+          equals(DSOperationalCategory.verification),
+          reason: '${state.label} should be verification',
+        );
       }
     });
 
@@ -321,8 +412,11 @@ void main() {
         DSOperationalState.stale,
         DSOperationalState.excluded,
       ]) {
-        expect(state.category, equals(DSOperationalCategory.governance),
-            reason: '${state.label} should be governance');
+        expect(
+          state.category,
+          equals(DSOperationalCategory.governance),
+          reason: '${state.label} should be governance',
+        );
       }
     });
   });
@@ -334,11 +428,7 @@ void main() {
     testWidgets('renders for each operational state', (tester) async {
       for (final state in DSOperationalState.values) {
         await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: DSStatusDot.operational(state),
-            ),
-          ),
+          MaterialApp(home: Scaffold(body: DSStatusDot.operational(state))),
         );
         expect(find.byType(DSStatusDot), findsOneWidget);
       }
@@ -416,11 +506,7 @@ void main() {
     testWidgets('renders for each operational state', (tester) async {
       for (final state in DSOperationalState.values) {
         await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: DSBadge.operational(state),
-            ),
-          ),
+          MaterialApp(home: Scaffold(body: DSBadge.operational(state))),
         );
         expect(find.byType(DSBadge), findsOneWidget);
       }
@@ -429,9 +515,7 @@ void main() {
     testWidgets('displays state label by default', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: DSBadge.operational(DSOperationalState.pending),
-          ),
+          home: Scaffold(body: DSBadge.operational(DSOperationalState.pending)),
         ),
       );
       expect(find.text('Pending'), findsOneWidget);
@@ -455,10 +539,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: DSBadge.operational(
-              DSOperationalState.error,
-              count: 5,
-            ),
+            body: DSBadge.operational(DSOperationalState.error, count: 5),
           ),
         ),
       );
@@ -512,9 +593,7 @@ void main() {
     testWidgets('DSStateSurface.loading still works', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: DSStateSurface.loading(title: 'Loading...'),
-          ),
+          home: Scaffold(body: DSStateSurface.loading(title: 'Loading...')),
         ),
       );
       expect(find.text('Loading...'), findsOneWidget);
@@ -525,10 +604,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: DSStateSurface.error(
-              title: 'Failed',
-              onAction: () {},
-            ),
+            body: DSStateSurface.error(title: 'Failed', onAction: () {}),
           ),
         ),
       );

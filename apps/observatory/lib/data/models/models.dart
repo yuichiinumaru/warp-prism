@@ -414,10 +414,7 @@ class FallbackRule {
   final String condition;
   final String action;
 
-  const FallbackRule({
-    required this.condition,
-    required this.action,
-  });
+  const FallbackRule({required this.condition, required this.action});
 }
 
 /// Task model
@@ -556,10 +553,7 @@ class ChangeSection {
   final String type; // added, changed, fixed, deprecated, removed, security
   final List<String> items;
 
-  const ChangeSection({
-    required this.type,
-    required this.items,
-  });
+  const ChangeSection({required this.type, required this.items});
 }
 
 /// Affected asset reference in changelog

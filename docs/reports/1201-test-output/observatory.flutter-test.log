@@ -1,0 +1,1051 @@
+Resolving dependencies...
+Downloading packages...
+  cli_util 0.4.2 (0.5.1 available)
+  fl_chart 0.68.0 (1.2.0 available)
+  flutter_lints 4.0.0 (6.0.0 available)
+  flutter_riverpod 2.6.1 (3.3.2 available)
+  go_router 14.8.1 (17.3.0 available)
+  intl 0.19.0 (0.20.2 available)
+  lints 4.0.0 (6.1.0 available)
+  matcher 0.12.19 (0.12.20 available)
+  melos 7.8.1 (7.8.2 available)
+  meta 1.18.0 (1.18.3 available)
+  mustache_template 2.0.4 (2.0.5 available)
+  riverpod 2.6.1 (3.3.2 available)
+  test_api 0.7.11 (0.7.12 available)
+  vector_math 2.2.0 (2.4.0 available)
+Got dependencies!
+14 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+00:00 +0: loading /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_bootstrap_test.dart
+00:00 +0: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_bootstrap_test.dart: App Bootstrap WarpPrismApp renders MaterialApp.router
+00:01 +1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_bootstrap_test.dart: App Bootstrap WarpPrismApp renders MaterialApp.router
+00:01 +2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_bootstrap_test.dart: App Bootstrap WarpPrismApp renders MaterialApp.router
+00:01 +3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_bootstrap_test.dart: App Bootstrap WarpPrismApp renders MaterialApp.router
+00:01 +4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_bootstrap_test.dart: App Bootstrap WarpPrismApp renders MaterialApp.router
+00:01 +5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_bootstrap_test.dart: App Bootstrap WarpPrismApp renders MaterialApp.router
+00:01 +6: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_bootstrap_test.dart: App Bootstrap WarpPrismApp renders MaterialApp.router
+00:01 +7: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_bootstrap_test.dart: App Bootstrap WarpPrismApp renders MaterialApp.router
+00:01 +8: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_bootstrap_test.dart: App Bootstrap WarpPrismApp renders MaterialApp.router
+00:01 +9: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_bootstrap_test.dart: App Bootstrap WarpPrismApp renders MaterialApp.router
+00:01 +10: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_bootstrap_test.dart: App Bootstrap WarpPrismApp renders MaterialApp.router
+00:01 +11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_bootstrap_test.dart: App Bootstrap WarpPrismApp renders MaterialApp.router
+00:01 +12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_bootstrap_test.dart: App Bootstrap WarpPrismApp renders MaterialApp.router
+00:01 +13: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_bootstrap_test.dart: App Bootstrap WarpPrismApp renders MaterialApp.router
+00:01 +14: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_bootstrap_test.dart: App Bootstrap WarpPrismApp renders MaterialApp.router
+00:01 +15: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_bootstrap_test.dart: App Bootstrap WarpPrismApp renders MaterialApp.router
+00:01 +16: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_bootstrap_test.dart: App Bootstrap WarpPrismApp renders MaterialApp.router
+00:01 +17: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_bootstrap_test.dart: App Bootstrap WarpPrismApp renders MaterialApp.router
+00:01 +18: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_bootstrap_test.dart: App Bootstrap WarpPrismApp renders MaterialApp.router
+00:01 +19: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_bootstrap_test.dart: App Bootstrap WarpPrismApp renders MaterialApp.router
+00:01 +20: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_bootstrap_test.dart: App Bootstrap WarpPrismApp renders MaterialApp.router
+00:02 +21: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_shell_smoke_test.dart: App shell smoke test app boots and renders the shell with default route
+00:03 +22: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_shell_smoke_test.dart: App shell smoke test app boots and renders the shell with default route
+00:04 +23: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_shell_smoke_test.dart: App shell smoke test app boots and renders the shell with default route
+00:04 +24: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_shell_smoke_test.dart: App shell smoke test app boots and renders the shell with default route
+00:04 +25: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_shell_smoke_test.dart: App shell smoke test app boots and renders the shell with default route
+00:04 +26: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_shell_smoke_test.dart: App shell smoke test app boots and renders the shell with default route
+00:04 +27: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_shell_smoke_test.dart: App shell smoke test app boots and renders the shell with default route
+00:04 +28: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_shell_smoke_test.dart: App shell smoke test app boots and renders the shell with default route
+00:04 +29: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_shell_smoke_test.dart: App shell smoke test app boots and renders the shell with default route
+00:04 +30: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_shell_smoke_test.dart: App shell smoke test app boots and renders the shell with default route
+00:04 +31: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_shell_smoke_test.dart: App shell smoke test app boots and renders the shell with default route
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following assertion was thrown running a test:
+No GoRouter found in context
+'package:go_router/src/router.dart':
+Failed assertion: line 521 pos 12: 'inherited != null'
+
+When the exception was thrown, this was the stack:
+#2      GoRouter.of (package:go_router/src/router.dart:521:12)
+#3      main.<anonymous closure>.<anonymous closure> (file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_shell_smoke_test.dart:20:16)
+<asynchronous suspension>
+#4      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#5      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 3 frames from class _AssertionError and package:stack_trace)
+
+The test description was:
+  app boots and renders the shell with default route
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:04 +31 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/deep_link_fallback_test.dart: AssetDetailPage deep-link fallback renders fallback for empty asset ID
+00:04 +31 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_shell_smoke_test.dart: App shell smoke test app boots and renders the shell with default route [E]
+  Test failed. See exception logs above.
+  The test description was: app boots and renders the shell with default route
+  
+00:04 +32 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/deep_link_fallback_test.dart: AssetDetailPage deep-link fallback renders fallback for empty asset ID
+00:04 +33 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/deep_link_fallback_test.dart: AssetDetailPage deep-link fallback renders fallback for empty asset ID
+00:04 +34 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/deep_link_fallback_test.dart: AssetDetailPage deep-link fallback renders fallback for empty asset ID
+00:04 +35 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/deep_link_fallback_test.dart: AssetDetailPage deep-link fallback renders fallback for empty asset ID
+00:04 +36 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/deep_link_fallback_test.dart: AssetDetailPage deep-link fallback renders fallback for empty asset ID
+00:04 +37 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/deep_link_fallback_test.dart: AssetDetailPage deep-link fallback renders fallback for empty asset ID
+00:04 +38 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/deep_link_fallback_test.dart: AssetDetailPage deep-link fallback renders fallback for empty asset ID
+00:04 +39 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/deep_link_fallback_test.dart: AssetDetailPage deep-link fallback renders fallback for empty asset ID
+00:04 +40 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/deep_link_fallback_test.dart: AssetDetailPage deep-link fallback renders fallback for empty asset ID
+00:04 +41 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/deep_link_fallback_test.dart: AssetDetailPage deep-link fallback renders fallback for empty asset ID
+00:04 +42 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/deep_link_fallback_test.dart: AssetDetailPage deep-link fallback renders fallback for empty asset ID
+00:04 +43 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/deep_link_fallback_test.dart: AssetDetailPage deep-link fallback renders fallback for empty asset ID
+00:05 +44 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/deep_link_fallback_test.dart: AssetDetailPage deep-link fallback renders fallback for empty asset ID
+00:05 +45 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:05 +46 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:05 +47 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:05 +48 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:05 +49 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:05 +50 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:05 +51 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:05 +52 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:05 +53 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:05 +54 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:05 +55 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:05 +56 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:05 +57 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:05 +58 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:05 +59 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:05 +60 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:05 +61 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:05 +62 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:05 +63 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:05 +64 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:05 +65 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:05 +66 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:05 +67 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:05 +68 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:05 +69 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:05 +70 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:05 +71 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:05 +72 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:05 +73 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:05 +74 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:05 +75 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +76 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +77 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +78 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +79 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +80 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +81 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +82 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +83 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +84 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +85 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +86 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +87 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +88 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +89 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +90 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +91 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +92 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +93 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +94 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +95 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +96 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +97 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +98 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +99 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +100 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +101 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +102 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +103 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +104 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +105 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +106 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +107 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +108 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +109 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +110 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +111 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +112 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +112 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_shell_smoke_test.dart: App shell smoke test default route lands on Overview
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following assertion was thrown running a test:
+No GoRouter found in context
+'package:go_router/src/router.dart':
+Failed assertion: line 521 pos 12: 'inherited != null'
+
+When the exception was thrown, this was the stack:
+#2      GoRouter.of (package:go_router/src/router.dart:521:12)
+#3      main.<anonymous closure>.<anonymous closure> (file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_shell_smoke_test.dart:36:16)
+<asynchronous suspension>
+#4      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#5      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 3 frames from class _AssertionError and package:stack_trace)
+
+The test description was:
+  default route lands on Overview
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:06 +112 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +112 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_shell_smoke_test.dart: App shell smoke test default route lands on Overview [E]
+  Test failed. See exception logs above.
+  The test description was: default route lands on Overview
+  
+00:06 +113 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +114 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +115 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +116 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/sources/preset_local_workspace_source_test.dart: PresetLocalWorkspaceSource returns empty snapshot for directory with no .agents or docs
+00:07 +117 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/sources/preset_local_workspace_source_test.dart: PresetLocalWorkspaceSource returns empty snapshot for directory with no .agents or docs
+00:07 +118 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout narrow layout (400px) renders bottom navigation and no sidebar
+00:07 +119 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout narrow layout (400px) renders bottom navigation and no sidebar
+00:07 +120 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout narrow layout (400px) renders bottom navigation and no sidebar
+00:07 +121 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout narrow layout (400px) renders bottom navigation and no sidebar
+00:07 +122 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout narrow layout (400px) renders bottom navigation and no sidebar
+00:07 +123 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout narrow layout (400px) renders bottom navigation and no sidebar
+00:07 +124 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout narrow layout (400px) renders bottom navigation and no sidebar
+00:07 +125 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout narrow layout (400px) renders bottom navigation and no sidebar
+00:07 +126 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout narrow layout (400px) renders bottom navigation and no sidebar
+00:07 +127 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout narrow layout (400px) renders bottom navigation and no sidebar
+00:07 +128 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout narrow layout (400px) renders bottom navigation and no sidebar
+00:07 +129 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout narrow layout (400px) renders bottom navigation and no sidebar
+00:07 +130 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout narrow layout (400px) renders bottom navigation and no sidebar
+00:07 +131 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout narrow layout (400px) renders bottom navigation and no sidebar
+00:07 +132 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout narrow layout (400px) renders bottom navigation and no sidebar
+00:07 +133 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout narrow layout (400px) renders bottom navigation and no sidebar
+00:08 +134 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout narrow layout (400px) renders bottom navigation and no sidebar
+00:08 +135 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout narrow layout (400px) renders bottom navigation and no sidebar
+00:08 +136 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout narrow layout (400px) renders bottom navigation and no sidebar
+00:08 +137 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/repositories/mock_workspace_repository_test.dart: MockWorkspaceRepository returns empty state for empty directory
+00:08 +138 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout medium layout (900px) renders collapsed sidebar
+00:08 +139 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout medium layout (900px) renders collapsed sidebar
+00:08 +140 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout medium layout (900px) renders collapsed sidebar
+00:08 +141 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout medium layout (900px) renders collapsed sidebar
+00:08 +142 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout medium layout (900px) renders collapsed sidebar
+00:08 +143 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout medium layout (900px) renders collapsed sidebar
+00:08 +144 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout medium layout (900px) renders collapsed sidebar
+00:08 +145 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout medium layout (900px) renders collapsed sidebar
+00:08 +146 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout medium layout (900px) renders collapsed sidebar
+00:08 +147 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout medium layout (900px) renders collapsed sidebar
+00:08 +148 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout medium layout (900px) renders collapsed sidebar
+00:08 +149 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout medium layout (900px) renders collapsed sidebar
+00:08 +150 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout medium layout (900px) renders collapsed sidebar
+00:08 +151 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/services/workspace_diagnostics_service_test.dart: WorkspaceMetricsService empty graph produces empty summary
+00:09 +152 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout AppShell defines exactly 5 navigation items
+00:09 +153 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/services/workspace_diagnostics_service_test.dart: WorkspaceDiagnosticsService no-warning baseline produces empty report
+00:09 +154 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout navigation items have required labels
+00:09 +155 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/services/workspace_diagnostics_service_test.dart: WorkspaceDiagnosticsService detects orphan assets with no edges
+00:09 +156 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout navigation items have unique ids
+00:09 +157 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/services/workspace_diagnostics_service_test.dart: WorkspaceDiagnosticsService detects stale references to non-existent assets
+00:09 +158 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout navigation items have distinct icons
+00:09 +159 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/services/workspace_diagnostics_service_test.dart: WorkspaceDiagnosticsService detects proof gaps in review lane
+00:09 +160 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive breakpoint contract sidebar hidden below 600px
+00:09 +161 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive breakpoint contract sidebar hidden below 600px
+00:09 +162 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive breakpoint contract sidebar hidden below 600px
+00:09 +163 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive breakpoint contract sidebar hidden below 600px
+00:09 +164 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive breakpoint contract sidebar hidden below 600px
+00:09 +165 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive breakpoint contract sidebar hidden below 600px
+00:09 +166 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive breakpoint contract sidebar visible at exactly 600px
+00:10 +167 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/services/workspace_graph_builder_test.dart: WorkspaceGraphBuilder builds canonical graph from flat asset list
+00:10 +168 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive breakpoint contract sidebar width changes between narrow and wide
+00:10 +169 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive breakpoint contract sidebar width changes between narrow and wide
+00:10 +170 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive breakpoint contract sidebar width changes between narrow and wide
+00:10 +171 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive breakpoint contract sidebar width changes between narrow and wide
+00:10 +172 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive breakpoint contract sidebar width changes between narrow and wide
+00:10 +173 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive breakpoint contract sidebar width changes between narrow and wide
+00:10 +174 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive breakpoint contract sidebar width changes between narrow and wide
+00:10 +175 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive breakpoint contract sidebar width changes between narrow and wide
+00:10 +176 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive breakpoint contract sidebar width changes between narrow and wide
+00:10 +177 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive breakpoint contract sidebar width changes between narrow and wide
+00:10 +178 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/services/workspace_graph_builder_test.dart: WorkspaceGraphBuilder incomingEdges returns edges targeting the given asset
+00:10 +179 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/services/workspace_graph_builder_test.dart: WorkspaceGraphBuilder neighbors returns connected assets
+00:10 +180 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/history/history_repository_test.dart: HistoryRepository builds timeline from changelog assets in chronological order
+00:10 +181 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/history/history_repository_test.dart: HistoryRepository builds timeline from changelog assets in chronological order
+00:10 +182 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/history/history_repository_test.dart: HistoryRepository builds timeline from changelog assets in chronological order
+00:10 +183 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/history/history_repository_test.dart: HistoryRepository builds timeline from changelog assets in chronological order
+00:10 +184 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/history/history_repository_test.dart: HistoryRepository builds timeline from changelog assets in chronological order
+00:10 +185 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/history/history_repository_test.dart: HistoryRepository builds timeline from changelog assets in chronological order
+00:10 +186 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/history/history_repository_test.dart: HistoryRepository builds timeline from changelog assets in chronological order
+00:10 +187 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/history/history_repository_test.dart: HistoryRepository builds timeline from changelog assets in chronological order
+00:10 +188 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/services/workspace_graph_builder_test.dart: EdgeInferenceService inferChangelogLinkage returns empty for null task
+00:10 +189 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/history/history_repository_test.dart: HistoryRepository extracts typed metadata from ChangelogMetadata
+00:10 +190 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/history/history_repository_test.dart: HistoryRepository extracts typed metadata from ChangelogMetadata
+00:11 +191 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/services/workspace_graph_builder_test.dart: EdgeInferenceService inferPathContainment extracts skill from path
+00:11 +192 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/history/history_repository_test.dart: HistoryRepository filterByProject returns entries for given project
+00:11 +193 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/services/workspace_graph_builder_test.dart: EdgeInferenceService inferPathContainment returns null for non-matching path
+00:11 +194 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/history/history_repository_test.dart: HistoryRepository filterByType returns entries of given type
+00:11 +195 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/services/workspace_graph_builder_test.dart: EdgeInferenceService inferProofLinkage creates proves edge when proof state present
+00:11 +196 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/history/history_repository_test.dart: HistoryRepository filterByTask returns entries linked to given task
+00:11 +197 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/services/workspace_graph_builder_test.dart: EdgeInferenceService inferProofLinkage returns empty when proof state is none
+00:11 +198 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/history/history_repository_test.dart: HistoryRepository filterByImpactTag returns entries with given tag
+00:11 +199 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/services/workspace_graph_builder_test.dart: WorkspaceGraphResult empty constructor produces empty graph
+00:11 +200 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/history/history_repository_test.dart: HistoryRepository filterBySkill returns entries referencing given skill
+00:11 +201 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/services/workspace_graph_builder_test.dart: WorkspaceGraphResult referencingAssets finds assets with incoming edges
+00:11 +202 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/history/history_repository_test.dart: HistoryFacets computes all facet dimensions
+00:11 +203 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/history/history_repository_test.dart: HistoryFacets facets contain expected values
+00:11 +204 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/history/history_repository_test.dart: HistoryFacets empty timeline produces empty facets
+00:11 +205 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/history/history_repository_test.dart: HistoryStoryGroup groups by project
+00:11 +206 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/history/history_repository_test.dart: HistoryStoryGroup groups by type
+00:11 +207 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/history/history_repository_test.dart: HistoryStoryGroup groups by task
+00:11 +208 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/history/history_repository_test.dart: HistoryStoryGroup groups are sorted by count descending
+00:11 +209 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/providers/workspace_providers_test.dart: WorkspaceOverviewViewModel builds from metrics and diagnostics
+00:11 +210 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/history/history_repository_test.dart: HistoryEntry linkedTaskId returns null for empty task
+00:11 +211 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/providers/workspace_providers_test.dart: WorkspaceOverviewViewModel empty overview has all zeroes
+00:11 +212 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/history/history_repository_test.dart: HistoryEntry linkedTaskId returns formatted id for non-empty task
+00:11 +213 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/history/history_repository_test.dart: HistoryEntry linkedTaskId returns formatted id for non-empty task
+00:11 +214 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/providers/workspace_providers_test.dart: OperateViewModel empty operate view model
+00:11 +215 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/history/history_repository_test.dart: Malformed and edge cases empty input produces empty timeline
+00:11 +216 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/providers/workspace_providers_test.dart: HistoryViewModel builds from metrics
+00:11 +217 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/history/history_repository_test.dart: Malformed and edge cases assets without ChangelogMetadata are handled gracefully
+00:11 +218 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/providers/workspace_providers_test.dart: HistoryViewModel empty history view model
+00:11 +219 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/history/history_repository_test.dart: Malformed and edge cases assets with invalid dates sort to the end
+00:11 +220 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/providers/workspace_providers_test.dart: GovernanceViewModel builds from diagnostics report
+00:11 +221 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/history/history_repository_test.dart: Malformed and edge cases multiple entries with same date maintain stable order
+00:11 +222 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/providers/workspace_providers_test.dart: GovernanceViewModel empty governance view model
+00:11 +223 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/history/history_repository_test.dart: Cross-reference edges HistoryEntry.linkedTaskId produces graph-compatible id
+00:11 +224 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/providers/workspace_providers_test.dart: MapViewModel empty map view model
+00:11 +225 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/providers/workspace_providers_test.dart: MapViewModel wraps a graph result
+00:11 +226 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/providers/workspace_providers_test.dart: Provider state contract workspaceRootPathProvider returns a non-null string
+00:11 +227 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/providers/workspace_providers_test.dart: Provider state contract workspaceRepositoryProvider returns a repository
+00:12 +228 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/overview/overview_page_test.dart: OverviewPage widget renders totals section with metric tiles
+00:13 +229 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/overview/overview_page_test.dart: OverviewPage widget renders totals section with metric tiles
+00:13 +230 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/overview/overview_page_test.dart: OverviewPage widget renders totals section with metric tiles
+00:13 +231 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/overview/overview_page_test.dart: OverviewPage widget renders totals section with metric tiles
+00:13 +232 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/overview/overview_page_test.dart: OverviewPage widget renders totals section with metric tiles
+00:13 +233 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/overview/overview_page_test.dart: OverviewPage widget renders totals section with metric tiles
+00:13 +234 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/overview/overview_page_test.dart: OverviewPage widget renders totals section with metric tiles
+00:13 +235 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/overview/overview_page_test.dart: OverviewPage widget renders totals section with metric tiles
+00:13 +236 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/overview/overview_page_test.dart: OverviewPage widget renders totals section with metric tiles
+00:13 +237 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/overview/overview_page_test.dart: OverviewPage widget renders totals section with metric tiles
+00:14 +238 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/overview/overview_page_test.dart: OverviewPage widget renders totals section with metric tiles
+00:14 +239 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/overview/overview_page_test.dart: OverviewPage widget renders totals section with metric tiles
+00:14 +240 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/overview/overview_page_test.dart: OverviewPage widget renders totals section with metric tiles
+00:14 +241 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/overview/overview_page_test.dart: OverviewPage widget renders totals section with metric tiles
+00:14 +242 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/overview/overview_page_test.dart: OverviewPage widget renders totals section with metric tiles
+00:14 +243 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/overview/overview_page_test.dart: OverviewPage widget renders totals section with metric tiles
+00:14 +244 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/overview/overview_page_test.dart: OverviewPage widget renders totals section with metric tiles
+00:14 +245 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/overview/overview_page_test.dart: OverviewPage widget renders totals section with metric tiles
+00:14 +246 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/overview/overview_page_test.dart: OverviewPage widget renders totals section with metric tiles
+00:15 +247 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/overview/overview_page_test.dart: OverviewPage widget renders totals section with metric tiles
+00:15 +248 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/overview/overview_page_test.dart: OverviewPage widget renders totals section with metric tiles
+00:15 +249 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/overview/overview_page_test.dart: OverviewPage widget renders totals section with metric tiles
+00:15 +250 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/overview/overview_page_test.dart: OverviewPage widget renders totals section with metric tiles
+00:15 +251 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/overview/overview_page_test.dart: OverviewPage widget renders totals section with metric tiles
+00:15 +252 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/overview/overview_page_test.dart: OverviewPage widget renders totals section with metric tiles
+00:15 +253 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/overview/overview_page_test.dart: OverviewPage widget renders totals section with metric tiles
+00:15 +254 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/overview/overview_page_test.dart: OverviewPage widget renders totals section with metric tiles
+00:15 +255 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/overview/overview_page_test.dart: OverviewPage widget renders totals section with metric tiles
+00:15 +256 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:15 +257 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:15 +258 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:15 +259 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:15 +260 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:15 +261 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:15 +262 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:15 +263 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:15 +264 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:15 +265 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:15 +266 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:15 +267 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:15 +268 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:16 +269 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:16 +270 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:16 +271 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:16 +272 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:16 +273 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:16 +274 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:16 +275 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:16 +276 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:16 +277 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:16 +278 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:16 +279 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:16 +280 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:16 +281 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:16 +282 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:16 +283 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:16 +284 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:16 +285 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:16 +286 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:16 +287 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:16 +288 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:16 +289 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:16 +290 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:16 +291 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:16 +292 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:16 +293 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:16 +294 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:16 +295 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:16 +296 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:16 +297 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:17 +298 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:17 +299 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:17 +300 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:17 +301 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:17 +302 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:17 +303 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:17 +304 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:17 +305 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:17 +306 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:17 +307 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:17 +308 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:17 +309 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:17 +310 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:17 +311 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:17 +312 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:17 +313 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:17 +314 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:17 +315 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:17 +316 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:17 +317 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:17 +318 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:18 +319 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:18 +320 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:18 +321 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:18 +322 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:18 +323 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:18 +324 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:18 +325 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:18 +326 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders catalog with assets when data is loaded
+00:18 +327 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders search bar
+00:18 +328 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders search bar
+00:19 +329 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders search bar
+00:19 +330 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders search bar
+00:19 +331 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders search bar
+00:19 +331 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders graph tab with projection when edges exist
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: at least one matching candidate
+  Actual: _TextWidgetFinder:<Found 0 widgets with text "Containment": []>
+   Which: means none were found but some were expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.<anonymous closure> (file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart:124:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart line 124
+The test description was:
+  renders graph tab with projection when edges exist
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:19 +331 -3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders search bar
+00:19 +331 -3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders graph tab with projection when edges exist [E]
+  Test failed. See exception logs above.
+  The test description was: renders graph tab with projection when edges exist
+  
+00:19 +332 -3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders search bar
+00:19 +333 -3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders search bar
+00:19 +334 -3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders search bar
+00:20 +335 -3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders search bar
+00:20 +336 -3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders search bar
+00:20 +337 -3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders search bar
+00:20 +338 -3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders search bar
+00:20 +339 -3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+00:20 +340 -3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+00:20 +341 -3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+00:20 +342 -3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+00:20 +343 -3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+00:20 +344 -3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+00:21 +345 -3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+00:21 +345 -3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_selection_and_inspector_test.dart: MapInspectorPanel widget switches from selected to no-selection when cleared
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: at least one matching candidate
+  Actual: _TextWidgetFinder:<Found 0 widgets with text "No asset selected": []>
+   Which: means none were found but some were expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.<anonymous closure> (file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_selection_and_inspector_test.dart:353:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_selection_and_inspector_test.dart line 353
+The test description was:
+  switches from selected to no-selection when cleared
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:21 +345 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+00:21 +345 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_selection_and_inspector_test.dart: MapInspectorPanel widget switches from selected to no-selection when cleared [E]
+  Test failed. See exception logs above.
+  The test description was: switches from selected to no-selection when cleared
+  
+00:21 +346 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+00:21 +347 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+00:21 +348 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+00:21 +349 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+00:21 +350 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+00:21 +351 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+00:21 +352 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+00:21 +353 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+00:21 +354 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+00:21 +355 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+00:21 +356 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+00:21 +357 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+00:21 +358 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+00:21 +359 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+00:21 +360 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+00:21 +361 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+00:21 +361 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget shows catalog panel on first tab (Agents)
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: at least one matching candidate
+  Actual: _TypeWidgetFinder:<Found 0 widgets with type "DSSearchBar": []>
+   Which: means none were found but some were expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.<anonymous closure> (file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart:249:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart line 249
+The test description was:
+  shows catalog panel on first tab (Agents)
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:21 +362 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget shows catalog panel on first tab (Agents)
+00:21 +362 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - no-results state shows no-results when filters eliminate all assets
+00:21 +362 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget shows catalog panel on first tab (Agents) [E]
+  Test failed. See exception logs above.
+  The test description was: shows catalog panel on first tab (Agents)
+  
+00:21 +363 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - no-results state shows no-results when filters eliminate all assets
+00:21 +364 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders no-results state when filteredAssets is empty
+00:21 +365 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders no-results state when filteredAssets is empty
+00:21 +366 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders no-results state when filteredAssets is empty
+00:21 +367 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders no-results state when filteredAssets is empty
+00:21 +368 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders no-results state when filteredAssets is empty
+00:21 +369 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders no-results state when filteredAssets is empty
+00:21 +370 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders no-results state when filteredAssets is empty
+00:21 +371 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders no-results state when filteredAssets is empty
+00:21 +372 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders no-results state when filteredAssets is empty
+00:21 +373 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders no-results state when filteredAssets is empty
+00:21 +374 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders no-results state when filteredAssets is empty
+00:21 +375 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/shell/shell_state_handler_test.dart: ShellStateHandler - Unresolved Asset renders retry button when callback provided
+00:21 +376 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/shell/shell_state_handler_test.dart: ShellStateHandler - Unresolved Asset renders retry button when callback provided
+00:21 +377 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders metadata section with lane, priority, owner
+00:21 +378 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders metadata section with lane, priority, owner
+00:21 +379 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders metadata section with lane, priority, owner
+00:21 +380 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders metadata section with lane, priority, owner
+00:22 +381 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders metadata section with lane, priority, owner
+00:22 +382 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders metadata section with lane, priority, owner
+00:22 +383 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders metadata section with lane, priority, owner
+00:22 +384 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders metadata section with lane, priority, owner
+00:22 +385 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders metadata section with lane, priority, owner
+00:22 +386 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders metadata section with lane, priority, owner
+00:22 +387 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders metadata section with lane, priority, owner
+00:22 +388 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders metadata section with lane, priority, owner
+00:22 +389 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders metadata section with lane, priority, owner
+00:22 +390 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders metadata section with lane, priority, owner
+00:22 +391 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders metadata section with lane, priority, owner
+00:22 +392 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders metadata section with lane, priority, owner
+00:22 +393 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders metadata section with lane, priority, owner
+00:22 +394 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders metadata section with lane, priority, owner
+00:22 +395 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders metadata section with lane, priority, owner
+00:22 +396 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders metadata section with lane, priority, owner
+00:22 +397 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget switching tabs shows correct content
+00:22 +398 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget switching tabs shows correct content
+00:22 +399 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget switching tabs shows correct content
+00:22 +400 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget switching tabs shows correct content
+00:22 +401 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget switching tabs shows correct content
+00:22 +402 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget switching tabs shows correct content
+00:22 +403 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget switching tabs shows correct content
+00:22 +404 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget switching tabs shows correct content
+00:22 +404 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - error state error state shows retry button
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: at least one matching candidate
+  Actual: _TextWidgetFinder:<Found 0 widgets with text "Retry": []>
+   Which: means none were found but some were expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.<anonymous closure> (file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart:289:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart line 289
+The test description was:
+  error state shows retry button
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:22 +404 -6: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget switching tabs shows correct content
+00:22 +404 -6: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - error state error state shows retry button [E]
+  Test failed. See exception logs above.
+  The test description was: error state shows retry button
+  
+00:23 +404 -6: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget switching tabs shows correct content
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: at least one matching candidate
+  Actual: _TypeWidgetFinder:<Found 0 widgets with type "DSSearchBar": []>
+   Which: means none were found but some were expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.<anonymous closure> (file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart:259:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart line 259
+The test description was:
+  switching tabs shows correct content
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:23 +404 -7: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders verification commands
+00:23 +404 -7: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget switching tabs shows correct content [E]
+  Test failed. See exception logs above.
+  The test description was: switching tabs shows correct content
+  
+00:23 +405 -7: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders verification commands
+00:23 +406 -7: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders verification commands
+00:23 +407 -7: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders verification commands
+00:23 +408 -7: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+00:23 +408 -7: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget renders with initial state specifying a subview
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: at least one matching candidate
+  Actual: _TextWidgetFinder:<Found 0 widgets with text "Asset Graph": []>
+   Which: means none were found but some were expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.<anonymous closure> (file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart:279:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart line 279
+The test description was:
+  renders with initial state specifying a subview
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:23 +408 -8: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+00:23 +408 -8: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget renders with initial state specifying a subview [E]
+  Test failed. See exception logs above.
+  The test description was: renders with initial state specifying a subview
+  
+00:23 +409 -8: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+00:24 +410 -8: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+00:24 +410 -8: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapNoResultsState widget shows message for query with no results
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _TextWidgetFinder:<Found 0 widgets with text "Clear filters": []>
+   Which: means none were found but one was expected
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.<anonymous closure> (file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart:428:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart line 428
+The test description was:
+  shows message for query with no results
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:24 +410 -9: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+00:24 +410 -9: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapNoResultsState widget shows message for query with no results [E]
+  Test failed. See exception logs above.
+  The test description was: shows message for query with no results
+  
+00:24 +411 -9: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+00:24 +412 -9: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+00:24 +413 -9: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+00:24 +414 -9: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+00:24 +415 -9: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+00:24 +416 -9: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+00:24 +417 -9: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+00:24 +418 -9: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+00:25 +419 -9: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+00:25 +420 -9: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+00:25 +421 -9: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+00:25 +422 -9: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_page_test.dart: HistoryWorkspacePage renders timeline entries in reverse chronological order
+00:26 +422 -9: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders exit conditions with checked state
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _TextWidgetFinder:<Found 2 widgets with text "Exit Conditions": [
+            Text("Exit Conditions", inherit: true, color: Color(alpha: 1.0000, red: 0.6275, green:
+0.6275, blue: 0.6902, colorSpace: ColorSpace.sRGB), family: Inter, size: 14.0, weight: 500,
+letterSpacing: 0.1, height: 1.4x, dependencies: [DefaultSelectionStyle, DefaultTextStyle,
+MediaQuery]),
+            Text("Exit Conditions", inherit: true, color: Color(alpha: 1.0000, red: 0.9412, green:
+0.9412, blue: 0.9608, colorSpace: ColorSpace.sRGB), family: Inter, size: 12.0, weight: 500,
+letterSpacing: 0.3, height: 1.4x, dependencies: [DefaultSelectionStyle, DefaultTextStyle,
+MediaQuery]),
+          ]>
+   Which: is too many
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.<anonymous closure> (file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart:130:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart line 130
+The test description was:
+  renders exit conditions with checked state
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:26 +422 -10: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_page_test.dart: HistoryWorkspacePage renders timeline entries in reverse chronological order
+00:26 +422 -10: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders exit conditions with checked state [E]
+  Test failed. See exception logs above.
+  The test description was: renders exit conditions with checked state
+  
+00:26 +423 -10: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_page_test.dart: HistoryWorkspacePage renders timeline entries in reverse chronological order
+00:26 +424 -10: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_page_test.dart: HistoryWorkspacePage renders timeline entries in reverse chronological order
+00:26 +425 -10: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_page_test.dart: HistoryWorkspacePage renders timeline entries in reverse chronological order
+00:26 +426 -10: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_page_test.dart: HistoryWorkspacePage renders timeline entries in reverse chronological order
+00:27 +427 -10: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:27 +427 -10: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel close button triggers onClose callback
+
+Warning: A call to tap() with finder "Found 1 widget with widget matching predicate: [
+  RawTooltip-[LabeledGlobalKey<RawTooltipState>#879c2]("Close", hover delay: 0:00:00.000000, touch delay: 0:00:01.500000, dismiss delay: 0:00:00.100000, triggerMode: TooltipTriggerMode.longPress, enableFeedback: true, positionDelegate: Closure: (TooltipPositionContext) => Offset from Function '_getDefaultPositionDelegate@801220820':., state: RawTooltipState#179a0),
+]" derived an Offset (Offset(760.0, -847.5)) that would not hit test on the specified widget.
+Maybe the widget is actually off-screen, or another widget is obscuring it, or the widget cannot receive pointer events.
+Indeed, Offset(760.0, -847.5) is outside the bounds of the root of the render tree, Size(800.0, 600.0).
+The finder corresponds to this RenderBox: _RenderLayoutSurrogateProxyBox#8e9bb relayoutBoundary=up12
+The hit test result at that offset is: HitTestResult(HitTestEntry<HitTestTarget>#216b0(_ReusableRenderView#10f0f), HitTestEntry<HitTestTarget>#4bd6d(<AutomatedTestWidgetsFlutterBinding>))
+#0      WidgetController._getElementPoint (package:flutter_test/src/controller.dart:2165:25)
+#1      WidgetController.getCenter (package:flutter_test/src/controller.dart:1947:12)
+#2      WidgetController.tap (package:flutter_test/src/controller.dart:1080:7)
+#3      main.<anonymous closure>.<anonymous closure> (file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart:167:20)
+<asynchronous suspension>
+#4      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#5      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+<asynchronous suspension>
+#6      StackZoneSpecification._registerCallback.<anonymous closure> (package:stack_trace/src/stack_zone_specification.dart:114:42)
+<asynchronous suspension>
+To silence this warning, pass "warnIfMissed: false" to "tap()".
+To make this warning fatal, set WidgetController.hitTestWarningShouldBeFatal to true.
+
+00:27 +428 -10: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:27 +429 -10: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:27 +430 -10: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:29 +431 -10: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:29 +431 -10: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel close button triggers onClose callback
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: true
+  Actual: <false>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.<anonymous closure> (file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart:168:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart line 168
+The test description was:
+  close button triggers onClose callback
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:29 +431 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:29 +431 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel close button triggers onClose callback [E]
+  Test failed. See exception logs above.
+  The test description was: close button triggers onClose callback
+  
+00:29 +432 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:29 +433 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:29 +434 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:29 +435 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:29 +436 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:29 +437 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:29 +438 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:29 +439 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:29 +440 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:29 +441 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:29 +442 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:29 +443 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:29 +444 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:29 +445 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:29 +446 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:29 +447 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:29 +448 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:29 +449 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:29 +450 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:29 +451 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:29 +452 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:29 +453 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:29 +454 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:30 +455 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:30 +456 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:30 +457 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:30 +458 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:30 +459 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:30 +460 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:30 +461 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:30 +462 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:30 +463 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:30 +464 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:30 +465 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:30 +466 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:30 +467 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:30 +468 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:30 +469 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:30 +470 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:31 +471 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:31 +472 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:31 +473 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:31 +474 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:31 +475 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:31 +476 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:31 +477 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:31 +478 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:31 +479 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:31 +480 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:31 +481 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:31 +482 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:31 +483 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:31 +484 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:31 +485 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:31 +486 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:31 +487 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:31 +488 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:31 +489 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:32 +490 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:32 +491 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:32 +492 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:32 +493 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:32 +494 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: SkillDetailView renders all 6 panels for a complete skill
+00:32 +495 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: SkillDetailView renders all 6 panels for a complete skill
+00:32 +496 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: SkillDetailView renders all 6 panels for a complete skill
+00:32 +497 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: SkillDetailView renders all 6 panels for a complete skill
+00:32 +498 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: SkillDetailView renders all 6 panels for a complete skill
+00:32 +499 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: SkillDetailView renders all 6 panels for a complete skill
+00:32 +500 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: SkillDetailView renders all 6 panels for a complete skill
+00:32 +501 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: SkillDetailView renders all 6 panels for a complete skill
+00:32 +502 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: SkillDetailView renders all 6 panels for a complete skill
+00:32 +503 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: SkillDetailView renders all 6 panels for a complete skill
+00:32 +504 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: SkillDetailView renders all 6 panels for a complete skill
+00:32 +505 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: SkillDetailView renders all 6 panels for a complete skill
+00:32 +506 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: SkillDetailView renders all 6 panels for a complete skill
+00:32 +507 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: SkillDetailView renders all 6 panels for a complete skill
+00:33 +508 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: SkillDetailView renders all 6 panels for a complete skill
+00:33 +509 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: SkillDetailView renders all 6 panels for a complete skill
+00:33 +510 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: SkillDetailView renders all 6 panels for a complete skill
+00:33 +511 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: SkillDetailView renders all 6 panels for a complete skill
+00:33 +512 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: SkillDetailView renders all 6 panels for a complete skill
+00:33 +513 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: SkillDetailView renders all 6 panels for a complete skill
+00:33 +514 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: SkillDetailView renders all 6 panels for a complete skill
+00:33 +515 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: SkillDetailView renders all 6 panels for a complete skill
+00:33 +516 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: SkillDetailView renders all 6 panels for a complete skill
+00:33 +517 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: SkillDetailView renders all 6 panels for a complete skill
+00:33 +518 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: SkillDetailView renders all 6 panels for a complete skill
+00:33 +519 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: SkillDetailView renders all 6 panels for a complete skill
+00:33 +520 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: SkillDetailView renders all 6 panels for a complete skill
+00:33 +521 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:33 +522 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:33 +523 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:33 +524 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:33 +525 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +526 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +527 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +528 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +529 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +530 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +531 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +532 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +533 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +534 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +535 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +536 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +537 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +538 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +539 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +539 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/governance/governance_analytics_panels_test.dart: ReviewPressurePanel renders lane breakdown chips
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: exactly one matching candidate
+  Actual: _TextWidgetFinder:<Found 2 widgets with text "04-completed": [
+            Text("04-completed", inherit: true, color: Color(alpha: 1.0000, red: 0.9608, green:
+0.6196, blue: 0.0431, colorSpace: ColorSpace.sRGB), family: Inter, size: 10.0, weight: 500,
+letterSpacing: 0.5, height: 1.4x, dependencies: [DefaultSelectionStyle, DefaultTextStyle,
+MediaQuery]),
+            Text("04-completed", inherit: true, color: Color(alpha: 1.0000, red: 0.6275, green:
+0.6275, blue: 0.6902, colorSpace: ColorSpace.sRGB), size: 12.0, weight: 500, height: 1.0x,
+dependencies: [DefaultSelectionStyle, DefaultTextStyle, MediaQuery]),
+          ]>
+   Which: is too many
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure>.<anonymous closure> (file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/governance/governance_analytics_panels_test.dart:341:7)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/governance/governance_analytics_panels_test.dart line 341
+The test description was:
+  renders lane breakdown chips
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:34 +540 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +540 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +540 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/governance/governance_analytics_panels_test.dart: ReviewPressurePanel renders lane breakdown chips [E]
+  Test failed. See exception logs above.
+  The test description was: renders lane breakdown chips
+  
+00:34 +541 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +542 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +543 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +544 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +545 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +546 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +547 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +548 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +549 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +550 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +551 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +552 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +553 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +554 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:35 +555 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:35 +556 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:35 +557 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:35 +558 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:35 +559 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher switching to impact story mode renders impact cards
+00:36 +560 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: TaskDetailView renders forensic sections with lane-neutral header
+00:36 +561 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: TaskDetailView renders forensic sections with lane-neutral header
+00:36 +562 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher tapping mode chip changes mode
+00:36 +563 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher tapping mode chip changes mode
+00:36 +564 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher tapping mode chip changes mode
+00:36 +565 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher tapping mode chip changes mode
+
+Warning: A call to tap() with finder "Found 1 widget with text "Project Story": [
+  Text("Project Story", inherit: true, color: Color(alpha: 1.0000, red: 0.5333, green: 0.5333, blue: 0.6275, colorSpace: ColorSpace.sRGB), family: Inter, size: 10.0, weight: 500, letterSpacing: 0.5, height: 1.4x, dependencies: [DefaultSelectionStyle, DefaultTextStyle, MediaQuery]),
+]" derived an Offset (Offset(39.3, -875.0)) that would not hit test on the specified widget.
+Maybe the widget is actually off-screen, or another widget is obscuring it, or the widget cannot receive pointer events.
+Indeed, Offset(39.3, -875.0) is outside the bounds of the root of the render tree, Size(800.0, 600.0).
+The finder corresponds to this RenderBox: RenderParagraph#0bd0e relayoutBoundary=up12
+The hit test result at that offset is: HitTestResult(HitTestEntry<HitTestTarget>#9fc82(_ReusableRenderView#12320), HitTestEntry<HitTestTarget>#5e981(<AutomatedTestWidgetsFlutterBinding>))
+#0      WidgetController._getElementPoint (package:flutter_test/src/controller.dart:2165:25)
+#1      WidgetController.getCenter (package:flutter_test/src/controller.dart:1947:12)
+#2      WidgetController.tap (package:flutter_test/src/controller.dart:1080:7)
+#3      main.<anonymous closure>.<anonymous closure> (file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart:159:20)
+<asynchronous suspension>
+#4      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#5      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+<asynchronous suspension>
+#6      StackZoneSpecification._registerCallback.<anonymous closure> (package:stack_trace/src/stack_zone_specification.dart:114:42)
+<asynchronous suspension>
+To silence this warning, pass "warnIfMissed: false" to "tap()".
+To make this warning fatal, set WidgetController.hitTestWarningShouldBeFatal to true.
+
+00:37 +566 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher tapping mode chip changes mode
+00:37 +567 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/responsive_detail_integration_test.dart: ResponsiveDetailShell Wide layout (split-pane) renders master and detail side-by-side
+00:37 +568 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/responsive_detail_integration_test.dart: ResponsiveDetailShell Wide layout (split-pane) renders master and detail side-by-side
+00:37 +569 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/responsive_detail_integration_test.dart: ResponsiveDetailShell Wide layout (split-pane) renders master and detail side-by-side
+00:37 +570 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/responsive_detail_integration_test.dart: ResponsiveDetailShell Wide layout (split-pane) renders master and detail side-by-side
+00:37 +571 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/responsive_detail_integration_test.dart: ResponsiveDetailShell Wide layout (split-pane) renders master and detail side-by-side
+00:37 +572 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/responsive_detail_integration_test.dart: ResponsiveDetailShell Wide layout (split-pane) renders master and detail side-by-side
+00:37 +573 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/responsive_detail_integration_test.dart: ResponsiveDetailShell Wide layout (split-pane) renders master and detail side-by-side
+00:37 +574 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/responsive_detail_integration_test.dart: ResponsiveDetailShell Wide layout (split-pane) renders master and detail side-by-side
+00:37 +575 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/responsive_detail_integration_test.dart: ResponsiveDetailShell Wide layout (split-pane) renders master and detail side-by-side
+00:37 +576 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/responsive_detail_integration_test.dart: ResponsiveDetailShell Wide layout (split-pane) renders master and detail side-by-side
+00:37 +577 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/responsive_detail_integration_test.dart: ResponsiveDetailShell Wide layout (split-pane) renders master and detail side-by-side
+00:37 +578 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: TaskDetailView renders related skills and workflows
+00:37 +579 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: TaskDetailView renders related skills and workflows
+00:37 +580 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: TaskDetailView renders related skills and workflows
+00:37 +581 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: TaskDetailView renders related skills and workflows
+00:37 +582 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: TaskDetailView renders related skills and workflows
+00:37 +583 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: TaskDetailView renders related skills and workflows
+00:37 +584 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: TaskDetailView renders related skills and workflows
+00:38 +585 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: WorkflowDetailView renders related assets
+00:38 +586 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: WorkflowDetailView renders related assets
+00:38 +587 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: HistoryStoryView renders project groups
+00:38 +588 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: TaskDetailView renders lifecycle section
+00:38 +589 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: TaskDetailView renders lifecycle section
+00:38 +590 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: TaskDetailView renders lifecycle section
+00:38 +591 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: TaskDetailView renders lifecycle section
+00:38 +592 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: TaskDetailView renders lifecycle section
+00:38 +593 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/responsive_detail_integration_test.dart: ResponsiveDetailShell Medium layout (overlay drawer) does not render overlay when detail is hidden
+00:38 +594 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: HistoryImpactView renders impact path cards
+00:38 +595 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: HistoryImpactView renders impact path cards
+00:38 +596 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: TaskDetailView renders close button
+00:39 +597 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: TaskDetailView renders close button
+00:39 +598 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: TaskDetailView renders close button
+00:39 +599 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: TaskDetailView renders close button
+00:39 +600 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: TaskDetailView renders close button
+00:39 +601 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: HistoryImpactView shows gap indicator for missing skills
+00:39 +602 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: ChangelogDetailView renders affected assets
+00:39 +603 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/responsive_detail_integration_test.dart: ResponsiveDetailShell Narrow layout (full-screen detail) back arrow triggers onDetailClose
+00:39 +604 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: AssetDetailEmpty renders empty state when no asset selected
+00:39 +605 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: HistoryImpactView shows partial path warning
+00:39 +606 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: HistoryImpactView shows partial path warning
+00:39 +607 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: ChangelogDetailView renders impact story with Why/Changed/Evidence
+00:40 +608 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: AssetDetailView dispatcher dispatches skill to SkillDetailView
+00:40 +609 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: AssetDetailView dispatcher dispatches skill to SkillDetailView
+00:40 +610 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: AssetDetailView dispatcher dispatches skill to SkillDetailView
+00:40 +611 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: AssetDetailView dispatcher dispatches skill to SkillDetailView
+00:40 +612 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: AssetDetailView dispatcher dispatches skill to SkillDetailView
+00:40 +613 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: GenericAssetDetailView (fallback) renders partial support banner for script
+00:40 +614 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/responsive_detail_integration_test.dart: ResponsiveDetailShell Breakpoint transitions transition from visible to hidden removes detail
+00:40 +615 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: AssetDetailView dispatcher dispatches task to TaskDetailView
+00:40 +616 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: AssetDetailView dispatcher dispatches task to TaskDetailView
+00:40 +617 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/skill_task_detail_widgets_test.dart: AssetDetailView dispatcher dispatches task to TaskDetailView
+00:40 +618 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/responsive_detail_integration_test.dart: ResponsiveDetailShell Edge cases wide layout includes divider between master and detail
+00:40 +619 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: GenericAssetDetailView (fallback) renders partial support banner for rule
+00:40 +620 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/responsive_detail_integration_test.dart: AssetDetailConsumer renders only child when no asset selected
+00:40 +621 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: GenericAssetDetailView (fallback) shows identity and metadata in fallback view
+00:40 +622 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/responsive_detail_integration_test.dart: AssetDetailConsumer renders detail when asset is selected
+00:41 +623 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AssetDetailView dispatcher dispatches agent to AgentDetailView
+00:41 +624 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/responsive_detail_integration_test.dart: AssetDetailConsumer does not render detail for empty asset ID
+00:41 +625 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AssetDetailView dispatcher dispatches workflow to WorkflowDetailView
+00:41 +626 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/responsive_detail_integration_test.dart: AssetDetailConsumer onDetailClose is passed through
+00:41 +627 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AssetDetailView dispatcher dispatches changelog to ChangelogDetailView
+00:41 +628 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AssetDetailView dispatcher dispatches changelog to ChangelogDetailView
+00:41 +629 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/responsive_detail_integration_test.dart: Breakpoint contract alignment medium uses overlay at 1000px
+00:41 +630 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AssetDetailView dispatcher dispatches subskill to GenericAssetDetailView
+00:41 +631 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/responsive_detail_integration_test.dart: Breakpoint contract alignment narrow uses full-screen at 600px
+00:41 +632 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AssetDetailView dispatcher dispatches script to GenericAssetDetailView
+00:41 +633 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/responsive_detail_integration_test.dart: Breakpoint contract alignment narrow at 799px uses full-screen
+00:41 +634 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AssetDetailView dispatcher dispatches reference to GenericAssetDetailView
+00:41 +635 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/responsive_detail_integration_test.dart: Breakpoint contract alignment medium at 800px uses overlay
+00:41 +636 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AssetDetailView dispatcher dispatches rule to GenericAssetDetailView
+00:41 +637 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/responsive_detail_integration_test.dart: Breakpoint contract alignment medium at 1199px uses overlay
+00:41 +638 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: Partial-data and empty states agent with empty frontmatter does not crash
+00:42 +639 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: Partial-data and empty states workflow with no stages or trigger does not crash
+00:42 +640 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: Partial-data and empty states changelog with no task or impact does not crash
+00:42 +641 -12: Some tests failed.
+
+Failing tests:
+  /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_shell_smoke_test.dart: App shell smoke test app boots and renders the shell with default route
+  /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_shell_smoke_test.dart: App shell smoke test default route lands on Overview
+  /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/governance/governance_analytics_panels_test.dart: ReviewPressurePanel renders lane breakdown chips
+  /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapNoResultsState widget shows message for query with no results
+  ... and 8 more

@@ -9,7 +9,10 @@
 
 # Task NNNN: [Descriptive Task Name]
 
-> **Status**: `[ ]` Open | `[/]` In Progress | `[x]` Completed
+> **Status**: `[ ]` Open | `[/]` Doing | `[x]` Completed
+> **Review State**: `Open` | `Doing` | `Builder Done` | `Package Gate Failed` | `Consumer Gate Failed` | `Ready For Review` | `Review Approved` | `Promoted` | `Superseded` | `Blocked` — see `docs/governance/promotion-state-model.md`
+>
+> `Doing` is the canonical active-work state; `In Progress` is a legacy alias for `Doing`; use `Doing` for new task headers.
 > **Priority**: 🔴 P0 | 🟡 P1 | 🟢 P2 | ⚪ P3
 > **Type**: `feature` | `remediation` | `verification` | `testing` | `governance` | `housekeeping` | `ux-polish`
 > **Origin**: [prompt/research/draft/report/user request/task audit]

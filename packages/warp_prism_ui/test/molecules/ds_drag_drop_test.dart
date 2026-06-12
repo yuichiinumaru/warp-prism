@@ -52,21 +52,17 @@ List<DSLane> _sampleLanes() {
     const DSLane(
       id: '02-doing',
       label: 'Doing',
-      tasks: [
-        DSLaneTask(id: 3, title: 'Task Gamma', priority: 'P0'),
-      ],
+      tasks: [DSLaneTask(id: 3, title: 'Task Gamma', priority: 'P0')],
     ),
-    const DSLane(
-      id: '03-review',
-      label: 'Review',
-      tasks: [],
-    ),
+    const DSLane(id: '03-review', label: 'Review', tasks: []),
   ];
 }
 
 void main() {
   group('DSDraggableCard', () {
-    testWidgets('renders DSTaskCard within a LongPressDraggable', (tester) async {
+    testWidgets('renders DSTaskCard within a LongPressDraggable', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -94,7 +90,9 @@ void main() {
       expect(find.byType(LongPressDraggable<DSDragPayload>), findsOneWidget);
     });
 
-    testWidgets('long press shows feedback widget (ghost at origin)', (tester) async {
+    testWidgets('long press shows feedback widget (ghost at origin)', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -119,9 +117,7 @@ void main() {
       expect(cardFinder, findsOneWidget);
 
       // Start long press gesture
-      final gesture = await tester.startGesture(
-        tester.getCenter(cardFinder),
-      );
+      final gesture = await tester.startGesture(tester.getCenter(cardFinder));
       // Wait for long press duration + some extra
       await tester.pump(const Duration(milliseconds: 300));
       await tester.pump(const Duration(milliseconds: 100));
@@ -176,10 +172,7 @@ void main() {
                 laneId: '01-open',
                 taskCount: 2,
                 child: ListView(
-                  children: const [
-                    Text('Card A'),
-                    Text('Card B'),
-                  ],
+                  children: const [Text('Card A'), Text('Card B')],
                 ),
               ),
             ),
@@ -229,20 +222,21 @@ void main() {
       expect(find.byType(DSDropTarget), findsNWidgets(3));
     });
 
-    testWidgets('tap still fires onTaskTap through draggable wrapper',
-        (tester) async {
+    testWidgets('tap still fires onTaskTap through draggable wrapper', (
+      tester,
+    ) async {
       String? tappedId;
-      await tester.pumpWidget(_buildBoard(
-        lanes: _sampleLanes(),
-        onTaskTap: (id) => tappedId = id,
-      ));
+      await tester.pumpWidget(
+        _buildBoard(lanes: _sampleLanes(), onTaskTap: (id) => tappedId = id),
+      );
 
       await tester.tap(find.text('Task Alpha'));
       expect(tappedId, '1');
     });
 
-    testWidgets('empty lane renders empty state surface inside drop target',
-        (tester) async {
+    testWidgets('empty lane renders empty state surface inside drop target', (
+      tester,
+    ) async {
       await tester.pumpWidget(_buildBoard(lanes: _sampleLanes()));
 
       // Lane 03-review is empty — should show the empty state
@@ -253,10 +247,12 @@ void main() {
 
     testWidgets('onReorder callback is defined on DSLaneBoard', (tester) async {
       DSDragReorderEvent? reorderEvent;
-      await tester.pumpWidget(_buildBoard(
-        lanes: _sampleLanes(),
-        onReorder: (event) => reorderEvent = event,
-      ));
+      await tester.pumpWidget(
+        _buildBoard(
+          lanes: _sampleLanes(),
+          onReorder: (event) => reorderEvent = event,
+        ),
+      );
 
       // The board should accept the callback without errors
       expect(find.byType(DSLaneBoard), findsOneWidget);
@@ -264,17 +260,20 @@ void main() {
 
     testWidgets('onMove callback is defined on DSLaneBoard', (tester) async {
       DSDragMoveEvent? moveEvent;
-      await tester.pumpWidget(_buildBoard(
-        lanes: _sampleLanes(),
-        onMove: (event) => moveEvent = event,
-      ));
+      await tester.pumpWidget(
+        _buildBoard(
+          lanes: _sampleLanes(),
+          onMove: (event) => moveEvent = event,
+        ),
+      );
 
       // The board should accept the callback without errors
       expect(find.byType(DSLaneBoard), findsOneWidget);
     });
 
-    testWidgets('backward compatible: works without onReorder/onMove',
-        (tester) async {
+    testWidgets('backward compatible: works without onReorder/onMove', (
+      tester,
+    ) async {
       // Existing API without drag callbacks must still compile and render
       await tester.pumpWidget(_buildBoard(lanes: _sampleLanes()));
 
@@ -287,17 +286,37 @@ void main() {
 
   group('DSDragPayload', () {
     test('equality is based on all fields', () {
-      const a = DSDragPayload(taskId: 1, sourceLaneId: 'lane-a', sourceIndex: 0);
-      const b = DSDragPayload(taskId: 1, sourceLaneId: 'lane-a', sourceIndex: 0);
-      const c = DSDragPayload(taskId: 2, sourceLaneId: 'lane-a', sourceIndex: 0);
+      const a = DSDragPayload(
+        taskId: 1,
+        sourceLaneId: 'lane-a',
+        sourceIndex: 0,
+      );
+      const b = DSDragPayload(
+        taskId: 1,
+        sourceLaneId: 'lane-a',
+        sourceIndex: 0,
+      );
+      const c = DSDragPayload(
+        taskId: 2,
+        sourceLaneId: 'lane-a',
+        sourceIndex: 0,
+      );
 
       expect(a, equals(b));
       expect(a, isNot(equals(c)));
     });
 
     test('hashCode consistent with equality', () {
-      const a = DSDragPayload(taskId: 1, sourceLaneId: 'lane-a', sourceIndex: 0);
-      const b = DSDragPayload(taskId: 1, sourceLaneId: 'lane-a', sourceIndex: 0);
+      const a = DSDragPayload(
+        taskId: 1,
+        sourceLaneId: 'lane-a',
+        sourceIndex: 0,
+      );
+      const b = DSDragPayload(
+        taskId: 1,
+        sourceLaneId: 'lane-a',
+        sourceIndex: 0,
+      );
 
       expect(a.hashCode, equals(b.hashCode));
     });

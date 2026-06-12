@@ -7,7 +7,7 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
-import '../../../../data/models/governance_diagnostics.dart';
+import 'package:warp_prism_observatory/data/models/governance_diagnostics.dart';
 
 /// A group of governance issues sharing the same category.
 @immutable
@@ -140,8 +140,11 @@ class GovernanceIssueGroup extends StatelessWidget {
               padding: const EdgeInsets.all(DSSpacing.lg),
               child: Row(
                 children: [
-                  Icon(Icons.check_circle_outline,
-                      size: 16, color: DSColors.statusSuccess),
+                  Icon(
+                    Icons.check_circle_outline,
+                    size: 16,
+                    color: DSColors.statusSuccess,
+                  ),
                   const SizedBox(width: DSSpacing.sm),
                   DSText.bodySmall(
                     'No ${group.title.toLowerCase()} found — system is clean',
@@ -269,9 +272,7 @@ class _IssueRow extends StatelessWidget {
         decoration: BoxDecoration(
           color: DSColors.obsidianBase,
           borderRadius: BorderRadius.circular(DSRadii.sm),
-          border: Border(
-            left: BorderSide(color: severityColor, width: 3),
-          ),
+          border: Border(left: BorderSide(color: severityColor, width: 3)),
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -282,10 +283,7 @@ class _IssueRow extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  DSText.labelSmall(
-                    issue.assetId,
-                    color: severityColor,
-                  ),
+                  DSText.labelSmall(issue.assetId, color: severityColor),
                   const SizedBox(height: 2),
                   DSText.bodySmall(
                     issue.message,

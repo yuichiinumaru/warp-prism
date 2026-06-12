@@ -1,6 +1,7 @@
 # Task 1020: Warp-Prism Responsive Shell and Detail Pass
 
 > **Status**: `[x]` Done
+> **Review State**: Blocked — Flutter SDK not installed; validation commands cannot execute
 > **Priority**: 🔴 P0
 > **Type**: `feature`
 > **Origin**: EPIC 10 candidate story "Responsive shell and detail behavior pass" plus `warp-prism/docs/prompt.txt` responsive layout requirement

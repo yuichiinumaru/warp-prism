@@ -8,7 +8,7 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
-import '../../../data/models/task_contracts.dart';
+import 'package:warp_prism_observatory/data/models/task_contracts.dart';
 import 'task_projection.dart';
 
 /// Creates the list of [DSDetailSection]s that represent a single task
@@ -67,11 +67,13 @@ DSDetailSection _buildDependenciesSection(TaskProjection task) {
             spacing: DSSpacing.xs,
             runSpacing: DSSpacing.xs,
             children: deps
-                .map((dep) => DSLinkRow(
-                      label: dep,
-                      icon: DSIcons.task,
-                      color: DSColors.accentCyan,
-                    ))
+                .map(
+                  (dep) => DSLinkRow(
+                    label: dep,
+                    icon: DSIcons.task,
+                    color: DSColors.accentCyan,
+                  ),
+                )
                 .toList(),
           ),
   );
@@ -90,31 +92,33 @@ DSDetailSection _buildExitConditionsSection(TaskProjection task) {
           )
         : Column(
             children: conditions
-                .map((ec) => Padding(
-                      padding: const EdgeInsets.only(bottom: DSSpacing.xs),
-                      child: Row(
-                        children: [
-                          Icon(
-                            ec.isComplete
-                                ? Icons.check_box
-                                : Icons.check_box_outline_blank,
-                            size: 16,
+                .map(
+                  (ec) => Padding(
+                    padding: const EdgeInsets.only(bottom: DSSpacing.xs),
+                    child: Row(
+                      children: [
+                        Icon(
+                          ec.isComplete
+                              ? Icons.check_box
+                              : Icons.check_box_outline_blank,
+                          size: 16,
+                          color: ec.isComplete
+                              ? DSColors.statusSuccess
+                              : DSColors.textTertiary,
+                        ),
+                        const SizedBox(width: DSSpacing.sm),
+                        Expanded(
+                          child: DSText.bodySmall(
+                            ec.text,
                             color: ec.isComplete
-                                ? DSColors.statusSuccess
-                                : DSColors.textTertiary,
+                                ? DSColors.textPrimary
+                                : DSColors.textSecondary,
                           ),
-                          const SizedBox(width: DSSpacing.sm),
-                          Expanded(
-                            child: DSText.bodySmall(
-                              ec.text,
-                              color: ec.isComplete
-                                  ? DSColors.textPrimary
-                                  : DSColors.textSecondary,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ))
+                        ),
+                      ],
+                    ),
+                  ),
+                )
                 .toList(),
           ),
   );
@@ -133,22 +137,21 @@ DSDetailSection _buildVerificationCommandsSection(TaskProjection task) {
           )
         : Column(
             children: commands
-                .map((cmd) => Padding(
-                      padding: const EdgeInsets.only(bottom: DSSpacing.xs),
-                      child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(DSSpacing.sm),
-                        decoration: BoxDecoration(
-                          color: DSColors.obsidianDeep,
-                          borderRadius: BorderRadius.circular(DSRadii.sm),
-                          border: Border.all(color: DSColors.borderSubtle),
-                        ),
-                        child: DSText.code(
-                          cmd,
-                          color: DSColors.accentCyan,
-                        ),
+                .map(
+                  (cmd) => Padding(
+                    padding: const EdgeInsets.only(bottom: DSSpacing.xs),
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(DSSpacing.sm),
+                      decoration: BoxDecoration(
+                        color: DSColors.obsidianDeep,
+                        borderRadius: BorderRadius.circular(DSRadii.sm),
+                        border: Border.all(color: DSColors.borderSubtle),
                       ),
-                    ))
+                      child: DSText.code(cmd, color: DSColors.accentCyan),
+                    ),
+                  ),
+                )
                 .toList(),
           ),
   );
@@ -158,11 +161,11 @@ DSDetailSection _buildEvidenceSection(TaskProjection task) {
   final evidenceState = task.hasCompletionEvidence
       ? DSEvidenceState.verified
       : (task.proofState == ProofState.partial
-          ? DSEvidenceState.partial
-          : (task.proofState == ProofState.complete ||
-                  task.proofState == ProofState.verified
-              ? DSEvidenceState.verified
-              : DSEvidenceState.pending));
+            ? DSEvidenceState.partial
+            : (task.proofState == ProofState.complete ||
+                      task.proofState == ProofState.verified
+                  ? DSEvidenceState.verified
+                  : DSEvidenceState.pending));
 
   return DSDetailSection(
     title: 'Completion Evidence',
@@ -218,11 +221,13 @@ DSDetailSection _buildRelatedLinksSection(TaskProjection task) {
             spacing: DSSpacing.xs,
             runSpacing: DSSpacing.xs,
             children: skills
-                .map((s) => DSLinkRow(
-                      label: s,
-                      icon: DSIcons.skill,
-                      color: DSColors.accentViolet,
-                    ))
+                .map(
+                  (s) => DSLinkRow(
+                    label: s,
+                    icon: DSIcons.skill,
+                    color: DSColors.accentViolet,
+                  ),
+                )
                 .toList(),
           ),
         ],
@@ -234,11 +239,13 @@ DSDetailSection _buildRelatedLinksSection(TaskProjection task) {
             spacing: DSSpacing.xs,
             runSpacing: DSSpacing.xs,
             children: workflows
-                .map((w) => DSLinkRow(
-                      label: w,
-                      icon: DSIcons.workflow,
-                      color: DSColors.accentGold,
-                    ))
+                .map(
+                  (w) => DSLinkRow(
+                    label: w,
+                    icon: DSIcons.workflow,
+                    color: DSColors.accentGold,
+                  ),
+                )
                 .toList(),
           ),
         ],
@@ -253,10 +260,7 @@ DSDetailSection _buildBodySummarySection(TaskProjection task) {
     title: 'Body Summary',
     icon: Icons.description,
     child: body.isEmpty
-        ? DSText.bodySmall(
-            'No body content',
-            color: DSColors.textTertiary,
-          )
+        ? DSText.bodySmall('No body content', color: DSColors.textTertiary)
         : Container(
             width: double.infinity,
             padding: const EdgeInsets.all(DSSpacing.md),

@@ -44,13 +44,17 @@ class _DSTaskCardState extends State<DSTaskCard> {
   final FocusNode _focusNode = FocusNode();
 
   Color get _laneColor => DSColors.forLane(widget.lane);
-  
+
   Color get _proofColor {
     switch (widget.proofState?.toLowerCase()) {
-      case 'complete': return DSColors.statusSuccess;
-      case 'partial': return DSColors.statusWarning;
-      case 'missing': return DSColors.statusError;
-      default: return DSColors.textTertiary;
+      case 'complete':
+        return DSColors.statusSuccess;
+      case 'partial':
+        return DSColors.statusWarning;
+      case 'missing':
+        return DSColors.statusError;
+      default:
+        return DSColors.textTertiary;
     }
   }
 
@@ -121,26 +125,26 @@ class _DSTaskCardState extends State<DSTaskCard> {
                     children: [
                       // Task ID
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
                         decoration: BoxDecoration(
                           color: _laneColor.withOpacity(0.15),
                           borderRadius: BorderRadius.circular(DSRadii.xs),
                         ),
-                        child: DSText.code(
-                          '#${widget.id}',
-                          color: _laneColor,
-                        ),
+                        child: DSText.code('#${widget.id}', color: _laneColor),
                       ),
                       const SizedBox(width: DSSpacing.xs),
-                      
+
                       // Priority
                       if (widget.priority != null) ...[
                         _PriorityBadge(priority: widget.priority!),
                         const SizedBox(width: DSSpacing.xs),
                       ],
-                      
+
                       const Spacer(),
-                      
+
                       // Proof state indicator
                       if (widget.proofState != null)
                         DSStatusDot(
@@ -149,24 +153,27 @@ class _DSTaskCardState extends State<DSTaskCard> {
                         ),
                     ],
                   ),
-                  
+
                   const SizedBox(height: DSSpacing.sm),
-                  
+
                   // Title
                   DSText.bodyMedium(
                     widget.title,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  
+
                   const SizedBox(height: DSSpacing.sm),
-                  
+
                   // Footer row
                   Row(
                     children: [
                       // Owner
                       if (widget.owner != null) ...[
-                        DSIcon.small(Icons.person_outline, color: DSColors.textTertiary),
+                        DSIcon.small(
+                          Icons.person_outline,
+                          color: DSColors.textTertiary,
+                        ),
                         const SizedBox(width: 4),
                         Expanded(
                           child: DSText.labelSmall(
@@ -177,18 +184,22 @@ class _DSTaskCardState extends State<DSTaskCard> {
                           ),
                         ),
                       ],
-                      
+
                       // Dependency count
-                      if (widget.dependencyCount != null && widget.dependencyCount! > 0) ...[
+                      if (widget.dependencyCount != null &&
+                          widget.dependencyCount! > 0) ...[
                         const SizedBox(width: DSSpacing.sm),
-                        DSIcon.small(DSIcons.link, color: DSColors.textTertiary),
+                        DSIcon.small(
+                          DSIcons.link,
+                          color: DSColors.textTertiary,
+                        ),
                         const SizedBox(width: 2),
                         DSText.labelSmall(
                           widget.dependencyCount.toString(),
                           color: DSColors.textTertiary,
                         ),
                       ],
-                      
+
                       // Review score
                       if (widget.reviewScore != null) ...[
                         const SizedBox(width: DSSpacing.sm),
@@ -196,18 +207,24 @@ class _DSTaskCardState extends State<DSTaskCard> {
                       ],
                     ],
                   ),
-                  
+
                   // Linked skills
-                  if (widget.linkedSkills != null && widget.linkedSkills!.isNotEmpty) ...[
+                  if (widget.linkedSkills != null &&
+                      widget.linkedSkills!.isNotEmpty) ...[
                     const SizedBox(height: DSSpacing.sm),
                     Wrap(
                       spacing: 4,
                       runSpacing: 4,
-                      children: widget.linkedSkills!.take(2).map((skill) => DSChip(
-                        label: skill,
-                        size: DSChipSize.small,
-                        color: DSColors.assetSkill,
-                      )).toList(),
+                      children: widget.linkedSkills!
+                          .take(2)
+                          .map(
+                            (skill) => DSChip(
+                              label: skill,
+                              size: DSChipSize.small,
+                              color: DSColors.assetSkill,
+                            ),
+                          )
+                          .toList(),
                     ),
                   ],
                 ],
@@ -227,10 +244,14 @@ class _PriorityBadge extends StatelessWidget {
 
   Color get _color {
     switch (priority.toUpperCase()) {
-      case 'P0': return DSColors.statusError;
-      case 'P1': return DSColors.statusWarning;
-      case 'P2': return DSColors.statusInfo;
-      default: return DSColors.textTertiary;
+      case 'P0':
+        return DSColors.statusError;
+      case 'P1':
+        return DSColors.statusWarning;
+      case 'P2':
+        return DSColors.statusInfo;
+      default:
+        return DSColors.textTertiary;
     }
   }
 

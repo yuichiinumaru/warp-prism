@@ -52,11 +52,7 @@ class DSFallbackView extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           // Error icon
-          const DSIcon(
-            DSIcons.error,
-            color: DSColors.statusError,
-            size: 32,
-          ),
+          const DSIcon(DSIcons.error, color: DSColors.statusError, size: 32),
 
           const SizedBox(height: DSSpacing.md),
 

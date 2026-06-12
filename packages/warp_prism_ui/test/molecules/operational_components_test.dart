@@ -16,68 +16,50 @@ void main() {
   // ===========================================================================
   group('DSStatusDot operational states', () {
     testWidgets('pending renders with textTertiary color', (tester) async {
-      await tester.pumpWidget(
-        const MaterialApp(home: DSStatusDot.pending()),
-      );
+      await tester.pumpWidget(const MaterialApp(home: DSStatusDot.pending()));
       expect(find.byType(DSStatusDot), findsOneWidget);
       expect(find.byType(Tooltip), findsOneWidget);
     });
 
     testWidgets('running renders with animation by default', (tester) async {
-      await tester.pumpWidget(
-        const MaterialApp(home: DSStatusDot.running()),
-      );
+      await tester.pumpWidget(const MaterialApp(home: DSStatusDot.running()));
       expect(find.byType(DSStatusDot), findsOneWidget);
       // Running has animated=true by default
       expect(find.byType(Tooltip), findsOneWidget);
     });
 
     testWidgets('approved renders with success color', (tester) async {
-      await tester.pumpWidget(
-        const MaterialApp(home: DSStatusDot.approved()),
-      );
+      await tester.pumpWidget(const MaterialApp(home: DSStatusDot.approved()));
       expect(find.byType(DSStatusDot), findsOneWidget);
     });
 
     testWidgets('rejected renders with error color', (tester) async {
-      await tester.pumpWidget(
-        const MaterialApp(home: DSStatusDot.rejected()),
-      );
+      await tester.pumpWidget(const MaterialApp(home: DSStatusDot.rejected()));
       expect(find.byType(DSStatusDot), findsOneWidget);
     });
 
     testWidgets('promoted renders with cyan color', (tester) async {
-      await tester.pumpWidget(
-        const MaterialApp(home: DSStatusDot.promoted()),
-      );
+      await tester.pumpWidget(const MaterialApp(home: DSStatusDot.promoted()));
       expect(find.byType(DSStatusDot), findsOneWidget);
     });
 
     testWidgets('archived renders with disabled color', (tester) async {
-      await tester.pumpWidget(
-        const MaterialApp(home: DSStatusDot.archived()),
-      );
+      await tester.pumpWidget(const MaterialApp(home: DSStatusDot.archived()));
       expect(find.byType(DSStatusDot), findsOneWidget);
     });
 
     testWidgets('healthy renders with success color', (tester) async {
-      await tester.pumpWidget(
-        const MaterialApp(home: DSStatusDot.healthy()),
-      );
+      await tester.pumpWidget(const MaterialApp(home: DSStatusDot.healthy()));
       expect(find.byType(DSStatusDot), findsOneWidget);
     });
 
     testWidgets('degraded renders with warning color', (tester) async {
-      await tester.pumpWidget(
-        const MaterialApp(home: DSStatusDot.degraded()),
-      );
+      await tester.pumpWidget(const MaterialApp(home: DSStatusDot.degraded()));
       expect(find.byType(DSStatusDot), findsOneWidget);
     });
 
     testWidgets('disabled renders with disabled color', (tester) async {
-      await tester.pumpWidget(
-        const MaterialApp(home: DSStatusDot.disabled()),
-      );
+      await tester.pumpWidget(const MaterialApp(home: DSStatusDot.disabled()));
       expect(find.byType(DSStatusDot), findsOneWidget);
     });
 
@@ -89,39 +71,29 @@ void main() {
     });
 
     testWidgets('exposed renders with animation by default', (tester) async {
-      await tester.pumpWidget(
-        const MaterialApp(home: DSStatusDot.exposed()),
-      );
+      await tester.pumpWidget(const MaterialApp(home: DSStatusDot.exposed()));
       expect(find.byType(DSStatusDot), findsOneWidget);
       expect(find.byType(Tooltip), findsOneWidget);
     });
 
     testWidgets('redacted renders with violet color', (tester) async {
-      await tester.pumpWidget(
-        const MaterialApp(home: DSStatusDot.redacted()),
-      );
+      await tester.pumpWidget(const MaterialApp(home: DSStatusDot.redacted()));
       expect(find.byType(DSStatusDot), findsOneWidget);
     });
 
     testWidgets('stale renders with warning color', (tester) async {
-      await tester.pumpWidget(
-        const MaterialApp(home: DSStatusDot.stale()),
-      );
+      await tester.pumpWidget(const MaterialApp(home: DSStatusDot.stale()));
       expect(find.byType(DSStatusDot), findsOneWidget);
     });
 
     testWidgets('excluded renders with disabled color', (tester) async {
-      await tester.pumpWidget(
-        const MaterialApp(home: DSStatusDot.excluded()),
-      );
+      await tester.pumpWidget(const MaterialApp(home: DSStatusDot.excluded()));
       expect(find.byType(DSStatusDot), findsOneWidget);
     });
 
     testWidgets('custom tooltip overrides default', (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: DSStatusDot.running(tooltip: 'Custom label'),
-        ),
+        const MaterialApp(home: DSStatusDot.running(tooltip: 'Custom label')),
       );
       final tooltip = tester.widget<Tooltip>(find.byType(Tooltip));
       expect(tooltip.message, 'Custom label');
@@ -129,19 +101,13 @@ void main() {
 
     testWidgets('custom size is applied', (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: DSStatusDot.healthy(size: 16),
-        ),
+        const MaterialApp(home: DSStatusDot.healthy(size: 16)),
       );
       expect(find.byType(DSStatusDot), findsOneWidget);
     });
 
     testWidgets('semantics label matches tooltip', (tester) async {
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: DSStatusDot.pending(),
-        ),
-      );
+      await tester.pumpWidget(const MaterialApp(home: DSStatusDot.pending()));
       // Pending has default tooltip 'Pending'
       expect(find.byType(Semantics), findsWidgets);
     });
@@ -247,7 +213,9 @@ void main() {
       expect(find.text('20'), findsOneWidget);
     });
 
-    testWidgets('semantics label includes health for non-healthy', (tester) async {
+    testWidgets('semantics label includes health for non-healthy', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: DSMetricTile(
@@ -257,8 +225,15 @@ void main() {
           ),
         ),
       );
-      final semantics = tester.widget<Semantics>(find.byType(Semantics).first);
-      expect(semantics.properties.label, contains('degraded'));
+      // Find the Semantics widget that has the tile's composite label
+      // (child widgets like DSGlassPanelSimple may contribute their own Semantics)
+      final tileSemantics = find.byWidgetPredicate(
+        (widget) =>
+            widget is Semantics &&
+            widget.properties.label != null &&
+            widget.properties.label!.contains('degraded'),
+      );
+      expect(tileSemantics, findsOneWidget);
     });
   });
 
@@ -340,9 +315,7 @@ void main() {
 
     testWidgets('degraded renders title', (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: DSStateSurface.degraded(title: 'Partial Data'),
-        ),
+        const MaterialApp(home: DSStateSurface.degraded(title: 'Partial Data')),
       );
       expect(find.text('Partial Data'), findsOneWidget);
       expect(find.byIcon(Icons.warning_amber), findsOneWidget);
@@ -350,9 +323,7 @@ void main() {
 
     testWidgets('excluded renders title', (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: DSStateSurface.excluded(title: 'Filtered Out'),
-        ),
+        const MaterialApp(home: DSStateSurface.excluded(title: 'Filtered Out')),
       );
       expect(find.text('Filtered Out'), findsOneWidget);
       expect(find.byIcon(Icons.remove_circle_outline), findsOneWidget);
@@ -361,10 +332,7 @@ void main() {
     testWidgets('operational states render compact', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: DSStateSurface.stale(
-            title: 'Stale',
-            compact: true,
-          ),
+          home: DSStateSurface.stale(title: 'Stale', compact: true),
         ),
       );
       expect(find.text('Stale'), findsOneWidget);
@@ -373,10 +341,7 @@ void main() {
     testWidgets('custom icon overrides default', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: DSStateSurface.disabled(
-            title: 'Custom',
-            icon: Icons.lock,
-          ),
+          home: DSStateSurface.disabled(title: 'Custom', icon: Icons.lock),
         ),
       );
       expect(find.byIcon(Icons.lock), findsOneWidget);

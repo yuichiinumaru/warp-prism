@@ -1,6 +1,7 @@
 # Task 0710: Warp Prism History Fixture Ledger Corpus
 
 > **Status**: `[x]` Done
+> **Review State**: Blocked — Flutter SDK not installed; validation commands cannot execute
 > **Priority**: 🔴 P0
 > **Type**: `feature`
 > **Origin**: EPIC 07 `warp-prism/docs/tasks/00-planning/EPIC-07-warp-prism-history-surface.md`

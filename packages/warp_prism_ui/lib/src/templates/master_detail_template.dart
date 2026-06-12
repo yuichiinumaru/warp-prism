@@ -27,43 +27,43 @@ import '../organisms/organisms.dart';
 class MasterDetailTemplate extends StatefulWidget {
   /// The sidebar navigation items
   final List<DSSidebarItem> sidebarItems;
-  
+
   /// Currently selected sidebar item index
   final int selectedIndex;
-  
+
   /// Callback when sidebar item is selected
   final void Function(int) onSidebarItemSelected;
-  
+
   /// The title shown in the topbar
   final String title;
-  
+
   /// Optional search query
   final String? searchQuery;
-  
+
   /// Callback when search changes
   final void Function(String)? onSearchChanged;
-  
+
   /// Optional filter chips
   final List<String>? filters;
-  
+
   /// Currently selected filters
   final Set<String>? selectedFilters;
-  
+
   /// Callback when filter selection changes
   final void Function(Set<String>)? onFiltersChanged;
-  
+
   /// The master panel content (list/grid/graph)
   final Widget masterContent;
-  
+
   /// The detail panel content (inspector)
   final Widget? detailContent;
-  
+
   /// Whether to show the detail panel
   final bool showDetail;
-  
+
   /// Optional breadcrumbs
   final List<String>? breadcrumbs;
-  
+
   /// Optional actions for the topbar
   final List<Widget>? actions;
 
@@ -104,7 +104,7 @@ class MasterDetailTemplate extends StatefulWidget {
 
 class _MasterDetailTemplateState extends State<MasterDetailTemplate> {
   bool _sidebarCollapsed = false;
-  
+
   @override
   Widget build(BuildContext context) {
     return DSShell(
@@ -135,34 +135,25 @@ class _MasterDetailTemplateState extends State<MasterDetailTemplate> {
       content: _buildBody(),
     );
   }
-  
+
   Widget _buildBody() {
     final content = _buildFilterableContent(widget.masterContent);
 
     if (!widget.showDetail || widget.detailContent == null) {
       return content;
     }
-    
+
     return LayoutBuilder(
       builder: (context, constraints) {
         final width = constraints.maxWidth;
-        
+
         if (width >= DSBreakpoints.masterDetailSideBySide) {
           // Side-by-side layout — detail with close button in header
           return Row(
             children: [
-              Expanded(
-                flex: 3,
-                child: content,
-              ),
-              Container(
-                width: 1,
-                color: DSColors.borderSubtle,
-              ),
-              Expanded(
-                flex: 2,
-                child: widget.detailContent!,
-              ),
+              Expanded(flex: 3, child: content),
+              Container(width: 1, color: DSColors.borderSubtle),
+              Expanded(flex: 2, child: widget.detailContent!),
             ],
           );
         } else if (width >= DSBreakpoints.sidebarCollapse) {
@@ -221,10 +212,7 @@ class _MasterDetailTemplateState extends State<MasterDetailTemplate> {
                   : null,
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(1),
-                child: Container(
-                  height: 1,
-                  color: DSColors.borderSubtle,
-                ),
+                child: Container(height: 1, color: DSColors.borderSubtle),
               ),
             ),
             body: widget.detailContent!,
@@ -254,12 +242,7 @@ class _MasterDetailTemplateState extends State<MasterDetailTemplate> {
           ),
           child: DSFilterChipGroup(
             options: filters
-                .map(
-                  (filter) => DSFilterOption(
-                    value: filter,
-                    label: filter,
-                  ),
-                )
+                .map((filter) => DSFilterOption(value: filter, label: filter))
                 .toList(),
             selected: selected,
             onToggle: (value) {
@@ -288,34 +271,34 @@ class _MasterDetailTemplateState extends State<MasterDetailTemplate> {
 class CanvasTemplate extends StatelessWidget {
   /// The sidebar navigation items
   final List<DSSidebarItem> sidebarItems;
-  
+
   /// Currently selected sidebar item index
   final int selectedIndex;
-  
+
   /// Callback when sidebar item is selected
   final void Function(int) onSidebarItemSelected;
-  
+
   /// The title shown in the topbar
   final String title;
-  
+
   /// Optional search query
   final String? searchQuery;
-  
+
   /// Callback when search changes
   final void Function(String)? onSearchChanged;
-  
+
   /// The canvas content (typically a graph)
   final Widget canvas;
-  
+
   /// Optional overlay panel (e.g., node inspector)
   final Widget? overlayPanel;
-  
+
   /// Whether to show the overlay panel
   final bool showOverlay;
-  
+
   /// Optional floating controls
   final List<Widget>? floatingControls;
-  
+
   /// Optional actions for the topbar
   final List<Widget>? actions;
 
@@ -363,7 +346,7 @@ class CanvasTemplate extends StatelessWidget {
         children: [
           // Full-bleed canvas
           Positioned.fill(child: canvas),
-          
+
           // Floating controls (zoom, layout, etc.)
           if (floatingControls != null)
             Positioned(
@@ -372,14 +355,16 @@ class CanvasTemplate extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: floatingControls!
-                    .map((control) => Padding(
-                          padding: const EdgeInsets.only(bottom: DSSpacing.sm),
-                          child: control,
-                        ))
+                    .map(
+                      (control) => Padding(
+                        padding: const EdgeInsets.only(bottom: DSSpacing.sm),
+                        child: control,
+                      ),
+                    )
                     .toList(),
               ),
             ),
-          
+
           // Overlay panel (inspector) - hidden below narrow breakpoint
           if (showOverlay && overlayPanel != null)
             Positioned(
@@ -414,43 +399,43 @@ class CanvasTemplate extends StatelessWidget {
 class TimelineTemplate extends StatelessWidget {
   /// The sidebar navigation items
   final List<DSSidebarItem> sidebarItems;
-  
+
   /// Currently selected sidebar item index
   final int selectedIndex;
-  
+
   /// Callback when sidebar item is selected
   final void Function(int) onSidebarItemSelected;
-  
+
   /// The title shown in the topbar
   final String title;
-  
+
   /// Optional search query
   final String? searchQuery;
-  
+
   /// Callback when search changes
   final void Function(String)? onSearchChanged;
-  
+
   /// Optional filter chips
   final List<String>? filters;
-  
+
   /// Currently selected filters
   final Set<String>? selectedFilters;
-  
+
   /// Callback when filter selection changes
   final void Function(Set<String>)? onFiltersChanged;
-  
+
   /// Timeline entries
   final List<DSTimelineEntry> entries;
-  
+
   /// Callback when entry is selected
   final void Function(DSTimelineEntry)? onEntrySelected;
-  
+
   /// Currently selected entry
   final DSTimelineEntry? selectedEntry;
-  
+
   /// Detail panel for selected entry
   final Widget? detailPanel;
-  
+
   /// Optional actions for the topbar
   final List<Widget>? actions;
 
@@ -490,10 +475,7 @@ class TimelineTemplate extends StatelessWidget {
         showSearch: onSearchChanged != null,
         searchBar: onSearchChanged == null
             ? null
-            : DSSearchBar(
-                value: searchQuery,
-                onChanged: onSearchChanged,
-              ),
+            : DSSearchBar(value: searchQuery, onChanged: onSearchChanged),
         actions: actions,
       ),
       content: LayoutBuilder(
@@ -520,7 +502,10 @@ class TimelineTemplate extends StatelessWidget {
                 ? null
                 : DSFilterChipGroup(
                     options: filters!
-                        .map((filter) => DSFilterOption(value: filter, label: filter))
+                        .map(
+                          (filter) =>
+                              DSFilterOption(value: filter, label: filter),
+                        )
                         .toList(),
                     selected: selectedFilters ?? const <String>{},
                     onToggle: (value) {
@@ -540,23 +525,17 @@ class TimelineTemplate extends StatelessWidget {
                     },
                   ),
           );
-          
+
           if (showDetail && isWide) {
             return Row(
               children: [
-                Expanded(
-                  flex: 2,
-                  child: timeline,
-                ),
+                Expanded(flex: 2, child: timeline),
                 Container(width: 1, color: DSColors.borderSubtle),
-                Expanded(
-                  flex: 3,
-                  child: detailPanel!,
-                ),
+                Expanded(flex: 3, child: detailPanel!),
               ],
             );
           }
-          
+
           return timeline;
         },
       ),

@@ -10,29 +10,48 @@ import 'package:warp_prism_ui/src/tokens/tokens.dart';
 void main() {
   group('DSBreakpoints Contract', () {
     test('narrow breakpoint is 600px', () {
-      expect(DSBreakpoints.narrow, 600.0,
-          reason: 'Narrow breakpoint must be 600px per contract');
+      expect(
+        DSBreakpoints.narrow,
+        600.0,
+        reason: 'Narrow breakpoint must be 600px per contract',
+      );
     });
 
     test('sidebarCollapse breakpoint is 800px', () {
-      expect(DSBreakpoints.sidebarCollapse, 800.0,
-          reason: 'Sidebar collapse breakpoint must be 800px per contract');
+      expect(
+        DSBreakpoints.sidebarCollapse,
+        800.0,
+        reason: 'Sidebar collapse breakpoint must be 800px per contract',
+      );
     });
 
     test('timelineDetail breakpoint is 1000px', () {
-      expect(DSBreakpoints.timelineDetail, 1000.0,
-          reason: 'Timeline detail breakpoint must be 1000px per contract');
+      expect(
+        DSBreakpoints.timelineDetail,
+        1000.0,
+        reason: 'Timeline detail breakpoint must be 1000px per contract',
+      );
     });
 
     test('masterDetailSideBySide breakpoint is 1200px', () {
-      expect(DSBreakpoints.masterDetailSideBySide, 1200.0,
-          reason: 'Master-detail side-by-side breakpoint must be 1200px per contract');
+      expect(
+        DSBreakpoints.masterDetailSideBySide,
+        1200.0,
+        reason:
+            'Master-detail side-by-side breakpoint must be 1200px per contract',
+      );
     });
 
     test('breakpoints are in ascending order', () {
       expect(DSBreakpoints.narrow, lessThan(DSBreakpoints.sidebarCollapse));
-      expect(DSBreakpoints.sidebarCollapse, lessThan(DSBreakpoints.timelineDetail));
-      expect(DSBreakpoints.timelineDetail, lessThanOrEqualTo(DSBreakpoints.masterDetailSideBySide));
+      expect(
+        DSBreakpoints.sidebarCollapse,
+        lessThan(DSBreakpoints.timelineDetail),
+      );
+      expect(
+        DSBreakpoints.timelineDetail,
+        lessThanOrEqualTo(DSBreakpoints.masterDetailSideBySide),
+      );
     });
   });
 
@@ -63,14 +82,26 @@ void main() {
     test('gaps between breakpoints are reasonable (not too tight)', () {
       final gap1 = DSBreakpoints.sidebarCollapse - DSBreakpoints.narrow;
       final gap2 = DSBreakpoints.timelineDetail - DSBreakpoints.sidebarCollapse;
-      final gap3 = DSBreakpoints.masterDetailSideBySide - DSBreakpoints.timelineDetail;
+      final gap3 =
+          DSBreakpoints.masterDetailSideBySide - DSBreakpoints.timelineDetail;
 
-      expect(gap1, greaterThanOrEqualTo(100),
-          reason: 'Gap between narrow and sidebarCollapse should be >= 100px');
-      expect(gap2, greaterThanOrEqualTo(100),
-          reason: 'Gap between sidebarCollapse and timelineDetail should be >= 100px');
-      expect(gap3, greaterThanOrEqualTo(100),
-          reason: 'Gap between timelineDetail and masterDetail should be >= 100px');
+      expect(
+        gap1,
+        greaterThanOrEqualTo(100),
+        reason: 'Gap between narrow and sidebarCollapse should be >= 100px',
+      );
+      expect(
+        gap2,
+        greaterThanOrEqualTo(100),
+        reason:
+            'Gap between sidebarCollapse and timelineDetail should be >= 100px',
+      );
+      expect(
+        gap3,
+        greaterThanOrEqualTo(100),
+        reason:
+            'Gap between timelineDetail and masterDetail should be >= 100px',
+      );
     });
   });
 
@@ -78,7 +109,10 @@ void main() {
     test('sidebar widths are defined', () {
       expect(DSSpacing.sidebarCollapsed, isPositive);
       expect(DSSpacing.sidebarExpanded, isPositive);
-      expect(DSSpacing.sidebarExpanded, greaterThan(DSSpacing.sidebarCollapsed));
+      expect(
+        DSSpacing.sidebarExpanded,
+        greaterThan(DSSpacing.sidebarCollapsed),
+      );
     });
 
     test('inspector width is defined', () {

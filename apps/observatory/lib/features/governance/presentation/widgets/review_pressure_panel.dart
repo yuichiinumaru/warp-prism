@@ -7,7 +7,7 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
-import '../../../../data/models/governance_diagnostics.dart';
+import 'package:warp_prism_observatory/data/models/governance_diagnostics.dart';
 
 /// Review pressure indicator derived from diagnostics.
 @immutable
@@ -42,19 +42,21 @@ class ReviewPressureIndicator {
       final lane = ctx['taskLane']?.toString() ?? 'unknown';
       final title = ctx['taskTitle']?.toString() ?? d.assetId;
 
-      indicators.add(ReviewPressureIndicator(
-        assetId: d.assetId,
-        taskTitle: title,
-        lane: lane,
-        severity: d.severity,
-        explanation: d.severity == DiagnosticSeverity.error
-            ? 'Task "$title" is in $lane with zero proof. '
-                'This creates review pressure because the task cannot '
-                'be verified before progressing further.'
-            : 'Task "$title" is in $lane with only partial proof. '
-                'Reviewers must determine if the available evidence '
-                'is sufficient for advancement.',
-      ));
+      indicators.add(
+        ReviewPressureIndicator(
+          assetId: d.assetId,
+          taskTitle: title,
+          lane: lane,
+          severity: d.severity,
+          explanation: d.severity == DiagnosticSeverity.error
+              ? 'Task "$title" is in $lane with zero proof. '
+                    'This creates review pressure because the task cannot '
+                    'be verified before progressing further.'
+              : 'Task "$title" is in $lane with only partial proof. '
+                    'Reviewers must determine if the available evidence '
+                    'is sufficient for advancement.',
+        ),
+      );
     }
 
     return indicators
@@ -126,8 +128,7 @@ class ReviewPressurePanel extends StatelessWidget {
     super.key,
     required this.indicators,
     ReviewPressureSummary? summary,
-  }) : summary = summary ??
-            ReviewPressureSummary.fromIndicators(indicators);
+  }) : summary = summary ?? ReviewPressureSummary.fromIndicators(indicators);
 
   @override
   Widget build(BuildContext context) {
@@ -151,7 +152,10 @@ class ReviewPressurePanel extends StatelessWidget {
                     color: DSColors.statusError.withOpacity(0.15),
                     borderRadius: BorderRadius.circular(DSRadii.md),
                   ),
-                  child: DSIcon(Icons.queue_outlined, color: DSColors.statusError),
+                  child: DSIcon(
+                    Icons.queue_outlined,
+                    color: DSColors.statusError,
+                  ),
                 ),
                 const SizedBox(width: DSSpacing.md),
                 Expanded(
@@ -191,10 +195,7 @@ class ReviewPressurePanel extends StatelessWidget {
                 children: summary.pressureByLane.entries.map((entry) {
                   return Padding(
                     padding: const EdgeInsets.only(right: DSSpacing.md),
-                    child: _LaneChip(
-                      lane: entry.key,
-                      count: entry.value,
-                    ),
+                    child: _LaneChip(lane: entry.key, count: entry.value),
                   );
                 }).toList(),
               ),
@@ -218,8 +219,11 @@ class ReviewPressurePanel extends StatelessWidget {
       padding: const EdgeInsets.all(DSSpacing.lg),
       child: Row(
         children: [
-          Icon(Icons.check_circle_outline,
-              size: 16, color: DSColors.statusSuccess),
+          Icon(
+            Icons.check_circle_outline,
+            size: 16,
+            color: DSColors.statusSuccess,
+          ),
           const SizedBox(width: DSSpacing.sm),
           Expanded(
             child: DSText.bodySmall(
@@ -269,9 +273,7 @@ class _LaneChip extends StatelessWidget {
       decoration: BoxDecoration(
         color: DSColors.statusWarning.withOpacity(0.1),
         borderRadius: BorderRadius.circular(DSRadii.sm),
-        border: Border.all(
-          color: DSColors.statusWarning.withOpacity(0.3),
-        ),
+        border: Border.all(color: DSColors.statusWarning.withOpacity(0.3)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -306,9 +308,7 @@ class _PressureRow extends StatelessWidget {
         decoration: BoxDecoration(
           color: DSColors.obsidianBase,
           borderRadius: BorderRadius.circular(DSRadii.sm),
-          border: Border(
-            left: BorderSide(color: color, width: 3),
-          ),
+          border: Border(left: BorderSide(color: color, width: 3)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -324,10 +324,7 @@ class _PressureRow extends StatelessWidget {
                 ),
                 const SizedBox(width: DSSpacing.sm),
                 Expanded(
-                  child: DSText.labelSmall(
-                    indicator.taskTitle,
-                    color: color,
-                  ),
+                  child: DSText.labelSmall(indicator.taskTitle, color: color),
                 ),
                 DSChip(label: indicator.lane),
               ],

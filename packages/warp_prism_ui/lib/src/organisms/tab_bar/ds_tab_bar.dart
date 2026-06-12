@@ -116,7 +116,8 @@ class _DSTabBarState extends State<DSTabBar> {
     final tabWidth = _TabHeaderDelegate.estimatedWidth(
       widget.controller.tabs[activeIndex],
     );
-    final targetOffset = (activeIndex * tabWidth) -
+    final targetOffset =
+        (activeIndex * tabWidth) -
         (_scrollController.position.viewportDimension / 2) +
         (tabWidth / 2);
     _scrollController.animateTo(
@@ -174,10 +175,7 @@ class _DSTabBarState extends State<DSTabBar> {
           children: [
             // Left scroll arrow (visible when can scroll left)
             if (widget.showScrollFades && _canScrollLeft)
-              _ScrollArrow(
-                icon: Icons.chevron_left,
-                onTap: _scrollLeft,
-              ),
+              _ScrollArrow(icon: Icons.chevron_left, onTap: _scrollLeft),
 
             // Tab headers
             Expanded(
@@ -215,10 +213,7 @@ class _DSTabBarState extends State<DSTabBar> {
                             gradient: LinearGradient(
                               begin: Alignment.centerLeft,
                               end: Alignment.centerRight,
-                              colors: [
-                                bgColor,
-                                bgColor.withOpacity(0),
-                              ],
+                              colors: [bgColor, bgColor.withOpacity(0)],
                             ),
                           ),
                         ),
@@ -238,10 +233,7 @@ class _DSTabBarState extends State<DSTabBar> {
                             gradient: LinearGradient(
                               begin: Alignment.centerRight,
                               end: Alignment.centerLeft,
-                              colors: [
-                                bgColor,
-                                bgColor.withOpacity(0),
-                              ],
+                              colors: [bgColor, bgColor.withOpacity(0)],
                             ),
                           ),
                         ),
@@ -253,10 +245,7 @@ class _DSTabBarState extends State<DSTabBar> {
 
             // Right scroll arrow (visible when can scroll right)
             if (widget.showScrollFades && _canScrollRight)
-              _ScrollArrow(
-                icon: Icons.chevron_right,
-                onTap: _scrollRight,
-              ),
+              _ScrollArrow(icon: Icons.chevron_right, onTap: _scrollRight),
           ],
         ),
       ),
@@ -345,10 +334,7 @@ class _TabHeaderState extends State<_TabHeader> {
             child: AnimatedContainer(
               duration: DSMotion.fast,
               curve: DSMotion.standard,
-              constraints: const BoxConstraints(
-                minWidth: 80,
-                maxWidth: 200,
-              ),
+              constraints: const BoxConstraints(minWidth: 80, maxWidth: 200),
               height: DSSpacing.topbarHeight,
               padding: const EdgeInsets.symmetric(horizontal: DSSpacing.md),
               decoration: BoxDecoration(
@@ -371,9 +357,7 @@ class _TabHeaderState extends State<_TabHeader> {
                     child: Text(
                       widget.tab.label,
                       style: DSTypography.labelMedium.copyWith(
-                        color: _isFocused
-                            ? DSColors.textPrimary
-                            : textColor,
+                        color: _isFocused ? DSColors.textPrimary : textColor,
                       ),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
@@ -524,15 +508,11 @@ class _ScrollArrowState extends State<_ScrollArrow> {
           onTap: widget.onTap,
           child: Container(
             width: DSSpacing.iconButtonSizeCompact,
-            color: _isHovered
-                ? DSColors.obsidianHover
-                : DSColors.transparent,
+            color: _isHovered ? DSColors.obsidianHover : DSColors.transparent,
             child: Icon(
               widget.icon,
               size: 16,
-              color: _isHovered
-                  ? DSColors.textPrimary
-                  : DSColors.textTertiary,
+              color: _isHovered ? DSColors.textPrimary : DSColors.textTertiary,
             ),
           ),
         ),

@@ -1,6 +1,7 @@
 # Task 0613: Warp-Prism Operate Review and Blocker Storytelling
 
 > **Status**: `[x]` Complete
+> **Review State**: Builder Done — implementation evidence missing; needs verification
 > **Priority**: 🟡 P1
 > **Type**: `feature`
 > **Origin**: EPIC 06 promotion from `warp-prism/docs/tasks/00-planning/EPIC-06-warp-prism-operate-surface.md`

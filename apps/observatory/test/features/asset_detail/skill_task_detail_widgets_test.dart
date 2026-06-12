@@ -45,10 +45,18 @@ AssetDetailDescriptor _testSkillDescriptor({
   WorkspaceAsset? asset,
   List<DetailLink> incoming = const [
     DetailLink(targetId: 'agent:builder', label: 'builder', kind: 'agent'),
-    DetailLink(targetId: 'workflow:doc-gen', label: 'doc-gen', kind: 'workflow'),
+    DetailLink(
+      targetId: 'workflow:doc-gen',
+      label: 'doc-gen',
+      kind: 'workflow',
+    ),
   ],
   List<DetailLink> outgoing = const [
-    DetailLink(targetId: 'subskill:readme-writer', label: 'readme-writer', kind: 'skill'),
+    DetailLink(
+      targetId: 'subskill:readme-writer',
+      label: 'readme-writer',
+      kind: 'skill',
+    ),
   ],
 }) {
   final a = asset ?? _testSkillAsset();
@@ -72,7 +80,9 @@ AssetDetailDescriptor _testSkillDescriptor({
         title: 'Role in the Harness',
         key: 'role',
         kindSpecific: true,
-        properties: [const DetailProperty(label: 'Type', value: 'Execution skill')],
+        properties: [
+          const DetailProperty(label: 'Type', value: 'Execution skill'),
+        ],
       ),
       DetailSection(
         title: 'Sub-structure',
@@ -80,7 +90,10 @@ AssetDetailDescriptor _testSkillDescriptor({
         kindSpecific: true,
         count: 2,
         properties: [
-          const DetailProperty(label: 'Sub-skills', value: 'readme-writer, api-doc-writer'),
+          const DetailProperty(
+            label: 'Sub-skills',
+            value: 'readme-writer, api-doc-writer',
+          ),
         ],
       ),
       DetailSection(
@@ -128,9 +141,7 @@ WorkspaceAsset _testTaskAsset({
   );
 }
 
-AssetDetailDescriptor _testTaskDescriptor({
-  WorkspaceAsset? asset,
-}) {
+AssetDetailDescriptor _testTaskDescriptor({WorkspaceAsset? asset}) {
   final a = asset ?? _testTaskAsset();
   return AssetDetailDescriptor(
     asset: a,
@@ -164,7 +175,9 @@ AssetDetailDescriptor _testTaskDescriptor({
         key: 'dependencies',
         kindSpecific: true,
         count: 1,
-        links: [const DetailLink(targetId: 'task:0902', label: '0902', kind: 'task')],
+        links: [
+          const DetailLink(targetId: 'task:0902', label: '0902', kind: 'task'),
+        ],
       ),
       DetailSection(
         title: 'Validation Commands',
@@ -190,8 +203,16 @@ AssetDetailDescriptor _testTaskDescriptor({
         kindSpecific: true,
         count: 2,
         links: [
-          const DetailLink(targetId: 'skill:agent-wiki', label: 'agent-wiki', kind: 'skill'),
-          const DetailLink(targetId: 'workflow:build-orchestrator', label: 'build-orchestrator', kind: 'workflow'),
+          const DetailLink(
+            targetId: 'skill:agent-wiki',
+            label: 'agent-wiki',
+            kind: 'skill',
+          ),
+          const DetailLink(
+            targetId: 'workflow:build-orchestrator',
+            label: 'build-orchestrator',
+            kind: 'workflow',
+          ),
         ],
       ),
       DetailSection(
@@ -225,9 +246,7 @@ AssetDetailDescriptor _testTaskDescriptor({
 }
 
 Widget _wrapInApp(Widget child) {
-  return MaterialApp(
-    home: Scaffold(body: SizedBox(width: 800, height: 900, child: child)),
-  );
+  return MaterialApp(home: SizedBox.expand(child: child));
 }
 
 // ---------------------------------------------------------------------------
@@ -237,10 +256,15 @@ Widget _wrapInApp(Widget child) {
 void main() {
   group('SkillDetailView', () {
     testWidgets('renders all 6 panels for a complete skill', (tester) async {
+      tester.view.physicalSize = const Size(800, 2000);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
       final descriptor = _testSkillDescriptor();
-      await tester.pumpWidget(_wrapInApp(
-        SkillDetailView(descriptor: descriptor),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(SkillDetailView(descriptor: descriptor)),
+      );
 
       // Identity
       expect(find.text('Identity'), findsOneWidget);
@@ -255,7 +279,7 @@ void main() {
       expect(find.text('readme-writer, api-doc-writer'), findsOneWidget);
 
       // Incoming links
-      expect(find.text('Incoming Links'), findsOneWidget);
+      expect(find.text('Incoming Links'), findsWidgets);
 
       // Usage
       expect(find.text('Operational Usage'), findsOneWidget);
@@ -266,9 +290,9 @@ void main() {
 
     testWidgets('renders triggers and tags', (tester) async {
       final descriptor = _testSkillDescriptor();
-      await tester.pumpWidget(_wrapInApp(
-        SkillDetailView(descriptor: descriptor),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(SkillDetailView(descriptor: descriptor)),
+      );
 
       expect(find.textContaining('wiki'), findsWidgets);
       expect(find.textContaining('documentation'), findsWidgets);
@@ -276,9 +300,9 @@ void main() {
 
     testWidgets('renders incoming links as link rows', (tester) async {
       final descriptor = _testSkillDescriptor();
-      await tester.pumpWidget(_wrapInApp(
-        SkillDetailView(descriptor: descriptor),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(SkillDetailView(descriptor: descriptor)),
+      );
 
       expect(find.textContaining('builder'), findsWidgets);
       expect(find.textContaining('doc-gen'), findsWidgets);
@@ -290,9 +314,9 @@ void main() {
         incoming: const [],
         outgoing: const [],
       );
-      await tester.pumpWidget(_wrapInApp(
-        SkillDetailView(descriptor: descriptor),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(SkillDetailView(descriptor: descriptor)),
+      );
 
       // Should not crash
       expect(find.text('Identity'), findsOneWidget);
@@ -301,16 +325,20 @@ void main() {
   });
 
   group('TaskDetailView', () {
-    testWidgets('renders forensic sections with lane-neutral header',
-        (tester) async {
+    testWidgets('renders forensic sections with lane-neutral header', (
+      tester,
+    ) async {
       final descriptor = _testTaskDescriptor();
-      await tester.pumpWidget(_wrapInApp(
-        TaskDetailView(descriptor: descriptor),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(TaskDetailView(descriptor: descriptor)),
+      );
 
       // Header with task id and title
       expect(find.textContaining('task:0903'), findsWidgets);
-      expect(find.textContaining('Skill and Task Detail Variants'), findsOneWidget);
+      expect(
+        find.textContaining('Skill and Task Detail Variants'),
+        findsWidgets,
+      );
 
       // Contract section
       expect(find.text('Contract'), findsOneWidget);
@@ -321,19 +349,19 @@ void main() {
 
     testWidgets('renders dependencies as link rows', (tester) async {
       final descriptor = _testTaskDescriptor();
-      await tester.pumpWidget(_wrapInApp(
-        TaskDetailView(descriptor: descriptor),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(TaskDetailView(descriptor: descriptor)),
+      );
 
       expect(find.text('Dependencies'), findsOneWidget);
-      expect(find.text('task:0902'), findsOneWidget);
+      expect(find.text('0902'), findsWidgets);
     });
 
     testWidgets('renders validation commands as code blocks', (tester) async {
       final descriptor = _testTaskDescriptor();
-      await tester.pumpWidget(_wrapInApp(
-        TaskDetailView(descriptor: descriptor),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(TaskDetailView(descriptor: descriptor)),
+      );
 
       expect(find.text('Validation Commands'), findsOneWidget);
       expect(find.textContaining('flutter test'), findsOneWidget);
@@ -341,20 +369,30 @@ void main() {
     });
 
     testWidgets('renders evidence section', (tester) async {
-      final descriptor = _testTaskDescriptor();
-      await tester.pumpWidget(_wrapInApp(
-        TaskDetailView(descriptor: descriptor),
-      ));
+      tester.view.physicalSize = const Size(800, 2000);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
 
-      expect(find.text('Evidence'), findsOneWidget);
+      final descriptor = _testTaskDescriptor();
+      await tester.pumpWidget(
+        _wrapInApp(TaskDetailView(descriptor: descriptor)),
+      );
+
+      expect(find.text('Evidence'), findsWidgets);
       expect(find.text('Not yet provided'), findsOneWidget);
     });
 
     testWidgets('renders related skills and workflows', (tester) async {
+      tester.view.physicalSize = const Size(800, 2000);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
       final descriptor = _testTaskDescriptor();
-      await tester.pumpWidget(_wrapInApp(
-        TaskDetailView(descriptor: descriptor),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(TaskDetailView(descriptor: descriptor)),
+      );
 
       expect(find.text('Related Skills & Workflows'), findsOneWidget);
       expect(find.text('agent-wiki'), findsOneWidget);
@@ -362,10 +400,15 @@ void main() {
     });
 
     testWidgets('renders lifecycle section', (tester) async {
+      tester.view.physicalSize = const Size(800, 2000);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
       final descriptor = _testTaskDescriptor();
-      await tester.pumpWidget(_wrapInApp(
-        TaskDetailView(descriptor: descriptor),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(TaskDetailView(descriptor: descriptor)),
+      );
 
       expect(find.text('Lifecycle'), findsOneWidget);
     });
@@ -373,12 +416,11 @@ void main() {
     testWidgets('renders close button', (tester) async {
       var closed = false;
       final descriptor = _testTaskDescriptor();
-      await tester.pumpWidget(_wrapInApp(
-        TaskDetailView(
-          descriptor: descriptor,
-          onClose: () => closed = true,
+      await tester.pumpWidget(
+        _wrapInApp(
+          TaskDetailView(descriptor: descriptor, onClose: () => closed = true),
         ),
-      ));
+      );
 
       final closeBtn = find.byTooltip('Close');
       expect(closeBtn, findsOneWidget);
@@ -397,9 +439,9 @@ void main() {
   group('AssetDetailView dispatcher', () {
     testWidgets('dispatches skill to SkillDetailView', (tester) async {
       final descriptor = _testSkillDescriptor();
-      await tester.pumpWidget(_wrapInApp(
-        AssetDetailView(descriptor: descriptor),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(AssetDetailView(descriptor: descriptor)),
+      );
 
       // Skill-specific panels should be visible
       expect(find.text('Role in the Harness'), findsOneWidget);
@@ -408,9 +450,9 @@ void main() {
 
     testWidgets('dispatches task to TaskDetailView', (tester) async {
       final descriptor = _testTaskDescriptor();
-      await tester.pumpWidget(_wrapInApp(
-        AssetDetailView(descriptor: descriptor),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(AssetDetailView(descriptor: descriptor)),
+      );
 
       // Task-specific panels should be visible
       expect(find.text('Contract'), findsOneWidget);

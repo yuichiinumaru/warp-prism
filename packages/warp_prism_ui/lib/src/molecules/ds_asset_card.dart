@@ -3,7 +3,7 @@ import '../tokens/tokens.dart';
 import '../atoms/atoms.dart';
 
 /// ASW Observatory Molecule - Asset Card
-/// 
+///
 /// Card representing any workspace asset (agent, skill, workflow, etc.)
 class DSAssetCard extends StatelessWidget {
   final String name;
@@ -84,11 +84,10 @@ class DSAssetCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                  if (canonicality != null)
-                    DSChip.governance(canonicality!),
+                  if (canonicality != null) DSChip.governance(canonicality!),
                 ],
               ),
-              
+
               // Description
               if (description != null) ...[
                 const SizedBox(height: DSSpacing.sm),
@@ -99,7 +98,7 @@ class DSAssetCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
               ],
-              
+
               // Footer
               if ((tags != null && tags!.isNotEmpty) || edgeCount != null) ...[
                 const SizedBox(height: DSSpacing.sm),
@@ -110,10 +109,13 @@ class DSAssetCard extends StatelessWidget {
                         child: Wrap(
                           spacing: 4,
                           runSpacing: 4,
-                          children: tags!.take(3).map((tag) => DSChip(
-                            label: tag,
-                            size: DSChipSize.small,
-                          )).toList(),
+                          children: tags!
+                              .take(3)
+                              .map(
+                                (tag) =>
+                                    DSChip(label: tag, size: DSChipSize.small),
+                              )
+                              .toList(),
                         ),
                       ),
                     if (edgeCount != null) ...[

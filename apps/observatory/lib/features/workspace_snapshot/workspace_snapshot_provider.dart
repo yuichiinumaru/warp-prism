@@ -6,12 +6,12 @@
 library;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../data/models/workspace_snapshot.dart';
-import '../../../data/models/workspace_graph.dart';
-import '../../../data/models/task_contracts.dart';
-import '../../../data/sources/preset_local_workspace_source.dart';
-import '../../../data/services/workspace_graph_builder.dart';
-import '../../../data/services/workspace_graph.dart';
+import 'package:warp_prism_observatory/data/models/workspace_snapshot.dart';
+import 'package:warp_prism_observatory/data/models/workspace_graph.dart';
+import 'package:warp_prism_observatory/data/models/task_contracts.dart';
+import 'package:warp_prism_observatory/data/sources/preset_local_workspace_source.dart';
+import 'package:warp_prism_observatory/data/services/workspace_graph_builder.dart';
+import 'package:warp_prism_observatory/data/services/workspace_graph.dart';
 
 /// The workspace root path, configurable via `--dart-define`.
 ///
@@ -46,8 +46,8 @@ class WorkspaceSnapshotNotifier extends AsyncNotifier<WorkspaceSnapshot> {
 /// Exposes loading/success/error states to the UI layer.
 final workspaceSnapshotProvider =
     AsyncNotifierProvider<WorkspaceSnapshotNotifier, WorkspaceSnapshot>(
-  WorkspaceSnapshotNotifier.new,
-);
+      WorkspaceSnapshotNotifier.new,
+    );
 
 // ---------------------------------------------------------------------------
 // Search
@@ -87,7 +87,9 @@ final kindFilterProvider = StateProvider<Set<AssetKind>>((ref) => {});
 final laneFilterProvider = StateProvider<Set<TaskLane>>((ref) => {});
 
 /// Active canonicality filters (empty = show all).
-final canonicalityFilterProvider = StateProvider<Set<Canonicality>>((ref) => {});
+final canonicalityFilterProvider = StateProvider<Set<Canonicality>>(
+  (ref) => {},
+);
 
 /// Filtered and searched assets. Combines search + filters.
 final filteredAssetsProvider = Provider<List<WorkspaceAsset>>((ref) {
@@ -143,7 +145,9 @@ enum GraphMode {
 }
 
 /// Current graph mode selection.
-final graphModeProvider = StateProvider<GraphMode>((ref) => GraphMode.containment);
+final graphModeProvider = StateProvider<GraphMode>(
+  (ref) => GraphMode.containment,
+);
 
 /// The canonical graph builder.
 const _graphBuilder = WorkspaceGraphBuilder();
@@ -256,11 +260,13 @@ GraphProjection _projectGraph(
     // Only include edge if both endpoints are in the node set
     if (nodeMap.containsKey(edge.sourceId) &&
         nodeMap.containsKey(edge.targetId)) {
-      projectedEdges.add(GraphEdge(
-        sourceId: edge.sourceId,
-        targetId: edge.targetId,
-        edgeType: edge.kind.name,
-      ));
+      projectedEdges.add(
+        GraphEdge(
+          sourceId: edge.sourceId,
+          targetId: edge.targetId,
+          edgeType: edge.kind.name,
+        ),
+      );
     }
   }
 
@@ -275,10 +281,7 @@ GraphProjection _projectGraph(
     }
   }
 
-  return GraphProjection(
-    nodes: nodeMap.values.toList(),
-    edges: projectedEdges,
-  );
+  return GraphProjection(nodes: nodeMap.values.toList(), edges: projectedEdges);
 }
 
 bool _matchesQuery(WorkspaceAsset asset, String lowerQuery) {

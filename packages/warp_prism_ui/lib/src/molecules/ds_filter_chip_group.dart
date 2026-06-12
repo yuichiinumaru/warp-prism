@@ -90,6 +90,7 @@ class _FilterChipState extends State<_FilterChip> {
       label: widget.option.label,
       button: true,
       selected: widget.isSelected,
+      explicitChildNodes: true,
       child: Focus(
         focusNode: _focusNode,
         onFocusChange: (focused) => setState(() => _isFocused = focused),
@@ -107,50 +108,59 @@ class _FilterChipState extends State<_FilterChip> {
           onTap: widget.onTap,
           child: MouseRegion(
             cursor: SystemMouseCursors.click,
-            child: AnimatedContainer(
-              duration: DSMotion.fast,
-              height: 28,
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              decoration: BoxDecoration(
-                color: bgColor,
-                borderRadius: BorderRadius.circular(DSRadii.chip),
-                border: Border.all(
-                  color: _isFocused
-                      ? DSColors.accentCyan.withOpacity(0.5)
-                      : borderColor,
-                  width: _isFocused ? 2 : 1,
-                ),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (widget.option.icon != null) ...[
-                    Icon(widget.option.icon, size: 14, color: iconColor),
-                    const SizedBox(width: 6),
-                  ],
-                  Text(
-                    widget.option.label,
-                    style: DSTypography.labelMedium.copyWith(color: textColor),
+            child: ExcludeSemantics(
+              child: AnimatedContainer(
+                duration: DSMotion.fast,
+                height: 28,
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                decoration: BoxDecoration(
+                  color: bgColor,
+                  borderRadius: BorderRadius.circular(DSRadii.chip),
+                  border: Border.all(
+                    color: _isFocused
+                        ? DSColors.accentCyan.withOpacity(0.5)
+                        : borderColor,
+                    width: _isFocused ? 2 : 1,
                   ),
-                  if (widget.showCount && widget.option.count != null) ...[
-                    const SizedBox(width: 6),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
-                      decoration: BoxDecoration(
-                        color: widget.isSelected 
-                            ? color.withOpacity(0.3) 
-                            : DSColors.obsidianHover,
-                        borderRadius: BorderRadius.circular(DSRadii.full),
-                      ),
-                      child: Text(
-                        widget.option.count.toString(),
-                        style: DSTypography.labelSmall.copyWith(
-                          color: widget.isSelected ? color : DSColors.textTertiary,
-                        ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (widget.option.icon != null) ...[
+                      Icon(widget.option.icon, size: 14, color: iconColor),
+                      const SizedBox(width: 6),
+                    ],
+                    Text(
+                      widget.option.label,
+                      style: DSTypography.labelMedium.copyWith(
+                        color: textColor,
                       ),
                     ),
+                    if (widget.showCount && widget.option.count != null) ...[
+                      const SizedBox(width: 6),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 5,
+                          vertical: 1,
+                        ),
+                        decoration: BoxDecoration(
+                          color: widget.isSelected
+                              ? color.withOpacity(0.3)
+                              : DSColors.obsidianHover,
+                          borderRadius: BorderRadius.circular(DSRadii.full),
+                        ),
+                        child: Text(
+                          widget.option.count.toString(),
+                          style: DSTypography.labelSmall.copyWith(
+                            color: widget.isSelected
+                                ? color
+                                : DSColors.textTertiary,
+                          ),
+                        ),
+                      ),
+                    ],
                   ],
-                ],
+                ),
               ),
             ),
           ),

@@ -7,7 +7,7 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
-import '../../../data/models/workspace_graph.dart';
+import 'package:warp_prism_observatory/data/models/workspace_graph.dart';
 import '../domain/asset_detail_descriptor.dart';
 import 'skill_detail_view.dart';
 import 'task_detail_view.dart';
@@ -25,11 +25,7 @@ class AssetDetailView extends StatelessWidget {
   final AssetDetailDescriptor descriptor;
   final VoidCallback? onClose;
 
-  const AssetDetailView({
-    super.key,
-    required this.descriptor,
-    this.onClose,
-  });
+  const AssetDetailView({super.key, required this.descriptor, this.onClose});
 
   @override
   Widget build(BuildContext context) {
@@ -71,9 +67,10 @@ class AssetDetailEmpty extends StatelessWidget {
           child: DSStateSurface.empty(
             icon: Icons.touch_app_outlined,
             title: 'No asset selected',
-            subtitle: message ??
+            subtitle:
+                message ??
                 'Select an asset from the catalog or graph to view its details, '
-                'relationships, and provenance.',
+                    'relationships, and provenance.',
             compact: true,
           ),
         ),
@@ -102,11 +99,7 @@ class AssetDetailError extends StatelessWidget {
   final String message;
   final VoidCallback? onRetry;
 
-  const AssetDetailError({
-    super.key,
-    required this.message,
-    this.onRetry,
-  });
+  const AssetDetailError({super.key, required this.message, this.onRetry});
 
   @override
   Widget build(BuildContext context) {
@@ -129,16 +122,10 @@ class AssetDetailError extends StatelessWidget {
                 color: DSColors.textSecondary,
               ),
               const SizedBox(height: DSSpacing.sm),
-              DSText.bodyMedium(
-                message,
-                color: DSColors.textTertiary,
-              ),
+              DSText.bodyMedium(message, color: DSColors.textTertiary),
               if (onRetry != null) ...[
                 const SizedBox(height: DSSpacing.lg),
-                TextButton(
-                  onPressed: onRetry,
-                  child: const Text('Retry'),
-                ),
+                TextButton(onPressed: onRetry, child: const Text('Retry')),
               ],
             ],
           ),

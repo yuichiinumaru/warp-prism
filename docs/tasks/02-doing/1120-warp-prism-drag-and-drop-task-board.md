@@ -1,6 +1,7 @@
 # Task 1120: Warp Prism Drag And Drop Task Board
 
 > **Status**: `[x]` Complete
+> **Review State**: Package Gate Failed — implementation complete; pre-existing gallery compilation errors block full package gate
 > **Priority**: 🟡 P1
 > **Type**: `feature` | `design-system`
 > **Origin**: EPIC-11 gap analysis (IMPORTANT GAP-I7)

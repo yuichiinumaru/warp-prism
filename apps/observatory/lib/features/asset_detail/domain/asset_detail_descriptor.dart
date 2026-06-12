@@ -8,9 +8,9 @@ library;
 
 import 'package:flutter/foundation.dart';
 
-import '../../../data/models/workspace_graph.dart';
-import '../../../data/models/task_contracts.dart';
-import '../../../data/models/changelog_contracts.dart';
+import 'package:warp_prism_observatory/data/models/workspace_graph.dart';
+import 'package:warp_prism_observatory/data/models/task_contracts.dart';
+import 'package:warp_prism_observatory/data/models/changelog_contracts.dart';
 
 /// A single renderable section inside the universal detail inspector.
 @immutable
@@ -166,10 +166,12 @@ class AssetDetailDescriptor {
             properties: asset.frontmatter.entries
                 .where((e) => !e.key.startsWith('_'))
                 .take(10)
-                .map((e) => DetailProperty(
-                      label: e.key,
-                      value: _formatValue(e.value),
-                    ))
+                .map(
+                  (e) => DetailProperty(
+                    label: e.key,
+                    value: _formatValue(e.value),
+                  ),
+                )
                 .toList(),
           ),
         if (asset.tags.isNotEmpty || asset.triggers.isNotEmpty)
@@ -181,7 +183,9 @@ class AssetDetailDescriptor {
                 DetailProperty(label: 'Tags', value: asset.tags.join(', ')),
               if (asset.triggers.isNotEmpty)
                 DetailProperty(
-                    label: 'Triggers', value: asset.triggers.join(', ')),
+                  label: 'Triggers',
+                  value: asset.triggers.join(', '),
+                ),
             ],
           ),
       ],

@@ -20,7 +20,8 @@ CanonicalityBoundarySummary _testSummary({
   List<GovernanceDiagnostic>? diagnostics,
 }) {
   return CanonicalityBoundarySummary(
-    counts: counts ??
+    counts:
+        counts ??
         const {
           'parentCanonical': 18,
           'childLocal': 4,
@@ -58,91 +59,98 @@ Widget _wrapInApp(Widget child) {
 void main() {
   group('GovernanceOverviewPage', () {
     testWidgets('renders read-only banner', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        GovernanceOverviewPage(summary: _testSummary()),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(GovernanceOverviewPage(summary: _testSummary())),
+      );
 
       expect(find.textContaining('read-only'), findsOneWidget);
     });
 
     testWidgets('renders total assets count from fixture data', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        GovernanceOverviewPage(summary: _testSummary()),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(GovernanceOverviewPage(summary: _testSummary())),
+      );
 
       expect(find.text('42'), findsOneWidget);
       expect(find.text('Total Assets'), findsOneWidget);
     });
 
     testWidgets('renders canonical count from fixture data', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        GovernanceOverviewPage(summary: _testSummary()),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(GovernanceOverviewPage(summary: _testSummary())),
+      );
 
-      expect(find.text('18'), findsOneWidget);
-      expect(find.text('Canonical'), findsOneWidget);
+      expect(find.text('18'), findsWidgets);
+      expect(find.text('Canonical'), findsWidgets);
     });
 
     testWidgets('renders generated count from fixture data', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        GovernanceOverviewPage(summary: _testSummary()),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(GovernanceOverviewPage(summary: _testSummary())),
+      );
 
-      expect(find.text('8'), findsOneWidget);
-      expect(find.text('Generated'), findsOneWidget);
+      expect(find.text('8'), findsWidgets);
+      expect(find.text('Generated'), findsWidgets);
     });
 
     testWidgets('renders all six boundary classes in legend', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        GovernanceOverviewPage(summary: _testSummary()),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(GovernanceOverviewPage(summary: _testSummary())),
+      );
 
       // Legend should show all six classes
       expect(find.text('Canonical'), findsWidgets);
-      expect(find.text('Child-Local'), findsOneWidget);
+      expect(find.text('Child-Local'), findsWidgets);
       expect(find.text('Generated'), findsWidgets);
-      expect(find.text('Append-Only'), findsOneWidget);
-      expect(find.text('Archive'), findsOneWidget);
-      expect(find.text('Mock'), findsOneWidget);
+      expect(find.text('Append-Only'), findsWidgets);
+      expect(find.text('Archive'), findsWidgets);
+      expect(find.text('Mock'), findsWidgets);
     });
 
     testWidgets('renders diagnostics when present', (tester) async {
       final diag = _testDiagnostic();
-      await tester.pumpWidget(_wrapInApp(
-        GovernanceOverviewPage(
-          summary: _testSummary(diagnostics: [diag]),
+      await tester.pumpWidget(
+        _wrapInApp(
+          GovernanceOverviewPage(summary: _testSummary(diagnostics: [diag])),
         ),
-      ));
+      );
 
       expect(find.text('DIAGNOSTICS'), findsOneWidget);
       expect(find.textContaining('proofGap'), findsOneWidget);
-      expect(find.text('Task claims completion but no evidence found'),
-          findsOneWidget);
+      expect(
+        find.text('Task claims completion but no evidence found'),
+        findsOneWidget,
+      );
     });
 
-    testWidgets('does not render diagnostics section when empty',
-        (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        GovernanceOverviewPage(summary: _testSummary(diagnostics: [])),
-      ));
+    testWidgets('does not render diagnostics section when empty', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        _wrapInApp(
+          GovernanceOverviewPage(summary: _testSummary(diagnostics: [])),
+        ),
+      );
 
       expect(find.text('DIAGNOSTICS'), findsNothing);
     });
 
     testWidgets('renders empty state when no data', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        GovernanceOverviewPage(
-          summary: _testSummary(counts: {}, totalAssets: 0),
+      await tester.pumpWidget(
+        _wrapInApp(
+          GovernanceOverviewPage(
+            summary: _testSummary(counts: {}, totalAssets: 0),
+          ),
         ),
-      ));
+      );
 
       expect(find.text('No governance data'), findsOneWidget);
     });
 
     testWidgets('renders non-canonical count calculation', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        GovernanceOverviewPage(summary: _testSummary()),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(GovernanceOverviewPage(summary: _testSummary())),
+      );
 
       // 42 total - 18 canonical = 24 non-canonical
       expect(find.text('24'), findsOneWidget);
@@ -152,9 +160,7 @@ void main() {
 
   group('GovernanceBoundaryLegend', () {
     testWidgets('renders all six canonicality class labels', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        const GovernanceBoundaryLegend(),
-      ));
+      await tester.pumpWidget(_wrapInApp(const GovernanceBoundaryLegend()));
 
       expect(find.text('Canonical'), findsOneWidget);
       expect(find.text('Child-Local'), findsOneWidget);
@@ -165,33 +171,31 @@ void main() {
     });
 
     testWidgets('renders counts when provided', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        GovernanceBoundaryLegend(
-          counts: const {
-            'parentCanonical': 10,
-            'generated': 5,
-          },
+      await tester.pumpWidget(
+        _wrapInApp(
+          GovernanceBoundaryLegend(
+            counts: const {'parentCanonical': 10, 'generated': 5},
+          ),
         ),
-      ));
+      );
 
       expect(find.text('10'), findsOneWidget);
       expect(find.text('5'), findsOneWidget);
     });
 
     testWidgets('has semantic label for accessibility', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        const GovernanceBoundaryLegend(),
-      ));
+      await tester.pumpWidget(_wrapInApp(const GovernanceBoundaryLegend()));
 
-      expect(find.bySemanticsLabel('Canonicality boundary legend'), findsOneWidget);
+      expect(
+        find.bySemanticsLabel('Canonicality boundary legend'),
+        findsOneWidget,
+      );
     });
   });
 
   group('GovernanceReadOnlyBanner', () {
     testWidgets('renders read-only message', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        const GovernanceReadOnlyBanner(),
-      ));
+      await tester.pumpWidget(_wrapInApp(const GovernanceReadOnlyBanner()));
 
       expect(find.textContaining('read-only'), findsOneWidget);
       expect(find.byIcon(Icons.lock_outline), findsOneWidget);

@@ -12,7 +12,7 @@
 library;
 
 import 'package:flutter/foundation.dart';
-import '../../../data/models/data_models.dart';
+import 'package:warp_prism_observatory/data/models/data_models.dart';
 
 /// Snapshot of all derived Overview metrics at a point in time.
 ///
@@ -115,17 +115,17 @@ class OverviewMetrics {
 
   @override
   int get hashCode => Object.hash(
-        agentCount,
-        skillCount,
-        subSkillCount,
-        workflowCount,
-        changelogEntryCount,
-        activeBlockers,
-        reviewQueueCount,
-        governanceWarningCount,
-        totalAssets,
-        totalEdges,
-      );
+    agentCount,
+    skillCount,
+    subSkillCount,
+    workflowCount,
+    changelogEntryCount,
+    activeBlockers,
+    reviewQueueCount,
+    governanceWarningCount,
+    totalAssets,
+    totalEdges,
+  );
 
   @override
   String toString() =>

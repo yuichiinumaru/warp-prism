@@ -1,6 +1,7 @@
 # Task 0011: Warp-Prism Bootstrap Main Router Shell
 
 > **Status**: `[x]` Done
+> **Review State**: `Builder Done` — see `docs/governance/promotion-state-model.md`
 > **Priority**: 🔴 P0
 > **Type**: `feature`
 > **Origin**: EPIC-00 Warp-Prism Foundation and Compile Gate promotion

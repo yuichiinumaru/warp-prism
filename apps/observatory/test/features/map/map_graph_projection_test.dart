@@ -146,8 +146,11 @@ void main() {
           mode: mode,
         );
         // Every mode has the same number of nodes
-        expect(projection.nodeCount, 5,
-            reason: 'Mode ${mode.name} should have 5 nodes');
+        expect(
+          projection.nodeCount,
+          5,
+          reason: 'Mode ${mode.name} should have 5 nodes',
+        );
       }
     });
 
@@ -158,8 +161,11 @@ void main() {
           edges: const [],
           mode: mode,
         );
-        expect(projection.isEmpty, isTrue,
-            reason: 'Mode ${mode.name} should have 0 edges with empty input');
+        expect(
+          projection.isEmpty,
+          isTrue,
+          reason: 'Mode ${mode.name} should have 0 edges with empty input',
+        );
         expect(projection.edgeCount, 0);
         expect(projection.nodeCount, 5); // nodes still present
       }
@@ -198,12 +204,20 @@ void main() {
     });
 
     test('edgeKindsForMode returns correct sets', () {
-      expect(edgeKindsForMode(MapGraphMode.containment),
-          {EdgeKind.contains, EdgeKind.routesTo});
-      expect(edgeKindsForMode(MapGraphMode.operational),
-          {EdgeKind.uses, EdgeKind.dependsOn, EdgeKind.routesTo});
-      expect(edgeKindsForMode(MapGraphMode.evidence),
-          {EdgeKind.proves, EdgeKind.changedBy, EdgeKind.references});
+      expect(edgeKindsForMode(MapGraphMode.containment), {
+        EdgeKind.contains,
+        EdgeKind.routesTo,
+      });
+      expect(edgeKindsForMode(MapGraphMode.operational), {
+        EdgeKind.uses,
+        EdgeKind.dependsOn,
+        EdgeKind.routesTo,
+      });
+      expect(edgeKindsForMode(MapGraphMode.evidence), {
+        EdgeKind.proves,
+        EdgeKind.changedBy,
+        EdgeKind.references,
+      });
     });
 
     test('labelForMode returns human-readable names', () {

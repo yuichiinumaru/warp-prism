@@ -49,11 +49,12 @@ class FrontmatterResult {
 
   /// Failed parse result with a descriptive error.
   const FrontmatterResult.error(String message)
-      : this._(isOk: false, frontmatter: const {}, body: '', error: message);
+    : this._(isOk: false, frontmatter: const {}, body: '', error: message);
 
   @override
-  String toString() =>
-      isOk ? 'FrontmatterResult.ok(${frontmatter.keys})' : 'FrontmatterResult.error($error)';
+  String toString() => isOk
+      ? 'FrontmatterResult.ok(${frontmatter.keys})'
+      : 'FrontmatterResult.error($error)';
 }
 
 /// Parses YAML frontmatter from a markdown document.
@@ -103,10 +104,7 @@ class FrontmatterParser {
           return const FrontmatterResult.error('Empty frontmatter section');
         }
         final frontmatter = _parseYaml(yamlSection);
-        return FrontmatterResult.success(
-          frontmatter: frontmatter,
-          body: '',
-        );
+        return FrontmatterResult.success(frontmatter: frontmatter, body: '');
       }
       return const FrontmatterResult.error(
         'Missing closing --- frontmatter delimiter',

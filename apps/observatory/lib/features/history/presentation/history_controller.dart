@@ -6,7 +6,7 @@
 library;
 
 import 'package:flutter/foundation.dart';
-import '../../../data/models/changelog_contracts.dart';
+import 'package:warp_prism_observatory/data/models/changelog_contracts.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
 import 'history_view_mode.dart';
 
@@ -27,7 +27,7 @@ class ProjectStoryGroup {
     final range = first == last
         ? '${first.year}-${first.month.toString().padLeft(2, '0')}-${first.day.toString().padLeft(2, '0')}'
         : '${first.month.toString().padLeft(2, '0')}/${first.day.toString().padLeft(2, '0')}'
-            ' – ${last.month.toString().padLeft(2, '0')}/${last.day.toString().padLeft(2, '0')}';
+              ' – ${last.month.toString().padLeft(2, '0')}/${last.day.toString().padLeft(2, '0')}';
     return '${entries.length} change${entries.length == 1 ? '' : 's'} '
         '(${types.join(', ')}) · $range';
   }
@@ -57,13 +57,7 @@ class ImpactPathNode {
 }
 
 /// Facet categories for History filters.
-enum HistoryFilterCategory {
-  project,
-  type,
-  task,
-  skillWorkflow,
-  impactTag,
-}
+enum HistoryFilterCategory { project, type, task, skillWorkflow, impactTag }
 
 /// Immutable state snapshot for the History workspace.
 @immutable
@@ -111,18 +105,14 @@ class HistoryState {
               .where((e) => entry.value.contains(e.type.name))
               .toList();
         case HistoryFilterCategory.task:
-          entries = entries
-              .where((e) => entry.value.contains(e.task))
-              .toList();
+          entries = entries.where((e) => entry.value.contains(e.task)).toList();
         case HistoryFilterCategory.skillWorkflow:
           entries = entries
-              .where((e) =>
-                  e.skills.any((s) => entry.value.contains(s)))
+              .where((e) => e.skills.any((s) => entry.value.contains(s)))
               .toList();
         case HistoryFilterCategory.impactTag:
           entries = entries
-              .where((e) =>
-                  e.impact.any((t) => entry.value.contains(t)))
+              .where((e) => e.impact.any((t) => entry.value.contains(t)))
               .toList();
       }
     }

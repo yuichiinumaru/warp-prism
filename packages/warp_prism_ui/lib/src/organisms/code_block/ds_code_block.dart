@@ -31,8 +31,7 @@ class DSCodeBlock extends StatelessWidget {
   });
 
   /// Returns the effective language — explicit or auto-detected.
-  String? get effectiveLanguage =>
-      language ?? _LanguageDetector.detect(source);
+  String? get effectiveLanguage => language ?? _LanguageDetector.detect(source);
 
   @override
   Widget build(BuildContext context) {
@@ -73,10 +72,7 @@ class DSCodeBlock extends StatelessWidget {
       borderColor: DSColors.borderSubtle,
       padding: const EdgeInsets.all(DSSpacing.lg),
       child: const Center(
-        child: DSText.bodySmall(
-          'No content',
-          color: DSColors.textTertiary,
-        ),
+        child: DSText.bodySmall('No content', color: DSColors.textTertiary),
       ),
     );
   }
@@ -105,8 +101,15 @@ class DSCodeBlock extends StatelessWidget {
     );
   }
 
-  Widget _buildCodeContent(List<String> lines, double gutterWidth, String? lang) {
-    final highlighter = _SyntaxHighlighter(source: source, language: lang ?? 'plain');
+  Widget _buildCodeContent(
+    List<String> lines,
+    double gutterWidth,
+    String? lang,
+  ) {
+    final highlighter = _SyntaxHighlighter(
+      source: source,
+      language: lang ?? 'plain',
+    );
     final highlightedSpans = highlighter.highlight();
 
     return Padding(
@@ -191,7 +194,10 @@ class _CopyButtonState extends State<_CopyButton> {
               ),
               if (_copied) ...[
                 const SizedBox(width: DSSpacing.xs),
-                const DSText.labelSmall('Copied', color: DSColors.statusSuccess),
+                const DSText.labelSmall(
+                  'Copied',
+                  color: DSColors.statusSuccess,
+                ),
               ],
             ],
           ),
@@ -357,7 +363,10 @@ class _SyntaxHighlighter {
   static final _jsonPatterns = <_HighlightPattern>[
     _HighlightPattern(RegExp(r'"[^"\\]*(?:\\.[^"\\]*)*"\s*(?=:)'), _keyColor),
     _HighlightPattern(RegExp(r'"[^"\\]*(?:\\.[^"\\]*)*"'), _stringColor),
-    _HighlightPattern(RegExp(r'-?\b\d+\.?\d*(?:[eE][+-]?\d+)?\b'), _numberColor),
+    _HighlightPattern(
+      RegExp(r'-?\b\d+\.?\d*(?:[eE][+-]?\d+)?\b'),
+      _numberColor,
+    ),
     _HighlightPattern(RegExp(r'\b(true|false|null)\b'), _boolColor),
     _HighlightPattern(RegExp(r'[{}\[\]]'), _punctuationColor),
   ];
@@ -365,11 +374,17 @@ class _SyntaxHighlighter {
   // YAML
   static final _yamlPatterns = <_HighlightPattern>[
     _HighlightPattern(RegExp(r'#.*'), _commentColor),
-    _HighlightPattern(RegExp(r'^\s*\w[\w.-]*\s*(?=:)', multiLine: true), _keyColor),
+    _HighlightPattern(
+      RegExp(r'^\s*\w[\w.-]*\s*(?=:)', multiLine: true),
+      _keyColor,
+    ),
     _HighlightPattern(RegExp(r'[&*]\w+'), _annotationColor),
     _HighlightPattern(RegExp(r"'[^']*'"), _stringColor),
     _HighlightPattern(RegExp(r'"[^"]*"'), _stringColor),
-    _HighlightPattern(RegExp(r'\b(true|false|null|yes|no|on|off)\b'), _boolColor),
+    _HighlightPattern(
+      RegExp(r'\b(true|false|null|yes|no|on|off)\b'),
+      _boolColor,
+    ),
     _HighlightPattern(RegExp(r'\b\d+\.?\d*\b'), _numberColor),
   ];
 
@@ -381,8 +396,14 @@ class _SyntaxHighlighter {
     _HighlightPattern(RegExp(r'`[^`]+`'), _codeColor),
     _HighlightPattern(RegExp(r'\[[^\]]+\]\([^)]+\)'), _typeColor),
     _HighlightPattern(RegExp(r'^>\s*.*', multiLine: true), _commentColor),
-    _HighlightPattern(RegExp(r'^\s*[-*+]\s', multiLine: true), _punctuationColor),
-    _HighlightPattern(RegExp(r'^\s*\d+\.\s', multiLine: true), _punctuationColor),
+    _HighlightPattern(
+      RegExp(r'^\s*[-*+]\s', multiLine: true),
+      _punctuationColor,
+    ),
+    _HighlightPattern(
+      RegExp(r'^\s*\d+\.\s', multiLine: true),
+      _punctuationColor,
+    ),
   ];
 
   // ---------------------------------------------------------------------------
@@ -428,10 +449,12 @@ class _SyntaxHighlighter {
           spans.add(_plainSpan(text.substring(pos, bestStart)));
         }
         // Add highlighted match
-        spans.add(TextSpan(
-          text: bestMatch.match.group(0),
-          style: TextStyle(color: bestMatch.color),
-        ));
+        spans.add(
+          TextSpan(
+            text: bestMatch.match.group(0),
+            style: TextStyle(color: bestMatch.color),
+          ),
+        );
         pos = bestMatch.match.end;
       } else {
         // No more matches — remaining text is plain

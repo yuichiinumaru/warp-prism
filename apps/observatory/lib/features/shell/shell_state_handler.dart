@@ -43,15 +43,8 @@ abstract class ShellStateHandler {
   }
 
   /// Compact loading indicator for inline use (e.g., inside panels).
-  static Widget buildLoadingCompact({
-    String title = 'Loading...',
-  }) {
-    return Center(
-      child: DSStateSurface.loading(
-        title: title,
-        compact: true,
-      ),
-    );
+  static Widget buildLoadingCompact({String title = 'Loading...'}) {
+    return Center(child: DSStateSurface.loading(title: title, compact: true));
   }
 
   // ---------------------------------------------------------------------------
@@ -75,7 +68,8 @@ abstract class ShellStateHandler {
         child: DSStateSurface.empty(
           icon: icon,
           title: 'No $surfaceName data',
-          subtitle: subtitle ??
+          subtitle:
+              subtitle ??
               'The workspace is loaded but contains no assets to display here.',
           actionLabel: actionLabel,
           onAction: onAction,
@@ -135,16 +129,9 @@ abstract class ShellStateHandler {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            DSIcon(
-              Icons.link_off,
-              color: DSColors.statusWarning,
-              size: 48,
-            ),
+            DSIcon(Icons.link_off, color: DSColors.statusWarning, size: 48),
             const SizedBox(height: DSSpacing.lg),
-            DSText.headingSmall(
-              'Asset not found',
-              color: DSColors.textPrimary,
-            ),
+            DSText.headingSmall('Asset not found', color: DSColors.textPrimary),
             const SizedBox(height: DSSpacing.sm),
             DSText.bodyMedium(
               'Could not resolve asset:',
@@ -161,10 +148,7 @@ abstract class ShellStateHandler {
                 borderRadius: BorderRadius.circular(DSRadii.sm),
                 border: Border.all(color: DSColors.borderSubtle),
               ),
-              child: DSText.labelMedium(
-                assetId,
-                color: DSColors.accentCyan,
-              ),
+              child: DSText.labelMedium(assetId, color: DSColors.accentCyan),
             ),
             const SizedBox(height: DSSpacing.xs),
             DSText.bodySmall(
@@ -197,9 +181,7 @@ abstract class ShellStateHandler {
                     label: const Text('Go to Overview'),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: DSColors.textSecondary,
-                      side: BorderSide(
-                        color: DSColors.borderDefault,
-                      ),
+                      side: BorderSide(color: DSColors.borderDefault),
                     ),
                   ),
               ],

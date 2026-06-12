@@ -12,7 +12,7 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
-import '../../../data/models/changelog_contracts.dart';
+import 'package:warp_prism_observatory/data/models/changelog_contracts.dart';
 import '../../asset_detail/presentation/responsive_detail_shell.dart';
 import 'history_controller.dart';
 import 'history_view_mode.dart';
@@ -46,8 +46,7 @@ class _HistoryWorkspacePageState extends State<HistoryWorkspacePage> {
 
   void _toggleFilter(HistoryFilterCategory category, String value) {
     setState(() {
-      final current =
-          Set<String>.from(_state.activeFilters[category] ?? {});
+      final current = Set<String>.from(_state.activeFilters[category] ?? {});
       if (current.contains(value)) {
         current.remove(value);
       } else {
@@ -114,9 +113,7 @@ class _HistoryWorkspacePageState extends State<HistoryWorkspacePage> {
         ),
 
         // Main content area
-        Expanded(
-          child: _buildContent(),
-        ),
+        Expanded(child: _buildContent()),
       ],
     );
   }
@@ -252,8 +249,8 @@ class _HistoryWorkspacePageState extends State<HistoryWorkspacePage> {
     final entries = _state.toTimelineEntries();
     final selectedEntry = _state.selectedEntryId != null
         ? _state.allEntries
-            .where((e) => e.id == _state.selectedEntryId)
-            .firstOrNull
+              .where((e) => e.id == _state.selectedEntryId)
+              .firstOrNull
         : null;
 
     final timeline = DSTimeline(
@@ -328,19 +325,14 @@ class _HistoryWorkspacePageState extends State<HistoryWorkspacePage> {
             child: Wrap(
               spacing: DSSpacing.xs,
               runSpacing: DSSpacing.xs,
-              children: entry.impact
-                  .map((t) => DSChip(label: t))
-                  .toList(),
+              children: entry.impact.map((t) => DSChip(label: t)).toList(),
             ),
           ),
         if (entry.why != null)
           DSDetailSection(
             title: 'Why',
             icon: Icons.question_mark,
-            child: DSText.bodySmall(
-              entry.why!,
-              color: DSColors.textSecondary,
-            ),
+            child: DSText.bodySmall(entry.why!, color: DSColors.textSecondary),
           ),
         if (entry.changed != null)
           DSDetailSection(
@@ -406,16 +398,12 @@ class _ModeChip extends StatelessWidget {
             children: [
               DSIcon.small(
                 icon,
-                color: isActive
-                    ? DSColors.accentCyan
-                    : DSColors.textTertiary,
+                color: isActive ? DSColors.accentCyan : DSColors.textTertiary,
               ),
               const SizedBox(width: DSSpacing.xs),
               DSText.labelSmall(
                 label,
-                color: isActive
-                    ? DSColors.accentCyan
-                    : DSColors.textTertiary,
+                color: isActive ? DSColors.accentCyan : DSColors.textTertiary,
               ),
             ],
           ),

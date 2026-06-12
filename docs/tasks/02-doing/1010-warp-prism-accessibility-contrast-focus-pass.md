@@ -1,6 +1,7 @@
 # Task 1010: Warp-Prism Accessibility Contrast and Focus Pass
 
 > **Status**: `[x]` Done
+> **Review State**: Blocked — Flutter SDK not installed; validation commands cannot execute
 > **Priority**: 🔴 P0
 > **Type**: `remediation`
 > **Origin**: EPIC 10 candidate story "WCAG contrast/focus state pass" plus `warp-prism/docs/prompt.txt` and `warp-prism/docs/research.md`

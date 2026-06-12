@@ -7,8 +7,8 @@ void main() {
   // Helper
   // ---------------------------------------------------------------------------
   Widget wrap(Widget child) => MaterialApp(
-        home: Scaffold(body: SizedBox(width: 800, height: 600, child: child)),
-      );
+    home: Scaffold(body: SizedBox(width: 800, height: 600, child: child)),
+  );
 
   // ---------------------------------------------------------------------------
   // GROUP: DSVirtualGrid — fixed cross axis count
@@ -16,13 +16,14 @@ void main() {
   group('DSVirtualGrid fixed crossAxisCount', () {
     testWidgets('renders items in grid layout', (tester) async {
       await tester.pumpWidget(
-        wrap(DSVirtualGrid(
-          itemCount: 12,
-          crossAxisCount: 4,
-          itemBuilder: (context, index) => Card(
-            child: Center(child: Text('Grid $index')),
+        wrap(
+          DSVirtualGrid(
+            itemCount: 12,
+            crossAxisCount: 4,
+            itemBuilder: (context, index) =>
+                Card(child: Center(child: Text('Grid $index'))),
           ),
-        )),
+        ),
       );
 
       expect(find.text('Grid 0'), findsOneWidget);
@@ -31,11 +32,13 @@ void main() {
 
     testWidgets('applies crossAxisCount', (tester) async {
       await tester.pumpWidget(
-        wrap(DSVirtualGrid(
-          itemCount: 8,
-          crossAxisCount: 2,
-          itemBuilder: (context, index) => Text('G$index'),
-        )),
+        wrap(
+          DSVirtualGrid(
+            itemCount: 8,
+            crossAxisCount: 2,
+            itemBuilder: (context, index) => Text('G$index'),
+          ),
+        ),
       );
 
       expect(find.text('G0'), findsOneWidget);
@@ -43,14 +46,16 @@ void main() {
 
     testWidgets('applies custom aspect ratio and spacing', (tester) async {
       await tester.pumpWidget(
-        wrap(DSVirtualGrid(
-          itemCount: 4,
-          crossAxisCount: 2,
-          childAspectRatio: 1.5,
-          crossAxisSpacing: 16,
-          mainAxisSpacing: 16,
-          itemBuilder: (context, index) => Text('G$index'),
-        )),
+        wrap(
+          DSVirtualGrid(
+            itemCount: 4,
+            crossAxisCount: 2,
+            childAspectRatio: 1.5,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
+            itemBuilder: (context, index) => Text('G$index'),
+          ),
+        ),
       );
 
       expect(find.text('G0'), findsOneWidget);
@@ -58,11 +63,13 @@ void main() {
 
     testWidgets('renders empty grid without error', (tester) async {
       await tester.pumpWidget(
-        wrap(DSVirtualGrid(
-          itemCount: 0,
-          crossAxisCount: 4,
-          itemBuilder: (context, index) => const SizedBox.shrink(),
-        )),
+        wrap(
+          DSVirtualGrid(
+            itemCount: 0,
+            crossAxisCount: 4,
+            itemBuilder: (context, index) => const SizedBox.shrink(),
+          ),
+        ),
       );
 
       expect(find.byType(DSVirtualGrid), findsOneWidget);
@@ -70,12 +77,14 @@ void main() {
 
     testWidgets('has semantic label when provided', (tester) async {
       await tester.pumpWidget(
-        wrap(DSVirtualGrid(
-          itemCount: 4,
-          crossAxisCount: 2,
-          semanticLabel: 'Dashboard grid',
-          itemBuilder: (context, index) => Text('G$index'),
-        )),
+        wrap(
+          DSVirtualGrid(
+            itemCount: 4,
+            crossAxisCount: 2,
+            semanticLabel: 'Dashboard grid',
+            itemBuilder: (context, index) => Text('G$index'),
+          ),
+        ),
       );
 
       expect(find.bySemanticsLabel('Dashboard grid'), findsOneWidget);
@@ -85,14 +94,16 @@ void main() {
       var buildCount = 0;
 
       await tester.pumpWidget(
-        wrap(DSVirtualGrid(
-          itemCount: 1000,
-          crossAxisCount: 4,
-          itemBuilder: (context, index) {
-            buildCount++;
-            return Text('G$index');
-          },
-        )),
+        wrap(
+          DSVirtualGrid(
+            itemCount: 1000,
+            crossAxisCount: 4,
+            itemBuilder: (context, index) {
+              buildCount++;
+              return Text('G$index');
+            },
+          ),
+        ),
       );
 
       // Should NOT build all 1000
@@ -106,11 +117,13 @@ void main() {
   group('DSVirtualGrid responsive', () {
     testWidgets('renders in responsive mode', (tester) async {
       await tester.pumpWidget(
-        wrap(DSVirtualGrid.responsive(
-          itemCount: 8,
-          minCrossAxisExtent: 200,
-          itemBuilder: (context, index) => Text('R$index'),
-        )),
+        wrap(
+          DSVirtualGrid.responsive(
+            itemCount: 8,
+            minCrossAxisExtent: 200,
+            itemBuilder: (context, index) => Text('R$index'),
+          ),
+        ),
       );
 
       expect(find.text('R0'), findsOneWidget);
@@ -144,11 +157,13 @@ void main() {
   group('DSVirtualGrid edge cases', () {
     testWidgets('renders single item', (tester) async {
       await tester.pumpWidget(
-        wrap(DSVirtualGrid(
-          itemCount: 1,
-          crossAxisCount: 4,
-          itemBuilder: (context, index) => const Text('Only grid item'),
-        )),
+        wrap(
+          DSVirtualGrid(
+            itemCount: 1,
+            crossAxisCount: 4,
+            itemBuilder: (context, index) => const Text('Only grid item'),
+          ),
+        ),
       );
 
       expect(find.text('Only grid item'), findsOneWidget);

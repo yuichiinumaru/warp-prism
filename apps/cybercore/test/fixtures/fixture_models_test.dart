@@ -9,7 +9,11 @@ void main() {
         'skillMetrics': {'total': 13, 'withTriggers': 10, 'noTriggers': 3},
         'workflowMetrics': {'total': 11, 'active': 8, 'orphaned': 3},
         'executionMetrics': {
-          'planning': 3, 'open': 5, 'doing': 5, 'review': 4, 'completed': 5,
+          'planning': 3,
+          'open': 5,
+          'doing': 5,
+          'review': 4,
+          'completed': 5,
         },
         'recentActivity': {
           'total': 36,

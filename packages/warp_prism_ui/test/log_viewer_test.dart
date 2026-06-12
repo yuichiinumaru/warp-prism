@@ -12,56 +12,50 @@ import 'package:warp_prism_ui/src/tokens/tokens.dart';
 /// Helper: wraps a widget in MaterialApp + Scaffold for testing.
 Widget _wrap(Widget child) {
   return MaterialApp(
-    home: Scaffold(
-      body: SizedBox(
-        width: 800,
-        height: 600,
-        child: child,
-      ),
-    ),
+    home: Scaffold(body: SizedBox(width: 800, height: 600, child: child)),
   );
 }
 
 /// Sample entries for testing.
 List<DSLogEntry> _sampleEntries() => [
-      DSLogEntry(
-        id: '1',
-        timestamp: DateTime(2026, 6, 8, 10, 0, 0),
-        severity: DSLogSeverity.info,
-        source: 'agent-alpha',
-        message: 'Workflow started',
-      ),
-      DSLogEntry(
-        id: '2',
-        timestamp: DateTime(2026, 6, 8, 10, 0, 1),
-        severity: DSLogSeverity.warning,
-        source: 'governance',
-        message: 'Stale index detected',
-      ),
-      DSLogEntry(
-        id: '3',
-        timestamp: DateTime(2026, 6, 8, 10, 0, 2),
-        severity: DSLogSeverity.error,
-        source: 'agent-beta',
-        message: 'Parse failure',
-        detail: 'FormatException at line 42\nStack trace here',
-      ),
-      DSLogEntry(
-        id: '4',
-        timestamp: DateTime(2026, 6, 8, 10, 0, 3),
-        severity: DSLogSeverity.debug,
-        source: 'mcp-server',
-        message: 'Tool invocation detail',
-      ),
-      DSLogEntry(
-        id: '5',
-        timestamp: DateTime(2026, 6, 8, 10, 0, 4),
-        severity: DSLogSeverity.critical,
-        source: 'system',
-        message: 'Circuit breaker open',
-        detail: 'Connection pool exhausted',
-      ),
-    ];
+  DSLogEntry(
+    id: '1',
+    timestamp: DateTime(2026, 6, 8, 10, 0, 0),
+    severity: DSLogSeverity.info,
+    source: 'agent-alpha',
+    message: 'Workflow started',
+  ),
+  DSLogEntry(
+    id: '2',
+    timestamp: DateTime(2026, 6, 8, 10, 0, 1),
+    severity: DSLogSeverity.warning,
+    source: 'governance',
+    message: 'Stale index detected',
+  ),
+  DSLogEntry(
+    id: '3',
+    timestamp: DateTime(2026, 6, 8, 10, 0, 2),
+    severity: DSLogSeverity.error,
+    source: 'agent-beta',
+    message: 'Parse failure',
+    detail: 'FormatException at line 42\nStack trace here',
+  ),
+  DSLogEntry(
+    id: '4',
+    timestamp: DateTime(2026, 6, 8, 10, 0, 3),
+    severity: DSLogSeverity.debug,
+    source: 'mcp-server',
+    message: 'Tool invocation detail',
+  ),
+  DSLogEntry(
+    id: '5',
+    timestamp: DateTime(2026, 6, 8, 10, 0, 4),
+    severity: DSLogSeverity.critical,
+    source: 'system',
+    message: 'Circuit breaker open',
+    detail: 'Connection pool exhausted',
+  ),
+];
 
 void main() {
   group('DSLogSeverity', () {
@@ -174,18 +168,15 @@ void main() {
   group('DSLogViewer', () {
     group('empty state', () {
       testWidgets('shows empty state when no entries', (tester) async {
-        await tester.pumpWidget(
-          _wrap(const DSLogViewer(entries: [])),
-        );
+        await tester.pumpWidget(_wrap(const DSLogViewer(entries: [])));
 
         expect(find.text('No log entries'), findsOneWidget);
       });
 
-      testWidgets('shows filter hint when filters active with no results',
-          (tester) async {
-        await tester.pumpWidget(
-          _wrap(DSLogViewer(entries: _sampleEntries())),
-        );
+      testWidgets('shows filter hint when filters active with no results', (
+        tester,
+      ) async {
+        await tester.pumpWidget(_wrap(DSLogViewer(entries: _sampleEntries())));
         await tester.pumpAndSettle();
 
         // The viewer starts with all entries visible
@@ -195,9 +186,7 @@ void main() {
 
     group('severity display', () {
       testWidgets('renders all sample entries', (tester) async {
-        await tester.pumpWidget(
-          _wrap(DSLogViewer(entries: _sampleEntries())),
-        );
+        await tester.pumpWidget(_wrap(DSLogViewer(entries: _sampleEntries())));
         await tester.pumpAndSettle();
 
         expect(find.text('Workflow started'), findsOneWidget);
@@ -208,9 +197,7 @@ void main() {
       });
 
       testWidgets('shows severity labels in filter chips', (tester) async {
-        await tester.pumpWidget(
-          _wrap(DSLogViewer(entries: _sampleEntries())),
-        );
+        await tester.pumpWidget(_wrap(DSLogViewer(entries: _sampleEntries())));
         await tester.pumpAndSettle();
 
         expect(find.text('DEBUG'), findsOneWidget);
@@ -221,9 +208,7 @@ void main() {
       });
 
       testWidgets('shows source badges', (tester) async {
-        await tester.pumpWidget(
-          _wrap(DSLogViewer(entries: _sampleEntries())),
-        );
+        await tester.pumpWidget(_wrap(DSLogViewer(entries: _sampleEntries())));
         await tester.pumpAndSettle();
 
         // Source names appear in both entry rows AND filter chips
@@ -236,11 +221,10 @@ void main() {
     });
 
     group('severity filter', () {
-      testWidgets('filtering by severity shows only matching entries',
-          (tester) async {
-        await tester.pumpWidget(
-          _wrap(DSLogViewer(entries: _sampleEntries())),
-        );
+      testWidgets('filtering by severity shows only matching entries', (
+        tester,
+      ) async {
+        await tester.pumpWidget(_wrap(DSLogViewer(entries: _sampleEntries())));
         await tester.pumpAndSettle();
 
         // Tap the ERROR chip
@@ -253,11 +237,10 @@ void main() {
         expect(find.text('1 / 5 entries'), findsOneWidget);
       });
 
-      testWidgets('toggling severity filter off shows all entries',
-          (tester) async {
-        await tester.pumpWidget(
-          _wrap(DSLogViewer(entries: _sampleEntries())),
-        );
+      testWidgets('toggling severity filter off shows all entries', (
+        tester,
+      ) async {
+        await tester.pumpWidget(_wrap(DSLogViewer(entries: _sampleEntries())));
         await tester.pumpAndSettle();
 
         // Tap ERROR to filter
@@ -272,9 +255,7 @@ void main() {
       });
 
       testWidgets('filtering by multiple severities', (tester) async {
-        await tester.pumpWidget(
-          _wrap(DSLogViewer(entries: _sampleEntries())),
-        );
+        await tester.pumpWidget(_wrap(DSLogViewer(entries: _sampleEntries())));
         await tester.pumpAndSettle();
 
         // Tap ERROR and FATAL
@@ -291,11 +272,10 @@ void main() {
     });
 
     group('source filter', () {
-      testWidgets('filtering by source shows only matching entries',
-          (tester) async {
-        await tester.pumpWidget(
-          _wrap(DSLogViewer(entries: _sampleEntries())),
-        );
+      testWidgets('filtering by source shows only matching entries', (
+        tester,
+      ) async {
+        await tester.pumpWidget(_wrap(DSLogViewer(entries: _sampleEntries())));
         await tester.pumpAndSettle();
 
         // Tap the agent-alpha source chip (first occurrence is the chip in filter bar)
@@ -311,16 +291,11 @@ void main() {
 
     group('text search', () {
       testWidgets('search filters entries by message content', (tester) async {
-        await tester.pumpWidget(
-          _wrap(DSLogViewer(entries: _sampleEntries())),
-        );
+        await tester.pumpWidget(_wrap(DSLogViewer(entries: _sampleEntries())));
         await tester.pumpAndSettle();
 
         // Enter search text
-        await tester.enterText(
-          find.byType(TextField),
-          'circuit',
-        );
+        await tester.enterText(find.byType(TextField), 'circuit');
         await tester.pumpAndSettle();
 
         expect(find.text('Circuit breaker open'), findsOneWidget);
@@ -328,15 +303,10 @@ void main() {
       });
 
       testWidgets('search is case-insensitive', (tester) async {
-        await tester.pumpWidget(
-          _wrap(DSLogViewer(entries: _sampleEntries())),
-        );
+        await tester.pumpWidget(_wrap(DSLogViewer(entries: _sampleEntries())));
         await tester.pumpAndSettle();
 
-        await tester.enterText(
-          find.byType(TextField),
-          'PARSE',
-        );
+        await tester.enterText(find.byType(TextField), 'PARSE');
         await tester.pumpAndSettle();
 
         expect(find.text('Parse failure'), findsOneWidget);
@@ -344,15 +314,10 @@ void main() {
       });
 
       testWidgets('search matches source names', (tester) async {
-        await tester.pumpWidget(
-          _wrap(DSLogViewer(entries: _sampleEntries())),
-        );
+        await tester.pumpWidget(_wrap(DSLogViewer(entries: _sampleEntries())));
         await tester.pumpAndSettle();
 
-        await tester.enterText(
-          find.byType(TextField),
-          'governance',
-        );
+        await tester.enterText(find.byType(TextField), 'governance');
         await tester.pumpAndSettle();
 
         expect(find.text('Stale index detected'), findsOneWidget);
@@ -360,9 +325,7 @@ void main() {
       });
 
       testWidgets('empty search shows all entries', (tester) async {
-        await tester.pumpWidget(
-          _wrap(DSLogViewer(entries: _sampleEntries())),
-        );
+        await tester.pumpWidget(_wrap(DSLogViewer(entries: _sampleEntries())));
         await tester.pumpAndSettle();
 
         await tester.enterText(find.byType(TextField), 'circuit');
@@ -377,9 +340,7 @@ void main() {
 
     group('expand/collapse', () {
       testWidgets('entries with detail can be expanded', (tester) async {
-        await tester.pumpWidget(
-          _wrap(DSLogViewer(entries: _sampleEntries())),
-        );
+        await tester.pumpWidget(_wrap(DSLogViewer(entries: _sampleEntries())));
         await tester.pumpAndSettle();
 
         // Stack trace should not be visible initially
@@ -394,9 +355,7 @@ void main() {
       });
 
       testWidgets('expanded entry can be collapsed', (tester) async {
-        await tester.pumpWidget(
-          _wrap(DSLogViewer(entries: _sampleEntries())),
-        );
+        await tester.pumpWidget(_wrap(DSLogViewer(entries: _sampleEntries())));
         await tester.pumpAndSettle();
 
         // Expand
@@ -411,9 +370,7 @@ void main() {
       });
 
       testWidgets('entries without detail do not expand', (tester) async {
-        await tester.pumpWidget(
-          _wrap(DSLogViewer(entries: _sampleEntries())),
-        );
+        await tester.pumpWidget(_wrap(DSLogViewer(entries: _sampleEntries())));
         await tester.pumpAndSettle();
 
         // Tap on info entry (no detail) — should not throw
@@ -426,11 +383,10 @@ void main() {
     });
 
     group('empty results after filtering', () {
-      testWidgets('shows empty state when search has no matches',
-          (tester) async {
-        await tester.pumpWidget(
-          _wrap(DSLogViewer(entries: _sampleEntries())),
-        );
+      testWidgets('shows empty state when search has no matches', (
+        tester,
+      ) async {
+        await tester.pumpWidget(_wrap(DSLogViewer(entries: _sampleEntries())));
         await tester.pumpAndSettle();
 
         await tester.enterText(find.byType(TextField), 'nonexistent-query');
@@ -440,8 +396,9 @@ void main() {
         expect(find.text('Try adjusting filters'), findsOneWidget);
       });
 
-      testWidgets('shows empty state when severity filter has no matches',
-          (tester) async {
+      testWidgets('shows empty state when severity filter has no matches', (
+        tester,
+      ) async {
         // All entries are different severities — filtering on DEBUG should
         // show only the single debug entry, not empty.
         // Let's test with entries that don't have a particular severity.
@@ -468,19 +425,14 @@ void main() {
 
     group('auto-scroll', () {
       testWidgets('shows count summary', (tester) async {
-        await tester.pumpWidget(
-          _wrap(DSLogViewer(entries: _sampleEntries())),
-        );
+        await tester.pumpWidget(_wrap(DSLogViewer(entries: _sampleEntries())));
         await tester.pumpAndSettle();
 
         expect(find.text('5 / 5 entries'), findsOneWidget);
       });
 
-      testWidgets('auto-scroll button not shown by default',
-          (tester) async {
-        await tester.pumpWidget(
-          _wrap(DSLogViewer(entries: _sampleEntries())),
-        );
+      testWidgets('auto-scroll button not shown by default', (tester) async {
+        await tester.pumpWidget(_wrap(DSLogViewer(entries: _sampleEntries())));
         await tester.pumpAndSettle();
 
         // "Latest" button should not appear when auto-scroll is active
@@ -489,13 +441,9 @@ void main() {
     });
 
     group('showFilters flag', () {
-      testWidgets('hides filter bar when showFilters is false',
-          (tester) async {
+      testWidgets('hides filter bar when showFilters is false', (tester) async {
         await tester.pumpWidget(
-          _wrap(DSLogViewer(
-            entries: _sampleEntries(),
-            showFilters: false,
-          )),
+          _wrap(DSLogViewer(entries: _sampleEntries(), showFilters: false)),
         );
         await tester.pumpAndSettle();
 
@@ -513,9 +461,7 @@ void main() {
 
     group('timestamps', () {
       testWidgets('shows HH:mm:ss format by default', (tester) async {
-        await tester.pumpWidget(
-          _wrap(DSLogViewer(entries: _sampleEntries())),
-        );
+        await tester.pumpWidget(_wrap(DSLogViewer(entries: _sampleEntries())));
         await tester.pumpAndSettle();
 
         // Check for formatted timestamps
@@ -526,9 +472,7 @@ void main() {
 
     group('Semantics', () {
       testWidgets('log viewer has semantic label', (tester) async {
-        await tester.pumpWidget(
-          _wrap(DSLogViewer(entries: _sampleEntries())),
-        );
+        await tester.pumpWidget(_wrap(DSLogViewer(entries: _sampleEntries())));
         await tester.pumpAndSettle();
 
         expect(
@@ -538,9 +482,7 @@ void main() {
       });
 
       testWidgets('entries have semantic labels', (tester) async {
-        await tester.pumpWidget(
-          _wrap(DSLogViewer(entries: _sampleEntries())),
-        );
+        await tester.pumpWidget(_wrap(DSLogViewer(entries: _sampleEntries())));
         await tester.pumpAndSettle();
 
         expect(
@@ -548,8 +490,7 @@ void main() {
           findsOneWidget,
         );
         expect(
-          find.bySemanticsLabel(
-              'FATAL: system: Circuit breaker open'),
+          find.bySemanticsLabel('FATAL: system: Circuit breaker open'),
           findsOneWidget,
         );
       });

@@ -68,13 +68,22 @@ class WorkspaceMarkdownParser {
       case AssetKind.changelog:
         return _parseChangelog(id, filePath, result.frontmatter, result.body);
       default:
-        return _parseGeneric(id, filePath, result.frontmatter, result.body, kind);
+        return _parseGeneric(
+          id,
+          filePath,
+          result.frontmatter,
+          result.body,
+          kind,
+        );
     }
   }
 
   /// Parse frontmatter only (no body parsing). Returns the raw map.
   /// Throws [ParseException] on malformed frontmatter.
-  Map<String, dynamic> parseFrontmatter(String content, {required String filePath}) {
+  Map<String, dynamic> parseFrontmatter(
+    String content, {
+    required String filePath,
+  }) {
     final result = _fmParser.parse(content);
     if (!result.isOk) {
       throw ParseException(result.error!, filePath: filePath);
@@ -108,7 +117,8 @@ class WorkspaceMarkdownParser {
       final skillsIndex = segments.indexWhere((s) => s == 'skills');
       if (skillsIndex >= 0 && skillsIndex + 2 < segments.length) {
         // e.g., skills/harness-architecture/sub-skills/create-agent/SKILL.md
-        if (segments.contains('sub-skills') || segments.contains('sub_skills')) {
+        if (segments.contains('sub-skills') ||
+            segments.contains('sub_skills')) {
           return AssetKind.subskill;
         }
       }
@@ -118,11 +128,7 @@ class WorkspaceMarkdownParser {
   }
 
   /// Build a canonical asset id from path and frontmatter.
-  static String _buildId(
-    String path,
-    Map<String, dynamic> fm,
-    AssetKind kind,
-  ) {
+  static String _buildId(String path, Map<String, dynamic> fm, AssetKind kind) {
     // For tasks, use the numeric id from frontmatter
     if (kind == AssetKind.task) {
       final taskId = fm['id']?.toString();
@@ -146,7 +152,10 @@ class WorkspaceMarkdownParser {
       segments.lastWhere((s) => s.endsWith('.md'), orElse: () => segments.last),
       segments.last,
     ]) {
-      final name = candidate.replaceAll('.md', '').replaceAll('SKILL', '').trim();
+      final name = candidate
+          .replaceAll('.md', '')
+          .replaceAll('SKILL', '')
+          .trim();
       if (name.isNotEmpty) return name;
     }
     return segments.last;
@@ -167,7 +176,8 @@ class WorkspaceMarkdownParser {
       kind: AssetKind.agent,
       name: fm['name']?.toString() ?? _nameFromPath(path),
       path: path,
-      description: fm['description']?.toString() ?? _extractFirstParagraph(body),
+      description:
+          fm['description']?.toString() ?? _extractFirstParagraph(body),
       canonicality: _parseCanonicality(fm['canonicality']?.toString()),
       frontmatter: fm,
       tags: _parseStringList(fm['tags']),
@@ -188,7 +198,8 @@ class WorkspaceMarkdownParser {
       kind: kind,
       name: fm['name']?.toString() ?? _nameFromPath(path),
       path: path,
-      description: fm['description']?.toString() ?? _extractFirstParagraph(body),
+      description:
+          fm['description']?.toString() ?? _extractFirstParagraph(body),
       canonicality: _parseCanonicality(fm['canonicality']?.toString()),
       frontmatter: fm,
       tags: _parseStringList(fm['tags']),
@@ -208,7 +219,8 @@ class WorkspaceMarkdownParser {
       kind: AssetKind.workflow,
       name: fm['name']?.toString() ?? _nameFromPath(path),
       path: path,
-      description: fm['description']?.toString() ?? _extractFirstParagraph(body),
+      description:
+          fm['description']?.toString() ?? _extractFirstParagraph(body),
       canonicality: _parseCanonicality(fm['canonicality']?.toString()),
       frontmatter: fm,
       tags: _parseStringList(fm['tags']),
@@ -251,7 +263,8 @@ class WorkspaceMarkdownParser {
       kind: AssetKind.task,
       name: taskMeta.title,
       path: path,
-      description: fm['description']?.toString() ?? _extractFirstParagraph(body),
+      description:
+          fm['description']?.toString() ?? _extractFirstParagraph(body),
       canonicality: Canonicality.parentCanonical,
       frontmatter: {...fm, '_taskMetadata': taskMeta},
       tags: _parseStringList(fm['tags']),
@@ -286,7 +299,8 @@ class WorkspaceMarkdownParser {
       kind: AssetKind.changelog,
       name: fm['id']?.toString() ?? _nameFromPath(path),
       path: path,
-      description: fm['description']?.toString() ?? _extractFirstParagraph(body),
+      description:
+          fm['description']?.toString() ?? _extractFirstParagraph(body),
       canonicality: Canonicality.appendOnly,
       frontmatter: {...fm, '_changelogMetadata': clMeta},
       tags: _parseStringList(fm['tags']),
@@ -307,7 +321,8 @@ class WorkspaceMarkdownParser {
       kind: kind,
       name: fm['name']?.toString() ?? _nameFromPath(path),
       path: path,
-      description: fm['description']?.toString() ?? _extractFirstParagraph(body),
+      description:
+          fm['description']?.toString() ?? _extractFirstParagraph(body),
       canonicality: _parseCanonicality(fm['canonicality']?.toString()),
       frontmatter: fm,
       tags: _parseStringList(fm['tags']),
@@ -319,59 +334,80 @@ class WorkspaceMarkdownParser {
   // Edge builders
   // ---------------------------------------------------------------------------
 
-  List<WorkspaceEdge> _buildAgentEdges(String agentId, Map<String, dynamic> fm) {
+  List<WorkspaceEdge> _buildAgentEdges(
+    String agentId,
+    Map<String, dynamic> fm,
+  ) {
     final edges = <WorkspaceEdge>[];
     for (final skill in _parseStringList(fm['skills'])) {
-      edges.add(WorkspaceEdge(
-        sourceId: agentId,
-        targetId: 'skill:$skill',
-        kind: EdgeKind.uses,
-      ));
+      edges.add(
+        WorkspaceEdge(
+          sourceId: agentId,
+          targetId: 'skill:$skill',
+          kind: EdgeKind.uses,
+        ),
+      );
     }
     for (final wf in _parseStringList(fm['workflows'])) {
-      edges.add(WorkspaceEdge(
-        sourceId: agentId,
-        targetId: 'workflow:$wf',
-        kind: EdgeKind.uses,
-      ));
+      edges.add(
+        WorkspaceEdge(
+          sourceId: agentId,
+          targetId: 'workflow:$wf',
+          kind: EdgeKind.uses,
+        ),
+      );
     }
     return edges;
   }
 
-  List<WorkspaceEdge> _buildSkillEdges(String skillId, Map<String, dynamic> fm) {
+  List<WorkspaceEdge> _buildSkillEdges(
+    String skillId,
+    Map<String, dynamic> fm,
+  ) {
     final edges = <WorkspaceEdge>[];
     for (final sub in _parseStringList(fm['sub_skills'])) {
-      edges.add(WorkspaceEdge(
-        sourceId: skillId,
-        targetId: 'subskill:$sub',
-        kind: EdgeKind.contains,
-      ));
+      edges.add(
+        WorkspaceEdge(
+          sourceId: skillId,
+          targetId: 'subskill:$sub',
+          kind: EdgeKind.contains,
+        ),
+      );
     }
     for (final wf in _parseStringList(fm['workflows'])) {
-      edges.add(WorkspaceEdge(
-        sourceId: skillId,
-        targetId: 'workflow:$wf',
-        kind: EdgeKind.references,
-      ));
+      edges.add(
+        WorkspaceEdge(
+          sourceId: skillId,
+          targetId: 'workflow:$wf',
+          kind: EdgeKind.references,
+        ),
+      );
     }
     for (final ref in _parseStringList(fm['references'])) {
-      edges.add(WorkspaceEdge(
-        sourceId: skillId,
-        targetId: 'reference:$ref',
-        kind: EdgeKind.references,
-      ));
+      edges.add(
+        WorkspaceEdge(
+          sourceId: skillId,
+          targetId: 'reference:$ref',
+          kind: EdgeKind.references,
+        ),
+      );
     }
     return edges;
   }
 
-  List<WorkspaceEdge> _buildWorkflowEdges(String wfId, Map<String, dynamic> fm) {
+  List<WorkspaceEdge> _buildWorkflowEdges(
+    String wfId,
+    Map<String, dynamic> fm,
+  ) {
     final edges = <WorkspaceEdge>[];
     for (final skill in _parseStringList(fm['uses_skills'])) {
-      edges.add(WorkspaceEdge(
-        sourceId: wfId,
-        targetId: 'skill:$skill',
-        kind: EdgeKind.dependsOn,
-      ));
+      edges.add(
+        WorkspaceEdge(
+          sourceId: wfId,
+          targetId: 'skill:$skill',
+          kind: EdgeKind.dependsOn,
+        ),
+      );
     }
     return edges;
   }
@@ -379,38 +415,49 @@ class WorkspaceMarkdownParser {
   List<WorkspaceEdge> _buildTaskEdges(String taskId, Map<String, dynamic> fm) {
     final edges = <WorkspaceEdge>[];
     for (final skill in _parseStringList(fm['skills'])) {
-      edges.add(WorkspaceEdge(
-        sourceId: taskId,
-        targetId: 'skill:$skill',
-        kind: EdgeKind.references,
-      ));
+      edges.add(
+        WorkspaceEdge(
+          sourceId: taskId,
+          targetId: 'skill:$skill',
+          kind: EdgeKind.references,
+        ),
+      );
     }
     for (final wf in _parseStringList(fm['workflows'])) {
-      edges.add(WorkspaceEdge(
-        sourceId: taskId,
-        targetId: 'workflow:$wf',
-        kind: EdgeKind.references,
-      ));
+      edges.add(
+        WorkspaceEdge(
+          sourceId: taskId,
+          targetId: 'workflow:$wf',
+          kind: EdgeKind.references,
+        ),
+      );
     }
     for (final dep in _parseStringList(fm['depends_on'])) {
-      edges.add(WorkspaceEdge(
-        sourceId: taskId,
-        targetId: 'task:$dep',
-        kind: EdgeKind.dependsOn,
-      ));
+      edges.add(
+        WorkspaceEdge(
+          sourceId: taskId,
+          targetId: 'task:$dep',
+          kind: EdgeKind.dependsOn,
+        ),
+      );
     }
     return edges;
   }
 
-  List<WorkspaceEdge> _buildChangelogEdges(String clId, Map<String, dynamic> fm) {
+  List<WorkspaceEdge> _buildChangelogEdges(
+    String clId,
+    Map<String, dynamic> fm,
+  ) {
     final edges = <WorkspaceEdge>[];
     final task = fm['task']?.toString();
     if (task != null && task.isNotEmpty) {
-      edges.add(WorkspaceEdge(
-        sourceId: clId,
-        targetId: 'task:$task',
-        kind: EdgeKind.changedBy,
-      ));
+      edges.add(
+        WorkspaceEdge(
+          sourceId: clId,
+          targetId: 'task:$task',
+          kind: EdgeKind.changedBy,
+        ),
+      );
     }
     return edges;
   }
@@ -488,15 +535,15 @@ class WorkspaceMarkdownParser {
   ///
   /// Returns the content under `## SectionName` until the next `##` heading.
   static String? _extractSection(String body, String sectionName) {
-    final regex = RegExp(
-      '^##\\s+$sectionName\\s*\$',
-      multiLine: true,
-    );
+    final regex = RegExp('^##\\s+$sectionName\\s*\$', multiLine: true);
     final match = regex.firstMatch(body);
     if (match == null) return null;
 
     final afterMatch = body.substring(match.end);
-    final nextHeading = RegExp(r'^##\s', multiLine: true).firstMatch(afterMatch);
+    final nextHeading = RegExp(
+      r'^##\s',
+      multiLine: true,
+    ).firstMatch(afterMatch);
     final section = nextHeading != null
         ? afterMatch.substring(0, nextHeading.start)
         : afterMatch;

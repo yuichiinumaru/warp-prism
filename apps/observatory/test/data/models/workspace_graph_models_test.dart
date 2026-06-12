@@ -174,11 +174,7 @@ void main() {
 
     test('supports all EdgeKind values', () {
       for (final kind in EdgeKind.values) {
-        final edge = WorkspaceEdge(
-          sourceId: 'a',
-          targetId: 'b',
-          kind: kind,
-        );
+        final edge = WorkspaceEdge(sourceId: 'a', targetId: 'b', kind: kind);
         expect(edge.kind, kind);
       }
     });
@@ -225,26 +221,17 @@ void main() {
         TaskLaneParsing.fromDirectoryPrefix('00-planning'),
         TaskLane.planning,
       );
-      expect(
-        TaskLaneParsing.fromDirectoryPrefix('02-doing'),
-        TaskLane.doing,
-      );
+      expect(TaskLaneParsing.fromDirectoryPrefix('02-doing'), TaskLane.doing);
       expect(
         TaskLaneParsing.fromDirectoryPrefix('04-completed'),
         TaskLane.completed,
       );
-      expect(
-        TaskLaneParsing.fromDirectoryPrefix('unknown'),
-        TaskLane.open,
-      );
+      expect(TaskLaneParsing.fromDirectoryPrefix('unknown'), TaskLane.open);
     });
 
     test('round-trips directory prefix', () {
       for (final lane in TaskLane.values) {
-        expect(
-          TaskLaneParsing.fromDirectoryPrefix(lane.directoryPrefix),
-          lane,
-        );
+        expect(TaskLaneParsing.fromDirectoryPrefix(lane.directoryPrefix), lane);
       }
     });
   });
@@ -309,18 +296,12 @@ void main() {
     });
 
     test('ChangelogType parses from string', () {
-      expect(
-        ChangelogTypeParsing.fromString('feature'),
-        ChangelogType.feature,
-      );
+      expect(ChangelogTypeParsing.fromString('feature'), ChangelogType.feature);
       expect(
         ChangelogTypeParsing.fromString('governance'),
         ChangelogType.governance,
       );
-      expect(
-        ChangelogTypeParsing.fromString(null),
-        ChangelogType.chore,
-      );
+      expect(ChangelogTypeParsing.fromString(null), ChangelogType.chore);
     });
   });
 
@@ -365,11 +346,9 @@ void main() {
         'staleIndex',
         'childParentDrift',
       ];
-      final names =
-          DiagnosticCategory.values.map((e) => e.name).toList();
+      final names = DiagnosticCategory.values.map((e) => e.name).toList();
       for (final r in required) {
-        expect(names, contains(r),
-            reason: 'DiagnosticCategory missing: $r');
+        expect(names, contains(r), reason: 'DiagnosticCategory missing: $r');
       }
     });
   });

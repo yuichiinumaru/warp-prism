@@ -24,11 +24,7 @@ class MapInspectorPanel extends StatelessWidget {
   /// Called when the user closes the inspector.
   final VoidCallback? onClose;
 
-  const MapInspectorPanel({
-    super.key,
-    required this.controller,
-    this.onClose,
-  });
+  const MapInspectorPanel({super.key, required this.controller, this.onClose});
 
   @override
   Widget build(BuildContext context) {
@@ -59,10 +55,7 @@ class MapInspectorPanel extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: section.rows
-            .map((row) => DSPropertyRow(
-                  label: row.label,
-                  value: row.value,
-                ))
+            .map((row) => DSPropertyRow(label: row.label, value: row.value))
             .toList(),
       ),
     );

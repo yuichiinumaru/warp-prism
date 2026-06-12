@@ -22,10 +22,7 @@ class DSSkeletonCard extends StatelessWidget {
   /// Whether to show the subtitle text line. Defaults to true.
   final bool showSubtitle;
 
-  const DSSkeletonCard({
-    super.key,
-    this.showSubtitle = true,
-  });
+  const DSSkeletonCard({super.key, this.showSubtitle = true});
 
   @override
   Widget build(BuildContext context) {
@@ -43,33 +40,21 @@ class DSSkeletonCard extends StatelessWidget {
           const Row(
             children: [
               // Icon area
-              DSShimmer(
-                width: 32,
-                height: 32,
-                borderRadius: DSRadii.sm,
-              ),
+              DSShimmer(width: 32, height: 32, borderRadius: DSRadii.sm),
               SizedBox(width: DSSpacing.sm),
               // Kind label + title
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    DSShimmer(
-                      width: 60,
-                      height: 10,
-                      borderRadius: DSRadii.xs,
-                    ),
+                    DSShimmer(width: 60, height: 10, borderRadius: DSRadii.xs),
                     SizedBox(height: 6),
                     DSSkeletonTextLine(widthFactor: 0.6),
                   ],
                 ),
               ),
               // Governance chip placeholder
-              DSShimmer(
-                width: 56,
-                height: 20,
-                borderRadius: DSRadii.chip,
-              ),
+              DSShimmer(width: 56, height: 20, borderRadius: DSRadii.chip),
             ],
           ),
 

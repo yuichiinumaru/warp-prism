@@ -12,7 +12,11 @@ class OperatePage extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          DSIcon(Icons.play_circle_outline, color: DSColors.accentCyan, size: 48),
+          DSIcon(
+            Icons.play_circle_outline,
+            color: DSColors.accentCyan,
+            size: 48,
+          ),
           const SizedBox(height: DSSpacing.lg),
           DSText.headingMedium('Operate', color: DSColors.textPrimary),
           const SizedBox(height: DSSpacing.sm),

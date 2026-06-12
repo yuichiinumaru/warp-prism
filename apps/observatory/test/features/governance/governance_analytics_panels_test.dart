@@ -70,8 +70,16 @@ void main() {
     test('fromDiagnostics extracts and ranks hotspots', () {
       final diags = [
         _fanInDiag(incomingEdgeCount: 3),
-        _fanInDiag(assetId: 'workflow:core', assetName: 'core-workflow', incomingEdgeCount: 8),
-        _fanInDiag(assetId: 'skill:minor', assetName: 'minor-skill', incomingEdgeCount: 4),
+        _fanInDiag(
+          assetId: 'workflow:core',
+          assetName: 'core-workflow',
+          incomingEdgeCount: 8,
+        ),
+        _fanInDiag(
+          assetId: 'skill:minor',
+          assetName: 'minor-skill',
+          incomingEdgeCount: 4,
+        ),
       ];
       final hotspots = FanInHotspot.fromDiagnostics(diags);
       expect(hotspots.length, 3);
@@ -80,10 +88,7 @@ void main() {
     });
 
     test('fromDiagnostics ignores non-fan-in diagnostics', () {
-      final diags = [
-        _fanInDiag(),
-        _proofGapDiag(),
-      ];
+      final diags = [_fanInDiag(), _proofGapDiag()];
       final hotspots = FanInHotspot.fromDiagnostics(diags);
       expect(hotspots.length, 1);
     });
@@ -113,16 +118,16 @@ void main() {
 
   group('FanInHotspotsPanel', () {
     testWidgets('renders header', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        FanInHotspotsPanel(hotspots: const []),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(FanInHotspotsPanel(hotspots: const [])),
+      );
       expect(find.text('Fan-In Hotspots'), findsOneWidget);
     });
 
     testWidgets('renders healthy state when empty', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        FanInHotspotsPanel(hotspots: const []),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(FanInHotspotsPanel(hotspots: const [])),
+      );
       expect(find.textContaining('No fan-in hotspots'), findsOneWidget);
     });
 
@@ -145,9 +150,9 @@ void main() {
           severity: DiagnosticSeverity.warning,
         ),
       ];
-      await tester.pumpWidget(_wrapInApp(
-        FanInHotspotsPanel(hotspots: hotspots),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(FanInHotspotsPanel(hotspots: hotspots)),
+      );
       expect(find.text('hub-skill'), findsOneWidget);
       expect(find.text('core-workflow'), findsOneWidget);
       expect(find.text('8'), findsOneWidget);
@@ -165,9 +170,9 @@ void main() {
           severity: DiagnosticSeverity.error,
         ),
       ];
-      await tester.pumpWidget(_wrapInApp(
-        FanInHotspotsPanel(hotspots: hotspots),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(FanInHotspotsPanel(hotspots: hotspots)),
+      );
       expect(find.textContaining('1 hotspot'), findsOneWidget);
     });
 
@@ -182,9 +187,9 @@ void main() {
           severity: DiagnosticSeverity.error,
         ),
       ];
-      await tester.pumpWidget(_wrapInApp(
-        FanInHotspotsPanel(hotspots: hotspots),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(FanInHotspotsPanel(hotspots: hotspots)),
+      );
       expect(find.textContaining('critical hub'), findsOneWidget);
     });
   });
@@ -207,10 +212,7 @@ void main() {
     });
 
     test('fromDiagnostics ignores non-proof-gap diagnostics', () {
-      final diags = [
-        _proofGapDiag(),
-        _fanInDiag(),
-      ];
+      final diags = [_proofGapDiag(), _fanInDiag()];
       final indicators = ReviewPressureIndicator.fromDiagnostics(diags);
       expect(indicators.length, 1);
     });
@@ -224,10 +226,12 @@ void main() {
         ),
       ];
       final indicators = ReviewPressureIndicator.fromDiagnostics(diags);
-      final errorInd =
-          indicators.firstWhere((i) => i.severity == DiagnosticSeverity.error);
-      final warnInd =
-          indicators.firstWhere((i) => i.severity == DiagnosticSeverity.warning);
+      final errorInd = indicators.firstWhere(
+        (i) => i.severity == DiagnosticSeverity.error,
+      );
+      final warnInd = indicators.firstWhere(
+        (i) => i.severity == DiagnosticSeverity.warning,
+      );
       expect(errorInd.explanation, contains('zero proof'));
       expect(warnInd.explanation, contains('partial proof'));
     });
@@ -282,17 +286,17 @@ void main() {
 
   group('ReviewPressurePanel', () {
     testWidgets('renders header', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        ReviewPressurePanel(indicators: const []),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(ReviewPressurePanel(indicators: const [])),
+      );
       expect(find.text('Review Queue Pressure'), findsOneWidget);
     });
 
     testWidgets('renders healthy state when empty', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        ReviewPressurePanel(indicators: const []),
-      ));
-      expect(find.textContaining('No review pressure'), findsOneWidget);
+      await tester.pumpWidget(
+        _wrapInApp(ReviewPressurePanel(indicators: const [])),
+      );
+      expect(find.textContaining('No review pressure'), findsWidgets);
     });
 
     testWidgets('renders pressure indicators', (tester) async {
@@ -305,11 +309,11 @@ void main() {
           explanation: 'Task has zero proof in review lane.',
         ),
       ];
-      await tester.pumpWidget(_wrapInApp(
-        ReviewPressurePanel(indicators: indicators),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(ReviewPressurePanel(indicators: indicators)),
+      );
       expect(find.text('Implement Inspector'), findsOneWidget);
-      expect(find.text('03-review'), findsOneWidget);
+      expect(find.text('03-review'), findsWidgets);
       expect(find.textContaining('zero proof'), findsOneWidget);
     });
 
@@ -330,17 +334,17 @@ void main() {
           explanation: 'test',
         ),
       ];
-      await tester.pumpWidget(_wrapInApp(
-        ReviewPressurePanel(indicators: indicators),
-      ));
-      expect(find.text('03-review'), findsOneWidget);
+      await tester.pumpWidget(
+        _wrapInApp(ReviewPressurePanel(indicators: indicators)),
+      );
+      expect(find.text('03-review'), findsWidgets);
       expect(find.text('04-completed'), findsOneWidget);
     });
 
     testWidgets('renders overview explanation', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        ReviewPressurePanel(indicators: const []),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(ReviewPressurePanel(indicators: const [])),
+      );
       expect(find.textContaining('adequate proof'), findsOneWidget);
     });
   });

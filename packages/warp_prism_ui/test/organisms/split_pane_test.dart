@@ -71,9 +71,7 @@ void main() {
     });
 
     testWidgets('initial ratio controls pane sizes', (tester) async {
-      await tester.pumpWidget(
-        buildSplitHarness(initialRatio: 0.7),
-      );
+      await tester.pumpWidget(buildSplitHarness(initialRatio: 0.7));
 
       // Leading pane should be approximately 70% of 800px
       // (minus divider thickness of 6px, so available = 794)
@@ -145,10 +143,7 @@ void main() {
       tester,
     ) async {
       await tester.pumpWidget(
-        buildSplitHarness(
-          initialRatio: 0.5,
-          leadingMaxExtent: 400,
-        ),
+        buildSplitHarness(initialRatio: 0.5, leadingMaxExtent: 400),
       );
 
       final divider = find.bySemanticsLabel(RegExp('Split pane divider'));

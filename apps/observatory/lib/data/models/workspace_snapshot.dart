@@ -119,7 +119,8 @@ class WorkspaceSnapshot {
     }
     for (final skill in skills) {
       for (final edge in skill.edges) {
-        if (edge.kind == EdgeKind.references || edge.kind == EdgeKind.contains) {
+        if (edge.kind == EdgeKind.references ||
+            edge.kind == EdgeKind.contains) {
           referencedIds.add(edge.targetId);
         }
       }
@@ -140,7 +141,7 @@ class WorkspaceSnapshot {
       if (meta == null) continue;
       if ((meta.lane == TaskLane.review || meta.lane == TaskLane.completed) &&
           (meta.proofState == ProofState.none ||
-           meta.proofState == ProofState.partial)) {
+              meta.proofState == ProofState.partial)) {
         count++;
       }
     }
@@ -227,12 +228,12 @@ class WorkspaceSnapshot {
 
   @override
   int get hashCode => Object.hash(
-        agents.length,
-        skills.length,
-        workflows.length,
-        tasks.length,
-        changelogEntries.length,
-      );
+    agents.length,
+    skills.length,
+    workflows.length,
+    tasks.length,
+    changelogEntries.length,
+  );
 
   @override
   String toString() =>

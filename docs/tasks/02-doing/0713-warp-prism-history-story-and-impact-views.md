@@ -1,6 +1,7 @@
 # Task 0713: Warp Prism History Story And Impact Views
 
 > **Status**: `[x]` Done
+> **Review State**: Blocked — Flutter SDK not installed; validation commands cannot execute
 > **Priority**: 🟡 P1
 > **Type**: `feature`
 > **Origin**: EPIC 07 `warp-prism/docs/tasks/00-planning/EPIC-07-warp-prism-history-surface.md`

@@ -13,7 +13,7 @@ library;
 import 'dart:async';
 import 'task_projection.dart';
 import 'operate_filters.dart';
-import '../../../data/models/task_contracts.dart';
+import 'package:warp_prism_observatory/data/models/task_contracts.dart';
 import 'operate_storytelling.dart';
 
 /// View model for the Operate board surface.
@@ -38,15 +38,15 @@ class OperateWorkspaceViewModel {
 
   /// Current state snapshot.
   OperateBoardState get state => OperateBoardState(
-        filters: _filters,
-        lanes: _buildLanes(),
-        allTasks: _allTasks,
-        selectedTaskId: _selectedTaskId,
-        isLoading: _isLoading,
-        error: _error,
-        filterOptions: _buildFilterOptions(),
-        storyDiagnostics: deriveOperateStoryDiagnostics(_allTasks),
-      );
+    filters: _filters,
+    lanes: _buildLanes(),
+    allTasks: _allTasks,
+    selectedTaskId: _selectedTaskId,
+    isLoading: _isLoading,
+    error: _error,
+    filterOptions: _buildFilterOptions(),
+    storyDiagnostics: deriveOperateStoryDiagnostics(_allTasks),
+  );
 
   /// Stream of state changes.
   Stream<OperateBoardState> get stateStream => _controller.stream;
@@ -169,10 +169,8 @@ class OperateWorkspaceViewModel {
     final filtered = _applyFilters(_allTasks);
 
     return TaskLane.values.map((lane) {
-      final laneTasks =
-          filtered.where((t) => t.lane == lane).toList();
-      final totalCount =
-          _allTasks.where((t) => t.lane == lane).length;
+      final laneTasks = filtered.where((t) => t.lane == lane).toList();
+      final totalCount = _allTasks.where((t) => t.lane == lane).length;
       return OperateLaneState(
         lane: lane,
         tasks: laneTasks,
@@ -187,12 +185,13 @@ class OperateWorkspaceViewModel {
     return tasks.where((task) {
       if (_filters.lane != null && task.lane != _filters.lane) return false;
       if (_filters.owner != null && task.owner != _filters.owner) return false;
-      if (_filters.skill != null &&
-          !task.linkedSkills.contains(_filters.skill)) return false;
+      if (_filters.skill != null && !task.linkedSkills.contains(_filters.skill))
+        return false;
       if (_filters.workflow != null &&
-          !task.linkedWorkflows.contains(_filters.workflow)) return false;
-      if (_filters.proofState != null &&
-          task.proofState != _filters.proofState) return false;
+          !task.linkedWorkflows.contains(_filters.workflow))
+        return false;
+      if (_filters.proofState != null && task.proofState != _filters.proofState)
+        return false;
       if (_filters.query.isNotEmpty) {
         final q = _filters.query.toLowerCase();
         if (!task.title.toLowerCase().contains(q) &&
@@ -208,7 +207,8 @@ class OperateWorkspaceViewModel {
   /// Build available filter options from the current task set.
   OperateFilterOptions _buildFilterOptions() {
     final owners = _allTasks.map((t) => t.owner).toSet().toList()..sort();
-    final skills = _allTasks.expand((t) => t.linkedSkills).toSet().toList()..sort();
+    final skills = _allTasks.expand((t) => t.linkedSkills).toSet().toList()
+      ..sort();
     final workflows =
         _allTasks.expand((t) => t.linkedWorkflows).toSet().toList()..sort();
     final proofStates = _allTasks.map((t) => t.proofState).toSet().toList();

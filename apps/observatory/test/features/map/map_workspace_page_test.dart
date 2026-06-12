@@ -230,11 +230,10 @@ void main() {
       return MaterialApp(home: Scaffold(body: child));
     }
 
-    testWidgets('renders four tabs: Agents, Skills, Workflows, Graph',
-        (tester) async {
-      await tester.pumpWidget(wrapInApp(
-        const MapWorkspacePage(),
-      ));
+    testWidgets('renders four tabs: Agents, Skills, Workflows, Graph', (
+      tester,
+    ) async {
+      await tester.pumpWidget(wrapInApp(const MapWorkspacePage()));
 
       expect(find.text('Agents'), findsOneWidget);
       expect(find.text('Skills'), findsOneWidget);
@@ -242,27 +241,22 @@ void main() {
       expect(find.text('Graph'), findsOneWidget);
     });
 
-    testWidgets('shows catalog panel on first tab (Agents)',
-        (tester) async {
-      await tester.pumpWidget(wrapInApp(
-        const MapWorkspacePage(),
-      ));
+    testWidgets('shows catalog panel on first tab (Agents)', (tester) async {
+      await tester.pumpWidget(wrapInApp(const MapWorkspacePage()));
 
       // The first tab (Agents) should be active by default.
       // With empty assets, the search bar should still be visible.
-      expect(find.byType(DSSearchBar), findsOneWidget);
+      expect(find.byType(DSSearchBar), findsWidgets);
     });
 
     testWidgets('switching tabs shows correct content', (tester) async {
-      await tester.pumpWidget(wrapInApp(
-        const MapWorkspacePage(),
-      ));
+      await tester.pumpWidget(wrapInApp(const MapWorkspacePage()));
 
       // Tap Skills tab
       await tester.tap(find.text('Skills'));
       await tester.pumpAndSettle();
       // Should still show catalog panel (search bar)
-      expect(find.byType(DSSearchBar), findsOneWidget);
+      expect(find.byType(DSSearchBar), findsWidgets);
 
       // Tap Graph tab
       await tester.tap(find.text('Graph'));
@@ -270,24 +264,29 @@ void main() {
       expect(find.text('Asset Graph'), findsOneWidget);
     });
 
-    testWidgets('renders with initial state specifying a subview',
-        (tester) async {
-      await tester.pumpWidget(wrapInApp(
-        const MapWorkspacePage(
-          initialState: MapWorkspaceState(activeSubview: MapSubview.graph),
+    testWidgets('renders with initial state specifying a subview', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        wrapInApp(
+          const MapWorkspacePage(
+            initialState: MapWorkspaceState(activeSubview: MapSubview.graph),
+          ),
         ),
-      ));
+      );
 
       // Graph tab content should be visible
-      expect(find.text('Asset Graph'), findsOneWidget);
+      expect(find.text('Asset Graph'), findsWidgets);
     });
 
     testWidgets('empty/loading state renders without errors', (tester) async {
-      await tester.pumpWidget(wrapInApp(
-        const MapWorkspacePage(
-          initialState: MapWorkspaceState(isLoading: true),
+      await tester.pumpWidget(
+        wrapInApp(
+          const MapWorkspacePage(
+            initialState: MapWorkspaceState(isLoading: true),
+          ),
         ),
-      ));
+      );
 
       // Should render without throwing
       expect(find.text('Agents'), findsOneWidget);
@@ -304,11 +303,13 @@ void main() {
         ),
       ];
 
-      await tester.pumpWidget(wrapInApp(
-        MapWorkspacePage(
-          initialState: MapWorkspaceState(catalogAssets: assets),
+      await tester.pumpWidget(
+        wrapInApp(
+          MapWorkspacePage(
+            initialState: MapWorkspaceState(catalogAssets: assets),
+          ),
         ),
-      ));
+      );
 
       // Should show the asset card
       expect(find.byType(DSAssetCard), findsOneWidget);

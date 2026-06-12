@@ -1,0 +1,33 @@
+Resolving dependencies...
+Downloading packages...
+  cli_util 0.4.2 (0.5.1 available)
+  fl_chart 0.68.0 (1.2.0 available)
+  flutter_lints 4.0.0 (6.0.0 available)
+  flutter_riverpod 2.6.1 (3.3.2 available)
+  go_router 14.8.1 (17.3.0 available)
+  intl 0.19.0 (0.20.2 available)
+  lints 4.0.0 (6.1.0 available)
+  matcher 0.12.19 (0.12.20 available)
+  melos 7.8.1 (7.8.2 available)
+  meta 1.18.0 (1.18.3 available)
+  mustache_template 2.0.4 (2.0.5 available)
+  riverpod 2.6.1 (3.3.2 available)
+  test_api 0.7.11 (0.7.12 available)
+  vector_math 2.2.0 (2.4.0 available)
+Got dependencies!
+14 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+00:00 +0: loading /home/sephiroth/working/ganthritor/warp-prism/apps/cybercore/test/widget_test.dart
+00:00 +0: /home/sephiroth/working/ganthritor/warp-prism/apps/cybercore/test/widget_test.dart: CyberCore app renders app shell with sidebar
+00:00 +1: /home/sephiroth/working/ganthritor/warp-prism/apps/cybercore/test/widget_test.dart: CyberCore app renders app shell with sidebar
+00:00 +2: /home/sephiroth/working/ganthritor/warp-prism/apps/cybercore/test/widget_test.dart: CyberCore app renders app shell with sidebar
+00:00 +3: /home/sephiroth/working/ganthritor/warp-prism/apps/cybercore/test/widget_test.dart: CyberCore app renders app shell with sidebar
+00:00 +4: /home/sephiroth/working/ganthritor/warp-prism/apps/cybercore/test/widget_test.dart: CyberCore app renders app shell with sidebar
+00:00 +5: /home/sephiroth/working/ganthritor/warp-prism/apps/cybercore/test/widget_test.dart: CyberCore app renders app shell with sidebar
+00:00 +6: /home/sephiroth/working/ganthritor/warp-prism/apps/cybercore/test/widget_test.dart: CyberCore app renders app shell with sidebar
+00:00 +7: /home/sephiroth/working/ganthritor/warp-prism/apps/cybercore/test/widget_test.dart: CyberCore app renders app shell with sidebar
+00:00 +8: /home/sephiroth/working/ganthritor/warp-prism/apps/cybercore/test/widget_test.dart: CyberCore app renders app shell with sidebar
+00:00 +9: /home/sephiroth/working/ganthritor/warp-prism/apps/cybercore/test/widget_test.dart: CyberCore app renders app shell with sidebar
+00:00 +10: /home/sephiroth/working/ganthritor/warp-prism/apps/cybercore/test/widget_test.dart: CyberCore app renders app shell with sidebar
+00:03 +11: /home/sephiroth/working/ganthritor/warp-prism/apps/cybercore/test/widget_test.dart: CyberCore app shows loading state on dashboard
+00:04 +12: All tests passed!

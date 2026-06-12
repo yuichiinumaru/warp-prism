@@ -7,8 +7,8 @@ void main() {
   // Helper: wraps a widget in MaterialApp + Scaffold for consistent test env
   // ---------------------------------------------------------------------------
   Widget wrap(Widget child) => MaterialApp(
-        home: Scaffold(body: SizedBox(width: 800, height: 600, child: child)),
-      );
+    home: Scaffold(body: SizedBox(width: 800, height: 600, child: child)),
+  );
 
   // Sample columns for reuse
   const sampleColumns = <DSDataColumn>[
@@ -18,22 +18,19 @@ void main() {
   ];
 
   List<DSDataRow> sampleRows() => [
-        DSDataRow(id: '1', cells: {
-          'id': '001',
-          'name': 'Alpha',
-          'status': 'Running',
-        }),
-        DSDataRow(id: '2', cells: {
-          'id': '002',
-          'name': 'Beta',
-          'status': 'Healthy',
-        }),
-        DSDataRow(id: '3', cells: {
-          'id': '003',
-          'name': 'Gamma',
-          'status': 'Error',
-        }),
-      ];
+    DSDataRow(
+      id: '1',
+      cells: {'id': '001', 'name': 'Alpha', 'status': 'Running'},
+    ),
+    DSDataRow(
+      id: '2',
+      cells: {'id': '002', 'name': 'Beta', 'status': 'Healthy'},
+    ),
+    DSDataRow(
+      id: '3',
+      cells: {'id': '003', 'name': 'Gamma', 'status': 'Error'},
+    ),
+  ];
 
   // ---------------------------------------------------------------------------
   // GROUP: Default rendering
@@ -41,12 +38,14 @@ void main() {
   group('DSDataTable default rendering', () {
     testWidgets('renders column headers', (tester) async {
       await tester.pumpWidget(
-        wrap(DSDataTable(
-          columns: sampleColumns,
-          rows: sampleRows(),
-          paginated: false,
-          showPagination: false,
-        )),
+        wrap(
+          DSDataTable(
+            columns: sampleColumns,
+            rows: sampleRows(),
+            paginated: false,
+            showPagination: false,
+          ),
+        ),
       );
 
       expect(find.text('ID'), findsOneWidget);
@@ -56,12 +55,14 @@ void main() {
 
     testWidgets('renders row data', (tester) async {
       await tester.pumpWidget(
-        wrap(DSDataTable(
-          columns: sampleColumns,
-          rows: sampleRows(),
-          paginated: false,
-          showPagination: false,
-        )),
+        wrap(
+          DSDataTable(
+            columns: sampleColumns,
+            rows: sampleRows(),
+            paginated: false,
+            showPagination: false,
+          ),
+        ),
       );
 
       expect(find.text('Alpha'), findsOneWidget);
@@ -71,12 +72,14 @@ void main() {
 
     testWidgets('renders inside a glass panel', (tester) async {
       await tester.pumpWidget(
-        wrap(DSDataTable(
-          columns: sampleColumns,
-          rows: sampleRows(),
-          paginated: false,
-          showPagination: false,
-        )),
+        wrap(
+          DSDataTable(
+            columns: sampleColumns,
+            rows: sampleRows(),
+            paginated: false,
+            showPagination: false,
+          ),
+        ),
       );
 
       expect(find.byType(DSGlassPanelSimple), findsOneWidget);
@@ -84,12 +87,14 @@ void main() {
 
     testWidgets('has semantic label for data table', (tester) async {
       await tester.pumpWidget(
-        wrap(DSDataTable(
-          columns: sampleColumns,
-          rows: sampleRows(),
-          paginated: false,
-          showPagination: false,
-        )),
+        wrap(
+          DSDataTable(
+            columns: sampleColumns,
+            rows: sampleRows(),
+            paginated: false,
+            showPagination: false,
+          ),
+        ),
       );
 
       // The semantic label includes column count and row count
@@ -106,10 +111,7 @@ void main() {
   group('DSDataTable empty state', () {
     testWidgets('renders empty state when no rows', (tester) async {
       await tester.pumpWidget(
-        wrap(DSDataTable(
-          columns: sampleColumns,
-          rows: const [],
-        )),
+        wrap(DSDataTable(columns: sampleColumns, rows: const [])),
       );
 
       expect(find.text('No data'), findsOneWidget);
@@ -123,10 +125,7 @@ void main() {
   group('DSDataTable loading state', () {
     testWidgets('renders skeleton when loading', (tester) async {
       await tester.pumpWidget(
-        wrap(DSDataTable(
-          columns: sampleColumns,
-          loading: true,
-        )),
+        wrap(DSDataTable(columns: sampleColumns, loading: true)),
       );
 
       // Skeleton renders Container widgets for each row
@@ -141,10 +140,12 @@ void main() {
   group('DSDataTable error state', () {
     testWidgets('renders error message', (tester) async {
       await tester.pumpWidget(
-        wrap(DSDataTable(
-          columns: sampleColumns,
-          errorMessage: 'Connection failed',
-        )),
+        wrap(
+          DSDataTable(
+            columns: sampleColumns,
+            errorMessage: 'Connection failed',
+          ),
+        ),
       );
 
       expect(find.text('Failed to load data'), findsOneWidget);
@@ -155,11 +156,13 @@ void main() {
       var retryCalled = false;
 
       await tester.pumpWidget(
-        wrap(DSDataTable(
-          columns: sampleColumns,
-          errorMessage: 'Failed',
-          onRetry: () => retryCalled = true,
-        )),
+        wrap(
+          DSDataTable(
+            columns: sampleColumns,
+            errorMessage: 'Failed',
+            onRetry: () => retryCalled = true,
+          ),
+        ),
       );
 
       await tester.tap(find.text('Retry'));
@@ -175,13 +178,15 @@ void main() {
       String? sortedColumn;
 
       await tester.pumpWidget(
-        wrap(DSDataTable(
-          columns: sampleColumns,
-          rows: sampleRows(),
-          onSort: (colId) => sortedColumn = colId,
-          paginated: false,
-          showPagination: false,
-        )),
+        wrap(
+          DSDataTable(
+            columns: sampleColumns,
+            rows: sampleRows(),
+            onSort: (colId) => sortedColumn = colId,
+            paginated: false,
+            showPagination: false,
+          ),
+        ),
       );
 
       // Tap the "Name" column header (sortable)
@@ -191,16 +196,18 @@ void main() {
 
     testWidgets('sort indicators highlight sorted column', (tester) async {
       await tester.pumpWidget(
-        wrap(DSDataTable(
-          columns: sampleColumns,
-          rows: sampleRows(),
-          sortState: const DSSortState(
-            columnId: 'name',
-            direction: DSSortDirection.ascending,
+        wrap(
+          DSDataTable(
+            columns: sampleColumns,
+            rows: sampleRows(),
+            sortState: const DSSortState(
+              columnId: 'name',
+              direction: DSSortDirection.ascending,
+            ),
+            paginated: false,
+            showPagination: false,
           ),
-          paginated: false,
-          showPagination: false,
-        )),
+        ),
       );
 
       // Sort indicators are rendered as arrow_drop_up/down icons
@@ -215,25 +222,26 @@ void main() {
   group('DSDataTable pagination', () {
     testWidgets('shows pagination controls by default', (tester) async {
       await tester.pumpWidget(
-        wrap(DSDataTable(
-          columns: sampleColumns,
-          rows: sampleRows(),
-          pageSize: 10,
-        )),
+        wrap(
+          DSDataTable(columns: sampleColumns, rows: sampleRows(), pageSize: 10),
+        ),
       );
 
       expect(find.text('1–3 of 3'), findsOneWidget);
       expect(find.text('1 / 1'), findsOneWidget);
     });
 
-    testWidgets('hides pagination when showPagination is false',
-        (tester) async {
+    testWidgets('hides pagination when showPagination is false', (
+      tester,
+    ) async {
       await tester.pumpWidget(
-        wrap(DSDataTable(
-          columns: sampleColumns,
-          rows: sampleRows(),
-          showPagination: false,
-        )),
+        wrap(
+          DSDataTable(
+            columns: sampleColumns,
+            rows: sampleRows(),
+            showPagination: false,
+          ),
+        ),
       );
 
       expect(find.text('1–3 of 3'), findsNothing);
@@ -252,13 +260,15 @@ void main() {
       );
 
       await tester.pumpWidget(
-        wrap(DSDataTable(
-          columns: sampleColumns,
-          rows: rows,
-          currentPage: 0,
-          pageSize: 10,
-          onPageChanged: (page) => changedPage = page,
-        )),
+        wrap(
+          DSDataTable(
+            columns: sampleColumns,
+            rows: rows,
+            currentPage: 0,
+            pageSize: 10,
+            onPageChanged: (page) => changedPage = page,
+          ),
+        ),
       );
 
       // Tap the "next page" button
@@ -276,12 +286,14 @@ void main() {
       );
 
       await tester.pumpWidget(
-        wrap(DSDataTable(
-          columns: sampleColumns,
-          rows: rows,
-          currentPage: 0,
-          pageSize: 10,
-        )),
+        wrap(
+          DSDataTable(
+            columns: sampleColumns,
+            rows: rows,
+            currentPage: 0,
+            pageSize: 10,
+          ),
+        ),
       );
 
       // Previous page button should be disabled
@@ -297,13 +309,15 @@ void main() {
   group('DSDataTable row selection', () {
     testWidgets('renders checkboxes when selectable', (tester) async {
       await tester.pumpWidget(
-        wrap(DSDataTable(
-          columns: sampleColumns,
-          rows: sampleRows(),
-          selectable: true,
-          paginated: false,
-          showPagination: false,
-        )),
+        wrap(
+          DSDataTable(
+            columns: sampleColumns,
+            rows: sampleRows(),
+            selectable: true,
+            paginated: false,
+            showPagination: false,
+          ),
+        ),
       );
 
       // 3 row checkboxes + 1 select-all checkbox
@@ -314,14 +328,16 @@ void main() {
       final selectedIds = <String>{};
 
       await tester.pumpWidget(
-        wrap(DSDataTable(
-          columns: sampleColumns,
-          rows: sampleRows(),
-          selectable: true,
-          paginated: false,
-          showPagination: false,
-          onSelectionChanged: (ids) => selectedIds.addAll(ids),
-        )),
+        wrap(
+          DSDataTable(
+            columns: sampleColumns,
+            rows: sampleRows(),
+            selectable: true,
+            paginated: false,
+            showPagination: false,
+            onSelectionChanged: (ids) => selectedIds.addAll(ids),
+          ),
+        ),
       );
 
       // Tap the second row checkbox (after select-all)
@@ -337,8 +353,9 @@ void main() {
   // GROUP: Custom cell renderers
   // ---------------------------------------------------------------------------
   group('DSDataTable cell renderers', () {
-    testWidgets('renders operational state cell with dot and label',
-        (tester) async {
+    testWidgets('renders operational state cell with dot and label', (
+      tester,
+    ) async {
       final columns = <DSDataColumn>[
         const DSDataColumn(id: 'name', label: 'Name'),
         DSDataColumn(
@@ -354,19 +371,21 @@ void main() {
       ];
 
       final rows = [
-        DSDataRow(id: '1', cells: {
-          'name': 'Test Entity',
-          'state': DSOperationalState.running,
-        }),
+        DSDataRow(
+          id: '1',
+          cells: {'name': 'Test Entity', 'state': DSOperationalState.running},
+        ),
       ];
 
       await tester.pumpWidget(
-        wrap(DSDataTable(
-          columns: columns,
-          rows: rows,
-          paginated: false,
-          showPagination: false,
-        )),
+        wrap(
+          DSDataTable(
+            columns: columns,
+            rows: rows,
+            paginated: false,
+            showPagination: false,
+          ),
+        ),
       );
 
       expect(find.text('Test Entity'), findsOneWidget);
@@ -376,10 +395,12 @@ void main() {
 
     testWidgets('renders secret cell with masked value', (tester) async {
       await tester.pumpWidget(
-        wrap(const DSSecretCell(
-          maskedValue: '••••••abc1',
-          fullValue: 'sk-1234567890abcdef',
-        )),
+        wrap(
+          const DSSecretCell(
+            maskedValue: '••••••abc1',
+            fullValue: 'sk-1234567890abcdef',
+          ),
+        ),
       );
 
       expect(find.text('••••••abc1'), findsOneWidget);
@@ -389,10 +410,12 @@ void main() {
 
     testWidgets('secret cell reveals value on tap', (tester) async {
       await tester.pumpWidget(
-        wrap(const DSSecretCell(
-          maskedValue: '••••••abc1',
-          fullValue: 'sk-1234567890abcdef',
-        )),
+        wrap(
+          const DSSecretCell(
+            maskedValue: '••••••abc1',
+            fullValue: 'sk-1234567890abcdef',
+          ),
+        ),
       );
 
       // Tap the reveal icon
@@ -502,20 +525,21 @@ void main() {
       ];
 
       final rows = [
-        DSDataRow(id: '1', cells: {
-          'id': '001',
-          'name': 'Alpha',
-          'secret': 'hidden-value',
-        }),
+        DSDataRow(
+          id: '1',
+          cells: {'id': '001', 'name': 'Alpha', 'secret': 'hidden-value'},
+        ),
       ];
 
       await tester.pumpWidget(
-        wrap(DSDataTable(
-          columns: columns,
-          rows: rows,
-          paginated: false,
-          showPagination: false,
-        )),
+        wrap(
+          DSDataTable(
+            columns: columns,
+            rows: rows,
+            paginated: false,
+            showPagination: false,
+          ),
+        ),
       );
 
       expect(find.text('ID'), findsOneWidget);
@@ -534,16 +558,18 @@ void main() {
       ];
 
       await tester.pumpWidget(
-        wrap(DSDataTable(
-          columns: columns,
-          rows: sampleRows(),
-          paginated: false,
-          showPagination: false,
-          onToggleColumn: (id, vis) {
-            toggledColumn = id;
-            toggledVisible = vis;
-          },
-        )),
+        wrap(
+          DSDataTable(
+            columns: columns,
+            rows: sampleRows(),
+            paginated: false,
+            showPagination: false,
+            onToggleColumn: (id, vis) {
+              toggledColumn = id;
+              toggledVisible = vis;
+            },
+          ),
+        ),
       );
 
       // Column visibility menu button should exist
@@ -568,11 +594,7 @@ void main() {
     });
 
     test('row selection state is tracked', () {
-      const row = DSDataRow(
-        id: 'test',
-        cells: {'a': 'b'},
-        selected: true,
-      );
+      const row = DSDataRow(id: 'test', cells: {'a': 'b'}, selected: true);
 
       expect(row.selected, isTrue);
       expect(row.selectable, isTrue);
@@ -649,8 +671,9 @@ void main() {
       expect(newPage, 1);
     });
 
-    testWidgets('previous page button is disabled on first page',
-        (tester) async {
+    testWidgets('previous page button is disabled on first page', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(

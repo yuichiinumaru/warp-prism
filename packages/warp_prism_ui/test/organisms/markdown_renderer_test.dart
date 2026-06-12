@@ -21,9 +21,7 @@ void main() {
     testWidgets('renders "No content" when data is empty', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: DSMarkdownRenderer(data: ''),
-          ),
+          home: Scaffold(body: DSMarkdownRenderer(data: '')),
         ),
       );
 
@@ -36,9 +34,7 @@ void main() {
     testWidgets('renders h1 heading', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: DSMarkdownRenderer(data: '# Hello World'),
-          ),
+          home: Scaffold(body: DSMarkdownRenderer(data: '# Hello World')),
         ),
       );
 
@@ -48,9 +44,7 @@ void main() {
     testWidgets('renders h2 heading', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: DSMarkdownRenderer(data: '## Section Title'),
-          ),
+          home: Scaffold(body: DSMarkdownRenderer(data: '## Section Title')),
         ),
       );
 
@@ -60,9 +54,7 @@ void main() {
     testWidgets('renders h3 heading', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: DSMarkdownRenderer(data: '### Subsection'),
-          ),
+          home: Scaffold(body: DSMarkdownRenderer(data: '### Subsection')),
         ),
       );
 
@@ -72,9 +64,7 @@ void main() {
     testWidgets('renders h4 heading', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: DSMarkdownRenderer(data: '#### Level 4'),
-          ),
+          home: Scaffold(body: DSMarkdownRenderer(data: '#### Level 4')),
         ),
       );
 
@@ -116,9 +106,7 @@ void main() {
     testWidgets('renders inline code', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: DSMarkdownRenderer(data: 'Use `const` keyword'),
-          ),
+          home: Scaffold(body: DSMarkdownRenderer(data: 'Use `const` keyword')),
         ),
       );
 
@@ -147,9 +135,7 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: DSMarkdownRenderer(
-              data: '```dart\nvoid main() {}\n```',
-            ),
+            body: DSMarkdownRenderer(data: '```dart\nvoid main() {}\n```'),
           ),
         ),
       );
@@ -162,9 +148,7 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: DSMarkdownRenderer(
-              data: '```\nplain code block\n```',
-            ),
+            body: DSMarkdownRenderer(data: '```\nplain code block\n```'),
           ),
         ),
       );
@@ -194,11 +178,7 @@ void main() {
     testWidgets('renders bullet list with * prefix', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: DSMarkdownRenderer(
-              data: '* Alpha\n* Beta',
-            ),
-          ),
+          home: Scaffold(body: DSMarkdownRenderer(data: '* Alpha\n* Beta')),
         ),
       );
 
@@ -213,9 +193,7 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: DSMarkdownRenderer(
-              data: '1. First\n2. Second\n3. Third',
-            ),
+            body: DSMarkdownRenderer(data: '1. First\n2. Second\n3. Third'),
           ),
         ),
       );
@@ -234,11 +212,7 @@ void main() {
     testWidgets('renders blockquote text', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: DSMarkdownRenderer(
-              data: '> This is a quote',
-            ),
-          ),
+          home: Scaffold(body: DSMarkdownRenderer(data: '> This is a quote')),
         ),
       );
 
@@ -270,7 +244,8 @@ void main() {
         const MaterialApp(
           home: Scaffold(
             body: DSMarkdownRenderer(
-              data: '# Title\n'
+              data:
+                  '# Title\n'
                   '\n'
                   'Some **bold** and *italic* text with `code`.\n'
                   '\n'
@@ -305,9 +280,7 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: DSMarkdownRenderer(
-              data: '```dart\nvoid main() {',
-            ),
+            body: DSMarkdownRenderer(data: '```dart\nvoid main() {'),
           ),
         ),
       );
@@ -320,9 +293,7 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: DSMarkdownRenderer(
-              data: 'This has **unclosed bold',
-            ),
+            body: DSMarkdownRenderer(data: 'This has **unclosed bold'),
           ),
         ),
       );
@@ -338,9 +309,7 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: DSMarkdownRenderer(
-              data: 'Just a simple paragraph of text.',
-            ),
+            body: DSMarkdownRenderer(data: 'Just a simple paragraph of text.'),
           ),
         ),
       );
@@ -363,10 +332,7 @@ void main() {
       );
 
       // Multi-line paragraph should be joined
-      expect(
-        findTextInRichText('First line of paragraph'),
-        findsOneWidget,
-      );
+      expect(findTextInRichText('First line of paragraph'), findsOneWidget);
     });
   });
 }

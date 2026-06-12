@@ -1,6 +1,7 @@
 # Task 0016: Warp Prism DS Organisms and Templates Alignment
 
 > **Status**: `[x]` Done
+> **Review State**: Blocked — Flutter SDK not installed; validation commands cannot execute
 > **Priority**: 🔴 P0
 > **Type**: `feature`
 > **Origin**: `EPIC-01-warp-prism-atomic-design-system.md` candidate story `Organism API alignment with templates`

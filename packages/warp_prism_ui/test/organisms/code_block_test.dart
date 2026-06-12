@@ -14,9 +14,7 @@ void main() {
     testWidgets('renders source text as RichText', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: DSCodeBlock(source: 'hello world'),
-          ),
+          home: Scaffold(body: DSCodeBlock(source: 'hello world')),
         ),
       );
 
@@ -29,9 +27,7 @@ void main() {
     testWidgets('renders empty state when source is empty', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: DSCodeBlock(source: ''),
-          ),
+          home: Scaffold(body: DSCodeBlock(source: '')),
         ),
       );
 
@@ -46,9 +42,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: DSCodeBlock(source: '{"key": "value"}'),
-          ),
+          home: Scaffold(body: DSCodeBlock(source: '{"key": "value"}')),
         ),
       );
 
@@ -60,9 +54,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: DSCodeBlock(source: '[1, 2, 3]'),
-          ),
+          home: Scaffold(body: DSCodeBlock(source: '[1, 2, 3]')),
         ),
       );
 
@@ -99,9 +91,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: DSCodeBlock(
-              source: 'name: warp-prism\nversion: 0.1.0',
-            ),
+            body: DSCodeBlock(source: 'name: warp-prism\nversion: 0.1.0'),
           ),
         ),
       );
@@ -112,9 +102,7 @@ void main() {
     testWidgets('auto-detects Markdown from heading', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: DSCodeBlock(source: '# Hello\n\nSome text'),
-          ),
+          home: Scaffold(body: DSCodeBlock(source: '# Hello\n\nSome text')),
         ),
       );
 
@@ -124,9 +112,7 @@ void main() {
     testWidgets('shows Plain Text for unrecognized content', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: DSCodeBlock(source: 'just some random text'),
-          ),
+          home: Scaffold(body: DSCodeBlock(source: 'just some random text')),
         ),
       );
 
@@ -137,10 +123,7 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: DSCodeBlock(
-              source: 'just some text',
-              language: 'json',
-            ),
+            body: DSCodeBlock(source: 'just some text', language: 'json'),
           ),
         ),
       );
@@ -154,9 +137,7 @@ void main() {
     testWidgets('shows line numbers by default', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: DSCodeBlock(source: 'line1\nline2\nline3'),
-          ),
+          home: Scaffold(body: DSCodeBlock(source: 'line1\nline2\nline3')),
         ),
       );
 
@@ -171,10 +152,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: DSCodeBlock(
-              source: 'line1\nline2',
-              showLineNumbers: false,
-            ),
+            body: DSCodeBlock(source: 'line1\nline2', showLineNumbers: false),
           ),
         ),
       );
@@ -190,9 +168,7 @@ void main() {
     testWidgets('shows copy button by default', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: DSCodeBlock(source: 'copy me'),
-          ),
+          home: Scaffold(body: DSCodeBlock(source: 'copy me')),
         ),
       );
 
@@ -216,9 +192,7 @@ void main() {
     testWidgets('copy button exists and is tappable', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: DSCodeBlock(source: 'copy this code'),
-          ),
+          home: Scaffold(body: DSCodeBlock(source: 'copy this code')),
         ),
       );
 
@@ -303,17 +277,12 @@ void main() {
     testWidgets('wraps content in DSGlassPanelSimple', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: DSCodeBlock(source: 'styled code'),
-          ),
+          home: Scaffold(body: DSCodeBlock(source: 'styled code')),
         ),
       );
 
       // DSCodeBlock uses DSGlassPanelSimple for its container
-      expect(
-        find.byType(DSGlassPanelSimple),
-        findsWidgets,
-      );
+      expect(find.byType(DSGlassPanelSimple), findsWidgets);
     });
 
     // ---------------------------------------------------------------------------

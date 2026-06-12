@@ -6,7 +6,7 @@
 library;
 
 import 'package:flutter/foundation.dart';
-import '../../../data/models/task_contracts.dart';
+import 'package:warp_prism_observatory/data/models/task_contracts.dart';
 
 /// Immutable filter state for the Operate board.
 ///
@@ -102,7 +102,8 @@ class OperateFilters {
           query == other.query;
 
   @override
-  int get hashCode => Object.hash(lane, owner, skill, workflow, proofState, query);
+  int get hashCode =>
+      Object.hash(lane, owner, skill, workflow, proofState, query);
 
   @override
   String toString() =>

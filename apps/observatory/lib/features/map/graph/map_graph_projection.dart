@@ -7,7 +7,7 @@
 /// state coupling.
 library;
 
-import '../../../data/models/workspace_graph.dart';
+import 'package:warp_prism_observatory/data/models/workspace_graph.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
 import 'map_graph_mode.dart';
 
@@ -61,7 +61,9 @@ MapGraphProjection projectGraph({
   final allowedKinds = edgeKindsForMode(mode);
 
   // Filter edges to those matching the mode's rules.
-  final filteredEdges = edges.where((e) => allowedKinds.contains(e.kind)).toList();
+  final filteredEdges = edges
+      .where((e) => allowedKinds.contains(e.kind))
+      .toList();
 
   // Collect asset ids that participate in at least one edge.
   final connectedIds = <String>{};
@@ -74,12 +76,16 @@ MapGraphProjection projectGraph({
   final nodes = assets.map((a) => _assetToNode(a)).toList();
 
   // Build graph edges from the filtered set.
-  final graphEdges = filteredEdges.map((e) => GraphEdge(
-    sourceId: e.sourceId,
-    targetId: e.targetId,
-    label: e.kind.name,
-    edgeType: e.kind.name,
-  )).toList();
+  final graphEdges = filteredEdges
+      .map(
+        (e) => GraphEdge(
+          sourceId: e.sourceId,
+          targetId: e.targetId,
+          label: e.kind.name,
+          edgeType: e.kind.name,
+        ),
+      )
+      .toList();
 
   return MapGraphProjection(
     nodes: nodes,

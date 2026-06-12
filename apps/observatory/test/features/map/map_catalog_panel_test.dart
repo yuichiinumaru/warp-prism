@@ -39,7 +39,11 @@ List<WorkspaceAsset> _testAssets = [
     canonicality: Canonicality.parentCanonical,
     tags: ['review'],
     edges: [
-      WorkspaceEdge(sourceId: 'agent:reviewer', targetId: 'skill:review', kind: EdgeKind.uses),
+      WorkspaceEdge(
+        sourceId: 'agent:reviewer',
+        targetId: 'skill:review',
+        kind: EdgeKind.uses,
+      ),
     ],
   ),
   const WorkspaceAsset(
@@ -73,7 +77,11 @@ List<WorkspaceAsset> _testAssets = [
     canonicality: Canonicality.parentCanonical,
     tags: ['ci', 'automation'],
     edges: [
-      WorkspaceEdge(sourceId: 'workflow:ci', targetId: 'skill:harness', kind: EdgeKind.dependsOn),
+      WorkspaceEdge(
+        sourceId: 'workflow:ci',
+        targetId: 'skill:harness',
+        kind: EdgeKind.dependsOn,
+      ),
     ],
   ),
   const WorkspaceAsset(
@@ -90,7 +98,9 @@ List<WorkspaceAsset> _testAssets = [
 
 void main() {
   Widget wrapInApp(Widget child) {
-    return MaterialApp(home: Scaffold(body: SizedBox(width: 800, height: 600, child: child)));
+    return MaterialApp(
+      home: Scaffold(body: SizedBox(width: 800, height: 600, child: child)),
+    );
   }
 
   // ===========================================================================
@@ -104,7 +114,10 @@ void main() {
       );
 
       expect(state.assetsForTab.length, 2);
-      expect(state.assetsForTab.every((a) => a.kind == AssetKind.agent), isTrue);
+      expect(
+        state.assetsForTab.every((a) => a.kind == AssetKind.agent),
+        isTrue,
+      );
     });
 
     test('assetsForTab returns skills and subskills for skills subview', () {
@@ -129,7 +142,10 @@ void main() {
       );
 
       expect(state.assetsForTab.length, 2);
-      expect(state.assetsForTab.every((a) => a.kind == AssetKind.workflow), isTrue);
+      expect(
+        state.assetsForTab.every((a) => a.kind == AssetKind.workflow),
+        isTrue,
+      );
     });
 
     test('assetsForTab returns all assets for graph subview', () {
@@ -295,13 +311,15 @@ void main() {
           .where((a) => a.kind == AssetKind.agent)
           .toList();
 
-      await tester.pumpWidget(wrapInApp(
-        MapCatalogPanel(
-          activeTab: MapCatalogTab.agents,
-          filteredAssets: assets,
-          allAssets: assets,
+      await tester.pumpWidget(
+        wrapInApp(
+          MapCatalogPanel(
+            activeTab: MapCatalogTab.agents,
+            filteredAssets: assets,
+            allAssets: assets,
+          ),
         ),
-      ));
+      );
 
       expect(find.byType(DSSearchBar), findsOneWidget);
     });
@@ -311,13 +329,15 @@ void main() {
           .where((a) => a.kind == AssetKind.agent)
           .toList();
 
-      await tester.pumpWidget(wrapInApp(
-        MapCatalogPanel(
-          activeTab: MapCatalogTab.agents,
-          filteredAssets: assets,
-          allAssets: assets,
+      await tester.pumpWidget(
+        wrapInApp(
+          MapCatalogPanel(
+            activeTab: MapCatalogTab.agents,
+            filteredAssets: assets,
+            allAssets: assets,
+          ),
         ),
-      ));
+      );
 
       expect(find.byType(DSAssetCard), findsNWidgets(2));
     });
@@ -327,32 +347,37 @@ void main() {
           .where((a) => a.kind == AssetKind.agent)
           .toList();
 
-      await tester.pumpWidget(wrapInApp(
-        MapCatalogPanel(
-          activeTab: MapCatalogTab.agents,
-          filteredAssets: assets,
-          allAssets: assets,
+      await tester.pumpWidget(
+        wrapInApp(
+          MapCatalogPanel(
+            activeTab: MapCatalogTab.agents,
+            filteredAssets: assets,
+            allAssets: assets,
+          ),
         ),
-      ));
+      );
 
       expect(find.text('2 results'), findsOneWidget);
     });
 
-    testWidgets('renders no-results state when filteredAssets is empty',
-        (tester) async {
-      await tester.pumpWidget(wrapInApp(
-        MapCatalogPanel(
-          activeTab: MapCatalogTab.agents,
-          filteredAssets: const [],
-          allAssets: _testAssets
-              .where((a) => a.kind == AssetKind.agent)
-              .toList(),
-          query: 'nonexistent',
+    testWidgets('renders no-results state when filteredAssets is empty', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        wrapInApp(
+          MapCatalogPanel(
+            activeTab: MapCatalogTab.agents,
+            filteredAssets: const [],
+            allAssets: _testAssets
+                .where((a) => a.kind == AssetKind.agent)
+                .toList(),
+            query: 'nonexistent',
+          ),
         ),
-      ));
+      );
 
       expect(find.byType(MapNoResultsState), findsOneWidget);
-      expect(find.text('No results for "nonexistent"'), findsOneWidget);
+      expect(find.text('No results for "nonexistent"'), findsWidgets);
     });
 
     testWidgets('renders filter chips when tags available', (tester) async {
@@ -360,13 +385,15 @@ void main() {
           .where((a) => a.kind == AssetKind.agent)
           .toList();
 
-      await tester.pumpWidget(wrapInApp(
-        MapCatalogPanel(
-          activeTab: MapCatalogTab.agents,
-          filteredAssets: assets,
-          allAssets: assets,
+      await tester.pumpWidget(
+        wrapInApp(
+          MapCatalogPanel(
+            activeTab: MapCatalogTab.agents,
+            filteredAssets: assets,
+            allAssets: assets,
+          ),
         ),
-      ));
+      );
 
       expect(find.byType(DSFilterChipGroup), findsOneWidget);
     });
@@ -374,13 +401,15 @@ void main() {
     testWidgets('renders singular result count for 1 result', (tester) async {
       final assets = [_testAssets.first]; // 1 agent
 
-      await tester.pumpWidget(wrapInApp(
-        MapCatalogPanel(
-          activeTab: MapCatalogTab.agents,
-          filteredAssets: assets,
-          allAssets: assets,
+      await tester.pumpWidget(
+        wrapInApp(
+          MapCatalogPanel(
+            activeTab: MapCatalogTab.agents,
+            filteredAssets: assets,
+            allAssets: assets,
+          ),
         ),
-      ));
+      );
 
       expect(find.text('1 result'), findsOneWidget);
     });
@@ -391,50 +420,54 @@ void main() {
   // ===========================================================================
   group('MapNoResultsState widget', () {
     testWidgets('shows message for query with no results', (tester) async {
-      await tester.pumpWidget(wrapInApp(
-        const MapNoResultsState(query: 'nonexistent'),
-      ));
+      await tester.pumpWidget(
+        wrapInApp(const MapNoResultsState(query: 'nonexistent')),
+      );
 
       expect(find.text('No results for "nonexistent"'), findsOneWidget);
       expect(find.text('Clear filters'), findsOneWidget);
     });
 
     testWidgets('shows message for filters with no results', (tester) async {
-      await tester.pumpWidget(wrapInApp(
-        const MapNoResultsState(activeFilters: {'tag:core'}),
-      ));
+      await tester.pumpWidget(
+        wrapInApp(const MapNoResultsState(activeFilters: {'tag:core'})),
+      );
 
       expect(find.text('No matching assets'), findsOneWidget);
     });
 
     testWidgets('shows message for combined query and filters', (tester) async {
-      await tester.pumpWidget(wrapInApp(
-        const MapNoResultsState(
-          query: 'test',
-          activeFilters: {'can:canonical'},
+      await tester.pumpWidget(
+        wrapInApp(
+          const MapNoResultsState(
+            query: 'test',
+            activeFilters: {'can:canonical'},
+          ),
         ),
-      ));
+      );
 
       expect(find.text('No results for "test"'), findsOneWidget);
     });
 
     testWidgets('clear filters callback fires', (tester) async {
       var cleared = false;
-      await tester.pumpWidget(wrapInApp(
-        MapNoResultsState(
-          query: 'test',
-          onClearFilters: () => cleared = true,
+      await tester.pumpWidget(
+        wrapInApp(
+          MapNoResultsState(
+            query: 'test',
+            onClearFilters: () => cleared = true,
+          ),
         ),
-      ));
+      );
 
       await tester.tap(find.text('Clear filters'));
       expect(cleared, isTrue);
     });
 
-    testWidgets('shows generic message when no query or filters', (tester) async {
-      await tester.pumpWidget(wrapInApp(
-        const MapNoResultsState(),
-      ));
+    testWidgets('shows generic message when no query or filters', (
+      tester,
+    ) async {
+      await tester.pumpWidget(wrapInApp(const MapNoResultsState()));
 
       expect(find.text('No assets to display'), findsOneWidget);
     });

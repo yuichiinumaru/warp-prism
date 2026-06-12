@@ -6,7 +6,7 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../data/models/workspace_graph.dart';
+import 'package:warp_prism_observatory/data/models/workspace_graph.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
 import '../workspace_snapshot_provider.dart';
 
@@ -37,7 +37,9 @@ class AgentListPanel extends ConsumerWidget {
           child: DSAssetCard(
             name: agent.name,
             kind: agent.kind.name,
-            description: agent.description.isNotEmpty ? agent.description : null,
+            description: agent.description.isNotEmpty
+                ? agent.description
+                : null,
             canonicality: agent.canonicality.name,
             tags: agent.tags.isNotEmpty ? agent.tags : null,
             edgeCount: agent.edges.length,

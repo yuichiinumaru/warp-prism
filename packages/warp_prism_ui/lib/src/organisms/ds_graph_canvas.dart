@@ -45,11 +45,11 @@ class GraphNode {
     this.status,
     this.metadata = const {},
     Offset? position,
-  })  : position = position ?? Offset.zero,
-        velocity = Offset.zero,
-        isDragging = false,
-        isHovered = false,
-        isSelected = false;
+  }) : position = position ?? Offset.zero,
+       velocity = Offset.zero,
+       isDragging = false,
+       isHovered = false,
+       isSelected = false;
 
   GraphNode copyWith({
     String? id,
@@ -64,13 +64,13 @@ class GraphNode {
     bool? isSelected,
   }) {
     return GraphNode(
-      id: id ?? this.id,
-      label: label ?? this.label,
-      type: type ?? this.type,
-      status: status ?? this.status,
-      metadata: metadata ?? this.metadata,
-      position: position ?? this.position,
-    )
+        id: id ?? this.id,
+        label: label ?? this.label,
+        type: type ?? this.type,
+        status: status ?? this.status,
+        metadata: metadata ?? this.metadata,
+        position: position ?? this.position,
+      )
       ..velocity = velocity ?? this.velocity
       ..isDragging = isDragging ?? this.isDragging
       ..isHovered = isHovered ?? this.isHovered

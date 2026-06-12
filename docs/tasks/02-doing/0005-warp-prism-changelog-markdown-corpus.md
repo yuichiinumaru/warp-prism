@@ -1,6 +1,7 @@
 # Task 0005: Warp Prism Changelog Markdown Corpus
 
 > **Status**: `[x]` Done
+> **Review State**: Builder Done — implementation evidence missing; needs verification
 > **Priority**: 🔴 P0
 > **Type**: `feature`
 > **Origin**: EPIC 02 — Warp Prism Mock Workspace Corpus

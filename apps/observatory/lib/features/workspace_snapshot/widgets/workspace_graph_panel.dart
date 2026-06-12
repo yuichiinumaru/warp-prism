@@ -22,18 +22,26 @@ class WorkspaceGraphPanel extends ConsumerWidget {
     final projection = ref.watch(graphProjectionProvider);
 
     // Convert provider GraphNode/GraphEdge to DS GraphNode/GraphEdge
-    final dsNodes = projection.nodes.map((n) => GraphNode(
-      id: n.id,
-      label: n.label,
-      type: n.type,
-      status: n.status,
-    )).toList();
+    final dsNodes = projection.nodes
+        .map(
+          (n) => GraphNode(
+            id: n.id,
+            label: n.label,
+            type: n.type,
+            status: n.status,
+          ),
+        )
+        .toList();
 
-    final dsEdges = projection.edges.map((e) => GraphEdge(
-      sourceId: e.sourceId,
-      targetId: e.targetId,
-      edgeType: e.edgeType,
-    )).toList();
+    final dsEdges = projection.edges
+        .map(
+          (e) => GraphEdge(
+            sourceId: e.sourceId,
+            targetId: e.targetId,
+            edgeType: e.edgeType,
+          ),
+        )
+        .toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

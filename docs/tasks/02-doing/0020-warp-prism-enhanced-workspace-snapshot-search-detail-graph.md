@@ -1,6 +1,7 @@
 # Task 0020: Warp Prism Enhanced Workspace Snapshot — Search, Detail, Graph
 
 > **Status**: `[x]` Done
+> **Review State**: Builder Done — completion evidence filled; no gate verification recorded
 > **Priority**: 🟡 P1
 > **Type**: `feature`
 > **Origin**: `.agents/user/warp-prism2.txt` research + user request for

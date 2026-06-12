@@ -65,7 +65,8 @@ class _RegistryPageState extends State<RegistryPage>
     if (_loading) {
       return const PrismStateSurface.loading(
         title: 'Loading registry...',
-        subtitle: 'Fetching capabilities, providers, and workflows from fixtures',
+        subtitle:
+            'Fetching capabilities, providers, and workflows from fixtures',
       );
     }
 
@@ -88,12 +89,12 @@ class _RegistryPageState extends State<RegistryPage>
         children: [
           // Tab bar
           Container(
-            color: DSColors.obsidianBase,
+            color: PrismColors.obsidianBase,
             child: TabBar(
               controller: _tabController,
-              labelColor: DSColors.accentCyan,
-              unselectedLabelColor: DSColors.textTertiary,
-              indicatorColor: DSColors.accentCyan,
+              labelColor: PrismColors.accentCyan,
+              unselectedLabelColor: PrismColors.textTertiary,
+              indicatorColor: PrismColors.accentCyan,
               tabs: [
                 Tab(
                   child: Row(
@@ -185,8 +186,12 @@ class _RegistryPageState extends State<RegistryPage>
           id: skill.id,
           cells: {
             'name': skill.name,
-            'triggers': skill.triggers.isEmpty ? '(none)' : skill.triggers.join(', '),
-            'subSkills': skill.subSkills.isEmpty ? '—' : skill.subSkills.join(', '),
+            'triggers': skill.triggers.isEmpty
+                ? '(none)'
+                : skill.triggers.join(', '),
+            'subSkills': skill.subSkills.isEmpty
+                ? '—'
+                : skill.subSkills.join(', '),
             'canonicality': skill.canonicality,
           },
           onTap: () {},
@@ -213,7 +218,9 @@ class _RegistryPageState extends State<RegistryPage>
             'kind': workflow.kind,
             'skills': workflow.skills.join(', '),
             'agents': workflow.agents.join(', '),
-            'triggers': workflow.triggers.isEmpty ? '(none)' : workflow.triggers.join(', '),
+            'triggers': workflow.triggers.isEmpty
+                ? '(none)'
+                : workflow.triggers.join(', '),
           },
           onTap: () {},
         );

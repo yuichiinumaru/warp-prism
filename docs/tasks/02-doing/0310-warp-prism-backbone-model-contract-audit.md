@@ -1,6 +1,7 @@
 # Task 0310: Warp-Prism Backbone Model Contract Audit
 
 > **Status**: `[x]` Done
+> **Review State**: Blocked — Flutter SDK not installed; validation commands cannot execute
 > **Priority**: 🔴 P0
 > **Type**: `feature`
 > **Origin**: EPIC 03 promotion from `warp-prism/docs/tasks/00-planning/EPIC-03-warp-prism-data-layer-graph-backbone.md`

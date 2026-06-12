@@ -1,6 +1,7 @@
 # Task 1107: Warp Prism Melos Monorepo Migration
 
 > **Status**: `[x]` Completed
+> **Review State**: Package Gate Failed — monorepo migration implemented; Melos/Flutter gate blocked
 > **Priority**: 🔴 P0
 > **Type**: `feature` | `remediation`
 > **Origin**: Task 1104 architecture plan.

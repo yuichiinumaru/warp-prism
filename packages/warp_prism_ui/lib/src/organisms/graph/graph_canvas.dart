@@ -196,8 +196,7 @@ class _GraphCanvasState extends State<GraphCanvas>
       return DSStateSurface.empty(
         icon: DSIcons.graph,
         title: 'No assets to display',
-        subtitle:
-            'The workspace graph will appear here once assets are loaded',
+        subtitle: 'The workspace graph will appear here once assets are loaded',
       );
     }
 
@@ -223,13 +222,12 @@ class _GraphCanvasState extends State<GraphCanvas>
           child: Stack(
             children: widget.model.nodes.map((node) {
               final screenPos =
-                  ((_positions[node.id] ?? Offset.zero) * _scale) +
-                      _panOffset;
+                  ((_positions[node.id] ?? Offset.zero) * _scale) + _panOffset;
               return Positioned(
-                left: screenPos.dx +
-                    (MediaQuery.of(context).size.width / 2) -
-                    30,
-                top: screenPos.dy +
+                left:
+                    screenPos.dx + (MediaQuery.of(context).size.width / 2) - 30,
+                top:
+                    screenPos.dy +
                     (MediaQuery.of(context).size.height / 2) -
                     30,
                 child: _buildNode(node),
@@ -267,10 +265,7 @@ class _GraphCanvasState extends State<GraphCanvas>
         onPanEnd: (_) {
           _draggingNodes.remove(node.id);
           final pos = _positions[node.id] ?? Offset.zero;
-          widget.onNodeDragEnd?.call(
-            node.copyWith(position: pos),
-            pos,
-          );
+          widget.onNodeDragEnd?.call(node.copyWith(position: pos), pos);
         },
         child: AnimatedContainer(
           duration: DSMotion.fast,
@@ -285,8 +280,8 @@ class _GraphCanvasState extends State<GraphCanvas>
               color: isSelected
                   ? color
                   : isHovered
-                      ? color.withOpacity(0.6)
-                      : DSColors.borderSubtle,
+                  ? color.withOpacity(0.6)
+                  : DSColors.borderSubtle,
               width: isSelected ? 2 : 1,
             ),
             boxShadow: [

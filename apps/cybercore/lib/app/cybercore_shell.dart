@@ -8,7 +8,7 @@ import 'package:warp_prism_ui/warp_prism_ui.dart';
 /// navigation, topbar, and content area. Used by [GoRouter]'s
 /// [StatefulShellRoute] to wrap all product pages in consistent chrome.
 ///
-/// Responsive layout contract (references [DSBreakpoints]):
+/// Responsive layout contract (references [PrismBreakpoints]):
 ///   >= 1200px (wide):     full expanded sidebar + topbar + content
 ///   800-1199px (medium):  full expanded sidebar + topbar + content
 ///   600-799px (narrow):   collapsed sidebar + topbar + content
@@ -24,31 +24,31 @@ class CyberCoreShell extends StatelessWidget {
       id: 'dashboard',
       label: 'Dashboard',
       icon: Icons.dashboard_outlined,
-      color: DSColors.accentCyan,
+      color: PrismColors.accentCyan,
     ),
     PrismSidebarItem(
       id: 'registry',
       label: 'Registry',
       icon: Icons.hub_outlined,
-      color: DSColors.accentViolet,
+      color: PrismColors.accentViolet,
     ),
     PrismSidebarItem(
       id: 'tasks',
       label: 'Tasks',
       icon: Icons.play_circle_outline,
-      color: DSColors.accentGold,
+      color: PrismColors.accentGold,
     ),
     PrismSidebarItem(
       id: 'audit',
       label: 'Audit',
       icon: Icons.history_outlined,
-      color: DSColors.accentCyan,
+      color: PrismColors.accentCyan,
     ),
     PrismSidebarItem(
       id: 'governance',
       label: 'Governance',
       icon: Icons.gavel_outlined,
-      color: DSColors.statusWarning,
+      color: PrismColors.statusWarning,
     ),
   ];
 
@@ -94,7 +94,7 @@ class CyberCoreShell extends StatelessWidget {
   Widget build(BuildContext context) {
     final currentIndex = navigationShell.currentIndex;
     final screenWidth = MediaQuery.sizeOf(context).width;
-    final isCompact = screenWidth < DSBreakpoints.narrow;
+    final isCompact = screenWidth < PrismBreakpoints.narrow;
 
     if (isCompact) {
       return _CompactShell(
@@ -122,9 +122,7 @@ class CyberCoreShell extends StatelessWidget {
         expanded: false,
         header: const _CyberCoreHeader(expanded: false),
       ),
-      topbar: PrismTopbar(
-        title: _titleByIndex[currentIndex] ?? 'CyberCore',
-      ),
+      topbar: PrismTopbar(title: _titleByIndex[currentIndex] ?? 'CyberCore'),
       content: navigationShell,
       showInspector: false,
     );
@@ -143,9 +141,9 @@ class _CyberCoreHeader extends StatelessWidget {
       label: 'CyberCore logo and title',
       header: true,
       child: Container(
-        height: DSSpacing.topbarHeight,
+        height: PrismSpacing.topbarHeight,
         padding: EdgeInsets.symmetric(
-          horizontal: expanded ? DSSpacing.lg : DSSpacing.sm,
+          horizontal: expanded ? PrismSpacing.lg : PrismSpacing.sm,
         ),
         child: Row(
           children: [
@@ -156,23 +154,20 @@ class _CyberCoreHeader extends StatelessWidget {
                 gradient: const LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [
-                    DSColors.accentViolet,
-                    DSColors.accentCyan,
-                  ],
+                  colors: [PrismColors.accentViolet, PrismColors.accentCyan],
                 ),
-                borderRadius: BorderRadius.circular(DSRadii.sm),
+                borderRadius: BorderRadius.circular(PrismRadii.sm),
               ),
               child: const Center(
                 child: PrismIcon(
                   Icons.shield_outlined,
-                  color: DSColors.white,
+                  color: PrismColors.white,
                   size: 18,
                 ),
               ),
             ),
             if (expanded) ...[
-              const SizedBox(width: DSSpacing.sm),
+              const SizedBox(width: PrismSpacing.sm),
               const Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -180,11 +175,11 @@ class _CyberCoreHeader extends StatelessWidget {
                   children: [
                     PrismText.labelLarge(
                       'CyberCore',
-                      color: DSColors.textPrimary,
+                      color: PrismColors.textPrimary,
                     ),
                     PrismText.labelSmall(
                       'Read-Only Observatory',
-                      color: DSColors.textTertiary,
+                      color: PrismColors.textTertiary,
                     ),
                   ],
                 ),
@@ -216,18 +211,15 @@ class _CompactShell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: DSColors.obsidianDeep,
+      backgroundColor: PrismColors.obsidianDeep,
       appBar: AppBar(
         title: PrismText.headingMedium(title),
-        backgroundColor: DSColors.obsidianBase,
-        foregroundColor: DSColors.textPrimary,
+        backgroundColor: PrismColors.obsidianBase,
+        foregroundColor: PrismColors.textPrimary,
         elevation: 0,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
-          child: Container(
-            height: 1,
-            color: DSColors.borderSubtle,
-          ),
+          child: Container(height: 1, color: PrismColors.borderSubtle),
         ),
       ),
       body: content,
@@ -235,11 +227,11 @@ class _CompactShell extends StatelessWidget {
         currentIndex: currentIndex,
         onTap: onBottomNavTap,
         type: BottomNavigationBarType.fixed,
-        backgroundColor: DSColors.obsidianBase,
-        selectedItemColor: DSColors.accentCyan,
-        unselectedItemColor: DSColors.textTertiary,
-        selectedLabelStyle: DSTypography.labelSmall,
-        unselectedLabelStyle: DSTypography.labelSmall,
+        backgroundColor: PrismColors.obsidianBase,
+        selectedItemColor: PrismColors.accentCyan,
+        unselectedItemColor: PrismColors.textTertiary,
+        selectedLabelStyle: PrismTypography.labelSmall,
+        unselectedLabelStyle: PrismTypography.labelSmall,
         items: bottomNavItems,
       ),
     );

@@ -19,11 +19,7 @@ class WorkflowDetailView extends StatelessWidget {
   final AssetDetailDescriptor descriptor;
   final VoidCallback? onClose;
 
-  const WorkflowDetailView({
-    super.key,
-    required this.descriptor,
-    this.onClose,
-  });
+  const WorkflowDetailView({super.key, required this.descriptor, this.onClose});
 
   @override
   Widget build(BuildContext context) {

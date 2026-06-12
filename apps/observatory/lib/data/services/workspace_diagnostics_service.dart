@@ -65,8 +65,7 @@ class DiagnosticsReport {
   }
 
   @override
-  String toString() =>
-      'DiagnosticsReport(${diagnostics.length} diagnostics)';
+  String toString() => 'DiagnosticsReport(${diagnostics.length} diagnostics)';
 }
 
 /// Computes governance diagnostics from a [WorkspaceGraphResult].
@@ -127,19 +126,22 @@ class WorkspaceDiagnosticsService {
 
     for (final asset in graph.assetsById.values) {
       if (!connected.contains(asset.id)) {
-        diagnostics.add(GovernanceDiagnostic(
-          assetId: asset.id,
-          severity: DiagnosticSeverity.warning,
-          category: DiagnosticCategory.orphanAsset,
-          message: 'Asset "${asset.name}" (${asset.kind.name}) has no '
-              'incoming or outgoing edges — it is isolated in the graph.',
-          context: {
-            'assetKind': asset.kind.name,
-            'assetPath': asset.path,
-            'assetName': asset.name,
-          },
-          computedAt: now,
-        ));
+        diagnostics.add(
+          GovernanceDiagnostic(
+            assetId: asset.id,
+            severity: DiagnosticSeverity.warning,
+            category: DiagnosticCategory.orphanAsset,
+            message:
+                'Asset "${asset.name}" (${asset.kind.name}) has no '
+                'incoming or outgoing edges — it is isolated in the graph.',
+            context: {
+              'assetKind': asset.kind.name,
+              'assetPath': asset.path,
+              'assetName': asset.name,
+            },
+            computedAt: now,
+          ),
+        );
       }
     }
   }
@@ -161,22 +163,25 @@ class WorkspaceDiagnosticsService {
 
       if (!graph.assetsById.containsKey(edge.targetId)) {
         final source = graph.getAsset(edge.sourceId);
-        diagnostics.add(GovernanceDiagnostic(
-          assetId: edge.sourceId,
-          severity: DiagnosticSeverity.error,
-          category: DiagnosticCategory.staleReference,
-          message: 'Asset "${source?.name ?? edge.sourceId}" references '
-              '"${edge.targetId}" via ${edge.kind.name}, but the target '
-              'does not exist in the graph.',
-          context: {
-            'sourceId': edge.sourceId,
-            'targetId': edge.targetId,
-            'edgeKind': edge.kind.name,
-            'sourceName': source?.name,
-            'sourcePath': source?.path,
-          },
-          computedAt: now,
-        ));
+        diagnostics.add(
+          GovernanceDiagnostic(
+            assetId: edge.sourceId,
+            severity: DiagnosticSeverity.error,
+            category: DiagnosticCategory.staleReference,
+            message:
+                'Asset "${source?.name ?? edge.sourceId}" references '
+                '"${edge.targetId}" via ${edge.kind.name}, but the target '
+                'does not exist in the graph.',
+            context: {
+              'sourceId': edge.sourceId,
+              'targetId': edge.targetId,
+              'edgeKind': edge.kind.name,
+              'sourceName': source?.name,
+              'sourcePath': source?.path,
+            },
+            computedAt: now,
+          ),
+        );
       }
     }
   }
@@ -203,37 +208,43 @@ class WorkspaceDiagnosticsService {
       }
 
       if (meta.proofState == ProofState.none) {
-        diagnostics.add(GovernanceDiagnostic(
-          assetId: task.id,
-          severity: DiagnosticSeverity.error,
-          category: DiagnosticCategory.proofGap,
-          message: 'Task "${meta.title}" is in ${meta.lane.directoryPrefix} '
-              'but has no proof or evidence.',
-          context: {
-            'taskId': meta.id,
-            'taskTitle': meta.title,
-            'taskLane': meta.lane.directoryPrefix,
-            'proofState': meta.proofState.name,
-            'taskPath': task.path,
-          },
-          computedAt: now,
-        ));
+        diagnostics.add(
+          GovernanceDiagnostic(
+            assetId: task.id,
+            severity: DiagnosticSeverity.error,
+            category: DiagnosticCategory.proofGap,
+            message:
+                'Task "${meta.title}" is in ${meta.lane.directoryPrefix} '
+                'but has no proof or evidence.',
+            context: {
+              'taskId': meta.id,
+              'taskTitle': meta.title,
+              'taskLane': meta.lane.directoryPrefix,
+              'proofState': meta.proofState.name,
+              'taskPath': task.path,
+            },
+            computedAt: now,
+          ),
+        );
       } else if (meta.proofState == ProofState.partial) {
-        diagnostics.add(GovernanceDiagnostic(
-          assetId: task.id,
-          severity: DiagnosticSeverity.warning,
-          category: DiagnosticCategory.proofGap,
-          message: 'Task "${meta.title}" is in ${meta.lane.directoryPrefix} '
-              'but only has partial proof.',
-          context: {
-            'taskId': meta.id,
-            'taskTitle': meta.title,
-            'taskLane': meta.lane.directoryPrefix,
-            'proofState': meta.proofState.name,
-            'taskPath': task.path,
-          },
-          computedAt: now,
-        ));
+        diagnostics.add(
+          GovernanceDiagnostic(
+            assetId: task.id,
+            severity: DiagnosticSeverity.warning,
+            category: DiagnosticCategory.proofGap,
+            message:
+                'Task "${meta.title}" is in ${meta.lane.directoryPrefix} '
+                'but only has partial proof.',
+            context: {
+              'taskId': meta.id,
+              'taskTitle': meta.title,
+              'taskLane': meta.lane.directoryPrefix,
+              'proofState': meta.proofState.name,
+              'taskPath': task.path,
+            },
+            computedAt: now,
+          ),
+        );
       }
     }
   }
@@ -254,32 +265,34 @@ class WorkspaceDiagnosticsService {
     final incomingCounts = <String, int>{};
     for (final edge in graph.edges) {
       if (edge.sourceId == edge.targetId) continue;
-      incomingCounts[edge.targetId] =
-          (incomingCounts[edge.targetId] ?? 0) + 1;
+      incomingCounts[edge.targetId] = (incomingCounts[edge.targetId] ?? 0) + 1;
     }
 
     for (final entry in incomingCounts.entries) {
       if (entry.value >= fanInThreshold) {
         final asset = graph.getAsset(entry.key);
-        diagnostics.add(GovernanceDiagnostic(
-          assetId: entry.key,
-          severity: entry.value >= fanInThreshold * 2
-              ? DiagnosticSeverity.error
-              : DiagnosticSeverity.warning,
-          category: DiagnosticCategory.brokenEdge,
-          message: 'Asset "${asset?.name ?? entry.key}" has ${entry.value} '
-              'incoming edges (fan-in ≥ $fanInThreshold). High fan-in may '
-              'indicate a hotspot or over-centralized dependency.',
-          context: {
-            'targetId': entry.key,
-            'incomingEdgeCount': entry.value,
-            'threshold': fanInThreshold,
-            'assetName': asset?.name,
-            'assetKind': asset?.kind.name,
-            'assetPath': asset?.path,
-          },
-          computedAt: now,
-        ));
+        diagnostics.add(
+          GovernanceDiagnostic(
+            assetId: entry.key,
+            severity: entry.value >= fanInThreshold * 2
+                ? DiagnosticSeverity.error
+                : DiagnosticSeverity.warning,
+            category: DiagnosticCategory.brokenEdge,
+            message:
+                'Asset "${asset?.name ?? entry.key}" has ${entry.value} '
+                'incoming edges (fan-in ≥ $fanInThreshold). High fan-in may '
+                'indicate a hotspot or over-centralized dependency.',
+            context: {
+              'targetId': entry.key,
+              'incomingEdgeCount': entry.value,
+              'threshold': fanInThreshold,
+              'assetName': asset?.name,
+              'assetKind': asset?.kind.name,
+              'assetPath': asset?.path,
+            },
+            computedAt: now,
+          ),
+        );
       }
     }
   }

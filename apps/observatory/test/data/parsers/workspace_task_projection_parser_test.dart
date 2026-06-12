@@ -231,8 +231,11 @@ grep -l "^name:" assets/mock_workspace/.agents/agents/*.md | wc -l
 
   group('WorkspaceTaskProjectionParser — single task', () {
     test('parses planning lane task (T001)', () {
-      final task = parser.parseTask(planningFixture,
-          filePath: 'docs/tasks/00-planning/T001-plan-workspace-onboarding-epic.md');
+      final task = parser.parseTask(
+        planningFixture,
+        filePath:
+            'docs/tasks/00-planning/T001-plan-workspace-onboarding-epic.md',
+      );
 
       expect(task.id, 'T001');
       expect(task.title, 'Plan workspace onboarding epic');
@@ -241,8 +244,14 @@ grep -l "^name:" assets/mock_workspace/.agents/agents/*.md | wc -l
       expect(task.owner, 'architect-orchestrator');
       expect(task.proofState, ProofState.none);
       expect(task.reviewScore, isNull);
-      expect(task.linkedSkills, ['project-management', 'development-methodologies']);
-      expect(task.linkedWorkflows, ['architect-orchestration', 'plan-evidence-to-tasks']);
+      expect(task.linkedSkills, [
+        'project-management',
+        'development-methodologies',
+      ]);
+      expect(task.linkedWorkflows, [
+        'architect-orchestration',
+        'plan-evidence-to-tasks',
+      ]);
       expect(task.dependsOn, isEmpty);
       expect(task.dependencyCount, 0);
       expect(task.verificationCommands, hasLength(1));
@@ -253,8 +262,10 @@ grep -l "^name:" assets/mock_workspace/.agents/agents/*.md | wc -l
     });
 
     test('parses open lane task (T006)', () {
-      final task = parser.parseTask(openFixture,
-          filePath: 'docs/tasks/01-open/T006-parse-yaml-workspace-manifest.md');
+      final task = parser.parseTask(
+        openFixture,
+        filePath: 'docs/tasks/01-open/T006-parse-yaml-workspace-manifest.md',
+      );
 
       expect(task.id, 'T006');
       expect(task.lane, TaskLane.open);
@@ -266,8 +277,10 @@ grep -l "^name:" assets/mock_workspace/.agents/agents/*.md | wc -l
     });
 
     test('parses doing lane task (T009)', () {
-      final task = parser.parseTask(doingFixture,
-          filePath: 'docs/tasks/02-doing/T009-implement-task-lane-board-ui.md');
+      final task = parser.parseTask(
+        doingFixture,
+        filePath: 'docs/tasks/02-doing/T009-implement-task-lane-board-ui.md',
+      );
 
       expect(task.id, 'T009');
       expect(task.lane, TaskLane.doing);
@@ -282,8 +295,11 @@ grep -l "^name:" assets/mock_workspace/.agents/agents/*.md | wc -l
     });
 
     test('parses review lane task (T015)', () {
-      final task = parser.parseTask(reviewFixture,
-          filePath: 'docs/tasks/03-review/T015-governance-audit-task-dependency-chains.md');
+      final task = parser.parseTask(
+        reviewFixture,
+        filePath:
+            'docs/tasks/03-review/T015-governance-audit-task-dependency-chains.md',
+      );
 
       expect(task.id, 'T015');
       expect(task.lane, TaskLane.review);
@@ -297,8 +313,11 @@ grep -l "^name:" assets/mock_workspace/.agents/agents/*.md | wc -l
     });
 
     test('parses completed lane task (T018)', () {
-      final task = parser.parseTask(completedFixture,
-          filePath: 'docs/tasks/04-completed/T018-completed-mock-agent-corpus-creation.md');
+      final task = parser.parseTask(
+        completedFixture,
+        filePath:
+            'docs/tasks/04-completed/T018-completed-mock-agent-corpus-creation.md',
+      );
 
       expect(task.id, 'T018');
       expect(task.lane, TaskLane.completed);
@@ -327,8 +346,10 @@ updated: "2026-01-01"
 ---
 # Test''';
 
-      final task = parser.parseTask(content,
-          filePath: 'docs/tasks/03-review/T999-test.md');
+      final task = parser.parseTask(
+        content,
+        filePath: 'docs/tasks/03-review/T999-test.md',
+      );
       expect(task.lane, TaskLane.review);
     });
 
@@ -344,8 +365,10 @@ updated: "2026-01-01"
 ---
 # Test''';
 
-      final task = parser.parseTask(content,
-          filePath: 'docs/tasks/01-open/T999-test.md');
+      final task = parser.parseTask(
+        content,
+        filePath: 'docs/tasks/01-open/T999-test.md',
+      );
       expect(task.lane, TaskLane.completed);
     });
 
@@ -360,8 +383,10 @@ updated: "2026-01-01"
 ---
 # Test''';
 
-      final task = parser.parseTask(content,
-          filePath: 'some/other/path/T999-test.md');
+      final task = parser.parseTask(
+        content,
+        filePath: 'some/other/path/T999-test.md',
+      );
       expect(task.lane, TaskLane.open);
     });
   });
@@ -382,7 +407,10 @@ updated: "2026-01-01"
 ---
 # Test''';
 
-      final task = parser.parseTask(content, filePath: 'docs/tasks/01-open/T001.md');
+      final task = parser.parseTask(
+        content,
+        filePath: 'docs/tasks/01-open/T001.md',
+      );
       expect(task.priority, 'P0');
     });
 
@@ -398,7 +426,10 @@ review_score: n/a
 ---
 # Test''';
 
-      final task = parser.parseTask(content, filePath: 'docs/tasks/01-open/T001.md');
+      final task = parser.parseTask(
+        content,
+        filePath: 'docs/tasks/01-open/T001.md',
+      );
       expect(task.reviewScore, isNull);
     });
 
@@ -414,7 +445,10 @@ review_score: 8.5
 ---
 # Test''';
 
-      final task = parser.parseTask(content, filePath: 'docs/tasks/01-open/T001.md');
+      final task = parser.parseTask(
+        content,
+        filePath: 'docs/tasks/01-open/T001.md',
+      );
       expect(task.reviewScore, 8.5);
     });
 
@@ -425,7 +459,10 @@ title: "Minimal task"
 ---
 # Minimal''';
 
-      final task = parser.parseTask(content, filePath: 'docs/tasks/01-open/T001.md');
+      final task = parser.parseTask(
+        content,
+        filePath: 'docs/tasks/01-open/T001.md',
+      );
       expect(task.id, 'T001');
       expect(task.title, 'Minimal task');
       expect(task.owner, 'unassigned');
@@ -458,7 +495,10 @@ flutter analyze
 ```
 ''';
 
-      final task = parser.parseTask(content, filePath: 'docs/tasks/01-open/T001.md');
+      final task = parser.parseTask(
+        content,
+        filePath: 'docs/tasks/01-open/T001.md',
+      );
       expect(task.verificationCommands, ['flutter test', 'flutter analyze']);
     });
 
@@ -479,7 +519,10 @@ updated: "2026-01-01"
 - [x] Third condition done
 ''';
 
-      final task = parser.parseTask(content, filePath: 'docs/tasks/01-open/T001.md');
+      final task = parser.parseTask(
+        content,
+        filePath: 'docs/tasks/01-open/T001.md',
+      );
       expect(task.exitConditions, hasLength(3));
       expect(task.exitConditions[0].isComplete, isTrue);
       expect(task.exitConditions[0].text, 'First condition done');
@@ -502,7 +545,10 @@ updated: "2026-01-01"
 *Not yet completed — task is in open lane.*
 ''';
 
-      final task = parser.parseTask(content, filePath: 'docs/tasks/01-open/T001.md');
+      final task = parser.parseTask(
+        content,
+        filePath: 'docs/tasks/01-open/T001.md',
+      );
       expect(task.hasCompletionEvidence, isFalse);
     });
 
@@ -521,7 +567,10 @@ updated: "2026-01-01"
 All tests pass. Files created as expected.
 ''';
 
-      final task = parser.parseTask(content, filePath: 'docs/tasks/04-completed/T001.md');
+      final task = parser.parseTask(
+        content,
+        filePath: 'docs/tasks/04-completed/T001.md',
+      );
       expect(task.hasCompletionEvidence, isTrue);
     });
   });
@@ -606,14 +655,18 @@ updated: "2026-01-02"
 
   group('tryParse', () {
     test('returns null for malformed content', () {
-      final result = parser.tryParseTask('not valid markdown',
-          filePath: 'docs/tasks/01-open/bad.md');
+      final result = parser.tryParseTask(
+        'not valid markdown',
+        filePath: 'docs/tasks/01-open/bad.md',
+      );
       expect(result, isNull);
     });
 
     test('returns projection for valid content', () {
-      final result = parser.tryParseTask(planningFixture,
-          filePath: 'docs/tasks/00-planning/T001.md');
+      final result = parser.tryParseTask(
+        planningFixture,
+        filePath: 'docs/tasks/00-planning/T001.md',
+      );
       expect(result, isNotNull);
       expect(result!.id, 'T001');
     });
@@ -626,8 +679,10 @@ updated: "2026-01-02"
   group('error handling', () {
     test('throws TaskParseException for missing frontmatter', () {
       expect(
-        () => parser.parseTask('no frontmatter here',
-            filePath: 'docs/tasks/01-open/bad.md'),
+        () => parser.parseTask(
+          'no frontmatter here',
+          filePath: 'docs/tasks/01-open/bad.md',
+        ),
         throwsA(isA<TaskParseException>()),
       );
     });

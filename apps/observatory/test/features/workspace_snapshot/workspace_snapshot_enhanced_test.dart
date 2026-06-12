@@ -21,7 +21,10 @@ void main() {
     test('search matches by name', () {
       final results = snapshot.search('architect');
       expect(results, isNotEmpty);
-      expect(results.any((a) => a.name.toLowerCase().contains('architect')), isTrue);
+      expect(
+        results.any((a) => a.name.toLowerCase().contains('architect')),
+        isTrue,
+      );
     });
 
     test('search matches by description', () {
@@ -90,8 +93,9 @@ void main() {
     final snapshot = _buildTestSnapshot();
 
     test('filters by parentCanonical', () {
-      final canonical =
-          snapshot.filterByCanonicality(Canonicality.parentCanonical);
+      final canonical = snapshot.filterByCanonicality(
+        Canonicality.parentCanonical,
+      );
       expect(canonical, isNotEmpty);
       expect(
         canonical.every((a) => a.canonicality == Canonicality.parentCanonical),
@@ -100,8 +104,7 @@ void main() {
     });
 
     test('filters by appendOnly', () {
-      final appendOnly =
-          snapshot.filterByCanonicality(Canonicality.appendOnly);
+      final appendOnly = snapshot.filterByCanonicality(Canonicality.appendOnly);
       expect(appendOnly, isNotEmpty);
     });
   });
@@ -171,8 +174,9 @@ void main() {
 
       // Task should have reference edges to skills
       final taskEdges = graph.outgoingEdges('task:0020');
-      final refEdges =
-          taskEdges.where((e) => e.kind == EdgeKind.references).toList();
+      final refEdges = taskEdges
+          .where((e) => e.kind == EdgeKind.references)
+          .toList();
       expect(refEdges, isNotEmpty);
     });
 
@@ -183,8 +187,9 @@ void main() {
 
       // Changelog should have changedBy edge to task
       final clEdges = graph.outgoingEdges('changelog:cl-test');
-      final changedBy =
-          clEdges.where((e) => e.kind == EdgeKind.changedBy).toList();
+      final changedBy = clEdges
+          .where((e) => e.kind == EdgeKind.changedBy)
+          .toList();
       expect(changedBy, isNotEmpty);
       expect(changedBy.first.targetId, equals('task:0020'));
     });

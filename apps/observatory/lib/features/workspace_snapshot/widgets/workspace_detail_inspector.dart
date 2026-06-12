@@ -7,8 +7,8 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../data/models/task_contracts.dart';
-import '../../../../data/models/workspace_graph.dart';
+import 'package:warp_prism_observatory/data/models/task_contracts.dart';
+import 'package:warp_prism_observatory/data/models/workspace_graph.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
 import '../workspace_snapshot_provider.dart';
 
@@ -34,8 +34,7 @@ class WorkspaceDetailInspector extends ConsumerWidget {
     final incoming = ref.watch(selectedAssetIncomingProvider);
     final outgoing = ref.watch(selectedAssetOutgoingProvider);
 
-    final taskMeta =
-        asset.frontmatter['_taskMetadata'] as TaskMetadata?;
+    final taskMeta = asset.frontmatter['_taskMetadata'] as TaskMetadata?;
 
     final sections = <DSDetailSection>[
       // Identity section
@@ -47,10 +46,7 @@ class WorkspaceDetailInspector extends ConsumerWidget {
             DSPropertyRow(label: 'ID', value: asset.id),
             DSPropertyRow(label: 'Kind', value: asset.kind.name),
             DSPropertyRow(label: 'Path', value: asset.path),
-            DSPropertyRow(
-              label: 'Provenance',
-              value: asset.canonicality.name,
-            ),
+            DSPropertyRow(label: 'Provenance', value: asset.canonicality.name),
             if (asset.description.isNotEmpty)
               DSPropertyRow(label: 'Description', value: asset.description),
           ],
@@ -67,10 +63,10 @@ class WorkspaceDetailInspector extends ConsumerWidget {
             children: asset.frontmatter.entries
                 .where((e) => !e.key.startsWith('_'))
                 .take(10)
-                .map((e) => DSPropertyRow(
-                      label: e.key,
-                      value: _formatValue(e.value),
-                    ))
+                .map(
+                  (e) =>
+                      DSPropertyRow(label: e.key, value: _formatValue(e.value)),
+                )
                 .toList(),
           ),
         ),
@@ -121,15 +117,9 @@ class WorkspaceDetailInspector extends ConsumerWidget {
                 label: 'Lane',
                 value: taskMeta.lane.directoryPrefix,
               ),
-              DSPropertyRow(
-                label: 'Priority',
-                value: taskMeta.priority,
-              ),
+              DSPropertyRow(label: 'Priority', value: taskMeta.priority),
               DSPropertyRow(label: 'Owner', value: taskMeta.owner),
-              DSPropertyRow(
-                label: 'Proof',
-                value: taskMeta.proofState.name,
-              ),
+              DSPropertyRow(label: 'Proof', value: taskMeta.proofState.name),
               if (taskMeta.reviewScore != null)
                 DSPropertyRow(
                   label: 'Review',
@@ -153,11 +143,15 @@ class WorkspaceDetailInspector extends ConsumerWidget {
                 color: DSColors.textTertiary,
               ),
               const SizedBox(height: 4),
-              ...outgoing.take(10).map((edge) => _EdgeRow(
-                    edge: edge,
-                    direction: '→',
-                    onTap: () => selectAsset(ref, edge.targetId),
-                  )),
+              ...outgoing
+                  .take(10)
+                  .map(
+                    (edge) => _EdgeRow(
+                      edge: edge,
+                      direction: '→',
+                      onTap: () => selectAsset(ref, edge.targetId),
+                    ),
+                  ),
             ],
             if (incoming.isNotEmpty) ...[
               const SizedBox(height: DSSpacing.sm),
@@ -166,11 +160,15 @@ class WorkspaceDetailInspector extends ConsumerWidget {
                 color: DSColors.textTertiary,
               ),
               const SizedBox(height: 4),
-              ...incoming.take(10).map((edge) => _EdgeRow(
-                    edge: edge,
-                    direction: '←',
-                    onTap: () => selectAsset(ref, edge.sourceId),
-                  )),
+              ...incoming
+                  .take(10)
+                  .map(
+                    (edge) => _EdgeRow(
+                      edge: edge,
+                      direction: '←',
+                      onTap: () => selectAsset(ref, edge.sourceId),
+                    ),
+                  ),
             ],
             if (incoming.isEmpty && outgoing.isEmpty)
               DSText.bodySmall(
@@ -194,7 +192,8 @@ class WorkspaceDetailInspector extends ConsumerWidget {
   static String _formatValue(dynamic value) {
     if (value == null) return 'null';
     if (value is List) return value.join(', ');
-    if (value is Map) return value.entries.map((e) => '${e.key}: ${e.value}').join(', ');
+    if (value is Map)
+      return value.entries.map((e) => '${e.key}: ${e.value}').join(', ');
     return value.toString();
   }
 }
@@ -205,16 +204,11 @@ class _EdgeRow extends StatelessWidget {
   final String direction;
   final VoidCallback? onTap;
 
-  const _EdgeRow({
-    required this.edge,
-    required this.direction,
-    this.onTap,
-  });
+  const _EdgeRow({required this.edge, required this.direction, this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    final targetId =
-        direction == '→' ? edge.targetId : edge.sourceId;
+    final targetId = direction == '→' ? edge.targetId : edge.sourceId;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 4),

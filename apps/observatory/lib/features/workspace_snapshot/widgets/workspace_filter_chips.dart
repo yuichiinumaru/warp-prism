@@ -6,8 +6,8 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../data/models/workspace_graph.dart';
-import '../../../../data/models/task_contracts.dart';
+import 'package:warp_prism_observatory/data/models/workspace_graph.dart';
+import 'package:warp_prism_observatory/data/models/task_contracts.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
 import '../workspace_snapshot_provider.dart';
 
@@ -162,12 +162,14 @@ class _LaneFilterChips extends StatelessWidget {
   Widget build(BuildContext context) {
     final tasksByLane = snapshot.tasksByLane as Map<TaskLane, int>;
     final options = TaskLane.values
-        .map((lane) => DSFilterOption(
-              value: lane.directoryPrefix,
-              label: lane.directoryPrefix,
-              color: DSColors.forLane(lane.directoryPrefix),
-              count: tasksByLane[lane] ?? 0,
-            ))
+        .map(
+          (lane) => DSFilterOption(
+            value: lane.directoryPrefix,
+            label: lane.directoryPrefix,
+            color: DSColors.forLane(lane.directoryPrefix),
+            count: tasksByLane[lane] ?? 0,
+          ),
+        )
         .toList();
 
     return DSFilterChipGroup(
@@ -205,12 +207,14 @@ class _ProvenanceFilterChips extends StatelessWidget {
 
     final options = Canonicality.values
         .where((c) => (counts[c] ?? 0) > 0)
-        .map((canon) => DSFilterOption(
-              value: canon.name,
-              label: canon.name,
-              color: DSColors.forCanonicity(canon.name),
-              count: counts[canon],
-            ))
+        .map(
+          (canon) => DSFilterOption(
+            value: canon.name,
+            label: canon.name,
+            color: DSColors.forCanonicity(canon.name),
+            count: counts[canon],
+          ),
+        )
         .toList();
 
     return DSFilterChipGroup(

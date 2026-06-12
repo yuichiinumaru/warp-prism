@@ -149,7 +149,11 @@ class WorkspaceGraphBuilder {
             skillDirectoryPattern: skillName,
           );
           if (pathEdge != null) {
-            edges[_EdgeKey(pathEdge.sourceId, pathEdge.targetId, pathEdge.kind)] =
+            edges[_EdgeKey(
+                  pathEdge.sourceId,
+                  pathEdge.targetId,
+                  pathEdge.kind,
+                )] =
                 pathEdge;
           }
         }

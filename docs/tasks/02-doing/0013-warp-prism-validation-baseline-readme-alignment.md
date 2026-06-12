@@ -1,6 +1,7 @@
 # Task 0013: Warp-Prism Validation Baseline README Alignment
 
 > **Status**: `[x]` Completed
+> **Review State**: Blocked — Flutter SDK not installed; validation commands cannot execute
 > **Priority**: 🟡 P1
 > **Type**: `governance`
 > **Origin**: EPIC-00 Warp-Prism Foundation and Compile Gate promotion

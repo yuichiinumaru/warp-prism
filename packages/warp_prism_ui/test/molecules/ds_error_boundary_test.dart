@@ -18,11 +18,7 @@ void main() {
     testWidgets('renders error icon', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: DSFallbackView(
-              error: 'Something failed',
-            ),
-          ),
+          home: Scaffold(body: DSFallbackView(error: 'Something failed')),
         ),
       );
 
@@ -32,11 +28,7 @@ void main() {
     testWidgets('renders default title', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: DSFallbackView(
-              error: 'Something failed',
-            ),
-          ),
+          home: Scaffold(body: DSFallbackView(error: 'Something failed')),
         ),
       );
 
@@ -62,9 +54,7 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: DSFallbackView(
-              error: 'TestError("detail message")',
-            ),
+            body: DSFallbackView(error: 'TestError("detail message")'),
           ),
         ),
       );
@@ -76,16 +66,14 @@ void main() {
       }
     });
 
-    testWidgets('shows friendly message in release mode context', (tester) async {
+    testWidgets('shows friendly message in release mode context', (
+      tester,
+    ) async {
       // The widget always shows kDebugMode-dependent text.
       // In test, kDebugMode is always true, so we verify the debug path.
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: DSFallbackView(
-              error: 'InternalStateError',
-            ),
-          ),
+          home: Scaffold(body: DSFallbackView(error: 'InternalStateError')),
         ),
       );
 
@@ -114,11 +102,7 @@ void main() {
     testWidgets('hides retry button when onRetry is null', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: DSFallbackView(
-              error: 'Failed',
-            ),
-          ),
+          home: Scaffold(body: DSFallbackView(error: 'Failed')),
         ),
       );
 
@@ -128,11 +112,7 @@ void main() {
     testWidgets('uses DSGlassPanelSimple container', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: DSFallbackView(
-              error: 'Test',
-            ),
-          ),
+          home: Scaffold(body: DSFallbackView(error: 'Test')),
         ),
       );
 
@@ -143,10 +123,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: DSFallbackView(
-              error: 'Test',
-              onRetry: () {},
-            ),
+            body: DSFallbackView(error: 'Test', onRetry: () {}),
           ),
         ),
       );
@@ -179,11 +156,7 @@ void main() {
     testWidgets('renders child normally when no error', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: DSErrorBoundary(
-              child: Text('Healthy child'),
-            ),
-          ),
+          home: Scaffold(body: DSErrorBoundary(child: Text('Healthy child'))),
         ),
       );
 
@@ -195,9 +168,7 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: DSErrorBoundary.withDefaultFallback(
-              child: Text('OK'),
-            ),
+            body: DSErrorBoundary.withDefaultFallback(child: Text('OK')),
           ),
         ),
       );
@@ -206,8 +177,9 @@ void main() {
       expect(find.byType(DSErrorBoundary), findsOneWidget);
     });
 
-    testWidgets('shows default fallback when error state is set',
-        (tester) async {
+    testWidgets('shows default fallback when error state is set', (
+      tester,
+    ) async {
       // Directly test the fallback display by pumping DSFallbackView
       // (the error boundary's internal mechanism is tied to Flutter's
       // error pipeline which is hard to test in isolation).

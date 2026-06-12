@@ -71,8 +71,8 @@ class WorkspaceOverviewViewModel {
     required WorkspaceMetricsSummary metrics,
     required DiagnosticsReport diagnostics,
   }) {
-    final criticalCount = diagnostics
-        .bySeverity(DiagnosticSeverity.error).length +
+    final criticalCount =
+        diagnostics.bySeverity(DiagnosticSeverity.error).length +
         diagnostics.bySeverity(DiagnosticSeverity.critical).length;
 
     return WorkspaceOverviewViewModel(
@@ -90,19 +90,18 @@ class WorkspaceOverviewViewModel {
 
   /// An empty overview with all zeroes.
   const WorkspaceOverviewViewModel.empty()
-      : totalAssets = 0,
-        assetsByKind = const {},
-        blockedTaskCount = 0,
-        reviewQueueCount = 0,
-        proofGapCount = 0,
-        criticalWarningCount = 0,
-        totalWarningCount = 0,
-        totalEdges = 0,
-        tasksByLane = const {};
+    : totalAssets = 0,
+      assetsByKind = const {},
+      blockedTaskCount = 0,
+      reviewQueueCount = 0,
+      proofGapCount = 0,
+      criticalWarningCount = 0,
+      totalWarningCount = 0,
+      totalEdges = 0,
+      tasksByLane = const {};
 
   /// Whether the workspace has any tasks.
-  bool get hasTasks =>
-      tasksByLane.values.fold(0, (a, b) => a + b) > 0;
+  bool get hasTasks => tasksByLane.values.fold(0, (a, b) => a + b) > 0;
 
   /// Whether there are any blockers to show.
   bool get hasBlockers => blockedTaskCount > 0;
@@ -111,8 +110,7 @@ class WorkspaceOverviewViewModel {
   bool get hasWarnings => totalWarningCount > 0;
 
   /// Total task count across all lanes.
-  int get totalTaskCount =>
-      tasksByLane.values.fold(0, (a, b) => a + b);
+  int get totalTaskCount => tasksByLane.values.fold(0, (a, b) => a + b);
 }
 
 // ---------------------------------------------------------------------------
@@ -187,15 +185,14 @@ class OperateViewModel {
 
   /// An empty operate view model.
   const OperateViewModel.empty()
-      : tasksByLane = const {},
-        blockedTaskCount = 0,
-        reviewQueueCount = 0,
-        proofGapCount = 0,
-        tasksWithoutVerification = 0;
+    : tasksByLane = const {},
+      blockedTaskCount = 0,
+      reviewQueueCount = 0,
+      proofGapCount = 0,
+      tasksWithoutVerification = 0;
 
   /// Total task count.
-  int get totalTaskCount =>
-      tasksByLane.values.fold(0, (a, b) => a + b);
+  int get totalTaskCount => tasksByLane.values.fold(0, (a, b) => a + b);
 }
 
 // ---------------------------------------------------------------------------
@@ -231,13 +228,12 @@ class HistoryViewModel {
 
   /// An empty history view model.
   const HistoryViewModel.empty()
-      : changelogWithTaskLink = 0,
-        changelogWithoutTaskLink = 0,
-        totalEdges = 0;
+    : changelogWithTaskLink = 0,
+      changelogWithoutTaskLink = 0,
+      totalEdges = 0;
 
   /// Total changelog entries.
-  int get totalChangelog =>
-      changelogWithTaskLink + changelogWithoutTaskLink;
+  int get totalChangelog => changelogWithTaskLink + changelogWithoutTaskLink;
 }
 
 // ---------------------------------------------------------------------------
@@ -288,12 +284,12 @@ class GovernanceViewModel {
 
   /// An empty governance view model.
   const GovernanceViewModel.empty()
-      : diagnostics = const [],
-        countsByCategory = const {},
-        countsBySeverity = const {},
-        orphanCount = 0,
-        proofGapCount = 0,
-        hotspotCount = 0;
+    : diagnostics = const [],
+      countsByCategory = const {},
+      countsBySeverity = const {},
+      orphanCount = 0,
+      proofGapCount = 0,
+      hotspotCount = 0;
 
   /// Whether there are any diagnostics.
   bool get hasDiagnostics => diagnostics.isNotEmpty;

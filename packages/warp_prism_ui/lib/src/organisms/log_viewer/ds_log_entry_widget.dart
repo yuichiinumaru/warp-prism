@@ -28,23 +28,17 @@ class DSLogEntryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label:
-          '${entry.severity.label}: ${entry.source}: ${entry.message}',
+      label: '${entry.severity.label}: ${entry.source}: ${entry.message}',
       explicitChildNodes: true,
       child: Container(
         decoration: BoxDecoration(
-          color: expanded
-              ? DSColors.obsidianHover
-              : DSColors.transparent,
+          color: expanded ? DSColors.obsidianHover : DSColors.transparent,
           border: Border(
             left: BorderSide(
               color: entry.severity.color,
               width: expanded ? 3 : 2,
             ),
-            bottom: const BorderSide(
-              color: DSColors.borderSubtle,
-              width: 0.5,
-            ),
+            bottom: const BorderSide(color: DSColors.borderSubtle, width: 0.5),
           ),
         ),
         child: Column(
@@ -114,10 +108,7 @@ class _LogRow extends StatelessWidget {
 
             // Source badge
             Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 6,
-                vertical: 1,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
               decoration: BoxDecoration(
                 color: DSColors.obsidianElevated,
                 borderRadius: BorderRadius.circular(DSRadii.chip),
@@ -194,9 +185,7 @@ class _ExpandedDetail extends StatelessWidget {
       color: DSColors.obsidianDeep,
       child: SelectableText(
         detail,
-        style: DSTypography.codeSmall.copyWith(
-          color: DSColors.textSecondary,
-        ),
+        style: DSTypography.codeSmall.copyWith(color: DSColors.textSecondary),
       ),
     );
   }

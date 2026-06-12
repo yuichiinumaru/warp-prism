@@ -115,10 +115,7 @@ class DSHealthCard extends StatelessWidget {
 
                 // State label
                 const SizedBox(height: DSSpacing.xs),
-                DSText.labelSmall(
-                  operationalState.label,
-                  color: stateColor,
-                ),
+                DSText.labelSmall(operationalState.label, color: stateColor),
 
                 // Uptime bar
                 if (uptimePercent != null) ...[

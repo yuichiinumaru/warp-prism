@@ -163,8 +163,9 @@ class DSStateSurface extends StatelessWidget {
     final effectiveColor = accentColor ?? _defaultColor;
     final effectiveIcon = icon ?? _defaultIcon;
     final iconSize = compact ? 24.0 : 40.0;
-    final titleStyle =
-        compact ? DSTypography.bodyMedium : DSTypography.headingSmall;
+    final titleStyle = compact
+        ? DSTypography.bodyMedium
+        : DSTypography.headingSmall;
 
     return Center(
       child: Padding(
@@ -183,11 +184,7 @@ class DSStateSurface extends StatelessWidget {
                 ),
               )
             else
-              DSIcon(
-                effectiveIcon,
-                color: effectiveColor,
-                size: iconSize,
-              ),
+              DSIcon(effectiveIcon, color: effectiveColor, size: iconSize),
 
             SizedBox(height: compact ? DSSpacing.sm : DSSpacing.md),
 

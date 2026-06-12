@@ -157,6 +157,9 @@ class DSToastManagerState extends State<DSToastManager> {
       }
     });
 
+    // Force the overlay entry to rebuild so the new/replaced toast renders.
+    _overlayEntry?.markNeedsBuild();
+
     // Start auto-dismiss timer for the new/replaced entry.
     _startTimer(entry);
 
@@ -174,12 +177,16 @@ class DSToastManagerState extends State<DSToastManager> {
 
     // Animate out, then remove.
     setState(() {});
+    _overlayEntry?.markNeedsBuild();
     Future.delayed(DSMotion.slow, () {
       if (!mounted) return;
       setState(() {
         _entries.removeWhere((e) => e.entry.id == id);
         if (_entries.isEmpty) {
           _removeOverlay();
+        } else {
+          // Mark overlay dirty for non-empty stacks so remaining toasts render.
+          _overlayEntry?.markNeedsBuild();
         }
       });
     });
@@ -242,6 +249,7 @@ class DSToastManagerState extends State<DSToastManager> {
         }
       }
     });
+    _overlayEntry?.markNeedsBuild();
   }
 
   void _ensureOverlay() {
@@ -266,10 +274,21 @@ class DSToastManagerState extends State<DSToastManager> {
     // Parse the inset to get actual pixel values.
     final resolvedInset = _resolvedInset.resolve(Directionality.of(context));
 
+    // Constrain the overlay content to the available viewport size.
+    // Without a bounded height, Positioned(right, bottom) yields
+    // unconstrained BoxConstraints and the accent bar's fixed height
+    // collapses to 0 because the cross-axis constraint is clamped.
+    final viewHeight =
+        View.of(context).physicalSize.height /
+        View.of(context).devicePixelRatio;
+
     return Positioned(
       right: resolvedInset.right,
       bottom: resolvedInset.bottom,
-      child: _buildStack(),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxHeight: viewHeight),
+        child: _buildStack(),
+      ),
     );
   }
 
@@ -277,10 +296,7 @@ class DSToastManagerState extends State<DSToastManager> {
     final i = widget.inset;
     if (i is EdgeInsets) return i;
     // Fallback for non-EdgeInsets types.
-    return const EdgeInsets.only(
-      right: DSSpacing.xl,
-      bottom: DSSpacing.xl,
-    );
+    return const EdgeInsets.only(right: DSSpacing.xl, bottom: DSSpacing.xl);
   }
 
   Widget _buildStack() {
@@ -341,7 +357,5 @@ class _ManagedToastEntry {
   bool removing;
   bool paused;
 
-  _ManagedToastEntry({required this.entry})
-      : removing = false,
-        paused = false;
+  _ManagedToastEntry({required this.entry}) : removing = false, paused = false;
 }

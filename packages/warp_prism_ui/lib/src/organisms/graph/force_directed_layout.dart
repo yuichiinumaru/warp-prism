@@ -57,9 +57,7 @@ class ForceDirectedConfig {
 class ForceDirectedLayout implements GraphLayoutEngine {
   final ForceDirectedConfig config;
 
-  const ForceDirectedLayout({
-    this.config = const ForceDirectedConfig(),
-  });
+  const ForceDirectedLayout({this.config = const ForceDirectedConfig()});
 
   @override
   Map<GraphNodeId, Offset> layout(GraphModel model, Size canvasSize) {
@@ -77,7 +75,8 @@ class ForceDirectedLayout implements GraphLayoutEngine {
       } else {
         positions[node.id] = Offset(
           random.nextDouble() * canvasSize.width * 0.6 - canvasSize.width * 0.3,
-          random.nextDouble() * canvasSize.height * 0.4 - canvasSize.height * 0.2,
+          random.nextDouble() * canvasSize.height * 0.4 -
+              canvasSize.height * 0.2,
         );
       }
       velocities[node.id] = Offset.zero;
@@ -218,8 +217,7 @@ class ForceDirectedLayout implements GraphLayoutEngine {
     final shift = canvasCenter - centroid;
 
     return {
-      for (final entry in positions.entries)
-        entry.key: entry.value + shift,
+      for (final entry in positions.entries) entry.key: entry.value + shift,
     };
   }
 }

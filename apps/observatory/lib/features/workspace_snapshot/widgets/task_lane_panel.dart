@@ -6,8 +6,8 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../data/models/workspace_graph.dart';
-import '../../../../data/models/task_contracts.dart';
+import 'package:warp_prism_observatory/data/models/workspace_graph.dart';
+import 'package:warp_prism_observatory/data/models/task_contracts.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
 import '../workspace_snapshot_provider.dart';
 
@@ -42,10 +42,7 @@ class TaskLanePanel extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: TaskLane.values
           .where((lane) => tasksByLane[lane]!.isNotEmpty)
-          .map((lane) => _LaneSection(
-                lane: lane,
-                tasks: tasksByLane[lane]!,
-              ))
+          .map((lane) => _LaneSection(lane: lane, tasks: tasksByLane[lane]!))
           .toList(),
     );
   }
@@ -82,8 +79,7 @@ class _LaneSection extends ConsumerWidget {
         ),
         const SizedBox(height: DSSpacing.sm),
         ...tasks.map((task) {
-          final taskMeta =
-              task.frontmatter['_taskMetadata'] as TaskMetadata?;
+          final taskMeta = task.frontmatter['_taskMetadata'] as TaskMetadata?;
           // Parse task id for DSTaskCard (expects int)
           final taskId = int.tryParse(taskMeta?.id ?? '') ?? 0;
           return Padding(

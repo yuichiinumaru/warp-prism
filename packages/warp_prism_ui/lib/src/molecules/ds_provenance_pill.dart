@@ -3,7 +3,7 @@ import '../tokens/tokens.dart';
 import '../atoms/atoms.dart';
 
 /// ASW Observatory Molecule - Provenance Pill
-/// 
+///
 /// Shows governance/canonicality status with icon and label
 class DSProvenancePill extends StatelessWidget {
   final String canonicality;
@@ -18,42 +18,58 @@ class DSProvenancePill extends StatelessWidget {
   });
 
   Color get _color => DSColors.forCanonicity(canonicality);
-  
+
   IconData get _icon => DSIcons.forCanonicity(canonicality);
-  
+
   String get _label {
     switch (canonicality.toLowerCase()) {
-      case 'parentcanonical': return 'Canonical';
-      case 'childlocal': return 'Local';
-      case 'generated': return 'Generated';
-      case 'appendonly': return 'Append-Only';
-      case 'archive': return 'Archive';
-      case 'mock': return 'Mock';
-      default: return canonicality;
+      case 'parentcanonical':
+        return 'Canonical';
+      case 'childlocal':
+        return 'Local';
+      case 'generated':
+        return 'Generated';
+      case 'appendonly':
+        return 'Append-Only';
+      case 'archive':
+        return 'Archive';
+      case 'mock':
+        return 'Mock';
+      default:
+        return canonicality;
     }
   }
 
   double get _height {
     switch (size) {
-      case DSProvenanceSize.small: return 20;
-      case DSProvenanceSize.medium: return 24;
-      case DSProvenanceSize.large: return 28;
+      case DSProvenanceSize.small:
+        return 20;
+      case DSProvenanceSize.medium:
+        return 24;
+      case DSProvenanceSize.large:
+        return 28;
     }
   }
 
   double get _iconSize {
     switch (size) {
-      case DSProvenanceSize.small: return 12;
-      case DSProvenanceSize.medium: return 14;
-      case DSProvenanceSize.large: return 16;
+      case DSProvenanceSize.small:
+        return 12;
+      case DSProvenanceSize.medium:
+        return 14;
+      case DSProvenanceSize.large:
+        return 16;
     }
   }
 
   double get _fontSize {
     switch (size) {
-      case DSProvenanceSize.small: return 10;
-      case DSProvenanceSize.medium: return 11;
-      case DSProvenanceSize.large: return 12;
+      case DSProvenanceSize.small:
+        return 10;
+      case DSProvenanceSize.medium:
+        return 11;
+      case DSProvenanceSize.large:
+        return 12;
     }
   }
 
@@ -63,9 +79,7 @@ class DSProvenancePill extends StatelessWidget {
       message: _getTooltip(),
       child: Container(
         height: _height,
-        padding: EdgeInsets.symmetric(
-          horizontal: showLabel ? 8 : 6,
-        ),
+        padding: EdgeInsets.symmetric(horizontal: showLabel ? 8 : 6),
         decoration: BoxDecoration(
           color: _color.withOpacity(0.15),
           borderRadius: BorderRadius.circular(DSRadii.full),

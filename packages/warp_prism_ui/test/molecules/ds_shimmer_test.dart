@@ -16,9 +16,7 @@ void main() {
     testWidgets('renders without errors', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: DSShimmer(width: 200, height: 16),
-          ),
+          home: Scaffold(body: DSShimmer(width: 200, height: 16)),
         ),
       );
 
@@ -28,9 +26,7 @@ void main() {
     testWidgets('renders a Container widget', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: DSShimmer(width: 100, height: 20),
-          ),
+          home: Scaffold(body: DSShimmer(width: 100, height: 20)),
         ),
       );
 
@@ -40,9 +36,7 @@ void main() {
     testWidgets('animates continuously', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: DSShimmer(width: 100, height: 20),
-          ),
+          home: Scaffold(body: DSShimmer(width: 100, height: 20)),
         ),
       );
 
@@ -78,11 +72,7 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: DSShimmer(
-              width: 48,
-              height: 48,
-              borderRadius: DSRadii.full,
-            ),
+            body: DSShimmer(width: 48, height: 48, borderRadius: DSRadii.full),
           ),
         ),
       );
@@ -94,10 +84,7 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: SizedBox(
-              width: 300,
-              child: DSShimmer(height: 16),
-            ),
+            body: SizedBox(width: 300, child: DSShimmer(height: 16)),
           ),
         ),
       );
@@ -109,11 +96,7 @@ void main() {
   group('DSSkeletonTextLine', () {
     testWidgets('renders without errors', (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: DSSkeletonTextLine(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: DSSkeletonTextLine())),
       );
 
       expect(find.byType(DSSkeletonTextLine), findsOneWidget);
@@ -129,9 +112,7 @@ void main() {
     testWidgets('accepts custom width factor', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: DSSkeletonTextLine(widthFactor: 0.5),
-          ),
+          home: Scaffold(body: DSSkeletonTextLine(widthFactor: 0.5)),
         ),
       );
 
@@ -142,11 +123,7 @@ void main() {
   group('DSSkeletonCard', () {
     testWidgets('renders without errors', (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: DSSkeletonCard(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: DSSkeletonCard())),
       );
 
       expect(find.byType(DSSkeletonCard), findsOneWidget);
@@ -154,11 +131,7 @@ void main() {
 
     testWidgets('contains shimmer blocks', (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: DSSkeletonCard(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: DSSkeletonCard())),
       );
 
       // Should contain multiple shimmer blocks: icon + text lines
@@ -167,31 +140,20 @@ void main() {
 
     testWidgets('uses DSColors and DSRadii tokens', (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: DSSkeletonCard(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: DSSkeletonCard())),
       );
 
       // The Container decoration uses DSColors.obsidianElevated and DSRadii.card
-      final container = tester.widget<Container>(
-        find.byType(Container).first,
-      );
+      final container = tester.widget<Container>(find.byType(Container).first);
       final decoration = container.decoration as BoxDecoration;
       expect(decoration.color, DSColors.obsidianElevated);
-      expect(
-        decoration.borderRadius,
-        BorderRadius.circular(DSRadii.card),
-      );
+      expect(decoration.borderRadius, BorderRadius.circular(DSRadii.card));
     });
 
     testWidgets('hides subtitle when showSubtitle is false', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: DSSkeletonCard(showSubtitle: false),
-          ),
+          home: Scaffold(body: DSSkeletonCard(showSubtitle: false)),
         ),
       );
 
@@ -202,11 +164,7 @@ void main() {
 
     testWidgets('shows subtitle by default', (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: DSSkeletonCard(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: DSSkeletonCard())),
       );
 
       final textLines = find.byType(DSSkeletonTextLine);
@@ -217,11 +175,7 @@ void main() {
   group('DSSkeletonTableRows', () {
     testWidgets('renders without errors', (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: DSSkeletonTableRows(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: DSSkeletonTableRows())),
       );
 
       expect(find.byType(DSSkeletonTableRows), findsOneWidget);
@@ -229,11 +183,7 @@ void main() {
 
     testWidgets('renders default 3 rows', (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: DSSkeletonTableRows(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: DSSkeletonTableRows())),
       );
 
       // 3 rows × 3 columns = 9 shimmer blocks
@@ -275,9 +225,7 @@ void main() {
     testWidgets('uses DSShimmer with DSRadii tokens', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: DSSkeletonTableRows(rowCount: 1),
-          ),
+          home: Scaffold(body: DSSkeletonTableRows(rowCount: 1)),
         ),
       );
 

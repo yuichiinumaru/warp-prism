@@ -43,7 +43,8 @@ class DSTopbar extends StatelessWidget {
         child: LayoutBuilder(
           builder: (context, constraints) {
             // Collapse search bar on narrow widths
-            final showSearchBar = showSearch &&
+            final showSearchBar =
+                showSearch &&
                 searchBar != null &&
                 constraints.maxWidth >= DSBreakpoints.narrow;
 
@@ -165,11 +166,13 @@ class _DSTopbarActionState extends State<DSTopbarAction> {
     final bgColor = widget.active
         ? DSColors.accentCyan.withOpacity(0.15)
         : (_isFocused
-            ? DSColors.obsidianActive
-            : (_isHovered ? DSColors.obsidianHover : DSColors.transparent));
+              ? DSColors.obsidianActive
+              : (_isHovered ? DSColors.obsidianHover : DSColors.transparent));
     final iconColor = widget.active
         ? DSColors.accentCyan
-        : (_isHovered || _isFocused ? DSColors.textPrimary : DSColors.textSecondary);
+        : (_isHovered || _isFocused
+              ? DSColors.textPrimary
+              : DSColors.textSecondary);
 
     Widget button = Semantics(
       label: widget.tooltip ?? 'Action button',
@@ -201,14 +204,15 @@ class _DSTopbarActionState extends State<DSTopbarAction> {
                 color: bgColor,
                 borderRadius: BorderRadius.circular(DSRadii.md),
                 border: _isFocused
-                    ? Border.all(color: DSColors.accentCyan.withOpacity(0.5), width: 2)
+                    ? Border.all(
+                        color: DSColors.accentCyan.withOpacity(0.5),
+                        width: 2,
+                      )
                     : null,
               ),
               child: Stack(
                 children: [
-                  Center(
-                    child: DSIcon(widget.icon, color: iconColor),
-                  ),
+                  Center(child: DSIcon(widget.icon, color: iconColor)),
                   if (widget.badge != null && widget.badge! > 0)
                     Positioned(
                       top: 4,
@@ -228,10 +232,7 @@ class _DSTopbarActionState extends State<DSTopbarAction> {
     );
 
     if (widget.tooltip != null) {
-      button = Tooltip(
-        message: widget.tooltip!,
-        child: button,
-      );
+      button = Tooltip(message: widget.tooltip!, child: button);
     }
 
     return button;

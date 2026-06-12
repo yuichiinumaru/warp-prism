@@ -32,9 +32,9 @@ void main() {
       final graph = builder.build(assets);
 
       expect(graph.assetsByKind[AssetKind.agent]!.length, equals(1));
-      expect(graph.assetsByKind[AssetKind.skill]!.length, equals(1));
+      expect(graph.assetsByKind[AssetKind.skill]!.length, equals(2));
       expect(graph.assetsByKind[AssetKind.workflow]!.length, equals(1));
-      expect(graph.assetsByKind[AssetKind.task]!.length, equals(1));
+      expect(graph.assetsByKind[AssetKind.task]!.length, equals(2));
       expect(graph.assetsByKind[AssetKind.changelog]!.length, equals(1));
     });
 
@@ -55,8 +55,9 @@ void main() {
       final graph = builder.build(assets);
 
       final changelogEdges = graph.outgoingEdges('changelog:cl-001');
-      final changedByEdges =
-          changelogEdges.where((e) => e.kind == EdgeKind.changedBy).toList();
+      final changedByEdges = changelogEdges
+          .where((e) => e.kind == EdgeKind.changedBy)
+          .toList();
 
       expect(changedByEdges, isNotEmpty);
       expect(changedByEdges.first.targetId, equals('task:1001'));
@@ -67,8 +68,9 @@ void main() {
       final graph = builder.build(assets);
 
       final taskEdges = graph.outgoingEdges('task:1001');
-      final refEdges =
-          taskEdges.where((e) => e.kind == EdgeKind.references).toList();
+      final refEdges = taskEdges
+          .where((e) => e.kind == EdgeKind.references)
+          .toList();
 
       expect(refEdges, isNotEmpty);
       final targetIds = refEdges.map((e) => e.targetId).toSet();
@@ -81,8 +83,9 @@ void main() {
       final graph = builder.build(assets);
 
       final taskEdges = graph.outgoingEdges('task:1001');
-      final depEdges =
-          taskEdges.where((e) => e.kind == EdgeKind.dependsOn).toList();
+      final depEdges = taskEdges
+          .where((e) => e.kind == EdgeKind.dependsOn)
+          .toList();
 
       expect(depEdges, isNotEmpty);
       expect(depEdges.first.targetId, equals('task:0999'));
@@ -93,8 +96,9 @@ void main() {
       final graph = builder.build(assets);
 
       final agentEdges = graph.outgoingEdges('agent:orchestrator');
-      final usesEdges =
-          agentEdges.where((e) => e.kind == EdgeKind.uses).toList();
+      final usesEdges = agentEdges
+          .where((e) => e.kind == EdgeKind.uses)
+          .toList();
 
       expect(usesEdges, isNotEmpty);
       final targetIds = usesEdges.map((e) => e.targetId).toSet();
@@ -106,8 +110,9 @@ void main() {
       final graph = builder.build(assets);
 
       final skillEdges = graph.outgoingEdges('skill:harness-arch');
-      final containsEdges =
-          skillEdges.where((e) => e.kind == EdgeKind.contains).toList();
+      final containsEdges = skillEdges
+          .where((e) => e.kind == EdgeKind.contains)
+          .toList();
 
       expect(containsEdges, isNotEmpty);
       expect(containsEdges.first.targetId, equals('subskill:create-agent'));
@@ -118,8 +123,9 @@ void main() {
       final graph = builder.build(assets);
 
       final wfEdges = graph.outgoingEdges('workflow:gt-code-review');
-      final depEdges =
-          wfEdges.where((e) => e.kind == EdgeKind.dependsOn).toList();
+      final depEdges = wfEdges
+          .where((e) => e.kind == EdgeKind.dependsOn)
+          .toList();
 
       expect(depEdges, isNotEmpty);
       expect(depEdges.first.targetId, equals('skill:code-review'));
@@ -161,10 +167,7 @@ void main() {
 
       final containsEdges = graph.edgesByKind(EdgeKind.contains);
       expect(containsEdges, isNotEmpty);
-      expect(
-        containsEdges.every((e) => e.kind == EdgeKind.contains),
-        isTrue,
-      );
+      expect(containsEdges.every((e) => e.kind == EdgeKind.contains), isTrue);
     });
 
     test('deduplicates edges with same source, target, and kind', () {
@@ -188,10 +191,12 @@ void main() {
       final graph = builder.build(assets);
       // Count edges with same source/target/kind
       final matching = graph.edges
-          .where((e) =>
-              e.sourceId == 'task:1001' &&
-              e.targetId == 'skill:code-review' &&
-              e.kind == EdgeKind.references)
+          .where(
+            (e) =>
+                e.sourceId == 'task:1001' &&
+                e.targetId == 'skill:code-review' &&
+                e.kind == EdgeKind.references,
+          )
           .toList();
       // Should be deduplicated per source — each source contributes its own edge
       // The dedup is per unique (source, target, kind) triple
@@ -232,7 +237,7 @@ void main() {
     test('inferWorkflowDependencies creates dependsOn edges', () {
       final edges = inference.inferWorkflowDependencies(
         workflowId: 'workflow:build',
-        usesSkills: ['skill:compile', 'skill:test'],
+        usesSkills: ['compile', 'test'],
       );
       expect(edges.length, equals(2));
       expect(edges[0].kind, equals(EdgeKind.dependsOn));
@@ -433,11 +438,7 @@ List<WorkspaceAsset> _buildSampleAssets() {
       name: 'cl-001',
       path: '/ws/docs/changelog/2026-06-07-parser.md',
       canonicality: Canonicality.appendOnly,
-      frontmatter: {
-        'id': 'cl-001',
-        'task': '1001',
-        'type': 'feature',
-      },
+      frontmatter: {'id': 'cl-001', 'task': '1001', 'type': 'feature'},
     ),
   ];
 }

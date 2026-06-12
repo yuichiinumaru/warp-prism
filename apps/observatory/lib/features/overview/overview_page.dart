@@ -10,7 +10,7 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
-import '../../../data/models/data_models.dart';
+import 'package:warp_prism_observatory/data/models/data_models.dart';
 import 'overview_metrics.dart';
 
 /// Overview dashboard page.
@@ -46,10 +46,7 @@ class OverviewPage extends StatelessWidget {
           const SizedBox(height: DSSpacing.xl),
 
           // -- Operational risk section --
-          DSText.headingSmall(
-            'Operational Risk',
-            color: DSColors.textPrimary,
-          ),
+          DSText.headingSmall('Operational Risk', color: DSColors.textPrimary),
           const SizedBox(height: DSSpacing.md),
           _buildRiskGrid(context),
 
@@ -121,12 +118,7 @@ class OverviewPage extends StatelessWidget {
         DSColors.lanePlanning,
         Icons.edit_note_outlined,
       ),
-      (
-        'Open',
-        metrics.openTaskCount,
-        DSColors.laneOpen,
-        Icons.inbox_outlined,
-      ),
+      ('Open', metrics.openTaskCount, DSColors.laneOpen, Icons.inbox_outlined),
       (
         'Doing',
         metrics.doingTaskCount,
@@ -188,8 +180,7 @@ class OverviewPage extends StatelessWidget {
           color: metrics.reviewQueueCount > 3
               ? DSColors.statusWarning
               : DSColors.accentCyan,
-          subtitle:
-              metrics.reviewQueueCount > 3 ? 'High pressure' : 'Normal',
+          subtitle: metrics.reviewQueueCount > 3 ? 'High pressure' : 'Normal',
         ),
         DSMetricTile(
           label: 'Gov Warnings',

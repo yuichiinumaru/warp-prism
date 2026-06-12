@@ -84,14 +84,15 @@ class AssetDetailPage extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            DSIcon(Icons.article_outlined, color: DSColors.accentCyan, size: 48),
+            DSIcon(
+              Icons.article_outlined,
+              color: DSColors.accentCyan,
+              size: 48,
+            ),
             const SizedBox(height: DSSpacing.lg),
             DSText.headingMedium('Asset Detail', color: DSColors.textPrimary),
             const SizedBox(height: DSSpacing.sm),
-            DSText.bodyMedium(
-              'Asset: $assetId',
-              color: DSColors.textSecondary,
-            ),
+            DSText.bodyMedium('Asset: $assetId', color: DSColors.textSecondary),
             const SizedBox(height: DSSpacing.xs),
             DSText.bodyMedium(
               'Detail view — coming soon',

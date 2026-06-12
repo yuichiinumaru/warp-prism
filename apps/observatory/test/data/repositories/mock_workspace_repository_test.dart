@@ -35,24 +35,39 @@ void main() {
       if (state.status == WorkspaceLoadStatus.success) {
         final snapshot = state.snapshot!;
         // The mock corpus should have at least some assets
-        expect(snapshot.totalAssets, greaterThan(0),
-            reason: 'Mock corpus should contain assets');
+        expect(
+          snapshot.totalAssets,
+          greaterThan(0),
+          reason: 'Mock corpus should contain assets',
+        );
 
         // Agents should be present
-        expect(snapshot.agents, isNotEmpty,
-            reason: 'Mock corpus contains agent files');
+        expect(
+          snapshot.agents,
+          isNotEmpty,
+          reason: 'Mock corpus contains agent files',
+        );
 
         // Skills should be present
-        expect(snapshot.skills, isNotEmpty,
-            reason: 'Mock corpus contains skill files');
+        expect(
+          snapshot.skills,
+          isNotEmpty,
+          reason: 'Mock corpus contains skill files',
+        );
 
         // Tasks should be present
-        expect(snapshot.tasks, isNotEmpty,
-            reason: 'Mock corpus contains task files');
+        expect(
+          snapshot.tasks,
+          isNotEmpty,
+          reason: 'Mock corpus contains task files',
+        );
 
         // Changelog entries should be present
-        expect(snapshot.changelogEntries, isNotEmpty,
-            reason: 'Mock corpus contains changelog files');
+        expect(
+          snapshot.changelogEntries,
+          isNotEmpty,
+          reason: 'Mock corpus contains changelog files',
+        );
 
         // Metadata should reflect the scan
         expect(snapshot.metadata.rootPath, equals('assets/mock_workspace'));
@@ -61,8 +76,10 @@ void main() {
         // Task lane breakdown should be populated
         final tasksByLane = snapshot.tasksByLane;
         expect(tasksByLane, isNotEmpty);
-        final totalFromLanes =
-            tasksByLane.values.fold<int>(0, (sum, c) => sum + c);
+        final totalFromLanes = tasksByLane.values.fold<int>(
+          0,
+          (sum, c) => sum + c,
+        );
         expect(totalFromLanes, equals(snapshot.tasks.length));
       }
     });
@@ -80,26 +97,38 @@ void main() {
 
     test('returns empty state for empty directory', () async {
       // Create a temp directory with the expected structure but no files
-      final tempDir =
-          await Directory.systemTemp.createTemp('mock_repo_empty_test_');
+      final tempDir = await Directory.systemTemp.createTemp(
+        'mock_repo_empty_test_',
+      );
       try {
         // Create the directory structure but leave it empty
-        await Directory('${tempDir.path}/.agents/agents').create(recursive: true);
-        await Directory('${tempDir.path}/.agents/skills').create(recursive: true);
-        await Directory('${tempDir.path}/.agents/workflows')
-            .create(recursive: true);
-        await Directory('${tempDir.path}/docs/tasks/00-planning')
-            .create(recursive: true);
-        await Directory('${tempDir.path}/docs/tasks/01-open')
-            .create(recursive: true);
-        await Directory('${tempDir.path}/docs/tasks/02-doing')
-            .create(recursive: true);
-        await Directory('${tempDir.path}/docs/tasks/03-review')
-            .create(recursive: true);
-        await Directory('${tempDir.path}/docs/tasks/04-completed')
-            .create(recursive: true);
-        await Directory('${tempDir.path}/docs/changelog')
-            .create(recursive: true);
+        await Directory(
+          '${tempDir.path}/.agents/agents',
+        ).create(recursive: true);
+        await Directory(
+          '${tempDir.path}/.agents/skills',
+        ).create(recursive: true);
+        await Directory(
+          '${tempDir.path}/.agents/workflows',
+        ).create(recursive: true);
+        await Directory(
+          '${tempDir.path}/docs/tasks/00-planning',
+        ).create(recursive: true);
+        await Directory(
+          '${tempDir.path}/docs/tasks/01-open',
+        ).create(recursive: true);
+        await Directory(
+          '${tempDir.path}/docs/tasks/02-doing',
+        ).create(recursive: true);
+        await Directory(
+          '${tempDir.path}/docs/tasks/03-review',
+        ).create(recursive: true);
+        await Directory(
+          '${tempDir.path}/docs/tasks/04-completed',
+        ).create(recursive: true);
+        await Directory(
+          '${tempDir.path}/docs/changelog',
+        ).create(recursive: true);
 
         final repo = MockWorkspaceRepository(rootPath: tempDir.path);
         final state = await repo.load();
@@ -113,15 +142,16 @@ void main() {
     });
 
     test('handles malformed files gracefully', () async {
-      final tempDir =
-          await Directory.systemTemp.createTemp('mock_repo_malformed_test_');
+      final tempDir = await Directory.systemTemp.createTemp(
+        'mock_repo_malformed_test_',
+      );
       try {
         // Create agent dir with a malformed file
         final agentDir = Directory('${tempDir.path}/.agents/agents');
         await agentDir.create(recursive: true);
-        await File('${agentDir.path}/bad-agent.md').writeAsString(
-          'No frontmatter here, just plain text.',
-        );
+        await File(
+          '${agentDir.path}/bad-agent.md',
+        ).writeAsString('No frontmatter here, just plain text.');
 
         // Create a valid agent
         await File('${agentDir.path}/good-agent.md').writeAsString('''
@@ -150,8 +180,9 @@ description: A properly formatted agent
     });
 
     test('uses workspace_graph.dart backbone types', () async {
-      final tempDir =
-          await Directory.systemTemp.createTemp('mock_repo_types_test_');
+      final tempDir = await Directory.systemTemp.createTemp(
+        'mock_repo_types_test_',
+      );
       try {
         final agentDir = Directory('${tempDir.path}/.agents/agents');
         await agentDir.create(recursive: true);

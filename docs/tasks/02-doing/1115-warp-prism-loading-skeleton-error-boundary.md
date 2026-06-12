@@ -1,6 +1,7 @@
 # Task 1115: Warp Prism Loading Skeleton And Error Boundary
 
 > **Status**: `[x]` Done (awaiting review)
+> **Review State**: Package Gate Failed — implementation complete; pre-existing gallery compilation errors block full package gate
 > **Priority**: 🟡 P1
 > **Type**: `feature` | `design-system`
 > **Origin**: EPIC-11 gap analysis (IMPORTANT GAP-I2 + GAP-I6)

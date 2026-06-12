@@ -46,9 +46,7 @@ class MockWorkspaceRepository implements WorkspaceRepository {
   /// Creates a repository pointing at the given [rootPath].
   ///
   /// Defaults to `assets/mock_workspace` (relative to project root).
-  const MockWorkspaceRepository({
-    this.rootPath = _defaultRoot,
-  });
+  const MockWorkspaceRepository({this.rootPath = _defaultRoot});
 
   @override
   Future<WorkspaceLoadState> load() async {
@@ -148,7 +146,8 @@ class MockWorkspaceRepository implements WorkspaceRepository {
         onError: () => parseErrors++,
       );
 
-      final totalAssets = agents.length +
+      final totalAssets =
+          agents.length +
           skills.length +
           workflows.length +
           tasks.length +
@@ -172,10 +171,7 @@ class MockWorkspaceRepository implements WorkspaceRepository {
         return WorkspaceLoadState.empty(rootPath: rootPath);
       }
 
-      return WorkspaceLoadState.success(
-        snapshot: snapshot,
-        rootPath: rootPath,
-      );
+      return WorkspaceLoadState.success(snapshot: snapshot, rootPath: rootPath);
     } catch (e) {
       return WorkspaceLoadState.error(
         message: 'Failed to load mock workspace: $e',

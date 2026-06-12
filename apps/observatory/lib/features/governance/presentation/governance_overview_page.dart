@@ -7,7 +7,7 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
-import '../../../data/models/governance_diagnostics.dart';
+import 'package:warp_prism_observatory/data/models/governance_diagnostics.dart';
 import 'widgets/governance_boundary_legend.dart';
 
 /// Summary of canonicality boundary metrics from diagnostics.
@@ -93,9 +93,7 @@ class GovernanceOverviewPage extends StatelessWidget {
           const SizedBox(height: DSSpacing.xxl),
 
           // Diagnostics section (if any)
-          if (summary!.diagnostics.isNotEmpty) ...[
-            _buildDiagnosticsSection(),
-          ],
+          if (summary!.diagnostics.isNotEmpty) ...[_buildDiagnosticsSection()],
         ],
       ),
     );
@@ -159,11 +157,36 @@ class GovernanceOverviewPage extends StatelessWidget {
 
   Widget _buildCountCards() {
     final classes = [
-      _ClassCardData('parentCanonical', 'Canonical', DSColors.governanceCanonical, DSIcons.canonical),
-      _ClassCardData('childLocal', 'Child-Local', DSColors.governanceLocal, DSIcons.local),
-      _ClassCardData('generated', 'Generated', DSColors.governanceGenerated, DSIcons.generated),
-      _ClassCardData('appendOnly', 'Append-Only', DSColors.governanceAppendOnly, DSIcons.appendOnly),
-      _ClassCardData('archive', 'Archive', DSColors.governanceArchive, DSIcons.archive),
+      _ClassCardData(
+        'parentCanonical',
+        'Canonical',
+        DSColors.governanceCanonical,
+        DSIcons.canonical,
+      ),
+      _ClassCardData(
+        'childLocal',
+        'Child-Local',
+        DSColors.governanceLocal,
+        DSIcons.local,
+      ),
+      _ClassCardData(
+        'generated',
+        'Generated',
+        DSColors.governanceGenerated,
+        DSIcons.generated,
+      ),
+      _ClassCardData(
+        'appendOnly',
+        'Append-Only',
+        DSColors.governanceAppendOnly,
+        DSIcons.appendOnly,
+      ),
+      _ClassCardData(
+        'archive',
+        'Archive',
+        DSColors.governanceArchive,
+        DSIcons.archive,
+      ),
       _ClassCardData('mock', 'Mock', DSColors.governanceMock, DSIcons.mock),
     ];
 
@@ -183,10 +206,12 @@ class GovernanceOverviewPage extends StatelessWidget {
       children: [
         DSText.labelLarge('DIAGNOSTICS', color: DSColors.textSecondary),
         const SizedBox(height: DSSpacing.md),
-        ...summary!.diagnostics.map((d) => Padding(
-              padding: const EdgeInsets.only(bottom: DSSpacing.xs),
-              child: _DiagnosticRow(diagnostic: d),
-            )),
+        ...summary!.diagnostics.map(
+          (d) => Padding(
+            padding: const EdgeInsets.only(bottom: DSSpacing.xs),
+            child: _DiagnosticRow(diagnostic: d),
+          ),
+        ),
       ],
     );
   }
@@ -277,9 +302,7 @@ class _DiagnosticRow extends StatelessWidget {
       decoration: BoxDecoration(
         color: DSColors.obsidianElevated,
         borderRadius: BorderRadius.circular(DSRadii.sm),
-        border: Border(
-          left: BorderSide(color: severityColor, width: 3),
-        ),
+        border: Border(left: BorderSide(color: severityColor, width: 3)),
       ),
       child: Row(
         children: [

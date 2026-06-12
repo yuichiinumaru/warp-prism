@@ -1,6 +1,7 @@
 # Task 1101: Warp Prism Charter And Naming Convergence
 
 > **Status**: `[ ]` Open
+> **Review State**: Open — unstarted task; lane mismatch (should be in 01-open/)
 > **Priority**: 🔴 P0
 > **Type**: `governance`
 > **Origin**: Task 1100 Warp Prism epic

@@ -19,11 +19,7 @@ class AgentDetailView extends StatelessWidget {
   final AssetDetailDescriptor descriptor;
   final VoidCallback? onClose;
 
-  const AgentDetailView({
-    super.key,
-    required this.descriptor,
-    this.onClose,
-  });
+  const AgentDetailView({super.key, required this.descriptor, this.onClose});
 
   @override
   Widget build(BuildContext context) {

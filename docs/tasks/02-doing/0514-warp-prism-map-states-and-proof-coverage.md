@@ -1,6 +1,7 @@
 # Task 0514: Map empty/loading/error states and proof coverage
 
 > **Status**: `[x]` Done
+> **Review State**: Blocked — Flutter SDK not installed; validation commands cannot execute
 > **Priority**: 🟢 P2
 > **Type**: `feature`
 > **Origin**: `EPIC-05-warp-prism-map-surface.md` scope item for map-specific empty/loading/error states

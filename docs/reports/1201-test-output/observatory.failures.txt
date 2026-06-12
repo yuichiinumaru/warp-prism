@@ -1,0 +1,433 @@
+--- Failure marker at log line 74 ---
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 3 frames from class _AssertionError and package:stack_trace)
+
+The test description was:
+  app boots and renders the shell with default route
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:04 +31 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/deep_link_fallback_test.dart: AssetDetailPage deep-link fallback renders fallback for empty asset ID
+00:04 +31 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_shell_smoke_test.dart: App shell smoke test app boots and renders the shell with default route [E]
+  Test failed. See exception logs above.
+  The test description was: app boots and renders the shell with default route
+  
+00:04 +32 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/deep_link_fallback_test.dart: AssetDetailPage deep-link fallback renders fallback for empty asset ID
+00:04 +33 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/deep_link_fallback_test.dart: AssetDetailPage deep-link fallback renders fallback for empty asset ID
+00:04 +34 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/deep_link_fallback_test.dart: AssetDetailPage deep-link fallback renders fallback for empty asset ID
+00:04 +35 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/deep_link_fallback_test.dart: AssetDetailPage deep-link fallback renders fallback for empty asset ID
+
+--- Failure marker at log line 75 ---
+<asynchronous suspension>
+(elided 3 frames from class _AssertionError and package:stack_trace)
+
+The test description was:
+  app boots and renders the shell with default route
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:04 +31 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/deep_link_fallback_test.dart: AssetDetailPage deep-link fallback renders fallback for empty asset ID
+00:04 +31 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_shell_smoke_test.dart: App shell smoke test app boots and renders the shell with default route [E]
+  Test failed. See exception logs above.
+  The test description was: app boots and renders the shell with default route
+  
+00:04 +32 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/deep_link_fallback_test.dart: AssetDetailPage deep-link fallback renders fallback for empty asset ID
+00:04 +33 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/deep_link_fallback_test.dart: AssetDetailPage deep-link fallback renders fallback for empty asset ID
+00:04 +34 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/deep_link_fallback_test.dart: AssetDetailPage deep-link fallback renders fallback for empty asset ID
+00:04 +35 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/deep_link_fallback_test.dart: AssetDetailPage deep-link fallback renders fallback for empty asset ID
+00:04 +36 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/deep_link_fallback_test.dart: AssetDetailPage deep-link fallback renders fallback for empty asset ID
+
+--- Failure marker at log line 181 ---
+<asynchronous suspension>
+<asynchronous suspension>
+(elided 3 frames from class _AssertionError and package:stack_trace)
+
+The test description was:
+  default route lands on Overview
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:06 +112 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +112 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_shell_smoke_test.dart: App shell smoke test default route lands on Overview [E]
+  Test failed. See exception logs above.
+  The test description was: default route lands on Overview
+  
+00:06 +113 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +114 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +115 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +116 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/sources/preset_local_workspace_source_test.dart: PresetLocalWorkspaceSource returns empty snapshot for directory with no .agents or docs
+
+--- Failure marker at log line 182 ---
+<asynchronous suspension>
+(elided 3 frames from class _AssertionError and package:stack_trace)
+
+The test description was:
+  default route lands on Overview
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:06 +112 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +112 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_shell_smoke_test.dart: App shell smoke test default route lands on Overview [E]
+  Test failed. See exception logs above.
+  The test description was: default route lands on Overview
+  
+00:06 +113 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +114 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +115 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+00:06 +116 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/sources/preset_local_workspace_source_test.dart: PresetLocalWorkspaceSource returns empty snapshot for directory with no .agents or docs
+00:07 +117 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/data/sources/preset_local_workspace_source_test.dart: PresetLocalWorkspaceSource returns empty snapshot for directory with no .agents or docs
+
+--- Failure marker at log line 427 ---
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart line 124
+The test description was:
+  renders graph tab with projection when edges exist
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:19 +331 -3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders search bar
+00:19 +331 -3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders graph tab with projection when edges exist [E]
+  Test failed. See exception logs above.
+  The test description was: renders graph tab with projection when edges exist
+  
+00:19 +332 -3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders search bar
+00:19 +333 -3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders search bar
+00:19 +334 -3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders search bar
+00:20 +335 -3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders search bar
+
+--- Failure marker at log line 428 ---
+
+This was caught by the test expectation on the following line:
+  file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart line 124
+The test description was:
+  renders graph tab with projection when edges exist
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:19 +331 -3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders search bar
+00:19 +331 -3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders graph tab with projection when edges exist [E]
+  Test failed. See exception logs above.
+  The test description was: renders graph tab with projection when edges exist
+  
+00:19 +332 -3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders search bar
+00:19 +333 -3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders search bar
+00:19 +334 -3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders search bar
+00:20 +335 -3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders search bar
+00:20 +336 -3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders search bar
+
+--- Failure marker at log line 468 ---
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_selection_and_inspector_test.dart line 353
+The test description was:
+  switches from selected to no-selection when cleared
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:21 +345 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+00:21 +345 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_selection_and_inspector_test.dart: MapInspectorPanel widget switches from selected to no-selection when cleared [E]
+  Test failed. See exception logs above.
+  The test description was: switches from selected to no-selection when cleared
+  
+00:21 +346 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+00:21 +347 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+00:21 +348 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+00:21 +349 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+
+--- Failure marker at log line 469 ---
+
+This was caught by the test expectation on the following line:
+  file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_selection_and_inspector_test.dart line 353
+The test description was:
+  switches from selected to no-selection when cleared
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:21 +345 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+00:21 +345 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_selection_and_inspector_test.dart: MapInspectorPanel widget switches from selected to no-selection when cleared [E]
+  Test failed. See exception logs above.
+  The test description was: switches from selected to no-selection when cleared
+  
+00:21 +346 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+00:21 +347 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+00:21 +348 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+00:21 +349 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+00:21 +350 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+
+--- Failure marker at log line 512 ---
+
+This was caught by the test expectation on the following line:
+  file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart line 249
+The test description was:
+  shows catalog panel on first tab (Agents)
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:21 +362 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget shows catalog panel on first tab (Agents)
+00:21 +362 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - no-results state shows no-results when filters eliminate all assets
+00:21 +362 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget shows catalog panel on first tab (Agents) [E]
+  Test failed. See exception logs above.
+  The test description was: shows catalog panel on first tab (Agents)
+  
+00:21 +363 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - no-results state shows no-results when filters eliminate all assets
+00:21 +364 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders no-results state when filteredAssets is empty
+00:21 +365 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders no-results state when filteredAssets is empty
+00:21 +366 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders no-results state when filteredAssets is empty
+
+--- Failure marker at log line 513 ---
+This was caught by the test expectation on the following line:
+  file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart line 249
+The test description was:
+  shows catalog panel on first tab (Agents)
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:21 +362 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget shows catalog panel on first tab (Agents)
+00:21 +362 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - no-results state shows no-results when filters eliminate all assets
+00:21 +362 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget shows catalog panel on first tab (Agents) [E]
+  Test failed. See exception logs above.
+  The test description was: shows catalog panel on first tab (Agents)
+  
+00:21 +363 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - no-results state shows no-results when filters eliminate all assets
+00:21 +364 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders no-results state when filteredAssets is empty
+00:21 +365 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders no-results state when filteredAssets is empty
+00:21 +366 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders no-results state when filteredAssets is empty
+00:21 +367 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders no-results state when filteredAssets is empty
+
+--- Failure marker at log line 581 ---
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart line 289
+The test description was:
+  error state shows retry button
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:22 +404 -6: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget switching tabs shows correct content
+00:22 +404 -6: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - error state error state shows retry button [E]
+  Test failed. See exception logs above.
+  The test description was: error state shows retry button
+  
+00:23 +404 -6: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget switching tabs shows correct content
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: at least one matching candidate
+
+--- Failure marker at log line 582 ---
+
+This was caught by the test expectation on the following line:
+  file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart line 289
+The test description was:
+  error state shows retry button
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:22 +404 -6: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget switching tabs shows correct content
+00:22 +404 -6: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - error state error state shows retry button [E]
+  Test failed. See exception logs above.
+  The test description was: error state shows retry button
+  
+00:23 +404 -6: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget switching tabs shows correct content
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: at least one matching candidate
+  Actual: _TypeWidgetFinder:<Found 0 widgets with type "DSSearchBar": []>
+
+--- Failure marker at log line 608 ---
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart line 259
+The test description was:
+  switching tabs shows correct content
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:23 +404 -7: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders verification commands
+00:23 +404 -7: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget switching tabs shows correct content [E]
+  Test failed. See exception logs above.
+  The test description was: switching tabs shows correct content
+  
+00:23 +405 -7: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders verification commands
+00:23 +406 -7: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders verification commands
+00:23 +407 -7: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders verification commands
+00:23 +408 -7: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+
+--- Failure marker at log line 609 ---
+
+This was caught by the test expectation on the following line:
+  file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart line 259
+The test description was:
+  switching tabs shows correct content
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:23 +404 -7: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders verification commands
+00:23 +404 -7: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget switching tabs shows correct content [E]
+  Test failed. See exception logs above.
+  The test description was: switching tabs shows correct content
+  
+00:23 +405 -7: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders verification commands
+00:23 +406 -7: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders verification commands
+00:23 +407 -7: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders verification commands
+00:23 +408 -7: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+00:23 +408 -7: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget renders with initial state specifying a subview
+
+--- Failure marker at log line 639 ---
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart line 279
+The test description was:
+  renders with initial state specifying a subview
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:23 +408 -8: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+00:23 +408 -8: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget renders with initial state specifying a subview [E]
+  Test failed. See exception logs above.
+  The test description was: renders with initial state specifying a subview
+  
+00:23 +409 -8: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+00:24 +410 -8: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+00:24 +410 -8: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapNoResultsState widget shows message for query with no results
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+
+--- Failure marker at log line 640 ---
+
+This was caught by the test expectation on the following line:
+  file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart line 279
+The test description was:
+  renders with initial state specifying a subview
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:23 +408 -8: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+00:23 +408 -8: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget renders with initial state specifying a subview [E]
+  Test failed. See exception logs above.
+  The test description was: renders with initial state specifying a subview
+  
+00:23 +409 -8: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+00:24 +410 -8: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+00:24 +410 -8: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapNoResultsState widget shows message for query with no results
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+
+--- Failure marker at log line 668 ---
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart line 428
+The test description was:
+  shows message for query with no results
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:24 +410 -9: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+00:24 +410 -9: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapNoResultsState widget shows message for query with no results [E]
+  Test failed. See exception logs above.
+  The test description was: shows message for query with no results
+  
+00:24 +411 -9: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+00:24 +412 -9: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+00:24 +413 -9: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+00:24 +414 -9: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+
+--- Failure marker at log line 669 ---
+
+This was caught by the test expectation on the following line:
+  file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart line 428
+The test description was:
+  shows message for query with no results
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:24 +410 -9: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+00:24 +410 -9: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapNoResultsState widget shows message for query with no results [E]
+  Test failed. See exception logs above.
+  The test description was: shows message for query with no results
+  
+00:24 +411 -9: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+00:24 +412 -9: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+00:24 +413 -9: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+00:24 +414 -9: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+00:24 +415 -9: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+
+--- Failure marker at log line 716 ---
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart line 130
+The test description was:
+  renders exit conditions with checked state
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:26 +422 -10: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_page_test.dart: HistoryWorkspacePage renders timeline entries in reverse chronological order
+00:26 +422 -10: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders exit conditions with checked state [E]
+  Test failed. See exception logs above.
+  The test description was: renders exit conditions with checked state
+  
+00:26 +423 -10: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_page_test.dart: HistoryWorkspacePage renders timeline entries in reverse chronological order
+00:26 +424 -10: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_page_test.dart: HistoryWorkspacePage renders timeline entries in reverse chronological order
+00:26 +425 -10: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_page_test.dart: HistoryWorkspacePage renders timeline entries in reverse chronological order
+00:26 +426 -10: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_page_test.dart: HistoryWorkspacePage renders timeline entries in reverse chronological order
+
+--- Failure marker at log line 717 ---
+
+This was caught by the test expectation on the following line:
+  file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart line 130
+The test description was:
+  renders exit conditions with checked state
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:26 +422 -10: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_page_test.dart: HistoryWorkspacePage renders timeline entries in reverse chronological order
+00:26 +422 -10: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders exit conditions with checked state [E]
+  Test failed. See exception logs above.
+  The test description was: renders exit conditions with checked state
+  
+00:26 +423 -10: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_page_test.dart: HistoryWorkspacePage renders timeline entries in reverse chronological order
+00:26 +424 -10: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_page_test.dart: HistoryWorkspacePage renders timeline entries in reverse chronological order
+00:26 +425 -10: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_page_test.dart: HistoryWorkspacePage renders timeline entries in reverse chronological order
+00:26 +426 -10: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_page_test.dart: HistoryWorkspacePage renders timeline entries in reverse chronological order
+00:27 +427 -10: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+
+--- Failure marker at log line 774 ---
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart line 168
+The test description was:
+  close button triggers onClose callback
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:29 +431 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:29 +431 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel close button triggers onClose callback [E]
+  Test failed. See exception logs above.
+  The test description was: close button triggers onClose callback
+  
+00:29 +432 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:29 +433 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:29 +434 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:29 +435 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+
+--- Failure marker at log line 775 ---
+
+This was caught by the test expectation on the following line:
+  file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart line 168
+The test description was:
+  close button triggers onClose callback
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:29 +431 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:29 +431 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel close button triggers onClose callback [E]
+  Test failed. See exception logs above.
+  The test description was: close button triggers onClose callback
+  
+00:29 +432 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:29 +433 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:29 +434 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:29 +435 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+00:29 +436 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+
+--- Failure marker at log line 918 ---
+
+This was caught by the test expectation on the following line:
+  file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/governance/governance_analytics_panels_test.dart line 341
+The test description was:
+  renders lane breakdown chips
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:34 +540 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +540 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +540 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/governance/governance_analytics_panels_test.dart: ReviewPressurePanel renders lane breakdown chips [E]
+  Test failed. See exception logs above.
+  The test description was: renders lane breakdown chips
+  
+00:34 +541 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +542 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +543 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +544 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+
+--- Failure marker at log line 919 ---
+This was caught by the test expectation on the following line:
+  file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/governance/governance_analytics_panels_test.dart line 341
+The test description was:
+  renders lane breakdown chips
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:34 +540 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +540 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +540 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/governance/governance_analytics_panels_test.dart: ReviewPressurePanel renders lane breakdown chips [E]
+  Test failed. See exception logs above.
+  The test description was: renders lane breakdown chips
+  
+00:34 +541 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +542 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +543 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +544 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+00:34 +545 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+
+TOTAL_FAILURE_MARKERS=24

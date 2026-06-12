@@ -1,6 +1,7 @@
 # Task 1030: Warp-Prism Empty, Loading, and Error State Coherence
 
 > **Status**: `[x]` Done
+> **Review State**: Blocked — Flutter SDK not installed; validation commands cannot execute
 > **Priority**: 🟡 P1
 > **Type**: `feature`
 > **Origin**: EPIC 10 candidate story "Empty/loading/error state pass" plus prompt requirements for clear status handling

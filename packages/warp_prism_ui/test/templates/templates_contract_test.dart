@@ -48,6 +48,11 @@ void main() {
     testWidgets('shows detail panel when showDetail is true at wide width', (
       tester,
     ) async {
+      // Ensure the test surface is wide enough for side-by-side layout.
+      // Content area = surface width - sidebar (240) must >= 1200.
+      await tester.binding.setSurfaceSize(const Size(1600, 900));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+
       const sidebarItems = [
         DSSidebarItem(id: 'op', label: 'Operate', icon: Icons.play_circle),
       ];
@@ -55,18 +60,14 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: SizedBox(
-              width: 1400,
-              height: 900,
-              child: MasterDetailTemplate(
-                sidebarItems: sidebarItems,
-                selectedIndex: 0,
-                onSidebarItemSelected: (_) {},
-                title: 'Operate',
-                masterContent: Container(key: const Key('master')),
-                detailContent: Container(key: const Key('detail')),
-                showDetail: true,
-              ),
+            body: MasterDetailTemplate(
+              sidebarItems: sidebarItems,
+              selectedIndex: 0,
+              onSidebarItemSelected: (_) {},
+              title: 'Operate',
+              masterContent: Container(key: const Key('master')),
+              detailContent: Container(key: const Key('detail')),
+              showDetail: true,
             ),
           ),
         ),
@@ -79,31 +80,32 @@ void main() {
     testWidgets('renders search bar when onSearchChanged is provided', (
       tester,
     ) async {
+      // DSTopbar collapses search when maxWidth < DSBreakpoints.narrow (600).
+      // Ensure the test surface is wide enough for search to render.
+      await tester.binding.setSurfaceSize(const Size(1600, 900));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+
       const sidebarItems = [
         DSSidebarItem(id: 'map', label: 'Map', icon: Icons.hub_outlined),
       ];
 
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: SizedBox(
-              width: 1400,
-              height: 900,
-              child: MasterDetailTemplate(
-                sidebarItems: sidebarItems,
-                selectedIndex: 0,
-                onSidebarItemSelected: (_) {},
-                title: 'Map',
-                onSearchChanged: (_) {},
-                masterContent: const SizedBox(),
-              ),
+          home: Material(
+            child: MasterDetailTemplate(
+              sidebarItems: sidebarItems,
+              selectedIndex: 0,
+              onSidebarItemSelected: (_) {},
+              title: 'Map',
+              onSearchChanged: (_) {},
+              masterContent: const SizedBox(),
             ),
           ),
         ),
       );
 
-      // DSSearchBar should be present
-      expect(find.byType(TextField), findsOneWidget);
+      // DSSearchBar should be present (renders TextField inside)
+      expect(find.byType(DSSearchBar), findsOneWidget);
     });
 
     testWidgets('renders filter chips when filters are provided', (
@@ -171,9 +173,7 @@ void main() {
       expect(find.byKey(const Key('canvas')), findsOneWidget);
     });
 
-    testWidgets('shows overlay panel when showOverlay is true', (
-      tester,
-    ) async {
+    testWidgets('shows overlay panel when showOverlay is true', (tester) async {
       const sidebarItems = [
         DSSidebarItem(id: 'map', label: 'Map', icon: Icons.hub_outlined),
       ];
@@ -242,7 +242,10 @@ void main() {
         ),
       );
 
-      expect(find.text('History'), findsOneWidget);
+      expect(
+        find.text('History'),
+        findsNWidgets(2),
+      ); // sidebar label + topbar title
       expect(find.text('Initial setup'), findsOneWidget);
       expect(find.text('Bug fix'), findsOneWidget);
     });

@@ -20,10 +20,7 @@ void main() {
             body: SizedBox(
               width: 800,
               height: 600,
-              child: DSGraphCanvas(
-                nodes: [],
-                edges: [],
-              ),
+              child: DSGraphCanvas(nodes: [], edges: []),
             ),
           ),
         ),
@@ -37,9 +34,7 @@ void main() {
         GraphNode(id: 'a', label: 'Alpha', type: 'agent'),
         GraphNode(id: 'b', label: 'Beta', type: 'skill'),
       ];
-      const edges = [
-        GraphEdge(sourceId: 'a', targetId: 'b'),
-      ];
+      const edges = [GraphEdge(sourceId: 'a', targetId: 'b')];
 
       await tester.pumpWidget(
         MaterialApp(
@@ -58,9 +53,7 @@ void main() {
     });
 
     testWidgets('renders with all optional parameters', (tester) async {
-      final nodes = [
-        GraphNode(id: 'x', label: 'NodeX', type: 'workflow'),
-      ];
+      final nodes = [GraphNode(id: 'x', label: 'NodeX', type: 'workflow')];
       const edges = <GraphEdge>[];
 
       String? tappedId;

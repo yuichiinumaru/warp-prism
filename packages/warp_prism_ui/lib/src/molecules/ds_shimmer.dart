@@ -64,10 +64,8 @@ class _DSShimmerState extends State<DSShimmer>
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: widget.duration,
-    )..repeat();
+    _controller = AnimationController(vsync: this, duration: widget.duration)
+      ..repeat();
   }
 
   @override
@@ -90,8 +88,7 @@ class _DSShimmerState extends State<DSShimmer>
   @override
   Widget build(BuildContext context) {
     final effectiveBase = widget.baseColor ?? DSColors.obsidianHover;
-    final effectiveHighlight =
-        widget.highlightColor ?? DSColors.glassOverlay;
+    final effectiveHighlight = widget.highlightColor ?? DSColors.glassOverlay;
 
     return AnimatedBuilder(
       animation: _controller,

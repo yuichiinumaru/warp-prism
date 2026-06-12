@@ -8,6 +8,7 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
+import '../../../data/models/workspace_graph.dart';
 import '../domain/asset_detail_descriptor.dart';
 import 'detail_section_builder.dart';
 
@@ -53,16 +54,22 @@ class GenericAssetDetailView extends StatelessWidget {
       title: asset.name,
       kind: asset.kind.name,
       subtitle: _buildSubtitle(asset, descriptor),
-      headerActions: descriptor.isFallback ? _PartialSupportBanner(
-        message: descriptor.fallbackMessage ??
-            '${asset.kind.name} assets have limited detail support.',
-      ) : null,
+      headerActions: descriptor.isFallback
+          ? _PartialSupportBanner(
+              message:
+                  descriptor.fallbackMessage ??
+                  '${asset.kind.name} assets have limited detail support.',
+            )
+          : null,
       sections: sections,
       onClose: onClose,
     );
   }
 
-  String _buildSubtitle(dynamic asset, AssetDetailDescriptor descriptor) {
+  String _buildSubtitle(
+    WorkspaceAsset asset,
+    AssetDetailDescriptor descriptor,
+  ) {
     final parts = <String>[
       asset.kind.name,
       if (asset.description.isNotEmpty) asset.description,
@@ -87,9 +94,7 @@ class _PartialSupportBanner extends StatelessWidget {
       decoration: BoxDecoration(
         color: DSColors.statusWarning.withOpacity(0.1),
         borderRadius: BorderRadius.circular(DSRadii.sm),
-        border: Border.all(
-          color: DSColors.statusWarning.withOpacity(0.3),
-        ),
+        border: Border.all(color: DSColors.statusWarning.withOpacity(0.3)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

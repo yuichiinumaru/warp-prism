@@ -1,6 +1,7 @@
 # Task 1070: Warp-Prism Task Namespace Integrity Verification
 
 > **Status**: `[x]` Done
+> **Review State**: Blocked — Flutter SDK not installed; validation commands cannot execute
 > **Priority**: 🟡 P1
 > **Type**: `governance`
 > **Origin**: reviewer task-governance audit of `warp-prism/docs/tasks/01-open/` executable identity drift

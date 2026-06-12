@@ -12,8 +12,8 @@ import 'package:warp_prism_ui/warp_prism_ui.dart';
 void main() {
   group('DSStateSurface Contract', () {
     group('DSStateType enum', () {
-      test('has exactly three distinct states', () {
-        expect(DSStateType.values.length, equals(3));
+      test('has exactly seven distinct states (3 data + 4 operational)', () {
+        expect(DSStateType.values.length, equals(7));
       });
 
       test('defines empty, loading, and error', () {
@@ -25,9 +25,7 @@ void main() {
 
     group('empty state constructor', () {
       test('creates with required title', () {
-        const surface = DSStateSurface.empty(
-          title: 'No tasks',
-        );
+        const surface = DSStateSurface.empty(title: 'No tasks');
         expect(surface.stateType, equals(DSStateType.empty));
         expect(surface.title, equals('No tasks'));
       });
@@ -52,10 +50,7 @@ void main() {
       });
 
       test('accepts compact flag', () {
-        const surface = DSStateSurface.empty(
-          title: 'No tasks',
-          compact: true,
-        );
+        const surface = DSStateSurface.empty(title: 'No tasks', compact: true);
         expect(surface.compact, isTrue);
       });
     });
@@ -68,26 +63,20 @@ void main() {
       });
 
       test('accepts custom title', () {
-        const surface = DSStateSurface.loading(
-          title: 'Parsing workspace...',
-        );
+        const surface = DSStateSurface.loading(title: 'Parsing workspace...');
         expect(surface.title, equals('Parsing workspace...'));
       });
     });
 
     group('error state constructor', () {
       test('creates with required title', () {
-        const surface = DSStateSurface.error(
-          title: 'Failed to load',
-        );
+        const surface = DSStateSurface.error(title: 'Failed to load');
         expect(surface.stateType, equals(DSStateType.error));
         expect(surface.title, equals('Failed to load'));
       });
 
       test('defaults action label to Retry', () {
-        const surface = DSStateSurface.error(
-          title: 'Failed to load',
-        );
+        const surface = DSStateSurface.error(title: 'Failed to load');
         expect(surface.actionLabel, equals('Retry'));
       });
 
@@ -117,9 +106,7 @@ void main() {
         await tester.pumpWidget(
           const MaterialApp(
             home: Scaffold(
-              body: DSStateSurface.empty(
-                title: 'No assets found',
-              ),
+              body: DSStateSurface.empty(title: 'No assets found'),
             ),
           ),
         );
@@ -147,9 +134,7 @@ void main() {
         await tester.pumpWidget(
           const MaterialApp(
             home: Scaffold(
-              body: DSStateSurface.loading(
-                title: 'Loading workspace...',
-              ),
+              body: DSStateSurface.loading(title: 'Loading workspace...'),
             ),
           ),
         );
@@ -159,11 +144,7 @@ void main() {
 
       testWidgets('loading state shows progress indicator', (tester) async {
         await tester.pumpWidget(
-          const MaterialApp(
-            home: Scaffold(
-              body: DSStateSurface.loading(),
-            ),
-          ),
+          const MaterialApp(home: Scaffold(body: DSStateSurface.loading())),
         );
 
         expect(find.byType(CircularProgressIndicator), findsOneWidget);
@@ -185,8 +166,9 @@ void main() {
         expect(find.text('The YAML file is malformed'), findsOneWidget);
       });
 
-      testWidgets('error state renders retry button when onAction provided',
-          (tester) async {
+      testWidgets('error state renders retry button when onAction provided', (
+        tester,
+      ) async {
         var retried = false;
         await tester.pumpWidget(
           MaterialApp(
@@ -205,8 +187,9 @@ void main() {
         expect(retried, isTrue);
       });
 
-      testWidgets('action button is not rendered when onAction is null',
-          (tester) async {
+      testWidgets('action button is not rendered when onAction is null', (
+        tester,
+      ) async {
         await tester.pumpWidget(
           const MaterialApp(
             home: Scaffold(
@@ -226,15 +209,109 @@ void main() {
         await tester.pumpWidget(
           const MaterialApp(
             home: Scaffold(
-              body: DSStateSurface.empty(
-                title: 'No tasks',
-                compact: true,
-              ),
+              body: DSStateSurface.empty(title: 'No tasks', compact: true),
             ),
           ),
         );
 
         expect(find.text('No tasks'), findsOneWidget);
+      });
+
+      // ── Operational state constructors ────────────────────────────────
+      testWidgets('disabled state renders title and block icon', (
+        tester,
+      ) async {
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(
+              body: DSStateSurface.disabled(title: 'Feature Disabled'),
+            ),
+          ),
+        );
+        expect(find.text('Feature Disabled'), findsOneWidget);
+        expect(find.byIcon(Icons.block), findsOneWidget);
+      });
+
+      testWidgets('stale state renders title and update icon', (tester) async {
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(body: DSStateSurface.stale(title: 'Data Outdated')),
+          ),
+        );
+        expect(find.text('Data Outdated'), findsOneWidget);
+        expect(find.byIcon(Icons.update), findsOneWidget);
+      });
+
+      testWidgets('degraded state renders title and warning icon', (
+        tester,
+      ) async {
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(
+              body: DSStateSurface.degraded(title: 'Partial Data'),
+            ),
+          ),
+        );
+        expect(find.text('Partial Data'), findsOneWidget);
+        expect(find.byIcon(Icons.warning_amber), findsOneWidget);
+      });
+
+      testWidgets('excluded state renders title and remove icon', (
+        tester,
+      ) async {
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(
+              body: DSStateSurface.excluded(title: 'Filtered Out'),
+            ),
+          ),
+        );
+        expect(find.text('Filtered Out'), findsOneWidget);
+        expect(find.byIcon(Icons.remove_circle_outline), findsOneWidget);
+      });
+
+      testWidgets('all 7 constructors render distinct titles', (tester) async {
+        final constructors = <String, DSStateType>{
+          'Empty': DSStateType.empty,
+          'Loading': DSStateType.loading,
+          'Error': DSStateType.error,
+          'Disabled': DSStateType.disabled,
+          'Stale': DSStateType.stale,
+          'Degraded': DSStateType.degraded,
+          'Excluded': DSStateType.excluded,
+        };
+
+        for (final entry in constructors.entries) {
+          await tester.pumpWidget(
+            MaterialApp(
+              home: Scaffold(
+                body: DSStateSurface(stateType: entry.value, title: entry.key),
+              ),
+            ),
+          );
+          expect(
+            find.text(entry.key),
+            findsOneWidget,
+            reason: '${entry.key} constructor should render its title',
+          );
+        }
+      });
+
+      testWidgets('stale default action label is Refresh', (tester) async {
+        var called = false;
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: DSStateSurface.stale(
+                title: 'Stale',
+                onAction: () => called = true,
+              ),
+            ),
+          ),
+        );
+        expect(find.text('Refresh'), findsOneWidget);
+        await tester.tap(find.text('Refresh'));
+        expect(called, isTrue);
       });
     });
   });

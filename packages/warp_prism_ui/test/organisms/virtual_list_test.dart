@@ -7,8 +7,8 @@ void main() {
   // Helper
   // ---------------------------------------------------------------------------
   Widget wrap(Widget child) => MaterialApp(
-        home: Scaffold(body: SizedBox(width: 800, height: 600, child: child)),
-      );
+    home: Scaffold(body: SizedBox(width: 800, height: 600, child: child)),
+  );
 
   // ---------------------------------------------------------------------------
   // GROUP: DSVirtualScrollConfig
@@ -42,10 +42,7 @@ void main() {
 
     test('copyWith overrides specified fields', () {
       const config = DSVirtualScrollConfig();
-      final updated = config.copyWith(
-        itemExtent: 56.0,
-        cacheExtent: 400.0,
-      );
+      final updated = config.copyWith(itemExtent: 56.0, cacheExtent: 400.0);
       expect(updated.itemExtent, 56.0);
       expect(updated.cacheExtent, 400.0);
       expect(updated.addAutomaticKeepAlives, isTrue);
@@ -72,12 +69,14 @@ void main() {
   group('DSVirtualList fixed extent', () {
     testWidgets('renders items with fixed extent', (tester) async {
       await tester.pumpWidget(
-        wrap(DSVirtualList(
-          itemCount: 100,
-          config: DSVirtualScrollConfig.fixed,
-          itemBuilder: (context, index) =>
-              SizedBox(height: 48, child: Text('Item $index')),
-        )),
+        wrap(
+          DSVirtualList(
+            itemCount: 100,
+            config: DSVirtualScrollConfig.fixed,
+            itemBuilder: (context, index) =>
+                SizedBox(height: 48, child: Text('Item $index')),
+          ),
+        ),
       );
 
       // First visible items should be rendered
@@ -89,14 +88,16 @@ void main() {
       var buildCount = 0;
 
       await tester.pumpWidget(
-        wrap(DSVirtualList(
-          itemCount: 100,
-          config: DSVirtualScrollConfig.fixed,
-          itemBuilder: (context, index) {
-            buildCount++;
-            return SizedBox(height: 48, child: Text('Item $index'));
-          },
-        )),
+        wrap(
+          DSVirtualList(
+            itemCount: 100,
+            config: DSVirtualScrollConfig.fixed,
+            itemBuilder: (context, index) {
+              buildCount++;
+              return SizedBox(height: 48, child: Text('Item $index'));
+            },
+          ),
+        ),
       );
 
       // With 600px viewport and 48px items, ~12-13 items should be visible
@@ -106,12 +107,14 @@ void main() {
 
     testWidgets('has semantic label when provided', (tester) async {
       await tester.pumpWidget(
-        wrap(DSVirtualList(
-          itemCount: 10,
-          config: DSVirtualScrollConfig.fixed,
-          semanticLabel: 'Test list',
-          itemBuilder: (context, index) => Text('Item $index'),
-        )),
+        wrap(
+          DSVirtualList(
+            itemCount: 10,
+            config: DSVirtualScrollConfig.fixed,
+            semanticLabel: 'Test list',
+            itemBuilder: (context, index) => Text('Item $index'),
+          ),
+        ),
       );
 
       expect(find.bySemanticsLabel('Test list'), findsOneWidget);
@@ -124,12 +127,14 @@ void main() {
   group('DSVirtualList variable extent', () {
     testWidgets('renders items without itemExtent', (tester) async {
       await tester.pumpWidget(
-        wrap(DSVirtualList(
-          itemCount: 50,
-          config: DSVirtualScrollConfig.variable,
-          itemBuilder: (context, index) =>
-              ListTile(title: Text('Var Item $index')),
-        )),
+        wrap(
+          DSVirtualList(
+            itemCount: 50,
+            config: DSVirtualScrollConfig.variable,
+            itemBuilder: (context, index) =>
+                ListTile(title: Text('Var Item $index')),
+          ),
+        ),
       );
 
       expect(find.text('Var Item 0'), findsOneWidget);
@@ -142,11 +147,13 @@ void main() {
   group('DSVirtualList edge cases', () {
     testWidgets('renders empty list without error', (tester) async {
       await tester.pumpWidget(
-        wrap(DSVirtualList(
-          itemCount: 0,
-          config: DSVirtualScrollConfig.fixed,
-          itemBuilder: (context, index) => const SizedBox.shrink(),
-        )),
+        wrap(
+          DSVirtualList(
+            itemCount: 0,
+            config: DSVirtualScrollConfig.fixed,
+            itemBuilder: (context, index) => const SizedBox.shrink(),
+          ),
+        ),
       );
 
       // Should render without throwing
@@ -155,11 +162,13 @@ void main() {
 
     testWidgets('renders single item correctly', (tester) async {
       await tester.pumpWidget(
-        wrap(DSVirtualList(
-          itemCount: 1,
-          config: DSVirtualScrollConfig.fixed,
-          itemBuilder: (context, index) => const Text('Only item'),
-        )),
+        wrap(
+          DSVirtualList(
+            itemCount: 1,
+            config: DSVirtualScrollConfig.fixed,
+            itemBuilder: (context, index) => const Text('Only item'),
+          ),
+        ),
       );
 
       expect(find.text('Only item'), findsOneWidget);
@@ -172,26 +181,31 @@ void main() {
   group('DSVirtualList keyboard navigation', () {
     testWidgets('enables keyboard navigation by default', (tester) async {
       await tester.pumpWidget(
-        wrap(DSVirtualList(
-          itemCount: 1000,
-          config: DSVirtualScrollConfig.fixed,
-          itemBuilder: (context, index) => Text('Item $index'),
-        )),
+        wrap(
+          DSVirtualList(
+            itemCount: 1000,
+            config: DSVirtualScrollConfig.fixed,
+            itemBuilder: (context, index) => Text('Item $index'),
+          ),
+        ),
       );
 
       // The Focus widget should be in the tree for keyboard handling
       expect(find.byType(Focus), findsWidgets);
     });
 
-    testWidgets('disables keyboard navigation when set to false',
-        (tester) async {
+    testWidgets('disables keyboard navigation when set to false', (
+      tester,
+    ) async {
       await tester.pumpWidget(
-        wrap(DSVirtualList(
-          itemCount: 100,
-          enableKeyboardNavigation: false,
-          config: DSVirtualScrollConfig.fixed,
-          itemBuilder: (context, index) => Text('Item $index'),
-        )),
+        wrap(
+          DSVirtualList(
+            itemCount: 100,
+            enableKeyboardNavigation: false,
+            config: DSVirtualScrollConfig.fixed,
+            itemBuilder: (context, index) => Text('Item $index'),
+          ),
+        ),
       );
 
       // Should still render without Focus wrapper for key handling
@@ -209,42 +223,43 @@ void main() {
 
       // Test with large cache extent.
       await tester.pumpWidget(
-        wrap(DSVirtualList(
-          itemCount: 1000,
-          config: const DSVirtualScrollConfig(
-            itemExtent: 48.0,
-            cacheExtent: 500.0,
+        wrap(
+          DSVirtualList(
+            itemCount: 1000,
+            config: const DSVirtualScrollConfig(
+              itemExtent: 48.0,
+              cacheExtent: 500.0,
+            ),
+            itemBuilder: (context, index) {
+              buildCountLargeCache++;
+              return Text('Item $index');
+            },
           ),
-          itemBuilder: (context, index) {
-            buildCountLargeCache++;
-            return Text('Item $index');
-          },
-        )),
+        ),
       );
 
       // Test with small cache extent.
       await tester.pumpWidget(
-        wrap(DSVirtualList(
-          itemCount: 1000,
-          config: const DSVirtualScrollConfig(
-            itemExtent: 48.0,
-            cacheExtent: 50.0,
+        wrap(
+          DSVirtualList(
+            itemCount: 1000,
+            config: const DSVirtualScrollConfig(
+              itemExtent: 48.0,
+              cacheExtent: 50.0,
+            ),
+            itemBuilder: (context, index) {
+              buildCountSmallCache++;
+              return Text('Item $index');
+            },
           ),
-          itemBuilder: (context, index) {
-            buildCountSmallCache++;
-            return Text('Item $index');
-          },
-        )),
+        ),
       );
 
       // Both should virtualize (not build all 1000).
       expect(buildCountLargeCache, lessThan(1000));
       expect(buildCountSmallCache, lessThan(1000));
       // Larger cache should build at least as many items.
-      expect(
-        buildCountLargeCache,
-        greaterThanOrEqualTo(buildCountSmallCache),
-      );
+      expect(buildCountLargeCache, greaterThanOrEqualTo(buildCountSmallCache));
     });
   });
 
@@ -256,12 +271,14 @@ void main() {
       final controller = ScrollController();
 
       await tester.pumpWidget(
-        wrap(DSVirtualList(
-          itemCount: 1000,
-          scrollController: controller,
-          config: DSVirtualScrollConfig.fixed,
-          itemBuilder: (context, index) => Text('Item $index'),
-        )),
+        wrap(
+          DSVirtualList(
+            itemCount: 1000,
+            scrollController: controller,
+            config: DSVirtualScrollConfig.fixed,
+            itemBuilder: (context, index) => Text('Item $index'),
+          ),
+        ),
       );
 
       // Scroll down
@@ -272,12 +289,14 @@ void main() {
 
       // Rebuild the widget with same controller
       await tester.pumpWidget(
-        wrap(DSVirtualList(
-          itemCount: 1000,
-          scrollController: controller,
-          config: DSVirtualScrollConfig.fixed,
-          itemBuilder: (context, index) => Text('Item $index'),
-        )),
+        wrap(
+          DSVirtualList(
+            itemCount: 1000,
+            scrollController: controller,
+            config: DSVirtualScrollConfig.fixed,
+            itemBuilder: (context, index) => Text('Item $index'),
+          ),
+        ),
       );
 
       expect(controller.offset, equals(scrollOffset));
@@ -289,27 +308,27 @@ void main() {
   // GROUP: DSVirtualList integration with DSDataTable
   // ---------------------------------------------------------------------------
   group('DSDataTable with DSVirtualList', () {
-    testWidgets('renders with virtualScrollConfig for large datasets',
-        (tester) async {
+    testWidgets('renders with virtualScrollConfig for large datasets', (
+      tester,
+    ) async {
       final rows = List.generate(
         100,
-        (i) => DSDataRow(
-          id: '$i',
-          cells: {'name': 'Item $i'},
-        ),
+        (i) => DSDataRow(id: '$i', cells: {'name': 'Item $i'}),
       );
 
       await tester.pumpWidget(
-        wrap(DSDataTable(
-          columns: const [DSDataColumn(id: 'name', label: 'Name')],
-          rows: rows,
-          paginated: false,
-          showPagination: false,
-          virtualScrollConfig: const DSVirtualScrollConfig(
-            itemExtent: 48.0,
-            cacheExtent: 250.0,
+        wrap(
+          DSDataTable(
+            columns: const [DSDataColumn(id: 'name', label: 'Name')],
+            rows: rows,
+            paginated: false,
+            showPagination: false,
+            virtualScrollConfig: const DSVirtualScrollConfig(
+              itemExtent: 48.0,
+              cacheExtent: 250.0,
+            ),
           ),
-        )),
+        ),
       );
 
       // Should render header and visible items
@@ -319,23 +338,23 @@ void main() {
       expect(find.text('Item 99'), findsNothing);
     });
 
-    testWidgets('falls back to ListView.builder without virtualScrollConfig',
-        (tester) async {
+    testWidgets('falls back to ListView.builder without virtualScrollConfig', (
+      tester,
+    ) async {
       final rows = List.generate(
         5,
-        (i) => DSDataRow(
-          id: '$i',
-          cells: {'name': 'Item $i'},
-        ),
+        (i) => DSDataRow(id: '$i', cells: {'name': 'Item $i'}),
       );
 
       await tester.pumpWidget(
-        wrap(DSDataTable(
-          columns: const [DSDataColumn(id: 'name', label: 'Name')],
-          rows: rows,
-          paginated: false,
-          showPagination: false,
-        )),
+        wrap(
+          DSDataTable(
+            columns: const [DSDataColumn(id: 'name', label: 'Name')],
+            rows: rows,
+            paginated: false,
+            showPagination: false,
+          ),
+        ),
       );
 
       expect(find.text('Item 0'), findsOneWidget);

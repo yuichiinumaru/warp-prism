@@ -70,8 +70,7 @@ class DSVirtualScrollConfig {
       cacheExtent: cacheExtent ?? this.cacheExtent,
       addAutomaticKeepAlives:
           addAutomaticKeepAlives ?? this.addAutomaticKeepAlives,
-      addRepaintBoundaries:
-          addRepaintBoundaries ?? this.addRepaintBoundaries,
+      addRepaintBoundaries: addRepaintBoundaries ?? this.addRepaintBoundaries,
       addSemanticIndexes: addSemanticIndexes ?? this.addSemanticIndexes,
     );
   }
@@ -89,12 +88,12 @@ class DSVirtualScrollConfig {
 
   @override
   int get hashCode => Object.hash(
-        itemExtent,
-        cacheExtent,
-        addAutomaticKeepAlives,
-        addRepaintBoundaries,
-        addSemanticIndexes,
-      );
+    itemExtent,
+    cacheExtent,
+    addAutomaticKeepAlives,
+    addRepaintBoundaries,
+    addSemanticIndexes,
+  );
 }
 
 // ============================================================================
@@ -471,8 +470,8 @@ class DSVirtualGrid extends StatelessWidget {
     this.shrinkWrap = false,
     this.addAutomaticKeepAlives = true,
     this.addSemanticIndexes = true,
-  })  : responsive = true,
-        crossAxisCount = 1;
+  }) : responsive = true,
+       crossAxisCount = 1;
 
   @override
   Widget build(BuildContext context) {

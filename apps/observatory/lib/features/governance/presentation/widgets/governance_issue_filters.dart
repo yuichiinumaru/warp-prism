@@ -7,7 +7,7 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
-import '../../../../data/models/governance_diagnostics.dart';
+import 'package:warp_prism_observatory/data/models/governance_diagnostics.dart';
 
 /// Active filter state for governance issue panels.
 @immutable
@@ -85,32 +85,36 @@ class GovernanceIssueFilters extends StatelessWidget {
             _FilterChip(
               label: 'Orphans',
               icon: Icons.link_off,
-              isActive: filterState.selectedCategories
-                  .contains(DiagnosticCategory.orphanAsset),
+              isActive: filterState.selectedCategories.contains(
+                DiagnosticCategory.orphanAsset,
+              ),
               color: DSColors.statusWarning,
               onTap: () => _toggleCategory(DiagnosticCategory.orphanAsset),
             ),
             _FilterChip(
               label: 'Stale',
               icon: Icons.link_off,
-              isActive: filterState.selectedCategories
-                  .contains(DiagnosticCategory.staleReference),
+              isActive: filterState.selectedCategories.contains(
+                DiagnosticCategory.staleReference,
+              ),
               color: DSColors.statusError,
               onTap: () => _toggleCategory(DiagnosticCategory.staleReference),
             ),
             _FilterChip(
               label: 'Proof Gaps',
               icon: Icons.fact_check,
-              isActive: filterState.selectedCategories
-                  .contains(DiagnosticCategory.proofGap),
+              isActive: filterState.selectedCategories.contains(
+                DiagnosticCategory.proofGap,
+              ),
               color: DSColors.statusError,
               onTap: () => _toggleCategory(DiagnosticCategory.proofGap),
             ),
             _FilterChip(
               label: 'Fan-In',
               icon: Icons.warning_amber_outlined,
-              isActive: filterState.selectedCategories
-                  .contains(DiagnosticCategory.brokenEdge),
+              isActive: filterState.selectedCategories.contains(
+                DiagnosticCategory.brokenEdge,
+              ),
               color: DSColors.statusWarning,
               onTap: () => _toggleCategory(DiagnosticCategory.brokenEdge),
             ),
@@ -128,24 +132,27 @@ class GovernanceIssueFilters extends StatelessWidget {
             _FilterChip(
               label: 'Error',
               icon: Icons.error_outline,
-              isActive: filterState.selectedSeverities
-                  .contains(DiagnosticSeverity.error),
+              isActive: filterState.selectedSeverities.contains(
+                DiagnosticSeverity.error,
+              ),
               color: DSColors.statusError,
               onTap: () => _toggleSeverity(DiagnosticSeverity.error),
             ),
             _FilterChip(
               label: 'Warning',
               icon: Icons.warning_amber_outlined,
-              isActive: filterState.selectedSeverities
-                  .contains(DiagnosticSeverity.warning),
+              isActive: filterState.selectedSeverities.contains(
+                DiagnosticSeverity.warning,
+              ),
               color: DSColors.statusWarning,
               onTap: () => _toggleSeverity(DiagnosticSeverity.warning),
             ),
             _FilterChip(
               label: 'Info',
               icon: Icons.info_outline,
-              isActive: filterState.selectedSeverities
-                  .contains(DiagnosticSeverity.info),
+              isActive: filterState.selectedSeverities.contains(
+                DiagnosticSeverity.info,
+              ),
               color: DSColors.statusInfo,
               onTap: () => _toggleSeverity(DiagnosticSeverity.info),
             ),
@@ -231,9 +238,15 @@ class _FilterChip extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              DSIcon.small(icon, color: isActive ? color : DSColors.textTertiary),
+              DSIcon.small(
+                icon,
+                color: isActive ? color : DSColors.textTertiary,
+              ),
               const SizedBox(width: DSSpacing.xs),
-              DSText.labelSmall(label, color: isActive ? color : DSColors.textTertiary),
+              DSText.labelSmall(
+                label,
+                color: isActive ? color : DSColors.textTertiary,
+              ),
             ],
           ),
         ),

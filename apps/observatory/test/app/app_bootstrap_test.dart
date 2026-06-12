@@ -15,9 +15,7 @@ void main() {
       expect(find.byType(MaterialApp), findsOneWidget);
     });
 
-    testWidgets('app uses dark theme with obsidian background', (
-      tester,
-    ) async {
+    testWidgets('app uses dark theme with obsidian background', (tester) async {
       await tester.pumpWidget(const WarpPrismApp());
 
       final materialApp = tester.widget<MaterialApp>(find.byType(MaterialApp));
@@ -25,7 +23,10 @@ void main() {
 
       expect(theme, isNotNull);
       expect(theme!.brightness, Brightness.dark);
-      expect(theme.scaffoldBackgroundColor, const Color(0xFF050508)); // obsidianDeep
+      expect(
+        theme.scaffoldBackgroundColor,
+        const Color(0xFF050508),
+      ); // obsidianDeep
     });
 
     testWidgets('app initial location is /design-system', (tester) async {

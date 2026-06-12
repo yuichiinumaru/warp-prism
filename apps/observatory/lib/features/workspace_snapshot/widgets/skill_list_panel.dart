@@ -6,7 +6,7 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../data/models/workspace_graph.dart';
+import 'package:warp_prism_observatory/data/models/workspace_graph.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
 import '../workspace_snapshot_provider.dart';
 
@@ -28,7 +28,9 @@ class SkillListPanel extends ConsumerWidget {
 
     // Separate top-level skills from sub-skills
     final topSkills = skills.where((s) => s.kind == AssetKind.skill).toList();
-    final subSkills = skills.where((s) => s.kind == AssetKind.subskill).toList();
+    final subSkills = skills
+        .where((s) => s.kind == AssetKind.subskill)
+        .toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,20 +42,22 @@ class SkillListPanel extends ConsumerWidget {
             color: DSColors.textSecondary,
           ),
           const SizedBox(height: DSSpacing.sm),
-          ...topSkills.map((skill) => Padding(
-                padding: const EdgeInsets.only(bottom: DSSpacing.sm),
-                child: DSAssetCard(
-                  name: skill.name,
-                  kind: skill.kind.name,
-                  description: skill.description.isNotEmpty
-                      ? skill.description
-                      : null,
-                  canonicality: skill.canonicality.name,
-                  tags: skill.tags.isNotEmpty ? skill.tags : null,
-                  edgeCount: skill.edges.length,
-                  onTap: () => selectAsset(ref, skill.id),
-                ),
-              )),
+          ...topSkills.map(
+            (skill) => Padding(
+              padding: const EdgeInsets.only(bottom: DSSpacing.sm),
+              child: DSAssetCard(
+                name: skill.name,
+                kind: skill.kind.name,
+                description: skill.description.isNotEmpty
+                    ? skill.description
+                    : null,
+                canonicality: skill.canonicality.name,
+                tags: skill.tags.isNotEmpty ? skill.tags : null,
+                edgeCount: skill.edges.length,
+                onTap: () => selectAsset(ref, skill.id),
+              ),
+            ),
+          ),
         ],
 
         // Sub-skills
@@ -64,20 +68,22 @@ class SkillListPanel extends ConsumerWidget {
             color: DSColors.textSecondary,
           ),
           const SizedBox(height: DSSpacing.sm),
-          ...subSkills.map((skill) => Padding(
-                padding: const EdgeInsets.only(bottom: DSSpacing.sm),
-                child: DSAssetCard(
-                  name: skill.name,
-                  kind: skill.kind.name,
-                  description: skill.description.isNotEmpty
-                      ? skill.description
-                      : null,
-                  canonicality: skill.canonicality.name,
-                  tags: skill.tags.isNotEmpty ? skill.tags : null,
-                  edgeCount: skill.edges.length,
-                  onTap: () => selectAsset(ref, skill.id),
-                ),
-              )),
+          ...subSkills.map(
+            (skill) => Padding(
+              padding: const EdgeInsets.only(bottom: DSSpacing.sm),
+              child: DSAssetCard(
+                name: skill.name,
+                kind: skill.kind.name,
+                description: skill.description.isNotEmpty
+                    ? skill.description
+                    : null,
+                canonicality: skill.canonicality.name,
+                tags: skill.tags.isNotEmpty ? skill.tags : null,
+                edgeCount: skill.edges.length,
+                onTap: () => selectAsset(ref, skill.id),
+              ),
+            ),
+          ),
         ],
       ],
     );

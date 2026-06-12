@@ -18,13 +18,17 @@ class GovernanceDiagnostics {
 
   factory GovernanceDiagnostics.fromJson(Map<String, dynamic> json) {
     return GovernanceDiagnostics(
-      orphanWorkflows: (json['orphanWorkflows'] as List<dynamic>).cast<String>(),
-      noTriggerSkills: (json['noTriggerSkills'] as List<dynamic>).cast<String>(),
+      orphanWorkflows: (json['orphanWorkflows'] as List<dynamic>)
+          .cast<String>(),
+      noTriggerSkills: (json['noTriggerSkills'] as List<dynamic>)
+          .cast<String>(),
       unverifiedTasks: (json['unverifiedTasks'] as List<dynamic>)
           .map((e) => UnverifiedTask.fromJson(e as Map<String, dynamic>))
           .toList(),
-      canonicalityBoundary: (json['canonicalityBoundary'] as Map<String, dynamic>)
-          .map((k, v) => MapEntry(k, v as int)),
+      canonicalityBoundary:
+          (json['canonicalityBoundary'] as Map<String, dynamic>).map(
+            (k, v) => MapEntry(k, v as int),
+          ),
       fanInHotspots: (json['fanInHotspots'] as List<dynamic>)
           .map((e) => FanInHotspot.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -59,10 +63,7 @@ class FanInHotspot {
   final String skillName;
   final int referenceCount;
 
-  const FanInHotspot({
-    required this.skillName,
-    required this.referenceCount,
-  });
+  const FanInHotspot({required this.skillName, required this.referenceCount});
 
   factory FanInHotspot.fromJson(Map<String, dynamic> json) {
     return FanInHotspot(

@@ -25,11 +25,7 @@ class AppShell extends StatelessWidget {
       label: 'Overview',
       icon: Icons.dashboard_outlined,
     ),
-    DSSidebarItem(
-      id: 'map',
-      label: 'Map',
-      icon: Icons.hub_outlined,
-    ),
+    DSSidebarItem(id: 'map', label: 'Map', icon: Icons.hub_outlined),
     DSSidebarItem(
       id: 'operate',
       label: 'Operate',
@@ -123,9 +119,7 @@ class AppShell extends StatelessWidget {
         onItemTap: _onNavItemTap,
       ),
       collapsedSidebar: _buildCollapsedSidebar(),
-      topbar: DSTopbar(
-        title: _titleByIndex[currentIndex] ?? 'ASW Observatory',
-      ),
+      topbar: DSTopbar(title: _titleByIndex[currentIndex] ?? 'ASW Observatory'),
       content: navigationShell,
       // Inspector is a shell concern. Feature surfaces can request it
       // via state management; for now the shell defers inspector display.
@@ -165,10 +159,7 @@ class _CompactShell extends StatelessWidget {
         elevation: 0,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
-          child: Container(
-            height: 1,
-            color: DSColors.borderSubtle,
-          ),
+          child: Container(height: 1, color: DSColors.borderSubtle),
         ),
       ),
       body: content,

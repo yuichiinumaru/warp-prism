@@ -82,23 +82,26 @@ class _AuditPageState extends State<AuditPage> {
           // Header with type filter
           Padding(
             padding: const EdgeInsets.fromLTRB(
-              DSSpacing.lg, DSSpacing.md, DSSpacing.lg, 0,
+              PrismSpacing.lg,
+              PrismSpacing.md,
+              PrismSpacing.lg,
+              0,
             ),
             child: Row(
               children: [
                 const PrismText.headingMedium(
                   'Audit Trail',
-                  color: DSColors.textPrimary,
+                  color: PrismColors.textPrimary,
                 ),
-                const SizedBox(width: DSSpacing.md),
+                const SizedBox(width: PrismSpacing.md),
                 PrismBadge.count(
                   _events!.length,
-                  color: DSColors.accentCyan,
+                  color: PrismColors.accentCyan,
                 ),
                 const Spacer(),
                 const PrismText.bodySmall(
                   'Read-only — append-only timeline',
-                  color: DSColors.textTertiary,
+                  color: PrismColors.textTertiary,
                 ),
               ],
             ),
@@ -107,7 +110,10 @@ class _AuditPageState extends State<AuditPage> {
           // Type filter chips
           Padding(
             padding: const EdgeInsets.fromLTRB(
-              DSSpacing.lg, DSSpacing.md, DSSpacing.lg, 0,
+              PrismSpacing.lg,
+              PrismSpacing.md,
+              PrismSpacing.lg,
+              0,
             ),
             child: PrismFilterChipGroup(
               options: _buildFilterOptions(),
@@ -123,15 +129,19 @@ class _AuditPageState extends State<AuditPage> {
           // Timeline
           Expanded(
             child: PrismTimeline(
-              entries: filtered.map((e) => PrismTimelineEntry(
-                id: e.id,
-                date: e.displayDate,
-                title: e.body ?? '${e.type}: ${e.task}',
-                type: e.type,
-                project: e.project,
-                taskId: e.task,
-                impacts: e.skills,
-              )).toList(),
+              entries: filtered
+                  .map(
+                    (e) => PrismTimelineEntry(
+                      id: e.id,
+                      date: e.displayDate,
+                      title: e.body ?? '${e.type}: ${e.task}',
+                      type: e.type,
+                      project: e.project,
+                      taskId: e.task,
+                      impacts: e.skills,
+                    ),
+                  )
+                  .toList(),
               showFilters: false,
             ),
           ),
@@ -159,17 +169,17 @@ class _AuditPageState extends State<AuditPage> {
   Color _typeColor(String type) {
     switch (type) {
       case 'feature':
-        return DSColors.accentCyan;
+        return PrismColors.accentCyan;
       case 'fix':
-        return DSColors.statusWarning;
+        return PrismColors.statusWarning;
       case 'refactor':
-        return DSColors.accentViolet;
+        return PrismColors.accentViolet;
       case 'docs':
-        return DSColors.textSecondary;
+        return PrismColors.textSecondary;
       case 'chore':
-        return DSColors.textTertiary;
+        return PrismColors.textTertiary;
       default:
-        return DSColors.textSecondary;
+        return PrismColors.textSecondary;
     }
   }
 }

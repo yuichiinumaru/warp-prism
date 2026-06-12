@@ -30,42 +30,48 @@ const _canonicalityClasses = [
   CanonicalityClass(
     key: 'parentCanonical',
     label: 'Canonical',
-    description: 'Authoritative source of truth. Parent-owned markdown that downstream consumers trust.',
+    description:
+        'Authoritative source of truth. Parent-owned markdown that downstream consumers trust.',
     color: DSColors.governanceCanonical,
     icon: DSIcons.canonical,
   ),
   CanonicalityClass(
     key: 'childLocal',
     label: 'Child-Local',
-    description: 'Local overlay that may diverge from its parent canonical definition.',
+    description:
+        'Local overlay that may diverge from its parent canonical definition.',
     color: DSColors.governanceLocal,
     icon: DSIcons.local,
   ),
   CanonicalityClass(
     key: 'generated',
     label: 'Generated',
-    description: 'Computed or built from other sources. Not hand-authored; derived from canonical data.',
+    description:
+        'Computed or built from other sources. Not hand-authored; derived from canonical data.',
     color: DSColors.governanceGenerated,
     icon: DSIcons.generated,
   ),
   CanonicalityClass(
     key: 'appendOnly',
     label: 'Append-Only',
-    description: 'Immutable ledger. New entries may be added, but existing records cannot be modified.',
+    description:
+        'Immutable ledger. New entries may be added, but existing records cannot be modified.',
     color: DSColors.governanceAppendOnly,
     icon: DSIcons.appendOnly,
   ),
   CanonicalityClass(
     key: 'archive',
     label: 'Archive',
-    description: 'Historical record, no longer actively maintained or referenced by live workflows.',
+    description:
+        'Historical record, no longer actively maintained or referenced by live workflows.',
     color: DSColors.governanceArchive,
     icon: DSIcons.archive,
   ),
   CanonicalityClass(
     key: 'mock',
     label: 'Mock',
-    description: 'Test or demo data. Should not be treated as production content.',
+    description:
+        'Test or demo data. Should not be treated as production content.',
     color: DSColors.governanceMock,
     icon: DSIcons.mock,
   ),
@@ -101,10 +107,9 @@ class GovernanceBoundaryLegend extends StatelessWidget {
               color: DSColors.textSecondary,
             ),
             const SizedBox(height: DSSpacing.md),
-            ..._canonicalityClasses.map((cls) => _LegendRow(
-                  cls: cls,
-                  count: counts?[cls.key],
-                )),
+            ..._canonicalityClasses.map(
+              (cls) => _LegendRow(cls: cls, count: counts?[cls.key]),
+            ),
           ],
         ),
       ),
@@ -142,16 +147,11 @@ class _LegendRow extends StatelessWidget {
             const SizedBox(width: DSSpacing.sm),
 
             // Label
-            Expanded(
-              child: DSText.bodyMedium(cls.label, color: cls.color),
-            ),
+            Expanded(child: DSText.bodyMedium(cls.label, color: cls.color)),
 
             // Count
             if (count != null)
-              DSText.numeric(
-                count.toString(),
-                color: cls.color,
-              ),
+              DSText.numeric(count.toString(), color: cls.color),
           ],
         ),
       ),

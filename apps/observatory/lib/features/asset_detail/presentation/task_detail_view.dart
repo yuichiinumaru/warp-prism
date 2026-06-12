@@ -20,11 +20,7 @@ class TaskDetailView extends StatelessWidget {
   final AssetDetailDescriptor descriptor;
   final VoidCallback? onClose;
 
-  const TaskDetailView({
-    super.key,
-    required this.descriptor,
-    this.onClose,
-  });
+  const TaskDetailView({super.key, required this.descriptor, this.onClose});
 
   @override
   Widget build(BuildContext context) {

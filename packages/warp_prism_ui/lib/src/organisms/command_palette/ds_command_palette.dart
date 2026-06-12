@@ -339,10 +339,7 @@ class _Panel extends StatelessWidget {
                   placeholder: placeholder,
                   onChanged: onQueryChanged,
                 ),
-                _CategoryChips(
-                  active: activeCategory,
-                  onTap: onCategoryTap,
-                ),
+                _CategoryChips(active: activeCategory, onTap: onCategoryTap),
                 const Divider(height: 1, color: DSColors.borderSubtle),
                 Expanded(
                   child: _ResultsList(
@@ -440,8 +437,9 @@ class _CategoryChips extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: DSSpacing.lg)
-          .copyWith(bottom: DSSpacing.sm),
+      padding: const EdgeInsets.symmetric(
+        horizontal: DSSpacing.lg,
+      ).copyWith(bottom: DSSpacing.sm),
       child: Row(
         children: [
           _CatChip(
@@ -651,9 +649,7 @@ class _CommandItem extends StatelessWidget {
     final borderColor = isSelected
         ? DSColors.accentCyan.withValues(alpha: 0.2)
         : DSColors.transparent;
-    final iconColor = isSelected
-        ? DSColors.accentCyan
-        : DSColors.textSecondary;
+    final iconColor = isSelected ? DSColors.accentCyan : DSColors.textSecondary;
 
     return GestureDetector(
       onTap: onTap,
@@ -701,10 +697,7 @@ class _CommandItem extends StatelessWidget {
             // Shortcut hint
             if (command.shortcut != null) ...[
               Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 6,
-                  vertical: 2,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
                   color: DSColors.obsidianHover,
                   borderRadius: BorderRadius.circular(DSRadii.xs),
@@ -759,10 +752,7 @@ class _FooterHint extends StatelessWidget {
           DSText.labelSmall('close', color: DSColors.textDisabled),
           if (hasResults) ...[
             const Spacer(),
-            DSText.labelSmall(
-              '${_countText}',
-              color: DSColors.textDisabled,
-            ),
+            DSText.labelSmall('${_countText}', color: DSColors.textDisabled),
           ],
         ],
       ),
@@ -834,38 +824,32 @@ class _CommandPaletteRoute extends PageRouteBuilder<void> {
     this.initialQuery,
     this.placeholder = 'Type a command...',
   }) : super(
-          opaque: false,
-          barrierDismissible: true,
-          barrierColor: Colors.transparent,
-          transitionDuration: DSMotion.normal,
-          reverseTransitionDuration: DSMotion.fast,
-          pageBuilder: (context, animation, secondaryAnimation) {
-            return DSCommandPalette(
-              commands: commands,
-              onExecute: onExecute,
-              onClose: () => Navigator.of(context).pop(),
-              initialQuery: initialQuery,
-              placeholder: placeholder,
-            );
-          },
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return FadeTransition(
-              opacity: CurvedAnimation(
-                parent: animation,
-                curve: DSMotion.enter,
-              ),
-              child: ScaleTransition(
-                scale: Tween<double>(begin: 0.97, end: 1.0).animate(
-                  CurvedAnimation(
-                    parent: animation,
-                    curve: DSMotion.emphasized,
-                  ),
-                ),
-                child: child,
-              ),
-            );
-          },
-        );
+         opaque: false,
+         barrierDismissible: true,
+         barrierColor: Colors.transparent,
+         transitionDuration: DSMotion.normal,
+         reverseTransitionDuration: DSMotion.fast,
+         pageBuilder: (context, animation, secondaryAnimation) {
+           return DSCommandPalette(
+             commands: commands,
+             onExecute: onExecute,
+             onClose: () => Navigator.of(context).pop(),
+             initialQuery: initialQuery,
+             placeholder: placeholder,
+           );
+         },
+         transitionsBuilder: (context, animation, secondaryAnimation, child) {
+           return FadeTransition(
+             opacity: CurvedAnimation(parent: animation, curve: DSMotion.enter),
+             child: ScaleTransition(
+               scale: Tween<double>(begin: 0.97, end: 1.0).animate(
+                 CurvedAnimation(parent: animation, curve: DSMotion.emphasized),
+               ),
+               child: child,
+             ),
+           );
+         },
+       );
 }
 
 // =============================================================================
@@ -923,7 +907,8 @@ class _DSCommandPaletteShortcutState extends State<DSCommandPaletteShortcut> {
     if (event is! KeyDownEvent) return KeyEventResult.ignored;
 
     // Cmd+K (macOS) or Ctrl+K (other platforms)
-    final isMod = (HardwareKeyboard.instance.isMetaPressed ||
+    final isMod =
+        (HardwareKeyboard.instance.isMetaPressed ||
         HardwareKeyboard.instance.isControlPressed);
     if (isMod && event.logicalKey == LogicalKeyboardKey.keyK) {
       _openPalette();
@@ -934,10 +919,6 @@ class _DSCommandPaletteShortcutState extends State<DSCommandPaletteShortcut> {
 
   @override
   Widget build(BuildContext context) {
-    return Focus(
-      autofocus: true,
-      onKeyEvent: _handleKey,
-      child: widget.child,
-    );
+    return Focus(autofocus: true, onKeyEvent: _handleKey, child: widget.child);
   }
 }

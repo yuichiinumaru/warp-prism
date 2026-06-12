@@ -1,6 +1,7 @@
 # Task 1121: Warp Prism Code Block And Markdown Renderer
 
 > **Status**: `[x]` Implementation Complete — Pending Review
+> **Review State**: Package Gate Failed — implementation complete; pre-existing gallery compilation errors block full package gate
 > **Priority**: 🔵 P2
 > **Type**: `feature` | `design-system`
 > **Origin**: EPIC-11 gap analysis (NICE-TO-HAVE GAP-N1 + GAP-N5)

@@ -76,86 +76,99 @@ class MapSelectionController {
     final sections = <MapInspectorSection>[];
 
     // Identity section
-    sections.add(MapInspectorSection(
-      title: 'Identity',
-      rows: [
-        MapInspectorRow(label: 'ID', value: asset.id),
-        MapInspectorRow(label: 'Kind', value: asset.kind.name),
-        MapInspectorRow(label: 'Path', value: asset.path),
-        if (asset.description.isNotEmpty)
-          MapInspectorRow(label: 'Description', value: asset.description),
-      ],
-    ));
+    sections.add(
+      MapInspectorSection(
+        title: 'Identity',
+        rows: [
+          MapInspectorRow(label: 'ID', value: asset.id),
+          MapInspectorRow(label: 'Kind', value: asset.kind.name),
+          MapInspectorRow(label: 'Path', value: asset.path),
+          if (asset.description.isNotEmpty)
+            MapInspectorRow(label: 'Description', value: asset.description),
+        ],
+      ),
+    );
 
     // Governance / Canonicality section
-    sections.add(MapInspectorSection(
-      title: 'Governance',
-      rows: [
-        MapInspectorRow(
-          label: 'Canonicality',
-          value: _canonicalityLabel(asset.canonicality),
-        ),
-        if (asset.tags.isNotEmpty)
-          MapInspectorRow(label: 'Tags', value: asset.tags.join(', ')),
-      ],
-    ));
+    sections.add(
+      MapInspectorSection(
+        title: 'Governance',
+        rows: [
+          MapInspectorRow(
+            label: 'Canonicality',
+            value: _canonicalityLabel(asset.canonicality),
+          ),
+          if (asset.tags.isNotEmpty)
+            MapInspectorRow(label: 'Tags', value: asset.tags.join(', ')),
+        ],
+      ),
+    );
 
     // Relationships section
     if (asset.edges.isNotEmpty) {
-      final outgoing = asset.edges.where((e) => e.sourceId == asset.id).toList();
-      final incoming = asset.edges.where((e) => e.targetId == asset.id).toList();
+      final outgoing = asset.edges
+          .where((e) => e.sourceId == asset.id)
+          .toList();
+      final incoming = asset.edges
+          .where((e) => e.targetId == asset.id)
+          .toList();
 
       final relRows = <MapInspectorRow>[];
       for (final edge in outgoing) {
-        relRows.add(MapInspectorRow(
-          label: edge.kind.name,
-          value: '→ ${edge.targetId}',
-        ));
+        relRows.add(
+          MapInspectorRow(label: edge.kind.name, value: '→ ${edge.targetId}'),
+        );
       }
       for (final edge in incoming) {
-        relRows.add(MapInspectorRow(
-          label: edge.kind.name,
-          value: '← ${edge.sourceId}',
-        ));
+        relRows.add(
+          MapInspectorRow(label: edge.kind.name, value: '← ${edge.sourceId}'),
+        );
       }
 
-      sections.add(MapInspectorSection(
-        title: 'Relationships',
-        count: asset.edges.length,
-        rows: relRows,
-      ));
+      sections.add(
+        MapInspectorSection(
+          title: 'Relationships',
+          count: asset.edges.length,
+          rows: relRows,
+        ),
+      );
     }
 
     // Triggers section (skills only)
     if (asset.triggers.isNotEmpty) {
-      sections.add(MapInspectorSection(
-        title: 'Triggers',
-        count: asset.triggers.length,
-        rows: asset.triggers
-            .map((t) => MapInspectorRow(label: 'Trigger', value: t))
-            .toList(),
-      ));
+      sections.add(
+        MapInspectorSection(
+          title: 'Triggers',
+          count: asset.triggers.length,
+          rows: asset.triggers
+              .map((t) => MapInspectorRow(label: 'Trigger', value: t))
+              .toList(),
+        ),
+      );
     }
 
     // Operational hints from frontmatter
     final operationalRows = <MapInspectorRow>[];
     if (asset.frontmatter.containsKey('owner')) {
-      operationalRows.add(MapInspectorRow(
-        label: 'Owner',
-        value: asset.frontmatter['owner'].toString(),
-      ));
+      operationalRows.add(
+        MapInspectorRow(
+          label: 'Owner',
+          value: asset.frontmatter['owner'].toString(),
+        ),
+      );
     }
     if (asset.frontmatter.containsKey('status')) {
-      operationalRows.add(MapInspectorRow(
-        label: 'Status',
-        value: asset.frontmatter['status'].toString(),
-      ));
+      operationalRows.add(
+        MapInspectorRow(
+          label: 'Status',
+          value: asset.frontmatter['status'].toString(),
+        ),
+      );
     }
     if (operationalRows.isNotEmpty) {
-      sections.add(MapInspectorSection(
-        title: 'Operational',
-        rows: operationalRows,
-      ));
+      sections.add(
+        MapInspectorSection(title: 'Operational', rows: operationalRows),
+      );
     }
 
     return sections;

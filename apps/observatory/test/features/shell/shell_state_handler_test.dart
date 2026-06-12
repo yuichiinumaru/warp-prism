@@ -21,33 +21,35 @@ void main() {
   // Loading state
   // ===========================================================================
   group('ShellStateHandler - Loading', () {
-    testWidgets('renders loading indicator with default message',
-        (tester) async {
-      await tester.pumpWidget(wrapInApp(
-        ShellStateHandler.buildLoading(),
-      ));
+    testWidgets('renders loading indicator with default message', (
+      tester,
+    ) async {
+      await tester.pumpWidget(wrapInApp(ShellStateHandler.buildLoading()));
 
       expect(find.text('Loading workspace...'), findsOneWidget);
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
     });
 
-    testWidgets('renders loading indicator with custom message',
-        (tester) async {
-      await tester.pumpWidget(wrapInApp(
-        ShellStateHandler.buildLoading(
-          title: 'Parsing markdown...',
-          subtitle: 'This may take a moment',
+    testWidgets('renders loading indicator with custom message', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        wrapInApp(
+          ShellStateHandler.buildLoading(
+            title: 'Parsing markdown...',
+            subtitle: 'This may take a moment',
+          ),
         ),
-      ));
+      );
 
       expect(find.text('Parsing markdown...'), findsOneWidget);
       expect(find.text('This may take a moment'), findsOneWidget);
     });
 
     testWidgets('compact loading renders without subtitle', (tester) async {
-      await tester.pumpWidget(wrapInApp(
-        ShellStateHandler.buildLoadingCompact(title: 'Loading...'),
-      ));
+      await tester.pumpWidget(
+        wrapInApp(ShellStateHandler.buildLoadingCompact(title: 'Loading...')),
+      );
 
       expect(find.text('Loading...'), findsOneWidget);
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
@@ -59,9 +61,9 @@ void main() {
   // ===========================================================================
   group('ShellStateHandler - Empty', () {
     testWidgets('renders empty state with surface name', (tester) async {
-      await tester.pumpWidget(wrapInApp(
-        ShellStateHandler.buildEmpty(surfaceName: 'Overview'),
-      ));
+      await tester.pumpWidget(
+        wrapInApp(ShellStateHandler.buildEmpty(surfaceName: 'Overview')),
+      );
 
       expect(find.text('No Overview data'), findsOneWidget);
       expect(
@@ -73,12 +75,14 @@ void main() {
     });
 
     testWidgets('renders empty state with custom subtitle', (tester) async {
-      await tester.pumpWidget(wrapInApp(
-        ShellStateHandler.buildEmpty(
-          surfaceName: 'Agent Catalog',
-          subtitle: 'No agents were found in the workspace.',
+      await tester.pumpWidget(
+        wrapInApp(
+          ShellStateHandler.buildEmpty(
+            surfaceName: 'Agent Catalog',
+            subtitle: 'No agents were found in the workspace.',
+          ),
         ),
-      ));
+      );
 
       expect(find.text('No Agent Catalog data'), findsOneWidget);
       expect(
@@ -87,16 +91,19 @@ void main() {
       );
     });
 
-    testWidgets('renders empty state with action button when callback given',
-        (tester) async {
+    testWidgets('renders empty state with action button when callback given', (
+      tester,
+    ) async {
       var tapped = false;
-      await tester.pumpWidget(wrapInApp(
-        ShellStateHandler.buildEmpty(
-          surfaceName: 'Skills',
-          actionLabel: 'Load workspace',
-          onAction: () => tapped = true,
+      await tester.pumpWidget(
+        wrapInApp(
+          ShellStateHandler.buildEmpty(
+            surfaceName: 'Skills',
+            actionLabel: 'Load workspace',
+            onAction: () => tapped = true,
+          ),
         ),
-      ));
+      );
 
       expect(find.text('Load workspace'), findsOneWidget);
       await tester.tap(find.text('Load workspace'));
@@ -109,12 +116,14 @@ void main() {
   // ===========================================================================
   group('ShellStateHandler - Error', () {
     testWidgets('renders error state with message', (tester) async {
-      await tester.pumpWidget(wrapInApp(
-        ShellStateHandler.buildError(
-          title: 'Failed to load workspace',
-          errorMessage: 'Permission denied: /workspace',
+      await tester.pumpWidget(
+        wrapInApp(
+          ShellStateHandler.buildError(
+            title: 'Failed to load workspace',
+            errorMessage: 'Permission denied: /workspace',
+          ),
         ),
-      ));
+      );
 
       expect(find.text('Failed to load workspace'), findsOneWidget);
       expect(find.text('Permission denied: /workspace'), findsOneWidget);
@@ -122,12 +131,14 @@ void main() {
 
     testWidgets('renders retry button when onRetry provided', (tester) async {
       var retried = false;
-      await tester.pumpWidget(wrapInApp(
-        ShellStateHandler.buildError(
-          title: 'Load failed',
-          onRetry: () => retried = true,
+      await tester.pumpWidget(
+        wrapInApp(
+          ShellStateHandler.buildError(
+            title: 'Load failed',
+            onRetry: () => retried = true,
+          ),
         ),
-      ));
+      );
 
       expect(find.text('Retry'), findsOneWidget);
       await tester.tap(find.text('Retry'));
@@ -135,9 +146,9 @@ void main() {
     });
 
     testWidgets('hides retry button when onRetry is null', (tester) async {
-      await tester.pumpWidget(wrapInApp(
-        ShellStateHandler.buildError(title: 'Load failed'),
-      ));
+      await tester.pumpWidget(
+        wrapInApp(ShellStateHandler.buildError(title: 'Load failed')),
+      );
 
       expect(find.text('Retry'), findsNothing);
     });
@@ -148,65 +159,74 @@ void main() {
   // ===========================================================================
   group('ShellStateHandler - Unresolved Asset', () {
     testWidgets('renders asset ID and explanation', (tester) async {
-      await tester.pumpWidget(wrapInApp(
-        ShellStateHandler.buildUnresolvedAssetFallback(
-          assetId: 'agent:nonexistent',
+      await tester.pumpWidget(
+        wrapInApp(
+          ShellStateHandler.buildUnresolvedAssetFallback(
+            assetId: 'agent:nonexistent',
+          ),
         ),
-      ));
+      );
 
       expect(find.text('Asset not found'), findsOneWidget);
       expect(find.text('agent:nonexistent'), findsOneWidget);
       expect(find.text('Could not resolve asset:'), findsOneWidget);
     });
 
-    testWidgets('renders navigation button when callback provided',
-        (tester) async {
+    testWidgets('renders navigation button when callback provided', (
+      tester,
+    ) async {
       var navigated = false;
-      await tester.pumpWidget(wrapInApp(
-        ShellStateHandler.buildUnresolvedAssetFallback(
-          assetId: 'skill:missing',
-          onNavigateHome: () => navigated = true,
+      await tester.pumpWidget(
+        wrapInApp(
+          ShellStateHandler.buildUnresolvedAssetFallback(
+            assetId: 'skill:missing',
+            onNavigateHome: () => navigated = true,
+          ),
         ),
-      ));
+      );
 
       expect(find.text('Go to Overview'), findsOneWidget);
       await tester.tap(find.text('Go to Overview'));
       expect(navigated, isTrue);
     });
 
-    testWidgets('renders retry button when callback provided',
-        (tester) async {
+    testWidgets('renders retry button when callback provided', (tester) async {
       var retried = false;
-      await tester.pumpWidget(wrapInApp(
-        ShellStateHandler.buildUnresolvedAssetFallback(
-          assetId: 'workflow:broken',
-          onRetry: () => retried = true,
+      await tester.pumpWidget(
+        wrapInApp(
+          ShellStateHandler.buildUnresolvedAssetFallback(
+            assetId: 'workflow:broken',
+            onRetry: () => retried = true,
+          ),
         ),
-      ));
+      );
 
       expect(find.text('Retry'), findsOneWidget);
       await tester.tap(find.text('Retry'));
       expect(retried, isTrue);
     });
 
-    testWidgets('renders both retry and navigate when both provided',
-        (tester) async {
-      await tester.pumpWidget(wrapInApp(
-        ShellStateHandler.buildUnresolvedAssetFallback(
-          assetId: 'task:0999',
-          onRetry: () {},
-          onNavigateHome: () {},
+    testWidgets('renders both retry and navigate when both provided', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        wrapInApp(
+          ShellStateHandler.buildUnresolvedAssetFallback(
+            assetId: 'task:0999',
+            onRetry: () {},
+            onNavigateHome: () {},
+          ),
         ),
-      ));
+      );
 
       expect(find.text('Retry'), findsOneWidget);
       expect(find.text('Go to Overview'), findsOneWidget);
     });
 
     testWidgets('renders with empty asset ID', (tester) async {
-      await tester.pumpWidget(wrapInApp(
-        ShellStateHandler.buildUnresolvedAssetFallback(assetId: ''),
-      ));
+      await tester.pumpWidget(
+        wrapInApp(ShellStateHandler.buildUnresolvedAssetFallback(assetId: '')),
+      );
 
       // Empty asset ID should still show the fallback
       expect(find.text('Asset not found'), findsOneWidget);
@@ -218,9 +238,9 @@ void main() {
   // ===========================================================================
   group('ShellStateHandler - Narrow Layout', () {
     testWidgets('renders narrow layout message', (tester) async {
-      await tester.pumpWidget(wrapInApp(
-        ShellStateHandler.buildNarrowLayoutInspectorFallback(),
-      ));
+      await tester.pumpWidget(
+        wrapInApp(ShellStateHandler.buildNarrowLayoutInspectorFallback()),
+      );
 
       expect(find.text('Detail panel unavailable'), findsOneWidget);
     });

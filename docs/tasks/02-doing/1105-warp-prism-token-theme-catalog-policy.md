@@ -1,6 +1,7 @@
 # Task 1105: Warp Prism Token Theme Catalog Policy
 
 > **Status**: `[x]` Done — awaiting review
+> **Review State**: Builder Done — status marker inconsistent with evidence; lane mismatch
 > **Priority**: 🔴 P0
 > **Type**: `architecture` | `design-system`
 > **Origin**: Task 1100 candidate Task 1104 plus user requirement for reusable ADS with Storybook/Widgetbook-style catalog.

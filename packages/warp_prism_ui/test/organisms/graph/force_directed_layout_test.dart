@@ -53,8 +53,11 @@ void main() {
 
       expect(positions, hasLength(10));
       for (int i = 0; i < 10; i++) {
-        expect(positions.containsKey(GraphNodeId('n$i')), isTrue,
-            reason: 'Missing position for n$i');
+        expect(
+          positions.containsKey(GraphNodeId('n$i')),
+          isTrue,
+          reason: 'Missing position for n$i',
+        );
       }
     });
 
@@ -67,14 +70,26 @@ void main() {
       for (final entry in positions.entries) {
         // Positions should be within the canvas (with some tolerance for
         // the node radius of 30px)
-        expect(entry.value.dx, greaterThan(-canvasSize.width),
-            reason: '${entry.key} x too far left');
-        expect(entry.value.dx, lessThan(canvasSize.width * 2),
-            reason: '${entry.key} x too far right');
-        expect(entry.value.dy, greaterThan(-canvasSize.height),
-            reason: '${entry.key} y too far up');
-        expect(entry.value.dy, lessThan(canvasSize.height * 2),
-            reason: '${entry.key} y too far down');
+        expect(
+          entry.value.dx,
+          greaterThan(-canvasSize.width),
+          reason: '${entry.key} x too far left',
+        );
+        expect(
+          entry.value.dx,
+          lessThan(canvasSize.width * 2),
+          reason: '${entry.key} x too far right',
+        );
+        expect(
+          entry.value.dy,
+          greaterThan(-canvasSize.height),
+          reason: '${entry.key} y too far up',
+        );
+        expect(
+          entry.value.dy,
+          lessThan(canvasSize.height * 2),
+          reason: '${entry.key} y too far down',
+        );
       }
     });
 
@@ -86,9 +101,12 @@ void main() {
       layout.layout(tenNodeModel, canvasSize);
       stopwatch.stop();
 
-      expect(stopwatch.elapsedMilliseconds, lessThan(100),
-          reason:
-              'Layout took ${stopwatch.elapsedMilliseconds}ms, expected <100ms');
+      expect(
+        stopwatch.elapsedMilliseconds,
+        lessThan(100),
+        reason:
+            'Layout took ${stopwatch.elapsedMilliseconds}ms, expected <100ms',
+      );
     });
 
     test('is deterministic — same input produces same output', () {
@@ -99,8 +117,11 @@ void main() {
       final pos2 = layout.layout(tenNodeModel, canvasSize);
 
       for (final key in pos1.keys) {
-        expect(pos1[key], equals(pos2[key]),
-            reason: 'Position for ${key.value} differs between runs');
+        expect(
+          pos1[key],
+          equals(pos2[key]),
+          reason: 'Position for ${key.value} differs between runs',
+        );
       }
     });
 
@@ -155,8 +176,11 @@ void main() {
       }
       final avgDist = totalDist / pairs;
 
-      expect(avgDist, greaterThan(20),
-          reason: 'Average pairwise distance $avgDist is too small');
+      expect(
+        avgDist,
+        greaterThan(20),
+        reason: 'Average pairwise distance $avgDist is too small',
+      );
     });
   });
 }

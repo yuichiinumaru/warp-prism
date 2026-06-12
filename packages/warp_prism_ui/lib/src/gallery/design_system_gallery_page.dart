@@ -41,8 +41,6 @@ class DesignSystemGalleryPage extends StatelessWidget {
           const SizedBox(height: DSSpacing.xxl),
           DSGallerySections.buildVirtualScrollSection(),
           const SizedBox(height: DSSpacing.xxl),
-          DSGallerySections.buildOperationalStatesSection(),
-          const SizedBox(height: DSSpacing.xxl),
           DSGallerySections.buildHealthDashboardSection(),
           const SizedBox(height: DSSpacing.xxl),
           DSGallerySections.buildToastsSection(),
@@ -115,7 +113,10 @@ class DesignSystemGalleryPage extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                DSIcon.small(Icons.check_circle_outline, color: DSColors.statusSuccess),
+                DSIcon.small(
+                  Icons.check_circle_outline,
+                  color: DSColors.statusSuccess,
+                ),
                 const SizedBox(width: DSSpacing.xs),
                 DSText.labelMedium('DS Layer', color: DSColors.statusSuccess),
               ],

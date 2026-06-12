@@ -4,7 +4,7 @@ import '../atoms/atoms.dart';
 import '../molecules/molecules.dart';
 
 /// ASW Observatory Organism - Timeline
-/// 
+///
 /// Chronological list of changelog entries
 class DSTimeline extends StatelessWidget {
   final List<DSTimelineEntry> entries;
@@ -30,7 +30,7 @@ class DSTimeline extends StatelessWidget {
           filterBar!,
           const SizedBox(height: DSSpacing.md),
         ],
-        
+
         Expanded(
           child: entries.isEmpty
               ? DSStateSurface.empty(
@@ -109,9 +109,8 @@ class DSTimelineGrouped extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (groupIndex > 0)
-              const SizedBox(height: DSSpacing.xxl),
-            
+            if (groupIndex > 0) const SizedBox(height: DSSpacing.xxl),
+
             // Group header
             Container(
               padding: const EdgeInsets.symmetric(
@@ -141,9 +140,9 @@ class DSTimelineGrouped extends StatelessWidget {
                 ],
               ),
             ),
-            
+
             const SizedBox(height: DSSpacing.sm),
-            
+
             // Group entries
             ...group.entries.asMap().entries.map((e) {
               final index = e.key;

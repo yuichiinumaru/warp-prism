@@ -163,10 +163,7 @@ class WorkspaceAsset {
           kind == other.kind &&
           name == other.name &&
           path == other.path &&
-          description == other.description &&
-          canonicality == other.canonicality &&
-          _listEquals(tags, other.tags) &&
-          _listEquals(triggers, other.triggers);
+          canonicality == other.canonicality;
 
   @override
   int get hashCode => Object.hash(id, kind, name, path, canonicality);
@@ -213,8 +210,7 @@ class WorkspaceEdge {
   int get hashCode => Object.hash(sourceId, targetId, kind);
 
   @override
-  String toString() =>
-      'WorkspaceEdge($sourceId -[${kind.name}]-> $targetId)';
+  String toString() => 'WorkspaceEdge($sourceId -[${kind.name}]-> $targetId)';
 }
 
 /// Helper for list equality in [WorkspaceAsset] and [WorkspaceEdge].

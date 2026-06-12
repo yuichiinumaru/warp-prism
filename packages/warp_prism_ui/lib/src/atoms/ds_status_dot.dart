@@ -52,85 +52,161 @@ class DSStatusDot extends StatelessWidget {
   });
 
   // === BASIC CONSTRUCTORS ===
-  const DSStatusDot.success({super.key, this.size = 8, this.animated = false, this.tooltip})
-      : color = DSColors.statusSuccess;
+  const DSStatusDot.success({
+    super.key,
+    this.size = 8,
+    this.animated = false,
+    this.tooltip,
+  }) : color = DSColors.statusSuccess;
 
-  const DSStatusDot.warning({super.key, this.size = 8, this.animated = false, this.tooltip})
-      : color = DSColors.statusWarning;
+  const DSStatusDot.warning({
+    super.key,
+    this.size = 8,
+    this.animated = false,
+    this.tooltip,
+  }) : color = DSColors.statusWarning;
 
-  const DSStatusDot.error({super.key, this.size = 8, this.animated = false, this.tooltip})
-      : color = DSColors.statusError;
+  const DSStatusDot.error({
+    super.key,
+    this.size = 8,
+    this.animated = false,
+    this.tooltip,
+  }) : color = DSColors.statusError;
 
-  const DSStatusDot.info({super.key, this.size = 8, this.animated = false, this.tooltip})
-      : color = DSColors.statusInfo;
+  const DSStatusDot.info({
+    super.key,
+    this.size = 8,
+    this.animated = false,
+    this.tooltip,
+  }) : color = DSColors.statusInfo;
 
-  const DSStatusDot.neutral({super.key, this.size = 8, this.animated = false, this.tooltip})
-      : color = DSColors.textTertiary;
+  const DSStatusDot.neutral({
+    super.key,
+    this.size = 8,
+    this.animated = false,
+    this.tooltip,
+  }) : color = DSColors.textTertiary;
 
   // === OPERATIONAL STATE CONSTRUCTORS ===
   // Lifecycle states
 
   /// Pending — awaiting start. Muted neutral dot.
-  const DSStatusDot.pending({super.key, this.size = 8, this.animated = false, this.tooltip = 'Pending'})
-      : color = DSColors.statusPending;
+  const DSStatusDot.pending({
+    super.key,
+    this.size = 8,
+    this.animated = false,
+    this.tooltip = 'Pending',
+  }) : color = DSColors.statusPending;
 
   /// Running — actively in progress. Animated gold dot.
-  const DSStatusDot.running({super.key, this.size = 8, this.animated = true, this.tooltip = 'Running'})
-      : color = DSColors.statusRunning;
+  const DSStatusDot.running({
+    super.key,
+    this.size = 8,
+    this.animated = true,
+    this.tooltip = 'Running',
+  }) : color = DSColors.statusRunning;
 
   /// Approved — review accepted. Green dot.
-  const DSStatusDot.approved({super.key, this.size = 8, this.animated = false, this.tooltip = 'Approved'})
-      : color = DSColors.statusApproved;
+  const DSStatusDot.approved({
+    super.key,
+    this.size = 8,
+    this.animated = false,
+    this.tooltip = 'Approved',
+  }) : color = DSColors.statusApproved;
 
   /// Rejected — review declined. Red dot.
-  const DSStatusDot.rejected({super.key, this.size = 8, this.animated = false, this.tooltip = 'Rejected'})
-      : color = DSColors.statusRejected;
+  const DSStatusDot.rejected({
+    super.key,
+    this.size = 8,
+    this.animated = false,
+    this.tooltip = 'Rejected',
+  }) : color = DSColors.statusRejected;
 
   /// Promoted — advanced to next stage. Cyan dot.
-  const DSStatusDot.promoted({super.key, this.size = 8, this.animated = false, this.tooltip = 'Promoted'})
-      : color = DSColors.statusPromoted;
+  const DSStatusDot.promoted({
+    super.key,
+    this.size = 8,
+    this.animated = false,
+    this.tooltip = 'Promoted',
+  }) : color = DSColors.statusPromoted;
 
   /// Archived — terminal completed state. Gray dot.
-  const DSStatusDot.archived({super.key, this.size = 8, this.animated = false, this.tooltip = 'Archived'})
-      : color = DSColors.statusArchived;
+  const DSStatusDot.archived({
+    super.key,
+    this.size = 8,
+    this.animated = false,
+    this.tooltip = 'Archived',
+  }) : color = DSColors.statusArchived;
 
   // Health states
 
   /// Healthy — operating normally. Green dot.
-  const DSStatusDot.healthy({super.key, this.size = 8, this.animated = false, this.tooltip = 'Healthy'})
-      : color = DSColors.statusHealthy;
+  const DSStatusDot.healthy({
+    super.key,
+    this.size = 8,
+    this.animated = false,
+    this.tooltip = 'Healthy',
+  }) : color = DSColors.statusHealthy;
 
   /// Degraded — partial impairment. Amber dot.
-  const DSStatusDot.degraded({super.key, this.size = 8, this.animated = false, this.tooltip = 'Degraded'})
-      : color = DSColors.statusDegraded;
+  const DSStatusDot.degraded({
+    super.key,
+    this.size = 8,
+    this.animated = false,
+    this.tooltip = 'Degraded',
+  }) : color = DSColors.statusDegraded;
 
   /// Disabled — intentionally inactive. Gray dot.
-  const DSStatusDot.disabled({super.key, this.size = 8, this.animated = false, this.tooltip = 'Disabled'})
-      : color = DSColors.statusDisabled;
+  const DSStatusDot.disabled({
+    super.key,
+    this.size = 8,
+    this.animated = false,
+    this.tooltip = 'Disabled',
+  }) : color = DSColors.statusDisabled;
 
   // Verification states
 
   /// Unverified — not yet verified. Muted neutral dot.
-  const DSStatusDot.unverified({super.key, this.size = 8, this.animated = false, this.tooltip = 'Unverified'})
-      : color = DSColors.statusUnverified;
+  const DSStatusDot.unverified({
+    super.key,
+    this.size = 8,
+    this.animated = false,
+    this.tooltip = 'Unverified',
+  }) : color = DSColors.statusUnverified;
 
   /// Exposed — at risk, unverified and critical. Animated red dot.
-  const DSStatusDot.exposed({super.key, this.size = 8, this.animated = true, this.tooltip = 'Exposed'})
-      : color = DSColors.statusExposed;
+  const DSStatusDot.exposed({
+    super.key,
+    this.size = 8,
+    this.animated = true,
+    this.tooltip = 'Exposed',
+  }) : color = DSColors.statusExposed;
 
   /// Redacted — content hidden. Violet dot.
-  const DSStatusDot.redacted({super.key, this.size = 8, this.animated = false, this.tooltip = 'Redacted'})
-      : color = DSColors.statusRedacted;
+  const DSStatusDot.redacted({
+    super.key,
+    this.size = 8,
+    this.animated = false,
+    this.tooltip = 'Redacted',
+  }) : color = DSColors.statusRedacted;
 
   // Governance states
 
   /// Stale — needs refresh. Amber dot.
-  const DSStatusDot.stale({super.key, this.size = 8, this.animated = false, this.tooltip = 'Stale'})
-      : color = DSColors.statusStale;
+  const DSStatusDot.stale({
+    super.key,
+    this.size = 8,
+    this.animated = false,
+    this.tooltip = 'Stale',
+  }) : color = DSColors.statusStale;
 
   /// Excluded — filtered out. Gray dot.
-  const DSStatusDot.excluded({super.key, this.size = 8, this.animated = false, this.tooltip = 'Excluded'})
-      : color = DSColors.statusExcluded;
+  const DSStatusDot.excluded({
+    super.key,
+    this.size = 8,
+    this.animated = false,
+    this.tooltip = 'Excluded',
+  }) : color = DSColors.statusExcluded;
 
   // === OPERATIONAL STATE FACTORY ===
   /// Creates a status dot from a [DSOperationalState].
@@ -150,7 +226,10 @@ class DSStatusDot extends StatelessWidget {
       key: key,
       color: state.color,
       size: size,
-      animated: animated ?? (state == DSOperationalState.running || state == DSOperationalState.exposed),
+      animated:
+          animated ??
+          (state == DSOperationalState.running ||
+              state == DSOperationalState.exposed),
       tooltip: tooltip ?? state.label,
     );
   }
@@ -162,19 +241,13 @@ class DSStatusDot extends StatelessWidget {
         : Container(
             width: size,
             height: size,
-            decoration: BoxDecoration(
-              color: color,
-              shape: BoxShape.circle,
-            ),
+            decoration: BoxDecoration(color: color, shape: BoxShape.circle),
           );
 
     if (tooltip != null) {
       return Semantics(
         label: tooltip,
-        child: Tooltip(
-          message: tooltip!,
-          child: dot,
-        ),
+        child: Tooltip(message: tooltip!, child: dot),
       );
     }
 
@@ -192,7 +265,8 @@ class _AnimatedDot extends StatefulWidget {
   State<_AnimatedDot> createState() => _AnimatedDotState();
 }
 
-class _AnimatedDotState extends State<_AnimatedDot> with SingleTickerProviderStateMixin {
+class _AnimatedDotState extends State<_AnimatedDot>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
 
@@ -203,9 +277,10 @@ class _AnimatedDotState extends State<_AnimatedDot> with SingleTickerProviderSta
       duration: const Duration(seconds: 2),
       vsync: this,
     )..repeat(reverse: true);
-    _animation = Tween<double>(begin: 0.3, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
+    _animation = Tween<double>(
+      begin: 0.3,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
   @override

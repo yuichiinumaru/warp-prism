@@ -32,9 +32,9 @@ class WorkspaceGraphResult {
 
   /// An empty graph with no assets or edges.
   const WorkspaceGraphResult.empty()
-      : assetsById = const {},
-        edges = const [],
-        assetsByKind = const {};
+    : assetsById = const {},
+      edges = const [],
+      assetsByKind = const {};
 
   /// Total number of nodes (assets) in the graph.
   int get nodeCount => assetsById.length;

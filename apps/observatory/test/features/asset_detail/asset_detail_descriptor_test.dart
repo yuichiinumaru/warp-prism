@@ -19,82 +19,76 @@ import 'package:warp_prism_observatory/features/asset_detail/application/asset_d
 // ---------------------------------------------------------------------------
 
 WorkspaceAsset _agentAsset() => const WorkspaceAsset(
-      id: 'agent:test-orchestrator',
-      kind: AssetKind.agent,
-      name: 'Test Orchestrator',
-      path: 'agents/test-orchestrator.md',
-      description: 'An agent that orchestrates test workflows.',
-      canonicality: Canonicality.parentCanonical,
-      frontmatter: {
-        'version': '2.0.0',
-        'status': 'active',
-        'model': {'provider': 'openai', 'name': 'gpt-4'},
-      },
-      tags: ['orchestration', 'testing'],
-    );
+  id: 'agent:test-orchestrator',
+  kind: AssetKind.agent,
+  name: 'Test Orchestrator',
+  path: 'agents/test-orchestrator.md',
+  description: 'An agent that orchestrates test workflows.',
+  canonicality: Canonicality.parentCanonical,
+  frontmatter: {
+    'version': '2.0.0',
+    'status': 'active',
+    'model': {'provider': 'openai', 'name': 'gpt-4'},
+  },
+  tags: ['orchestration', 'testing'],
+);
 
 WorkspaceAsset _skillAsset() => const WorkspaceAsset(
-      id: 'skill:test-runner',
-      kind: AssetKind.skill,
-      name: 'Test Runner',
-      path: 'skills/test-runner.md',
-      description: 'Runs test suites and reports results.',
-      canonicality: Canonicality.parentCanonical,
-      frontmatter: {
-        'version': '1.5.0',
-      },
-      tags: ['testing'],
-      triggers: ['run tests', 'execute tests'],
-    );
+  id: 'skill:test-runner',
+  kind: AssetKind.skill,
+  name: 'Test Runner',
+  path: 'skills/test-runner.md',
+  description: 'Runs test suites and reports results.',
+  canonicality: Canonicality.parentCanonical,
+  frontmatter: {'version': '1.5.0'},
+  tags: ['testing'],
+  triggers: ['run tests', 'execute tests'],
+);
 
 WorkspaceAsset _taskAsset() => const WorkspaceAsset(
-      id: 'task:0902',
-      kind: AssetKind.task,
-      name: 'Universal Asset Detail View Model',
-      path: 'docs/tasks/01-open/0902.md',
-      description: 'Create the universal asset detail domain.',
-      canonicality: Canonicality.parentCanonical,
-      frontmatter: {
-        'priority': 'P1',
-        'lane': 'doing',
-        'status': 'open',
-      },
-    );
+  id: 'task:0902',
+  kind: AssetKind.task,
+  name: 'Universal Asset Detail View Model',
+  path: 'docs/tasks/01-open/0902.md',
+  description: 'Create the universal asset detail domain.',
+  canonicality: Canonicality.parentCanonical,
+  frontmatter: {'priority': 'P1', 'lane': 'doing', 'status': 'open'},
+);
 
 WorkspaceAsset _changelogAsset() => const WorkspaceAsset(
-      id: 'changelog:2026-06-07-task-0902',
-      kind: AssetKind.changelog,
-      name: 'Task 0902 Changelog',
-      path: 'docs/changelog/2026-06-07-task-0902.md',
-      description: 'Changelog entry for task 0902.',
-      canonicality: Canonicality.appendOnly,
-    );
+  id: 'changelog:2026-06-07-task-0902',
+  kind: AssetKind.changelog,
+  name: 'Task 0902 Changelog',
+  path: 'docs/changelog/2026-06-07-task-0902.md',
+  description: 'Changelog entry for task 0902.',
+  canonicality: Canonicality.appendOnly,
+);
 
 WorkspaceAsset _scriptAsset() => const WorkspaceAsset(
-      id: 'script:setup.sh',
-      kind: AssetKind.script,
-      name: 'Setup Script',
-      path: 'scripts/setup.sh',
-      description: 'A setup script.',
-    );
+  id: 'script:setup.sh',
+  kind: AssetKind.script,
+  name: 'Setup Script',
+  path: 'scripts/setup.sh',
+  description: 'A setup script.',
+);
 
 List<WorkspaceEdge> _testEdges() => [
-      const WorkspaceEdge(
-        sourceId: 'agent:test-orchestrator',
-        targetId: 'skill:test-runner',
-        kind: EdgeKind.uses,
-      ),
-      const WorkspaceEdge(
-        sourceId: 'task:0902',
-        targetId: 'skill:test-runner',
-        kind: EdgeKind.dependsOn,
-      ),
-      const WorkspaceEdge(
-        sourceId: 'changelog:2026-06-07-task-0902',
-        targetId: 'task:0902',
-        kind: EdgeKind.changedBy,
-      ),
-    ];
+  const WorkspaceEdge(
+    sourceId: 'agent:test-orchestrator',
+    targetId: 'skill:test-runner',
+    kind: EdgeKind.uses,
+  ),
+  const WorkspaceEdge(
+    sourceId: 'task:0902',
+    targetId: 'skill:test-runner',
+    kind: EdgeKind.dependsOn,
+  ),
+  const WorkspaceEdge(
+    sourceId: 'changelog:2026-06-07-task-0902',
+    targetId: 'task:0902',
+    kind: EdgeKind.changedBy,
+  ),
+];
 
 Map<String, WorkspaceAsset> _testAssetIndex() {
   final assets = [
@@ -183,8 +177,9 @@ void main() {
         assetIndex: _testAssetIndex(),
         allEdges: _testEdges(),
       );
-      final identitySections = result.descriptor.sharedSections
-          .where((s) => s.key == 'identity');
+      final identitySections = result.descriptor.sharedSections.where(
+        (s) => s.key == 'identity',
+      );
       expect(identitySections, isNotEmpty);
 
       final identity = identitySections.first;
@@ -220,7 +215,7 @@ void main() {
 
       // Agent should have version, status from frontmatter
       expect(labels, contains('version'));
-      expect(labels, contains('status'));
+      expect(labels, contains('Status'));
     });
 
     test('includes task-specific fields', () {
@@ -247,8 +242,7 @@ void main() {
       final allProps = result.descriptor.allSections
           .expand((s) => s.properties)
           .toList();
-      final triggerProp =
-          allProps.where((p) => p.label == 'Triggers');
+      final triggerProp = allProps.where((p) => p.label == 'Triggers');
 
       expect(triggerProp, isNotEmpty);
       expect(triggerProp.first.value, contains('run tests'));
@@ -262,12 +256,14 @@ void main() {
         assetIndex: _testAssetIndex(),
         allEdges: _testEdges(),
       );
-      final identitySections = result.descriptor.sharedSections
-          .where((s) => s.key == 'identity');
+      final identitySections = result.descriptor.sharedSections.where(
+        (s) => s.key == 'identity',
+      );
       expect(identitySections, isNotEmpty);
 
-      final descProp = identitySections.first.properties
-          .where((p) => p.label == 'Description');
+      final descProp = identitySections.first.properties.where(
+        (p) => p.label == 'Description',
+      );
       expect(descProp, isNotEmpty);
       expect(descProp.first.value, contains('orchestrates test'));
     });
@@ -290,8 +286,9 @@ void main() {
         assetIndex: _testAssetIndex(),
         allEdges: _testEdges(),
       );
-      final usesLink = result.descriptor.incomingLinks
-          .firstWhere((l) => l.kind == 'uses');
+      final usesLink = result.descriptor.incomingLinks.firstWhere(
+        (l) => l.kind == 'uses',
+      );
 
       expect(usesLink.targetId, 'agent:test-orchestrator');
       expect(usesLink.label, 'Test Orchestrator');
@@ -439,12 +436,8 @@ void main() {
       };
       final desc = buildAssetDetailDescriptor(
         asset: asset,
-        incoming: _testEdges()
-            .where((e) => e.targetId == 'task:0902')
-            .toList(),
-        outgoing: _testEdges()
-            .where((e) => e.sourceId == 'task:0902')
-            .toList(),
+        incoming: _testEdges().where((e) => e.targetId == 'task:0902').toList(),
+        outgoing: _testEdges().where((e) => e.sourceId == 'task:0902').toList(),
         assetNames: names,
       );
 
@@ -476,8 +469,7 @@ void main() {
         asset: asset,
         incoming: [],
         outgoing: _testEdges()
-            .where(
-                (e) => e.sourceId == 'changelog:2026-06-07-task-0902')
+            .where((e) => e.sourceId == 'changelog:2026-06-07-task-0902')
             .toList(),
         assetNames: names,
       );

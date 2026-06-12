@@ -1,0 +1,365 @@
+UNIQUE_FAILURE_MARKERS=12
+
+--- FAILURE 1 at log line 74 ---
+54: The following assertion was thrown running a test:
+55: No GoRouter found in context
+56: 'package:go_router/src/router.dart':
+57: Failed assertion: line 521 pos 12: 'inherited != null'
+58: 
+59: When the exception was thrown, this was the stack:
+60: #2      GoRouter.of (package:go_router/src/router.dart:521:12)
+61: #3      main.<anonymous closure>.<anonymous closure> (file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_shell_smoke_test.dart:20:16)
+62: <asynchronous suspension>
+63: #4      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+64: <asynchronous suspension>
+65: #5      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+66: <asynchronous suspension>
+67: <asynchronous suspension>
+68: (elided 3 frames from class _AssertionError and package:stack_trace)
+69: 
+70: The test description was:
+71:   app boots and renders the shell with default route
+72: ════════════════════════════════════════════════════════════════════════════════════════════════════
+73: 00:04 +31 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/deep_link_fallback_test.dart: AssetDetailPage deep-link fallback renders fallback for empty asset ID
+74: 00:04 +31 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_shell_smoke_test.dart: App shell smoke test app boots and renders the shell with default route [E]
+75:   Test failed. See exception logs above.
+76:   The test description was: app boots and renders the shell with default route
+77:   
+78: 00:04 +32 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/deep_link_fallback_test.dart: AssetDetailPage deep-link fallback renders fallback for empty asset ID
+79: 00:04 +33 -1: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/deep_link_fallback_test.dart: AssetDetailPage deep-link fallback renders fallback for empty asset ID
+
+--- FAILURE 2 at log line 181 ---
+161: The following assertion was thrown running a test:
+162: No GoRouter found in context
+163: 'package:go_router/src/router.dart':
+164: Failed assertion: line 521 pos 12: 'inherited != null'
+165: 
+166: When the exception was thrown, this was the stack:
+167: #2      GoRouter.of (package:go_router/src/router.dart:521:12)
+168: #3      main.<anonymous closure>.<anonymous closure> (file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_shell_smoke_test.dart:36:16)
+169: <asynchronous suspension>
+170: #4      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+171: <asynchronous suspension>
+172: #5      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+173: <asynchronous suspension>
+174: <asynchronous suspension>
+175: (elided 3 frames from class _AssertionError and package:stack_trace)
+176: 
+177: The test description was:
+178:   default route lands on Overview
+179: ════════════════════════════════════════════════════════════════════════════════════════════════════
+180: 00:06 +112 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+181: 00:06 +112 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/app_shell_smoke_test.dart: App shell smoke test default route lands on Overview [E]
+182:   Test failed. See exception logs above.
+183:   The test description was: default route lands on Overview
+184:   
+185: 00:06 +113 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+186: 00:06 +114 -2: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/app/shell_responsive_layout_test.dart: AppShell responsive layout wide layout (1400px) renders expanded sidebar and topbar
+
+--- FAILURE 3 at log line 427 ---
+406: The following TestFailure was thrown running a test:
+407: Expected: at least one matching candidate
+408:   Actual: _TextWidgetFinder:<Found 0 widgets with text "Containment": []>
+409:    Which: means none were found but some were expected
+410: 
+411: When the exception was thrown, this was the stack:
+412: #4      main.<anonymous closure>.<anonymous closure> (file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart:124:7)
+413: <asynchronous suspension>
+414: #5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+415: <asynchronous suspension>
+416: #6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+417: <asynchronous suspension>
+418: <asynchronous suspension>
+419: (elided one frame from package:stack_trace)
+420: 
+421: This was caught by the test expectation on the following line:
+422:   file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart line 124
+423: The test description was:
+424:   renders graph tab with projection when edges exist
+425: ════════════════════════════════════════════════════════════════════════════════════════════════════
+426: 00:19 +331 -3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders search bar
+427: 00:19 +331 -3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - happy path renders graph tab with projection when edges exist [E]
+428:   Test failed. See exception logs above.
+429:   The test description was: renders graph tab with projection when edges exist
+430:   
+431: 00:19 +332 -3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders search bar
+432: 00:19 +333 -3: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders search bar
+
+--- FAILURE 4 at log line 468 ---
+447: The following TestFailure was thrown running a test:
+448: Expected: at least one matching candidate
+449:   Actual: _TextWidgetFinder:<Found 0 widgets with text "No asset selected": []>
+450:    Which: means none were found but some were expected
+451: 
+452: When the exception was thrown, this was the stack:
+453: #4      main.<anonymous closure>.<anonymous closure> (file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_selection_and_inspector_test.dart:353:7)
+454: <asynchronous suspension>
+455: #5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+456: <asynchronous suspension>
+457: #6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+458: <asynchronous suspension>
+459: <asynchronous suspension>
+460: (elided one frame from package:stack_trace)
+461: 
+462: This was caught by the test expectation on the following line:
+463:   file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_selection_and_inspector_test.dart line 353
+464: The test description was:
+465:   switches from selected to no-selection when cleared
+466: ════════════════════════════════════════════════════════════════════════════════════════════════════
+467: 00:21 +345 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+468: 00:21 +345 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_selection_and_inspector_test.dart: MapInspectorPanel widget switches from selected to no-selection when cleared [E]
+469:   Test failed. See exception logs above.
+470:   The test description was: switches from selected to no-selection when cleared
+471:   
+472: 00:21 +346 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+473: 00:21 +347 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders task identity as header
+
+--- FAILURE 5 at log line 512 ---
+490: The following TestFailure was thrown running a test:
+491: Expected: at least one matching candidate
+492:   Actual: _TypeWidgetFinder:<Found 0 widgets with type "DSSearchBar": []>
+493:    Which: means none were found but some were expected
+494: 
+495: When the exception was thrown, this was the stack:
+496: #4      main.<anonymous closure>.<anonymous closure> (file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart:249:7)
+497: <asynchronous suspension>
+498: #5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+499: <asynchronous suspension>
+500: #6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+501: <asynchronous suspension>
+502: <asynchronous suspension>
+503: (elided one frame from package:stack_trace)
+504: 
+505: This was caught by the test expectation on the following line:
+506:   file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart line 249
+507: The test description was:
+508:   shows catalog panel on first tab (Agents)
+509: ════════════════════════════════════════════════════════════════════════════════════════════════════
+510: 00:21 +362 -4: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget shows catalog panel on first tab (Agents)
+511: 00:21 +362 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - no-results state shows no-results when filters eliminate all assets
+512: 00:21 +362 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget shows catalog panel on first tab (Agents) [E]
+513:   Test failed. See exception logs above.
+514:   The test description was: shows catalog panel on first tab (Agents)
+515:   
+516: 00:21 +363 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - no-results state shows no-results when filters eliminate all assets
+517: 00:21 +364 -5: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapCatalogPanel widget renders no-results state when filteredAssets is empty
+
+--- FAILURE 6 at log line 581 ---
+560: The following TestFailure was thrown running a test:
+561: Expected: at least one matching candidate
+562:   Actual: _TextWidgetFinder:<Found 0 widgets with text "Retry": []>
+563:    Which: means none were found but some were expected
+564: 
+565: When the exception was thrown, this was the stack:
+566: #4      main.<anonymous closure>.<anonymous closure> (file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart:289:7)
+567: <asynchronous suspension>
+568: #5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+569: <asynchronous suspension>
+570: #6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+571: <asynchronous suspension>
+572: <asynchronous suspension>
+573: (elided one frame from package:stack_trace)
+574: 
+575: This was caught by the test expectation on the following line:
+576:   file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart line 289
+577: The test description was:
+578:   error state shows retry button
+579: ════════════════════════════════════════════════════════════════════════════════════════════════════
+580: 00:22 +404 -6: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget switching tabs shows correct content
+581: 00:22 +404 -6: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_surface_states_test.dart: Map surface - error state error state shows retry button [E]
+582:   Test failed. See exception logs above.
+583:   The test description was: error state shows retry button
+584:   
+585: 00:23 +404 -6: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget switching tabs shows correct content
+586: ══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+
+--- FAILURE 7 at log line 608 ---
+587: The following TestFailure was thrown running a test:
+588: Expected: at least one matching candidate
+589:   Actual: _TypeWidgetFinder:<Found 0 widgets with type "DSSearchBar": []>
+590:    Which: means none were found but some were expected
+591: 
+592: When the exception was thrown, this was the stack:
+593: #4      main.<anonymous closure>.<anonymous closure> (file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart:259:7)
+594: <asynchronous suspension>
+595: #5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+596: <asynchronous suspension>
+597: #6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+598: <asynchronous suspension>
+599: <asynchronous suspension>
+600: (elided one frame from package:stack_trace)
+601: 
+602: This was caught by the test expectation on the following line:
+603:   file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart line 259
+604: The test description was:
+605:   switching tabs shows correct content
+606: ════════════════════════════════════════════════════════════════════════════════════════════════════
+607: 00:23 +404 -7: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders verification commands
+608: 00:23 +404 -7: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget switching tabs shows correct content [E]
+609:   Test failed. See exception logs above.
+610:   The test description was: switching tabs shows correct content
+611:   
+612: 00:23 +405 -7: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders verification commands
+613: 00:23 +406 -7: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders verification commands
+
+--- FAILURE 8 at log line 639 ---
+618: The following TestFailure was thrown running a test:
+619: Expected: at least one matching candidate
+620:   Actual: _TextWidgetFinder:<Found 0 widgets with text "Asset Graph": []>
+621:    Which: means none were found but some were expected
+622: 
+623: When the exception was thrown, this was the stack:
+624: #4      main.<anonymous closure>.<anonymous closure> (file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart:279:7)
+625: <asynchronous suspension>
+626: #5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+627: <asynchronous suspension>
+628: #6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+629: <asynchronous suspension>
+630: <asynchronous suspension>
+631: (elided one frame from package:stack_trace)
+632: 
+633: This was caught by the test expectation on the following line:
+634:   file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart line 279
+635: The test description was:
+636:   renders with initial state specifying a subview
+637: ════════════════════════════════════════════════════════════════════════════════════════════════════
+638: 00:23 +408 -8: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+639: 00:23 +408 -8: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_workspace_page_test.dart: MapWorkspacePage widget renders with initial state specifying a subview [E]
+640:   Test failed. See exception logs above.
+641:   The test description was: renders with initial state specifying a subview
+642:   
+643: 00:23 +409 -8: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+644: 00:24 +410 -8: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+
+--- FAILURE 9 at log line 668 ---
+647: The following TestFailure was thrown running a test:
+648: Expected: exactly one matching candidate
+649:   Actual: _TextWidgetFinder:<Found 0 widgets with text "Clear filters": []>
+650:    Which: means none were found but one was expected
+651: 
+652: When the exception was thrown, this was the stack:
+653: #4      main.<anonymous closure>.<anonymous closure> (file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart:428:7)
+654: <asynchronous suspension>
+655: #5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+656: <asynchronous suspension>
+657: #6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+658: <asynchronous suspension>
+659: <asynchronous suspension>
+660: (elided one frame from package:stack_trace)
+661: 
+662: This was caught by the test expectation on the following line:
+663:   file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart line 428
+664: The test description was:
+665:   shows message for query with no results
+666: ════════════════════════════════════════════════════════════════════════════════════════════════════
+667: 00:24 +410 -9: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+668: 00:24 +410 -9: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/map/map_catalog_panel_test.dart: MapNoResultsState widget shows message for query with no results [E]
+669:   Test failed. See exception logs above.
+670:   The test description was: shows message for query with no results
+671:   
+672: 00:24 +411 -9: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+673: 00:24 +412 -9: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_board_surface_test.dart: DSLaneBoard integration renders five lanes from DSLane objects
+
+--- FAILURE 10 at log line 716 ---
+686: The following TestFailure was thrown running a test:
+687: Expected: exactly one matching candidate
+688:   Actual: _TextWidgetFinder:<Found 2 widgets with text "Exit Conditions": [
+689:             Text("Exit Conditions", inherit: true, color: Color(alpha: 1.0000, red: 0.6275, green:
+690: 0.6275, blue: 0.6902, colorSpace: ColorSpace.sRGB), family: Inter, size: 14.0, weight: 500,
+691: letterSpacing: 0.1, height: 1.4x, dependencies: [DefaultSelectionStyle, DefaultTextStyle,
+692: MediaQuery]),
+693:             Text("Exit Conditions", inherit: true, color: Color(alpha: 1.0000, red: 0.9412, green:
+694: 0.9412, blue: 0.9608, colorSpace: ColorSpace.sRGB), family: Inter, size: 12.0, weight: 500,
+695: letterSpacing: 0.3, height: 1.4x, dependencies: [DefaultSelectionStyle, DefaultTextStyle,
+696: MediaQuery]),
+697:           ]>
+698:    Which: is too many
+699: 
+700: When the exception was thrown, this was the stack:
+701: #4      main.<anonymous closure>.<anonymous closure> (file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart:130:7)
+702: <asynchronous suspension>
+703: #5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+704: <asynchronous suspension>
+705: #6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+706: <asynchronous suspension>
+707: <asynchronous suspension>
+708: (elided one frame from package:stack_trace)
+709: 
+710: This was caught by the test expectation on the following line:
+711:   file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart line 130
+712: The test description was:
+713:   renders exit conditions with checked state
+714: ════════════════════════════════════════════════════════════════════════════════════════════════════
+715: 00:26 +422 -10: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_page_test.dart: HistoryWorkspacePage renders timeline entries in reverse chronological order
+716: 00:26 +422 -10: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel renders exit conditions with checked state [E]
+717:   Test failed. See exception logs above.
+718:   The test description was: renders exit conditions with checked state
+719:   
+720: 00:26 +423 -10: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_page_test.dart: HistoryWorkspacePage renders timeline entries in reverse chronological order
+721: 00:26 +424 -10: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_page_test.dart: HistoryWorkspacePage renders timeline entries in reverse chronological order
+
+--- FAILURE 11 at log line 774 ---
+754: The following TestFailure was thrown running a test:
+755: Expected: true
+756:   Actual: <false>
+757: 
+758: When the exception was thrown, this was the stack:
+759: #4      main.<anonymous closure>.<anonymous closure> (file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart:168:7)
+760: <asynchronous suspension>
+761: #5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+762: <asynchronous suspension>
+763: #6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+764: <asynchronous suspension>
+765: <asynchronous suspension>
+766: (elided one frame from package:stack_trace)
+767: 
+768: This was caught by the test expectation on the following line:
+769:   file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart line 168
+770: The test description was:
+771:   close button triggers onClose callback
+772: ════════════════════════════════════════════════════════════════════════════════════════════════════
+773: 00:29 +431 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+774: 00:29 +431 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/operate/operate_task_detail_inspector_test.dart: OperateTaskDetailPanel close button triggers onClose callback [E]
+775:   Test failed. See exception logs above.
+776:   The test description was: close button triggers onClose callback
+777:   
+778: 00:29 +432 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+779: 00:29 +433 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/history/history_story_modes_test.dart: History View Mode Switcher renders all three mode chips
+
+--- FAILURE 12 at log line 918 ---
+888: The following TestFailure was thrown running a test:
+889: Expected: exactly one matching candidate
+890:   Actual: _TextWidgetFinder:<Found 2 widgets with text "04-completed": [
+891:             Text("04-completed", inherit: true, color: Color(alpha: 1.0000, red: 0.9608, green:
+892: 0.6196, blue: 0.0431, colorSpace: ColorSpace.sRGB), family: Inter, size: 10.0, weight: 500,
+893: letterSpacing: 0.5, height: 1.4x, dependencies: [DefaultSelectionStyle, DefaultTextStyle,
+894: MediaQuery]),
+895:             Text("04-completed", inherit: true, color: Color(alpha: 1.0000, red: 0.6275, green:
+896: 0.6275, blue: 0.6902, colorSpace: ColorSpace.sRGB), size: 12.0, weight: 500, height: 1.0x,
+897: dependencies: [DefaultSelectionStyle, DefaultTextStyle, MediaQuery]),
+898:           ]>
+899:    Which: is too many
+900: 
+901: When the exception was thrown, this was the stack:
+902: #4      main.<anonymous closure>.<anonymous closure> (file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/governance/governance_analytics_panels_test.dart:341:7)
+903: <asynchronous suspension>
+904: #5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+905: <asynchronous suspension>
+906: #6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1952:5)
+907: <asynchronous suspension>
+908: <asynchronous suspension>
+909: (elided one frame from package:stack_trace)
+910: 
+911: This was caught by the test expectation on the following line:
+912:   file:///home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/governance/governance_analytics_panels_test.dart line 341
+913: The test description was:
+914:   renders lane breakdown chips
+915: ════════════════════════════════════════════════════════════════════════════════════════════════════
+916: 00:34 +540 -11: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+917: 00:34 +540 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+918: 00:34 +540 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/governance/governance_analytics_panels_test.dart: ReviewPressurePanel renders lane breakdown chips [E]
+919:   Test failed. See exception logs above.
+920:   The test description was: renders lane breakdown chips
+921:   
+922: 00:34 +541 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels
+923: 00:34 +542 -12: /home/sephiroth/working/ganthritor/warp-prism/apps/observatory/test/features/asset_detail/extended_detail_variants_test.dart: AgentDetailView renders operational metadata panels

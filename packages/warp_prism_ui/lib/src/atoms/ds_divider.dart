@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../tokens/tokens.dart';
 
 /// ASW Observatory Atom - Divider
-/// 
+///
 /// Visual separator for content sections
 class DSDivider extends StatelessWidget {
   final Color? color;
@@ -21,30 +21,42 @@ class DSDivider extends StatelessWidget {
   });
 
   // === NAMED CONSTRUCTORS ===
-  const DSDivider.subtle({super.key, this.indent, this.endIndent, this.vertical = false})
-      : color = DSColors.borderSubtle, thickness = 1;
-  
-  const DSDivider.strong({super.key, this.indent, this.endIndent, this.vertical = false})
-      : color = DSColors.borderDefault, thickness = 1;
-  
-  const DSDivider.glow({super.key, this.indent, this.endIndent, this.vertical = false})
-      : color = DSColors.accentCyan, thickness = 1;
+  const DSDivider.subtle({
+    super.key,
+    this.indent,
+    this.endIndent,
+    this.vertical = false,
+  }) : color = DSColors.borderSubtle,
+       thickness = 1;
+
+  const DSDivider.strong({
+    super.key,
+    this.indent,
+    this.endIndent,
+    this.vertical = false,
+  }) : color = DSColors.borderDefault,
+       thickness = 1;
+
+  const DSDivider.glow({
+    super.key,
+    this.indent,
+    this.endIndent,
+    this.vertical = false,
+  }) : color = DSColors.accentCyan,
+       thickness = 1;
 
   @override
   Widget build(BuildContext context) {
     final effectiveColor = color ?? DSColors.borderSubtle;
-    
+
     if (vertical) {
       return Container(
         width: thickness,
-        margin: EdgeInsets.only(
-          top: indent ?? 0,
-          bottom: endIndent ?? 0,
-        ),
+        margin: EdgeInsets.only(top: indent ?? 0, bottom: endIndent ?? 0),
         color: effectiveColor,
       );
     }
-    
+
     return Divider(
       color: effectiveColor,
       thickness: thickness,

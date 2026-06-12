@@ -1,6 +1,7 @@
 # Task 0410: Warp Prism App Root Router Shell Skeleton
 
 > **Status**: `[x]` Done
+> **Review State**: Blocked — Flutter SDK not installed; validation commands cannot execute
 > **Priority**: 🔴 P0
 > **Type**: `feature`
 > **Origin**: EPIC-04 Warp Prism Product Shell and Overview

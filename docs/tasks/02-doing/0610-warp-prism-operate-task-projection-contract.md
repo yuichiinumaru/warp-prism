@@ -1,6 +1,7 @@
 # Task 0610: Warp-Prism Operate Task Projection Contract
 
 > **Status**: `[x]` Done
+> **Review State**: Blocked — Flutter SDK not installed; validation commands cannot execute
 > **Priority**: 🔴 P0
 > **Type**: `feature`
 > **Origin**: EPIC 06 promotion from `warp-prism/docs/tasks/00-planning/EPIC-06-warp-prism-operate-surface.md`

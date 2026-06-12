@@ -18,11 +18,7 @@ class OperateTaskDetailPanel extends StatelessWidget {
   /// Called when the user closes the inspector.
   final VoidCallback? onClose;
 
-  const OperateTaskDetailPanel({
-    super.key,
-    required this.task,
-    this.onClose,
-  });
+  const OperateTaskDetailPanel({super.key, required this.task, this.onClose});
 
   @override
   Widget build(BuildContext context) {

@@ -5,7 +5,7 @@
 /// asset graph for the [DSGraphCanvas] consumer.
 library;
 
-import '../../../data/models/workspace_graph.dart';
+import 'package:warp_prism_observatory/data/models/workspace_graph.dart';
 
 /// The three graph projection modes available in the Map Graph subview.
 enum MapGraphMode {

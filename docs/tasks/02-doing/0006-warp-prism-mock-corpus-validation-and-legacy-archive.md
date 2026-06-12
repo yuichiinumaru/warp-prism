@@ -1,6 +1,7 @@
 # Task 0006: Warp Prism Mock Corpus Validation And Legacy Archive
 
 > **Status**: `[x]` Done
+> **Review State**: Blocked — Flutter SDK not installed; validation commands cannot execute
 > **Priority**: 🔴 P0
 > **Type**: `verification`
 > **Origin**: EPIC 02 — Warp Prism Mock Workspace Corpus

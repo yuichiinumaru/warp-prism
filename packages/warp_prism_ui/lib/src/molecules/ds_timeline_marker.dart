@@ -3,7 +3,7 @@ import '../tokens/tokens.dart';
 import '../atoms/atoms.dart';
 
 /// ASW Observatory Molecule - Timeline Marker
-/// 
+///
 /// Marker for timeline/changelog entries
 class DSTimelineMarker extends StatelessWidget {
   final String date;
@@ -33,12 +33,18 @@ class DSTimelineMarker extends StatelessWidget {
 
   Color get _typeColor {
     switch (type?.toLowerCase()) {
-      case 'feature': return DSColors.statusSuccess;
-      case 'fix': return DSColors.statusInfo;
-      case 'refactor': return DSColors.accentViolet;
-      case 'docs': return DSColors.accentGold;
-      case 'chore': return DSColors.textTertiary;
-      default: return DSColors.accentCyan;
+      case 'feature':
+        return DSColors.statusSuccess;
+      case 'fix':
+        return DSColors.statusInfo;
+      case 'refactor':
+        return DSColors.accentViolet;
+      case 'docs':
+        return DSColors.accentGold;
+      case 'chore':
+        return DSColors.textTertiary;
+      default:
+        return DSColors.accentCyan;
     }
   }
 
@@ -73,7 +79,7 @@ class DSTimelineMarker extends StatelessWidget {
                         )
                       else
                         const Expanded(child: SizedBox()),
-                      
+
                       // Dot
                       Container(
                         width: 12,
@@ -85,15 +91,17 @@ class DSTimelineMarker extends StatelessWidget {
                             color: DSColors.obsidianBase,
                             width: 2,
                           ),
-                          boxShadow: selected ? [
-                            BoxShadow(
-                              color: _typeColor.withOpacity(0.5),
-                              blurRadius: 8,
-                            ),
-                          ] : null,
+                          boxShadow: selected
+                              ? [
+                                  BoxShadow(
+                                    color: _typeColor.withOpacity(0.5),
+                                    blurRadius: 8,
+                                  ),
+                                ]
+                              : null,
                         ),
                       ),
-                      
+
                       // Bottom line
                       if (!isLast)
                         Expanded(
@@ -107,7 +115,7 @@ class DSTimelineMarker extends StatelessWidget {
                     ],
                   ),
                 ),
-                
+
                 // Content
                 Expanded(
                   child: Padding(
@@ -138,22 +146,25 @@ class DSTimelineMarker extends StatelessWidget {
                             ],
                           ],
                         ),
-                        
+
                         const SizedBox(height: DSSpacing.xs),
-                        
+
                         // Title
                         DSText.bodyMedium(
                           title,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        
+
                         // Project
                         if (project != null) ...[
                           const SizedBox(height: DSSpacing.xs),
                           Row(
                             children: [
-                              DSIcon.small(Icons.folder_outlined, color: DSColors.textTertiary),
+                              DSIcon.small(
+                                Icons.folder_outlined,
+                                color: DSColors.textTertiary,
+                              ),
                               const SizedBox(width: 4),
                               DSText.labelSmall(
                                 project!,
@@ -162,17 +173,22 @@ class DSTimelineMarker extends StatelessWidget {
                             ],
                           ),
                         ],
-                        
+
                         // Impacts
                         if (impacts != null && impacts!.isNotEmpty) ...[
                           const SizedBox(height: DSSpacing.sm),
                           Wrap(
                             spacing: 4,
                             runSpacing: 4,
-                            children: impacts!.take(3).map((impact) => DSChip(
-                              label: impact,
-                              size: DSChipSize.small,
-                            )).toList(),
+                            children: impacts!
+                                .take(3)
+                                .map(
+                                  (impact) => DSChip(
+                                    label: impact,
+                                    size: DSChipSize.small,
+                                  ),
+                                )
+                                .toList(),
                           ),
                         ],
                       ],

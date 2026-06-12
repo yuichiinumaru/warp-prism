@@ -34,7 +34,7 @@ class MapWorkspaceProvider {
   final _controller = StreamController<MapWorkspaceState>.broadcast();
 
   MapWorkspaceProvider({MapWorkspaceState? initialState})
-      : _state = initialState ?? const MapWorkspaceState();
+    : _state = initialState ?? const MapWorkspaceState();
 
   /// Current state (synchronous access).
   MapWorkspaceState get state => _state;
@@ -45,11 +45,13 @@ class MapWorkspaceProvider {
   /// Change the active subview/tab.
   void changeSubview(MapSubview subview) {
     if (_state.activeSubview == subview) return;
-    _emit(_state.copyWith(
-      activeSubview: subview,
-      clearSelectedAsset: true,
-      clearError: true,
-    ));
+    _emit(
+      _state.copyWith(
+        activeSubview: subview,
+        clearSelectedAsset: true,
+        clearError: true,
+      ),
+    );
   }
 
   /// Update the search query.
@@ -109,19 +111,22 @@ class MapWorkspaceProvider {
   /// This replaces the entire asset collection. The provider does
   /// not own the data source — assets are injected from outside.
   void loadAssets(List<WorkspaceAsset> assets) {
-    _emit(_state.copyWith(
-      catalogAssets: assets,
-      isLoading: false,
-      clearError: true,
-    ));
+    _emit(
+      _state.copyWith(
+        catalogAssets: assets,
+        isLoading: false,
+        clearError: true,
+      ),
+    );
   }
 
   /// Update additional state (extension point for follow-up tasks).
   void updateAdditionalState(Map<String, dynamic> additional) {
-    _emit(_state.copyWith(additionalState: {
-      ..._state.additionalState,
-      ...additional,
-    }));
+    _emit(
+      _state.copyWith(
+        additionalState: {..._state.additionalState, ...additional},
+      ),
+    );
   }
 
   void _emit(MapWorkspaceState next) {

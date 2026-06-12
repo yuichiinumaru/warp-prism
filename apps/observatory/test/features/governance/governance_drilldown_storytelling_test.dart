@@ -35,50 +35,50 @@ GovernanceDiagnostic _diag({
 }
 
 List<GovernanceDiagnostic> _mixedDiagnostics() => [
-      _diag(
-        assetId: 'skill:orphan-skill',
-        category: DiagnosticCategory.orphanAsset,
-        severity: DiagnosticSeverity.warning,
-        message: 'Skill has no incoming or outgoing edges',
-      ),
-      _diag(
-        assetId: 'workflow:broken-ref',
-        category: DiagnosticCategory.staleReference,
-        severity: DiagnosticSeverity.error,
-        message: 'References non-existent target',
-      ),
-      _diag(
-        assetId: 'task:0612',
-        category: DiagnosticCategory.proofGap,
-        severity: DiagnosticSeverity.error,
-        message: 'Task in completed lane but has no proof',
-      ),
-      _diag(
-        assetId: 'task:0613',
-        category: DiagnosticCategory.proofGap,
-        severity: DiagnosticSeverity.warning,
-        message: 'Task in completed lane but only partial proof',
-      ),
-    ];
+  _diag(
+    assetId: 'skill:orphan-skill',
+    category: DiagnosticCategory.orphanAsset,
+    severity: DiagnosticSeverity.warning,
+    message: 'Skill has no incoming or outgoing edges',
+  ),
+  _diag(
+    assetId: 'workflow:broken-ref',
+    category: DiagnosticCategory.staleReference,
+    severity: DiagnosticSeverity.error,
+    message: 'References non-existent target',
+  ),
+  _diag(
+    assetId: 'task:0612',
+    category: DiagnosticCategory.proofGap,
+    severity: DiagnosticSeverity.error,
+    message: 'Task in completed lane but has no proof',
+  ),
+  _diag(
+    assetId: 'task:0613',
+    category: DiagnosticCategory.proofGap,
+    severity: DiagnosticSeverity.warning,
+    message: 'Task in completed lane but only partial proof',
+  ),
+];
 
 List<FanInHotspot> _testHotspots() => [
-      const FanInHotspot(
-        assetId: 'skill:hub-skill',
-        assetName: 'Hub Skill',
-        assetKind: 'skill',
-        incomingEdgeCount: 8,
-        threshold: 3,
-        severity: DiagnosticSeverity.warning,
-      ),
-      const FanInHotspot(
-        assetId: 'agent:central-agent',
-        assetName: 'Central Agent',
-        assetKind: 'agent',
-        incomingEdgeCount: 5,
-        threshold: 3,
-        severity: DiagnosticSeverity.warning,
-      ),
-    ];
+  const FanInHotspot(
+    assetId: 'skill:hub-skill',
+    assetName: 'Hub Skill',
+    assetKind: 'skill',
+    incomingEdgeCount: 8,
+    threshold: 3,
+    severity: DiagnosticSeverity.warning,
+  ),
+  const FanInHotspot(
+    assetId: 'agent:central-agent',
+    assetName: 'Central Agent',
+    assetKind: 'agent',
+    incomingEdgeCount: 5,
+    threshold: 3,
+    severity: DiagnosticSeverity.warning,
+  ),
+];
 
 Widget _wrapInApp(Widget child) {
   return MaterialApp(
@@ -175,8 +175,9 @@ void main() {
         totalAssets: 12,
       );
 
-      final proofStory =
-          stories.where((s) => s.title.contains('Proof')).toList();
+      final proofStory = stories
+          .where((s) => s.title.contains('Proof'))
+          .toList();
       expect(proofStory, isNotEmpty);
       expect(proofStory.first.narrative, contains('2'));
       expect(proofStory.first.involvedAssetIds.length, 2);
@@ -198,8 +199,9 @@ void main() {
         totalAssets: 5,
       );
 
-      final orphanStory =
-          stories.where((s) => s.title.contains('Orphan')).toList();
+      final orphanStory = stories
+          .where((s) => s.title.contains('Orphan'))
+          .toList();
       expect(orphanStory, isNotEmpty);
       expect(orphanStory.first.narrative, contains('1'));
       expect(orphanStory.first.involvedAssetIds, contains('skill:orphan'));
@@ -221,8 +223,9 @@ void main() {
         totalAssets: 5,
       );
 
-      final staleStory =
-          stories.where((s) => s.title.contains('Broken')).toList();
+      final staleStory = stories
+          .where((s) => s.title.contains('Broken'))
+          .toList();
       expect(staleStory, isNotEmpty);
       expect(staleStory.first.severity, GovernanceStorySeverity.critical);
     });
@@ -235,8 +238,9 @@ void main() {
         hotspots: _testHotspots(),
       );
 
-      final hotspotStory =
-          stories.where((s) => s.title.contains('hotspot')).toList();
+      final hotspotStory = stories
+          .where((s) => s.title.contains('hotspot'))
+          .toList();
       expect(hotspotStory, isNotEmpty);
       expect(hotspotStory.first.narrative, contains('Hub Skill'));
       expect(hotspotStory.first.narrative, contains('8'));
@@ -250,8 +254,9 @@ void main() {
         totalAssets: 10,
       );
 
-      final boundaryStory =
-          stories.where((s) => s.title.contains('Boundary')).toList();
+      final boundaryStory = stories
+          .where((s) => s.title.contains('Boundary'))
+          .toList();
       expect(boundaryStory, isNotEmpty);
       expect(boundaryStory.first.severity, GovernanceStorySeverity.healthy);
     });
@@ -263,8 +268,9 @@ void main() {
         totalAssets: 10,
       );
 
-      final boundaryStory =
-          stories.where((s) => s.title.contains('Canonical')).toList();
+      final boundaryStory = stories
+          .where((s) => s.title.contains('Canonical'))
+          .toList();
       expect(boundaryStory, isNotEmpty);
       expect(boundaryStory.first.severity, GovernanceStorySeverity.warning);
     });
@@ -276,8 +282,9 @@ void main() {
         totalAssets: 10,
       );
 
-      final hasHealthy =
-          stories.any((s) => s.severity == GovernanceStorySeverity.healthy);
+      final hasHealthy = stories.any(
+        (s) => s.severity == GovernanceStorySeverity.healthy,
+      );
       expect(hasHealthy, isTrue);
     });
 
@@ -306,32 +313,33 @@ void main() {
         ),
       ];
 
-      await tester.pumpWidget(_wrapInApp(
-        GovernanceStorySummary(stories: stories),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(GovernanceStorySummary(stories: stories)),
+      );
 
       expect(find.text('Test Story'), findsOneWidget);
       expect(find.text('Test narrative text'), findsOneWidget);
     });
 
     testWidgets('renders header', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        const GovernanceStorySummary(stories: []),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(const GovernanceStorySummary(stories: [])),
+      );
 
       expect(find.text('Risk Stories'), findsOneWidget);
     });
 
     testWidgets('renders empty state when no stories', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        const GovernanceStorySummary(stories: []),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(const GovernanceStorySummary(stories: [])),
+      );
 
       expect(find.textContaining('No governance data'), findsOneWidget);
     });
 
-    testWidgets('renders drilldown link for story with asset IDs',
-        (tester) async {
+    testWidgets('renders drilldown link for story with asset IDs', (
+      tester,
+    ) async {
       final stories = [
         const GovernanceRiskStory(
           title: 'Proof Gap',
@@ -342,12 +350,14 @@ void main() {
       ];
 
       GovernanceDrilldownTarget? captured;
-      await tester.pumpWidget(_wrapInApp(
-        GovernanceStorySummary(
-          stories: stories,
-          onDrilldown: (target) => captured = target,
+      await tester.pumpWidget(
+        _wrapInApp(
+          GovernanceStorySummary(
+            stories: stories,
+            onDrilldown: (target) => captured = target,
+          ),
         ),
-      ));
+      );
 
       expect(find.textContaining('View task:0612'), findsOneWidget);
 
@@ -368,18 +378,18 @@ void main() {
         ),
       ];
 
-      await tester.pumpWidget(_wrapInApp(
-        GovernanceStorySummary(
-          stories: stories,
-          onDrilldown: (_) {},
+      await tester.pumpWidget(
+        _wrapInApp(
+          GovernanceStorySummary(stories: stories, onDrilldown: (_) {}),
         ),
-      ));
+      );
 
       expect(find.textContaining('View 3 assets'), findsOneWidget);
     });
 
-    testWidgets('severity badge renders for non-healthy stories',
-        (tester) async {
+    testWidgets('severity badge renders for non-healthy stories', (
+      tester,
+    ) async {
       final stories = [
         const GovernanceRiskStory(
           title: 'Critical Issue',
@@ -388,9 +398,9 @@ void main() {
         ),
       ];
 
-      await tester.pumpWidget(_wrapInApp(
-        GovernanceStorySummary(stories: stories),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(GovernanceStorySummary(stories: stories)),
+      );
 
       expect(find.text('critical'), findsOneWidget);
     });
@@ -403,9 +413,9 @@ void main() {
         hotspots: _testHotspots(),
       );
 
-      await tester.pumpWidget(_wrapInApp(
-        GovernanceStorySummary(stories: stories),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(GovernanceStorySummary(stories: stories)),
+      );
 
       // Should render all stories
       expect(find.text('Risk Stories'), findsOneWidget);

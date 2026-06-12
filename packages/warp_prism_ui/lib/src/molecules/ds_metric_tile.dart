@@ -45,11 +45,14 @@ class DSMetricTile extends StatelessWidget {
     final accentColor = _resolveAccentColor();
 
     return Semantics(
-      label: '$label: $value${health != null && health != DSMetricTileHealth.healthy ? ', ${health!.name}' : ''}',
+      label:
+          '$label: $value${health != null && health != DSMetricTileHealth.healthy ? ', ${health!.name}' : ''}',
       child: GestureDetector(
         onTap: onTap,
         child: MouseRegion(
-          cursor: onTap != null ? SystemMouseCursors.click : SystemMouseCursors.basic,
+          cursor: onTap != null
+              ? SystemMouseCursors.click
+              : SystemMouseCursors.basic,
           child: DSGlassPanelSimple(
             padding: const EdgeInsets.all(DSSpacing.insetCard),
             child: Column(
@@ -94,10 +97,7 @@ class DSMetricTile extends StatelessWidget {
                         animated: health == DSMetricTileHealth.error,
                       ),
                       const SizedBox(width: 4),
-                      DSText.labelSmall(
-                        health!.label,
-                        color: accentColor,
-                      ),
+                      DSText.labelSmall(health!.label, color: accentColor),
                     ],
                   ),
                 ],
@@ -105,10 +105,7 @@ class DSMetricTile extends StatelessWidget {
                 // Subtitle
                 if (subtitle != null) ...[
                   const SizedBox(height: DSSpacing.xs),
-                  DSText.bodySmall(
-                    subtitle!,
-                    color: DSColors.textTertiary,
-                  ),
+                  DSText.bodySmall(subtitle!, color: DSColors.textTertiary),
                 ],
               ],
             ),
@@ -186,14 +183,18 @@ class DSMetricTileCompact extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final accentColor = health != null ? health!.color : (color ?? DSColors.accentCyan);
+    final accentColor = health != null
+        ? health!.color
+        : (color ?? DSColors.accentCyan);
 
     return Semantics(
       label: '$label: $value',
       child: GestureDetector(
         onTap: onTap,
         child: MouseRegion(
-          cursor: onTap != null ? SystemMouseCursors.click : SystemMouseCursors.basic,
+          cursor: onTap != null
+              ? SystemMouseCursors.click
+              : SystemMouseCursors.basic,
           child: Container(
             padding: const EdgeInsets.symmetric(
               horizontal: DSSpacing.md,
@@ -213,10 +214,7 @@ class DSMetricTileCompact extends StatelessWidget {
                   color: accentColor,
                 ),
                 const SizedBox(width: DSSpacing.sm),
-                DSText.labelSmall(
-                  label,
-                  color: DSColors.textSecondary,
-                ),
+                DSText.labelSmall(label, color: DSColors.textSecondary),
               ],
             ),
           ),

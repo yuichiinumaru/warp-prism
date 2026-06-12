@@ -9,8 +9,8 @@
 /// inject synthetic data without touching the filesystem.
 library;
 
-import '../../../data/models/data_models.dart';
-import '../../../data/models/governance_diagnostics.dart';
+import 'package:warp_prism_observatory/data/models/data_models.dart';
+import 'package:warp_prism_observatory/data/models/governance_diagnostics.dart';
 import 'overview_metrics.dart';
 
 /// Computes derived metrics from workspace assets and diagnostics.
@@ -32,8 +32,11 @@ class OverviewProvider {
     required List<WorkspaceAsset> assets,
     List<GovernanceDiagnostic> diagnostics = const [],
   }) {
+    // Governance warnings are diagnostic-derived and independent of asset data.
+    final govWarningCount = _countGovernanceWarnings(diagnostics);
+
     if (assets.isEmpty) {
-      return _emptyMetrics();
+      return _emptyMetricsWithGov(govWarningCount);
     }
 
     // -- Totals by kind --
@@ -72,7 +75,6 @@ class OverviewProvider {
     // -- Operational risk --
     final activeBlockers = _countBlockers(assets);
     final reviewQueueCount = tasksByLane[TaskLane.review] ?? 0;
-    final govWarningCount = _countGovernanceWarnings(diagnostics);
 
     // -- Current story --
     final story = _buildCurrentStory(
@@ -115,12 +117,13 @@ class OverviewProvider {
       // A task is a blocker if:
       // 1. It has critical priority AND proof is incomplete, OR
       // 2. It depends on other tasks that are not completed.
-      final isCriticalIncomplete = meta.priority == 'P0' &&
+      final isCriticalIncomplete =
+          meta.priority == 'P0' &&
           meta.proofState != ProofState.complete &&
           meta.proofState != ProofState.verified;
 
-      final isHighPriorityInReview = meta.priority == 'P0' &&
-          meta.lane == TaskLane.review;
+      final isHighPriorityInReview =
+          meta.priority == 'P0' && meta.lane == TaskLane.review;
 
       if (isCriticalIncomplete || isHighPriorityInReview) {
         count++;
@@ -188,61 +191,79 @@ class OverviewProvider {
 
     // Build insights
     if (doingCount > 0) {
-      insights.add(OverviewStoryInsight(
-        text: '$doingCount task${doingCount == 1 ? ' is' : 's are'} currently in progress',
-        detail: 'Tasks in the doing lane represent active work',
-        value: '$doingCount',
-        severity: OverviewInsightSeverity.info,
-      ));
+      insights.add(
+        OverviewStoryInsight(
+          text:
+              '$doingCount task${doingCount == 1 ? ' is' : 's are'} currently in progress',
+          detail: 'Tasks in the doing lane represent active work',
+          value: '$doingCount',
+          severity: OverviewInsightSeverity.info,
+        ),
+      );
     }
 
     if (activeBlockers > 0) {
-      insights.add(OverviewStoryInsight(
-        text: '$activeBlockers active blocker${activeBlockers == 1 ? '' : 's'} detected',
-        detail: 'High-priority tasks with incomplete proof or critical dependencies',
-        value: '$activeBlockers',
-        severity: OverviewInsightSeverity.critical,
-      ));
+      insights.add(
+        OverviewStoryInsight(
+          text:
+              '$activeBlockers active blocker${activeBlockers == 1 ? '' : 's'} detected',
+          detail:
+              'High-priority tasks with incomplete proof or critical dependencies',
+          value: '$activeBlockers',
+          severity: OverviewInsightSeverity.critical,
+        ),
+      );
     }
 
     if (reviewQueueCount > 0) {
-      insights.add(OverviewStoryInsight(
-        text: '$reviewQueueCount task${reviewQueueCount == 1 ? '' : 's'} awaiting review',
-        detail: 'Review queue pressure',
-        value: '$reviewQueueCount',
-        severity: reviewQueueCount > 3
-            ? OverviewInsightSeverity.warning
-            : OverviewInsightSeverity.info,
-      ));
+      insights.add(
+        OverviewStoryInsight(
+          text:
+              '$reviewQueueCount task${reviewQueueCount == 1 ? '' : 's'} awaiting review',
+          detail: 'Review queue pressure',
+          value: '$reviewQueueCount',
+          severity: reviewQueueCount > 3
+              ? OverviewInsightSeverity.warning
+              : OverviewInsightSeverity.info,
+        ),
+      );
     }
 
     if (govWarningCount > 0) {
-      insights.add(OverviewStoryInsight(
-        text: '$govWarningCount governance warning${govWarningCount == 1 ? '' : 's'}',
-        detail: 'Diagnostics at warning severity or above',
-        value: '$govWarningCount',
-        severity: OverviewInsightSeverity.warning,
-      ));
+      insights.add(
+        OverviewStoryInsight(
+          text:
+              '$govWarningCount governance warning${govWarningCount == 1 ? '' : 's'}',
+          detail: 'Diagnostics at warning severity or above',
+          value: '$govWarningCount',
+          severity: OverviewInsightSeverity.warning,
+        ),
+      );
     }
 
     if (completedCount > 0) {
-      insights.add(OverviewStoryInsight(
-        text: '$completedCount task${completedCount == 1 ? '' : 's'} completed',
-        detail: totalTasks > 0
-            ? '${(completedCount / totalTasks * 100).round()}% completion rate'
-            : null,
-        value: '$completedCount',
-        severity: OverviewInsightSeverity.positive,
-      ));
+      insights.add(
+        OverviewStoryInsight(
+          text:
+              '$completedCount task${completedCount == 1 ? '' : 's'} completed',
+          detail: totalTasks > 0
+              ? '${(completedCount / totalTasks * 100).round()}% completion rate'
+              : null,
+          value: '$completedCount',
+          severity: OverviewInsightSeverity.positive,
+        ),
+      );
     }
 
     // Edge case: no insights at all (empty workspace or zero tasks)
     if (insights.isEmpty) {
-      insights.add(OverviewStoryInsight(
-        text: 'No task activity to report',
-        detail: 'Workspace has ${assets.length} assets but no task data',
-        severity: OverviewInsightSeverity.info,
-      ));
+      insights.add(
+        OverviewStoryInsight(
+          text: 'No task activity to report',
+          detail: 'Workspace has ${assets.length} assets but no task data',
+          severity: OverviewInsightSeverity.info,
+        ),
+      );
     }
 
     return (title, insights);
@@ -253,7 +274,7 @@ class OverviewProvider {
   // ---------------------------------------------------------------------------
 
   /// Return a zero-filled [OverviewMetrics] for the empty-data edge case.
-  static OverviewMetrics _emptyMetrics() {
+  static OverviewMetrics _emptyMetricsWithGov(int govWarningCount) {
     final tasksByLane = <TaskLane, int>{};
     for (final lane in TaskLane.values) {
       tasksByLane[lane] = 0;
@@ -267,7 +288,7 @@ class OverviewProvider {
       tasksByLane: tasksByLane,
       activeBlockers: 0,
       reviewQueueCount: 0,
-      governanceWarningCount: 0,
+      governanceWarningCount: govWarningCount,
       currentStoryTitle: 'No workspace data loaded',
       currentStoryInsights: const [
         OverviewStoryInsight(

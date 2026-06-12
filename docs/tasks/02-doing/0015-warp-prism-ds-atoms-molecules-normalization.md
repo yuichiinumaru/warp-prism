@@ -1,6 +1,7 @@
 # Task 0015: Warp Prism DS Atoms and Molecules Normalization
 
 > **Status**: `[x]` Done
+> **Review State**: Blocked — Flutter SDK not installed; validation commands cannot execute
 > **Priority**: 🔴 P0
 > **Type**: `feature`
 > **Origin**: `EPIC-01-warp-prism-atomic-design-system.md` candidate story `Atom and molecule inventory/normalization`

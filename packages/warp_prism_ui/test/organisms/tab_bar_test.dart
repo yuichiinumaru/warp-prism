@@ -61,9 +61,7 @@ void main() {
     test('select is no-op for same index', () {
       int notifyCount = 0;
       final controller = DSTabController(
-        tabs: [
-          DSTab(id: 'a', label: 'A', content: (_) => const SizedBox()),
-        ],
+        tabs: [DSTab(id: 'a', label: 'A', content: (_) => const SizedBox())],
       );
       controller.addListener(() => notifyCount++);
 
@@ -75,9 +73,7 @@ void main() {
     test('select is no-op for out-of-range index', () {
       int notifyCount = 0;
       final controller = DSTabController(
-        tabs: [
-          DSTab(id: 'a', label: 'A', content: (_) => const SizedBox()),
-        ],
+        tabs: [DSTab(id: 'a', label: 'A', content: (_) => const SizedBox())],
       );
       controller.addListener(() => notifyCount++);
 
@@ -102,12 +98,12 @@ void main() {
 
     test('add appends tab and selects it by default', () {
       final controller = DSTabController(
-        tabs: [
-          DSTab(id: 'a', label: 'A', content: (_) => const SizedBox()),
-        ],
+        tabs: [DSTab(id: 'a', label: 'A', content: (_) => const SizedBox())],
       );
 
-      controller.add(DSTab(id: 'b', label: 'B', content: (_) => const SizedBox()));
+      controller.add(
+        DSTab(id: 'b', label: 'B', content: (_) => const SizedBox()),
+      );
 
       expect(controller.length, 2);
       expect(controller.activeIndex, 1);
@@ -116,9 +112,7 @@ void main() {
 
     test('add with selectNew=false does not change active index', () {
       final controller = DSTabController(
-        tabs: [
-          DSTab(id: 'a', label: 'A', content: (_) => const SizedBox()),
-        ],
+        tabs: [DSTab(id: 'a', label: 'A', content: (_) => const SizedBox())],
       );
 
       controller.add(
@@ -164,9 +158,7 @@ void main() {
 
     test('close last tab results in empty controller', () {
       final controller = DSTabController(
-        tabs: [
-          DSTab(id: 'a', label: 'A', content: (_) => const SizedBox()),
-        ],
+        tabs: [DSTab(id: 'a', label: 'A', content: (_) => const SizedBox())],
       );
 
       controller.close(0);
@@ -192,9 +184,7 @@ void main() {
 
     test('setTabs replaces all tabs and resets active index', () {
       final controller = DSTabController(
-        tabs: [
-          DSTab(id: 'a', label: 'A', content: (_) => const SizedBox()),
-        ],
+        tabs: [DSTab(id: 'a', label: 'A', content: (_) => const SizedBox())],
       );
 
       controller.setTabs([
@@ -214,7 +204,10 @@ void main() {
         ],
       );
 
-      controller.replace(1, DSTab(id: 'z', label: 'Z', content: (_) => const SizedBox()));
+      controller.replace(
+        1,
+        DSTab(id: 'z', label: 'Z', content: (_) => const SizedBox()),
+      );
 
       expect(controller.tabs[1].id, 'z');
     });
@@ -232,13 +225,8 @@ void main() {
             height: 600,
             child: Column(
               children: [
-                DSTabBar(
-                  controller: controller,
-                  onClose: onClose,
-                ),
-                Expanded(
-                  child: DSTabView(controller: controller),
-                ),
+                DSTabBar(controller: controller, onClose: onClose),
+                Expanded(child: DSTabView(controller: controller)),
               ],
             ),
           ),

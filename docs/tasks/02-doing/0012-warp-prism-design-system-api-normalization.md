@@ -1,6 +1,7 @@
 # Task 0012: Warp-Prism Design System API Normalization
 
 > **Status**: `[x]` Done
+> **Review State**: Blocked — Flutter SDK not installed; validation commands cannot execute
 > **Priority**: 🔴 P0
 > **Type**: `remediation`
 > **Origin**: EPIC-00 Warp-Prism Foundation and Compile Gate promotion

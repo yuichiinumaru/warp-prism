@@ -14,11 +14,11 @@ class WarpPrismCyberCoreApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'Warp Prism — CyberCore',
       theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: DSColors.obsidianDeep,
+        scaffoldBackgroundColor: PrismColors.obsidianDeep,
         colorScheme: const ColorScheme.dark(
-          primary: DSColors.accentCyan,
-          secondary: DSColors.accentViolet,
-          surface: DSColors.obsidianBase,
+          primary: PrismColors.accentCyan,
+          secondary: PrismColors.accentViolet,
+          surface: PrismColors.obsidianBase,
         ),
       ),
       routerConfig: appRouter,

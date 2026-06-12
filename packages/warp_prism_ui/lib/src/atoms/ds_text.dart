@@ -30,77 +30,220 @@ class DSText extends StatelessWidget {
   });
 
   // === NAMED CONSTRUCTORS ===
-  const DSText.displayLarge(this.text, {super.key, this.color, this.textAlign, this.maxLines, this.overflow, this.selectable = false, this.semanticsLabel})
-      : variant = DSTextVariant.displayLarge, style = null;
-  
-  const DSText.displayMedium(this.text, {super.key, this.color, this.textAlign, this.maxLines, this.overflow, this.selectable = false, this.semanticsLabel})
-      : variant = DSTextVariant.displayMedium, style = null;
-  
-  const DSText.displaySmall(this.text, {super.key, this.color, this.textAlign, this.maxLines, this.overflow, this.selectable = false, this.semanticsLabel})
-      : variant = DSTextVariant.displaySmall, style = null;
-  
-  const DSText.headingLarge(this.text, {super.key, this.color, this.textAlign, this.maxLines, this.overflow, this.selectable = false, this.semanticsLabel})
-      : variant = DSTextVariant.headingLarge, style = null;
-  
-  const DSText.headingMedium(this.text, {super.key, this.color, this.textAlign, this.maxLines, this.overflow, this.selectable = false, this.semanticsLabel})
-      : variant = DSTextVariant.headingMedium, style = null;
-  
-  const DSText.headingSmall(this.text, {super.key, this.color, this.textAlign, this.maxLines, this.overflow, this.selectable = false, this.semanticsLabel})
-      : variant = DSTextVariant.headingSmall, style = null;
-  
-  const DSText.bodyLarge(this.text, {super.key, this.color, this.textAlign, this.maxLines, this.overflow, this.selectable = false, this.semanticsLabel})
-      : variant = DSTextVariant.bodyLarge, style = null;
-  
-  const DSText.bodyMedium(this.text, {super.key, this.color, this.textAlign, this.maxLines, this.overflow, this.selectable = false, this.semanticsLabel})
-      : variant = DSTextVariant.bodyMedium, style = null;
-  
-  const DSText.bodySmall(this.text, {super.key, this.color, this.textAlign, this.maxLines, this.overflow, this.selectable = false, this.semanticsLabel})
-      : variant = DSTextVariant.bodySmall, style = null;
-  
-  const DSText.labelLarge(this.text, {super.key, this.color, this.textAlign, this.maxLines, this.overflow, this.selectable = false, this.semanticsLabel})
-      : variant = DSTextVariant.labelLarge, style = null;
-  
-  const DSText.labelMedium(this.text, {super.key, this.color, this.textAlign, this.maxLines, this.overflow, this.selectable = false, this.semanticsLabel})
-      : variant = DSTextVariant.labelMedium, style = null;
-  
-  const DSText.labelSmall(this.text, {super.key, this.color, this.textAlign, this.maxLines, this.overflow, this.selectable = false, this.semanticsLabel})
-      : variant = DSTextVariant.labelSmall, style = null;
-  
-  const DSText.code(this.text, {super.key, this.color, this.textAlign, this.maxLines, this.overflow, this.selectable = true, this.semanticsLabel})
-      : variant = DSTextVariant.codeMedium, style = null;
-  
-  const DSText.numeric(this.text, {super.key, this.color, this.textAlign, this.maxLines, this.overflow, this.selectable = false, this.semanticsLabel})
-      : variant = DSTextVariant.numericMedium, style = null;
+  const DSText.displayLarge(
+    this.text, {
+    super.key,
+    this.color,
+    this.textAlign,
+    this.maxLines,
+    this.overflow,
+    this.selectable = false,
+    this.semanticsLabel,
+  }) : variant = DSTextVariant.displayLarge,
+       style = null;
+
+  const DSText.displayMedium(
+    this.text, {
+    super.key,
+    this.color,
+    this.textAlign,
+    this.maxLines,
+    this.overflow,
+    this.selectable = false,
+    this.semanticsLabel,
+  }) : variant = DSTextVariant.displayMedium,
+       style = null;
+
+  const DSText.displaySmall(
+    this.text, {
+    super.key,
+    this.color,
+    this.textAlign,
+    this.maxLines,
+    this.overflow,
+    this.selectable = false,
+    this.semanticsLabel,
+  }) : variant = DSTextVariant.displaySmall,
+       style = null;
+
+  const DSText.headingLarge(
+    this.text, {
+    super.key,
+    this.color,
+    this.textAlign,
+    this.maxLines,
+    this.overflow,
+    this.selectable = false,
+    this.semanticsLabel,
+  }) : variant = DSTextVariant.headingLarge,
+       style = null;
+
+  const DSText.headingMedium(
+    this.text, {
+    super.key,
+    this.color,
+    this.textAlign,
+    this.maxLines,
+    this.overflow,
+    this.selectable = false,
+    this.semanticsLabel,
+  }) : variant = DSTextVariant.headingMedium,
+       style = null;
+
+  const DSText.headingSmall(
+    this.text, {
+    super.key,
+    this.color,
+    this.textAlign,
+    this.maxLines,
+    this.overflow,
+    this.selectable = false,
+    this.semanticsLabel,
+  }) : variant = DSTextVariant.headingSmall,
+       style = null;
+
+  const DSText.bodyLarge(
+    this.text, {
+    super.key,
+    this.color,
+    this.textAlign,
+    this.maxLines,
+    this.overflow,
+    this.selectable = false,
+    this.semanticsLabel,
+  }) : variant = DSTextVariant.bodyLarge,
+       style = null;
+
+  const DSText.bodyMedium(
+    this.text, {
+    super.key,
+    this.color,
+    this.textAlign,
+    this.maxLines,
+    this.overflow,
+    this.selectable = false,
+    this.semanticsLabel,
+  }) : variant = DSTextVariant.bodyMedium,
+       style = null;
+
+  const DSText.bodySmall(
+    this.text, {
+    super.key,
+    this.color,
+    this.textAlign,
+    this.maxLines,
+    this.overflow,
+    this.selectable = false,
+    this.semanticsLabel,
+  }) : variant = DSTextVariant.bodySmall,
+       style = null;
+
+  const DSText.labelLarge(
+    this.text, {
+    super.key,
+    this.color,
+    this.textAlign,
+    this.maxLines,
+    this.overflow,
+    this.selectable = false,
+    this.semanticsLabel,
+  }) : variant = DSTextVariant.labelLarge,
+       style = null;
+
+  const DSText.labelMedium(
+    this.text, {
+    super.key,
+    this.color,
+    this.textAlign,
+    this.maxLines,
+    this.overflow,
+    this.selectable = false,
+    this.semanticsLabel,
+  }) : variant = DSTextVariant.labelMedium,
+       style = null;
+
+  const DSText.labelSmall(
+    this.text, {
+    super.key,
+    this.color,
+    this.textAlign,
+    this.maxLines,
+    this.overflow,
+    this.selectable = false,
+    this.semanticsLabel,
+  }) : variant = DSTextVariant.labelSmall,
+       style = null;
+
+  const DSText.code(
+    this.text, {
+    super.key,
+    this.color,
+    this.textAlign,
+    this.maxLines,
+    this.overflow,
+    this.selectable = true,
+    this.semanticsLabel,
+  }) : variant = DSTextVariant.codeMedium,
+       style = null;
+
+  const DSText.numeric(
+    this.text, {
+    super.key,
+    this.color,
+    this.textAlign,
+    this.maxLines,
+    this.overflow,
+    this.selectable = false,
+    this.semanticsLabel,
+  }) : variant = DSTextVariant.numericMedium,
+       style = null;
 
   TextStyle get _baseStyle {
     switch (variant) {
-      case DSTextVariant.displayLarge: return DSTypography.displayLarge;
-      case DSTextVariant.displayMedium: return DSTypography.displayMedium;
-      case DSTextVariant.displaySmall: return DSTypography.displaySmall;
-      case DSTextVariant.headingLarge: return DSTypography.headingLarge;
-      case DSTextVariant.headingMedium: return DSTypography.headingMedium;
-      case DSTextVariant.headingSmall: return DSTypography.headingSmall;
-      case DSTextVariant.bodyLarge: return DSTypography.bodyLarge;
-      case DSTextVariant.bodyMedium: return DSTypography.bodyMedium;
-      case DSTextVariant.bodySmall: return DSTypography.bodySmall;
-      case DSTextVariant.labelLarge: return DSTypography.labelLarge;
-      case DSTextVariant.labelMedium: return DSTypography.labelMedium;
-      case DSTextVariant.labelSmall: return DSTypography.labelSmall;
-      case DSTextVariant.codeLarge: return DSTypography.codeLarge;
-      case DSTextVariant.codeMedium: return DSTypography.codeMedium;
-      case DSTextVariant.codeSmall: return DSTypography.codeSmall;
-      case DSTextVariant.numericLarge: return DSTypography.numericLarge;
-      case DSTextVariant.numericMedium: return DSTypography.numericMedium;
-      case DSTextVariant.numericSmall: return DSTypography.numericSmall;
+      case DSTextVariant.displayLarge:
+        return DSTypography.displayLarge;
+      case DSTextVariant.displayMedium:
+        return DSTypography.displayMedium;
+      case DSTextVariant.displaySmall:
+        return DSTypography.displaySmall;
+      case DSTextVariant.headingLarge:
+        return DSTypography.headingLarge;
+      case DSTextVariant.headingMedium:
+        return DSTypography.headingMedium;
+      case DSTextVariant.headingSmall:
+        return DSTypography.headingSmall;
+      case DSTextVariant.bodyLarge:
+        return DSTypography.bodyLarge;
+      case DSTextVariant.bodyMedium:
+        return DSTypography.bodyMedium;
+      case DSTextVariant.bodySmall:
+        return DSTypography.bodySmall;
+      case DSTextVariant.labelLarge:
+        return DSTypography.labelLarge;
+      case DSTextVariant.labelMedium:
+        return DSTypography.labelMedium;
+      case DSTextVariant.labelSmall:
+        return DSTypography.labelSmall;
+      case DSTextVariant.codeLarge:
+        return DSTypography.codeLarge;
+      case DSTextVariant.codeMedium:
+        return DSTypography.codeMedium;
+      case DSTextVariant.codeSmall:
+        return DSTypography.codeSmall;
+      case DSTextVariant.numericLarge:
+        return DSTypography.numericLarge;
+      case DSTextVariant.numericMedium:
+        return DSTypography.numericMedium;
+      case DSTextVariant.numericSmall:
+        return DSTypography.numericSmall;
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
-    final effectiveStyle = (_baseStyle.merge(style)).copyWith(
-      color: color ?? DSColors.textPrimary,
-    );
+    final effectiveStyle = (_baseStyle.merge(
+      style,
+    )).copyWith(color: color ?? DSColors.textPrimary);
 
     Widget textWidget;
 

@@ -33,45 +33,81 @@ void main() {
   group('WCAG Contrast - Text on obsidianDeep', () {
     test('textPrimary meets WCAG AA (>= 4.5:1) on obsidianDeep', () {
       final ratio = _contrastRatio(DSColors.textPrimary, DSColors.obsidianDeep);
-      expect(ratio, greaterThanOrEqualTo(4.5),
-          reason: 'textPrimary on obsidianDeep should be >= 4.5:1, got ${ratio.toStringAsFixed(2)}');
+      expect(
+        ratio,
+        greaterThanOrEqualTo(4.5),
+        reason:
+            'textPrimary on obsidianDeep should be >= 4.5:1, got ${ratio.toStringAsFixed(2)}',
+      );
     });
 
     test('textSecondary meets WCAG AA (>= 4.5:1) on obsidianDeep', () {
-      final ratio = _contrastRatio(DSColors.textSecondary, DSColors.obsidianDeep);
-      expect(ratio, greaterThanOrEqualTo(4.5),
-          reason: 'textSecondary on obsidianDeep should be >= 4.5:1, got ${ratio.toStringAsFixed(2)}');
+      final ratio = _contrastRatio(
+        DSColors.textSecondary,
+        DSColors.obsidianDeep,
+      );
+      expect(
+        ratio,
+        greaterThanOrEqualTo(4.5),
+        reason:
+            'textSecondary on obsidianDeep should be >= 4.5:1, got ${ratio.toStringAsFixed(2)}',
+      );
     });
 
     test('textTertiary meets WCAG AA (>= 4.5:1) on obsidianDeep', () {
-      final ratio = _contrastRatio(DSColors.textTertiary, DSColors.obsidianDeep);
-      expect(ratio, greaterThanOrEqualTo(4.5),
-          reason: 'textTertiary on obsidianDeep should be >= 4.5:1, got ${ratio.toStringAsFixed(2)}');
+      final ratio = _contrastRatio(
+        DSColors.textTertiary,
+        DSColors.obsidianDeep,
+      );
+      expect(
+        ratio,
+        greaterThanOrEqualTo(4.5),
+        reason:
+            'textTertiary on obsidianDeep should be >= 4.5:1, got ${ratio.toStringAsFixed(2)}',
+      );
     });
 
     test('textTertiary is #8888A0 (raised from #606070)', () {
-      expect(DSColors.textTertiary, const Color(0xFF8888A0),
-          reason: 'textTertiary must be #8888A0 for WCAG AA compliance');
+      expect(
+        DSColors.textTertiary,
+        const Color(0xFF8888A0),
+        reason: 'textTertiary must be #8888A0 for WCAG AA compliance',
+      );
     });
 
     test('textPrimary meets WCAG AAA (>= 7:1) on obsidianDeep', () {
       final ratio = _contrastRatio(DSColors.textPrimary, DSColors.obsidianDeep);
-      expect(ratio, greaterThanOrEqualTo(7.0),
-          reason: 'textPrimary on obsidianDeep should be >= 7:1 for AAA');
+      expect(
+        ratio,
+        greaterThanOrEqualTo(7.0),
+        reason: 'textPrimary on obsidianDeep should be >= 7:1 for AAA',
+      );
     });
   });
 
   group('WCAG Contrast - Text on obsidianBase', () {
     test('textTertiary meets WCAG AA (>= 4.5:1) on obsidianBase', () {
-      final ratio = _contrastRatio(DSColors.textTertiary, DSColors.obsidianBase);
-      expect(ratio, greaterThanOrEqualTo(4.5),
-          reason: 'textTertiary on obsidianBase should be >= 4.5:1');
+      final ratio = _contrastRatio(
+        DSColors.textTertiary,
+        DSColors.obsidianBase,
+      );
+      expect(
+        ratio,
+        greaterThanOrEqualTo(4.5),
+        reason: 'textTertiary on obsidianBase should be >= 4.5:1',
+      );
     });
 
     test('textSecondary meets WCAG AA (>= 4.5:1) on obsidianBase', () {
-      final ratio = _contrastRatio(DSColors.textSecondary, DSColors.obsidianBase);
-      expect(ratio, greaterThanOrEqualTo(4.5),
-          reason: 'textSecondary on obsidianBase should be >= 4.5:1');
+      final ratio = _contrastRatio(
+        DSColors.textSecondary,
+        DSColors.obsidianBase,
+      );
+      expect(
+        ratio,
+        greaterThanOrEqualTo(4.5),
+        reason: 'textSecondary on obsidianBase should be >= 4.5:1',
+      );
     });
   });
 
@@ -82,20 +118,27 @@ void main() {
       expect(DSColors.statusWarning, isNot(DSColors.statusError));
     });
 
-    test('all status colors meet WCAG AA large text (>= 3:1) on obsidianDeep', () {
-      final pairs = [
-        DSColors.statusSuccess,
-        DSColors.statusWarning,
-        DSColors.statusError,
-        DSColors.statusInfo,
-      ];
+    test(
+      'all status colors meet WCAG AA large text (>= 3:1) on obsidianDeep',
+      () {
+        final pairs = [
+          DSColors.statusSuccess,
+          DSColors.statusWarning,
+          DSColors.statusError,
+          DSColors.statusInfo,
+        ];
 
-      for (final color in pairs) {
-        final ratio = _contrastRatio(color, DSColors.obsidianDeep);
-        expect(ratio, greaterThanOrEqualTo(3.0),
-            reason: '${color.toString()} on obsidianDeep must be >= 3:1 (large text minimum)');
-      }
-    });
+        for (final color in pairs) {
+          final ratio = _contrastRatio(color, DSColors.obsidianDeep);
+          expect(
+            ratio,
+            greaterThanOrEqualTo(3.0),
+            reason:
+                '${color.toString()} on obsidianDeep must be >= 3:1 (large text minimum)',
+          );
+        }
+      },
+    );
 
     test('lane colors are all distinct', () {
       final laneColors = [
@@ -106,8 +149,11 @@ void main() {
         DSColors.laneCompleted,
       ];
       final uniqueColors = laneColors.toSet();
-      expect(uniqueColors.length, laneColors.length,
-          reason: 'All 5 lane colors must be unique');
+      expect(
+        uniqueColors.length,
+        laneColors.length,
+        reason: 'All 5 lane colors must be unique',
+      );
     });
 
     test('governance colors are all distinct', () {
@@ -120,55 +166,100 @@ void main() {
         DSColors.governanceMock,
       ];
       final uniqueColors = govColors.toSet();
-      expect(uniqueColors.length, govColors.length,
-          reason: 'All 6 governance colors must be unique');
+      expect(
+        uniqueColors.length,
+        govColors.length,
+        reason: 'All 6 governance colors must be unique',
+      );
     });
   });
 
   group('Color Token Integrity', () {
     test('forAssetKind returns non-null for all known kinds', () {
-      final kinds = ['agent', 'skill', 'subskill', 'workflow', 'task', 'changelog', 'script', 'reference', 'rule'];
+      final kinds = [
+        'agent',
+        'skill',
+        'subskill',
+        'workflow',
+        'task',
+        'changelog',
+        'script',
+        'reference',
+        'rule',
+      ];
       for (final kind in kinds) {
         final color = DSColors.forAssetKind(kind);
-        expect(color, isNot(DSColors.transparent),
-            reason: '$kind should have a non-transparent color');
+        expect(
+          color,
+          isNot(DSColors.transparent),
+          reason: '$kind should have a non-transparent color',
+        );
       }
     });
 
     test('forLane returns non-null for all known lanes', () {
-      final lanes = ['00-planning', '01-open', '02-doing', '03-review', '04-completed'];
+      final lanes = [
+        '00-planning',
+        '01-open',
+        '02-doing',
+        '03-review',
+        '04-completed',
+      ];
       for (final lane in lanes) {
         final color = DSColors.forLane(lane);
-        expect(color, isNot(DSColors.transparent),
-            reason: '$lane should have a non-transparent color');
+        expect(
+          color,
+          isNot(DSColors.transparent),
+          reason: '$lane should have a non-transparent color',
+        );
       }
     });
 
     test('forCanonicity returns non-null for all known values', () {
-      final values = ['parentcanonical', 'childlocal', 'generated', 'appendonly', 'archive', 'mock'];
+      final values = [
+        'parentcanonical',
+        'childlocal',
+        'generated',
+        'appendonly',
+        'archive',
+        'mock',
+      ];
       for (final v in values) {
         final color = DSColors.forCanonicity(v);
-        expect(color, isNot(DSColors.transparent),
-            reason: '$v should have a non-transparent color');
+        expect(
+          color,
+          isNot(DSColors.transparent),
+          reason: '$v should have a non-transparent color',
+        );
       }
     });
   });
 
   group('Focus Indicator Colors', () {
     test('accentCyan is bright enough for focus ring visibility', () {
-      expect(DSColors.accentCyan.red + DSColors.accentCyan.green + DSColors.accentCyan.blue,
-          greaterThan(200),
-          reason: 'accentCyan must be bright enough for focus indicators');
+      expect(
+        DSColors.accentCyan.red +
+            DSColors.accentCyan.green +
+            DSColors.accentCyan.blue,
+        greaterThan(200),
+        reason: 'accentCyan must be bright enough for focus indicators',
+      );
     });
 
     test('obsidianActive is distinguishable from obsidianHover', () {
-      expect(DSColors.obsidianActive, isNot(DSColors.obsidianHover),
-          reason: 'Active and hover states must use different colors');
+      expect(
+        DSColors.obsidianActive,
+        isNot(DSColors.obsidianHover),
+        reason: 'Active and hover states must use different colors',
+      );
     });
 
     test('obsidianActive is distinguishable from obsidianBase', () {
-      expect(DSColors.obsidianActive, isNot(DSColors.obsidianBase),
-          reason: 'Active and base states must use different colors');
+      expect(
+        DSColors.obsidianActive,
+        isNot(DSColors.obsidianBase),
+        reason: 'Active and base states must use different colors',
+      );
     });
   });
 }

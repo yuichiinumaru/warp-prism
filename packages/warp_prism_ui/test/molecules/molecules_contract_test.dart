@@ -18,7 +18,7 @@ void main() {
   group('DSSearchBar contract', () {
     testWidgets('renders with placeholder text', (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(home: DSSearchBar()),
+        const MaterialApp(home: Scaffold(body: DSSearchBar())),
       );
       expect(find.byType(DSSearchBar), findsOneWidget);
       expect(find.byType(TextField), findsOneWidget);
@@ -27,7 +27,7 @@ void main() {
     testWidgets('custom placeholder is shown', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: DSSearchBar(placeholder: 'Find assets...'),
+          home: Scaffold(body: DSSearchBar(placeholder: 'Find assets...')),
         ),
       );
       expect(find.text('Find assets...'), findsOneWidget);
@@ -37,7 +37,7 @@ void main() {
       String? changedValue;
       await tester.pumpWidget(
         MaterialApp(
-          home: DSSearchBar(onChanged: (v) => changedValue = v),
+          home: Scaffold(body: DSSearchBar(onChanged: (v) => changedValue = v)),
         ),
       );
       await tester.enterText(find.byType(TextField), 'test');
@@ -46,7 +46,7 @@ void main() {
 
     testWidgets('clear button appears when text is entered', (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(home: DSSearchBar()),
+        const MaterialApp(home: Scaffold(body: DSSearchBar())),
       );
       await tester.enterText(find.byType(TextField), 'query');
       await tester.pump();
@@ -55,21 +55,21 @@ void main() {
 
     testWidgets('filter button visible by default', (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(home: DSSearchBar()),
+        const MaterialApp(home: Scaffold(body: DSSearchBar())),
       );
       expect(find.byIcon(DSIcons.filter), findsOneWidget);
     });
 
     testWidgets('filter button hidden when showFilter=false', (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(home: DSSearchBar(showFilter: false)),
+        const MaterialApp(home: Scaffold(body: DSSearchBar(showFilter: false))),
       );
       expect(find.byIcon(DSIcons.filter), findsNothing);
     });
 
     testWidgets('uses DSIcon and DSColors from atoms/tokens', (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(home: DSSearchBar()),
+        const MaterialApp(home: Scaffold(body: DSSearchBar())),
       );
       expect(find.byType(DSIcon), findsWidgets);
     });
@@ -92,10 +92,7 @@ void main() {
     testWidgets('renders all options', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: DSFilterChipGroup(
-            options: options,
-            selected: const {},
-          ),
+          home: DSFilterChipGroup(options: options, selected: const {}),
         ),
       );
       expect(find.text('Agents'), findsOneWidget);
@@ -106,10 +103,7 @@ void main() {
     testWidgets('selected chips show selected state', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: DSFilterChipGroup(
-            options: options,
-            selected: const {'agent'},
-          ),
+          home: DSFilterChipGroup(options: options, selected: const {'agent'}),
         ),
       );
       expect(find.text('Agents'), findsOneWidget);
@@ -133,10 +127,7 @@ void main() {
     testWidgets('counts shown by default', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: DSFilterChipGroup(
-            options: options,
-            selected: const {},
-          ),
+          home: DSFilterChipGroup(options: options, selected: const {}),
         ),
       );
       expect(find.text('5'), findsOneWidget);
@@ -188,11 +179,7 @@ void main() {
     testWidgets('selected state applies visual change', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: DSAssetCard(
-            name: 'selected',
-            kind: 'agent',
-            selected: true,
-          ),
+          home: DSAssetCard(name: 'selected', kind: 'agent', selected: true),
         ),
       );
       expect(find.text('selected'), findsOneWidget);
@@ -230,11 +217,7 @@ void main() {
     testWidgets('edge count shown when provided', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: DSAssetCard(
-            name: 'connected',
-            kind: 'workflow',
-            edgeCount: 7,
-          ),
+          home: DSAssetCard(name: 'connected', kind: 'workflow', edgeCount: 7),
         ),
       );
       expect(find.text('7'), findsOneWidget);
@@ -258,11 +241,7 @@ void main() {
     testWidgets('renders task id and title', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: DSTaskCard(
-            id: 15,
-            title: 'Normalize atoms',
-            lane: '02-doing',
-          ),
+          home: DSTaskCard(id: 15, title: 'Normalize atoms', lane: '02-doing'),
         ),
       );
       expect(find.text('#15'), findsOneWidget);
@@ -355,8 +334,9 @@ void main() {
       expect(find.byType(DSChip), findsWidgets);
     });
 
-    testWidgets('composes DSStatusDot, DSChip, DSText, DSIcon atoms',
-        (tester) async {
+    testWidgets('composes DSStatusDot, DSChip, DSText, DSIcon atoms', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: DSTaskCard(
@@ -394,11 +374,7 @@ void main() {
     testWidgets('renders trend indicator', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: DSMetricTile(
-            label: 'Skills',
-            value: '13',
-            trend: DSTrend.up,
-          ),
+          home: DSMetricTile(label: 'Skills', value: '13', trend: DSTrend.up),
         ),
       );
       expect(find.byIcon(Icons.trending_up), findsOneWidget);
@@ -444,10 +420,7 @@ void main() {
     testWidgets('hides label when showLabel=false', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: DSProvenancePill(
-            canonicality: 'generated',
-            showLabel: false,
-          ),
+          home: DSProvenancePill(canonicality: 'generated', showLabel: false),
         ),
       );
       expect(find.text('Generated'), findsNothing);
@@ -455,9 +428,7 @@ void main() {
 
     testWidgets('tooltip is shown', (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: DSProvenancePill(canonicality: 'mock'),
-        ),
+        const MaterialApp(home: DSProvenancePill(canonicality: 'mock')),
       );
       expect(find.byType(Tooltip), findsOneWidget);
     });
@@ -645,18 +616,14 @@ void main() {
   group('DSStateSurface contract', () {
     testWidgets('empty state renders title', (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: DSStateSurface.empty(title: 'No data'),
-        ),
+        const MaterialApp(home: DSStateSurface.empty(title: 'No data')),
       );
       expect(find.text('No data'), findsOneWidget);
     });
 
     testWidgets('loading state renders indicator', (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: DSStateSurface.loading(title: 'Loading...'),
-        ),
+        const MaterialApp(home: DSStateSurface.loading(title: 'Loading...')),
       );
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
     });
@@ -685,8 +652,11 @@ void main() {
       expect(find.text('Empty'), findsOneWidget);
     });
 
-    test('DSStateType has empty, loading, error', () {
-      expect(DSStateType.values.length, 3);
-    });
+    test(
+      'DSStateType has empty, loading, error, disabled, stale, degraded, excluded',
+      () {
+        expect(DSStateType.values.length, 7);
+      },
+    );
   });
 }

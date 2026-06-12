@@ -28,7 +28,7 @@ class DSDetailInspector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final kindColor = DSColors.forAssetKind(kind);
-    
+
     return Semantics(
       label: 'Detail inspector for $title',
       explicitChildNodes: true,
@@ -46,9 +46,9 @@ class DSDetailInspector extends StatelessWidget {
               onClose: onClose,
               actions: headerActions,
             ),
-            
+
             const DSDivider.subtle(),
-            
+
             // Sections
             Expanded(
               child: ListView.builder(
@@ -107,28 +107,22 @@ class _InspectorHeader extends StatelessWidget {
                     color: kindColor.withOpacity(0.15),
                     borderRadius: BorderRadius.circular(DSRadii.md),
                   ),
-                  child: DSIcon(
-                    DSIcons.forAssetKind(kind),
-                    color: kindColor,
-                  ),
+                  child: DSIcon(DSIcons.forAssetKind(kind), color: kindColor),
                 ),
                 const SizedBox(width: DSSpacing.md),
-                
+
                 // Title and kind
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      DSText.labelMedium(
-                        kind.toUpperCase(),
-                        color: kindColor,
-                      ),
+                      DSText.labelMedium(kind.toUpperCase(), color: kindColor),
                       const SizedBox(height: 2),
                       DSText.headingMedium(title),
                     ],
                   ),
                 ),
-                
+
                 // Close button
                 if (onClose != null)
                   Semantics(
@@ -142,15 +136,12 @@ class _InspectorHeader extends StatelessWidget {
                   ),
               ],
             ),
-            
+
             if (subtitle != null) ...[
               const SizedBox(height: DSSpacing.sm),
-              DSText.bodyMedium(
-                subtitle!,
-                color: DSColors.textSecondary,
-              ),
+              DSText.bodyMedium(subtitle!, color: DSColors.textSecondary),
             ],
-            
+
             if (actions != null) ...[
               const SizedBox(height: DSSpacing.md),
               actions!,
@@ -179,25 +170,19 @@ class _InspectorSection extends StatelessWidget {
           Row(
             children: [
               if (section.icon != null) ...[
-                DSIcon.small(
-                  section.icon!,
-                  color: DSColors.textTertiary,
-                ),
+                DSIcon.small(section.icon!, color: DSColors.textTertiary),
                 const SizedBox(width: DSSpacing.xs),
               ],
-              DSText.labelLarge(
-                section.title,
-                color: DSColors.textSecondary,
-              ),
+              DSText.labelLarge(section.title, color: DSColors.textSecondary),
               if (section.count != null) ...[
                 const SizedBox(width: DSSpacing.xs),
                 DSBadge.count(section.count!, size: DSBadgeSize.small),
               ],
             ],
           ),
-          
+
           const SizedBox(height: DSSpacing.sm),
-          
+
           // Section content
           section.child,
         ],
@@ -247,10 +232,7 @@ class DSPropertyRow extends StatelessWidget {
           children: [
             SizedBox(
               width: 100,
-              child: DSText.labelSmall(
-                label,
-                color: DSColors.textTertiary,
-              ),
+              child: DSText.labelSmall(label, color: DSColors.textTertiary),
             ),
             Expanded(
               child: DSText.bodySmall(
@@ -316,7 +298,9 @@ class _DSLinkRowState extends State<DSLinkRow> {
         child: GestureDetector(
           onTap: widget.onTap,
           child: MouseRegion(
-            cursor: widget.onTap != null ? SystemMouseCursors.click : SystemMouseCursors.basic,
+            cursor: widget.onTap != null
+                ? SystemMouseCursors.click
+                : SystemMouseCursors.basic,
             child: Container(
               padding: const EdgeInsets.symmetric(
                 horizontal: DSSpacing.sm,
@@ -326,14 +310,20 @@ class _DSLinkRowState extends State<DSLinkRow> {
                 color: DSColors.obsidianElevated,
                 borderRadius: BorderRadius.circular(DSRadii.sm),
                 border: _isFocused
-                    ? Border.all(color: DSColors.accentCyan.withOpacity(0.5), width: 2)
+                    ? Border.all(
+                        color: DSColors.accentCyan.withOpacity(0.5),
+                        width: 2,
+                      )
                     : null,
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   if (widget.icon != null) ...[
-                    DSIcon.small(widget.icon!, color: widget.color ?? DSColors.textSecondary),
+                    DSIcon.small(
+                      widget.icon!,
+                      color: widget.color ?? DSColors.textSecondary,
+                    ),
                     const SizedBox(width: DSSpacing.xs),
                   ],
                   Flexible(

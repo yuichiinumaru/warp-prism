@@ -66,7 +66,8 @@ final _testAssets = [
 void main() {
   Widget wrapInApp(Widget child) {
     return MaterialApp(
-        home: Scaffold(body: SizedBox(width: 800, height: 600, child: child)));
+      home: Scaffold(body: SizedBox(width: 800, height: 600, child: child)),
+    );
   }
 
   // ===========================================================================
@@ -152,7 +153,10 @@ void main() {
       final identity = sections.firstWhere((s) => s.title == 'Identity');
       expect(identity.rows.any((r) => r.value == 'agent:orchestrator'), isTrue);
       expect(identity.rows.any((r) => r.value == 'agent'), isTrue);
-      expect(identity.rows.any((r) => r.value == 'Architect Orchestrator'), isFalse);
+      expect(
+        identity.rows.any((r) => r.value == 'Architect Orchestrator'),
+        isFalse,
+      );
       // name goes in the inspector header, not sections
     });
 
@@ -183,18 +187,23 @@ void main() {
       expect(rels.rows.first.value.contains('skill:harness'), isTrue);
     });
 
-    test('buildInspectorSections includes operational hints from frontmatter',
-        () {
-      controller.selectAsset('agent:orchestrator');
-      final sections = controller.buildInspectorSections();
+    test(
+      'buildInspectorSections includes operational hints from frontmatter',
+      () {
+        controller.selectAsset('agent:orchestrator');
+        final sections = controller.buildInspectorSections();
 
-      final ops = sections.firstWhere((s) => s.title == 'Operational');
-      expect(ops.rows.any((r) => r.label == 'Owner' && r.value == 'builder'),
-          isTrue);
-      expect(
+        final ops = sections.firstWhere((s) => s.title == 'Operational');
+        expect(
+          ops.rows.any((r) => r.label == 'Owner' && r.value == 'builder'),
+          isTrue,
+        );
+        expect(
           ops.rows.any((r) => r.label == 'Status' && r.value == 'active'),
-          isTrue);
-    });
+          isTrue,
+        );
+      },
+    );
 
     test('buildInspectorSections empty when nothing selected', () {
       expect(controller.buildInspectorSections(), isEmpty);
@@ -261,30 +270,34 @@ void main() {
   // MapInspectorPanel widget
   // ===========================================================================
   group('MapInspectorPanel widget', () {
-    testWidgets('shows no-selection state when nothing selected', (tester) async {
+    testWidgets('shows no-selection state when nothing selected', (
+      tester,
+    ) async {
       final provider = MapWorkspaceProvider(
         initialState: MapWorkspaceState(catalogAssets: _testAssets),
       );
       final controller = MapSelectionController(provider);
 
-      await tester.pumpWidget(wrapInApp(
-        MapInspectorPanel(controller: controller),
-      ));
+      await tester.pumpWidget(
+        wrapInApp(MapInspectorPanel(controller: controller)),
+      );
 
       expect(find.text('No asset selected'), findsOneWidget);
       provider.dispose();
     });
 
-    testWidgets('shows inspector with asset name when selected', (tester) async {
+    testWidgets('shows inspector with asset name when selected', (
+      tester,
+    ) async {
       final provider = MapWorkspaceProvider(
         initialState: MapWorkspaceState(catalogAssets: _testAssets),
       );
       final controller = MapSelectionController(provider);
       controller.selectAsset('agent:orchestrator');
 
-      await tester.pumpWidget(wrapInApp(
-        MapInspectorPanel(controller: controller),
-      ));
+      await tester.pumpWidget(
+        wrapInApp(MapInspectorPanel(controller: controller)),
+      );
 
       expect(find.text('Architect Orchestrator'), findsOneWidget);
       expect(find.text('AGENT'), findsOneWidget);
@@ -299,15 +312,17 @@ void main() {
       controller.selectAsset('workflow:ci');
 
       var closed = false;
-      await tester.pumpWidget(wrapInApp(
-        MapInspectorPanel(
-          controller: controller,
-          onClose: () {
-            closed = true;
-            controller.deselectAsset();
-          },
+      await tester.pumpWidget(
+        wrapInApp(
+          MapInspectorPanel(
+            controller: controller,
+            onClose: () {
+              closed = true;
+              controller.deselectAsset();
+            },
+          ),
         ),
-      ));
+      );
 
       expect(find.text('CI Pipeline'), findsOneWidget);
       await tester.tap(find.byIcon(Icons.close));
@@ -316,17 +331,18 @@ void main() {
       provider.dispose();
     });
 
-    testWidgets('switches from selected to no-selection when cleared',
-        (tester) async {
+    testWidgets('switches from selected to no-selection when cleared', (
+      tester,
+    ) async {
       final provider = MapWorkspaceProvider(
         initialState: MapWorkspaceState(catalogAssets: _testAssets),
       );
       final controller = MapSelectionController(provider);
       controller.selectAsset('skill:harness');
 
-      await tester.pumpWidget(wrapInApp(
-        MapInspectorPanel(controller: controller),
-      ));
+      await tester.pumpWidget(
+        wrapInApp(MapInspectorPanel(controller: controller)),
+      );
 
       expect(find.text('Test Harness'), findsOneWidget);
 
@@ -334,7 +350,7 @@ void main() {
       controller.deselectAsset();
       await tester.pump();
 
-      expect(find.text('No asset selected'), findsOneWidget);
+      expect(find.text('No asset selected'), findsWidgets);
       provider.dispose();
     });
   });

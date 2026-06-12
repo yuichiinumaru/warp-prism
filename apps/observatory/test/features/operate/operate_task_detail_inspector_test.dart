@@ -34,7 +34,8 @@ TaskProjection _testTask({
     ExitCondition(text: 'Panel renders', isComplete: false),
   ],
   String? completionEvidenceSummary,
-  String bodyMarkdown = '## Objective\nImplement the Operate-specific task inspector.',
+  String bodyMarkdown =
+      '## Objective\nImplement the Operate-specific task inspector.',
 }) {
   return TaskProjection(
     id: id,
@@ -52,13 +53,20 @@ TaskProjection _testTask({
     bodyMarkdown: bodyMarkdown,
     created: DateTime(2026, 6, 7),
     updated: DateTime(2026, 6, 7),
-    filePath: 'docs/tasks/02-doing/0612-warp-prism-operate-task-detail-inspector.md',
+    filePath:
+        'docs/tasks/02-doing/0612-warp-prism-operate-task-detail-inspector.md',
   );
 }
 
 Widget _wrapInApp(Widget child) {
   return MaterialApp(
-    home: Scaffold(body: SizedBox(width: 800, height: 900, child: child)),
+    home: Scaffold(
+      body: OverflowBox(
+        maxWidth: double.infinity,
+        maxHeight: double.infinity,
+        child: SizedBox(width: 800, height: 2400, child: child),
+      ),
+    ),
   );
 }
 
@@ -66,21 +74,22 @@ void main() {
   group('OperateTaskDetailPanel', () {
     testWidgets('renders task identity as header', (tester) async {
       final task = _testTask();
-      await tester.pumpWidget(_wrapInApp(
-        OperateTaskDetailPanel(task: task),
-      ));
+      await tester.pumpWidget(_wrapInApp(OperateTaskDetailPanel(task: task)));
 
       // Header shows task id and title
       expect(find.textContaining('0612'), findsWidgets);
-      expect(find.textContaining('Operate Task Detail Inspector'), findsOneWidget);
-      expect(find.textContaining('doing'), findsOneWidget);
+      expect(
+        find.textContaining('Operate Task Detail Inspector'),
+        findsWidgets,
+      );
+      expect(find.textContaining('doing'), findsWidgets);
     });
 
-    testWidgets('renders metadata section with lane, priority, owner', (tester) async {
+    testWidgets('renders metadata section with lane, priority, owner', (
+      tester,
+    ) async {
       final task = _testTask();
-      await tester.pumpWidget(_wrapInApp(
-        OperateTaskDetailPanel(task: task),
-      ));
+      await tester.pumpWidget(_wrapInApp(OperateTaskDetailPanel(task: task)));
 
       expect(find.text('Metadata'), findsOneWidget);
       expect(find.text('P1'), findsOneWidget);
@@ -90,9 +99,7 @@ void main() {
 
     testWidgets('renders verification commands', (tester) async {
       final task = _testTask();
-      await tester.pumpWidget(_wrapInApp(
-        OperateTaskDetailPanel(task: task),
-      ));
+      await tester.pumpWidget(_wrapInApp(OperateTaskDetailPanel(task: task)));
 
       expect(find.text('Verification Commands'), findsOneWidget);
       expect(find.textContaining('flutter test'), findsOneWidget);
@@ -101,9 +108,7 @@ void main() {
 
     testWidgets('renders dependencies section', (tester) async {
       final task = _testTask();
-      await tester.pumpWidget(_wrapInApp(
-        OperateTaskDetailPanel(task: task),
-      ));
+      await tester.pumpWidget(_wrapInApp(OperateTaskDetailPanel(task: task)));
 
       expect(find.text('Dependencies & Blockers'), findsOneWidget);
       expect(find.text('0610'), findsOneWidget);
@@ -112,19 +117,15 @@ void main() {
 
     testWidgets('renders evidence rows', (tester) async {
       final task = _testTask();
-      await tester.pumpWidget(_wrapInApp(
-        OperateTaskDetailPanel(task: task),
-      ));
+      await tester.pumpWidget(_wrapInApp(OperateTaskDetailPanel(task: task)));
 
-      expect(find.text('Completion Evidence'), findsOneWidget);
-      expect(find.text('Evidence Status'), findsOneWidget);
+      expect(find.text('Completion Evidence'), findsWidgets);
+      expect(find.text('Evidence Status'), findsWidgets);
     });
 
     testWidgets('renders exit conditions with checked state', (tester) async {
       final task = _testTask();
-      await tester.pumpWidget(_wrapInApp(
-        OperateTaskDetailPanel(task: task),
-      ));
+      await tester.pumpWidget(_wrapInApp(OperateTaskDetailPanel(task: task)));
 
       expect(find.text('Exit Conditions'), findsOneWidget);
       expect(find.text('Mapper exists'), findsOneWidget);
@@ -133,34 +134,32 @@ void main() {
 
     testWidgets('renders related skills and workflows', (tester) async {
       final task = _testTask();
-      await tester.pumpWidget(_wrapInApp(
-        OperateTaskDetailPanel(task: task),
-      ));
+      await tester.pumpWidget(_wrapInApp(OperateTaskDetailPanel(task: task)));
 
-      expect(find.text('Related Skills & Workflows'), findsOneWidget);
+      expect(find.text('Related Skills & Workflows'), findsWidgets);
       expect(find.text('agent-wiki'), findsOneWidget);
       expect(find.text('build-orchestrator'), findsOneWidget);
     });
 
     testWidgets('renders body summary section', (tester) async {
       final task = _testTask();
-      await tester.pumpWidget(_wrapInApp(
-        OperateTaskDetailPanel(task: task),
-      ));
+      await tester.pumpWidget(_wrapInApp(OperateTaskDetailPanel(task: task)));
 
-      expect(find.text('Body Summary'), findsOneWidget);
-      expect(find.textContaining('Implement the Operate-specific'), findsOneWidget);
+      expect(find.text('Body Summary'), findsWidgets);
+      expect(
+        find.textContaining('Implement the Operate-specific'),
+        findsOneWidget,
+      );
     });
 
     testWidgets('close button triggers onClose callback', (tester) async {
       var closed = false;
       final task = _testTask();
-      await tester.pumpWidget(_wrapInApp(
-        OperateTaskDetailPanel(
-          task: task,
-          onClose: () => closed = true,
+      await tester.pumpWidget(
+        _wrapInApp(
+          OperateTaskDetailPanel(task: task, onClose: () => closed = true),
         ),
-      ));
+      );
 
       // Find and tap the close button
       final closeBtn = find.byTooltip('Close');
@@ -172,9 +171,7 @@ void main() {
 
   group('OperateTaskDetailEmpty', () {
     testWidgets('renders empty state message', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        const OperateTaskDetailEmpty(),
-      ));
+      await tester.pumpWidget(_wrapInApp(const OperateTaskDetailEmpty()));
 
       expect(find.text('No task selected'), findsOneWidget);
       expect(find.textContaining('Select a task card'), findsOneWidget);

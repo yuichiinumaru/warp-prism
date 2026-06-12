@@ -56,9 +56,7 @@ class HistoryImpactView extends StatelessWidget {
           ),
           child: _ImpactPathCard(
             node: node,
-            onTap: onEntryTap != null
-                ? () => onEntryTap!(node.entry.id)
-                : null,
+            onTap: onEntryTap != null ? () => onEntryTap!(node.entry.id) : null,
             isSelected: node.entry.id == selectedEntryId,
           ),
         );
@@ -109,8 +107,7 @@ class _ImpactPathCard extends StatelessWidget {
               _PathNode(
                 icon: Icons.description_outlined,
                 label: entry.id,
-                sublabel:
-                    '${entry.project} · ${entry.type.name}',
+                sublabel: '${entry.project} · ${entry.type.name}',
                 color: DSColors.accentCyan,
               ),
 
@@ -144,13 +141,15 @@ class _ImpactPathCard extends StatelessWidget {
                   spacing: DSSpacing.xs,
                   runSpacing: DSSpacing.xs,
                   children: node.resolvedSkills
-                      .map((s) => _PathNode(
-                            icon: DSIcons.skill,
-                            label: s,
-                            sublabel: 'Skill touched',
-                            color: DSColors.statusWarning,
-                            compact: true,
-                          ))
+                      .map(
+                        (s) => _PathNode(
+                          icon: DSIcons.skill,
+                          label: s,
+                          sublabel: 'Skill touched',
+                          color: DSColors.statusWarning,
+                          compact: true,
+                        ),
+                      )
                       .toList(),
                 )
               else if (hasTask && !hasSkills)
@@ -262,10 +261,7 @@ class _PathConnector extends StatelessWidget {
           ),
           if (gapMessage != null) ...[
             const SizedBox(width: DSSpacing.xs),
-            DSText.labelSmall(
-              gapMessage!,
-              color: DSColors.statusWarning,
-            ),
+            DSText.labelSmall(gapMessage!, color: DSColors.statusWarning),
           ],
         ],
       ),

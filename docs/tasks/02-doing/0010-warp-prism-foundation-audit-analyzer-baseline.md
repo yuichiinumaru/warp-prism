@@ -1,6 +1,7 @@
 # Task 0010: Warp-Prism Foundation Audit Analyzer Baseline
 
 > **Status**: `[x]` Done
+> **Review State**: Blocked — Flutter SDK not installed; validation commands cannot execute. See `docs/governance/promotion-state-model.md`
 > **Priority**: 🔴 P0
 > **Type**: `verification`
 > **Origin**: EPIC-00 Warp-Prism Foundation and Compile Gate promotion

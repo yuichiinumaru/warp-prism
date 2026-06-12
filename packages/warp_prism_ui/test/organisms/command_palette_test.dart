@@ -13,50 +13,50 @@ void main() {
   // ---------------------------------------------------------------------------
 
   List<DSCommand> _sampleCommands() => const [
-        DSCommand(
-          id: 'nav-map',
-          label: 'Map Workspace',
-          description: 'Navigate to the asset map',
-          icon: Icons.map_outlined,
-          category: DSCommandCategory.navigate,
-        ),
-        DSCommand(
-          id: 'nav-operate',
-          label: 'Operate — Task Board',
-          description: 'Navigate to the task board',
-          icon: Icons.play_circle_outline,
-          category: DSCommandCategory.navigate,
-        ),
-        DSCommand(
-          id: 'nav-governance',
-          label: 'Governance View',
-          description: 'Navigate to governance diagnostics',
-          icon: Icons.shield_outlined,
-          category: DSCommandCategory.navigate,
-        ),
-        DSCommand(
-          id: 'run-refresh',
-          label: 'Refresh Workspace',
-          description: 'Reload all workspace data',
-          icon: Icons.refresh,
-          category: DSCommandCategory.run,
-        ),
-        DSCommand(
-          id: 'run-theme',
-          label: 'Toggle Theme',
-          description: 'Switch between light and dark theme',
-          icon: Icons.brightness_6,
-          category: DSCommandCategory.run,
-          shortcut: 'Ctrl+T',
-        ),
-        DSCommand(
-          id: 'recent-agent',
-          label: 'Agent Alpha',
-          description: 'Recently viewed agent',
-          icon: Icons.smart_toy_outlined,
-          category: DSCommandCategory.recent,
-        ),
-      ];
+    DSCommand(
+      id: 'nav-map',
+      label: 'Map Workspace',
+      description: 'Navigate to the asset map',
+      icon: Icons.map_outlined,
+      category: DSCommandCategory.navigate,
+    ),
+    DSCommand(
+      id: 'nav-operate',
+      label: 'Operate — Task Board',
+      description: 'Navigate to the task board',
+      icon: Icons.play_circle_outline,
+      category: DSCommandCategory.navigate,
+    ),
+    DSCommand(
+      id: 'nav-governance',
+      label: 'Governance View',
+      description: 'Navigate to governance diagnostics',
+      icon: Icons.shield_outlined,
+      category: DSCommandCategory.navigate,
+    ),
+    DSCommand(
+      id: 'run-refresh',
+      label: 'Refresh Workspace',
+      description: 'Reload all workspace data',
+      icon: Icons.refresh,
+      category: DSCommandCategory.run,
+    ),
+    DSCommand(
+      id: 'run-theme',
+      label: 'Toggle Theme',
+      description: 'Switch between light and dark theme',
+      icon: Icons.brightness_6,
+      category: DSCommandCategory.run,
+      shortcut: 'Ctrl+T',
+    ),
+    DSCommand(
+      id: 'recent-agent',
+      label: 'Agent Alpha',
+      description: 'Recently viewed agent',
+      icon: Icons.smart_toy_outlined,
+      category: DSCommandCategory.recent,
+    ),
+  ];
 
   Widget _buildApp({
     required List<DSCommand> commands,
@@ -298,10 +298,7 @@ void main() {
       String? executedId;
       final commands = _sampleCommands();
       await tester.pumpWidget(
-        _buildApp(
-          commands: commands,
-          onExecute: (cmd) => executedId = cmd.id,
-        ),
+        _buildApp(commands: commands, onExecute: (cmd) => executedId = cmd.id),
       );
 
       // First command (Map Workspace) is selected by default
@@ -386,10 +383,7 @@ void main() {
     testWidgets('palette closes after execution', (tester) async {
       var closed = false;
       await tester.pumpWidget(
-        _buildApp(
-          commands: _sampleCommands(),
-          onClose: () => closed = true,
-        ),
+        _buildApp(commands: _sampleCommands(), onClose: () => closed = true),
       );
 
       await tester.sendKeyEvent(LogicalKeyboardKey.enter);

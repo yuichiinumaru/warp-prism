@@ -180,8 +180,24 @@ extension TaskLaneParsing on TaskLane {
   }
 
   /// Parse a lane from a frontmatter status string.
+  ///
+  /// Handles both bare status words (e.g. `"planning"`, `"doing"`) and
+  /// directory-prefix style strings (e.g. `"00-planning"`, `"02-doing"`).
   static TaskLane fromStatus(String status) {
-    return fromDirectoryPrefix(status);
+    switch (status.toLowerCase().trim()) {
+      case 'planning':
+        return TaskLane.planning;
+      case 'open':
+        return TaskLane.open;
+      case 'doing':
+        return TaskLane.doing;
+      case 'review':
+        return TaskLane.review;
+      case 'completed':
+        return TaskLane.completed;
+      default:
+        return fromDirectoryPrefix(status);
+    }
   }
 
   /// The canonical directory prefix for this lane.

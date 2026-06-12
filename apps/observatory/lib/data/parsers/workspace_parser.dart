@@ -10,7 +10,7 @@ class WorkspaceParser {
   /// Parse an agent YAML file
   Agent parseAgent(String yamlContent, String id) {
     final yaml = loadYaml(yamlContent) as YamlMap;
-    
+
     final modelYaml = yaml['model'] as YamlMap?;
     final model = modelYaml != null
         ? AgentModel(
@@ -22,27 +22,29 @@ class WorkspaceParser {
         : const AgentModel(provider: 'unknown', name: 'unknown');
 
     final toolsYaml = yaml['tools'] as YamlList?;
-    final tools = toolsYaml?.map((t) {
-      final toolMap = t as YamlMap;
-      final paramsYaml = toolMap['parameters'] as YamlMap?;
-      final params = <String, ToolParameter>{};
-      paramsYaml?.forEach((key, value) {
-        final paramMap = value as YamlMap;
-        params[key as String] = ToolParameter(
-          type: paramMap['type'] as String? ?? 'string',
-          required: paramMap['required'] as bool? ?? false,
-          defaultValue: paramMap['default'],
-          enumValues: (paramMap['enum'] as YamlList?)
-              ?.map((e) => e.toString())
-              .toList(),
-        );
-      });
-      return AgentTool(
-        name: toolMap['name'] as String? ?? '',
-        description: toolMap['description'] as String? ?? '',
-        parameters: params,
-      );
-    }).toList() ?? [];
+    final tools =
+        toolsYaml?.map((t) {
+          final toolMap = t as YamlMap;
+          final paramsYaml = toolMap['parameters'] as YamlMap?;
+          final params = <String, ToolParameter>{};
+          paramsYaml?.forEach((key, value) {
+            final paramMap = value as YamlMap;
+            params[key as String] = ToolParameter(
+              type: paramMap['type'] as String? ?? 'string',
+              required: paramMap['required'] as bool? ?? false,
+              defaultValue: paramMap['default'],
+              enumValues: (paramMap['enum'] as YamlList?)
+                  ?.map((e) => e.toString())
+                  .toList(),
+            );
+          });
+          return AgentTool(
+            name: toolMap['name'] as String? ?? '',
+            description: toolMap['description'] as String? ?? '',
+            parameters: params,
+          );
+        }).toList() ??
+        [];
 
     final metadataYaml = yaml['metadata'] as YamlMap?;
     final tagsYaml = metadataYaml?['tags'] as YamlList?;
@@ -59,16 +61,18 @@ class WorkspaceParser {
       status: _parseAgentStatus(yaml['status'] as String?),
       model: model,
       systemPrompt: yaml['system_prompt'] as String? ?? '',
-      capabilities: (yaml['capabilities'] as YamlList?)
-          ?.map((c) => c.toString())
-          .toList() ?? [],
+      capabilities:
+          (yaml['capabilities'] as YamlList?)
+              ?.map((c) => c.toString())
+              .toList() ??
+          [],
       tools: tools,
-      skillIds: (yaml['skills'] as YamlList?)
-          ?.map((s) => s.toString())
-          .toList() ?? [],
-      workflowIds: (yaml['workflows'] as YamlList?)
-          ?.map((w) => w.toString())
-          .toList() ?? [],
+      skillIds:
+          (yaml['skills'] as YamlList?)?.map((s) => s.toString()).toList() ??
+          [],
+      workflowIds:
+          (yaml['workflows'] as YamlList?)?.map((w) => w.toString()).toList() ??
+          [],
     );
   }
 
@@ -77,38 +81,44 @@ class WorkspaceParser {
     final yaml = loadYaml(yamlContent) as YamlMap;
 
     final inputsYaml = yaml['inputs'] as YamlList?;
-    final inputs = inputsYaml?.map((i) {
-      final inputMap = i as YamlMap;
-      return SkillInput(
-        name: inputMap['name'] as String? ?? '',
-        type: inputMap['type'] as String? ?? 'string',
-        description: inputMap['description'] as String? ?? '',
-        required: inputMap['required'] as bool? ?? false,
-        defaultValue: inputMap['default'],
-      );
-    }).toList() ?? [];
+    final inputs =
+        inputsYaml?.map((i) {
+          final inputMap = i as YamlMap;
+          return SkillInput(
+            name: inputMap['name'] as String? ?? '',
+            type: inputMap['type'] as String? ?? 'string',
+            description: inputMap['description'] as String? ?? '',
+            required: inputMap['required'] as bool? ?? false,
+            defaultValue: inputMap['default'],
+          );
+        }).toList() ??
+        [];
 
     final outputsYaml = yaml['outputs'] as YamlList?;
-    final outputs = outputsYaml?.map((o) {
-      final outputMap = o as YamlMap;
-      return SkillOutput(
-        name: outputMap['name'] as String? ?? '',
-        type: outputMap['type'] as String? ?? 'string',
-        description: outputMap['description'] as String? ?? '',
-      );
-    }).toList() ?? [];
+    final outputs =
+        outputsYaml?.map((o) {
+          final outputMap = o as YamlMap;
+          return SkillOutput(
+            name: outputMap['name'] as String? ?? '',
+            type: outputMap['type'] as String? ?? 'string',
+            description: outputMap['description'] as String? ?? '',
+          );
+        }).toList() ??
+        [];
 
     final stepsYaml = yaml['steps'] as YamlList?;
-    final steps = stepsYaml?.map((s) {
-      final stepMap = s as YamlMap;
-      return SkillStep(
-        name: stepMap['name'] as String? ?? '',
-        action: stepMap['action'] as String? ?? '',
-        description: stepMap['description'] as String? ?? '',
-        condition: stepMap['condition'] as String?,
-        config: _yamlMapToMap(stepMap['config'] as YamlMap?),
-      );
-    }).toList() ?? [];
+    final steps =
+        stepsYaml?.map((s) {
+          final stepMap = s as YamlMap;
+          return SkillStep(
+            name: stepMap['name'] as String? ?? '',
+            action: stepMap['action'] as String? ?? '',
+            description: stepMap['description'] as String? ?? '',
+            condition: stepMap['condition'] as String?,
+            config: _yamlMapToMap(stepMap['config'] as YamlMap?),
+          );
+        }).toList() ??
+        [];
 
     final metadataYaml = yaml['metadata'] as YamlMap?;
     final tagsYaml = metadataYaml?['tags'] as YamlList?;
@@ -139,40 +149,46 @@ class WorkspaceParser {
     final trigger = WorkflowTrigger(
       type: triggerYaml?['type'] as String? ?? 'manual',
       event: triggerYaml?['event'] as String?,
-      inputs: triggerInputsYaml?.map((i) {
-        final inputMap = i as YamlMap;
-        return SkillInput(
-          name: inputMap['name'] as String? ?? '',
-          type: inputMap['type'] as String? ?? 'string',
-          description: inputMap['description'] as String? ?? '',
-          required: inputMap['required'] as bool? ?? false,
-          defaultValue: inputMap['default'],
-        );
-      }).toList() ?? [],
+      inputs:
+          triggerInputsYaml?.map((i) {
+            final inputMap = i as YamlMap;
+            return SkillInput(
+              name: inputMap['name'] as String? ?? '',
+              type: inputMap['type'] as String? ?? 'string',
+              description: inputMap['description'] as String? ?? '',
+              required: inputMap['required'] as bool? ?? false,
+              defaultValue: inputMap['default'],
+            );
+          }).toList() ??
+          [],
     );
 
     final stagesYaml = yaml['stages'] as YamlList?;
-    final stages = stagesYaml?.map((s) {
-      final stageMap = s as YamlMap;
-      final branchesYaml = stageMap['branches'] as YamlMap?;
-      return WorkflowStage(
-        name: stageMap['name'] as String? ?? '',
-        description: stageMap['description'] as String? ?? '',
-        agentId: stageMap['agent'] as String?,
-        skillId: stageMap['skill'] as String?,
-        type: stageMap['type'] as String?,
-        inputs: _yamlMapToMap(stageMap['inputs'] as YamlMap?),
-        outputs: (stageMap['outputs'] as YamlList?)
-            ?.map((o) => o.toString())
-            .toList() ?? [],
-        timeout: stageMap['timeout'] as int?,
-        parallel: stageMap['parallel'] as bool? ?? false,
-        condition: stageMap['condition'] as String?,
-        branches: branchesYaml?.map(
-          (key, value) => MapEntry(key.toString(), value.toString()),
-        ),
-      );
-    }).toList() ?? [];
+    final stages =
+        stagesYaml?.map((s) {
+          final stageMap = s as YamlMap;
+          final branchesYaml = stageMap['branches'] as YamlMap?;
+          return WorkflowStage(
+            name: stageMap['name'] as String? ?? '',
+            description: stageMap['description'] as String? ?? '',
+            agentId: stageMap['agent'] as String?,
+            skillId: stageMap['skill'] as String?,
+            type: stageMap['type'] as String?,
+            inputs: _yamlMapToMap(stageMap['inputs'] as YamlMap?),
+            outputs:
+                (stageMap['outputs'] as YamlList?)
+                    ?.map((o) => o.toString())
+                    .toList() ??
+                [],
+            timeout: stageMap['timeout'] as int?,
+            parallel: stageMap['parallel'] as bool? ?? false,
+            condition: stageMap['condition'] as String?,
+            branches: branchesYaml?.map(
+              (key, value) => MapEntry(key.toString(), value.toString()),
+            ),
+          );
+        }).toList() ??
+        [];
 
     final errorYaml = yaml['error_handling'] as YamlMap?;
     WorkflowErrorHandling? errorHandling;
@@ -187,13 +203,15 @@ class WorkspaceParser {
                 initialDelay: retryYaml['initial_delay'] as int? ?? 30,
               )
             : null,
-        fallbackRules: fallbackYaml?.map((f) {
-          final ruleMap = f as YamlMap;
-          return FallbackRule(
-            condition: ruleMap['condition'] as String? ?? '',
-            action: ruleMap['action'] as String? ?? '',
-          );
-        }).toList() ?? [],
+        fallbackRules:
+            fallbackYaml?.map((f) {
+              final ruleMap = f as YamlMap;
+              return FallbackRule(
+                condition: ruleMap['condition'] as String? ?? '',
+                action: ruleMap['action'] as String? ?? '',
+              );
+            }).toList() ??
+            [],
       );
     }
 
@@ -213,8 +231,8 @@ class WorkspaceParser {
       trigger: trigger,
       stages: stages,
       errorHandling: errorHandling,
-      avgDurationMinutes:
-          (metadataYaml?['avg_duration_minutes'] as num?)?.toDouble(),
+      avgDurationMinutes: (metadataYaml?['avg_duration_minutes'] as num?)
+          ?.toDouble(),
       successRate: (metadataYaml?['success_rate'] as num?)?.toDouble(),
     );
   }
@@ -277,32 +295,50 @@ class WorkspaceParser {
         if (currentSection == 'summary') {
           summary = item;
         } else if (currentSection == 'affected') {
-          final affectedMatch = RegExp(r'(\w+):\s+(\S+)\s+\(v?([\d.]+)\s*->\s*v?([\d.]+)\)')
-              .firstMatch(item);
+          final affectedMatch = RegExp(
+            r'(\w+):\s+(\S+)\s+\(v?([\d.]+)\s*->\s*v?([\d.]+)\)',
+          ).firstMatch(item);
           if (affectedMatch != null) {
-            affectedAssets.add(AffectedAsset(
-              type: _parseAssetType(affectedMatch.group(1)!),
-              name: affectedMatch.group(2)!,
-              oldVersion: affectedMatch.group(3),
-              newVersion: affectedMatch.group(4)!,
-            ));
+            affectedAssets.add(
+              AffectedAsset(
+                type: _parseAssetType(affectedMatch.group(1)!),
+                name: affectedMatch.group(2)!,
+                oldVersion: affectedMatch.group(3),
+                newVersion: affectedMatch.group(4)!,
+              ),
+            );
           }
         } else if (currentSection == 'evidence') {
-          evidence.add(Evidence(
-            type: item.contains('PR') ? 'pr' : 
-                  item.contains('Issue') ? 'issue' : 
-                  item.contains('Benchmark') ? 'benchmark' : 'report',
-            reference: item,
-          ));
+          evidence.add(
+            Evidence(
+              type: item.contains('PR')
+                  ? 'pr'
+                  : item.contains('Issue')
+                  ? 'issue'
+                  : item.contains('Benchmark')
+                  ? 'benchmark'
+                  : 'report',
+              reference: item,
+            ),
+          );
         } else if (currentSection == 'tags') {
           tags.add(item);
-        } else if (['added', 'changed', 'fixed', 'deprecated', 'security']
-            .contains(currentSection)) {
+        } else if ([
+          'added',
+          'changed',
+          'fixed',
+          'deprecated',
+          'security',
+        ].contains(currentSection)) {
           currentItems.add(item);
         }
-      } else if (currentSection == 'summary' && line.isNotEmpty && !line.startsWith('#')) {
+      } else if (currentSection == 'summary' &&
+          line.isNotEmpty &&
+          !line.startsWith('#')) {
         summary = line.trim();
-      } else if (currentSection == 'author' && line.isNotEmpty && !line.startsWith('#')) {
+      } else if (currentSection == 'author' &&
+          line.isNotEmpty &&
+          !line.startsWith('#')) {
         author = line.trim();
       }
     }
@@ -332,8 +368,13 @@ class WorkspaceParser {
   ) {
     if (section != null &&
         items.isNotEmpty &&
-        ['added', 'changed', 'fixed', 'deprecated', 'security']
-            .contains(section)) {
+        [
+          'added',
+          'changed',
+          'fixed',
+          'deprecated',
+          'security',
+        ].contains(section)) {
       changes.add(ChangeSection(type: section, items: List.from(items)));
     }
   }

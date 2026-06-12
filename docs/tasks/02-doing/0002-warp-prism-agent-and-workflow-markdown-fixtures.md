@@ -1,6 +1,7 @@
 # Task 0002: Warp Prism Agent And Workflow Markdown Fixtures
 
 > **Status**: `[x]` Done
+> **Review State**: Blocked — Flutter SDK not installed; validation commands cannot execute
 > **Priority**: 🔴 P0
 > **Type**: `feature`
 > **Origin**: EPIC 02 — Warp Prism Mock Workspace Corpus

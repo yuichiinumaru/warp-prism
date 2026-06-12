@@ -91,8 +91,17 @@ void main() {
       });
 
       test('forAssetKind returns valid color for known kinds', () {
-        final kinds = ['agent', 'skill', 'subskill', 'workflow', 'task',
-                       'changelog', 'script', 'reference', 'rule'];
+        final kinds = [
+          'agent',
+          'skill',
+          'subskill',
+          'workflow',
+          'task',
+          'changelog',
+          'script',
+          'reference',
+          'rule',
+        ];
         for (final kind in kinds) {
           final color = DSColors.forAssetKind(kind);
           expect(color, isA<Color>());
@@ -101,7 +110,13 @@ void main() {
       });
 
       test('forLane returns valid color for known lanes', () {
-        final lanes = ['00-planning', '01-open', '02-doing', '03-review', '04-completed'];
+        final lanes = [
+          '00-planning',
+          '01-open',
+          '02-doing',
+          '03-review',
+          '04-completed',
+        ];
         for (final lane in lanes) {
           final color = DSColors.forLane(lane);
           expect(color, isA<Color>());
@@ -110,8 +125,14 @@ void main() {
       });
 
       test('forCanonicity returns valid color for known states', () {
-        final states = ['parentcanonical', 'childlocal', 'generated',
-                        'appendonly', 'archive', 'mock'];
+        final states = [
+          'parentcanonical',
+          'childlocal',
+          'generated',
+          'appendonly',
+          'archive',
+          'mock',
+        ];
         for (final state in states) {
           final color = DSColors.forCanonicity(state);
           expect(color, isA<Color>());
@@ -182,20 +203,33 @@ void main() {
     group('DSSpacing', () {
       test('base scale is monotonically increasing', () {
         final scale = [
-          DSSpacing.xxs, DSSpacing.xs, DSSpacing.sm, DSSpacing.md,
-          DSSpacing.lg, DSSpacing.xl, DSSpacing.xxl, DSSpacing.xxxl,
-          DSSpacing.huge, DSSpacing.massive,
+          DSSpacing.xxs,
+          DSSpacing.xs,
+          DSSpacing.sm,
+          DSSpacing.md,
+          DSSpacing.lg,
+          DSSpacing.xl,
+          DSSpacing.xxl,
+          DSSpacing.xxxl,
+          DSSpacing.huge,
+          DSSpacing.massive,
         ];
         for (int i = 1; i < scale.length; i++) {
-          expect(scale[i], greaterThan(scale[i - 1]),
-              reason: '${_spacingName(i)} should be > ${_spacingName(i - 1)}');
+          expect(
+            scale[i],
+            greaterThan(scale[i - 1]),
+            reason: '${_spacingName(i)} should be > ${_spacingName(i - 1)}',
+          );
         }
       });
 
       test('semantic layout dimensions are reasonable', () {
         expect(DSSpacing.sidebarCollapsed, lessThan(DSSpacing.sidebarExpanded));
         expect(DSSpacing.topbarHeight, greaterThan(0));
-        expect(DSSpacing.inspectorWidth, greaterThan(DSSpacing.sidebarExpanded));
+        expect(
+          DSSpacing.inspectorWidth,
+          greaterThan(DSSpacing.sidebarExpanded),
+        );
       });
 
       test('all spacing values are positive', () {
@@ -209,8 +243,13 @@ void main() {
     group('DSRadii', () {
       test('base radii scale is monotonically increasing (except full)', () {
         final scale = [
-          DSRadii.none, DSRadii.xs, DSRadii.sm, DSRadii.md,
-          DSRadii.lg, DSRadii.xl, DSRadii.xxl,
+          DSRadii.none,
+          DSRadii.xs,
+          DSRadii.sm,
+          DSRadii.md,
+          DSRadii.lg,
+          DSRadii.xl,
+          DSRadii.xxl,
         ];
         for (int i = 1; i < scale.length; i++) {
           expect(scale[i], greaterThan(scale[i - 1]));
@@ -237,8 +276,14 @@ void main() {
       });
 
       test('elevation shadows increase in complexity', () {
-        expect(DSShadows.elevation1.length, lessThanOrEqualTo(DSShadows.elevation2.length));
-        expect(DSShadows.elevation2.length, lessThanOrEqualTo(DSShadows.elevation3.length));
+        expect(
+          DSShadows.elevation1.length,
+          lessThanOrEqualTo(DSShadows.elevation2.length),
+        );
+        expect(
+          DSShadows.elevation2.length,
+          lessThanOrEqualTo(DSShadows.elevation3.length),
+        );
       });
 
       test('glow effects return non-empty lists', () {
@@ -294,14 +339,27 @@ void main() {
       });
 
       test('forAssetKind returns valid style for all kinds', () {
-        final kinds = ['agent', 'skill', 'subskill', 'workflow', 'task', 'changelog'];
+        final kinds = [
+          'agent',
+          'skill',
+          'subskill',
+          'workflow',
+          'task',
+          'changelog',
+        ];
         for (final kind in kinds) {
           expect(DSSemantics.forAssetKind(kind), isA<TextStyle>());
         }
       });
 
       test('forLane returns valid style for all lanes', () {
-        final lanes = ['00-planning', '01-open', '02-doing', '03-review', '04-completed'];
+        final lanes = [
+          '00-planning',
+          '01-open',
+          '02-doing',
+          '03-review',
+          '04-completed',
+        ];
         for (final lane in lanes) {
           expect(DSSemantics.forLane(lane), isA<TextStyle>());
         }
@@ -340,6 +398,17 @@ void main() {
 }
 
 String _spacingName(int index) {
-  const names = ['xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl', 'xxxl', 'huge', 'massive'];
+  const names = [
+    'xxs',
+    'xs',
+    'sm',
+    'md',
+    'lg',
+    'xl',
+    'xxl',
+    'xxxl',
+    'huge',
+    'massive',
+  ];
   return index < names.length ? names[index] : 'index_$index';
 }

@@ -28,7 +28,8 @@ class DSDropTarget extends StatefulWidget {
 
   /// Callback when a draggable is dropped on this target.
   /// Provides the drag payload and the computed target index.
-  final void Function(DSDragPayload payload, int targetIndex)? onAcceptWithIndex;
+  final void Function(DSDragPayload payload, int targetIndex)?
+  onAcceptWithIndex;
 
   const DSDropTarget({
     super.key,
@@ -86,10 +87,7 @@ class _DSDropTargetState extends State<DSDropTarget> {
               _isHovering ? 0.5 : 0.3,
             ),
             borderRadius: BorderRadius.circular(DSRadii.lg),
-            border: Border.all(
-              color: highlightColor,
-              width: borderWidth,
-            ),
+            border: Border.all(color: highlightColor, width: borderWidth),
           ),
           child: Stack(
             children: [

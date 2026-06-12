@@ -82,8 +82,9 @@ void main() {
       debugPrint('  Config:          highCache (48px extent, 500px cache)');
     });
 
-    testWidgets('scroll through 10K items stays within frame budget',
-        (tester) async {
+    testWidgets('scroll through 10K items stays within frame budget', (
+      tester,
+    ) async {
       const itemCount = 10000;
       final controller = ScrollController();
       final frameTimes = <double>[];
@@ -117,9 +118,7 @@ void main() {
       const scrollStep = 2400.0; // ~50 items per step
       const maxExtent = itemCount * 48.0 - 600.0; // total - viewport
 
-      for (double offset = 0;
-          offset < maxExtent;
-          offset += scrollStep) {
+      for (double offset = 0; offset < maxExtent; offset += scrollStep) {
         final frameStopwatch = Stopwatch()..start();
         controller.jumpTo(offset);
         await tester.pump();
@@ -135,9 +134,9 @@ void main() {
       final avgFrameTime =
           frameTimes.reduce((a, b) => a + b) / frameTimes.length;
       final p99Index = (frameTimes.length * 0.99).floor().clamp(
-            0,
-            frameTimes.length - 1,
-          );
+        0,
+        frameTimes.length - 1,
+      );
       final p99FrameTime = frameTimes[p99Index];
       final maxFrameTime = frameTimes.last;
 
@@ -168,8 +167,9 @@ void main() {
   // GROUP: DSVirtualList vs plain ListView.builder comparison
   // ---------------------------------------------------------------------------
   group('DSVirtualList vs plain ListView.builder', () {
-    testWidgets('virtual list builds fewer items than plain ListView',
-        (tester) async {
+    testWidgets('virtual list builds fewer items than plain ListView', (
+      tester,
+    ) async {
       const itemCount = 10000;
       var virtualBuildCount = 0;
       var plainBuildCount = 0;
@@ -186,10 +186,7 @@ void main() {
                 config: DSVirtualScrollConfig.highCache,
                 itemBuilder: (context, index) {
                   virtualBuildCount++;
-                  return SizedBox(
-                    height: 48,
-                    child: Text('Item $index'),
-                  );
+                  return SizedBox(height: 48, child: Text('Item $index'));
                 },
               ),
             ),
@@ -208,10 +205,7 @@ void main() {
                 itemCount: itemCount,
                 itemBuilder: (context, index) {
                   plainBuildCount++;
-                  return SizedBox(
-                    height: 48,
-                    child: Text('Item $index'),
-                  );
+                  return SizedBox(height: 48, child: Text('Item $index'));
                 },
               ),
             ),
@@ -252,9 +246,7 @@ void main() {
                 cacheExtent: 250,
                 itemBuilder: (context, index) {
                   buildCount++;
-                  return Card(
-                    child: Center(child: Text('Grid $index')),
-                  );
+                  return Card(child: Center(child: Text('Grid $index')));
                 },
               ),
             ),

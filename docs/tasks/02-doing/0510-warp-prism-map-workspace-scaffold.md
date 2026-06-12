@@ -1,6 +1,7 @@
 # Task 0510: Map workspace scaffold and route contract
 
 > **Status**: `[x]` Done
+> **Review State**: `Builder Done` — see `docs/governance/promotion-state-model.md`
 > **Priority**: 🔴 P0
 > **Type**: `feature`
 > **Origin**: `EPIC-05-warp-prism-map-surface.md` plus user request to create actionable warp-prism tasks

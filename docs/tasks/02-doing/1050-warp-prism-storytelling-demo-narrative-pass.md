@@ -1,6 +1,7 @@
 # Task 1050: Warp-Prism Storytelling and Demo Narrative Pass
 
 > **Status**: `[x]` Done (subtasks complete; validation blocked by missing Flutter SDK)
+> **Review State**: Blocked — Flutter SDK not installed; validation commands cannot execute
 > **Priority**: 🟡 P1
 > **Type**: `feature`
 > **Origin**: EPIC 10 candidate story "Data storytelling and demo narrative pass" plus `warp-prism/docs/research.md` storytelling guidance

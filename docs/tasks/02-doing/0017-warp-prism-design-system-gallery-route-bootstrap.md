@@ -1,6 +1,7 @@
 # Task 0017: Warp Prism Design System Gallery Route Bootstrap
 
 > **Status**: `[x]` Done
+> **Review State**: Blocked — Flutter SDK not installed; validation commands cannot execute
 > **Priority**: 🔴 P0
 > **Type**: `feature`
 > **Origin**: `EPIC-01-warp-prism-atomic-design-system.md` candidate story `Design System Gallery page and route`

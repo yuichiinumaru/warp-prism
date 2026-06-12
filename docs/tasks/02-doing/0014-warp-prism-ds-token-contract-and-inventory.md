@@ -1,6 +1,7 @@
 # Task 0014: Warp Prism DS Token Contract and Inventory
 
 > **Status**: `[x]` Done
+> **Review State**: Blocked — Flutter SDK not installed; validation commands cannot execute
 > **Priority**: 🔴 P0
 > **Type**: `feature`
 > **Origin**: `EPIC-01-warp-prism-atomic-design-system.md` plus `docs/draft.md` API mismatch evidence

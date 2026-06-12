@@ -1,6 +1,7 @@
 # Task 0513: Map selection state and inspector integration
 
 > **Status**: `[x]` Done
+> **Review State**: Blocked — Flutter SDK not installed; validation commands cannot execute
 > **Priority**: 🟡 P1
 > **Type**: `feature`
 > **Origin**: `EPIC-05-warp-prism-map-surface.md` candidate story for selection/inspector integration

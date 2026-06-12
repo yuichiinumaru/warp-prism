@@ -28,7 +28,8 @@ void main() {
         expect(
           timeline.entries[i].date.isAfter(timeline.entries[i + 1].date) ||
               timeline.entries[i].date.isAtSameMomentAs(
-                  timeline.entries[i + 1].date),
+                timeline.entries[i + 1].date,
+              ),
           isTrue,
           reason:
               'Entry ${timeline.entries[i].date} should be >= '
@@ -91,8 +92,10 @@ void main() {
 
       final harnessEntries = timeline.filterBySkill('harness-architecture');
       expect(harnessEntries, isNotEmpty);
-      expect(harnessEntries.every((e) => e.skills.contains('harness-architecture')),
-          isTrue);
+      expect(
+        harnessEntries.every((e) => e.skills.contains('harness-architecture')),
+        isTrue,
+      );
     });
   });
 
@@ -140,8 +143,9 @@ void main() {
       final timeline = repo.buildTimeline(assets);
 
       expect(timeline.byProject, isNotEmpty);
-      final prismGroup =
-          timeline.byProject.firstWhere((g) => g.key == 'warp-prism');
+      final prismGroup = timeline.byProject.firstWhere(
+        (g) => g.key == 'warp-prism',
+      );
       expect(prismGroup.count, greaterThan(0));
     });
 
@@ -151,8 +155,9 @@ void main() {
       final timeline = repo.buildTimeline(assets);
 
       expect(timeline.byType, isNotEmpty);
-      final featureGroup =
-          timeline.byType.firstWhere((g) => g.key == 'feature');
+      final featureGroup = timeline.byType.firstWhere(
+        (g) => g.key == 'feature',
+      );
       expect(featureGroup.count, greaterThan(0));
     });
 

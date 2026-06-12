@@ -3,7 +3,7 @@ import '../tokens/tokens.dart';
 import '../atoms/atoms.dart';
 
 /// ASW Observatory Molecule - Search Bar
-/// 
+///
 /// Searchable input with filter integration
 class DSSearchBar extends StatefulWidget {
   final String? placeholder;
@@ -44,6 +44,10 @@ class _DSSearchBarState extends State<DSSearchBar> {
     _focusNode.addListener(() {
       setState(() => _isFocused = _focusNode.hasFocus);
     });
+    _controller.addListener(() {
+      // Rebuild to show/hide clear button when text changes.
+      setState(() {});
+    });
   }
 
   @override
@@ -63,8 +67,8 @@ class _DSSearchBarState extends State<DSSearchBar> {
 
   @override
   Widget build(BuildContext context) {
-    final borderColor = _isFocused 
-        ? DSColors.accentCyan.withOpacity(0.5) 
+    final borderColor = _isFocused
+        ? DSColors.accentCyan.withOpacity(0.5)
         : DSColors.borderSubtle;
 
     return Container(
@@ -121,11 +125,9 @@ class _DSSearchBarState extends State<DSSearchBar> {
             ),
             Stack(
               children: [
-                _IconButton(
-                  icon: DSIcons.filter,
-                  onTap: widget.onFilterTap,
-                ),
-                if (widget.activeFilterCount != null && widget.activeFilterCount! > 0)
+                _IconButton(icon: DSIcons.filter, onTap: widget.onFilterTap),
+                if (widget.activeFilterCount != null &&
+                    widget.activeFilterCount! > 0)
                   Positioned(
                     top: 4,
                     right: 4,

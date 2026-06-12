@@ -71,8 +71,10 @@ class DSUptimeBar extends StatelessWidget {
             child: LayoutBuilder(
               builder: (context, constraints) {
                 final trackWidth = constraints.maxWidth;
-                final fillWidth =
-                    (trackWidth * clampedPercent).clamp(minFillWidth, trackWidth);
+                final fillWidth = (trackWidth * clampedPercent).clamp(
+                  minFillWidth,
+                  trackWidth,
+                );
 
                 return Container(
                   height: height,
@@ -99,10 +101,7 @@ class DSUptimeBar extends StatelessWidget {
           ),
           if (showLabel) ...[
             const SizedBox(width: DSSpacing.sm),
-            DSText.labelSmall(
-              _percentLabel,
-              color: effectiveColor,
-            ),
+            DSText.labelSmall(_percentLabel, color: effectiveColor),
           ],
         ],
       ),

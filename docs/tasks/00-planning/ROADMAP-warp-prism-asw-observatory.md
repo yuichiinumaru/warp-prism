@@ -38,6 +38,16 @@ Build a read-only Flutter desktop-first observability console for an Agent Syste
 | 8 | `EPIC-08-warp-prism-governance-surface.md` | Diagnostics for drift, canonicality, orphaning, proof gaps work. |
 | 9 | `EPIC-09-warp-prism-universal-asset-detail.md` | Universal detail surface supports every asset kind. |
 | 10 | `EPIC-10-warp-prism-polish-accessibility-demo-coherence.md` | Responsive, accessible, coherent demo-quality prototype. |
+| **11** | **`EPIC-11-warp-prism-cybercore-frontend.md`** | **CyberCore frontend pilot and ADS expansion (existing).** |
+| **12** | **`EPIC-12-warp-prism-test-suite-stabilization-and-promotion-gates.md`** | **Test suite becomes governance system. Promotion states, gate matrix, boundary tests, review packets.** |
+| **13** | **`EPIC-13-warp-prism-ads-public-contract-and-catalog-hardening.md`** | **ADS package green gate. Prism namespace, contracts, gallery, catalog, goldens, toast, state vocabulary.** |
+| **14** | **`EPIC-14-warp-prism-observatory-legacy-contract-reconciliation.md`** | **Observatory test suite green. Corpus, parsers, view-models, detail views, feature flows.** |
+
+> **Note (2026-06-09)**: EPICs 12-14 are the **stabilization wave**. They do NOT
+> add product features. They fix the governance layer (promotion semantics),
+> the ADS contract (31 failures), and the Observatory integration (64 failures).
+> Product expansion (EPICs 05-10, EPIC-11) resumes only after the stabilization
+> wave completes. See `docs/reports/warp-prism-stabilization-strategy.md`.
 
 ## RF8 Framing
 

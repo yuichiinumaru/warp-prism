@@ -8,7 +8,7 @@
 library;
 
 import 'package:flutter/material.dart';
-import '../../../data/models/task_contracts.dart';
+import 'package:warp_prism_observatory/data/models/task_contracts.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
 import 'operate_workspace_view_model.dart';
 import 'operate_filters.dart';
@@ -75,14 +75,10 @@ class _OperateWorkspaceViewState extends State<OperateWorkspaceView> {
 
             // Storytelling panel — only when there are signals
             if (state.storyDiagnostics.hasSignals)
-              _OperateStoryPanel(
-                diagnostics: state.storyDiagnostics,
-              ),
+              _OperateStoryPanel(diagnostics: state.storyDiagnostics),
 
             // Board or state
-            Expanded(
-              child: _buildBoard(state),
-            ),
+            Expanded(child: _buildBoard(state)),
           ],
         );
       },
@@ -93,10 +89,7 @@ class _OperateWorkspaceViewState extends State<OperateWorkspaceView> {
     // Loading state
     if (state.isLoading) {
       return Center(
-        child: DSStateSurface.loading(
-          title: 'Loading tasks...',
-          compact: true,
-        ),
+        child: DSStateSurface.loading(title: 'Loading tasks...', compact: true),
       );
     }
 
@@ -119,7 +112,8 @@ class _OperateWorkspaceViewState extends State<OperateWorkspaceView> {
         child: DSStateSurface.empty(
           icon: Icons.inbox_outlined,
           title: 'No tasks found',
-          subtitle: 'Tasks will appear here when the workspace has parsed task files.',
+          subtitle:
+              'Tasks will appear here when the workspace has parsed task files.',
         ),
       );
     }
@@ -320,7 +314,9 @@ class _SearchFieldState extends State<_SearchField> {
         style: DSTypography.bodySmall.copyWith(color: DSColors.textPrimary),
         decoration: InputDecoration(
           hintText: 'Search tasks...',
-          hintStyle: DSTypography.bodySmall.copyWith(color: DSColors.textTertiary),
+          hintStyle: DSTypography.bodySmall.copyWith(
+            color: DSColors.textTertiary,
+          ),
           prefixIcon: DSIcon.small(Icons.search, color: DSColors.textTertiary),
           isDense: true,
           contentPadding: const EdgeInsets.symmetric(
@@ -378,7 +374,10 @@ class _FilterDropdown<T> extends StatelessWidget {
             PopupMenuItem<T>(
               value: null,
               onTap: onClear,
-              child: DSText.bodySmall('Clear $label', color: DSColors.textTertiary),
+              child: DSText.bodySmall(
+                'Clear $label',
+                color: DSColors.textTertiary,
+              ),
             ),
           for (final item in items)
             PopupMenuItem<T>(
@@ -421,13 +420,17 @@ class _FilterDropdown<T> extends StatelessWidget {
             children: [
               DSText.labelSmall(
                 value != null ? itemLabel(value as T) : label,
-                color: value != null ? DSColors.accentCyan : DSColors.textSecondary,
+                color: value != null
+                    ? DSColors.accentCyan
+                    : DSColors.textSecondary,
               ),
               const SizedBox(width: 4),
               Icon(
                 Icons.arrow_drop_down,
                 size: 16,
-                color: value != null ? DSColors.accentCyan : DSColors.textTertiary,
+                color: value != null
+                    ? DSColors.accentCyan
+                    : DSColors.textTertiary,
               ),
             ],
           ),

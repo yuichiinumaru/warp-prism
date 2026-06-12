@@ -16,43 +16,47 @@ DSDetailSection toDSSection(DetailSection section) {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Property rows
-        ...section.properties.map((p) => DSPropertyRow(
-              label: p.label,
-              value: p.value,
-            )),
+        ...section.properties.map(
+          (p) => DSPropertyRow(label: p.label, value: p.value),
+        ),
 
         // Code blocks
         if (section.codeBlocks.isNotEmpty) ...[
           if (section.properties.isNotEmpty &&
               section.properties.first.value != 'No verification commands')
             const SizedBox(height: DSSpacing.xs),
-          ...section.codeBlocks.map((cmd) => Padding(
-                padding: const EdgeInsets.only(bottom: DSSpacing.xs),
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(DSSpacing.sm),
-                  decoration: BoxDecoration(
-                    color: DSColors.obsidianDeep,
-                    borderRadius: BorderRadius.circular(DSRadii.sm),
-                    border: Border.all(color: DSColors.borderSubtle),
-                  ),
-                  child: DSText.code(cmd, color: DSColors.accentCyan),
+          ...section.codeBlocks.map(
+            (cmd) => Padding(
+              padding: const EdgeInsets.only(bottom: DSSpacing.xs),
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(DSSpacing.sm),
+                decoration: BoxDecoration(
+                  color: DSColors.obsidianDeep,
+                  borderRadius: BorderRadius.circular(DSRadii.sm),
+                  border: Border.all(color: DSColors.borderSubtle),
                 ),
-              )),
+                child: DSText.code(cmd, color: DSColors.accentCyan),
+              ),
+            ),
+          ),
         ],
 
         // Link rows
         if (section.links.isNotEmpty) ...[
-          if (section.properties.isNotEmpty) const SizedBox(height: DSSpacing.sm),
+          if (section.properties.isNotEmpty)
+            const SizedBox(height: DSSpacing.sm),
           Wrap(
             spacing: DSSpacing.xs,
             runSpacing: DSSpacing.xs,
             children: section.links
-                .map((link) => DSLinkRow(
-                      label: link.label,
-                      icon: _iconForKind(link.kind),
-                      color: _colorForKind(link.kind),
-                    ))
+                .map(
+                  (link) => DSLinkRow(
+                    label: link.label,
+                    icon: _iconForKind(link.kind),
+                    color: _colorForKind(link.kind),
+                  ),
+                )
                 .toList(),
           ),
         ],
@@ -85,11 +89,13 @@ DSDetailSection buildLinksSection(
             spacing: DSSpacing.xs,
             runSpacing: DSSpacing.xs,
             children: links
-                .map((link) => DSLinkRow(
-                      label: '${isIncoming ? '←' : '→'} ${link.label}',
-                      icon: _iconForKind(link.kind),
-                      color: _colorForKind(link.kind),
-                    ))
+                .map(
+                  (link) => DSLinkRow(
+                    label: '${isIncoming ? '←' : '→'} ${link.label}',
+                    icon: _iconForKind(link.kind),
+                    color: _colorForKind(link.kind),
+                  ),
+                )
                 .toList(),
           ),
   );

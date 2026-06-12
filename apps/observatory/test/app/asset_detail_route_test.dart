@@ -15,7 +15,6 @@ import 'package:warp_prism_observatory/app/asset_selection_controller.dart';
 import 'package:warp_prism_observatory/data/services/workspace_graph.dart';
 import 'package:warp_prism_observatory/data/models/workspace_graph.dart';
 
-
 const _sampleAsset = WorkspaceAsset(
   id: 'agent:test-agent',
   kind: AssetKind.agent,
@@ -110,11 +109,7 @@ void main() {
     });
 
     test('select records origin surface', () {
-      controller.select(
-        'agent:test-agent',
-        graph: _sampleGraph,
-        origin: 'map',
-      );
+      controller.select('agent:test-agent', graph: _sampleGraph, origin: 'map');
 
       final state = container.read(assetSelectionControllerProvider);
       expect(state.origin, 'map');

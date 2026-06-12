@@ -72,9 +72,18 @@ class _FakeNavigationShellState extends State<_FakeNavigationShell> {
           items: [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Overview'),
             BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Map'),
-            BottomNavigationBarItem(icon: Icon(Icons.play_arrow), label: 'Operate'),
-            BottomNavigationBarItem(icon: Icon(Icons.history), label: 'History'),
-            BottomNavigationBarItem(icon: Icon(Icons.gavel), label: 'Governance'),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.play_arrow),
+              label: 'Operate',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.history),
+              label: 'History',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.gavel),
+              label: 'Governance',
+            ),
           ],
         ),
       );
@@ -103,8 +112,9 @@ class _FakeNavigationShellState extends State<_FakeNavigationShell> {
 
 void main() {
   group('AppShell responsive layout', () {
-    testWidgets('wide layout (1400px) renders expanded sidebar and topbar',
-        (tester) async {
+    testWidgets('wide layout (1400px) renders expanded sidebar and topbar', (
+      tester,
+    ) async {
       tester.view.physicalSize = const Size(1400, 900);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
@@ -122,25 +132,26 @@ void main() {
     });
 
     testWidgets(
-        'narrow layout (400px) renders bottom navigation and no sidebar',
-        (tester) async {
-      tester.view.physicalSize = const Size(400, 800);
-      tester.view.devicePixelRatio = 1.0;
-      addTearDown(tester.view.resetPhysicalSize);
-      addTearDown(tester.view.resetDevicePixelRatio);
+      'narrow layout (400px) renders bottom navigation and no sidebar',
+      (tester) async {
+        tester.view.physicalSize = const Size(400, 800);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
 
-      await tester.pumpWidget(_buildTestHarness(width: 400, height: 800));
-      await tester.pumpAndSettle();
+        await tester.pumpWidget(_buildTestHarness(width: 400, height: 800));
+        await tester.pumpAndSettle();
 
-      // Should render bottom navigation
-      expect(find.byType(BottomNavigationBar), findsOneWidget);
-      // Should NOT render DSSidebar
-      expect(find.byType(DSSidebar), findsNothing);
-    });
+        // Should render bottom navigation
+        expect(find.byType(BottomNavigationBar), findsOneWidget);
+        // Should NOT render DSSidebar
+        expect(find.byType(DSSidebar), findsNothing);
+      },
+    );
 
-    testWidgets(
-        'medium layout (900px) renders collapsed sidebar',
-        (tester) async {
+    testWidgets('medium layout (900px) renders collapsed sidebar', (
+      tester,
+    ) async {
       tester.view.physicalSize = const Size(900, 800);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
@@ -213,7 +224,9 @@ void main() {
       expect(find.byType(DSSidebar), findsWidgets);
     });
 
-    testWidgets('sidebar width changes between narrow and wide', (tester) async {
+    testWidgets('sidebar width changes between narrow and wide', (
+      tester,
+    ) async {
       // At 800px (sidebarCollapse), sidebar should be present
       tester.view.physicalSize = const Size(800, 800);
       tester.view.devicePixelRatio = 1.0;

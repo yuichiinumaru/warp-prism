@@ -31,10 +31,7 @@ class DSMarkdownRenderer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (data.isEmpty) {
-      return const DSText.bodySmall(
-        'No content',
-        color: DSColors.textTertiary,
-      );
+      return const DSText.bodySmall('No content', color: DSColors.textTertiary);
     }
 
     final blocks = _MarkdownParser.parse(data);
@@ -50,9 +47,9 @@ class DSMarkdownRenderer extends StatelessWidget {
       _HeadingBlock(:final level, :final text) => _buildHeading(level, text),
       _ParagraphBlock(:final text) => _buildParagraph(text),
       _CodeBlock(:final source, :final language) => Padding(
-            padding: const EdgeInsets.only(bottom: DSSpacing.md),
-            child: DSCodeBlock(source: source, language: language),
-          ),
+        padding: const EdgeInsets.only(bottom: DSSpacing.md),
+        child: DSCodeBlock(source: source, language: language),
+      ),
       _BulletListBlock(:final items) => _buildBulletList(items),
       _OrderedListBlock(:final items) => _buildOrderedList(items),
       _BlockquoteBlock(:final text) => _buildBlockquote(text),
@@ -64,7 +61,12 @@ class DSMarkdownRenderer extends StatelessWidget {
       1 => (DSTypography.headingLarge, DSSpacing.lg),
       2 => (DSTypography.headingMedium, DSSpacing.md),
       3 => (DSTypography.headingSmall, DSSpacing.sm),
-      _ => (DSTypography.bodyLarge.copyWith(fontWeight: DSTypography.weightSemibold), DSSpacing.sm),
+      _ => (
+        DSTypography.bodyLarge.copyWith(
+          fontWeight: DSTypography.weightSemibold,
+        ),
+        DSSpacing.sm,
+      ),
     };
 
     return Padding(
@@ -81,7 +83,9 @@ class DSMarkdownRenderer extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: DSSpacing.md),
       child: _RichMarkdownText(
         text: text,
-        baseStyle: DSTypography.bodyMedium.copyWith(color: DSColors.textPrimary),
+        baseStyle: DSTypography.bodyMedium.copyWith(
+          color: DSColors.textPrimary,
+        ),
       ),
     );
   }
@@ -204,10 +208,7 @@ class _RichMarkdownText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RichText(
-      text: TextSpan(
-        style: baseStyle,
-        children: _parseInline(text, baseStyle),
-      ),
+      text: TextSpan(style: baseStyle, children: _parseInline(text, baseStyle)),
     );
   }
 
@@ -216,9 +217,9 @@ class _RichMarkdownText extends StatelessWidget {
     final spans = <InlineSpan>[];
     // Combined pattern: **bold**, *italic*, `code`, [link](url)
     final pattern = RegExp(
-      r'\*\*(.+?)\*\*'         // bold
-      r'|(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)'  // italic
-      r'|`([^`]+)`'            // inline code
+      r'\*\*(.+?)\*\*' // bold
+      r'|(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)' // italic
+      r'|`([^`]+)`' // inline code
       r'|\[([^\]]+)\]\(([^)]+)\)', // link
     );
 
@@ -231,42 +232,50 @@ class _RichMarkdownText extends StatelessWidget {
 
       if (match.group(1) != null) {
         // Bold
-        spans.add(TextSpan(
-          text: match.group(1),
-          style: baseStyle.copyWith(fontWeight: DSTypography.weightBold),
-        ));
+        spans.add(
+          TextSpan(
+            text: match.group(1),
+            style: baseStyle.copyWith(fontWeight: DSTypography.weightBold),
+          ),
+        );
       } else if (match.group(2) != null) {
         // Italic
-        spans.add(TextSpan(
-          text: match.group(2),
-          style: baseStyle.copyWith(fontStyle: FontStyle.italic),
-        ));
+        spans.add(
+          TextSpan(
+            text: match.group(2),
+            style: baseStyle.copyWith(fontStyle: FontStyle.italic),
+          ),
+        );
       } else if (match.group(3) != null) {
         // Inline code
-        spans.add(TextSpan(
-          text: match.group(3),
-          style: DSTypography.codeSmall.copyWith(
-            color: DSColors.statusWarning,
-            backgroundColor: DSColors.obsidianHover,
+        spans.add(
+          TextSpan(
+            text: match.group(3),
+            style: DSTypography.codeSmall.copyWith(
+              color: DSColors.statusWarning,
+              backgroundColor: DSColors.obsidianHover,
+            ),
           ),
-        ));
+        );
       } else if (match.group(4) != null && match.group(5) != null) {
         // Link — display-only, no URL launching
         final linkText = match.group(4)!;
-        spans.add(TextSpan(
-          text: linkText,
-          style: baseStyle.copyWith(
-            color: DSColors.accentCyan,
-            decoration: TextDecoration.underline,
-            decorationColor: DSColors.accentCyanDim,
+        spans.add(
+          TextSpan(
+            text: linkText,
+            style: baseStyle.copyWith(
+              color: DSColors.accentCyan,
+              decoration: TextDecoration.underline,
+              decorationColor: DSColors.accentCyanDim,
+            ),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                // Display-only: URL is surfaced to the caller through semantics.
+                // For interactive launching, wrap DSMarkdownRenderer in a
+                // GestureDetector or supply a callback in a future extension.
+              },
           ),
-          recognizer: TapGestureRecognizer()
-            ..onTap = () {
-              // Display-only: URL is surfaced to the caller through semantics.
-              // For interactive launching, wrap DSMarkdownRenderer in a
-              // GestureDetector or supply a callback in a future extension.
-            },
-        ));
+        );
       }
 
       pos = match.end;
@@ -335,10 +344,12 @@ class _MarkdownParser {
       if (RegExp(r'^```').hasMatch(line.trimRight())) {
         if (inCodeBlock) {
           // Close code block
-          blocks.add(_CodeBlock(
-            source: codeBuffer.toString().trimRight(),
-            language: codeLanguage,
-          ));
+          blocks.add(
+            _CodeBlock(
+              source: codeBuffer.toString().trimRight(),
+              language: codeLanguage,
+            ),
+          );
           codeBuffer.clear();
           inCodeBlock = false;
           codeLanguage = null;
@@ -368,10 +379,12 @@ class _MarkdownParser {
       final headingMatch = RegExp(r'^(#{1,4})\s+(.+)').firstMatch(line);
       if (headingMatch != null) {
         flushAll();
-        blocks.add(_HeadingBlock(
-          level: headingMatch.group(1)!.length,
-          text: headingMatch.group(2)!,
-        ));
+        blocks.add(
+          _HeadingBlock(
+            level: headingMatch.group(1)!.length,
+            text: headingMatch.group(2)!,
+          ),
+        );
         continue;
       }
 
@@ -414,10 +427,12 @@ class _MarkdownParser {
 
     // Flush remaining state
     if (inCodeBlock && codeBuffer.isNotEmpty) {
-      blocks.add(_CodeBlock(
-        source: codeBuffer.toString().trimRight(),
-        language: codeLanguage,
-      ));
+      blocks.add(
+        _CodeBlock(
+          source: codeBuffer.toString().trimRight(),
+          language: codeLanguage,
+        ),
+      );
     }
     flushAll();
 

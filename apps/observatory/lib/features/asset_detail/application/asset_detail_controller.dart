@@ -10,7 +10,7 @@
 library;
 
 import 'package:flutter/foundation.dart';
-import '../../../data/models/workspace_graph.dart';
+import 'package:warp_prism_observatory/data/models/workspace_graph.dart';
 import '../domain/asset_detail_descriptor.dart';
 import 'asset_detail_mapper.dart';
 
@@ -27,8 +27,7 @@ AssetDetailDescriptor buildDescriptorFromSnapshot({
   required List<WorkspaceEdge> allEdges,
   required Map<String, String> assetNames,
 }) {
-  final incoming =
-      allEdges.where((e) => e.targetId == asset.id).toList();
+  final incoming = allEdges.where((e) => e.targetId == asset.id).toList();
   final outgoing = asset.edges;
 
   return buildAssetDetailDescriptor(

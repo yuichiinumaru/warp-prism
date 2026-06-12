@@ -19,11 +19,21 @@ class DashboardSummary {
 
   factory DashboardSummary.fromJson(Map<String, dynamic> json) {
     return DashboardSummary(
-      agentMetrics: AgentMetrics.fromJson(json['agentMetrics'] as Map<String, dynamic>),
-      skillMetrics: SkillMetrics.fromJson(json['skillMetrics'] as Map<String, dynamic>),
-      workflowMetrics: WorkflowMetrics.fromJson(json['workflowMetrics'] as Map<String, dynamic>),
-      executionMetrics: ExecutionMetrics.fromJson(json['executionMetrics'] as Map<String, dynamic>),
-      recentActivity: RecentActivity.fromJson(json['recentActivity'] as Map<String, dynamic>),
+      agentMetrics: AgentMetrics.fromJson(
+        json['agentMetrics'] as Map<String, dynamic>,
+      ),
+      skillMetrics: SkillMetrics.fromJson(
+        json['skillMetrics'] as Map<String, dynamic>,
+      ),
+      workflowMetrics: WorkflowMetrics.fromJson(
+        json['workflowMetrics'] as Map<String, dynamic>,
+      ),
+      executionMetrics: ExecutionMetrics.fromJson(
+        json['executionMetrics'] as Map<String, dynamic>,
+      ),
+      recentActivity: RecentActivity.fromJson(
+        json['recentActivity'] as Map<String, dynamic>,
+      ),
     );
   }
 

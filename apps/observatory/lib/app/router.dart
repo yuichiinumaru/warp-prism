@@ -155,9 +155,6 @@ final appRouter = GoRouter(
       },
     ),
     // Root redirect
-    GoRoute(
-      path: '/',
-      redirect: (context, state) => '/overview',
-    ),
+    GoRoute(path: '/', redirect: (context, state) => '/overview'),
   ],
 );

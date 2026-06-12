@@ -1,115 +1,119 @@
 # Warp Prism
 
-**ASW Observatory** — Agent System Workspace visibility console built with Flutter.
+**ASW Observatory + CyberCore Pilot** — a Melos monorepo containing a reusable
+Flutter Atomic Design System (`warp_prism_ui`), a read-only Agent System
+Workspace Observatory, an ADS catalog/gallery, and a CyberCore pilot app.
 
-Warp Prism is a Flutter application that provides a visual console for inspecting and navigating an agent-based workspace. It renders agents, skills, workflows, tasks, and changelog entries from a markdown-frontmatter corpus, presenting them through a design-system-driven UI with lane boards, graph visualization, and detail inspectors.
+Warp Prism turns mock ASW data (agents, skills, workflows, tasks, changelog)
+into a high-polish, desktop-first observability console with lane boards, graph
+visualization, and detail inspectors. The reusable design system package
+(`warp_prism_ui`) is consumed by all apps.
+
+## Monorepo Structure
+
+```
+warp-prism/                             # Melos workspace root (Dart 3.12 + Melos 7)
+  pubspec.yaml                          # Workspace manifest + Melos config
+  packages/
+    warp_prism_ui/                      # Reusable Flutter ADS (app-agnostic)
+  apps/
+    observatory/                        # ASW Observatory (warp_prism_observatory)
+    catalog/                            # ADS gallery/storybook (warp_prism_catalog)
+    cybercore/                          # CyberCore pilot (warp_prism_cybercore)
+  docs/
+    tasks/                              # Task governance (5 lanes)
+    reports/                            # Audit and analysis reports
+    changelog/                          # Local changelog
+    architecture/                       # Architecture decision records
+    design/                             # Charter, naming policy, planning
+  .agents/
+    profiles/                           # Agent continuity
+    rules/                              # Governance rules
+    skills/                             # Parent-canonical skills (symlinked)
+    workflows/                          # Local + parent workflows
+```
+
+### Packages
+
+| Package | Directory | Role |
+|---------|-----------|------|
+| `warp_prism_ui` | `packages/warp_prism_ui/` | Reusable Flutter ADS — tokens, atoms, molecules, organisms, templates. Only depends on `flutter` SDK. |
+| `warp_prism_observatory` | `apps/observatory/` | ASW Observatory app. Reads mock workspace data, renders Map/Operate/History/Governance surfaces. |
+| `warp_prism_catalog` | `apps/catalog/` | ADS catalog/gallery app. Proof surface for the design system. |
+| `warp_prism_cybercore` | `apps/cybercore/` | CyberCore pilot. Fixture-backed Flutter mirror of selected CyberCore admin surfaces. |
 
 ## Stack
 
-| Layer | Technology |
-|-------|-----------|
-| Framework | Flutter (Dart SDK >=3.0.0 <4.0.0) |
-| Routing | go_router ^14.0.0 |
-| State Management | flutter_riverpod ^2.5.0 |
-| Graph Visualization | graphview ^1.2.0 |
-| Charts | fl_chart ^0.68.0 |
-| Data Format | YAML frontmatter in markdown files |
+| Layer | Where | Technology |
+|-------|-------|-----------|
+| Workspace | Root | Dart 3.12, Melos 7 |
+| Design System | `packages/warp_prism_ui/` | Flutter (zero external dependencies) |
+| Observatory | `apps/observatory/` | Flutter, go_router, flutter_riverpod, graphview, fl_chart, yaml, intl, collection |
+| Catalog | `apps/catalog/` | Flutter (imports `warp_prism_ui`) |
+| CyberCore | `apps/cybercore/` | Flutter, go_router, intl, collection (imports `warp_prism_ui`) |
 
-## Project Structure
+## Design System Naming
 
-```
-warp-prism/
-  lib/
-    main.dart                   ← app entrypoint (Task 0011 — pending)
-    app/
-      app.dart                  ← root widget (Task 0011 — pending)
-      router.dart               ← GoRouter config (Task 0011 — pending)
-    design_system/
-      tokens/                   ← DSColors, DSTypography, DSSpacing, DSRadii, DSShadows, DSMotion, DSSemantics
-      atoms/                    ← DSText, DSIcon, DSBadge, DSChip, DSStatusDot, DSDivider, DSGlowBorder, DSGlassPanel
-      molecules/                ← DSSearchBar, DSFilterChipGroup, DSAssetCard, DSMetricTile, DSProvenancePill, DSTaskCard, DSEvidenceRow, DSTimelineMarker
-      organisms/                ← DSShell, DSSidebar, DSTopbar, DSLaneBoard, DSTimeline, DSDetailInspector, DSStoryPanel, DSGraphCanvas
-      templates/                ← MasterDetailTemplate
-    data/
-      models/                   ← data models
-      parsers/                  ← workspace and frontmatter parsers
-  assets/
-    mock_workspace/             ← markdown-frontmatter corpus (agents, skills, workflows, tasks, changelog)
-  test/                         ← test directory (pending Task 0011 bootstrap)
-  docs/
-    tasks/                      ← real task tracking (not mock)
-    reports/                    ← audit and analysis reports
-```
+All public ADS components exported by `warp_prism_ui` use the **`Prism*`** prefix:
+
+| Layer | Convention | Examples |
+|-------|------------|----------|
+| Tokens | `PrismTokens.*` | `PrismTokens.colors`, `PrismTokens.typography`, `PrismTokens.spacing` |
+| Atoms | `Prism` + noun | `PrismText`, `PrismIcon`, `PrismBadge`, `PrismGlassPanel` |
+| Molecules | `Prism` + compound noun | `PrismAssetCard`, `PrismMetricTile`, `PrismSearchBar` |
+| Organisms | `Prism` + descriptive noun | `PrismShell`, `PrismSidebar`, `PrismGraphCanvas`, `PrismLaneBoard` |
+| Templates | `Prism` + layout | `PrismMasterDetailTemplate` |
+
+The existing codebase also has `DS*`/`Ds*`-prefixed classes from a prior
+generation. These are treated as legacy aliases. `Prism*` is canonical for all
+new work and re-exports from `warp_prism_ui`.
 
 ## Setup
 
 ```bash
 # From the warp-prism/ directory:
 
-# 1. Install dependencies
-flutter pub get
+# 1. Bootstrap the workspace (resolve all path dependencies)
+dart pub get
+melos bootstrap
 
-# 2. Run the app
-flutter run
+# 2. Run the Observatory app
+cd apps/observatory && flutter run
 ```
 
-**Prerequisites**: Flutter SDK must be installed. See [flutter.dev](https://flutter.dev/docs/get-started/install) for installation instructions.
+**Prerequisites**: Flutter SDK >=3.12 and `melos` installed globally:
+
+```bash
+dart pub global activate melos
+```
 
 ## Validation
 
-These are the canonical validation commands for this project. Run them from the `warp-prism/` directory.
+Run from the `warp-prism/` root:
 
 ```bash
-# Static analysis
-flutter analyze
+# Static analysis across all packages and apps
+melos run analyze
 
-# Run tests
-flutter test
+# Run tests across all packages and apps
+melos run test
+
+# Full CI gate (format + analyze + test)
+melos run validate
 ```
 
-### Validation Baseline
+Per-package test commands:
 
-> **BLOCKER**: Flutter SDK is not installed in the current execution environment.
-> `flutter analyze` and `flutter test` cannot be executed until the SDK is available.
-> The baseline below is based on source inspection only (Task 0010 audit).
-
-**Expected state after Tasks 0011-0012 complete**:
-
-| Command | Expected State | Notes |
-|---------|---------------|-------|
-| `flutter analyze` | PASS (zero errors) | After `main.dart`, `app.dart`, `router.dart` are created by Task 0011 |
-| `flutter test` | PASS (zero failures) | After test directory is created and initial tests added |
-
-**Known blockers before baseline can close**:
-1. `lib/main.dart` does not exist — no Flutter entrypoint (Task 0011)
-2. `lib/app/app.dart` does not exist — no root widget (Task 0011)
-3. `lib/app/router.dart` does not exist — no routing (Task 0011)
-4. `test/` directory does not exist — no tests at all
-5. Flutter SDK not installed in current environment
-
-**Current code quality**: Source inspection (Task 0010) confirmed that all 40 Dart files in `lib/` use consistent `DS*` naming conventions. No `Ds*` (lowercase) naming was found. Parameter naming (`content:`, `selectedId:`, `onItemTap:`) is consistent across organisms and templates.
-
-### What is NOT in scope
-
-- The compile gate does **not** verify that application screens are complete or functional
-- The compile gate does **not** verify visual correctness or accessibility
-- The compile gate does **not** require full test coverage — only that `flutter test` passes with zero failures
-
-## Design System
-
-The project follows an atomic design system hierarchy:
-
-- **Tokens**: `DSColors`, `DSTypography`, `DSSpacing`, `DSRadii`, `DSShadows`, `DSMotion`, `DSSemantics`
-- **Atoms**: `DSText`, `DSIcon`, `DSBadge`, `DSChip`, `DSStatusDot`, `DSDivider`, `DSGlowBorder`, `DSGlassPanel`
-- **Molecules**: `DSSearchBar`, `DSFilterChipGroup`, `DSAssetCard`, `DSMetricTile`, `DSProvenancePill`, `DSTaskCard`, `DSEvidenceRow`, `DSTimelineMarker`
-- **Organisms**: `DSShell`, `DSSidebar`, `DSTopbar`, `DSLaneBoard`, `DSTimeline`, `DSDetailInspector`, `DSStoryPanel`, `DSGraphCanvas`
-- **Templates**: `MasterDetailTemplate`
-
-All design system classes use the `DS` prefix (uppercase). The main shell uses `content:` parameter (not `body:`). Sidebar uses `selectedId:` and `onItemTap:` (not `selectedIndex:` / `onItemSelected:`).
+| Command | Scope |
+|---------|-------|
+| `melos run test-ui` | `warp_prism_ui` only |
+| `melos run test-observatory` | Observatory app only |
+| `melos run test-catalog` | Catalog app only |
 
 ## Mock Workspace Corpus
 
-The `assets/mock_workspace/` directory contains a markdown-frontmatter corpus used by the app to render workspace data:
+The Observatory app bundles a markdown-frontmatter corpus under
+`assets/mock_workspace/` used to render workspace data:
 
 - **9 agents** — orchestrator and reviewer roles
 - **13 skills** — organized as super-skills with sub-skills, workflows, references, and scripts
@@ -121,6 +125,10 @@ See `docs/mock-workspace-corpus-contract.md` for the full corpus specification.
 
 ## Documentation
 
+- `docs/design/charter.md` — project charter, scope, and non-goals
+- `docs/design/naming.md` — naming policy (`Prism*` prefix, package names, Voidframe supersession)
+- `docs/architecture/warp-prism-melos-monorepo-architecture.md` — monorepo architecture decision record
 - `docs/mock-workspace-corpus-contract.md` — mock workspace corpus migration contract
-- `docs/reports/0010-warp-prism-foundation-audit-analyzer-baseline.md` — foundation audit report
-- `docs/tasks/` — real task tracking (not the mock corpus)
+- `docs/tasks/` — task governance (5-lane board)
+- `docs/reports/` — audit and analysis reports
+- `docs/changelog/` — local changelog

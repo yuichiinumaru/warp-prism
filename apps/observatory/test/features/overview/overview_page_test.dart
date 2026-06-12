@@ -24,13 +24,15 @@ OverviewMetrics _testMetrics({
   int totalAssets = 12,
   int totalEdges = 8,
 }) {
-  final laneMap = tasksByLane ?? {
-    TaskLane.planning: 0,
-    TaskLane.open: 1,
-    TaskLane.doing: 2,
-    TaskLane.review: 1,
-    TaskLane.completed: 1,
-  };
+  final laneMap =
+      tasksByLane ??
+      {
+        TaskLane.planning: 0,
+        TaskLane.open: 1,
+        TaskLane.doing: 2,
+        TaskLane.review: 1,
+        TaskLane.completed: 1,
+      };
   return OverviewMetrics(
     agentCount: agents,
     skillCount: skills,
@@ -44,7 +46,10 @@ OverviewMetrics _testMetrics({
     currentStoryTitle: 'Test story',
     currentStoryInsights: const [
       OverviewStoryInsight(text: 'Insight 1', value: '5'),
-      OverviewStoryInsight(text: 'Insight 2', severity: OverviewInsightSeverity.warning),
+      OverviewStoryInsight(
+        text: 'Insight 2',
+        severity: OverviewInsightSeverity.warning,
+      ),
     ],
     totalAssets: totalAssets,
     totalEdges: totalEdges,
@@ -60,9 +65,9 @@ Widget _wrapInApp(Widget child) {
 void main() {
   group('OverviewPage widget', () {
     testWidgets('renders totals section with metric tiles', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        OverviewPage(metrics: _testMetrics()),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(OverviewPage(metrics: _testMetrics())),
+      );
 
       // Should render the Totals heading
       expect(find.text('Totals'), findsOneWidget);
@@ -76,9 +81,9 @@ void main() {
     });
 
     testWidgets('renders tasks by lane section', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        OverviewPage(metrics: _testMetrics()),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(OverviewPage(metrics: _testMetrics())),
+      );
 
       expect(find.text('Tasks by Lane'), findsOneWidget);
       expect(find.text('Planning'), findsOneWidget);
@@ -89,9 +94,9 @@ void main() {
     });
 
     testWidgets('renders operational risk section', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        OverviewPage(metrics: _testMetrics()),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(OverviewPage(metrics: _testMetrics())),
+      );
 
       expect(find.text('Operational Risk'), findsOneWidget);
       expect(find.text('Active Blockers'), findsOneWidget);
@@ -100,9 +105,9 @@ void main() {
     });
 
     testWidgets('renders current story panel', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        OverviewPage(metrics: _testMetrics()),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(OverviewPage(metrics: _testMetrics())),
+      );
 
       expect(find.text('Current Story'), findsOneWidget);
       expect(find.text('Insight 1'), findsOneWidget);
@@ -111,9 +116,16 @@ void main() {
 
     testWidgets('renders zero-data state correctly', (tester) async {
       final zeroMetrics = _testMetrics(
-        agents: 0, skills: 0, subSkills: 0, workflows: 0,
-        changelog: 0, blockers: 0, reviewQueue: 0,
-        govWarnings: 0, totalAssets: 0, totalEdges: 0,
+        agents: 0,
+        skills: 0,
+        subSkills: 0,
+        workflows: 0,
+        changelog: 0,
+        blockers: 0,
+        reviewQueue: 0,
+        govWarnings: 0,
+        totalAssets: 0,
+        totalEdges: 0,
         tasksByLane: {
           TaskLane.planning: 0,
           TaskLane.open: 0,
@@ -123,9 +135,7 @@ void main() {
         },
       );
 
-      await tester.pumpWidget(_wrapInApp(
-        OverviewPage(metrics: zeroMetrics),
-      ));
+      await tester.pumpWidget(_wrapInApp(OverviewPage(metrics: zeroMetrics)));
 
       // Should still render all sections
       expect(find.text('Totals'), findsOneWidget);

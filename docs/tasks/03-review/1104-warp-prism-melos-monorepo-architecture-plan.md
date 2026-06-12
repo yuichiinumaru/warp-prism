@@ -1,6 +1,7 @@
 # Task 1104: Warp Prism Melos Monorepo Architecture Plan
 
 > **Status**: `[ ]` Open
+> **Review State**: Builder Done — status marker inconsistent with evidence; lane mismatch
 > **Priority**: 🔴 P0
 > **Type**: `architecture` | `governance`
 > **Origin**: User clarified ADS reuse/versioning/CI requirements and approved Warp Prism as a parent monorepo with ADS, catalog, and frontend apps as child projects.

@@ -7,7 +7,7 @@
 library;
 
 import 'package:flutter/material.dart';
-import '../../../data/models/workspace_graph.dart';
+import 'package:warp_prism_observatory/data/models/workspace_graph.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
 
 /// Renders a scrollable grid of asset cards from a list of [WorkspaceAsset].

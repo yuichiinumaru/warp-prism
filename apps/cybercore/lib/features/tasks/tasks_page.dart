@@ -75,23 +75,23 @@ class _TasksPageState extends State<TasksPage> {
           // Lane board header
           Padding(
             padding: const EdgeInsets.fromLTRB(
-              DSSpacing.lg, DSSpacing.md, DSSpacing.lg, 0,
+              PrismSpacing.lg,
+              PrismSpacing.md,
+              PrismSpacing.lg,
+              0,
             ),
             child: Row(
               children: [
                 const PrismText.headingMedium(
                   'Execution Board',
-                  color: DSColors.textPrimary,
+                  color: PrismColors.textPrimary,
                 ),
-                const SizedBox(width: DSSpacing.md),
-                PrismBadge.count(
-                  _tasks!.length,
-                  color: DSColors.accentCyan,
-                ),
+                const SizedBox(width: PrismSpacing.md),
+                PrismBadge.count(_tasks!.length, color: PrismColors.accentCyan),
                 const Spacer(),
                 const PrismText.bodySmall(
                   'Read-only — drag disabled',
-                  color: DSColors.textTertiary,
+                  color: PrismColors.textTertiary,
                 ),
               ],
             ),
@@ -131,16 +131,18 @@ class _TasksPageState extends State<TasksPage> {
     return laneOrder.map((laneId) {
       final laneTasks = _tasks!
           .where((t) => t.lane == laneId)
-          .map((t) => PrismLaneTask(
-                id: int.tryParse(t.id.replaceAll(RegExp(r'[^0-9]'), '')) ?? 0,
-                title: t.title,
-                priority: t.priority,
-                owner: t.owner,
-                proofState: t.proofState,
-                reviewScore: t.reviewScore?.toInt(),
-                linkedSkills: null,
-                dependencyCount: t.dependsOn.isEmpty ? null : t.dependsOn.length,
-              ))
+          .map(
+            (t) => PrismLaneTask(
+              id: int.tryParse(t.id.replaceAll(RegExp(r'[^0-9]'), '')) ?? 0,
+              title: t.title,
+              priority: t.priority,
+              owner: t.owner,
+              proofState: t.proofState,
+              reviewScore: t.reviewScore?.toInt(),
+              linkedSkills: null,
+              dependencyCount: t.dependsOn.isEmpty ? null : t.dependsOn.length,
+            ),
+          )
           .toList();
 
       return PrismLane(

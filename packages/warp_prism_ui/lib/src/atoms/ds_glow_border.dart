@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../tokens/tokens.dart';
 
 /// ASW Observatory Atom - Glow Border
-/// 
+///
 /// Luminous border effect for emphasis
 class DSGlowBorder extends StatelessWidget {
   final Widget child;
@@ -25,20 +25,55 @@ class DSGlowBorder extends StatelessWidget {
   });
 
   // === NAMED CONSTRUCTORS ===
-  const DSGlowBorder.cyan({super.key, required this.child, this.width = 1, this.radius = DSRadii.card, this.animated = false})
-      : color = DSColors.accentCyan, glowSpread = 0, glowBlur = 8;
-  
-  const DSGlowBorder.violet({super.key, required this.child, this.width = 1, this.radius = DSRadii.card, this.animated = false})
-      : color = DSColors.accentViolet, glowSpread = 0, glowBlur = 8;
-  
-  const DSGlowBorder.gold({super.key, required this.child, this.width = 1, this.radius = DSRadii.card, this.animated = false})
-      : color = DSColors.accentGold, glowSpread = 0, glowBlur = 8;
-  
-  const DSGlowBorder.success({super.key, required this.child, this.width = 1, this.radius = DSRadii.card, this.animated = false})
-      : color = DSColors.statusSuccess, glowSpread = 0, glowBlur = 8;
-  
-  const DSGlowBorder.error({super.key, required this.child, this.width = 1, this.radius = DSRadii.card, this.animated = false})
-      : color = DSColors.statusError, glowSpread = 0, glowBlur = 8;
+  const DSGlowBorder.cyan({
+    super.key,
+    required this.child,
+    this.width = 1,
+    this.radius = DSRadii.card,
+    this.animated = false,
+  }) : color = DSColors.accentCyan,
+       glowSpread = 0,
+       glowBlur = 8;
+
+  const DSGlowBorder.violet({
+    super.key,
+    required this.child,
+    this.width = 1,
+    this.radius = DSRadii.card,
+    this.animated = false,
+  }) : color = DSColors.accentViolet,
+       glowSpread = 0,
+       glowBlur = 8;
+
+  const DSGlowBorder.gold({
+    super.key,
+    required this.child,
+    this.width = 1,
+    this.radius = DSRadii.card,
+    this.animated = false,
+  }) : color = DSColors.accentGold,
+       glowSpread = 0,
+       glowBlur = 8;
+
+  const DSGlowBorder.success({
+    super.key,
+    required this.child,
+    this.width = 1,
+    this.radius = DSRadii.card,
+    this.animated = false,
+  }) : color = DSColors.statusSuccess,
+       glowSpread = 0,
+       glowBlur = 8;
+
+  const DSGlowBorder.error({
+    super.key,
+    required this.child,
+    this.width = 1,
+    this.radius = DSRadii.card,
+    this.animated = false,
+  }) : color = DSColors.statusError,
+       glowSpread = 0,
+       glowBlur = 8;
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +134,8 @@ class _AnimatedGlowBorder extends StatefulWidget {
   State<_AnimatedGlowBorder> createState() => _AnimatedGlowBorderState();
 }
 
-class _AnimatedGlowBorderState extends State<_AnimatedGlowBorder> with SingleTickerProviderStateMixin {
+class _AnimatedGlowBorderState extends State<_AnimatedGlowBorder>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
 
@@ -110,9 +146,10 @@ class _AnimatedGlowBorderState extends State<_AnimatedGlowBorder> with SingleTic
       duration: const Duration(seconds: 2),
       vsync: this,
     )..repeat(reverse: true);
-    _animation = Tween<double>(begin: 0.5, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
+    _animation = Tween<double>(
+      begin: 0.5,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
   @override

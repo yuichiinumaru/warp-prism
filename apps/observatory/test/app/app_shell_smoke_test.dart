@@ -1,36 +1,43 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:warp_prism_observatory/app/app.dart';
 import 'package:warp_prism_observatory/app/router.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
 
 void main() {
   group('App shell smoke test', () {
-    testWidgets('app boots and renders the shell with default route',
-        (tester) async {
-      await tester.pumpWidget(
-        const ProviderScope(
-          child: WarpPrismApp(),
-        ),
-      );
+    testWidgets('app boots and renders the shell with default route', (
+      tester,
+    ) async {
+      await tester.pumpWidget(const ProviderScope(child: WarpPrismApp()));
       await tester.pumpAndSettle();
 
-      // The app shell should render DSShell, which shows a sidebar
+      // The router's initialLocation is /design-system (outside the shell).
+      // Navigate to a shell-wrapped route to verify shell rendering.
+      final context = tester.element(find.byType(MaterialApp));
+      GoRouter.of(context).go('/overview');
+      await tester.pumpAndSettle();
+
+      // The app shell should render DSShellResponsive, which shows a sidebar
       // and the overview page content.
-      expect(find.byType(DSShell), findsOneWidget);
-      expect(find.byType(DSSidebar), findsOneWidget);
-      expect(find.byType(DSTopbar), findsOneWidget);
+      expect(find.byType(DSShellResponsive), findsOneWidget);
+      expect(find.byType(DSSidebar), findsWidgets);
+      expect(find.byType(DSTopbar), findsWidgets);
     });
 
     testWidgets('default route lands on Overview', (tester) async {
-      await tester.pumpWidget(
-        const ProviderScope(
-          child: WarpPrismApp(),
-        ),
-      );
+      await tester.pumpWidget(const ProviderScope(child: WarpPrismApp()));
       await tester.pumpAndSettle();
 
-      // Overview page placeholder text should be visible
+      // Navigate to overview inside the shell
+      final context = tester.element(find.byType(MaterialApp));
+      GoRouter.of(context).go('/overview');
+      await tester.pumpAndSettle();
+
+      // Overview page content should be visible
+      // (the topbar shows "Overview" as title and the sidebar shows it as nav label)
       expect(find.text('Overview'), findsWidgets);
     });
 

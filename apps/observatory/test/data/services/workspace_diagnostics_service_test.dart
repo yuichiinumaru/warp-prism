@@ -68,8 +68,8 @@ void main() {
       final graph = _buildHealthyGraph();
       final summary = service.compute(graph);
 
-      // Task 1003 (review, proof none) = 1 proof gap
-      expect(summary.proofGapCount, equals(1));
+      // Healthy graph: all review/completed tasks have complete proof → 0 gaps
+      expect(summary.proofGapCount, equals(0));
     });
 
     test('computes changelog linkage readiness', () {
@@ -172,11 +172,12 @@ void main() {
       final graph = _buildGraphWithHighFanIn();
       final report = service.analyze(graph, fanInThreshold: 2);
 
-      final hotspots =
-          report.byCategory(DiagnosticCategory.brokenEdge);
+      final hotspots = report.byCategory(DiagnosticCategory.brokenEdge);
       expect(hotspots, isNotEmpty);
-      expect(hotspots.first.context['incomingEdgeCount'],
-          greaterThanOrEqualTo(2));
+      expect(
+        hotspots.first.context['incomingEdgeCount'],
+        greaterThanOrEqualTo(2),
+      );
     });
 
     test('diagnostics report provides category and severity counts', () {
@@ -287,7 +288,7 @@ WorkspaceGraphResult _buildHealthyGraph() {
         ),
       },
     ),
-    // Task in review lane with complete proof
+    // Task in review lane with complete proof (healthy baseline)
     WorkspaceAsset(
       id: 'task:1003',
       kind: AssetKind.task,
@@ -302,7 +303,8 @@ WorkspaceGraphResult _buildHealthyGraph() {
           lane: TaskLane.review,
           created: DateTime(2026, 6, 3),
           updated: DateTime(2026, 6, 3),
-          proofState: ProofState.none,
+          proofState: ProofState.complete,
+          verificationCommands: 'flutter test',
         ),
       },
     ),
@@ -313,11 +315,7 @@ WorkspaceGraphResult _buildHealthyGraph() {
       name: 'cl-001',
       path: '/ws/docs/changelog/2026-06-07-cl-001.md',
       canonicality: Canonicality.appendOnly,
-      frontmatter: {
-        'id': 'cl-001',
-        'task': '1001',
-        'type': 'feature',
-      },
+      frontmatter: {'id': 'cl-001', 'task': '1001', 'type': 'feature'},
     ),
   ];
 
@@ -332,7 +330,9 @@ WorkspaceGraphResult _buildGraphWithOrphan() {
       kind: AssetKind.agent,
       name: 'Main Agent',
       path: '/ws/.agents/agents/main.md',
-      frontmatter: {'skills': ['skill-x']},
+      frontmatter: {
+        'skills': ['skill-x'],
+      },
     ),
     const WorkspaceAsset(
       id: 'skill:skill-x',
@@ -485,7 +485,9 @@ WorkspaceGraphResult _buildMixedGraph() {
       kind: AssetKind.agent,
       name: 'Main Agent',
       path: '/ws/.agents/agents/main.md',
-      frontmatter: {'skills': ['nonexistent']},
+      frontmatter: {
+        'skills': ['nonexistent'],
+      },
     ),
     const WorkspaceAsset(
       id: 'skill:orphan',

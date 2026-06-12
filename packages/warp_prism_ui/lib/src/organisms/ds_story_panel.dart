@@ -4,7 +4,7 @@ import '../atoms/atoms.dart';
 import '../molecules/molecules.dart';
 
 /// ASW Observatory Organism - Story Panel
-/// 
+///
 /// Narrative panel for data storytelling
 class DSStoryPanel extends StatelessWidget {
   final String title;
@@ -27,7 +27,7 @@ class DSStoryPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = accentColor ?? DSColors.accentCyan;
-    
+
     return DSGlassPanel.elevated(
       padding: const EdgeInsets.all(DSSpacing.lg),
       child: Column(
@@ -65,25 +65,28 @@ class DSStoryPanel extends StatelessWidget {
               ),
             ],
           ),
-          
+
           const SizedBox(height: DSSpacing.lg),
           const DSDivider.subtle(),
           const SizedBox(height: DSSpacing.lg),
-          
+
           // Insights
           if (insights.isEmpty)
             DSStateSurface.empty(
               icon: Icons.insights_outlined,
               title: 'No insights available',
-              subtitle: 'Narrative insights will appear here once data is analyzed',
+              subtitle:
+                  'Narrative insights will appear here once data is analyzed',
               compact: true,
             )
           else
-            ...insights.map((insight) => Padding(
-            padding: const EdgeInsets.only(bottom: DSSpacing.md),
-            child: _InsightRow(insight: insight),
-          )),
-          
+            ...insights.map(
+              (insight) => Padding(
+                padding: const EdgeInsets.only(bottom: DSSpacing.md),
+                child: _InsightRow(insight: insight),
+              ),
+            ),
+
           // Footer
           if (footer != null) ...[
             const SizedBox(height: DSSpacing.sm),
@@ -116,7 +119,7 @@ class _InsightRow extends StatelessWidget {
           ),
         ),
         const SizedBox(width: DSSpacing.sm),
-        
+
         // Content
         Expanded(
           child: Column(
@@ -125,15 +128,12 @@ class _InsightRow extends StatelessWidget {
               DSText.bodyMedium(insight.text),
               if (insight.detail != null) ...[
                 const SizedBox(height: 2),
-                DSText.bodySmall(
-                  insight.detail!,
-                  color: DSColors.textTertiary,
-                ),
+                DSText.bodySmall(insight.detail!, color: DSColors.textTertiary),
               ],
             ],
           ),
         ),
-        
+
         // Value
         if (insight.value != null) ...[
           const SizedBox(width: DSSpacing.sm),
@@ -233,11 +233,13 @@ class DSStoryCardQuick extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final accentColor = color ?? DSColors.accentCyan;
-    
+
     return GestureDetector(
       onTap: onTap,
       child: MouseRegion(
-        cursor: onTap != null ? SystemMouseCursors.click : SystemMouseCursors.basic,
+        cursor: onTap != null
+            ? SystemMouseCursors.click
+            : SystemMouseCursors.basic,
         child: DSGlassPanelSimple(
           padding: const EdgeInsets.all(DSSpacing.md),
           borderColor: accentColor.withOpacity(0.2),
@@ -251,10 +253,7 @@ class DSStoryCardQuick extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    DSText.labelSmall(
-                      title,
-                      color: DSColors.textSecondary,
-                    ),
+                    DSText.labelSmall(title, color: DSColors.textSecondary),
                     const SizedBox(height: 2),
                     DSText(
                       value,
@@ -266,7 +265,10 @@ class DSStoryCardQuick extends StatelessWidget {
               ),
               if (trend != null)
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 6,
+                    vertical: 2,
+                  ),
                   decoration: BoxDecoration(
                     color: accentColor.withOpacity(0.15),
                     borderRadius: BorderRadius.circular(DSRadii.sm),

@@ -59,9 +59,7 @@ void main() {
       expect(find.byKey(const Key('inspector')), findsOneWidget);
     });
 
-    testWidgets('hides inspector when showInspector is false', (
-      tester,
-    ) async {
+    testWidgets('hides inspector when showInspector is false', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -89,7 +87,9 @@ void main() {
               height: 900,
               child: DSShellResponsive(
                 sidebar: Container(key: const Key('full-sidebar')),
-                collapsedSidebar: Container(key: const Key('collapsed-sidebar')),
+                collapsedSidebar: Container(
+                  key: const Key('collapsed-sidebar'),
+                ),
                 content: Container(key: const Key('content')),
               ),
             ),
@@ -110,7 +110,9 @@ void main() {
               height: 900,
               child: DSShellResponsive(
                 sidebar: Container(key: const Key('full-sidebar')),
-                collapsedSidebar: Container(key: const Key('collapsed-sidebar')),
+                collapsedSidebar: Container(
+                  key: const Key('collapsed-sidebar'),
+                ),
                 content: Container(key: const Key('content')),
               ),
             ),
@@ -138,10 +140,7 @@ void main() {
             body: SizedBox(
               width: 240,
               height: 600,
-              child: DSSidebar(
-                items: items,
-                selectedId: 'map',
-              ),
+              child: DSSidebar(items: items, selectedId: 'map'),
             ),
           ),
         ),
@@ -184,9 +183,7 @@ void main() {
     testWidgets('renders title', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: DSTopbar(title: 'Map Workspace'),
-          ),
+          home: Scaffold(body: DSTopbar(title: 'Map Workspace')),
         ),
       );
 
@@ -197,9 +194,7 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: DSTopbar(
-              breadcrumbs: ['Home', 'Map', 'Agent Alpha'],
-            ),
+            body: DSTopbar(breadcrumbs: ['Home', 'Map', 'Agent Alpha']),
           ),
         ),
       );
@@ -217,10 +212,7 @@ void main() {
             body: SizedBox(
               width: 800,
               height: 600,
-              child: DSGraphCanvas(
-                nodes: [],
-                edges: [],
-              ),
+              child: DSGraphCanvas(nodes: [], edges: []),
             ),
           ),
         ),
@@ -234,9 +226,7 @@ void main() {
         GraphNode(id: 'a', label: 'Alpha', type: 'agent'),
         GraphNode(id: 'b', label: 'Beta', type: 'skill'),
       ];
-      const edges = [
-        GraphEdge(sourceId: 'a', targetId: 'b'),
-      ];
+      const edges = [GraphEdge(sourceId: 'a', targetId: 'b')];
 
       await tester.pumpWidget(
         MaterialApp(

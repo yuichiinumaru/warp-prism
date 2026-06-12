@@ -145,7 +145,10 @@ abstract class DSGallerySections {
               children: [
                 SizedBox(
                   width: 40,
-                  child: DSText.labelSmall(s.label, color: DSColors.textTertiary),
+                  child: DSText.labelSmall(
+                    s.label,
+                    color: DSColors.textTertiary,
+                  ),
                 ),
                 Container(
                   width: s.value * 3,
@@ -269,7 +272,8 @@ abstract class DSGallerySections {
   static Widget buildAtomsSection() {
     return _SectionCard(
       title: 'Atoms',
-      subtitle: 'DSText · DSIcon · DSBadge · DSChip · DSStatusDot · DSDivider · DSGlowBorder · DSGlassPanel',
+      subtitle:
+          'DSText · DSIcon · DSBadge · DSChip · DSStatusDot · DSDivider · DSGlowBorder · DSGlassPanel',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -370,7 +374,8 @@ abstract class DSGallerySections {
   static Widget buildMoleculesSection() {
     return _SectionCard(
       title: 'Molecules',
-      subtitle: 'DSSearchBar · DSFilterChipGroup · DSAssetCard · DSTaskCard · DSTimelineMarker · DSStateSurface · DSShimmer · DSSkeletonCard · DSSkeletonTableRows · DSSkeletonTextLine',
+      subtitle:
+          'DSSearchBar · DSFilterChipGroup · DSAssetCard · DSTaskCard · DSTimelineMarker · DSStateSurface · DSShimmer · DSSkeletonCard · DSSkeletonTableRows · DSSkeletonTextLine',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -433,25 +438,46 @@ abstract class DSGallerySections {
             subtitle: 'The workspace will populate once assets are parsed',
             compact: true,
           ),
+          const SizedBox(height: DSSpacing.sm),
+          DSStateSurface.loading(title: 'Loading workspace...', compact: true),
+          const SizedBox(height: DSSpacing.sm),
+          DSStateSurface.error(
+            title: 'Failed to parse workspace',
+            subtitle: 'Unexpected token at line 42',
+            compact: true,
+          ),
+          const SizedBox(height: DSSpacing.sm),
+          DSStateSurface.disabled(title: 'Feature disabled', compact: true),
+          const SizedBox(height: DSSpacing.sm),
+          DSStateSurface.stale(title: 'Data outdated', compact: true),
+          const SizedBox(height: DSSpacing.sm),
+          DSStateSurface.degraded(
+            title: 'Partial data available',
+            compact: true,
+          ),
+          const SizedBox(height: DSSpacing.sm),
+          DSStateSurface.excluded(
+            title: 'Filtered out by governance',
+            compact: true,
+          ),
           const SizedBox(height: DSSpacing.lg),
 
           // Shimmer
-          DSText.labelLarge('Shimmer (base animation)', color: DSColors.textSecondary),
-          const SizedBox(height: DSSpacing.sm),
-          const DSShimmer(
-            width: 200,
-            height: 16,
+          DSText.labelLarge(
+            'Shimmer (base animation)',
+            color: DSColors.textSecondary,
           ),
           const SizedBox(height: DSSpacing.sm),
-          const DSShimmer(
-            width: 48,
-            height: 48,
-            borderRadius: DSRadii.full,
-          ),
+          const DSShimmer(width: 200, height: 16),
+          const SizedBox(height: DSSpacing.sm),
+          const DSShimmer(width: 48, height: 48, borderRadius: DSRadii.full),
           const SizedBox(height: DSSpacing.lg),
 
           // Skeleton Text Line
-          DSText.labelLarge('Skeleton Text Line', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'Skeleton Text Line',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           const DSSkeletonTextLine(widthFactor: 1.0),
           const SizedBox(height: DSSpacing.xs),
@@ -463,21 +489,24 @@ abstract class DSGallerySections {
           // Skeleton Card
           DSText.labelLarge('Skeleton Card', color: DSColors.textSecondary),
           const SizedBox(height: DSSpacing.sm),
-          const SizedBox(
-            width: 360,
-            child: DSSkeletonCard(),
-          ),
+          const SizedBox(width: 360, child: DSSkeletonCard()),
           const SizedBox(height: DSSpacing.lg),
 
           // Skeleton Table Rows
-          DSText.labelLarge('Skeleton Table Rows (3 rows)', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'Skeleton Table Rows (3 rows)',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           const DSSkeletonTableRows(
             rowCount: 3,
             columnWidths: [0.25, 0.45, 0.3],
           ),
           const SizedBox(height: DSSpacing.lg),
-          DSText.labelLarge('Skeleton Table Rows (5 rows)', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'Skeleton Table Rows (5 rows)',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           const DSSkeletonTableRows(
             rowCount: 5,
@@ -496,7 +525,8 @@ abstract class DSGallerySections {
   static Widget buildOperationalStatesSection() {
     return _SectionCard(
       title: 'Operational States',
-      subtitle: '15-state vocabulary: lifecycle · health · verification · governance',
+      subtitle:
+          '15-state vocabulary: lifecycle · health · verification · governance',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -572,7 +602,10 @@ abstract class DSGallerySections {
           const SizedBox(height: DSSpacing.lg),
 
           // ── Badge showcase ──
-          DSText.labelLarge('Operational Badges', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'Operational Badges',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           Wrap(
             spacing: DSSpacing.sm,
@@ -584,7 +617,10 @@ abstract class DSGallerySections {
           const SizedBox(height: DSSpacing.lg),
 
           // ── Status dot showcase ──
-          DSText.labelLarge('Operational Status Dots', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'Operational Status Dots',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           Wrap(
             spacing: DSSpacing.md,
@@ -596,7 +632,10 @@ abstract class DSGallerySections {
           const SizedBox(height: DSSpacing.lg),
 
           // ── Behavioral contract summary ──
-          DSText.labelLarge('Behavioral Contracts', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'Behavioral Contracts',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           _BehavioralContractTable(),
         ],
@@ -610,22 +649,46 @@ abstract class DSGallerySections {
   static Widget buildOrganismsSection() {
     return _SectionCard(
       title: 'Organisms',
-      subtitle: 'DSShell · DSSidebar · DSTopbar · DSLaneBoard · DSTimeline · DSDetailInspector · DSStoryPanel · DSGraphCanvas · DSCodeBlock · DSMarkdownRenderer · DSErrorBoundary · DSFallbackView · DSTabBar · DSSplitPane',
+      subtitle:
+          'DSShell · DSSidebar · DSTopbar · DSLaneBoard · DSTimeline · DSDetailInspector · DSStoryPanel · DSGraphCanvas · DSCodeBlock · DSMarkdownRenderer · DSErrorBoundary · DSFallbackView · DSTabBar · DSSplitPane',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Sidebar preview
-          DSText.labelLarge('DSSidebar (collapsed preview)', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'DSSidebar (collapsed preview)',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           SizedBox(
             height: 260,
             child: DSSidebar(
               items: const [
-                DSSidebarItem(id: 'overview', label: 'Overview', icon: Icons.dashboard_outlined),
-                DSSidebarItem(id: 'map', label: 'Map', icon: Icons.hub_outlined),
-                DSSidebarItem(id: 'operate', label: 'Operate', icon: Icons.play_circle_outline),
-                DSSidebarItem(id: 'history', label: 'History', icon: Icons.history_outlined),
-                DSSidebarItem(id: 'governance', label: 'Governance', icon: Icons.shield_outlined),
+                DSSidebarItem(
+                  id: 'overview',
+                  label: 'Overview',
+                  icon: Icons.dashboard_outlined,
+                ),
+                DSSidebarItem(
+                  id: 'map',
+                  label: 'Map',
+                  icon: Icons.hub_outlined,
+                ),
+                DSSidebarItem(
+                  id: 'operate',
+                  label: 'Operate',
+                  icon: Icons.play_circle_outline,
+                ),
+                DSSidebarItem(
+                  id: 'history',
+                  label: 'History',
+                  icon: Icons.history_outlined,
+                ),
+                DSSidebarItem(
+                  id: 'governance',
+                  label: 'Governance',
+                  icon: Icons.shield_outlined,
+                ),
               ],
               selectedId: 'map',
             ),
@@ -642,7 +705,10 @@ abstract class DSGallerySections {
           const SizedBox(height: DSSpacing.lg),
 
           // Lane board preview
-          DSText.labelLarge('DSLaneBoard (sample lanes)', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'DSLaneBoard (sample lanes)',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           SizedBox(
             height: 240,
@@ -652,22 +718,30 @@ abstract class DSGallerySections {
                   id: '01-open',
                   label: 'Open',
                   tasks: [
-                    const DSLaneTask(id: 1, title: 'Align organism APIs', priority: 'high'),
-                    const DSLaneTask(id: 2, title: 'Create gallery route', priority: 'medium'),
+                    const DSLaneTask(
+                      id: 1,
+                      title: 'Align organism APIs',
+                      priority: 'high',
+                    ),
+                    const DSLaneTask(
+                      id: 2,
+                      title: 'Create gallery route',
+                      priority: 'medium',
+                    ),
                   ],
                 ),
                 DSLane(
                   id: '02-doing',
                   label: 'Doing',
                   tasks: [
-                    const DSLaneTask(id: 3, title: 'Build data layer', priority: 'high'),
+                    const DSLaneTask(
+                      id: 3,
+                      title: 'Build data layer',
+                      priority: 'high',
+                    ),
                   ],
                 ),
-                DSLane(
-                  id: '03-review',
-                  label: 'Review',
-                  tasks: const [],
-                ),
+                DSLane(id: '03-review', label: 'Review', tasks: const []),
               ],
             ),
           ),
@@ -732,7 +806,10 @@ abstract class DSGallerySections {
           const SizedBox(height: DSSpacing.lg),
 
           // Graph canvas preview — empty state
-          DSText.labelLarge('DSGraphCanvas (empty state)', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'DSGraphCanvas (empty state)',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           const SizedBox(
             height: 200,
@@ -741,7 +818,10 @@ abstract class DSGallerySections {
           const SizedBox(height: DSSpacing.lg),
 
           // Graph canvas preview — force-directed layout with sample data
-          DSText.labelLarge('DSGraphCanvas (force-directed layout)', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'DSGraphCanvas (force-directed layout)',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           SizedBox(
             height: 300,
@@ -755,11 +835,31 @@ abstract class DSGallerySections {
                 GraphNode(id: 'doc-1', label: 'ADS Spec', type: 'doc'),
               ],
               edges: [
-                const GraphEdge(sourceId: 'agent-1', targetId: 'skill-1', edgeType: 'uses'),
-                const GraphEdge(sourceId: 'agent-1', targetId: 'skill-2', edgeType: 'uses'),
-                const GraphEdge(sourceId: 'skill-1', targetId: 'wf-1', edgeType: 'triggers'),
-                const GraphEdge(sourceId: 'skill-2', targetId: 'task-1', edgeType: 'references'),
-                const GraphEdge(sourceId: 'wf-1', targetId: 'doc-1', edgeType: 'references'),
+                const GraphEdge(
+                  sourceId: 'agent-1',
+                  targetId: 'skill-1',
+                  edgeType: 'uses',
+                ),
+                const GraphEdge(
+                  sourceId: 'agent-1',
+                  targetId: 'skill-2',
+                  edgeType: 'uses',
+                ),
+                const GraphEdge(
+                  sourceId: 'skill-1',
+                  targetId: 'wf-1',
+                  edgeType: 'triggers',
+                ),
+                const GraphEdge(
+                  sourceId: 'skill-2',
+                  targetId: 'task-1',
+                  edgeType: 'references',
+                ),
+                const GraphEdge(
+                  sourceId: 'wf-1',
+                  targetId: 'doc-1',
+                  edgeType: 'references',
+                ),
               ],
               enablePhysics: false,
             ),
@@ -767,7 +867,10 @@ abstract class DSGallerySections {
           const SizedBox(height: DSSpacing.lg),
 
           // Error Boundary
-          DSText.labelLarge('DSErrorBoundary (with retry)', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'DSErrorBoundary (with retry)',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           DSErrorBoundary(
             child: DSGlassPanelSimple(
@@ -784,7 +887,10 @@ abstract class DSGallerySections {
           const SizedBox(height: DSSpacing.lg),
 
           // Command palette preview
-          DSText.labelLarge('DSCommandPalette (trigger with Cmd+K)', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'DSCommandPalette (trigger with Cmd+K)',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           _CommandPalettePreview(),
           const SizedBox(height: DSSpacing.lg),
@@ -815,64 +921,79 @@ abstract class DSGallerySections {
                   timestamp: DateTime(2026, 6, 8, 10, 0, 5),
                   severity: DSLogSeverity.warning,
                   source: 'governance',
-                  message: 'Stale index detected: skill/prompt-engineering has not been updated in 14 days',
+                  message:
+                      'Stale index detected: skill/prompt-engineering has not been updated in 14 days',
                 ),
                 DSLogEntry(
                   id: 'lv-4',
                   timestamp: DateTime(2026, 6, 8, 10, 0, 8),
                   severity: DSLogSeverity.error,
                   source: 'agent-beta',
-                  message: 'Failed to parse workspace manifest: unexpected token at line 42',
-                  detail: 'FormatException: Unexpected token at line 42, column 7\n  at parseYaml (package:yaml/yaml.dart:128)\n  at WorkspaceParser.parse (lib/parser.dart:67)\n  at main (bin/main.dart:12)',
+                  message:
+                      'Failed to parse workspace manifest: unexpected token at line 42',
+                  detail:
+                      'FormatException: Unexpected token at line 42, column 7\n  at parseYaml (package:yaml/yaml.dart:128)\n  at WorkspaceParser.parse (lib/parser.dart:67)\n  at main (bin/main.dart:12)',
                 ),
                 DSLogEntry(
                   id: 'lv-5',
                   timestamp: DateTime(2026, 6, 8, 10, 0, 10),
                   severity: DSLogSeverity.critical,
                   source: 'system',
-                  message: 'Circuit breaker open: MCP server connection pool exhausted',
-                  detail: 'StateError: No healthy connections available\nConnection pool: max=10, active=10, degraded=3\nRetry after: 30s',
+                  message:
+                      'Circuit breaker open: MCP server connection pool exhausted',
+                  detail:
+                      'StateError: No healthy connections available\nConnection pool: max=10, active=10, degraded=3\nRetry after: 30s',
                 ),
-               ],
+              ],
             ),
           ),
           const SizedBox(height: DSSpacing.lg),
 
           // DSTabBar preview
-          DSText.labelLarge('DSTabBar (3 closeable tabs with badges)', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'DSTabBar (3 closeable tabs with badges)',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           _TabBarDemo(),
           const SizedBox(height: DSSpacing.lg),
 
           // DSTabBar overflow preview
-          DSText.labelLarge('DSTabBar (10 tabs — scrollable overflow)', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'DSTabBar (10 tabs — scrollable overflow)',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           _TabBarOverflowDemo(),
           const SizedBox(height: DSSpacing.lg),
 
           // DSSplitPane horizontal preview
-          DSText.labelLarge('DSSplitPane (horizontal, draggable)', color: DSColors.textSecondary),
-          const SizedBox(height: DSSpacing.sm),
-          SizedBox(
-            height: 240,
-            child: _SplitPaneDemo(axis: Axis.horizontal),
+          DSText.labelLarge(
+            'DSSplitPane (horizontal, draggable)',
+            color: DSColors.textSecondary,
           ),
+          const SizedBox(height: DSSpacing.sm),
+          SizedBox(height: 240, child: _SplitPaneDemo(axis: Axis.horizontal)),
           const SizedBox(height: DSSpacing.lg),
 
           // DSSplitPane vertical preview
-          DSText.labelLarge('DSSplitPane (vertical, draggable)', color: DSColors.textSecondary),
-          const SizedBox(height: DSSpacing.sm),
-          SizedBox(
-            height: 240,
-            child: _SplitPaneDemo(axis: Axis.vertical),
+          DSText.labelLarge(
+            'DSSplitPane (vertical, draggable)',
+            color: DSColors.textSecondary,
           ),
+          const SizedBox(height: DSSpacing.sm),
+          SizedBox(height: 240, child: _SplitPaneDemo(axis: Axis.vertical)),
           const SizedBox(height: DSSpacing.lg),
 
           // DSCodeBlock — JSON config
-          DSText.labelLarge('DSCodeBlock (JSON config)', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'DSCodeBlock (JSON config)',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           const DSCodeBlock(
-            source: '{\n'
+            source:
+                '{\n'
                 '  "name": "warp-prism",\n'
                 '  "version": "0.1.0",\n'
                 '  "dependencies": {\n'
@@ -885,10 +1006,14 @@ abstract class DSGallerySections {
           const SizedBox(height: DSSpacing.lg),
 
           // DSCodeBlock — YAML skill config
-          DSText.labelLarge('DSCodeBlock (YAML skill config)', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'DSCodeBlock (YAML skill config)',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           const DSCodeBlock(
-            source: 'name: analyze-workspace\n'
+            source:
+                'name: analyze-workspace\n'
                 'description: >\n'
                 '  Parses the workspace manifest and indexes\n'
                 '  all agents, skills, and workflows.\n'
@@ -902,10 +1027,14 @@ abstract class DSGallerySections {
           const SizedBox(height: DSSpacing.lg),
 
           // DSCodeBlock — Dart snippet
-          DSText.labelLarge('DSCodeBlock (Dart snippet)', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'DSCodeBlock (Dart snippet)',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           const DSCodeBlock(
-            source: "import 'package:flutter/material.dart';\n"
+            source:
+                "import 'package:flutter/material.dart';\n"
                 '\n'
                 'class AgentWidget extends StatelessWidget {\n'
                 '  final String name;\n'
@@ -921,17 +1050,24 @@ abstract class DSGallerySections {
           const SizedBox(height: DSSpacing.lg),
 
           // DSCodeBlock — unknown language fallback
-          DSText.labelLarge('DSCodeBlock (auto-detect fallback)', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'DSCodeBlock (auto-detect fallback)',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           const DSCodeBlock(
-            source: '# Just a plain text block\n'
+            source:
+                '# Just a plain text block\n'
                 'with no special language hints\n'
                 'so it renders as plain text.',
           ),
           const SizedBox(height: DSSpacing.lg),
 
           // DSCodeBlock — without line numbers
-          DSText.labelLarge('DSCodeBlock (no line numbers)', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'DSCodeBlock (no line numbers)',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           const DSCodeBlock(
             source: '{ "status": "ok", "count": 42 }',
@@ -941,12 +1077,16 @@ abstract class DSGallerySections {
           const SizedBox(height: DSSpacing.lg),
 
           // DSMarkdownRenderer — task description
-          DSText.labelLarge('DSMarkdownRenderer (task description)', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'DSMarkdownRenderer (task description)',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           DSGlassPanelSimple(
             padding: const EdgeInsets.all(DSSpacing.lg),
             child: const DSMarkdownRenderer(
-              data: '## Task 1121: Code Block And Markdown Renderer\n'
+              data:
+                  '## Task 1121: Code Block And Markdown Renderer\n'
                   '\n'
                   '**Objective**: Implement reusable DS organisms for syntax-highlighted '
                   'code display and inline markdown rendering.\n'
@@ -967,12 +1107,16 @@ abstract class DSGallerySections {
           const SizedBox(height: DSSpacing.lg),
 
           // DSMarkdownRenderer — agent profile
-          DSText.labelLarge('DSMarkdownRenderer (agent profile)', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'DSMarkdownRenderer (agent profile)',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           DSGlassPanelSimple(
             padding: const EdgeInsets.all(DSSpacing.lg),
             child: const DSMarkdownRenderer(
-              data: '# Agent Alpha\n'
+              data:
+                  '# Agent Alpha\n'
                   '\n'
                   '**Role**: Workspace Builder\n'
                   '**Status**: Active\n'
@@ -1009,7 +1153,8 @@ abstract class DSGallerySections {
   static Widget buildDragAndDropSection() {
     return _SectionCard(
       title: 'Drag & Drop Task Board',
-      subtitle: 'DSDraggableCard · DSDropTarget · reorder · move · visual feedback',
+      subtitle:
+          'DSDraggableCard · DSDropTarget · reorder · move · visual feedback',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1021,12 +1166,12 @@ abstract class DSGallerySections {
           const SizedBox(height: DSSpacing.lg),
 
           // Interactive board: 3 lanes, one empty
-          DSText.labelLarge('Interactive Board (long-press to drag)', color: DSColors.textSecondary),
-          const SizedBox(height: DSSpacing.sm),
-          SizedBox(
-            height: 280,
-            child: _DragDropDemo(),
+          DSText.labelLarge(
+            'Interactive Board (long-press to drag)',
+            color: DSColors.textSecondary,
           ),
+          const SizedBox(height: DSSpacing.sm),
+          SizedBox(height: 280, child: _DragDropDemo()),
           const SizedBox(height: DSSpacing.lg),
 
           // Visual feedback documentation
@@ -1035,7 +1180,10 @@ abstract class DSGallerySections {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                DSText.labelLarge('Visual Feedback', color: DSColors.accentCyan),
+                DSText.labelLarge(
+                  'Visual Feedback',
+                  color: DSColors.accentCyan,
+                ),
                 const SizedBox(height: DSSpacing.xs),
                 DSText.bodySmall(
                   '• Drag origin: card renders at 20% opacity (ghost placeholder)\n'
@@ -1061,12 +1209,16 @@ abstract class DSGallerySections {
   static Widget buildAccessibilitySection() {
     return _SectionCard(
       title: 'Accessibility & Focus States',
-      subtitle: 'Keyboard focus rings · Enter/Space activation · Semantic labels · WCAG contrast',
+      subtitle:
+          'Keyboard focus rings · Enter/Space activation · Semantic labels · WCAG contrast',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Focus ring demonstration
-          DSText.labelLarge('Focus Ring Pattern', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'Focus Ring Pattern',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           DSText.bodySmall(
             'All interactive DS components use a 2px accentCyan border at 50% opacity '
@@ -1076,17 +1228,16 @@ abstract class DSGallerySections {
           const SizedBox(height: DSSpacing.md),
 
           // Focusable chips — keyboard demo
-          DSText.labelLarge('Focusable Chips (Tab + Enter/Space)', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'Focusable Chips (Tab + Enter/Space)',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           Wrap(
             spacing: DSSpacing.sm,
             runSpacing: DSSpacing.sm,
             children: [
-              DSChip(
-                label: 'Agent',
-                color: DSColors.assetAgent,
-                onTap: () {},
-              ),
+              DSChip(label: 'Agent', color: DSColors.assetAgent, onTap: () {}),
               DSChip(
                 label: 'Skill',
                 color: DSColors.assetSkill,
@@ -1098,16 +1249,16 @@ abstract class DSGallerySections {
                 color: DSColors.assetWorkflow,
                 onTap: () {},
               ),
-              DSChip(
-                label: 'Disabled',
-                enabled: false,
-              ),
+              DSChip(label: 'Disabled', enabled: false),
             ],
           ),
           const SizedBox(height: DSSpacing.lg),
 
           // Focusable filter chip group
-          DSText.labelLarge('Focusable Filter Chips', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'Focusable Filter Chips',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           DSFilterChipGroup(
             options: const [
@@ -1120,15 +1271,30 @@ abstract class DSGallerySections {
           const SizedBox(height: DSSpacing.lg),
 
           // Sidebar focus states
-          DSText.labelLarge('Sidebar Navigation (focusable items)', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'Sidebar Navigation (focusable items)',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           SizedBox(
             height: 200,
             child: DSSidebar(
               items: const [
-                DSSidebarItem(id: 'overview', label: 'Overview', icon: Icons.dashboard_outlined),
-                DSSidebarItem(id: 'map', label: 'Map', icon: Icons.hub_outlined),
-                DSSidebarItem(id: 'operate', label: 'Operate', icon: Icons.play_circle_outline),
+                DSSidebarItem(
+                  id: 'overview',
+                  label: 'Overview',
+                  icon: Icons.dashboard_outlined,
+                ),
+                DSSidebarItem(
+                  id: 'map',
+                  label: 'Map',
+                  icon: Icons.hub_outlined,
+                ),
+                DSSidebarItem(
+                  id: 'operate',
+                  label: 'Operate',
+                  icon: Icons.play_circle_outline,
+                ),
               ],
               selectedId: 'map',
             ),
@@ -1136,7 +1302,10 @@ abstract class DSGallerySections {
           const SizedBox(height: DSSpacing.lg),
 
           // Topbar actions focus
-          DSText.labelLarge('Topbar Actions (focusable buttons)', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'Topbar Actions (focusable buttons)',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           Row(
             children: [
@@ -1156,7 +1325,10 @@ abstract class DSGallerySections {
           const SizedBox(height: DSSpacing.lg),
 
           // Semantic status colors
-          DSText.labelLarge('Semantic Status Colors (WCAG AA)', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'Semantic Status Colors (WCAG AA)',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           Wrap(
             spacing: DSSpacing.md,
@@ -1214,7 +1386,10 @@ abstract class DSGallerySections {
           const SizedBox(height: DSSpacing.lg),
 
           // Toast with action button
-          DSText.labelLarge('With Action Button', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'With Action Button',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           DSToast(
             entry: DSToastEntry(
@@ -1245,7 +1420,10 @@ abstract class DSGallerySections {
           const SizedBox(height: DSSpacing.lg),
 
           // Stacking preview (static column showing 3 toasts)
-          DSText.labelLarge('Stacking Preview (3 toasts)', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'Stacking Preview (3 toasts)',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           Column(
             mainAxisSize: MainAxisSize.min,
@@ -1351,12 +1529,16 @@ abstract class DSGallerySections {
   static Widget buildDataTableSection() {
     return _SectionCard(
       title: 'DSDataTable',
-      subtitle: 'Sortable · Paginated · Cell Renderers · Operational States · Virtual Scroll',
+      subtitle:
+          'Sortable · Paginated · Cell Renderers · Operational States · Virtual Scroll',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Sortable table with operational state cells
-          DSText.labelLarge('Sortable Table with Status Cells', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'Sortable Table with Status Cells',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           SizedBox(
             height: 320,
@@ -1373,36 +1555,51 @@ abstract class DSGallerySections {
                 DSDataColumn(id: 'type', label: 'Type'),
               ],
               rows: [
-                DSDataRow(id: '1', cells: {
-                  'id': '001',
-                  'name': 'Agent Alpha',
-                  'status': DSOperationalState.running,
-                  'type': 'Agent',
-                }),
-                DSDataRow(id: '2', cells: {
-                  'id': '002',
-                  'name': 'Skill Parser',
-                  'status': DSOperationalState.healthy,
-                  'type': 'Skill',
-                }),
-                DSDataRow(id: '3', cells: {
-                  'id': '003',
-                  'name': 'Build Workflow',
-                  'status': DSOperationalState.degraded,
-                  'type': 'Workflow',
-                }),
-                DSDataRow(id: '4', cells: {
-                  'id': '004',
-                  'name': 'Deploy Pipeline',
-                  'status': DSOperationalState.error,
-                  'type': 'Workflow',
-                }),
-                DSDataRow(id: '5', cells: {
-                  'id': '005',
-                  'name': 'Auth Rule',
-                  'status': DSOperationalState.stale,
-                  'type': 'Rule',
-                }),
+                DSDataRow(
+                  id: '1',
+                  cells: {
+                    'id': '001',
+                    'name': 'Agent Alpha',
+                    'status': DSOperationalState.running,
+                    'type': 'Agent',
+                  },
+                ),
+                DSDataRow(
+                  id: '2',
+                  cells: {
+                    'id': '002',
+                    'name': 'Skill Parser',
+                    'status': DSOperationalState.healthy,
+                    'type': 'Skill',
+                  },
+                ),
+                DSDataRow(
+                  id: '3',
+                  cells: {
+                    'id': '003',
+                    'name': 'Build Workflow',
+                    'status': DSOperationalState.degraded,
+                    'type': 'Workflow',
+                  },
+                ),
+                DSDataRow(
+                  id: '4',
+                  cells: {
+                    'id': '004',
+                    'name': 'Deploy Pipeline',
+                    'status': DSOperationalState.error,
+                    'type': 'Workflow',
+                  },
+                ),
+                DSDataRow(
+                  id: '5',
+                  cells: {
+                    'id': '005',
+                    'name': 'Auth Rule',
+                    'status': DSOperationalState.stale,
+                    'type': 'Rule',
+                  },
+                ),
               ],
               paginated: false,
               showPagination: false,
@@ -1426,9 +1623,12 @@ abstract class DSGallerySections {
                 (i) => DSDataRow(
                   id: '$i',
                   cells: {
-                    'name': 'Entity ${String.fromCharCode(65 + (i % 26))}${i ~/ 26}',
+                    'name':
+                        'Entity ${String.fromCharCode(65 + (i % 26))}${i ~/ 26}',
                     'role': ['Agent', 'Skill', 'Workflow', 'Tool'][i % 4],
-                    'status': DSOperationalState.values[i % DSOperationalState.values.length].label,
+                    'status': DSOperationalState
+                        .values[i % DSOperationalState.values.length]
+                        .label,
                   },
                 ),
               ),
@@ -1484,7 +1684,10 @@ abstract class DSGallerySections {
           const SizedBox(height: DSSpacing.lg),
 
           // Operational state vocabulary
-          DSText.labelLarge('Operational State Vocabulary', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'Operational State Vocabulary',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           Wrap(
             spacing: DSSpacing.sm,
@@ -1507,24 +1710,18 @@ abstract class DSGallerySections {
           // Actions cell
           DSText.labelLarge('Actions Cell', color: DSColors.textSecondary),
           const SizedBox(height: DSSpacing.sm),
-          DSActionsCell(actions: [
-            DSActionItem(
-              icon: DSIcons.edit,
-              tooltip: 'Edit',
-              onTap: () {},
-            ),
-            DSActionItem(
-              icon: DSIcons.copy,
-              tooltip: 'Copy',
-              onTap: () {},
-            ),
-            DSActionItem(
-              icon: DSIcons.delete,
-              tooltip: 'Delete',
-              onTap: () {},
-              color: DSColors.statusError,
-            ),
-          ]),
+          DSActionsCell(
+            actions: [
+              DSActionItem(icon: DSIcons.edit, tooltip: 'Edit', onTap: () {}),
+              DSActionItem(icon: DSIcons.copy, tooltip: 'Copy', onTap: () {}),
+              DSActionItem(
+                icon: DSIcons.delete,
+                tooltip: 'Delete',
+                onTap: () {},
+                color: DSColors.statusError,
+              ),
+            ],
+          ),
           const SizedBox(height: DSSpacing.lg),
 
           // Selectable table
@@ -1538,18 +1735,18 @@ abstract class DSGallerySections {
                 DSDataColumn(id: 'kind', label: 'Kind'),
               ],
               rows: [
-                DSDataRow(id: 's1', cells: {
-                  'name': 'Agent Alpha',
-                  'kind': 'Agent',
-                }),
-                DSDataRow(id: 's2', cells: {
-                  'name': 'Parser Skill',
-                  'kind': 'Skill',
-                }),
-                DSDataRow(id: 's3', cells: {
-                  'name': 'Build Flow',
-                  'kind': 'Workflow',
-                }),
+                DSDataRow(
+                  id: 's1',
+                  cells: {'name': 'Agent Alpha', 'kind': 'Agent'},
+                ),
+                DSDataRow(
+                  id: 's2',
+                  cells: {'name': 'Parser Skill', 'kind': 'Skill'},
+                ),
+                DSDataRow(
+                  id: 's3',
+                  cells: {'name': 'Build Flow', 'kind': 'Workflow'},
+                ),
               ],
               selectable: true,
               paginated: false,
@@ -1563,11 +1760,17 @@ abstract class DSGallerySections {
 
   /// Status cell renderer for gallery examples.
   static Widget _galleryStatusCell(
-      BuildContext context, dynamic value, int rowIndex) {
+    BuildContext context,
+    dynamic value,
+    int rowIndex,
+  ) {
     if (value is DSOperationalState) {
       return DSStatusCell(state: value);
     }
-    return DSText.bodySmall(value?.toString() ?? '', color: DSColors.textTertiary);
+    return DSText.bodySmall(
+      value?.toString() ?? '',
+      color: DSColors.textTertiary,
+    );
   }
 
   // ---------------------------------------------------------------------------
@@ -1583,8 +1786,10 @@ abstract class DSGallerySections {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // DSVirtualList — 1K fixed-height items
-          DSText.labelLarge('DSVirtualList — 1,000 fixed-height items',
-              color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'DSVirtualList — 1,000 fixed-height items',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           DSText.bodySmall(
             'Fixed 48px extent with O(1) scroll offset computation. '
@@ -1601,8 +1806,7 @@ abstract class DSGallerySections {
               itemBuilder: (context, index) {
                 return Container(
                   height: 48,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: DSSpacing.md),
+                  padding: const EdgeInsets.symmetric(horizontal: DSSpacing.md),
                   decoration: BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
@@ -1613,10 +1817,7 @@ abstract class DSGallerySections {
                   ),
                   child: Row(
                     children: [
-                      DSIcon.small(
-                        DSIcons.task,
-                        color: DSColors.accentCyan,
-                      ),
+                      DSIcon.small(DSIcons.task, color: DSColors.accentCyan),
                       const SizedBox(width: DSSpacing.sm),
                       DSText.bodyMedium(
                         'MCP Server ${String.fromCharCode(65 + (index % 26))}${index ~/ 26}',
@@ -1636,8 +1837,10 @@ abstract class DSGallerySections {
           const SizedBox(height: DSSpacing.lg),
 
           // DSVirtualList — 5K variable-height items
-          DSText.labelLarge('DSVirtualList — 5,000 variable-height items',
-              color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'DSVirtualList — 5,000 variable-height items',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           DSText.bodySmall(
             'No itemExtent — falls back to standard variable-height layout. '
@@ -1677,8 +1880,10 @@ abstract class DSGallerySections {
           const SizedBox(height: DSSpacing.lg),
 
           // DSVirtualList — 10K fixed-height items with item count indicator
-          DSText.labelLarge('DSVirtualList — 10,000 fixed-height items',
-              color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'DSVirtualList — 10,000 fixed-height items',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           DSText.bodySmall(
             'High-cache config (500px cache) for fast scrollbar drags. '
@@ -1695,8 +1900,7 @@ abstract class DSGallerySections {
               itemBuilder: (context, index) {
                 return Container(
                   height: 48,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: DSSpacing.md),
+                  padding: const EdgeInsets.symmetric(horizontal: DSSpacing.md),
                   decoration: BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
@@ -1734,8 +1938,10 @@ abstract class DSGallerySections {
           const SizedBox(height: DSSpacing.lg),
 
           // DSVirtualGrid — 1K items
-          DSText.labelLarge('DSVirtualGrid — 1,000 items (4 columns)',
-              color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'DSVirtualGrid — 1,000 items (4 columns)',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           SizedBox(
             height: 300,
@@ -1771,8 +1977,10 @@ abstract class DSGallerySections {
           const SizedBox(height: DSSpacing.lg),
 
           // DSVirtualGrid — 5K items
-          DSText.labelLarge('DSVirtualGrid — 5,000 items (3 columns)',
-              color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'DSVirtualGrid — 5,000 items (3 columns)',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           SizedBox(
             height: 300,
@@ -1812,8 +2020,10 @@ abstract class DSGallerySections {
           const SizedBox(height: DSSpacing.lg),
 
           // Integration note: DSVirtualList + DSDataTable
-          DSText.labelLarge('DSDataTable + DSVirtualList integration',
-              color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'DSDataTable + DSVirtualList integration',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           DSText.bodySmall(
             'DSDataTable accepts a virtualScrollConfig parameter. When provided '
@@ -1838,7 +2048,8 @@ abstract class DSGallerySections {
                   id: '$i',
                   cells: {
                     'id': '${i + 1}',
-                    'name': 'MCP Server ${String.fromCharCode(65 + (i % 26))}${i ~/ 26}',
+                    'name':
+                        'MCP Server ${String.fromCharCode(65 + (i % 26))}${i ~/ 26}',
                     'type': ['Tool', 'Resource', 'Prompt'][i % 3],
                     'rows': '${(i * 13) % 5000}',
                   },
@@ -1871,30 +2082,45 @@ abstract class DSGallerySections {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // DSSparkline variants
-          DSText.labelLarge('DSSparkline — 20 data points', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'DSSparkline — 20 data points',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           SizedBox(
             height: 40,
             child: DSSparkline(
-              data: List.generate(20, (i) => 50 + 30 * (i % 3 == 0 ? 1 : -0.5) + i * 1.5),
+              data: List.generate(
+                20,
+                (i) => 50 + 30 * (i % 3 == 0 ? 1 : -0.5) + i * 1.5,
+              ),
               color: DSColors.accentCyan,
               semanticLabel: 'Demo sparkline: 20 data points',
             ),
           ),
           const SizedBox(height: DSSpacing.md),
-          DSText.labelLarge('DSSparkline — 100 data points (with dots)', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'DSSparkline — 100 data points (with dots)',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           SizedBox(
             height: 40,
             child: DSSparkline(
-              data: List.generate(100, (i) => 50 + 20 * (0.5 - (i - 50).abs() / 50) + (i % 7) * 2.0),
+              data: List.generate(
+                100,
+                (i) => 50 + 20 * (0.5 - (i - 50).abs() / 50) + (i % 7) * 2.0,
+              ),
               color: DSColors.accentViolet,
               showDots: false,
               semanticLabel: 'Demo sparkline: 100 data points',
             ),
           ),
           const SizedBox(height: DSSpacing.md),
-          DSText.labelLarge('DSSparkline — empty data', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'DSSparkline — empty data',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           const SizedBox(
             height: 32,
@@ -1906,32 +2132,32 @@ abstract class DSGallerySections {
           const SizedBox(height: DSSpacing.lg),
 
           // DSUptimeBar at various thresholds
-          DSText.labelLarge('DSUptimeBar — threshold coloring', color: DSColors.textSecondary),
-          const SizedBox(height: DSSpacing.sm),
-          const SizedBox(
-            height: 24,
-            child: DSUptimeBar(uptimePercent: 0.995),
+          DSText.labelLarge(
+            'DSUptimeBar — threshold coloring',
+            color: DSColors.textSecondary,
           ),
           const SizedBox(height: DSSpacing.sm),
-          DSText.labelSmall('99.5% — green (>99%)', color: DSColors.textTertiary),
+          const SizedBox(height: 24, child: DSUptimeBar(uptimePercent: 0.995)),
+          const SizedBox(height: DSSpacing.sm),
+          DSText.labelSmall(
+            '99.5% — green (>99%)',
+            color: DSColors.textTertiary,
+          ),
           const SizedBox(height: DSSpacing.md),
-          const SizedBox(
-            height: 24,
-            child: DSUptimeBar(uptimePercent: 0.97),
-          ),
+          const SizedBox(height: 24, child: DSUptimeBar(uptimePercent: 0.97)),
           const SizedBox(height: DSSpacing.sm),
           DSText.labelSmall('97% — amber (>95%)', color: DSColors.textTertiary),
           const SizedBox(height: DSSpacing.md),
-          const SizedBox(
-            height: 24,
-            child: DSUptimeBar(uptimePercent: 0.80),
-          ),
+          const SizedBox(height: 24, child: DSUptimeBar(uptimePercent: 0.80)),
           const SizedBox(height: DSSpacing.sm),
           DSText.labelSmall('80% — red (<=95%)', color: DSColors.textTertiary),
           const SizedBox(height: DSSpacing.lg),
 
           // DSHealthCard examples
-          DSText.labelLarge('DSHealthCard — various states', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'DSHealthCard — various states',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           Wrap(
             spacing: DSSpacing.md,
@@ -1945,7 +2171,9 @@ abstract class DSGallerySections {
                   latency: const Duration(milliseconds: 42),
                   uptimePercent: 0.9995,
                   trendData: List.generate(20, (i) => 30 + (i % 5) * 8.0),
-                  lastCheck: DateTime.now().subtract(const Duration(minutes: 2)),
+                  lastCheck: DateTime.now().subtract(
+                    const Duration(minutes: 2),
+                  ),
                 ),
               ),
               SizedBox(
@@ -1955,8 +2183,13 @@ abstract class DSGallerySections {
                   operationalState: DSOperationalState.degraded,
                   latency: const Duration(milliseconds: 230),
                   uptimePercent: 0.97,
-                  trendData: List.generate(20, (i) => 80 + (i > 10 ? 40 : 0) + (i % 3) * 5.0),
-                  lastCheck: DateTime.now().subtract(const Duration(minutes: 15)),
+                  trendData: List.generate(
+                    20,
+                    (i) => 80 + (i > 10 ? 40 : 0) + (i % 3) * 5.0,
+                  ),
+                  lastCheck: DateTime.now().subtract(
+                    const Duration(minutes: 15),
+                  ),
                 ),
               ),
               SizedBox(
@@ -1992,7 +2225,6 @@ abstract class DSGallerySections {
   // static final List<DSHealthCardData> _mockHealthItems = [
   //   DSHealthCardData(serviceName: 'MCP Server Alpha', operationalState: DSOperationalState.healthy, latency: Duration(milliseconds: 42), uptimePercent: 0.9995, trendData: [], lastCheck: DateTime.now()),
   // ];
-
 
   // _mockHealthItems commented out: DSHealthCardData pending from health dashboard task
   // static final List<DSHealthCardData> _mockHealthItems = [...];
@@ -2097,10 +2329,7 @@ class _StatusSample extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        DSStatusDot(
-          color: color,
-          tooltip: label,
-        ),
+        DSStatusDot(color: color, tooltip: label),
         const SizedBox(width: DSSpacing.xs),
         DSText.labelMedium(label, color: color),
       ],
@@ -2141,7 +2370,11 @@ class _DragDropDemoState extends State<_DragDropDemo> {
         id: '01-open',
         label: 'Open',
         tasks: [
-          DSLaneTask(id: 101, title: 'Define provider contracts', priority: 'P1'),
+          DSLaneTask(
+            id: 101,
+            title: 'Define provider contracts',
+            priority: 'P1',
+          ),
           DSLaneTask(id: 102, title: 'Wire mock data sources', priority: 'P2'),
           DSLaneTask(id: 103, title: 'Create gallery route', priority: 'P2'),
         ],
@@ -2154,11 +2387,7 @@ class _DragDropDemoState extends State<_DragDropDemo> {
           DSLaneTask(id: 202, title: 'Implement graph canvas', priority: 'P1'),
         ],
       ),
-      const DSLane(
-        id: '03-review',
-        label: 'Review',
-        tasks: [],
-      ),
+      const DSLane(id: '03-review', label: 'Review', tasks: []),
     ];
   }
 
@@ -2196,8 +2425,16 @@ class _DragDropDemoState extends State<_DragDropDemo> {
       final insertAt = event.targetIndex.clamp(0, tgtTasks.length);
       tgtTasks.insert(insertAt, task);
 
-      _lanes[srcIdx] = DSLane(id: srcLane.id, label: srcLane.label, tasks: srcTasks);
-      _lanes[tgtIdx] = DSLane(id: tgtLane.id, label: tgtLane.label, tasks: tgtTasks);
+      _lanes[srcIdx] = DSLane(
+        id: srcLane.id,
+        label: srcLane.label,
+        tasks: srcTasks,
+      );
+      _lanes[tgtIdx] = DSLane(
+        id: tgtLane.id,
+        label: tgtLane.label,
+        tasks: tgtTasks,
+      );
     });
   }
 
@@ -2268,19 +2505,34 @@ class _BehavioralContractTable extends StatelessWidget {
               children: [
                 Expanded(
                   flex: 2,
-                  child: DSText.labelSmall('State', color: DSColors.textSecondary),
+                  child: DSText.labelSmall(
+                    'State',
+                    color: DSColors.textSecondary,
+                  ),
                 ),
                 Expanded(
-                  child: DSText.labelSmall('Actions', color: DSColors.textSecondary),
+                  child: DSText.labelSmall(
+                    'Actions',
+                    color: DSColors.textSecondary,
+                  ),
                 ),
                 Expanded(
-                  child: DSText.labelSmall('Terminal', color: DSColors.textSecondary),
+                  child: DSText.labelSmall(
+                    'Terminal',
+                    color: DSColors.textSecondary,
+                  ),
                 ),
                 Expanded(
-                  child: DSText.labelSmall('Warning', color: DSColors.textSecondary),
+                  child: DSText.labelSmall(
+                    'Warning',
+                    color: DSColors.textSecondary,
+                  ),
                 ),
                 Expanded(
-                  child: DSText.labelSmall('Severity', color: DSColors.textSecondary),
+                  child: DSText.labelSmall(
+                    'Severity',
+                    color: DSColors.textSecondary,
+                  ),
                 ),
               ],
             ),
@@ -2293,9 +2545,7 @@ class _BehavioralContractTable extends StatelessWidget {
                 vertical: DSSpacing.xs,
               ),
               decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(color: DSColors.borderSubtle),
-                ),
+                border: Border(top: BorderSide(color: DSColors.borderSubtle)),
               ),
               child: Row(
                 children: [
@@ -2440,10 +2690,7 @@ class _TabBarDemoState extends State<_TabBarDemo> {
               _controller.closeById(id);
             },
           ),
-          SizedBox(
-            height: 120,
-            child: DSTabView(controller: _controller),
-          ),
+          SizedBox(height: 120, child: DSTabView(controller: _controller)),
         ],
       ),
     );
@@ -2510,10 +2757,7 @@ class _TabBarOverflowDemoState extends State<_TabBarOverflowDemo> {
               _controller.closeById(id);
             },
           ),
-          SizedBox(
-            height: 100,
-            child: DSTabView(controller: _controller),
-          ),
+          SizedBox(height: 100, child: DSTabView(controller: _controller)),
         ],
       ),
     );
@@ -2621,8 +2865,9 @@ class _SplitPaneDemo extends StatelessWidget {
           trailing: Container(
             color: DSColors.obsidianBase,
             padding: const EdgeInsets.all(DSSpacing.md),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: ListView(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
               children: [
                 DSText.labelLarge(
                   axis == Axis.horizontal ? 'Detail Inspector' : 'Preview',
@@ -2635,10 +2880,7 @@ class _SplitPaneDemo extends StatelessWidget {
                   color: DSColors.textTertiary,
                 ),
                 const SizedBox(height: DSSpacing.md),
-                DSText.labelMedium(
-                  'agent-alpha',
-                  color: DSColors.textPrimary,
-                ),
+                DSText.labelMedium('agent-alpha', color: DSColors.textPrimary),
                 DSText.bodySmall(
                   'Type: Agent · Status: Active',
                   color: DSColors.textTertiary,
@@ -2758,7 +3000,9 @@ class _CommandPalettePreview extends StatelessWidget {
             decoration: BoxDecoration(
               color: DSColors.obsidianElevated,
               borderRadius: BorderRadius.circular(DSRadii.sm),
-              border: Border.all(color: DSColors.accentCyan.withValues(alpha: 0.3)),
+              border: Border.all(
+                color: DSColors.accentCyan.withValues(alpha: 0.3),
+              ),
             ),
             child: Row(
               children: [
@@ -2770,7 +3014,10 @@ class _CommandPalettePreview extends StatelessWidget {
                 ),
                 const Spacer(),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 6,
+                    vertical: 2,
+                  ),
                   decoration: BoxDecoration(
                     color: DSColors.obsidianHover,
                     borderRadius: BorderRadius.circular(DSRadii.xs),

@@ -72,7 +72,7 @@ class _GovernancePageState extends State<GovernancePage> {
 
     return PrismErrorBoundary(
       child: SingleChildScrollView(
-        padding: const EdgeInsets.all(DSSpacing.lg),
+        padding: const EdgeInsets.all(PrismSpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -80,57 +80,79 @@ class _GovernancePageState extends State<GovernancePage> {
             // Summary story panel
             PrismStoryPanel(
               title: 'Governance Overview',
-              subtitle: 'Compliance diagnostics — ${diag.totalIssues} issue${diag.totalIssues == 1 ? '' : 's'} detected',
+              subtitle:
+                  'Compliance diagnostics — ${diag.totalIssues} issue${diag.totalIssues == 1 ? '' : 's'} detected',
               icon: Icons.gavel_outlined,
-              accentColor: hasIssues ? DSColors.statusWarning : DSColors.statusSuccess,
+              accentColor: hasIssues
+                  ? PrismColors.statusWarning
+                  : PrismColors.statusSuccess,
               insights: [
                 PrismStoryInsight(
-                  text: '${diag.orphanWorkflows.length} orphan workflow${diag.orphanWorkflows.length == 1 ? '' : 's'}',
+                  text:
+                      '${diag.orphanWorkflows.length} orphan workflow${diag.orphanWorkflows.length == 1 ? '' : 's'}',
                   detail: diag.orphanWorkflows.isEmpty
                       ? 'All workflows have agent or skill references'
                       : 'Unreferenced: ${diag.orphanWorkflows.join(', ')}',
                   value: '${diag.orphanWorkflows.length}',
-                  color: diag.orphanWorkflows.isNotEmpty ? DSColors.statusWarning : DSColors.statusSuccess,
+                  color: diag.orphanWorkflows.isNotEmpty
+                      ? PrismColors.statusWarning
+                      : PrismColors.statusSuccess,
                 ),
                 PrismStoryInsight(
-                  text: '${diag.noTriggerSkills.length} skill${diag.noTriggerSkills.length == 1 ? '' : 's'} without triggers',
+                  text:
+                      '${diag.noTriggerSkills.length} skill${diag.noTriggerSkills.length == 1 ? '' : 's'} without triggers',
                   detail: diag.noTriggerSkills.isEmpty
                       ? 'All skills have trigger definitions'
                       : 'Missing: ${diag.noTriggerSkills.join(', ')}',
                   value: '${diag.noTriggerSkills.length}',
-                  color: diag.noTriggerSkills.isNotEmpty ? DSColors.statusWarning : DSColors.statusSuccess,
+                  color: diag.noTriggerSkills.isNotEmpty
+                      ? PrismColors.statusWarning
+                      : PrismColors.statusSuccess,
                 ),
                 PrismStoryInsight(
-                  text: '${diag.unverifiedTasks.length} unverified high-priority task${diag.unverifiedTasks.length == 1 ? '' : 's'}',
+                  text:
+                      '${diag.unverifiedTasks.length} unverified high-priority task${diag.unverifiedTasks.length == 1 ? '' : 's'}',
                   detail: diag.unverifiedTasks.isEmpty
                       ? 'All high-priority tasks have proof'
-                      : diag.unverifiedTasks.map((t) => '${t.taskId} (${t.priority})').join(', '),
+                      : diag.unverifiedTasks
+                            .map((t) => '${t.taskId} (${t.priority})')
+                            .join(', '),
                   value: '${diag.unverifiedTasks.length}',
-                  color: diag.unverifiedTasks.isNotEmpty ? DSColors.statusError : DSColors.statusSuccess,
+                  color: diag.unverifiedTasks.isNotEmpty
+                      ? PrismColors.statusError
+                      : PrismColors.statusSuccess,
                 ),
                 PrismStoryInsight(
-                  text: '${diag.fanInHotspots.length} fan-in hotspot${diag.fanInHotspots.length == 1 ? '' : 's'}',
+                  text:
+                      '${diag.fanInHotspots.length} fan-in hotspot${diag.fanInHotspots.length == 1 ? '' : 's'}',
                   detail: diag.fanInHotspots.isEmpty
                       ? 'No skill has excessive incoming references'
-                      : diag.fanInHotspots.map((h) => '${h.skillName} (${h.referenceCount} refs)').join(', '),
+                      : diag.fanInHotspots
+                            .map(
+                              (h) =>
+                                  '${h.skillName} (${h.referenceCount} refs)',
+                            )
+                            .join(', '),
                   value: '${diag.fanInHotspots.length}',
-                  color: diag.fanInHotspots.isNotEmpty ? DSColors.statusWarning : DSColors.statusSuccess,
+                  color: diag.fanInHotspots.isNotEmpty
+                      ? PrismColors.statusWarning
+                      : PrismColors.statusSuccess,
                 ),
               ],
             ),
 
-            const SizedBox(height: DSSpacing.lg),
+            const SizedBox(height: PrismSpacing.lg),
 
             // Canonicality boundary metrics
             const PrismText.headingMedium(
               'Canonicality Boundary',
-              color: DSColors.textPrimary,
+              color: PrismColors.textPrimary,
             ),
-            const SizedBox(height: DSSpacing.md),
+            const SizedBox(height: PrismSpacing.md),
 
             Wrap(
-              spacing: DSSpacing.md,
-              runSpacing: DSSpacing.md,
+              spacing: PrismSpacing.md,
+              runSpacing: PrismSpacing.md,
               children: diag.canonicalityBoundary.entries.map((entry) {
                 return PrismMetricTile(
                   label: entry.key,
@@ -141,19 +163,24 @@ class _GovernancePageState extends State<GovernancePage> {
               }).toList(),
             ),
 
-            const SizedBox(height: DSSpacing.lg),
+            const SizedBox(height: PrismSpacing.lg),
 
             // Fan-in hotspots
             if (diag.fanInHotspots.isNotEmpty) ...[
               const PrismText.headingMedium(
                 'Fan-in Hotspots',
-                color: DSColors.textPrimary,
+                color: PrismColors.textPrimary,
               ),
-              const SizedBox(height: DSSpacing.md),
+              const SizedBox(height: PrismSpacing.md),
               PrismDataTable(
                 columns: const [
                   PrismDataColumn(id: 'skill', label: 'Skill', sortable: true),
-                  PrismDataColumn(id: 'refs', label: 'References', sortable: true, width: 120),
+                  PrismDataColumn(
+                    id: 'refs',
+                    label: 'References',
+                    sortable: true,
+                    width: 120,
+                  ),
                   PrismDataColumn(id: 'risk', label: 'Risk', width: 100),
                 ],
                 rows: diag.fanInHotspots.map((hotspot) {
@@ -168,21 +195,25 @@ class _GovernancePageState extends State<GovernancePage> {
                 }).toList(),
                 showPagination: false,
               ),
-              const SizedBox(height: DSSpacing.lg),
+              const SizedBox(height: PrismSpacing.lg),
             ],
 
             // Unverified high-priority tasks
             if (diag.unverifiedTasks.isNotEmpty) ...[
               const PrismText.headingMedium(
                 'Unverified High-Priority Tasks',
-                color: DSColors.textPrimary,
+                color: PrismColors.textPrimary,
               ),
-              const SizedBox(height: DSSpacing.md),
+              const SizedBox(height: PrismSpacing.md),
               PrismDataTable(
                 columns: const [
                   PrismDataColumn(id: 'taskId', label: 'Task ID', width: 100),
                   PrismDataColumn(id: 'title', label: 'Title'),
-                  PrismDataColumn(id: 'priority', label: 'Priority', width: 100),
+                  PrismDataColumn(
+                    id: 'priority',
+                    label: 'Priority',
+                    width: 100,
+                  ),
                   PrismDataColumn(id: 'status', label: 'Status', width: 100),
                 ],
                 rows: diag.unverifiedTasks.map((task) {
@@ -202,12 +233,12 @@ class _GovernancePageState extends State<GovernancePage> {
 
             // All clear state
             if (!hasIssues) ...[
-              const SizedBox(height: DSSpacing.lg),
+              const SizedBox(height: PrismSpacing.lg),
               const PrismStateSurface.empty(
                 icon: Icons.verified_outlined,
                 title: 'All systems compliant',
                 subtitle: 'No governance issues detected in the workspace',
-                accentColor: DSColors.statusSuccess,
+                accentColor: PrismColors.statusSuccess,
               ),
             ],
           ],
@@ -232,13 +263,13 @@ class _GovernancePageState extends State<GovernancePage> {
   Color _canonicalityColor(String boundary) {
     switch (boundary) {
       case 'parentCanonical':
-        return DSColors.statusSuccess;
+        return PrismColors.statusSuccess;
       case 'childLocal':
-        return DSColors.accentCyan;
+        return PrismColors.accentCyan;
       case 'mock':
-        return DSColors.textTertiary;
+        return PrismColors.textTertiary;
       default:
-        return DSColors.textSecondary;
+        return PrismColors.textSecondary;
     }
   }
 }

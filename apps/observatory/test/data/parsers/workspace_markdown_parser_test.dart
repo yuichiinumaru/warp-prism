@@ -50,7 +50,10 @@ Body content''';
 
       final result = parser.parse(input);
       expect(result.isOk, true);
-      expect(result.frontmatter['skills'], ['project-management', 'harness-architecture']);
+      expect(result.frontmatter['skills'], [
+        'project-management',
+        'harness-architecture',
+      ]);
       expect(result.frontmatter['tags'], ['orchestrator', 'planning']);
     });
 
@@ -207,7 +210,11 @@ tags:
 
 Main agent for the workspace.''';
 
-      final asset = parser.parse(input, filePath: 'assets/mock_workspace/.agents/agents/architect-orchestrator.md');
+      final asset = parser.parse(
+        input,
+        filePath:
+            'assets/mock_workspace/.agents/agents/architect-orchestrator.md',
+      );
 
       expect(asset.kind, AssetKind.agent);
       expect(asset.name, 'architect-orchestrator');
@@ -225,7 +232,10 @@ name: minimal-agent
 
 Body''';
 
-      final asset = parser.parse(input, filePath: 'assets/mock_workspace/.agents/agents/minimal.md');
+      final asset = parser.parse(
+        input,
+        filePath: 'assets/mock_workspace/.agents/agents/minimal.md',
+      );
 
       expect(asset.kind, AssetKind.agent);
       expect(asset.name, 'minimal-agent');
@@ -246,7 +256,10 @@ This is the first real paragraph of content.
 
 More text follows.''';
 
-      final asset = parser.parse(input, filePath: 'assets/mock_workspace/.agents/agents/fallback.md');
+      final asset = parser.parse(
+        input,
+        filePath: 'assets/mock_workspace/.agents/agents/fallback.md',
+      );
 
       expect(asset.description, 'This is the first real paragraph of content.');
     });
@@ -276,7 +289,11 @@ tags:
 
 # harness-architecture''';
 
-      final asset = parser.parse(input, filePath: 'assets/mock_workspace/.agents/skills/harness-architecture/SKILL.md');
+      final asset = parser.parse(
+        input,
+        filePath:
+            'assets/mock_workspace/.agents/skills/harness-architecture/SKILL.md',
+      );
 
       expect(asset.kind, AssetKind.skill);
       expect(asset.name, 'harness-architecture');
@@ -306,7 +323,10 @@ tags:
 
 # gt-code-review''';
 
-      final asset = parser.parse(input, filePath: 'assets/mock_workspace/.agents/workflows/gt-code-review.md');
+      final asset = parser.parse(
+        input,
+        filePath: 'assets/mock_workspace/.agents/workflows/gt-code-review.md',
+      );
 
       expect(asset.kind, AssetKind.workflow);
       expect(asset.name, 'gt-code-review');
@@ -359,7 +379,11 @@ flutter test
 
 Parser tests created.''';
 
-      final asset = parser.parse(input, filePath: 'assets/mock_workspace/docs/tasks/02-doing/7521-build-parser.md');
+      final asset = parser.parse(
+        input,
+        filePath:
+            'assets/mock_workspace/docs/tasks/02-doing/7521-build-parser.md',
+      );
 
       expect(asset.kind, AssetKind.task);
       expect(asset.id, 'task:7521');
@@ -383,7 +407,10 @@ Parser tests created.''';
 
       // Verify edges
       expect(asset.edges.where((e) => e.kind == EdgeKind.dependsOn).length, 1);
-      expect(asset.edges.where((e) => e.kind == EdgeKind.references).length, 2); // 1 skill + 1 workflow
+      expect(
+        asset.edges.where((e) => e.kind == EdgeKind.references).length,
+        2,
+      ); // 1 skill + 1 workflow
     });
 
     test('task lane inferred from path when status missing', () {
@@ -396,7 +423,11 @@ updated: 2026-06-01
 
 Body''';
 
-      final asset = parser.parse(input, filePath: 'assets/mock_workspace/docs/tasks/00-planning/100-planning-task.md');
+      final asset = parser.parse(
+        input,
+        filePath:
+            'assets/mock_workspace/docs/tasks/00-planning/100-planning-task.md',
+      );
       final taskMeta = asset.frontmatter['_taskMetadata'] as TaskMetadata;
       expect(taskMeta.lane, TaskLane.planning);
     });
@@ -413,7 +444,10 @@ review_score: null
 
 Body''';
 
-      final asset = parser.parse(input, filePath: 'assets/mock_workspace/docs/tasks/01-open/200.md');
+      final asset = parser.parse(
+        input,
+        filePath: 'assets/mock_workspace/docs/tasks/01-open/200.md',
+      );
       final taskMeta = asset.frontmatter['_taskMetadata'] as TaskMetadata;
       expect(taskMeta.reviewScore, null);
     });
@@ -455,14 +489,19 @@ Added FrontmatterParser and WorkspaceMarkdownParser.
 
 All parser tests pass.''';
 
-      final asset = parser.parse(input, filePath: 'assets/mock_workspace/docs/changelog/2026-06-05-7521-asw-parser.md');
+      final asset = parser.parse(
+        input,
+        filePath:
+            'assets/mock_workspace/docs/changelog/2026-06-05-7521-asw-parser.md',
+      );
 
       expect(asset.kind, AssetKind.changelog);
       expect(asset.id, 'changelog:2026-06-05-7521-asw-parser');
       expect(asset.canonicality, Canonicality.appendOnly);
 
       // Verify ChangelogMetadata is embedded
-      final clMeta = asset.frontmatter['_changelogMetadata'] as ChangelogMetadata;
+      final clMeta =
+          asset.frontmatter['_changelogMetadata'] as ChangelogMetadata;
       expect(clMeta.id, '2026-06-05-7521-asw-parser');
       expect(clMeta.project, 'warp-prism');
       expect(clMeta.task, '7521');
@@ -499,8 +538,12 @@ Maintenance.
 
 Cleaned up.''';
 
-      final asset = parser.parse(input, filePath: 'assets/mock_workspace/docs/changelog/2026-06-06-chore.md');
-      final clMeta = asset.frontmatter['_changelogMetadata'] as ChangelogMetadata;
+      final asset = parser.parse(
+        input,
+        filePath: 'assets/mock_workspace/docs/changelog/2026-06-06-chore.md',
+      );
+      final clMeta =
+          asset.frontmatter['_changelogMetadata'] as ChangelogMetadata;
       expect(clMeta.type, ChangelogType.chore);
     });
   });
@@ -586,7 +629,10 @@ Body''';
 name: test
 ---
 ''';
-      final asset = parser.parse(input, filePath: 'assets/mock_workspace/.agents/agents/test.md');
+      final asset = parser.parse(
+        input,
+        filePath: 'assets/mock_workspace/.agents/agents/test.md',
+      );
       expect(asset.kind, AssetKind.agent);
     });
 
@@ -595,7 +641,10 @@ name: test
 name: test-skill
 ---
 ''';
-      final asset = parser.parse(input, filePath: 'assets/mock_workspace/.agents/skills/test-skill/SKILL.md');
+      final asset = parser.parse(
+        input,
+        filePath: 'assets/mock_workspace/.agents/skills/test-skill/SKILL.md',
+      );
       expect(asset.kind, AssetKind.skill);
     });
 
@@ -604,7 +653,10 @@ name: test-skill
 name: test-wf
 ---
 ''';
-      final asset = parser.parse(input, filePath: 'assets/mock_workspace/.agents/workflows/test-wf.md');
+      final asset = parser.parse(
+        input,
+        filePath: 'assets/mock_workspace/.agents/workflows/test-wf.md',
+      );
       expect(asset.kind, AssetKind.workflow);
     });
 
@@ -616,7 +668,10 @@ created: 2026-06-01
 updated: 2026-06-01
 ---
 ''';
-      final asset = parser.parse(input, filePath: 'assets/mock_workspace/docs/tasks/01-open/999.md');
+      final asset = parser.parse(
+        input,
+        filePath: 'assets/mock_workspace/docs/tasks/01-open/999.md',
+      );
       expect(asset.kind, AssetKind.task);
     });
 
@@ -629,7 +684,10 @@ task: 1
 type: chore
 ---
 ''';
-      final asset = parser.parse(input, filePath: 'assets/mock_workspace/docs/changelog/cl-001.md');
+      final asset = parser.parse(
+        input,
+        filePath: 'assets/mock_workspace/docs/changelog/cl-001.md',
+      );
       expect(asset.kind, AssetKind.changelog);
     });
   });
@@ -646,7 +704,10 @@ name: canonical
 canonicality: parentCanonical
 ---
 ''';
-      final asset = parser.parse(input, filePath: 'assets/mock_workspace/.agents/agents/test.md');
+      final asset = parser.parse(
+        input,
+        filePath: 'assets/mock_workspace/.agents/agents/test.md',
+      );
       expect(asset.canonicality, Canonicality.parentCanonical);
     });
 
@@ -656,7 +717,10 @@ name: local
 canonicality: childLocal
 ---
 ''';
-      final asset = parser.parse(input, filePath: 'assets/mock_workspace/.agents/agents/test.md');
+      final asset = parser.parse(
+        input,
+        filePath: 'assets/mock_workspace/.agents/agents/test.md',
+      );
       expect(asset.canonicality, Canonicality.childLocal);
     });
 
@@ -666,7 +730,10 @@ name: mock
 canonicality: mock
 ---
 ''';
-      final asset = parser.parse(input, filePath: 'assets/mock_workspace/.agents/agents/test.md');
+      final asset = parser.parse(
+        input,
+        filePath: 'assets/mock_workspace/.agents/agents/test.md',
+      );
       expect(asset.canonicality, Canonicality.mock);
     });
 
@@ -676,7 +743,10 @@ name: unknown
 canonicality: something-else
 ---
 ''';
-      final asset = parser.parse(input, filePath: 'assets/mock_workspace/.agents/agents/test.md');
+      final asset = parser.parse(
+        input,
+        filePath: 'assets/mock_workspace/.agents/agents/test.md',
+      );
       expect(asset.canonicality, Canonicality.parentCanonical);
     });
   });
@@ -697,7 +767,10 @@ workflows:
   - wf-a
 ---
 ''';
-      final asset = parser.parse(input, filePath: 'assets/mock_workspace/.agents/agents/test.md');
+      final asset = parser.parse(
+        input,
+        filePath: 'assets/mock_workspace/.agents/agents/test.md',
+      );
       expect(asset.edges.length, 3);
       expect(asset.edges.every((e) => e.kind == EdgeKind.uses), true);
       expect(asset.edges.map((e) => e.targetId), contains('skill:skill-a'));
@@ -718,9 +791,16 @@ depends_on:
   - 99
 ---
 ''';
-      final asset = parser.parse(input, filePath: 'assets/mock_workspace/docs/tasks/01-open/100.md');
-      final deps = asset.edges.where((e) => e.kind == EdgeKind.dependsOn).toList();
-      final refs = asset.edges.where((e) => e.kind == EdgeKind.references).toList();
+      final asset = parser.parse(
+        input,
+        filePath: 'assets/mock_workspace/docs/tasks/01-open/100.md',
+      );
+      final deps = asset.edges
+          .where((e) => e.kind == EdgeKind.dependsOn)
+          .toList();
+      final refs = asset.edges
+          .where((e) => e.kind == EdgeKind.references)
+          .toList();
       expect(deps.length, 1);
       expect(deps.first.targetId, 'task:99');
       expect(refs.length, 2); // 1 skill + 1 workflow
@@ -735,7 +815,10 @@ task: 42
 type: feature
 ---
 ''';
-      final asset = parser.parse(input, filePath: 'assets/mock_workspace/docs/changelog/cl-1.md');
+      final asset = parser.parse(
+        input,
+        filePath: 'assets/mock_workspace/docs/changelog/cl-1.md',
+      );
       expect(asset.edges.length, 1);
       expect(asset.edges.first.kind, EdgeKind.changedBy);
       expect(asset.edges.first.targetId, 'task:42');
@@ -750,10 +833,18 @@ sub_skills:
   - child-c
 ---
 ''';
-      final asset = parser.parse(input, filePath: 'assets/mock_workspace/.agents/skills/parent/SKILL.md');
-      final containsEdges = asset.edges.where((e) => e.kind == EdgeKind.contains).toList();
+      final asset = parser.parse(
+        input,
+        filePath: 'assets/mock_workspace/.agents/skills/parent/SKILL.md',
+      );
+      final containsEdges = asset.edges
+          .where((e) => e.kind == EdgeKind.contains)
+          .toList();
       expect(containsEdges.length, 3);
-      expect(containsEdges.map((e) => e.targetId), contains('subskill:child-a'));
+      expect(
+        containsEdges.map((e) => e.targetId),
+        contains('subskill:child-a'),
+      );
     });
   });
 }

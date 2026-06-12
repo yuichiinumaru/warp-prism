@@ -118,8 +118,7 @@ class _DSLogViewerState extends State<DSLogViewer> {
         return false;
       }
       // Source filter
-      if (_activeSources.isNotEmpty &&
-          !_activeSources.contains(entry.source)) {
+      if (_activeSources.isNotEmpty && !_activeSources.contains(entry.source)) {
         return false;
       }
       // Text search
@@ -135,19 +134,14 @@ class _DSLogViewerState extends State<DSLogViewer> {
   }
 
   List<String> get _availableSources {
-    return widget.entries
-        .map((e) => e.source)
-        .toSet()
-        .toList()
-      ..sort();
+    return widget.entries.map((e) => e.source).toSet().toList()..sort();
   }
 
   @override
   void didUpdateWidget(DSLogViewer oldWidget) {
     super.didUpdateWidget(oldWidget);
     // Auto-scroll when new entries arrive and auto-scroll is enabled.
-    if (_autoScroll &&
-        widget.entries.length > oldWidget.entries.length) {
+    if (_autoScroll && widget.entries.length > oldWidget.entries.length) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _scrollToBottom();
       });
@@ -261,7 +255,8 @@ class _DSLogViewerState extends State<DSLogViewer> {
                 ? DSStateSurface.empty(
                     icon: DSIcons.list,
                     title: 'No log entries',
-                    subtitle: _searchQuery.isNotEmpty ||
+                    subtitle:
+                        _searchQuery.isNotEmpty ||
                             _activeSeverities.isNotEmpty ||
                             _activeSources.isNotEmpty
                         ? 'Try adjusting filters'

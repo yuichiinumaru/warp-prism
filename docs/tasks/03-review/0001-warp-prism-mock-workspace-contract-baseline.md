@@ -1,6 +1,7 @@
 # Task 0001: Warp Prism Mock Workspace Contract Baseline
 
 > **Status**: `[x]` Done
+> **Review State**: Builder Done — implementation evidence missing; needs verification
 > **Priority**: 🔴 P0
 > **Type**: `governance`
 > **Origin**: EPIC 02 — Warp Prism Mock Workspace Corpus
@@ -115,7 +116,7 @@ Without a single approved corpus contract, every executor would invent a differe
    - `docs/mock-workspace-corpus-contract.md` (criado)
    - `assets/mock_workspace/manifest.yaml` (criado)
    - `docs/changelog/2026-06-07-0001-mock-workspace-contract.md` (criado)
-   - `docs/tasks/02-doing/0001-warp-prism-mock-workspace-contract-baseline.md` (movido de 01-open/, atualizado)
+   - `docs/tasks/03-review/0001-warp-prism-mock-workspace-contract-baseline.md` (live file; historical completion evidence had referenced `docs/tasks/02-doing/0001-warp-prism-mock-workspace-contract-baseline.md`, but that path is absent and is now treated as a pre-existing lane/evidence defect)
 - **Testes que verificam o trabalho**: rg validation commands (see below)
 - **Resultado dos comandos de validacao**:
    - `rg -n "counts:|required_agents:|required_skills:|required_workflows:|archive_destination:" assets/mock_workspace/manifest.yaml` → PASS (5 matches: lines 5, 13, 24, 39, 74)

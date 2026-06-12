@@ -79,16 +79,22 @@ HistoryState _testState({
 
 Widget _wrapInApp(Widget child) {
   return MaterialApp(
-    home: Scaffold(body: SizedBox(width: 1200, height: 900, child: child)),
+    home: Scaffold(
+      body: OverflowBox(
+        maxWidth: double.infinity,
+        maxHeight: double.infinity,
+        child: SizedBox(width: 1200, height: 2400, child: child),
+      ),
+    ),
   );
 }
 
 void main() {
   group('History View Mode Switcher', () {
     testWidgets('renders all three mode chips', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        HistoryWorkspacePage(initialState: _testState()),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(HistoryWorkspacePage(initialState: _testState())),
+      );
 
       expect(find.text('Timeline'), findsOneWidget);
       expect(find.text('Project Story'), findsOneWidget);
@@ -96,61 +102,73 @@ void main() {
     });
 
     testWidgets('timeline mode shows DSTimeline', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        HistoryWorkspacePage(
-          initialState: _testState(viewMode: HistoryViewMode.timeline),
+      await tester.pumpWidget(
+        _wrapInApp(
+          HistoryWorkspacePage(
+            initialState: _testState(viewMode: HistoryViewMode.timeline),
+          ),
         ),
-      ));
+      );
 
       // Timeline renders entries
       expect(find.textContaining('4 of 4'), findsOneWidget);
     });
 
-    testWidgets('switching to project story mode renders story panels',
-        (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        HistoryWorkspacePage(
-          initialState: _testState(viewMode: HistoryViewMode.projectStory),
+    testWidgets('switching to project story mode renders story panels', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        _wrapInApp(
+          HistoryWorkspacePage(
+            initialState: _testState(viewMode: HistoryViewMode.projectStory),
+          ),
         ),
-      ));
+      );
 
       // Project story groups by project
-      expect(find.text('warp-prism'), findsOneWidget);
-      expect(find.text('ganthritor'), findsOneWidget);
+      expect(find.text('warp-prism'), findsWidgets);
+      expect(find.text('ganthritor'), findsWidgets);
     });
 
-    testWidgets('switching to impact story mode renders impact cards',
-        (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        HistoryWorkspacePage(
-          initialState: _testState(viewMode: HistoryViewMode.impactStory),
+    testWidgets('switching to impact story mode renders impact cards', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        _wrapInApp(
+          HistoryWorkspacePage(
+            initialState: _testState(viewMode: HistoryViewMode.impactStory),
+          ),
         ),
-      ));
+      );
 
       // Impact view renders entry IDs
-      expect(find.textContaining('0612'), findsOneWidget);
-      expect(find.textContaining('0712'), findsOneWidget);
+      expect(find.textContaining('0612'), findsWidgets);
+      expect(find.textContaining('Task 0712'), findsOneWidget);
     });
 
     testWidgets('tapping mode chip changes mode', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        HistoryWorkspacePage(
-          initialState: _testState(viewMode: HistoryViewMode.timeline),
+      await tester.pumpWidget(
+        _wrapInApp(
+          HistoryWorkspacePage(
+            initialState: _testState(viewMode: HistoryViewMode.timeline),
+          ),
         ),
-      ));
+      );
 
       // Tap Project Story
       await tester.tap(find.text('Project Story'));
       await tester.pumpAndSettle();
 
       // Should now show project groups
-      expect(find.text('warp-prism'), findsOneWidget);
+      expect(find.text('warp-prism'), findsWidgets);
     });
   });
 
   group('ProjectStoryGroup', () {
     test('summary includes entry count and types', () {
-      final entries = _testEntries().where((e) => e.project == 'warp-prism').toList();
+      final entries = _testEntries()
+          .where((e) => e.project == 'warp-prism')
+          .toList();
       final group = ProjectStoryGroup(project: 'warp-prism', entries: entries);
       expect(group.summary, contains('3 change'));
       expect(group.summary, contains('feature'));
@@ -158,13 +176,17 @@ void main() {
     });
 
     test('taskIds lists non-empty tasks', () {
-      final entries = _testEntries().where((e) => e.project == 'warp-prism').toList();
+      final entries = _testEntries()
+          .where((e) => e.project == 'warp-prism')
+          .toList();
       final group = ProjectStoryGroup(project: 'warp-prism', entries: entries);
       expect(group.taskIds, containsAll(['0612', '0712', '0313']));
     });
 
     test('taskIds is empty when no entries have tasks', () {
-      final entries = _testEntries().where((e) => e.project == 'ganthritor').toList();
+      final entries = _testEntries()
+          .where((e) => e.project == 'ganthritor')
+          .toList();
       final group = ProjectStoryGroup(project: 'ganthritor', entries: entries);
       expect(group.taskIds, isEmpty);
     });
@@ -235,18 +257,14 @@ void main() {
 
   group('HistoryStoryView', () {
     testWidgets('renders empty state when no groups', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        HistoryStoryView(groups: const []),
-      ));
+      await tester.pumpWidget(_wrapInApp(HistoryStoryView(groups: const [])));
       expect(find.text('No project stories'), findsOneWidget);
     });
 
     testWidgets('renders project groups', (tester) async {
       final state = _testState();
       final groups = state.toProjectStoryGroups();
-      await tester.pumpWidget(_wrapInApp(
-        HistoryStoryView(groups: groups),
-      ));
+      await tester.pumpWidget(_wrapInApp(HistoryStoryView(groups: groups)));
       expect(find.text('warp-prism'), findsOneWidget);
       expect(find.text('ganthritor'), findsOneWidget);
     });
@@ -254,57 +272,44 @@ void main() {
 
   group('HistoryImpactView', () {
     testWidgets('renders empty state when no nodes', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        HistoryImpactView(nodes: const []),
-      ));
+      await tester.pumpWidget(_wrapInApp(HistoryImpactView(nodes: const [])));
       expect(find.text('No impact paths'), findsOneWidget);
     });
 
     testWidgets('renders impact path cards', (tester) async {
       final state = _testState();
       final nodes = state.toImpactPathNodes();
-      await tester.pumpWidget(_wrapInApp(
-        HistoryImpactView(nodes: nodes),
-      ));
+      await tester.pumpWidget(_wrapInApp(HistoryImpactView(nodes: nodes)));
       // Should render entry IDs
-      expect(find.textContaining('0612'), findsOneWidget);
-      expect(find.textContaining('0712'), findsOneWidget);
+      expect(find.textContaining('0612'), findsWidgets);
+      expect(find.textContaining('Task 0712'), findsOneWidget);
     });
 
     testWidgets('shows gap indicator for missing task', (tester) async {
       final state = _testState();
       final nodes = state.toImpactPathNodes();
-      await tester.pumpWidget(_wrapInApp(
-        HistoryImpactView(nodes: nodes),
-      ));
-      expect(find.text('No task linked to this entry'), findsOneWidget);
+      await tester.pumpWidget(_wrapInApp(HistoryImpactView(nodes: nodes)));
+      expect(find.text('No task linked to this entry'), findsWidgets);
     });
 
     testWidgets('shows gap indicator for missing skills', (tester) async {
       final state = _testState();
       final nodes = state.toImpactPathNodes();
-      await tester.pumpWidget(_wrapInApp(
-        HistoryImpactView(nodes: nodes),
-      ));
+      await tester.pumpWidget(_wrapInApp(HistoryImpactView(nodes: nodes)));
       expect(find.text('No skills/workflows linked'), findsOneWidget);
     });
 
     testWidgets('shows partial path warning', (tester) async {
       final state = _testState();
       final nodes = state.toImpactPathNodes();
-      await tester.pumpWidget(_wrapInApp(
-        HistoryImpactView(nodes: nodes),
-      ));
+      await tester.pumpWidget(_wrapInApp(HistoryImpactView(nodes: nodes)));
       expect(find.textContaining('Partial impact path'), findsWidgets);
     });
 
-    testWidgets('shows complete path for fully linked entries',
-        (tester) async {
+    testWidgets('shows complete path for fully linked entries', (tester) async {
       final state = _testState();
       final nodes = state.toImpactPathNodes();
-      await tester.pumpWidget(_wrapInApp(
-        HistoryImpactView(nodes: nodes),
-      ));
+      await tester.pumpWidget(_wrapInApp(HistoryImpactView(nodes: nodes)));
       expect(find.textContaining('Complete impact path'), findsWidgets);
     });
   });

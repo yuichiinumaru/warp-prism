@@ -28,27 +28,24 @@ class DSShell extends StatelessWidget {
         children: [
           // Sidebar
           sidebar,
-          
+
           // Main content area
           Expanded(
             child: Column(
               children: [
                 // Topbar
                 if (topbar != null) topbar!,
-                
+
                 // Content
                 Expanded(
                   child: Row(
                     children: [
                       // Main content
                       Expanded(child: content),
-                      
+
                       // Inspector panel
                       if (showInspector && inspector != null) ...[
-                        Container(
-                          width: 1,
-                          color: DSColors.borderSubtle,
-                        ),
+                        Container(width: 1, color: DSColors.borderSubtle),
                         SizedBox(
                           width: DSSpacing.inspectorWidth,
                           child: inspector,
@@ -112,7 +109,7 @@ class DSShellResponsive extends StatelessWidget {
         final showAnySidebar = width >= DSBreakpoints.narrow;
         final isNarrow = width < DSBreakpoints.sidebarCollapse;
         final hasInspector = showInspector && inspector != null;
-        
+
         // Narrow + inspector: full-screen detail replaces content
         if (isNarrow && hasInspector) {
           return Container(
@@ -125,21 +122,21 @@ class DSShellResponsive extends StatelessWidget {
             ),
           );
         }
-        
+
         return Container(
           color: DSColors.obsidianDeep,
           child: Row(
             children: [
               // Sidebar - hidden below narrow breakpoint
               if (showAnySidebar) showFullSidebar ? sidebar : collapsedSidebar,
-              
+
               // Main content area
               Expanded(
                 child: Column(
                   children: [
                     // Topbar
                     if (topbar != null) topbar!,
-                    
+
                     // Content
                     Expanded(
                       child: Stack(
@@ -149,7 +146,7 @@ class DSShellResponsive extends StatelessWidget {
                             children: [
                               // Primary content
                               Expanded(child: content),
-                              
+
                               // Inspector panel (only on wide screens — side-by-side)
                               if (isWide && hasInspector) ...[
                                 Container(
@@ -163,7 +160,7 @@ class DSShellResponsive extends StatelessWidget {
                               ],
                             ],
                           ),
-                          
+
                           // Medium layout: overlay drawer with scrim
                           if (!isWide && !isNarrow && hasInspector) ...[
                             // Scrim

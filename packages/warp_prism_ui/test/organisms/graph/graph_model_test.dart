@@ -90,21 +90,9 @@ void main() {
     });
 
     test('equality is based on id, label, type, status, position', () {
-      const a = GraphNode(
-        id: GraphNodeId('n1'),
-        label: 'Test',
-        type: 'agent',
-      );
-      const b = GraphNode(
-        id: GraphNodeId('n1'),
-        label: 'Test',
-        type: 'agent',
-      );
-      const c = GraphNode(
-        id: GraphNodeId('n2'),
-        label: 'Test',
-        type: 'agent',
-      );
+      const a = GraphNode(id: GraphNodeId('n1'), label: 'Test', type: 'agent');
+      const b = GraphNode(id: GraphNodeId('n1'), label: 'Test', type: 'agent');
+      const c = GraphNode(id: GraphNodeId('n2'), label: 'Test', type: 'agent');
 
       expect(a, equals(b));
       expect(a, isNot(equals(c)));
@@ -198,26 +186,22 @@ void main() {
     });
 
     test('edgesForNode returns all edges connected to node', () {
-      final agentEdges =
-          model.edgesForNode(const GraphNodeId('agent-1'));
+      final agentEdges = model.edgesForNode(const GraphNodeId('agent-1'));
       expect(agentEdges, hasLength(1));
       expect(agentEdges.first.edgeType, 'uses');
 
-      final skillEdges =
-          model.edgesForNode(const GraphNodeId('skill-1'));
+      final skillEdges = model.edgesForNode(const GraphNodeId('skill-1'));
       expect(skillEdges, hasLength(2)); // source of triggers, target of uses
     });
 
     test('edgesForNode returns empty for disconnected node', () {
-      final disconnected =
-          model.edgesForNode(const GraphNodeId('workflow-1'));
+      final disconnected = model.edgesForNode(const GraphNodeId('workflow-1'));
       // workflow-1 is target of skill-1->workflow-1
       expect(disconnected, hasLength(1));
     });
 
     test('adjacentNodes returns connected node IDs', () {
-      final skillAdj =
-          model.adjacentNodes(const GraphNodeId('skill-1'));
+      final skillAdj = model.adjacentNodes(const GraphNodeId('skill-1'));
       expect(skillAdj, hasLength(2));
       expect(
         skillAdj.map((id) => id.value),
@@ -236,18 +220,20 @@ void main() {
         ],
         edges: [],
       );
-      final adj =
-          isolatedModel.adjacentNodes(const GraphNodeId('isolated'));
+      final adj = isolatedModel.adjacentNodes(const GraphNodeId('isolated'));
       expect(adj, isEmpty);
     });
 
     test('copyWith returns new instance', () {
       final copy = model.copyWith(
-        nodes: [...nodes, const GraphNode(
-          id: GraphNodeId('new-node'),
-          label: 'New',
-          type: 'task',
-        )],
+        nodes: [
+          ...nodes,
+          const GraphNode(
+            id: GraphNodeId('new-node'),
+            label: 'New',
+            type: 'task',
+          ),
+        ],
       );
 
       expect(copy.nodes, hasLength(4));
@@ -258,10 +244,7 @@ void main() {
       final same = GraphModel(nodes: nodes, edges: edges);
       expect(model, equals(same));
 
-      final different = GraphModel(
-        nodes: nodes.sublist(0, 2),
-        edges: edges,
-      );
+      final different = GraphModel(nodes: nodes.sublist(0, 2), edges: edges);
       expect(model, isNot(equals(different)));
     });
   });

@@ -15,16 +15,8 @@ void main() {
     setUp(() {
       model = GraphModel(
         nodes: [
-          const GraphNode(
-            id: GraphNodeId('a'),
-            label: 'Alpha',
-            type: 'agent',
-          ),
-          const GraphNode(
-            id: GraphNodeId('b'),
-            label: 'Beta',
-            type: 'skill',
-          ),
+          const GraphNode(id: GraphNodeId('a'), label: 'Alpha', type: 'agent'),
+          const GraphNode(id: GraphNodeId('b'), label: 'Beta', type: 'skill'),
           const GraphNode(
             id: GraphNodeId('c'),
             label: 'Gamma',
@@ -45,10 +37,7 @@ void main() {
     });
 
     test('paints without throwing', () {
-      final painter = GraphPainter(
-        model: model,
-        positions: positions,
-      );
+      final painter = GraphPainter(model: model, positions: positions);
 
       final recorder = PictureRecorder();
       final canvas = Canvas(recorder);
@@ -112,10 +101,7 @@ void main() {
 
     test('handles empty model gracefully', () {
       const emptyModel = GraphModel(nodes: [], edges: []);
-      final painter = GraphPainter(
-        model: emptyModel,
-        positions: {},
-      );
+      final painter = GraphPainter(model: emptyModel, positions: {});
 
       final recorder = PictureRecorder();
       final canvas = Canvas(recorder);
@@ -133,10 +119,7 @@ void main() {
         // b and c missing
       };
 
-      final painter = GraphPainter(
-        model: model,
-        positions: partialPositions,
-      );
+      final painter = GraphPainter(model: model, positions: partialPositions);
 
       final recorder = PictureRecorder();
       final canvas = Canvas(recorder);
@@ -149,10 +132,7 @@ void main() {
     });
 
     test('shouldRepaint returns true when model changes', () {
-      final painter1 = GraphPainter(
-        model: model,
-        positions: positions,
-      );
+      final painter1 = GraphPainter(model: model, positions: positions);
 
       final differentModel = GraphModel(
         nodes: [
@@ -173,29 +153,20 @@ void main() {
     });
 
     test('shouldRepaint returns true when positions change', () {
-      final painter1 = GraphPainter(
-        model: model,
-        positions: positions,
-      );
+      final painter1 = GraphPainter(model: model, positions: positions);
 
       final movedPositions = {
         const GraphNodeId('a'): const Offset(-200, 0),
         const GraphNodeId('b'): const Offset(0, 0),
         const GraphNodeId('c'): const Offset(200, 0),
       };
-      final painter2 = GraphPainter(
-        model: model,
-        positions: movedPositions,
-      );
+      final painter2 = GraphPainter(model: model, positions: movedPositions);
 
       expect(painter1.shouldRepaint(painter2), isTrue);
     });
 
     test('shouldRepaint returns true when hover state changes', () {
-      final painter1 = GraphPainter(
-        model: model,
-        positions: positions,
-      );
+      final painter1 = GraphPainter(model: model, positions: positions);
       final painter2 = GraphPainter(
         model: model,
         positions: positions,
@@ -206,14 +177,8 @@ void main() {
     });
 
     test('shouldRepaint returns false when nothing changes', () {
-      final painter1 = GraphPainter(
-        model: model,
-        positions: positions,
-      );
-      final painter2 = GraphPainter(
-        model: model,
-        positions: positions,
-      );
+      final painter1 = GraphPainter(model: model, positions: positions);
+      final painter2 = GraphPainter(model: model, positions: positions);
 
       expect(painter1.shouldRepaint(painter2), isFalse);
     });

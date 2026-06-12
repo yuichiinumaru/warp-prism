@@ -114,12 +114,12 @@ class HistoryFacets {
 
   /// Empty facets with no values.
   const HistoryFacets.empty()
-      : projects = const {},
-        types = const {},
-        tasks = const {},
-        skills = const {},
-        workflows = const {},
-        impactTags = const {};
+    : projects = const {},
+      types = const {},
+      tasks = const {},
+      skills = const {},
+      workflows = const {},
+      impactTags = const {};
 
   @override
   String toString() =>
@@ -184,11 +184,11 @@ class HistoryTimeline {
 
   /// An empty timeline with no entries.
   const HistoryTimeline.empty()
-      : entries = const [],
-        facets = const HistoryFacets.empty(),
-        byProject = const [],
-        byType = const [],
-        byTask = const [];
+    : entries = const [],
+      facets = const HistoryFacets.empty(),
+      byProject = const [],
+      byType = const [],
+      byTask = const [];
 
   /// Total number of entries.
   int get count => entries.length;
@@ -288,11 +288,12 @@ class HistoryRepository {
 
     // Build story groupings
     final byProject = _groupBy(entries, (e) => e.project, 'Project');
-    final byType = _groupBy(
-        entries, (e) => e.type.name, 'Type');
-    final byTask =
-        _groupBy(entries.where((e) => e.task.isNotEmpty).toList(),
-            (e) => e.task, 'Task');
+    final byType = _groupBy(entries, (e) => e.type.name, 'Type');
+    final byTask = _groupBy(
+      entries.where((e) => e.task.isNotEmpty).toList(),
+      (e) => e.task,
+      'Task',
+    );
 
     return HistoryTimeline(
       entries: entries,
@@ -342,11 +343,13 @@ class HistoryRepository {
     }
 
     final groups = map.entries
-        .map((e) => HistoryStoryGroup(
-              key: e.key,
-              label: '$dimension: ${e.key}',
-              entries: e.value,
-            ))
+        .map(
+          (e) => HistoryStoryGroup(
+            key: e.key,
+            label: '$dimension: ${e.key}',
+            entries: e.value,
+          ),
+        )
         .toList();
 
     // Sort groups by entry count descending
@@ -388,25 +391,22 @@ class _RawEntry {
   final List<String> impactTags;
   final List<String> skills;
 
-  _RawEntry({
-    required this.asset,
-    required ChangelogMetadata meta,
-  })  : date = meta.date,
-        project = meta.project,
-        task = meta.task,
-        type = meta.type,
-        impactTags = meta.impact,
-        skills = meta.skills;
+  _RawEntry({required this.asset, required ChangelogMetadata meta})
+    : date = meta.date,
+      project = meta.project,
+      task = meta.task,
+      type = meta.type,
+      impactTags = meta.impact,
+      skills = meta.skills;
 
-  _RawEntry.fromMap({
-    required this.asset,
-    required this.date,
-  })  : project = asset.frontmatter['project']?.toString(),
-        task = asset.frontmatter['task']?.toString(),
-        type = ChangelogTypeParsing.fromString(
-            asset.frontmatter['type']?.toString()),
-        impactTags = _parseStringList(asset.frontmatter['impact']),
-        skills = _parseStringList(asset.frontmatter['skills']);
+  _RawEntry.fromMap({required this.asset, required this.date})
+    : project = asset.frontmatter['project']?.toString(),
+      task = asset.frontmatter['task']?.toString(),
+      type = ChangelogTypeParsing.fromString(
+        asset.frontmatter['type']?.toString(),
+      ),
+      impactTags = _parseStringList(asset.frontmatter['impact']),
+      skills = _parseStringList(asset.frontmatter['skills']);
 
   static List<String> _parseStringList(dynamic value) {
     if (value == null) return [];

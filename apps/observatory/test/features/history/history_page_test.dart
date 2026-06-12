@@ -77,72 +77,81 @@ HistoryState _testState({
 
 Widget _wrapInApp(Widget child) {
   return MaterialApp(
-    home: Scaffold(body: SizedBox(width: 1200, height: 900, child: child)),
+    home: Scaffold(
+      body: OverflowBox(
+        maxWidth: double.infinity,
+        maxHeight: double.infinity,
+        child: SizedBox(width: 1200, height: 2400, child: child),
+      ),
+    ),
   );
 }
 
 void main() {
   group('HistoryWorkspacePage', () {
-    testWidgets('renders timeline entries in reverse chronological order',
-        (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        HistoryWorkspacePage(initialState: _testState()),
-      ));
+    testWidgets('renders timeline entries in reverse chronological order', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        _wrapInApp(HistoryWorkspacePage(initialState: _testState())),
+      );
 
       // Should render entries count
       expect(find.textContaining('4 of 4'), findsOneWidget);
 
       // All entries should be rendered
-      expect(find.textContaining('0612'), findsOneWidget);
-      expect(find.textContaining('0712'), findsOneWidget);
-      expect(find.textContaining('0313'), findsOneWidget);
-      expect(find.textContaining('0810'), findsOneWidget);
+      expect(find.textContaining('0612 — feature'), findsOneWidget);
+      expect(find.textContaining('0712 — feature'), findsOneWidget);
+      expect(find.textContaining('0313 — refactor'), findsOneWidget);
+      expect(find.textContaining('0810 — feature'), findsOneWidget);
     });
 
     testWidgets('renders filter categories', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        HistoryWorkspacePage(initialState: _testState()),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(HistoryWorkspacePage(initialState: _testState())),
+      );
 
-      // Filter category labels should be present
-      expect(find.text('Project'), findsOneWidget);
-      expect(find.text('Type'), findsOneWidget);
-      expect(find.text('Task'), findsOneWidget);
+      // Filter category chips should be present
+      expect(find.text('warp-prism'), findsWidgets);
+      expect(find.text('feature'), findsWidgets);
+      expect(find.text('0612'), findsWidgets);
     });
 
     testWidgets('shows loading state', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        HistoryWorkspacePage(initialState: _testState(isLoading: true)),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(
+          HistoryWorkspacePage(initialState: _testState(isLoading: true)),
+        ),
+      );
 
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
     });
 
     testWidgets('shows error state', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        HistoryWorkspacePage(
-          initialState: _testState(error: 'Parser failed'),
+      await tester.pumpWidget(
+        _wrapInApp(
+          HistoryWorkspacePage(
+            initialState: _testState(error: 'Parser failed'),
+          ),
         ),
-      ));
+      );
 
       expect(find.textContaining('Failed to load'), findsOneWidget);
       expect(find.text('Parser failed'), findsOneWidget);
     });
 
     testWidgets('shows empty state when no entries', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        HistoryWorkspacePage(
-          initialState: _testState(entries: []),
-        ),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(HistoryWorkspacePage(initialState: _testState(entries: []))),
+      );
 
       expect(find.textContaining('0 of 0'), findsOneWidget);
     });
 
     testWidgets('renders result count after loading', (tester) async {
-      await tester.pumpWidget(_wrapInApp(
-        HistoryWorkspacePage(initialState: _testState()),
-      ));
+      await tester.pumpWidget(
+        _wrapInApp(HistoryWorkspacePage(initialState: _testState())),
+      );
 
       expect(find.textContaining('of 4'), findsOneWidget);
     });

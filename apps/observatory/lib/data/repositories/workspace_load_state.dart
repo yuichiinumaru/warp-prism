@@ -54,34 +54,28 @@ class WorkspaceLoadState {
     required WorkspaceSnapshot snapshot,
     required String rootPath,
   }) : this._(
-          status: WorkspaceLoadStatus.success,
-          snapshot: snapshot,
-          rootPath: rootPath,
-        );
+         status: WorkspaceLoadStatus.success,
+         snapshot: snapshot,
+         rootPath: rootPath,
+       );
 
   /// The workspace root exists but contains no assets.
   const WorkspaceLoadState.empty({required String rootPath})
-      : this._(
-          status: WorkspaceLoadStatus.empty,
-          rootPath: rootPath,
-        );
+    : this._(status: WorkspaceLoadStatus.empty, rootPath: rootPath);
 
   /// The load operation failed.
   const WorkspaceLoadState.error({
     required String message,
     required String rootPath,
   }) : this._(
-          status: WorkspaceLoadStatus.error,
-          errorMessage: message,
-          rootPath: rootPath,
-        );
+         status: WorkspaceLoadStatus.error,
+         errorMessage: message,
+         rootPath: rootPath,
+       );
 
   /// A load operation is in progress.
   const WorkspaceLoadState.loading({required String rootPath})
-      : this._(
-          status: WorkspaceLoadStatus.loading,
-          rootPath: rootPath,
-        );
+    : this._(status: WorkspaceLoadStatus.loading, rootPath: rootPath);
 
   /// Whether the load was successful (with or without assets).
   bool get isSuccess =>
@@ -106,6 +100,7 @@ class WorkspaceLoadState {
   int get hashCode => Object.hash(status, rootPath);
 
   @override
-  String toString() => 'WorkspaceLoadState(${status.name}, root: $rootPath'
+  String toString() =>
+      'WorkspaceLoadState(${status.name}, root: $rootPath'
       '${errorMessage != null ? ', error: $errorMessage' : ''})';
 }

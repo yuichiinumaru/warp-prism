@@ -6,8 +6,8 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../data/models/workspace_graph.dart';
-import '../../../../data/models/changelog_contracts.dart';
+import 'package:warp_prism_observatory/data/models/workspace_graph.dart';
+import 'package:warp_prism_observatory/data/models/changelog_contracts.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
 import '../workspace_snapshot_provider.dart';
 
@@ -33,8 +33,8 @@ class ChangelogListPanel extends ConsumerWidget {
       itemCount: changelogEntries.length,
       itemBuilder: (context, index) {
         final entry = changelogEntries[index];
-        final clMeta = entry.frontmatter['_changelogMetadata']
-            as ChangelogMetadata?;
+        final clMeta =
+            entry.frontmatter['_changelogMetadata'] as ChangelogMetadata?;
 
         return Padding(
           padding: const EdgeInsets.only(bottom: DSSpacing.sm),

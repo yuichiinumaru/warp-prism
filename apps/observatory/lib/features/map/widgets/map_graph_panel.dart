@@ -104,7 +104,8 @@ class _ModeSelector extends StatelessWidget {
 
             // Counts
             Semantics(
-              label: '$nodeCount nodes, $edgeCount edges in ${labelForMode(activeMode)} mode',
+              label:
+                  '$nodeCount nodes, $edgeCount edges in ${labelForMode(activeMode)} mode',
               child: DSText.labelSmall(
                 '$nodeCount nodes · $edgeCount edges',
                 color: DSColors.textTertiary,
@@ -156,10 +157,7 @@ class _ModeChip extends StatelessWidget {
                 width: isActive ? 1.5 : 1,
               ),
             ),
-            child: DSText.labelMedium(
-              labelForMode(mode),
-              color: color,
-            ),
+            child: DSText.labelMedium(labelForMode(mode), color: color),
           ),
         ),
       ),

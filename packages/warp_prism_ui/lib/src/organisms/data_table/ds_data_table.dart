@@ -9,10 +9,7 @@ import '../virtual_scroll/virtual_scroll.dart';
 // ============================================================================
 
 /// Sort direction for table columns.
-enum DSSortDirection {
-  ascending,
-  descending,
-}
+enum DSSortDirection { ascending, descending }
 
 /// Current sort state of the table.
 class DSSortState {
@@ -29,11 +26,11 @@ class DSSortState {
 
   /// Returns a copy with toggled direction.
   DSSortState toggle() => DSSortState(
-        columnId: columnId,
-        direction: direction == DSSortDirection.ascending
-            ? DSSortDirection.descending
-            : DSSortDirection.ascending,
-      );
+    columnId: columnId,
+    direction: direction == DSSortDirection.ascending
+        ? DSSortDirection.descending
+        : DSSortDirection.ascending,
+  );
 }
 
 // ============================================================================
@@ -41,8 +38,8 @@ class DSSortState {
 // ============================================================================
 
 /// Cell renderer callback — receives the cell value and row index.
-typedef DSCellRenderer = Widget Function(
-    BuildContext context, dynamic value, int rowIndex);
+typedef DSCellRenderer =
+    Widget Function(BuildContext context, dynamic value, int rowIndex);
 
 /// Column configuration for [DSDataTable].
 class DSDataColumn {
@@ -79,14 +76,14 @@ class DSDataColumn {
 
   /// Copy with visibility toggle.
   DSDataColumn copyWith({bool? visible}) => DSDataColumn(
-        id: id,
-        label: label,
-        sortable: sortable,
-        visible: visible ?? this.visible,
-        width: width,
-        textAlign: textAlign,
-        cellRenderer: cellRenderer,
-      );
+    id: id,
+    label: label,
+    sortable: sortable,
+    visible: visible ?? this.visible,
+    width: width,
+    textAlign: textAlign,
+    cellRenderer: cellRenderer,
+  );
 }
 
 // ============================================================================
@@ -136,17 +133,9 @@ class DSStatusCell extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          DSStatusDot(
-            color: state.color,
-            tooltip: state.label,
-          ),
+          DSStatusDot(color: state.color, tooltip: state.label),
           const SizedBox(width: DSSpacing.xs),
-          Flexible(
-            child: DSText.labelSmall(
-              state.label,
-              color: state.color,
-            ),
-          ),
+          Flexible(child: DSText.labelSmall(state.label, color: state.color)),
         ],
       ),
     );
@@ -166,10 +155,7 @@ class DSBadgeCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DSBadge.count(
-      int.tryParse(text) ?? 0,
-      color: color,
-    );
+    return DSBadge.count(int.tryParse(text) ?? 0, color: color);
   }
 }
 
@@ -194,11 +180,7 @@ class DSSecretCell extends StatefulWidget {
   final String maskedValue;
   final String? fullValue;
 
-  const DSSecretCell({
-    super.key,
-    required this.maskedValue,
-    this.fullValue,
-  });
+  const DSSecretCell({super.key, required this.maskedValue, this.fullValue});
 
   @override
   State<DSSecretCell> createState() => _DSSecretCellState();
@@ -213,7 +195,9 @@ class _DSSecretCellState extends State<DSSecretCell> {
       mainAxisSize: MainAxisSize.min,
       children: [
         DSText(
-          _revealed ? (widget.fullValue ?? widget.maskedValue) : widget.maskedValue,
+          _revealed
+              ? (widget.fullValue ?? widget.maskedValue)
+              : widget.maskedValue,
           variant: DSTextVariant.codeSmall,
           color: _revealed ? DSColors.statusRedacted : DSColors.textTertiary,
         ),
@@ -222,7 +206,9 @@ class _DSSecretCellState extends State<DSSecretCell> {
           GestureDetector(
             onTap: () => setState(() => _revealed = !_revealed),
             child: DSIcon.small(
-              _revealed ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+              _revealed
+                  ? Icons.visibility_off_outlined
+                  : Icons.visibility_outlined,
               color: DSColors.textTertiary,
               semanticLabel: _revealed ? 'Hide value' : 'Reveal value',
             ),
@@ -515,10 +501,7 @@ class _DSTableHeader extends StatelessWidget {
           // Column visibility menu
           if (onToggleColumn != null) ...[
             const Spacer(),
-            _ColumnVisibilityMenu(
-              columns: columns,
-              onToggle: onToggleColumn!,
-            ),
+            _ColumnVisibilityMenu(columns: columns, onToggle: onToggleColumn!),
           ],
         ],
       ),
@@ -531,17 +514,15 @@ class _ColumnHeaderCell extends StatelessWidget {
   final DSSortState? sortState;
   final ValueChanged<String>? onSort;
 
-  const _ColumnHeaderCell({
-    required this.column,
-    this.sortState,
-    this.onSort,
-  });
+  const _ColumnHeaderCell({required this.column, this.sortState, this.onSort});
 
   @override
   Widget build(BuildContext context) {
     final isSorted = sortState?.columnId == column.id;
-    final isAscending = isSorted && sortState?.direction == DSSortDirection.ascending;
-    final isDescending = isSorted && sortState?.direction == DSSortDirection.descending;
+    final isAscending =
+        isSorted && sortState?.direction == DSSortDirection.ascending;
+    final isDescending =
+        isSorted && sortState?.direction == DSSortDirection.descending;
 
     Widget label = DSText.labelMedium(
       column.label,
@@ -606,10 +587,7 @@ class _ColumnVisibilityMenu extends StatelessWidget {
   final List<DSDataColumn> columns;
   final void Function(String id, bool visible) onToggle;
 
-  const _ColumnVisibilityMenu({
-    required this.columns,
-    required this.onToggle,
-  });
+  const _ColumnVisibilityMenu({required this.columns, required this.onToggle});
 
   @override
   Widget build(BuildContext context) {
@@ -629,10 +607,7 @@ class _ColumnVisibilityMenu extends StatelessWidget {
         return CheckedPopupMenuItem<String>(
           value: col.id,
           checked: col.visible,
-          child: DSText.bodySmall(
-            col.label,
-            color: DSColors.textPrimary,
-          ),
+          child: DSText.bodySmall(col.label, color: DSColors.textPrimary),
         );
       }).toList(),
     );
@@ -679,13 +654,10 @@ class _DSTableRow extends StatelessWidget {
             color: row.selected
                 ? DSColors.accentCyan.withOpacity(0.05)
                 : isHovered
-                    ? DSColors.obsidianHover
-                    : DSColors.transparent,
+                ? DSColors.obsidianHover
+                : DSColors.transparent,
             border: Border(
-              bottom: BorderSide(
-                color: DSColors.borderSubtle,
-                width: 1,
-              ),
+              bottom: BorderSide(color: DSColors.borderSubtle, width: 1),
             ),
           ),
           child: Row(
@@ -726,10 +698,7 @@ class _DSTableRow extends StatelessWidget {
     }
 
     if (column.width != null) {
-      return SizedBox(
-        width: column.width,
-        child: cell,
-      );
+      return SizedBox(width: column.width, child: cell);
     }
 
     return Expanded(child: cell);
@@ -738,10 +707,7 @@ class _DSTableRow extends StatelessWidget {
   Widget _defaultRenderer(dynamic value, DSDataColumn column) {
     final text = value?.toString() ?? '';
 
-    return DSText.bodyMedium(
-      text,
-      color: DSColors.textPrimary,
-    );
+    return DSText.bodyMedium(text, color: DSColors.textPrimary);
   }
 }
 
@@ -797,10 +763,7 @@ class _TableSkeleton extends StatelessWidget {
   final List<DSDataColumn> columns;
   final bool selectable;
 
-  const _TableSkeleton({
-    required this.columns,
-    this.selectable = false,
-  });
+  const _TableSkeleton({required this.columns, this.selectable = false});
 
   @override
   Widget build(BuildContext context) {
@@ -847,10 +810,7 @@ class _TableSkeleton extends StatelessWidget {
                 if (selectable) const SizedBox(width: 40),
                 for (int i = 0; i < visibleColumns.length; i++) ...[
                   if (i > 0) const SizedBox(width: DSSpacing.md),
-                  _skeletonBar(
-                    visibleColumns[i].width ?? 120,
-                    14,
-                  ),
+                  _skeletonBar(visibleColumns[i].width ?? 120, 14),
                 ],
               ],
             ),
@@ -1049,7 +1009,8 @@ class _DSDataTableState extends State<DSDataTable> {
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: 'Data table with ${widget.columns.where((c) => c.visible).length} columns'
+      label:
+          'Data table with ${widget.columns.where((c) => c.visible).length} columns'
           '${widget.rows.isNotEmpty ? ' and ${widget.rows.length} rows' : ''}',
       child: DSGlassPanelSimple(
         padding: EdgeInsets.zero,
@@ -1096,9 +1057,7 @@ class _DSDataTableState extends State<DSDataTable> {
                 onToggleColumn: widget.onToggleColumn,
               ),
               // Body — virtual scroll or paginated list
-              Flexible(
-                child: _buildBody(),
-              ),
+              Flexible(child: _buildBody()),
               // Pagination
               if (widget.showPagination)
                 DSTablePagination(
@@ -1160,10 +1119,10 @@ class _DSDataTableState extends State<DSDataTable> {
 /// Extension on [DSDataRow] to support copyWith.
 extension _DSDataRowCopyWith on DSDataRow {
   DSDataRow copyWith({bool? selected}) => DSDataRow(
-        id: id,
-        cells: cells,
-        selected: selected ?? this.selected,
-        selectable: selectable,
-        onTap: onTap,
-      );
+    id: id,
+    cells: cells,
+    selected: selected ?? this.selected,
+    selectable: selectable,
+    onTap: onTap,
+  );
 }

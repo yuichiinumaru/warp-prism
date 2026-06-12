@@ -1,6 +1,7 @@
 # Task 1118: Warp Prism Operational State Vocabulary Expansion
 
 > **Status**: `[x]` Complete
+> **Review State**: Package Gate Failed — implementation complete; pre-existing gallery compilation errors block full package gate
 > **Priority**: 🔴 P0 (architectural gate — blocks all operational components)
 > **Type**: `design-system` | `architecture`
 > **Origin**: EPIC-11 gap analysis (IMPORTANT GAP-I5) — promoted to P0 because without canonical state vocabulary, every operational component (data table, log viewer, health dashboard, badges) will invent its own semantics.

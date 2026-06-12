@@ -17,8 +17,7 @@ class GraphNodeId {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is GraphNodeId && value == other.value;
+      identical(this, other) || other is GraphNodeId && value == other.value;
 
   @override
   int get hashCode => value.hashCode;
@@ -42,8 +41,7 @@ class GraphEdgeId {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is GraphEdgeId && value == other.value;
+      identical(this, other) || other is GraphEdgeId && value == other.value;
 
   @override
   int get hashCode => value.hashCode;
@@ -164,8 +162,7 @@ class GraphEdge {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is GraphEdge && id == other.id;
+      identical(this, other) || other is GraphEdge && id == other.id;
 
   @override
   int get hashCode => id.hashCode;
@@ -182,10 +179,7 @@ class GraphModel {
   final List<GraphNode> nodes;
   final List<GraphEdge> edges;
 
-  const GraphModel({
-    required this.nodes,
-    required this.edges,
-  });
+  const GraphModel({required this.nodes, required this.edges});
 
   /// Look up a node by its typed ID. Returns `null` if not found.
   GraphNode? nodeById(GraphNodeId id) {
@@ -226,14 +220,8 @@ class GraphModel {
     return GraphModel(nodes: nodes, edges: edges);
   }
 
-  GraphModel copyWith({
-    List<GraphNode>? nodes,
-    List<GraphEdge>? edges,
-  }) {
-    return GraphModel(
-      nodes: nodes ?? this.nodes,
-      edges: edges ?? this.edges,
-    );
+  GraphModel copyWith({List<GraphNode>? nodes, List<GraphEdge>? edges}) {
+    return GraphModel(nodes: nodes ?? this.nodes, edges: edges ?? this.edges);
   }
 
   @override
@@ -244,10 +232,7 @@ class GraphModel {
           _listEquals(edges, other.edges);
 
   @override
-  int get hashCode => Object.hash(
-        Object.hashAll(nodes),
-        Object.hashAll(edges),
-      );
+  int get hashCode => Object.hash(Object.hashAll(nodes), Object.hashAll(edges));
 
   static bool _listEquals<T>(List<T> a, List<T> b) {
     if (a.length != b.length) return false;

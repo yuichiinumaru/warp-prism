@@ -35,19 +35,23 @@ class EdgeInferenceService {
   }) {
     final edges = <WorkspaceEdge>[];
     for (final sub in subSkills) {
-      edges.add(WorkspaceEdge(
-        sourceId: skillId,
-        targetId: 'subskill:$sub',
-        kind: EdgeKind.contains,
-      ));
+      edges.add(
+        WorkspaceEdge(
+          sourceId: skillId,
+          targetId: 'subskill:$sub',
+          kind: EdgeKind.contains,
+        ),
+      );
     }
     if (skillLocalWorkflowIds != null) {
       for (final wf in skillLocalWorkflowIds) {
-        edges.add(WorkspaceEdge(
-          sourceId: skillId,
-          targetId: 'workflow:$wf',
-          kind: EdgeKind.contains,
-        ));
+        edges.add(
+          WorkspaceEdge(
+            sourceId: skillId,
+            targetId: 'workflow:$wf',
+            kind: EdgeKind.contains,
+          ),
+        );
       }
     }
     return edges;
@@ -64,11 +68,15 @@ class EdgeInferenceService {
     required String skillId,
     required List<String> routesTo,
   }) {
-    return routesTo.map((target) => WorkspaceEdge(
-      sourceId: skillId,
-      targetId: target,
-      kind: EdgeKind.routesTo,
-    )).toList();
+    return routesTo
+        .map(
+          (target) => WorkspaceEdge(
+            sourceId: skillId,
+            targetId: target,
+            kind: EdgeKind.routesTo,
+          ),
+        )
+        .toList();
   }
 
   // ---------------------------------------------------------------------------
@@ -80,11 +88,15 @@ class EdgeInferenceService {
     required String workflowId,
     required List<String> usesSkills,
   }) {
-    return usesSkills.map((skill) => WorkspaceEdge(
-      sourceId: workflowId,
-      targetId: 'skill:$skill',
-      kind: EdgeKind.dependsOn,
-    )).toList();
+    return usesSkills
+        .map(
+          (skill) => WorkspaceEdge(
+            sourceId: workflowId,
+            targetId: 'skill:$skill',
+            kind: EdgeKind.dependsOn,
+          ),
+        )
+        .toList();
   }
 
   /// Infer dependency edges from a task's `depends_on` list.
@@ -92,11 +104,15 @@ class EdgeInferenceService {
     required String taskId,
     required List<String> dependsOn,
   }) {
-    return dependsOn.map((dep) => WorkspaceEdge(
-      sourceId: taskId,
-      targetId: 'task:$dep',
-      kind: EdgeKind.dependsOn,
-    )).toList();
+    return dependsOn
+        .map(
+          (dep) => WorkspaceEdge(
+            sourceId: taskId,
+            targetId: 'task:$dep',
+            kind: EdgeKind.dependsOn,
+          ),
+        )
+        .toList();
   }
 
   // ---------------------------------------------------------------------------
@@ -111,18 +127,22 @@ class EdgeInferenceService {
   }) {
     final edges = <WorkspaceEdge>[];
     for (final skill in skills) {
-      edges.add(WorkspaceEdge(
-        sourceId: agentId,
-        targetId: 'skill:$skill',
-        kind: EdgeKind.references,
-      ));
+      edges.add(
+        WorkspaceEdge(
+          sourceId: agentId,
+          targetId: 'skill:$skill',
+          kind: EdgeKind.references,
+        ),
+      );
     }
     for (final wf in workflows) {
-      edges.add(WorkspaceEdge(
-        sourceId: agentId,
-        targetId: 'workflow:$wf',
-        kind: EdgeKind.references,
-      ));
+      edges.add(
+        WorkspaceEdge(
+          sourceId: agentId,
+          targetId: 'workflow:$wf',
+          kind: EdgeKind.references,
+        ),
+      );
     }
     return edges;
   }
@@ -135,18 +155,22 @@ class EdgeInferenceService {
   }) {
     final edges = <WorkspaceEdge>[];
     for (final skill in skills) {
-      edges.add(WorkspaceEdge(
-        sourceId: taskId,
-        targetId: 'skill:$skill',
-        kind: EdgeKind.references,
-      ));
+      edges.add(
+        WorkspaceEdge(
+          sourceId: taskId,
+          targetId: 'skill:$skill',
+          kind: EdgeKind.references,
+        ),
+      );
     }
     for (final wf in workflows) {
-      edges.add(WorkspaceEdge(
-        sourceId: taskId,
-        targetId: 'workflow:$wf',
-        kind: EdgeKind.references,
-      ));
+      edges.add(
+        WorkspaceEdge(
+          sourceId: taskId,
+          targetId: 'workflow:$wf',
+          kind: EdgeKind.references,
+        ),
+      );
     }
     return edges;
   }
@@ -215,18 +239,22 @@ class EdgeInferenceService {
   }) {
     final edges = <WorkspaceEdge>[];
     for (final skill in skills) {
-      edges.add(WorkspaceEdge(
-        sourceId: agentId,
-        targetId: 'skill:$skill',
-        kind: EdgeKind.uses,
-      ));
+      edges.add(
+        WorkspaceEdge(
+          sourceId: agentId,
+          targetId: 'skill:$skill',
+          kind: EdgeKind.uses,
+        ),
+      );
     }
     for (final wf in workflows) {
-      edges.add(WorkspaceEdge(
-        sourceId: agentId,
-        targetId: 'workflow:$wf',
-        kind: EdgeKind.uses,
-      ));
+      edges.add(
+        WorkspaceEdge(
+          sourceId: agentId,
+          targetId: 'workflow:$wf',
+          kind: EdgeKind.uses,
+        ),
+      );
     }
     return edges;
   }
@@ -254,7 +282,8 @@ class EdgeInferenceService {
     final skillName = skillMatch.group(1)!;
     return WorkspaceEdge(
       sourceId: 'skill:$skillName',
-      targetId: 'workflow:${workflowPath.split('/').last.replaceAll('.md', '')}',
+      targetId:
+          'workflow:${workflowPath.split('/').last.replaceAll('.md', '')}',
       kind: EdgeKind.contains,
     );
   }

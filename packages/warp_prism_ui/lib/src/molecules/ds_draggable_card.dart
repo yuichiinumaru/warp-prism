@@ -114,10 +114,7 @@ class DSDraggableCard extends StatelessWidget {
         ),
       ),
       // ChildWhenDragging: ghost card at the original position
-      childWhenDragging: Opacity(
-        opacity: 0.2,
-        child: card,
-      ),
+      childWhenDragging: Opacity(opacity: 0.2, child: card),
       child: card,
     );
   }

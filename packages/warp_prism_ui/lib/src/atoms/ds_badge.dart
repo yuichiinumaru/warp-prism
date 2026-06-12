@@ -27,23 +27,45 @@ class DSBadge extends StatelessWidget {
   });
 
   // === NAMED CONSTRUCTORS ===
-  const DSBadge.count(int this.count, {super.key, this.color, this.backgroundColor, this.size = DSBadgeSize.small})
-      : label = null, variant = DSBadgeVariant.filled;
+  const DSBadge.count(
+    int this.count, {
+    super.key,
+    this.color,
+    this.backgroundColor,
+    this.size = DSBadgeSize.small,
+  }) : label = null,
+       variant = DSBadgeVariant.filled;
 
   const DSBadge.dot({super.key, this.color})
-      : label = null, count = null, backgroundColor = null, variant = DSBadgeVariant.dot, size = DSBadgeSize.small;
+    : label = null,
+      count = null,
+      backgroundColor = null,
+      variant = DSBadgeVariant.dot,
+      size = DSBadgeSize.small;
 
   const DSBadge.success({super.key, this.label, this.count})
-      : color = DSColors.statusSuccess, backgroundColor = null, variant = DSBadgeVariant.filled, size = DSBadgeSize.medium;
+    : color = DSColors.statusSuccess,
+      backgroundColor = null,
+      variant = DSBadgeVariant.filled,
+      size = DSBadgeSize.medium;
 
   const DSBadge.warning({super.key, this.label, this.count})
-      : color = DSColors.statusWarning, backgroundColor = null, variant = DSBadgeVariant.filled, size = DSBadgeSize.medium;
+    : color = DSColors.statusWarning,
+      backgroundColor = null,
+      variant = DSBadgeVariant.filled,
+      size = DSBadgeSize.medium;
 
   const DSBadge.error({super.key, this.label, this.count})
-      : color = DSColors.statusError, backgroundColor = null, variant = DSBadgeVariant.filled, size = DSBadgeSize.medium;
+    : color = DSColors.statusError,
+      backgroundColor = null,
+      variant = DSBadgeVariant.filled,
+      size = DSBadgeSize.medium;
 
   const DSBadge.info({super.key, this.label, this.count})
-      : color = DSColors.statusInfo, backgroundColor = null, variant = DSBadgeVariant.filled, size = DSBadgeSize.medium;
+    : color = DSColors.statusInfo,
+      backgroundColor = null,
+      variant = DSBadgeVariant.filled,
+      size = DSBadgeSize.medium;
 
   // === OPERATIONAL STATE FACTORY ===
   /// Creates a badge from a [DSOperationalState].
@@ -71,32 +93,41 @@ class DSBadge extends StatelessWidget {
 
   double get _height {
     switch (size) {
-      case DSBadgeSize.small: return 16;
-      case DSBadgeSize.medium: return 20;
-      case DSBadgeSize.large: return 24;
+      case DSBadgeSize.small:
+        return 16;
+      case DSBadgeSize.medium:
+        return 20;
+      case DSBadgeSize.large:
+        return 24;
     }
   }
 
   double get _fontSize {
     switch (size) {
-      case DSBadgeSize.small: return 10;
-      case DSBadgeSize.medium: return 11;
-      case DSBadgeSize.large: return 12;
+      case DSBadgeSize.small:
+        return 10;
+      case DSBadgeSize.medium:
+        return 11;
+      case DSBadgeSize.large:
+        return 12;
     }
   }
 
   EdgeInsets get _padding {
     switch (size) {
-      case DSBadgeSize.small: return const EdgeInsets.symmetric(horizontal: 4);
-      case DSBadgeSize.medium: return const EdgeInsets.symmetric(horizontal: 6);
-      case DSBadgeSize.large: return const EdgeInsets.symmetric(horizontal: 8);
+      case DSBadgeSize.small:
+        return const EdgeInsets.symmetric(horizontal: 4);
+      case DSBadgeSize.medium:
+        return const EdgeInsets.symmetric(horizontal: 6);
+      case DSBadgeSize.large:
+        return const EdgeInsets.symmetric(horizontal: 8);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final effectiveColor = color ?? DSColors.accentCyan;
-    
+
     if (variant == DSBadgeVariant.dot) {
       return Container(
         width: 8,
@@ -108,14 +139,14 @@ class DSBadge extends StatelessWidget {
       );
     }
 
-    final content = count != null 
+    final content = count != null
         ? (count! > 99 ? '99+' : count.toString())
         : label ?? '';
 
     final bgColor = variant == DSBadgeVariant.filled
         ? effectiveColor.withOpacity(0.15)
         : DSColors.transparent;
-    
+
     final borderColor = variant == DSBadgeVariant.outlined
         ? effectiveColor.withOpacity(0.5)
         : DSColors.transparent;
@@ -144,14 +175,6 @@ class DSBadge extends StatelessWidget {
   }
 }
 
-enum DSBadgeVariant {
-  filled,
-  outlined,
-  dot,
-}
+enum DSBadgeVariant { filled, outlined, dot }
 
-enum DSBadgeSize {
-  small,
-  medium,
-  large,
-}
+enum DSBadgeSize { small, medium, large }

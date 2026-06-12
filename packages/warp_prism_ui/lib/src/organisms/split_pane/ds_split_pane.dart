@@ -253,8 +253,8 @@ class _DSSplitPaneState extends State<DSSplitPane> {
             onExit: (_) => setState(() => _isHovering = false),
             cursor: widget.resizable
                 ? (isHorizontal
-                    ? SystemMouseCursors.resizeColumn
-                    : SystemMouseCursors.resizeRow)
+                      ? SystemMouseCursors.resizeColumn
+                      : SystemMouseCursors.resizeRow)
                 : SystemMouseCursors.basic,
             child: Focus(
               focusNode: _dividerFocusNode,
@@ -263,7 +263,8 @@ class _DSSplitPaneState extends State<DSSplitPane> {
                 return KeyEventResult.handled;
               },
               child: Semantics(
-                label: 'Split pane divider. '
+                label:
+                    'Split pane divider. '
                     '${widget.resizable ? 'Drag to resize. Double-click to collapse.' : ''}',
                 button: widget.resizable,
                 child: AnimatedContainer(
@@ -274,8 +275,8 @@ class _DSSplitPaneState extends State<DSSplitPane> {
                     color: _isHovering || _isDragging
                         ? DSColors.accentCyan.withOpacity(0.3)
                         : (_isFocused
-                            ? DSColors.accentCyan.withOpacity(0.2)
-                            : effectiveDividerColor),
+                              ? DSColors.accentCyan.withOpacity(0.2)
+                              : effectiveDividerColor),
                   ),
                   child: Center(
                     child: _buildDragHandle(
@@ -283,8 +284,8 @@ class _DSSplitPaneState extends State<DSSplitPane> {
                       color: (_isHovering || _isDragging)
                           ? DSColors.accentCyan
                           : (_isFocused
-                              ? DSColors.accentCyan.withOpacity(0.7)
-                              : effectiveHandleColor),
+                                ? DSColors.accentCyan.withOpacity(0.7)
+                                : effectiveHandleColor),
                     ),
                   ),
                 ),
@@ -316,10 +317,7 @@ class _DSSplitPaneState extends State<DSSplitPane> {
   }
 
   /// Renders the drag handle (three dots / grip pattern).
-  Widget _buildDragHandle({
-    required bool isHorizontal,
-    required Color color,
-  }) {
+  Widget _buildDragHandle({required bool isHorizontal, required Color color}) {
     if (isHorizontal) {
       // Vertical grip: three vertical dots
       return Column(
@@ -351,10 +349,7 @@ class _DSSplitPaneState extends State<DSSplitPane> {
     return Container(
       width: 3,
       height: 3,
-      decoration: BoxDecoration(
-        color: color,
-        shape: BoxShape.circle,
-      ),
+      decoration: BoxDecoration(color: color, shape: BoxShape.circle),
     );
   }
 }

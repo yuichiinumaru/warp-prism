@@ -35,10 +35,7 @@ class DSSkeletonTextLine extends StatelessWidget {
     return FractionallySizedBox(
       widthFactor: widthFactor,
       alignment: Alignment.centerLeft,
-      child: DSShimmer(
-        height: height,
-        borderRadius: DSRadii.xs,
-      ),
+      child: DSShimmer(height: height, borderRadius: DSRadii.xs),
     );
   }
 }

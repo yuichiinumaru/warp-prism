@@ -93,7 +93,8 @@ OperateProjection _buildTestProjection() {
 void main() {
   Widget wrapInApp(Widget child) {
     return MaterialApp(
-        home: Scaffold(body: SizedBox(width: 1600, height: 800, child: child)));
+      home: Scaffold(body: SizedBox(width: 1600, height: 800, child: child)),
+    );
   }
 
   // ===========================================================================
@@ -129,10 +130,7 @@ void main() {
     });
 
     test('copyWith clears individual filters', () {
-      const original = OperateFilters(
-        lane: TaskLane.doing,
-        owner: 'builder',
-      );
+      const original = OperateFilters(lane: TaskLane.doing, owner: 'builder');
       final cleared = original.copyWith(clearOwner: true);
       expect(cleared.lane, TaskLane.doing);
       expect(cleared.owner, isNull);
@@ -214,12 +212,14 @@ void main() {
       expect(viewModel.state.filters.lane, TaskLane.doing);
       expect(viewModel.state.filteredTaskCount, 1);
       // Doing lane has 1 task
-      final doingLane =
-          viewModel.state.lanes.firstWhere((l) => l.lane == TaskLane.doing);
+      final doingLane = viewModel.state.lanes.firstWhere(
+        (l) => l.lane == TaskLane.doing,
+      );
       expect(doingLane.tasks.length, 1);
       // Other lanes should have 0 filtered tasks
-      final openLane =
-          viewModel.state.lanes.firstWhere((l) => l.lane == TaskLane.open);
+      final openLane = viewModel.state.lanes.firstWhere(
+        (l) => l.lane == TaskLane.open,
+      );
       expect(openLane.tasks.length, 0);
     });
 
@@ -275,10 +275,14 @@ void main() {
     test('lane filter preserves totalCount per lane', () {
       viewModel.filterByOwner('builder');
       // Total count per lane is still the unfiltered count
-      final planningLane =
-          viewModel.state.lanes.firstWhere((l) => l.lane == TaskLane.planning);
+      final planningLane = viewModel.state.lanes.firstWhere(
+        (l) => l.lane == TaskLane.planning,
+      );
       expect(planningLane.totalCount, 1); // unfiltered
-      expect(planningLane.tasks.length, 0); // filtered: builder has no planning tasks
+      expect(
+        planningLane.tasks.length,
+        0,
+      ); // filtered: builder has no planning tasks
     });
   });
 
@@ -299,25 +303,39 @@ void main() {
 
     test('filterOptions contains unique owners', () {
       final options = viewModel.state.filterOptions;
-      expect(options.owners, containsAll(['architect', 'builder', 'reviewer', 'ops']));
+      expect(
+        options.owners,
+        containsAll(['architect', 'builder', 'reviewer', 'ops']),
+      );
     });
 
     test('filterOptions contains unique skills', () {
       final options = viewModel.state.filterOptions;
-      expect(options.skills,
-          containsAll(['design', 'auth', 'security', 'ui', 'deploy']));
+      expect(
+        options.skills,
+        containsAll(['design', 'auth', 'security', 'ui', 'deploy']),
+      );
     });
 
     test('filterOptions contains unique workflows', () {
       final options = viewModel.state.filterOptions;
-      expect(options.workflows,
-          containsAll(['planning-wf', 'dev-wf', 'review-wf', 'deploy-wf']));
+      expect(
+        options.workflows,
+        containsAll(['planning-wf', 'dev-wf', 'review-wf', 'deploy-wf']),
+      );
     });
 
     test('filterOptions contains unique proof states', () {
       final options = viewModel.state.filterOptions;
-      expect(options.proofStates,
-          containsAll([ProofState.complete, ProofState.none, ProofState.partial, ProofState.verified]));
+      expect(
+        options.proofStates,
+        containsAll([
+          ProofState.complete,
+          ProofState.none,
+          ProofState.partial,
+          ProofState.verified,
+        ]),
+      );
     });
   });
 
@@ -424,9 +442,7 @@ void main() {
         );
       }).toList();
 
-      await tester.pumpWidget(wrapInApp(
-        DSLaneBoard(lanes: lanes),
-      ));
+      await tester.pumpWidget(wrapInApp(DSLaneBoard(lanes: lanes)));
 
       // Should render 5 lane headers
       expect(find.text('planning'), findsOneWidget);
@@ -451,32 +467,18 @@ void main() {
             ),
           ],
         ),
-        DSLane(
-          id: '01-open',
-          label: 'Open',
-          tasks: const [],
-        ),
+        DSLane(id: '01-open', label: 'Open', tasks: const []),
       ];
 
-      await tester.pumpWidget(wrapInApp(
-        DSLaneBoard(lanes: lanes),
-      ));
+      await tester.pumpWidget(wrapInApp(DSLaneBoard(lanes: lanes)));
 
       expect(find.text('Build Dashboard'), findsOneWidget);
     });
 
     testWidgets('empty lanes show no-tasks state', (tester) async {
-      final lanes = [
-        const DSLane(
-          id: '01-open',
-          label: 'Open',
-          tasks: [],
-        ),
-      ];
+      final lanes = [const DSLane(id: '01-open', label: 'Open', tasks: [])];
 
-      await tester.pumpWidget(wrapInApp(
-        DSLaneBoard(lanes: lanes),
-      ));
+      await tester.pumpWidget(wrapInApp(DSLaneBoard(lanes: lanes)));
 
       expect(find.text('No tasks'), findsOneWidget);
     });

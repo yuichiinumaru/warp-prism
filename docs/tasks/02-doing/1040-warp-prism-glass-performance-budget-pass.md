@@ -1,6 +1,7 @@
 # Task 1040: Warp-Prism Glass Performance Budget Pass
 
 > **Status**: `[x]` Done
+> **Review State**: Blocked — Flutter SDK not installed; validation commands cannot execute
 > **Priority**: 🟡 P1
 > **Type**: `remediation`
 > **Origin**: EPIC 10 candidate story "Performance/glass effect pass" plus `warp-prism/docs/research.md` sparse glass guidance

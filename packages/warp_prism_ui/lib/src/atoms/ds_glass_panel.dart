@@ -8,11 +8,7 @@ import '../tokens/tokens.dart';
 /// - [subtle] — low blur, no shadow (lightweight containers)
 /// - [elevated] — medium blur, elevation2 shadow (cards, panels)
 /// - [modal] — high blur, elevation4 shadow (overlays, modals)
-enum DSGlassPanelVariant {
-  subtle,
-  elevated,
-  modal,
-}
+enum DSGlassPanelVariant { subtle, elevated, modal }
 
 /// ASW Observatory Atom - Glass Panel
 ///
@@ -57,12 +53,12 @@ class DSGlassPanel extends StatelessWidget {
     this.radius = DSRadii.card,
     this.padding,
     this.margin,
-  })  : backgroundColor = null,
-        borderColor = null,
-        borderWidth = 1,
-        blur = 5,
-        shadows = null,
-        variant = DSGlassPanelVariant.subtle;
+  }) : backgroundColor = null,
+       borderColor = null,
+       borderWidth = 1,
+       blur = 5,
+       shadows = null,
+       variant = DSGlassPanelVariant.subtle;
 
   const DSGlassPanel.elevated({
     super.key,
@@ -70,29 +66,30 @@ class DSGlassPanel extends StatelessWidget {
     this.radius = DSRadii.card,
     this.padding,
     this.margin,
-  })  : backgroundColor = null,
-        borderColor = null,
-        borderWidth = 1,
-        blur = 15,
-        shadows = DSShadows.elevation2,
-        variant = DSGlassPanelVariant.elevated;
+  }) : backgroundColor = null,
+       borderColor = null,
+       borderWidth = 1,
+       blur = 15,
+       shadows = DSShadows.elevation2,
+       variant = DSGlassPanelVariant.elevated;
 
   const DSGlassPanel.modal({
     super.key,
     required this.child,
     this.padding,
     this.margin,
-  })  : backgroundColor = null,
-        borderColor = null,
-        borderWidth = 1,
-        radius = DSRadii.modal,
-        blur = 20,
-        shadows = DSShadows.elevation4,
-        variant = DSGlassPanelVariant.modal;
+  }) : backgroundColor = null,
+       borderColor = null,
+       borderWidth = 1,
+       radius = DSRadii.modal,
+       blur = 20,
+       shadows = DSShadows.elevation4,
+       variant = DSGlassPanelVariant.modal;
 
   @override
   Widget build(BuildContext context) {
-    final bgColor = backgroundColor ?? DSColors.glassOverlay.withValues(alpha: 0.6);
+    final bgColor =
+        backgroundColor ?? DSColors.glassOverlay.withValues(alpha: 0.6);
     final border = borderColor ?? DSColors.borderSubtle;
 
     return Container(

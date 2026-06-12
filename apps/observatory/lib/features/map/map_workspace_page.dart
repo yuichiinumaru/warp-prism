@@ -47,9 +47,21 @@ class _MapWorkspacePageState extends State<MapWorkspacePage>
   late final TabController _tabController;
 
   static const _tabs = [
-    (subview: MapSubview.agents, label: 'Agents', icon: Icons.smart_toy_outlined),
-    (subview: MapSubview.skills, label: 'Skills', icon: Icons.psychology_outlined),
-    (subview: MapSubview.workflows, label: 'Workflows', icon: Icons.account_tree_outlined),
+    (
+      subview: MapSubview.agents,
+      label: 'Agents',
+      icon: Icons.smart_toy_outlined,
+    ),
+    (
+      subview: MapSubview.skills,
+      label: 'Skills',
+      icon: Icons.psychology_outlined,
+    ),
+    (
+      subview: MapSubview.workflows,
+      label: 'Workflows',
+      icon: Icons.account_tree_outlined,
+    ),
     (subview: MapSubview.graph, label: 'Graph', icon: Icons.hub_outlined),
   ];
 
@@ -216,9 +228,7 @@ class _MapWorkspacePageState extends State<MapWorkspacePage>
 
     // Empty corpus state (no assets at all for this tab)
     if (state.catalogAssets.isEmpty) {
-      return MapStatePanel(
-        state: MapSurfaceState.emptyCorpus,
-      );
+      return MapStatePanel(state: MapSurfaceState.emptyCorpus);
     }
 
     // No-results state (query/filter eliminated all assets)
@@ -271,15 +281,11 @@ class _MapWorkspacePageState extends State<MapWorkspacePage>
 
     // Empty corpus
     if (state.catalogAssets.isEmpty) {
-      return MapStatePanel(
-        state: MapSurfaceState.emptyCorpus,
-      );
+      return MapStatePanel(state: MapSurfaceState.emptyCorpus);
     }
 
     // Build edges from all catalog assets
-    final allEdges = state.catalogAssets
-        .expand((a) => a.edges)
-        .toList();
+    final allEdges = state.catalogAssets.expand((a) => a.edges).toList();
 
     // Compute the graph projection for the current mode
     final projection = projectGraph(
@@ -290,9 +296,7 @@ class _MapWorkspacePageState extends State<MapWorkspacePage>
 
     // Graph no-edges state
     if (projection.isEmpty) {
-      return MapStatePanel(
-        state: MapSurfaceState.graphNoEdges,
-      );
+      return MapStatePanel(state: MapSurfaceState.graphNoEdges);
     }
 
     return MapGraphPanel(

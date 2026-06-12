@@ -23,21 +23,23 @@ void main() {
   });
 
   group('PresetLocalWorkspaceSource', () {
-    test('returns empty snapshot for directory with no .agents or docs',
-        () async {
-      const source = PresetLocalWorkspaceSource();
-      final snapshot = await source.load(tempDir.path);
+    test(
+      'returns empty snapshot for directory with no .agents or docs',
+      () async {
+        const source = PresetLocalWorkspaceSource();
+        final snapshot = await source.load(tempDir.path);
 
-      expect(snapshot.agents, isEmpty);
-      expect(snapshot.skills, isEmpty);
-      expect(snapshot.workflows, isEmpty);
-      expect(snapshot.tasks, isEmpty);
-      expect(snapshot.changelogEntries, isEmpty);
-      expect(snapshot.totalAssets, equals(0));
-      expect(snapshot.metadata.rootPath, equals(tempDir.path));
-      expect(snapshot.metadata.filesScanned, equals(0));
-      expect(snapshot.metadata.parseErrors, equals(0));
-    });
+        expect(snapshot.agents, isEmpty);
+        expect(snapshot.skills, isEmpty);
+        expect(snapshot.workflows, isEmpty);
+        expect(snapshot.tasks, isEmpty);
+        expect(snapshot.changelogEntries, isEmpty);
+        expect(snapshot.totalAssets, equals(0));
+        expect(snapshot.metadata.rootPath, equals(tempDir.path));
+        expect(snapshot.metadata.filesScanned, equals(0));
+        expect(snapshot.metadata.parseErrors, equals(0));
+      },
+    );
 
     test('returns empty snapshot for non-existent directory', () async {
       const source = PresetLocalWorkspaceSource();
@@ -70,15 +72,16 @@ This agent exists to validate the workspace scanner.
 
       expect(snapshot.agents.length, equals(1));
       expect(snapshot.agents.first.name, equals('test-agent'));
-      expect(snapshot.agents.first.description,
-          contains('test agent for scanner validation'));
+      expect(
+        snapshot.agents.first.description,
+        contains('test agent for scanner validation'),
+      );
       expect(snapshot.metadata.filesScanned, equals(1));
       expect(snapshot.metadata.parseErrors, equals(0));
     });
 
     test('scans skills from .agents/skills/*/SKILL.md', () async {
-      final skillDir =
-          Directory('${tempDir.path}/.agents/skills/test-skill');
+      final skillDir = Directory('${tempDir.path}/.agents/skills/test-skill');
       await skillDir.create(recursive: true);
       await File('${skillDir.path}/SKILL.md').writeAsString('''
 ---
@@ -102,8 +105,7 @@ This skill validates the scanner.
     });
 
     test('scans tasks from docs/tasks/{lane}/*.md', () async {
-      final taskDir =
-          Directory('${tempDir.path}/docs/tasks/02-doing');
+      final taskDir = Directory('${tempDir.path}/docs/tasks/02-doing');
       await taskDir.create(recursive: true);
       await File('${taskDir.path}/T999-test-task.md').writeAsString('''
 ---
@@ -132,11 +134,10 @@ updated: 2026-06-07
     });
 
     test('scans changelog from docs/changelog/*.md', () async {
-      final changelogDir =
-          Directory('${tempDir.path}/docs/changelog');
+      final changelogDir = Directory('${tempDir.path}/docs/changelog');
       await changelogDir.create(recursive: true);
-      await File('${changelogDir.path}/2026-06-07-test-entry.md')
-          .writeAsString('''
+      await File('${changelogDir.path}/2026-06-07-test-entry.md').writeAsString(
+        '''
 ---
 id: 2026-06-07-test-entry
 date: 2026-06-07
@@ -150,7 +151,8 @@ type: chore
 ## Why
 
 Testing the scanner.
-''');
+''',
+      );
 
       const source = PresetLocalWorkspaceSource();
       final snapshot = await source.load(tempDir.path);
@@ -172,8 +174,7 @@ description: First test agent
 ''');
 
       // Skill
-      final skillDir =
-          Directory('${tempDir.path}/.agents/skills/skill1');
+      final skillDir = Directory('${tempDir.path}/.agents/skills/skill1');
       await skillDir.create(recursive: true);
       await File('${skillDir.path}/SKILL.md').writeAsString('''
 ---
@@ -184,8 +185,7 @@ description: First test skill
 ''');
 
       // Task
-      final taskDir =
-          Directory('${tempDir.path}/docs/tasks/01-open');
+      final taskDir = Directory('${tempDir.path}/docs/tasks/01-open');
       await taskDir.create(recursive: true);
       await File('${taskDir.path}/T001-test.md').writeAsString('''
 ---
@@ -200,11 +200,9 @@ updated: 2026-06-07
 ''');
 
       // Changelog
-      final changelogDir =
-          Directory('${tempDir.path}/docs/changelog');
+      final changelogDir = Directory('${tempDir.path}/docs/changelog');
       await changelogDir.create(recursive: true);
-      await File('${changelogDir.path}/2026-06-07-test.md')
-          .writeAsString('''
+      await File('${changelogDir.path}/2026-06-07-test.md').writeAsString('''
 ---
 id: 2026-06-07-test
 date: 2026-06-07
@@ -231,9 +229,9 @@ type: feature
       final agentDir = Directory('${tempDir.path}/.agents/agents');
       await agentDir.create(recursive: true);
       // File without frontmatter
-      await File('${agentDir.path}/bad-agent.md').writeAsString(
-        'This is not a valid agent file with no frontmatter.',
-      );
+      await File(
+        '${agentDir.path}/bad-agent.md',
+      ).writeAsString('This is not a valid agent file with no frontmatter.');
 
       const source = PresetLocalWorkspaceSource();
       final snapshot = await source.load(tempDir.path);

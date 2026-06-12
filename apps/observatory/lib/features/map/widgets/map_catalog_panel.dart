@@ -11,7 +11,7 @@
 library;
 
 import 'package:flutter/material.dart';
-import '../../../data/models/workspace_graph.dart';
+import 'package:warp_prism_observatory/data/models/workspace_graph.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
 import 'map_asset_card_grid.dart';
 import 'map_no_results_state.dart';
@@ -86,7 +86,9 @@ class MapCatalogPanel extends StatelessWidget {
             value: query,
             onChanged: onQueryChanged,
             onClear: onClearFilters,
-            activeFilterCount: activeFilters.isEmpty ? null : activeFilters.length,
+            activeFilterCount: activeFilters.isEmpty
+                ? null
+                : activeFilters.length,
           ),
         ),
 
@@ -163,8 +165,7 @@ class MapCatalogPanel extends StatelessWidget {
 
     for (final asset in assets) {
       final canLabel = _canonicalityLabel(asset.canonicality);
-      canonicalityCounts[canLabel] =
-          (canonicalityCounts[canLabel] ?? 0) + 1;
+      canonicalityCounts[canLabel] = (canonicalityCounts[canLabel] ?? 0) + 1;
 
       for (final tag in asset.tags) {
         tagCounts[tag] = (tagCounts[tag] ?? 0) + 1;
@@ -175,24 +176,28 @@ class MapCatalogPanel extends StatelessWidget {
 
     // Canonicality filters
     for (final entry in canonicalityCounts.entries) {
-      options.add(DSFilterOption(
-        value: 'can:${entry.key}',
-        label: entry.key,
-        icon: _canonicalityIcon(entry.key),
-        color: DSColors.forCanonicity(entry.key),
-        count: entry.value,
-      ));
+      options.add(
+        DSFilterOption(
+          value: 'can:${entry.key}',
+          label: entry.key,
+          icon: _canonicalityIcon(entry.key),
+          color: DSColors.forCanonicity(entry.key),
+          count: entry.value,
+        ),
+      );
     }
 
     // Tag filters (limit to top 8 to avoid overflow)
     final sortedTags = tagCounts.entries.toList()
       ..sort((a, b) => b.value.compareTo(a.value));
     for (final entry in sortedTags.take(8)) {
-      options.add(DSFilterOption(
-        value: 'tag:${entry.key}',
-        label: entry.key,
-        count: entry.value,
-      ));
+      options.add(
+        DSFilterOption(
+          value: 'tag:${entry.key}',
+          label: entry.key,
+          count: entry.value,
+        ),
+      );
     }
 
     return options;

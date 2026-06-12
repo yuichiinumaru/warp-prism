@@ -30,20 +30,18 @@ class DSErrorBoundary extends StatefulWidget {
   final Widget child;
 
   /// Custom fallback builder. If null, uses [DSFallbackView].
-  final Widget Function(BuildContext context, Object error, StackTrace? stackTrace)?
-      fallbackBuilder;
+  final Widget Function(
+    BuildContext context,
+    Object error,
+    StackTrace? stackTrace,
+  )?
+  fallbackBuilder;
 
-  const DSErrorBoundary({
-    super.key,
-    required this.child,
-    this.fallbackBuilder,
-  });
+  const DSErrorBoundary({super.key, required this.child, this.fallbackBuilder});
 
   /// Convenience constructor that uses [DSFallbackView] as the default fallback.
-  const DSErrorBoundary.withDefaultFallback({
-    super.key,
-    required this.child,
-  }) : fallbackBuilder = null;
+  const DSErrorBoundary.withDefaultFallback({super.key, required this.child})
+    : fallbackBuilder = null;
 
   @override
   State<DSErrorBoundary> createState() => _DSErrorBoundaryState();

@@ -24,7 +24,11 @@ void main() {
     test('builds from metrics and diagnostics', () {
       const metrics = WorkspaceMetricsSummary(
         totalAssets: 10,
-        assetsByKind: {AssetKind.task: 5, AssetKind.agent: 3, AssetKind.skill: 2},
+        assetsByKind: {
+          AssetKind.task: 5,
+          AssetKind.agent: 3,
+          AssetKind.skill: 2,
+        },
         tasksByLane: {
           TaskLane.open: 2,
           TaskLane.doing: 1,
@@ -43,22 +47,24 @@ void main() {
         orphanWorkflowCount: 0,
       );
 
-      final diagnostics = DiagnosticsReport(diagnostics: [
-        GovernanceDiagnostic(
-          assetId: 'task:001',
-          severity: DiagnosticSeverity.error,
-          category: DiagnosticCategory.proofGap,
-          message: 'No proof',
-          computedAt: DateTime(2026, 1, 1),
-        ),
-        GovernanceDiagnostic(
-          assetId: 'task:002',
-          severity: DiagnosticSeverity.warning,
-          category: DiagnosticCategory.orphanAsset,
-          message: 'Orphan',
-          computedAt: DateTime(2026, 1, 1),
-        ),
-      ]);
+      final diagnostics = DiagnosticsReport(
+        diagnostics: [
+          GovernanceDiagnostic(
+            assetId: 'task:001',
+            severity: DiagnosticSeverity.error,
+            category: DiagnosticCategory.proofGap,
+            message: 'No proof',
+            computedAt: DateTime(2026, 1, 1),
+          ),
+          GovernanceDiagnostic(
+            assetId: 'task:002',
+            severity: DiagnosticSeverity.warning,
+            category: DiagnosticCategory.orphanAsset,
+            message: 'Orphan',
+            computedAt: DateTime(2026, 1, 1),
+          ),
+        ],
+      );
 
       final vm = WorkspaceOverviewViewModel.from(
         metrics: metrics,
@@ -158,29 +164,31 @@ void main() {
 
   group('GovernanceViewModel', () {
     test('builds from diagnostics report', () {
-      final report = DiagnosticsReport(diagnostics: [
-        GovernanceDiagnostic(
-          assetId: 'task:001',
-          severity: DiagnosticSeverity.error,
-          category: DiagnosticCategory.proofGap,
-          message: 'No proof',
-          computedAt: DateTime(2026, 1, 1),
-        ),
-        GovernanceDiagnostic(
-          assetId: 'agent:001',
-          severity: DiagnosticSeverity.warning,
-          category: DiagnosticCategory.orphanAsset,
-          message: 'Orphan agent',
-          computedAt: DateTime(2026, 1, 1),
-        ),
-        GovernanceDiagnostic(
-          assetId: 'task:005',
-          severity: DiagnosticSeverity.warning,
-          category: DiagnosticCategory.brokenEdge,
-          message: 'High fan-in',
-          computedAt: DateTime(2026, 1, 1),
-        ),
-      ]);
+      final report = DiagnosticsReport(
+        diagnostics: [
+          GovernanceDiagnostic(
+            assetId: 'task:001',
+            severity: DiagnosticSeverity.error,
+            category: DiagnosticCategory.proofGap,
+            message: 'No proof',
+            computedAt: DateTime(2026, 1, 1),
+          ),
+          GovernanceDiagnostic(
+            assetId: 'agent:001',
+            severity: DiagnosticSeverity.warning,
+            category: DiagnosticCategory.orphanAsset,
+            message: 'Orphan agent',
+            computedAt: DateTime(2026, 1, 1),
+          ),
+          GovernanceDiagnostic(
+            assetId: 'task:005',
+            severity: DiagnosticSeverity.warning,
+            category: DiagnosticCategory.brokenEdge,
+            message: 'High fan-in',
+            computedAt: DateTime(2026, 1, 1),
+          ),
+        ],
+      );
 
       final vm = GovernanceViewModel.fromReport(report);
       expect(vm.totalCount, 3);
@@ -216,14 +224,16 @@ void main() {
           ),
         },
         edges: [],
-        assetsByKind: {AssetKind.agent: [
-          WorkspaceAsset(
-            id: 'a',
-            kind: AssetKind.agent,
-            name: 'Agent A',
-            path: 'agents/a.md',
-          ),
-        ]},
+        assetsByKind: {
+          AssetKind.agent: [
+            WorkspaceAsset(
+              id: 'a',
+              kind: AssetKind.agent,
+              name: 'Agent A',
+              path: 'agents/a.md',
+            ),
+          ],
+        },
       );
 
       final vm = MapViewModel(graph: graph);

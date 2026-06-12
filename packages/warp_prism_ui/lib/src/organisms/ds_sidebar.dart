@@ -31,7 +31,9 @@ class DSSidebar extends StatelessWidget {
       label: 'Navigation sidebar',
       explicitChildNodes: true,
       child: Container(
-        width: expanded ? DSSpacing.sidebarExpanded : DSSpacing.sidebarCollapsed,
+        width: expanded
+            ? DSSpacing.sidebarExpanded
+            : DSSpacing.sidebarCollapsed,
         decoration: BoxDecoration(
           color: DSColors.obsidianBase,
           border: Border(
@@ -48,7 +50,7 @@ class DSSidebar extends StatelessWidget {
               _DefaultHeader(expanded: expanded),
               const DSDivider.subtle(),
             ],
-            
+
             // Navigation items
             Expanded(
               child: ListView.builder(
@@ -57,7 +59,7 @@ class DSSidebar extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final item = items[index];
                   final isSelected = item.id == selectedId;
-                  
+
                   if (item.isDivider) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(
@@ -72,7 +74,7 @@ class DSSidebar extends StatelessWidget {
                           : const DSDivider.subtle(),
                     );
                   }
-                  
+
                   return _SidebarItemWidget(
                     item: item,
                     isSelected: isSelected,
@@ -82,12 +84,9 @@ class DSSidebar extends StatelessWidget {
                 },
               ),
             ),
-            
+
             // Footer
-            if (footer != null) ...[
-              const DSDivider.subtle(),
-              footer!,
-            ],
+            if (footer != null) ...[const DSDivider.subtle(), footer!],
           ],
         ),
       ),
@@ -120,19 +119,12 @@ class _DefaultHeader extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [
-                    DSColors.accentCyan,
-                    DSColors.accentViolet,
-                  ],
+                  colors: [DSColors.accentCyan, DSColors.accentViolet],
                 ),
                 borderRadius: BorderRadius.circular(DSRadii.sm),
               ),
               child: const Center(
-                child: DSIcon(
-                  Icons.hub,
-                  color: DSColors.white,
-                  size: 18,
-                ),
+                child: DSIcon(Icons.hub, color: DSColors.white, size: 18),
               ),
             ),
             if (expanded) ...[
@@ -142,8 +134,14 @@ class _DefaultHeader extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    DSText.labelLarge('ASW Observatory', color: DSColors.textPrimary),
-                    DSText.labelSmall('Agent Workspace', color: DSColors.textTertiary),
+                    DSText.labelLarge(
+                      'ASW Observatory',
+                      color: DSColors.textPrimary,
+                    ),
+                    DSText.labelSmall(
+                      'Agent Workspace',
+                      color: DSColors.textTertiary,
+                    ),
                   ],
                 ),
               ),
@@ -189,17 +187,23 @@ class _SidebarItemWidgetState extends State<_SidebarItemWidget> {
     final bgColor = widget.isSelected
         ? color.withOpacity(0.15)
         : (_isFocused
-            ? DSColors.obsidianActive
-            : (_isHovered ? DSColors.obsidianHover : DSColors.transparent));
+              ? DSColors.obsidianActive
+              : (_isHovered ? DSColors.obsidianHover : DSColors.transparent));
     final textColor = widget.isSelected
         ? color
-        : (_isHovered || _isFocused ? DSColors.textPrimary : DSColors.textSecondary);
+        : (_isHovered || _isFocused
+              ? DSColors.textPrimary
+              : DSColors.textSecondary);
     final iconColor = widget.isSelected
         ? color
-        : (_isHovered || _isFocused ? DSColors.textPrimary : DSColors.textTertiary);
+        : (_isHovered || _isFocused
+              ? DSColors.textPrimary
+              : DSColors.textTertiary);
 
     final semanticLabel = widget.item.label ?? '';
-    final semanticHint = widget.isSelected ? 'Currently selected' : 'Double-tap to navigate';
+    final semanticHint = widget.isSelected
+        ? 'Currently selected'
+        : 'Double-tap to navigate';
 
     return Semantics(
       label: semanticLabel,
@@ -207,6 +211,7 @@ class _SidebarItemWidgetState extends State<_SidebarItemWidget> {
       button: true,
       selected: widget.isSelected,
       enabled: true,
+      explicitChildNodes: true,
       child: Focus(
         focusNode: _focusNode,
         onFocusChange: (focused) => setState(() => _isFocused = focused),
@@ -226,51 +231,56 @@ class _SidebarItemWidgetState extends State<_SidebarItemWidget> {
           cursor: SystemMouseCursors.click,
           child: GestureDetector(
             onTap: widget.onTap,
-            child: AnimatedContainer(
-              duration: DSMotion.fast,
-              margin: EdgeInsets.symmetric(
-                horizontal: widget.expanded ? DSSpacing.sm : DSSpacing.xs,
-                vertical: 2,
-              ),
-              padding: EdgeInsets.symmetric(
-                horizontal: widget.expanded ? DSSpacing.md : 0,
-                vertical: DSSpacing.sm,
-              ),
-              decoration: BoxDecoration(
-                color: bgColor,
-                borderRadius: BorderRadius.circular(DSRadii.md),
-                border: widget.isSelected
-                    ? Border.all(color: color.withOpacity(0.3), width: 1)
-                    : (_isFocused
-                        ? Border.all(color: DSColors.accentCyan.withOpacity(0.5), width: 2)
-                        : null),
-              ),
-              child: Row(
-                mainAxisAlignment: widget.expanded
-                    ? MainAxisAlignment.start
-                    : MainAxisAlignment.center,
-                children: [
-                  DSIcon(
-                    widget.item.icon,
-                    color: iconColor,
-                    iconSize: DSIconSize.medium,
-                  ),
-                  if (widget.expanded) ...[
-                    const SizedBox(width: DSSpacing.sm),
-                    Expanded(
-                      child: DSText.labelMedium(
-                        widget.item.label ?? '',
-                        color: textColor,
-                      ),
+            child: ExcludeSemantics(
+              child: AnimatedContainer(
+                duration: DSMotion.fast,
+                margin: EdgeInsets.symmetric(
+                  horizontal: widget.expanded ? DSSpacing.sm : DSSpacing.xs,
+                  vertical: 2,
+                ),
+                padding: EdgeInsets.symmetric(
+                  horizontal: widget.expanded ? DSSpacing.md : 0,
+                  vertical: DSSpacing.sm,
+                ),
+                decoration: BoxDecoration(
+                  color: bgColor,
+                  borderRadius: BorderRadius.circular(DSRadii.md),
+                  border: widget.isSelected
+                      ? Border.all(color: color.withOpacity(0.3), width: 1)
+                      : (_isFocused
+                            ? Border.all(
+                                color: DSColors.accentCyan.withOpacity(0.5),
+                                width: 2,
+                              )
+                            : null),
+                ),
+                child: Row(
+                  mainAxisAlignment: widget.expanded
+                      ? MainAxisAlignment.start
+                      : MainAxisAlignment.center,
+                  children: [
+                    DSIcon(
+                      widget.item.icon,
+                      color: iconColor,
+                      iconSize: DSIconSize.medium,
                     ),
-                    if (widget.item.badge != null)
-                      DSBadge.count(
-                        widget.item.badge!,
-                        color: color,
-                        size: DSBadgeSize.small,
+                    if (widget.expanded) ...[
+                      const SizedBox(width: DSSpacing.sm),
+                      Expanded(
+                        child: DSText.labelMedium(
+                          widget.item.label ?? '',
+                          color: textColor,
+                        ),
                       ),
+                      if (widget.item.badge != null)
+                        DSBadge.count(
+                          widget.item.badge!,
+                          color: color,
+                          size: DSBadgeSize.small,
+                        ),
+                    ],
                   ],
-                ],
+                ),
               ),
             ),
           ),
@@ -298,9 +308,9 @@ class DSSidebarItem {
   });
 
   DSSidebarItem.divider({this.label})
-      : id = 'divider_${label ?? DateTime.now().millisecondsSinceEpoch}',
-        icon = Icons.circle,
-        color = null,
-        badge = null,
-        isDivider = true;
+    : id = 'divider_${label ?? DateTime.now().millisecondsSinceEpoch}',
+      icon = Icons.circle,
+      color = null,
+      badge = null,
+      isDivider = true;
 }

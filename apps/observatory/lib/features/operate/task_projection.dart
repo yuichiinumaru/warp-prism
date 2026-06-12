@@ -7,7 +7,7 @@
 library;
 
 import 'package:flutter/foundation.dart';
-import '../../../data/models/task_contracts.dart';
+import 'package:warp_prism_observatory/data/models/task_contracts.dart';
 
 /// Structured projection of a single task for the Operate surface.
 ///
@@ -95,10 +95,17 @@ class TaskProjection {
   bool get hasVerificationCommands => verificationCommands.isNotEmpty;
 
   /// Whether this task has completion evidence.
-  bool get hasCompletionEvidence =>
-      completionEvidenceSummary != null &&
-      completionEvidenceSummary!.isNotEmpty &&
-      !completionEvidenceSummary!.toLowerCase().startsWith('not yet');
+  ///
+  /// Strips markdown emphasis markers before checking for placeholder text
+  /// like "Not yet completed".
+  bool get hasCompletionEvidence {
+    if (completionEvidenceSummary == null) return false;
+    final stripped = completionEvidenceSummary!
+        .replaceAll(RegExp(r'^\*+'), '')
+        .replaceAll(RegExp(r'\*+$'), '')
+        .trim();
+    return stripped.isNotEmpty && !stripped.toLowerCase().startsWith('not yet');
+  }
 
   @override
   bool operator ==(Object other) =>
@@ -167,6 +174,5 @@ class OperateProjection {
   }
 
   /// Get all tasks across all lanes as a flat list.
-  List<TaskProjection> get allTasks =>
-      lanes.expand((l) => l.tasks).toList();
+  List<TaskProjection> get allTasks => lanes.expand((l) => l.tasks).toList();
 }

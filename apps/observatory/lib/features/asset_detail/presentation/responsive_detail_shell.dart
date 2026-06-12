@@ -65,13 +65,13 @@ class _ResponsiveDetailShellState extends State<ResponsiveDetailShell>
       vsync: this,
       duration: const Duration(milliseconds: 250),
     );
-    _overlaySlide = Tween<Offset>(
-      begin: const Offset(1, 0),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _overlayController,
-      curve: Curves.easeOutCubic,
-    ));
+    _overlaySlide = Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
+        .animate(
+          CurvedAnimation(
+            parent: _overlayController,
+            curve: Curves.easeOutCubic,
+          ),
+        );
 
     if (widget.showDetail) {
       _overlayController.value = 1.0;
@@ -119,18 +119,9 @@ class _ResponsiveDetailShellState extends State<ResponsiveDetailShell>
   Widget _buildSplitPane() {
     return Row(
       children: [
-        Expanded(
-          flex: 3,
-          child: widget.masterContent,
-        ),
-        Container(
-          width: 1,
-          color: DSColors.borderSubtle,
-        ),
-        Expanded(
-          flex: 2,
-          child: widget.detailContent,
-        ),
+        Expanded(flex: 3, child: widget.masterContent),
+        Container(width: 1, color: DSColors.borderSubtle),
+        Expanded(flex: 2, child: widget.detailContent),
       ],
     );
   }
@@ -150,8 +141,9 @@ class _ResponsiveDetailShellState extends State<ResponsiveDetailShell>
               animation: _overlayController,
               builder: (context, child) {
                 return ColoredBox(
-                  color: DSColors.obsidianDeep
-                      .withOpacity(0.5 * _overlayController.value),
+                  color: DSColors.obsidianDeep.withOpacity(
+                    0.5 * _overlayController.value,
+                  ),
                 );
               },
             ),
@@ -219,10 +211,7 @@ class _ResponsiveDetailShellState extends State<ResponsiveDetailShell>
         ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
-          child: Container(
-            height: 1,
-            color: DSColors.borderSubtle,
-          ),
+          child: Container(height: 1, color: DSColors.borderSubtle),
         ),
       ),
       body: widget.detailContent,
