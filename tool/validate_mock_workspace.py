@@ -7,7 +7,8 @@ to verify counts, required names, frontmatter presence, and pubspec alignment.
 Exit code 0 = all checks pass, 1 = one or more failures.
 
 Usage:
-    python3 tool/validate_mock_workspace.py [--project-root PATH]
+    python3 tool/validate_mock_workspace.py
+    python3 tool/validate_mock_workspace.py --project-root apps/observatory
 """
 
 import os
@@ -285,16 +286,43 @@ def validate_pubspec_alignment(project_root: Path, corpus_root: Path) -> list[st
 # Main
 # ---------------------------------------------------------------------------
 
+def resolve_default_project_root() -> Path:
+    """Prefer monorepo app root when the historical package-root corpus moved.
+
+    Layout after Melos migration:
+      apps/observatory/assets/mock_workspace/manifest.yaml  (canonical)
+    Historical layout:
+      assets/mock_workspace/manifest.yaml  (repo/package root)
+    """
+    tool_parent = Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    monorepo_app = tool_parent / "apps" / "observatory"
+    monorepo_manifest = monorepo_app / "assets" / "mock_workspace" / "manifest.yaml"
+    legacy_manifest = tool_parent / "assets" / "mock_workspace" / "manifest.yaml"
+
+    if monorepo_manifest.is_file():
+        return monorepo_app
+    if legacy_manifest.is_file():
+        return tool_parent
+    # Fall back to monorepo app when present so missing-corpus errors name the
+    # live expected path rather than the abandoned root assets/ tree.
+    if monorepo_app.is_dir():
+        return monorepo_app
+    return tool_parent
+
+
 def main():
     parser = argparse.ArgumentParser(description="Validate mock workspace corpus")
     parser.add_argument(
         "--project-root",
-        default=os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-        help="Project root (default: parent of tool/)",
+        default=None,
+        help=(
+            "Project root containing assets/mock_workspace/ "
+            "(default: apps/observatory when its manifest exists, else parent of tool/)"
+        ),
     )
     args = parser.parse_args()
 
-    project_root = Path(args.project_root)
+    project_root = Path(args.project_root) if args.project_root else resolve_default_project_root()
     corpus_root = project_root / "assets" / "mock_workspace"
     manifest_path = corpus_root / "manifest.yaml"
 

@@ -52,9 +52,14 @@ class DSVirtualScrollConfig {
   static const variable = DSVirtualScrollConfig();
 
   /// High-cache configuration for fast-scrolling scenarios (10K+ items).
+  ///
+  /// Disables automatic keep-alives so off-screen children release state —
+  /// cheaper for large catalogs that do not need scroll-position memory
+  /// per row.
   static const highCache = DSVirtualScrollConfig(
     itemExtent: 48.0,
     cacheExtent: 500.0,
+    addAutomaticKeepAlives: false,
   );
 
   /// Copy with overrides.
@@ -100,7 +105,7 @@ class DSVirtualScrollConfig {
 // VIRTUAL LIST
 // ============================================================================
 
-/// A high-performance virtualized list optimized for 10K+ items.
+/// A virtualized list configuration surface optimized for 10K+ item catalogs.
 ///
 /// Wraps Flutter's [ListView.builder] with explicit configuration for:
 /// - [DSVirtualScrollConfig.itemExtent] → O(1) scroll offset when fixed-height
@@ -118,12 +123,14 @@ class DSVirtualScrollConfig {
 /// )
 /// ```
 ///
-/// ## Performance
+/// ## Performance contract
 ///
 /// When [DSVirtualScrollConfig.itemExtent] is provided, the underlying
-/// [ListView] uses SliverFixedExtentList which computes scroll offsets in O(1).
-/// This is critical for 10K+ item lists where variable-height layout would
-/// cause frame drops during fast scrollbar drags.
+/// [ListView] uses [SliverFixedExtentList] which computes scroll offsets in
+/// O(1) and only builds the visible window + cache. Acceptance is proven by
+/// **viewport-bounded build counts** and exact jump-to-index — not by a
+/// hard 16ms / 60fps claim under `flutter_test` (wall-clock there is harness
+/// noise). Prefer fixed extent for MCP registry / audit log scale (1K–10K+).
 class DSVirtualList extends StatefulWidget {
   /// Total number of items.
   final int itemCount;

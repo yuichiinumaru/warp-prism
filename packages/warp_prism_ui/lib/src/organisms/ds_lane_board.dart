@@ -11,6 +11,8 @@ import '../molecules/molecules.dart';
 /// Supports drag-and-drop via [DSDraggableCard] and [DSDropTarget]:
 /// - [onReorder] fires when a task is reordered within the same lane.
 /// - [onMove] fires when a task is moved between different lanes.
+/// - Keyboard: Alt+Up/Down reorders; Alt+Left/Right moves across lanes
+///   when the corresponding callbacks are provided.
 class DSLaneBoard extends StatelessWidget {
   final List<DSLane> lanes;
   final String? selectedTaskId;
@@ -39,8 +41,8 @@ class DSLaneBoard extends StatelessWidget {
       child: LayoutBuilder(
         builder: (context, constraints) {
           // Calculate lane width based on available space
-          final minLaneWidth = 280.0;
-          final maxLaneWidth = 320.0;
+          const minLaneWidth = 280.0;
+          const maxLaneWidth = 320.0;
           final totalLanes = lanes.length;
           final availableWidth = constraints.maxWidth - (DSSpacing.lg * 2);
           final gapWidth = DSSpacing.md * (totalLanes - 1);
@@ -61,6 +63,10 @@ class DSLaneBoard extends StatelessWidget {
                     width: laneWidth,
                     child: _LaneColumn(
                       lane: lanes[i],
+                      laneIndex: i,
+                      previousLaneId: i > 0 ? lanes[i - 1].id : null,
+                      nextLaneId:
+                          i < lanes.length - 1 ? lanes[i + 1].id : null,
                       selectedTaskId: selectedTaskId,
                       onTaskTap: onTaskTap,
                       onReorder: onReorder,
@@ -79,6 +85,9 @@ class DSLaneBoard extends StatelessWidget {
 
 class _LaneColumn extends StatelessWidget {
   final DSLane lane;
+  final int laneIndex;
+  final String? previousLaneId;
+  final String? nextLaneId;
   final String? selectedTaskId;
   final ValueChanged<String>? onTaskTap;
   final ValueChanged<DSDragReorderEvent>? onReorder;
@@ -86,6 +95,9 @@ class _LaneColumn extends StatelessWidget {
 
   const _LaneColumn({
     required this.lane,
+    required this.laneIndex,
+    this.previousLaneId,
+    this.nextLaneId,
     this.selectedTaskId,
     this.onTaskTap,
     this.onReorder,
@@ -135,7 +147,7 @@ class _LaneColumn extends StatelessWidget {
                 }
               },
               child: lane.tasks.isEmpty
-                  ? DSStateSurface.empty(
+                  ? const DSStateSurface.empty(
                       icon: Icons.inbox_outlined,
                       title: 'No tasks',
                       subtitle:
@@ -156,6 +168,38 @@ class _LaneColumn extends StatelessWidget {
                           child: DSDraggableCard(
                             laneId: lane.id,
                             index: index,
+                            onKeyboardReorderDelta: onReorder == null
+                                ? null
+                                : (delta) {
+                                    final newIndex = (index + delta).clamp(
+                                      0,
+                                      lane.tasks.length - 1,
+                                    );
+                                    if (newIndex == index) return;
+                                    onReorder!(
+                                      DSDragReorderEvent(
+                                        laneId: lane.id,
+                                        oldIndex: index,
+                                        newIndex: newIndex,
+                                      ),
+                                    );
+                                  },
+                            onKeyboardMoveLaneDelta: onMove == null
+                                ? null
+                                : (delta) {
+                                    final targetLaneId = delta < 0
+                                        ? previousLaneId
+                                        : nextLaneId;
+                                    if (targetLaneId == null) return;
+                                    onMove!(
+                                      DSDragMoveEvent(
+                                        sourceLaneId: lane.id,
+                                        targetLaneId: targetLaneId,
+                                        taskId: task.id,
+                                        targetIndex: 0,
+                                      ),
+                                    );
+                                  },
                             card: DSTaskCard(
                               id: task.id,
                               title: task.title,
@@ -199,9 +243,9 @@ class _LaneHeader extends StatelessWidget {
           vertical: DSSpacing.sm,
         ),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.1),
+          color: color.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(DSRadii.md),
-          border: Border.all(color: color.withOpacity(0.3), width: 1),
+          border: Border.all(color: color.withValues(alpha: 0.3), width: 1),
         ),
         child: Row(
           children: [

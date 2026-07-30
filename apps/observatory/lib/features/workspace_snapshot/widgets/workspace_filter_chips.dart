@@ -1,7 +1,7 @@
 /// Workspace filter chips.
 ///
 /// Renders filter chip rows for asset kind, task lane, and provenance
-/// classification. Uses [DSFilterChipGroup] primitives.
+/// classification. Uses [PrismFilterChipGroup] primitives.
 library;
 
 import 'package:flutter/material.dart';
@@ -43,7 +43,7 @@ class WorkspaceFilterChips extends ConsumerWidget {
                 ref.read(kindFilterProvider.notifier).state = updated;
               },
             ),
-            const SizedBox(height: DSSpacing.sm),
+            const SizedBox(height: PrismSpacing.sm),
             // Task lane filters
             _LaneFilterChips(
               snapshot: snapshot,
@@ -59,7 +59,7 @@ class WorkspaceFilterChips extends ConsumerWidget {
                 ref.read(laneFilterProvider.notifier).state = updated;
               },
             ),
-            const SizedBox(height: DSSpacing.sm),
+            const SizedBox(height: PrismSpacing.sm),
             // Provenance filters
             _ProvenanceFilterChips(
               snapshot: snapshot,
@@ -95,45 +95,45 @@ class _KindFilterChips extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final options = <DSFilterOption>[
-      DSFilterOption(
+    final options = <PrismFilterOption>[
+      PrismFilterOption(
         value: 'agent',
         label: 'Agents',
-        icon: DSIcons.agent,
-        color: DSColors.assetAgent,
+        icon: PrismIcons.agent,
+        color: PrismColors.assetAgent,
         count: snapshot.agents.length,
       ),
-      DSFilterOption(
+      PrismFilterOption(
         value: 'skill',
         label: 'Skills',
-        icon: DSIcons.skill,
-        color: DSColors.assetSkill,
+        icon: PrismIcons.skill,
+        color: PrismColors.assetSkill,
         count: snapshot.skills.length,
       ),
-      DSFilterOption(
+      PrismFilterOption(
         value: 'workflow',
         label: 'Workflows',
-        icon: DSIcons.workflow,
-        color: DSColors.assetWorkflow,
+        icon: PrismIcons.workflow,
+        color: PrismColors.assetWorkflow,
         count: snapshot.workflows.length,
       ),
-      DSFilterOption(
+      PrismFilterOption(
         value: 'task',
         label: 'Tasks',
-        icon: DSIcons.task,
-        color: DSColors.assetTask,
+        icon: PrismIcons.task,
+        color: PrismColors.assetTask,
         count: snapshot.tasks.length,
       ),
-      DSFilterOption(
+      PrismFilterOption(
         value: 'changelog',
         label: 'Changelog',
-        icon: DSIcons.changelog,
-        color: DSColors.assetChangelog,
+        icon: PrismIcons.changelog,
+        color: PrismColors.assetChangelog,
         count: snapshot.changelogEntries.length,
       ),
     ];
 
-    return DSFilterChipGroup(
+    return PrismFilterChipGroup(
       options: options,
       selected: selected.map((k) => k.name).toSet(),
       onToggle: (value) {
@@ -163,16 +163,16 @@ class _LaneFilterChips extends StatelessWidget {
     final tasksByLane = snapshot.tasksByLane as Map<TaskLane, int>;
     final options = TaskLane.values
         .map(
-          (lane) => DSFilterOption(
+          (lane) => PrismFilterOption(
             value: lane.directoryPrefix,
             label: lane.directoryPrefix,
-            color: DSColors.forLane(lane.directoryPrefix),
+            color: PrismColors.forLane(lane.directoryPrefix),
             count: tasksByLane[lane] ?? 0,
           ),
         )
         .toList();
 
-    return DSFilterChipGroup(
+    return PrismFilterChipGroup(
       options: options,
       selected: selected.map((l) => l.directoryPrefix).toSet(),
       onToggle: (value) {
@@ -208,16 +208,16 @@ class _ProvenanceFilterChips extends StatelessWidget {
     final options = Canonicality.values
         .where((c) => (counts[c] ?? 0) > 0)
         .map(
-          (canon) => DSFilterOption(
+          (canon) => PrismFilterOption(
             value: canon.name,
             label: canon.name,
-            color: DSColors.forCanonicity(canon.name),
+            color: PrismColors.forCanonicity(canon.name),
             count: counts[canon],
           ),
         )
         .toList();
 
-    return DSFilterChipGroup(
+    return PrismFilterChipGroup(
       options: options,
       selected: selected.map((c) => c.name).toSet(),
       onToggle: (value) {

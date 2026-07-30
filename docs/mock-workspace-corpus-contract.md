@@ -9,7 +9,7 @@
 
 ## 1. Objective
 
-Define the migration contract for replacing the legacy `mock_workspace/` YAML corpus with a markdown-frontmatter corpus under `assets/mock_workspace/`.
+Define the migration contract for replacing the legacy `mock_workspace/` YAML corpus with a markdown-frontmatter corpus under `apps/observatory/assets/mock_workspace/`.
 
 ---
 
@@ -39,7 +39,7 @@ gt-task-architect.md
 gt-wave-orchestrator.md
 ```
 
-Location: `assets/mock_workspace/.agents/agents/<name>.md`
+Location: `apps/observatory/assets/mock_workspace/.agents/agents/<name>.md`
 
 Each agent `.md` file must have YAML frontmatter with at minimum:
 - `name`, `model` (provider/name), `mode`, `description`, `skills` (list), `workflows` (list)
@@ -64,7 +64,7 @@ remediation-harness/
 agent-cli-delegation/
 ```
 
-Location: `assets/mock_workspace/.agents/skills/<skill-name>/SKILL.md`
+Location: `apps/observatory/assets/mock_workspace/.agents/skills/<skill-name>/SKILL.md`
 
 Each SKILL.md must have YAML frontmatter with at minimum:
 - `name`, `description`, `triggers` (list), `sub_skills` (list), `canonicality`, `tags` (list)
@@ -90,7 +90,7 @@ gt-verify-task-completion.md
 gt-research-orchestration.md
 ```
 
-Location: `assets/mock_workspace/.agents/workflows/<name>.md`
+Location: `apps/observatory/assets/mock_workspace/.agents/workflows/<name>.md`
 
 Each workflow `.md` file must have YAML frontmatter with at minimum:
 - `name`, `description`, `uses_skills` (list), `kind`
@@ -109,7 +109,7 @@ docs/tasks/03-review/     — review-stage tasks
 docs/tasks/04-completed/  — done tasks with evidence
 ```
 
-Location: `assets/mock_workspace/docs/tasks/<lane>/<task-file>.md`
+Location: `apps/observatory/assets/mock_workspace/docs/tasks/<lane>/<task-file>.md`
 
 Each task `.md` must have YAML frontmatter with at minimum:
 - `id`, `title`, `status`, `priority`, `owner`, `created`, `updated`, `skills` (list), `workflows` (list), `depends_on` (list), `proof_state`, `review_score`
@@ -124,7 +124,7 @@ Task categories must include:
 
 ## 7. Required changelog entries (12+)
 
-Location: `assets/mock_workspace/docs/changelog/<date>-<slug>.md`
+Location: `apps/observatory/assets/mock_workspace/docs/changelog/<date>-<slug>.md`
 
 Each changelog `.md` must have YAML frontmatter with at minimum:
 - `id`, `date`, `project`, `task`, `type`, `impact` (list), `skills` (list)
@@ -139,26 +139,26 @@ The existing `mock_workspace/` tree is archived, never deleted.
 
 | Legacy source | Action     | Target destination | Rationale |
 |---------------|------------|-------------------|-----------|
-| `.agents/orchestrator/agent.yaml` | archive | `archive/mock_workspace/.agents/orchestrator/` | Name/format mismatch; prompt requires different agents in .md with frontmatter |
-| `.agents/coder/agent.yaml` | archive | `archive/mock_workspace/.agents/coder/` | Not in required agent list |
-| `.agents/planner/agent.yaml` | archive | `archive/mock_workspace/.agents/planner/` | Not in required agent list |
-| `.agents/researcher/agent.yaml` | archive | `archive/mock_workspace/.agents/researcher/` | Not in required agent list |
-| `.agents/reviewer/agent.yaml` | archive | `archive/mock_workspace/.agents/reviewer/` | Not in required agent list |
-| `.agents/skills/code-review/skill.yaml` | archive | `archive/mock_workspace/.agents/skills/code-review/` | Name/format mismatch; prompt requires different skills in SKILL.md with frontmatter |
-| `.agents/skills/planning/skill.yaml` | archive | `archive/mock_workspace/.agents/skills/planning/` | Not in required skill list |
-| `.agents/skills/synthesis/skill.yaml` | archive | `archive/mock_workspace/.agents/skills/synthesis/` | Not in required skill list |
-| `.agents/skills/test-generation/skill.yaml` | archive | `archive/mock_workspace/.agents/skills/test-generation/` | Not in required skill list |
-| `.agents/workflows/code-implementation/workflow.yaml` | archive | `archive/mock_workspace/.agents/workflows/code-implementation/` | Name/format mismatch; prompt requires different workflows in .md with frontmatter |
-| `.agents/workflows/complex-task-pipeline/workflow.yaml` | archive | `archive/mock_workspace/.agents/workflows/complex-task-pipeline/` | Not in required workflow list |
-| `.agents/workflows/review-cycle/workflow.yaml` | archive | `archive/mock_workspace/.agents/workflows/review-cycle/` | Not in required workflow list |
-| `.agents/tasks/queue.md` | archive | `archive/mock_workspace/.agents/tasks/queue.md` | Single queue file; prompt requires 20 tasks distributed across 5 lane directories |
-| `docs/changelog/2025-04-10-planner-release.md` | archive | `archive/mock_workspace/docs/changelog/` | No YAML frontmatter; prompt requires frontmatter schema |
-| `docs/changelog/2025-05-15-researcher-update.md` | archive | `archive/mock_workspace/docs/changelog/` | No YAML frontmatter |
-| `docs/changelog/2025-05-20-security-audit.md` | archive | `archive/mock_workspace/docs/changelog/` | No YAML frontmatter |
-| `docs/changelog/2025-05-28-orchestrator-update.md` | archive | `archive/mock_workspace/docs/changelog/` | No YAML frontmatter |
-| `docs/changelog/2025-06-01-coder-update.md` | archive | `archive/mock_workspace/docs/changelog/` | No YAML frontmatter |
+| `.agents/orchestrator/agent.yaml` | archive | `.archive/mock_workspace/.agents/orchestrator/` | Name/format mismatch; prompt requires different agents in .md with frontmatter |
+| `.agents/coder/agent.yaml` | archive | `.archive/mock_workspace/.agents/coder/` | Not in required agent list |
+| `.agents/planner/agent.yaml` | archive | `.archive/mock_workspace/.agents/planner/` | Not in required agent list |
+| `.agents/researcher/agent.yaml` | archive | `.archive/mock_workspace/.agents/researcher/` | Not in required agent list |
+| `.agents/reviewer/agent.yaml` | archive | `.archive/mock_workspace/.agents/reviewer/` | Not in required agent list |
+| `.agents/skills/code-review/skill.yaml` | archive | `.archive/mock_workspace/.agents/skills/code-review/` | Name/format mismatch; prompt requires different skills in SKILL.md with frontmatter |
+| `.agents/skills/planning/skill.yaml` | archive | `.archive/mock_workspace/.agents/skills/planning/` | Not in required skill list |
+| `.agents/skills/synthesis/skill.yaml` | archive | `.archive/mock_workspace/.agents/skills/synthesis/` | Not in required skill list |
+| `.agents/skills/test-generation/skill.yaml` | archive | `.archive/mock_workspace/.agents/skills/test-generation/` | Not in required skill list |
+| `.agents/workflows/code-implementation/workflow.yaml` | archive | `.archive/mock_workspace/.agents/workflows/code-implementation/` | Name/format mismatch; prompt requires different workflows in .md with frontmatter |
+| `.agents/workflows/complex-task-pipeline/workflow.yaml` | archive | `.archive/mock_workspace/.agents/workflows/complex-task-pipeline/` | Not in required workflow list |
+| `.agents/workflows/review-cycle/workflow.yaml` | archive | `.archive/mock_workspace/.agents/workflows/review-cycle/` | Not in required workflow list |
+| `.agents/tasks/queue.md` | archive | `.archive/mock_workspace/.agents/tasks/queue.md` | Single queue file; prompt requires 20 tasks distributed across 5 lane directories |
+| `docs/changelog/2025-04-10-planner-release.md` | archive | `.archive/mock_workspace/docs/changelog/` | No YAML frontmatter; prompt requires frontmatter schema |
+| `docs/changelog/2025-05-15-researcher-update.md` | archive | `.archive/mock_workspace/docs/changelog/` | No YAML frontmatter |
+| `docs/changelog/2025-05-20-security-audit.md` | archive | `.archive/mock_workspace/docs/changelog/` | No YAML frontmatter |
+| `docs/changelog/2025-05-28-orchestrator-update.md` | archive | `.archive/mock_workspace/docs/changelog/` | No YAML frontmatter |
+| `docs/changelog/2025-06-01-coder-update.md` | archive | `.archive/mock_workspace/docs/changelog/` | No YAML frontmatter |
 
-**Policy**: All 18 legacy files move to `warp-prism/archive/mock_workspace/` preserving directory structure. No destructive deletion.
+**Policy**: All 18 legacy files move to `.archive/mock_workspace/` preserving directory structure. No destructive deletion.
 
 ---
 
@@ -229,7 +229,7 @@ The existing `mock_workspace/` tree is archived, never deleted.
 ## 10. Target directory structure
 
 ```
-assets/mock_workspace/
+apps/observatory/assets/mock_workspace/
   manifest.yaml              ← this file
   .agents/
     agents/

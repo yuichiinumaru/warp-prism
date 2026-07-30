@@ -3,17 +3,52 @@
 /// Covers:
 /// - Asset detail page with empty asset ID renders fallback
 /// - Asset detail page with "unknown" asset ID renders fallback
-/// - Asset detail page with valid asset ID renders detail content
-/// - Router 404 error page renders for unknown routes
+/// - Asset detail page with valid asset ID renders mapper-backed detail
+/// - Explicit resolved:false keeps shell unresolved fallback
 library;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:warp_prism_observatory/app/pages/asset_detail_page.dart';
+import 'package:warp_prism_observatory/data/models/workspace_graph.dart';
+import 'package:warp_prism_observatory/data/providers/workspace_providers.dart';
+import 'package:warp_prism_observatory/data/services/workspace_graph.dart';
+import 'package:warp_prism_observatory/features/asset_detail/presentation/agent_detail_view.dart';
+import 'package:warp_prism_observatory/features/asset_detail/presentation/asset_detail_view.dart';
+
+const _agent = WorkspaceAsset(
+  id: 'agent:architect-orchestrator',
+  kind: AssetKind.agent,
+  name: 'Architect Orchestrator',
+  path: 'agents/architect-orchestrator.md',
+  description: 'Coordinates architecture work.',
+  frontmatter: {'model': 'gpt-4', 'status': 'active'},
+);
+
+const _graph = WorkspaceGraphResult(
+  assetsById: {'agent:architect-orchestrator': _agent},
+  edges: [],
+  assetsByKind: {
+    AssetKind.agent: [_agent],
+  },
+);
 
 void main() {
-  Widget wrapInApp(Widget child) {
-    return MaterialApp(home: child);
+  /// Avoid Material 3 InkSparkle (needs GPU shader stages unavailable
+  /// in headless CI / some Linux test backends).
+  Widget wrapInApp(Widget child, {List<Override> overrides = const []}) {
+    return ProviderScope(
+      overrides: overrides,
+      child: MaterialApp(
+        theme: ThemeData(
+          useMaterial3: true,
+          splashFactory: NoSplash.splashFactory,
+          highlightColor: Colors.transparent,
+        ),
+        home: child,
+      ),
+    );
   }
 
   // ===========================================================================
@@ -50,17 +85,43 @@ void main() {
       expect(find.text('agent:some-agent'), findsOneWidget);
     });
 
-    testWidgets('renders detail for valid asset ID', (tester) async {
+    testWidgets('renders mapper-backed detail for known asset ID', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         wrapInApp(
           const AssetDetailPage(assetId: 'agent:architect-orchestrator'),
+          overrides: [
+            workspaceGraphAsyncProvider.overrideWith(
+              () => _StaticGraphNotifier(_graph),
+            ),
+          ],
         ),
       );
+      await tester.pumpAndSettle();
 
-      // Should show the detail placeholder (not the fallback)
-      expect(find.text('Asset Detail'), findsWidgets);
-      expect(find.text('Asset: agent:architect-orchestrator'), findsWidgets);
+      expect(find.byType(AssetDetailView), findsOneWidget);
+      expect(find.byType(AgentDetailView), findsOneWidget);
+      expect(find.text('Architect Orchestrator'), findsWidgets);
       expect(find.text('Asset not found'), findsNothing);
+      expect(find.textContaining('coming soon'), findsNothing);
+    });
+
+    testWidgets('renders unresolved when graph lacks asset', (tester) async {
+      await tester.pumpWidget(
+        wrapInApp(
+          const AssetDetailPage(assetId: 'agent:missing'),
+          overrides: [
+            workspaceGraphAsyncProvider.overrideWith(
+              () => _StaticGraphNotifier(_graph),
+            ),
+          ],
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Asset not found'), findsOneWidget);
+      expect(find.text('agent:missing'), findsOneWidget);
     });
 
     testWidgets('fallback has navigation button', (tester) async {
@@ -79,4 +140,13 @@ void main() {
       expect(find.byIcon(Icons.link_off), findsOneWidget);
     });
   });
+}
+
+class _StaticGraphNotifier extends WorkspaceGraphAsyncNotifier {
+  _StaticGraphNotifier(this._graph);
+
+  final WorkspaceGraphResult _graph;
+
+  @override
+  Future<WorkspaceGraphResult> build() async => _graph;
 }

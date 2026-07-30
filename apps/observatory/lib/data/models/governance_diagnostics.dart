@@ -25,9 +25,16 @@ enum DiagnosticSeverity {
 
 /// Category of governance diagnostic.
 ///
-/// Covers the diagnostic surfaces required by the product contract:
-/// proof gaps, stale references, orphan assets, review pressure,
-/// canonicality drift, missing dependencies, and broken edges.
+/// ## Implemented emitters ([WorkspaceDiagnosticsService])
+/// - [orphanAsset], [staleReference], [proofGap], [missingDependency],
+///   [reviewPressure], [highFanIn]
+///
+/// ## Reserved / deferred (enum surface for UI filters + future rules)
+/// - [brokenEdge] — structural invalid edge (distinct from high fan-in)
+/// - [canonicalityDrift], [staleIndex], [childParentDrift]
+///
+/// Deferred values may appear as zero-count keys in
+/// [DiagnosticsReport.countsByCategory] until a rule is shipped.
 enum DiagnosticCategory {
   /// An asset with no incoming or outgoing edges (isolated node).
   orphanAsset,
@@ -38,7 +45,7 @@ enum DiagnosticCategory {
   /// A task claiming completion but lacking required proof/evidence.
   proofGap,
 
-  /// A task in review lane with overdue or high-priority status.
+  /// A task in the review lane under elevated priority pressure.
   reviewPressure,
 
   /// An asset whose canonicality doesn't match its expected provenance.
@@ -47,8 +54,14 @@ enum DiagnosticCategory {
   /// A declared dependency that cannot be resolved to a known asset.
   missingDependency,
 
-  /// An edge with invalid source or target.
+  /// An edge with invalid source or target (not fan-in overload).
   brokenEdge,
+
+  /// High incoming-edge concentration (structural hotspot).
+  ///
+  /// Distinct from [brokenEdge]: fan-in is about dependency centrality,
+  /// not edge validity. Governance hotspot panels key off this category.
+  highFanIn,
 
   /// A generated index that is out of date relative to its source assets.
   staleIndex,
@@ -56,6 +69,24 @@ enum DiagnosticCategory {
   /// A child asset diverged from its parent canonical definition.
   childParentDrift,
 }
+
+/// Categories currently produced by [WorkspaceDiagnosticsService.analyze].
+const Set<DiagnosticCategory> kImplementedDiagnosticCategories = {
+  DiagnosticCategory.orphanAsset,
+  DiagnosticCategory.staleReference,
+  DiagnosticCategory.proofGap,
+  DiagnosticCategory.reviewPressure,
+  DiagnosticCategory.missingDependency,
+  DiagnosticCategory.highFanIn,
+};
+
+/// Categories reserved for future rules (never silent — documented deferred).
+const Set<DiagnosticCategory> kDeferredDiagnosticCategories = {
+  DiagnosticCategory.brokenEdge,
+  DiagnosticCategory.canonicalityDrift,
+  DiagnosticCategory.staleIndex,
+  DiagnosticCategory.childParentDrift,
+};
 
 /// A single governance diagnostic entry.
 ///

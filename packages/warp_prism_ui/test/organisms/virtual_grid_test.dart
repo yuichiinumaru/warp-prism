@@ -11,13 +11,13 @@ void main() {
   );
 
   // ---------------------------------------------------------------------------
-  // GROUP: DSVirtualGrid — fixed cross axis count
+  // GROUP: PrismVirtualGrid — fixed cross axis count
   // ---------------------------------------------------------------------------
-  group('DSVirtualGrid fixed crossAxisCount', () {
+  group('PrismVirtualGrid fixed crossAxisCount', () {
     testWidgets('renders items in grid layout', (tester) async {
       await tester.pumpWidget(
         wrap(
-          DSVirtualGrid(
+          PrismVirtualGrid(
             itemCount: 12,
             crossAxisCount: 4,
             itemBuilder: (context, index) =>
@@ -33,7 +33,7 @@ void main() {
     testWidgets('applies crossAxisCount', (tester) async {
       await tester.pumpWidget(
         wrap(
-          DSVirtualGrid(
+          PrismVirtualGrid(
             itemCount: 8,
             crossAxisCount: 2,
             itemBuilder: (context, index) => Text('G$index'),
@@ -47,7 +47,7 @@ void main() {
     testWidgets('applies custom aspect ratio and spacing', (tester) async {
       await tester.pumpWidget(
         wrap(
-          DSVirtualGrid(
+          PrismVirtualGrid(
             itemCount: 4,
             crossAxisCount: 2,
             childAspectRatio: 1.5,
@@ -64,7 +64,7 @@ void main() {
     testWidgets('renders empty grid without error', (tester) async {
       await tester.pumpWidget(
         wrap(
-          DSVirtualGrid(
+          PrismVirtualGrid(
             itemCount: 0,
             crossAxisCount: 4,
             itemBuilder: (context, index) => const SizedBox.shrink(),
@@ -72,13 +72,13 @@ void main() {
         ),
       );
 
-      expect(find.byType(DSVirtualGrid), findsOneWidget);
+      expect(find.byType(PrismVirtualGrid), findsOneWidget);
     });
 
     testWidgets('has semantic label when provided', (tester) async {
       await tester.pumpWidget(
         wrap(
-          DSVirtualGrid(
+          PrismVirtualGrid(
             itemCount: 4,
             crossAxisCount: 2,
             semanticLabel: 'Dashboard grid',
@@ -95,7 +95,7 @@ void main() {
 
       await tester.pumpWidget(
         wrap(
-          DSVirtualGrid(
+          PrismVirtualGrid(
             itemCount: 1000,
             crossAxisCount: 4,
             itemBuilder: (context, index) {
@@ -112,13 +112,13 @@ void main() {
   });
 
   // ---------------------------------------------------------------------------
-  // GROUP: DSVirtualGrid — responsive mode
+  // GROUP: PrismVirtualGrid — responsive mode
   // ---------------------------------------------------------------------------
-  group('DSVirtualGrid responsive', () {
+  group('PrismVirtualGrid responsive', () {
     testWidgets('renders in responsive mode', (tester) async {
       await tester.pumpWidget(
         wrap(
-          DSVirtualGrid.responsive(
+          PrismVirtualGrid.responsive(
             itemCount: 8,
             minCrossAxisExtent: 200,
             itemBuilder: (context, index) => Text('R$index'),
@@ -130,7 +130,7 @@ void main() {
     });
 
     testWidgets('responsive has responsive=true', (tester) async {
-      final grid = DSVirtualGrid.responsive(
+      final grid = PrismVirtualGrid.responsive(
         itemCount: 4,
         minCrossAxisExtent: 200,
         itemBuilder: (context, index) => Text('R$index'),
@@ -141,7 +141,7 @@ void main() {
     });
 
     testWidgets('fixed has responsive=false', (tester) async {
-      const grid = DSVirtualGrid(
+      const grid = PrismVirtualGrid(
         itemCount: 4,
         crossAxisCount: 2,
         itemBuilder: _noopBuilder,
@@ -152,13 +152,13 @@ void main() {
   });
 
   // ---------------------------------------------------------------------------
-  // GROUP: DSVirtualGrid — single item
+  // GROUP: PrismVirtualGrid — single item
   // ---------------------------------------------------------------------------
-  group('DSVirtualGrid edge cases', () {
+  group('PrismVirtualGrid edge cases', () {
     testWidgets('renders single item', (tester) async {
       await tester.pumpWidget(
         wrap(
-          DSVirtualGrid(
+          PrismVirtualGrid(
             itemCount: 1,
             crossAxisCount: 4,
             itemBuilder: (context, index) => const Text('Only grid item'),

@@ -17,7 +17,7 @@ Every interactive DS component uses a **consistent focus indicator**:
 | Property       | Value                                        |
 |----------------|----------------------------------------------|
 | Border width   | `2px`                                        |
-| Border color   | `DSColors.accentCyan.withOpacity(0.5)`       |
+| Border color   | `DSColors.accentCyan.withValues(alpha: 0.5)`       |
 | Trigger        | Keyboard focus (Tab / Shift+Tab)             |
 | Animation      | `DSMotion.fast` on border width/color change |
 
@@ -37,7 +37,7 @@ All tappable interactive components respond to:
 - **Enter** — activates the component
 - **Space** — activates the component
 
-This is implemented via `Focus.onKeyEvent` + `KeyDownEvent` checks in each
+This is implemented via `FocusableActionDetector` / keyboard activation callbacks in each
 interactive widget.  Tab order follows the widget tree order.
 
 ---
@@ -102,31 +102,60 @@ Disabled components:
 
 ## 7. Known Limitations
 
-- **Asset cards**: `DSAssetCard` does not yet have explicit `Semantics` wrapping
-  or `Focus`/`onKeyEvent`.  It relies on `GestureDetector` only.  This is an
-  acceptable gap for v0.1.0 since cards are demonstrated read-only in the gallery
-  but will need focus support when interactive in product screens.
-- **Search bar icons**: The clear and filter `_IconButton` sub-widgets use
-  `InkWell` which provides Material ripple but not explicit `Semantics`.  When
-  product screens add real search, these should get `Semantics(label:)` and
-  `Tooltip`.
+- **Gallery density**: The Accessibility section uses a tall sidebar demo
+  (`height: 800`) for focus walkthroughs; product shells should prefer
+  viewport-sized sidebars via `DSShell`.
+- **Deprecated Color channels in contrast tests**:
+  `test/accessibility_focus_contrast_test.dart` still uses `Color.red/green/blue`
+  channel getters (info-level deprecation). Behavior is correct; migrate to
+  `Color.r/g/b` when refreshing that suite.
+- **Non-interactive molecules**: Surfaces without `onTap` intentionally omit
+  button/focus claims via `DSInteractiveSurface` (`onTap == null`).
+
+Resolved since Task 0018 closeout / Task 1307 reconciliation:
+- `DSAssetCard` uses `DSInteractiveSurface` (semantics label, focus ring,
+  Enter/Space, 48×48 target when interactive).
+- `DSSearchBar` clear/filter controls expose `Clear search query` and
+  `Open search filters` semantics labels.
 
 ---
 
 ## 8. Testing
 
-- **Contrast tests**: `test/design_system/accessibility_focus_contrast_test.dart`
+Package-root paths (monorepo package `packages/warp_prism_ui`):
+
+- **Contrast tests**: `test/accessibility_focus_contrast_test.dart`
   — WCAG ratio calculations on all text/background pairs
-- **Focus & semantics tests**: `test/design_system/accessibility/design_system_accessibility_test.dart`
-  — Widget tests verifying Semantics tree and keyboard baseline
+- **Focus & semantics tests**: `test/accessibility/design_system_accessibility_test.dart`
+  — Widget tests verifying Semantics tree, 48×48 hit regions, shell Tab order,
+  Shift+Tab reverse order, and Enter/Space activation
+
+Validation commands (from `packages/warp_prism_ui`):
+
+```bash
+dart analyze lib/src/molecules/ds_interactive_surface.dart \
+  lib/src/molecules/ds_asset_card.dart \
+  lib/src/molecules/ds_filter_chip_group.dart \
+  lib/src/molecules/ds_search_bar.dart \
+  lib/src/atoms/ds_chip.dart \
+  lib/src/organisms/ds_sidebar.dart \
+  lib/src/organisms/ds_topbar.dart \
+  lib/src/organisms/ds_shell.dart \
+  lib/src/gallery/design_system_gallery_sections.dart \
+  lib/src/gallery/design_system_gallery_registry.dart \
+  test/accessibility/design_system_accessibility_test.dart
+
+flutter test test/accessibility/design_system_accessibility_test.dart \
+  test/accessibility_focus_contrast_test.dart
+```
 
 ---
 
 ## 9. Gallery Demonstration
 
 The **Accessibility & Focus States** section in the Design System Gallery
-(`lib/design_system/gallery/design_system_gallery_sections.dart`) provides
-a live visual proof of:
+(`packages/warp_prism_ui/lib/src/gallery/design_system_gallery_sections.dart`,
+registered in `design_system_gallery_registry.dart`) provides a live visual proof of:
 
 - Focus ring pattern description
 - Focusable chips with keyboard activation

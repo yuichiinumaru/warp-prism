@@ -24,7 +24,7 @@ GovernanceDiagnostic _fanInDiag({
   return GovernanceDiagnostic(
     assetId: assetId,
     severity: severity,
-    category: DiagnosticCategory.brokenEdge,
+    category: DiagnosticCategory.highFanIn,
     message: 'High fan-in hotspot',
     context: {
       'targetId': assetId,
@@ -103,6 +103,8 @@ void main() {
         severity: DiagnosticSeverity.error,
       );
       expect(high.riskExplanation, contains('critical hub'));
+      expect(high.riskExplanation, contains('10 incoming'));
+      expect(high.riskExplanation, contains('threshold 3'));
 
       final moderate = FanInHotspot(
         assetId: 'test',
@@ -113,6 +115,7 @@ void main() {
         severity: DiagnosticSeverity.warning,
       );
       expect(moderate.riskExplanation, contains('structural hotspot'));
+      expect(moderate.riskExplanation, contains('4 incoming'));
     });
   });
 
@@ -337,8 +340,9 @@ void main() {
       await tester.pumpWidget(
         _wrapInApp(ReviewPressurePanel(indicators: indicators)),
       );
+      // Lane labels appear in both lane breakdown chips and per-row chips.
       expect(find.text('03-review'), findsWidgets);
-      expect(find.text('04-completed'), findsOneWidget);
+      expect(find.text('04-completed'), findsWidgets);
     });
 
     testWidgets('renders overview explanation', (tester) async {

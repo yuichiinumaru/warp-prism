@@ -2,7 +2,7 @@
 ///
 /// Converts normalized [WorkspaceAsset] and [WorkspaceEdge] from the
 /// backbone into mode-specific node and edge lists consumable by
-/// [DSGraphCanvas]. The projection is a pure function of the input
+/// [PrismGraphCanvas]. The projection is a pure function of the input
 /// assets plus a [MapGraphMode] — no hardcoded demo lists, no widget
 /// state coupling.
 library;
@@ -17,10 +17,10 @@ import 'map_graph_mode.dart';
 /// for deterministic test assertions.
 class MapGraphProjection {
   /// Nodes derived from the normalized asset list.
-  final List<GraphNode> nodes;
+  final List<PrismGraphNode> nodes;
 
   /// Edges filtered by the active mode's edge-kind rules.
-  final List<GraphEdge> edges;
+  final List<PrismGraphEdge> edges;
 
   /// The mode that produced this projection.
   final MapGraphMode mode;
@@ -78,7 +78,7 @@ MapGraphProjection projectGraph({
   // Build graph edges from the filtered set.
   final graphEdges = filteredEdges
       .map(
-        (e) => GraphEdge(
+        (e) => PrismGraphEdge(
           sourceId: e.sourceId,
           targetId: e.targetId,
           label: e.kind.name,
@@ -95,9 +95,9 @@ MapGraphProjection projectGraph({
   );
 }
 
-/// Converts a [WorkspaceAsset] into a [GraphNode] for the canvas.
-GraphNode _assetToNode(WorkspaceAsset asset) {
-  return GraphNode(
+/// Converts a [WorkspaceAsset] into a [PrismGraphNode] for the canvas.
+PrismGraphNode _assetToNode(WorkspaceAsset asset) {
+  return PrismGraphNode(
     id: asset.id,
     label: asset.name,
     type: asset.kind.name,

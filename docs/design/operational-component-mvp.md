@@ -3,6 +3,7 @@
 > **Status**: Active design document
 > **Author**: Task 1106 — Warp Prism Operational Component MVP
 > **Date**: 2026-06-08
+> **Last refreshed**: 2026-07-18 (path-to-100: Pilot A framing + deferred inventory currency)
 > **Depends on**: Task 1102 (inventory), Task 1104 (monorepo), Task 1105 (catalog policy)
 > **Blocks**: Task 1110 (CyberCore pilot), Task 1111 (expansion gate)
 
@@ -11,10 +12,16 @@
 ## 1. Objective
 
 Define the first reusable operational component MVP for `warp_prism_ui` — the
-minimum set of enhanced components needed by the CyberCore Task Governance Board
-pilot (Pilot Surface A from `cybercore-pilot-surface-matrix.md`). Each promoted
-component must be app-agnostic, have catalog evidence, and pass the Task 1105
-promotion gates.
+minimum set of enhanced components needed by CyberCore Pilot Surface A
+(**Providers connections**, route `/providers`, from
+`docs/design/cybercore-pilot-surface-matrix.md`). Each promoted component must
+be app-agnostic, have catalog evidence, and pass the Task 1105 promotion gates.
+
+> **Historical note**: Early drafts framed Pilot A as a “Task Governance Board.”
+> Live Task 1102 inventory realigned Pilot A to **Providers** (`/providers`).
+> Component selection (status dots, metric health, state surfaces, task/lane
+> cards) remains valid as shared operational primitives for that pilot and
+> later surfaces.
 
 ---
 
@@ -61,23 +68,23 @@ These components are already in `warp_prism_ui` and are fully app-agnostic:
 ### 2.2 Promoted with Enhancement (This Task)
 
 These components need operational state support before they can serve the
-CyberCore pilot:
+CyberCore Providers pilot and sibling operational surfaces:
 
 | Component | Layer | Enhancement | CyberCore Reuse |
 |-----------|-------|-------------|-----------------|
-| **`DSStatusDot`** | Atom | Add 15 operational state constructors (`running`, `approved`, `rejected`, `promoted`, `archived`, `healthy`, `degraded`, `disabled`, `unverified`, `exposed`, `redacted`, `stale`, `excluded`) | Task cards, health indicators, governance panels |
-| **`DSMetricTile`** | Molecule | Add `health` state support (healthy/degraded/error/disabled) with automatic accent color mapping | Overview dashboard, governance metrics, health monitors |
-| **`DSStateSurface`** | Molecule | Add 4 operational constructors (`disabled`, `stale`, `degraded`, `excluded`) for content-area state rendering | All empty/loading/error/operational states |
-| **`DSTaskCard`** | Molecule | Already app-agnostic. Add `Prism*` alias and catalog with all operational states | Task Governance Board — primary task card |
+| **`DSStatusDot`** | Atom | Add 15 operational state constructors (`running`, `approved`, `rejected`, `promoted`, `archived`, `healthy`, `degraded`, `disabled`, `unverified`, `exposed`, `redacted`, `stale`, `excluded`) | Provider status badges, health indicators, row/state chips |
+| **`DSMetricTile`** | Molecule | Add `health` state support (healthy/degraded/error/disabled) with automatic accent color mapping | Overview dashboard, provider health metrics, monitors |
+| **`DSStateSurface`** | Molecule | Add 4 operational constructors (`disabled`, `stale`, `degraded`, `excluded`) for content-area state rendering | All empty/loading/error/operational states on `/providers` and later pilots |
+| **`DSTaskCard`** | Molecule | Already app-agnostic. Add `Prism*` alias and catalog with all operational states | Generic operational card primitive (lane/task proof display); not product-specific governance UI |
 
-### 2.3 Deferred (Not in This Task)
+### 2.3 Deferred or Owned Elsewhere (Not in This Task)
 
-| Component | Reason |
-|-----------|--------|
-| `DSLaneBoard` | Already functional. Enhancement (drag-and-drop) deferred to Task 1120. |
-| `DSTaskCard` operational state enrichment | Full multi-category state display (lane + health + proof + governance) requires a deeper refactor deferred to a future task. Current proof state + priority display is sufficient for the pilot. |
-| Data Table | Not yet implemented (empty directory). Task 1112. |
-| Command Palette | Not yet implemented. Task 1113. |
+| Component | Status (live) | Reason / owner |
+|-----------|---------------|----------------|
+| `DSLaneBoard` | Implemented; DnD deferred | Already functional. Drag-and-drop enhancement deferred to Task 1120. |
+| `DSTaskCard` multi-category enrichment | Partial (sufficient for MVP) | Full multi-category state display (lane + health + proof + governance) deferred. Current proof state + priority display is sufficient for Pilot A. |
+| Data Table (`DSDataTable`) | **Delivered by Task 1112** | Lives at `packages/warp_prism_ui/lib/src/organisms/data_table/`. Out of 1106 MVP scope; not “not implemented.” |
+| Command Palette (`DSCommandPalette`) | **Delivered by Task 1113** | Lives at `packages/warp_prism_ui/lib/src/organisms/command_palette/`. Out of 1106 MVP scope; not “not implemented.” |
 
 ---
 
@@ -201,10 +208,13 @@ Each promoted component gets catalog cases in `DSGallerySections`:
 - [x] **Read existing code**: All relevant files read before modification.
 - [x] **Catalog case exists**: Operational states section added to gallery.
 - [x] **State matrix documented**: §3 above.
-- [x] **Widget test passes**: `operational_components_test.dart` covers all new constructors.
-- [ ] **Semantics test passes**: Existing DSStatusDot has tooltip semantics; new constructors inherit.
-- [ ] **Golden test baseline**: Deferred — golden infrastructure not yet in place for operational states.
+- [x] **Widget test passes**: `operational_components_test.dart` + related suites — **183/183 pass** (2026-07-18 path-to-100 re-verify).
+- [x] **Semantics test passes**: DSStatusDot tooltip Semantics; operational badge/status coverage in `ds_operational_state_test.dart`.
+- [ ] **Golden test baseline**: Deferred — separate golden files exist for status_dot/metric_tile; not required to close 1106 MVP scope.
 - [x] **Prism* public alias created**: `prism_aliases.dart` created and exported.
 - [x] **Dependency isolation verified**: Zero imports from apps, Riverpod, go_router, or data layer.
 - [x] **No new primitive tokens**: All new tokens are semantic aliases of existing primitives.
-- [ ] **Changelog entry added**: Pending.
+- [x] **Changelog entry added**: `docs/changelog/20260608-213011-0000-2026-06-08-task-1106-operational-component-mvp-repair-bot.md` (+ 2026-07-18 path-to-100 note).
+- [x] **Melos analyze (monorepo)**: `melos run analyze` → **SUCCESS** (2026-07-18). Uses `--no-fatal-infos`; observatory still emits prefer_const infos (non-fatal; not 1106-owned).
+- [x] **Package lib analyze**: `flutter analyze lib` on `warp_prism_ui` → **0 errors/warnings** (4 residual infos outside MVP files, exit 0).
+- [~] **Melos full test**: Full monorepo `melos run test` is multi-app; 1106 package gate is **scoped operational suites + gallery registry**. Package-wide organism suites owned by 1112–1123 / EPIC-15/16.

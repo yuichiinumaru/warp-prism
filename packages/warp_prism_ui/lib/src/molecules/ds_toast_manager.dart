@@ -169,6 +169,8 @@ class DSToastManagerState extends State<DSToastManager> {
 
   /// Dismisses the toast with the given [id].
   void dismiss(String id) {
+    if (!mounted) return;
+
     final idx = _entries.indexWhere((e) => e.entry.id == id);
     if (idx < 0) return;
 
@@ -182,6 +184,7 @@ class DSToastManagerState extends State<DSToastManager> {
       if (!mounted) return;
       setState(() {
         _entries.removeWhere((e) => e.entry.id == id);
+        _hoveredIds.remove(id);
         if (_entries.isEmpty) {
           _removeOverlay();
         } else {
@@ -189,11 +192,32 @@ class DSToastManagerState extends State<DSToastManager> {
           _overlayEntry?.markNeedsBuild();
         }
       });
+      // Overlay rebuild can drop MouseRegion enter/exit pairing. Re-sync
+      // timers from the authoritative [_hoveredIds] set after structural change.
+      _resyncHoverTimers();
     });
+  }
+
+  /// Aligns timer paused/running state with [_hoveredIds] after list mutations.
+  void _resyncHoverTimers() {
+    if (!mounted) return;
+    for (final managed in List<_ManagedToastEntry>.from(_entries)) {
+      final entryId = managed.entry.id;
+      final hovered = _hoveredIds.contains(entryId);
+      if (hovered) {
+        managed.timer?.cancel();
+        managed.paused = true;
+      } else if (managed.paused) {
+        managed.paused = false;
+        _startTimer(managed.entry);
+      }
+    }
   }
 
   /// Dismisses all active toasts.
   void clear() {
+    if (!mounted) return;
+
     _cancelAllTimers();
     _removeOverlay();
     setState(() {
@@ -214,21 +238,29 @@ class DSToastManagerState extends State<DSToastManager> {
     final idx = _entries.indexWhere((e) => e.entry.id == entry.id);
     if (idx < 0) return;
 
+    // Capture id only — list indices go stale after maxVisible front-removal
+    // or other mutations of [_entries] while the timer is outstanding.
+    final entryId = entry.id;
     _entries[idx].timer?.cancel();
     _entries[idx].timer = Timer(entry.duration, () {
       if (!mounted) return;
+      // Always re-resolve by id; never trust a captured list index.
+      final currentIdx = _entries.indexWhere((e) => e.entry.id == entryId);
+      if (currentIdx < 0) return;
       // Skip dismiss if hovered.
-      if (_hoveredIds.contains(entry.id)) {
+      if (_hoveredIds.contains(entryId)) {
         // Re-queue: the user will un-hover and the timer restarts
         // via [_onHoverChanged].
-        _entries[idx].paused = true;
+        _entries[currentIdx].paused = true;
         return;
       }
-      dismiss(entry.id);
+      dismiss(entryId);
     });
   }
 
   void _onHoverChanged(String id, bool isHovered) {
+    if (!mounted) return;
+
     setState(() {
       if (isHovered) {
         _hoveredIds.add(id);
@@ -339,10 +371,15 @@ class DSToastManagerState extends State<DSToastManager> {
             entry: entry,
             hovered: _hoveredIds.contains(entry.id),
             onDismiss: () => dismiss(entry.id),
-            onAction: () {
-              // Dismiss after action by default.
-              dismiss(entry.id);
-            },
+            onAction: entry.actionLabel == null
+                ? null
+                : () {
+                    // Prefer entry-owned action; fall back to dismiss-only.
+                    entry.onAction?.call();
+                    if (entry.dismissOnAction) {
+                      dismiss(entry.id);
+                    }
+                  },
           ),
         ),
       ),

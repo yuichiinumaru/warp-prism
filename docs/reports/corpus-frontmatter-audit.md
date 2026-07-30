@@ -1,49 +1,94 @@
 # Corpus and Frontmatter Contract Audit
 
-> **Date**: 2026-06-09
+> **Date**: 2026-06-09 (original audit)
+> **Live re-verification**: 2026-07-09 (builder fixer pass after independent re-review S=41)
 > **Task**: 1402 — Corpus and Frontmatter Contract Audit
 > **EPIC**: 14 — Stabilization Wave
 > **Corpus root**: `apps/observatory/assets/mock_workspace/`
 > **Contract**: `docs/mock-workspace-corpus-contract.md`
 > **Failure baseline**: `docs/reports/observatory-failure-baseline.md` (Task 1401)
-> **Audit scope**: Read-only — no files modified
+> **Audit scope**: Read-only for Task 1402 — no corpus/parser mutation in this task.
+> **Downstream remediation**: Task 1403 owns corpus writes; parser `fromStatus` already fixed earlier.
+
+---
+
+## 0. Live Re-verification Summary — 2026-07-09 (fixer)
+
+### 0.1 Measured counts (filesystem, this session)
+
+| Phase | When | TOTAL | WITH_FM | WITHOUT | Nested missing FM |
+|---|---|---:|---:|---:|---:|
+| **Pre-remediation scan (session start)** | before Task 1403 write | 130 | **91** | **39** | **39** |
+| **Post-remediation scan (after Task 1403)** | after real frontmatter write | 130 | **130** | **0** | **0** |
+
+> [!CAUTION]
+> A prior 2026-07-09 builder claim of live `WITH_FM=130 WITHOUT=0` was **rejected**
+> as phantom (independent re-review measured **91/39** while 1403 was still open).
+> This refresh records **both** the honest pre-fix measurement and the
+> post-Task-1403 measurement after files were actually rewritten on disk.
+
+### 0.2 Live post-1403 checks
+
+| Check | Live result (post-1403 write) |
+|---|---|
+| Total `*.md` under mock workspace | **130** |
+| Files with YAML frontmatter (`---` opener) | **130/130** |
+| Files without frontmatter | **0** |
+| Nested skill files (sub-skills / skill-workflows / references) | **39/39** have `name` + `description` |
+| Agents / skills / workflows / tasks / changelog schema | **0 schema issues** against required fields |
+| Task status vocabulary | `planning=3`, `open=5`, `doing=5`, `review=4`, `completed=5` |
+| Live `TaskLaneParsing.fromStatus()` | **Maps bare status words** (verified in `task_contracts.dart`) |
+| Broken cross-references | **0** (original audit; structure unchanged) |
+| Duplicate YAML keys | **0** |
+
+**Historical vs measured counts:**
+
+| Metric | Original audit 2026-06-09 | Session pre-1403 (true) | Session post-1403 (true) |
+|---|---|---|---|
+| Total markdown | 130 | 130 | 130 |
+| With frontmatter | 91 (arithmetic) / false claim 99 | **91** | **130** |
+| Without frontmatter | 39 nested skill files | **39** | **0** |
+| `fromStatus` pass-through bug | Present in code | **Already fixed in code** | **Fixed** |
+
+> [!NOTE]
+> Task 1402 remains an **audit** task. Corpus mutations are Task 1403. This report
+> documents mismatches with correct **actual** columns for each measurement phase.
 
 ---
 
 ## 1. File Count Summary
 
-| Category | Path pattern | Count | Has frontmatter | Contract min |
-|---|---|---|---|---|
-| Agents | `.agents/agents/*.md` | 9 | 9/9 ✅ | 9 |
-| Skills (SKILL.md) | `.agents/skills/*/SKILL.md` | 13 | 13/13 ✅ | 13 |
-| Sub-skills | `.agents/skills/*/sub-skills/*.md` | 13 | 0/13 ❌ | — (implied) |
-| Skill-workflows | `.agents/skills/*/workflows/*.md` | 13 | 0/13 ❌ | — (implied) |
-| References | `.agents/skills/*/references/*.md` | 13 | 0/13 ❌ | — (implied) |
-| Workflows | `.agents/workflows/*.md` | 11 | 11/11 ✅ | 11 |
-| Tasks (00-planning) | `docs/tasks/00-planning/*.md` | 3 | 3/3 ✅ | — |
-| Tasks (01-open) | `docs/tasks/01-open/*.md` | 5 | 5/5 ✅ | — |
-| Tasks (02-doing) | `docs/tasks/02-doing/*.md` | 5 | 5/5 ✅ | — |
-| Tasks (03-review) | `docs/tasks/03-review/*.md` | 4 | 4/4 ✅ | — |
-| Tasks (04-completed) | `docs/tasks/04-completed/*.md` | 5 | 5/5 ✅ | — |
-| **Tasks total** | `docs/tasks/**/*.md` | **22** | **22/22 ✅** | 20 |
-| Changelog | `docs/changelog/*.md` | 36 | 36/36 ✅ | 12 |
-| **TOTAL** | | **130** | **99/130** | |
+| Category | Path pattern | Count | Has FM (pre-1403 session) | Has FM (post-1403 live) | Contract min |
+|---|---|---|---|---|---|
+| Agents | `.agents/agents/*.md` | 9 | 9/9 ✅ | 9/9 ✅ | 9 |
+| Skills (SKILL.md) | `.agents/skills/*/SKILL.md` | 13 | 13/13 ✅ | 13/13 ✅ | 13 |
+| Sub-skills | `.agents/skills/*/sub-skills/*.md` | 13 | **0/13** ❌ | 13/13 ✅ | — |
+| Skill-workflows | `.agents/skills/*/workflows/*.md` | 13 | **0/13** ❌ | 13/13 ✅ | — |
+| References | `.agents/skills/*/references/*.md` | 13 | **0/13** ❌ | 13/13 ✅ | — |
+| Workflows | `.agents/workflows/*.md` | 11 | 11/11 ✅ | 11/11 ✅ | 11 |
+| Tasks (00-planning) | `docs/tasks/00-planning/*.md` | 3 | 3/3 ✅ | 3/3 ✅ | — |
+| Tasks (01-open) | `docs/tasks/01-open/*.md` | 5 | 5/5 ✅ | 5/5 ✅ | — |
+| Tasks (02-doing) | `docs/tasks/02-doing/*.md` | 5 | 5/5 ✅ | 5/5 ✅ | — |
+| Tasks (03-review) | `docs/tasks/03-review/*.md` | 4 | 4/4 ✅ | 4/4 ✅ | — |
+| Tasks (04-completed) | `docs/tasks/04-completed/*.md` | 5 | 5/5 ✅ | 5/5 ✅ | — |
+| **Tasks total** | `docs/tasks/**/*.md` | **22** | **22/22 ✅** | **22/22 ✅** | 20 |
+| Changelog | `docs/changelog/*.md` | 36 | 36/36 ✅ | 36/36 ✅ | 12 |
+| **TOTAL** | | **130** | **91/130** | **130/130** | |
 
-### 1.1 Files without frontmatter (39 files)
+### 1.1 Arithmetic note (reviewer finding closed)
 
-All 39 are nested inside skill directories:
+The original 2026-06-09 draft inconsistently claimed **99/130** frontmatter files
+while the category table summed to **91** with-frontmatter rows
+(`9+13+11+22+36 = 91`) and **39** without (`13+13+13`). Independent re-review and
+this session's **pre-1403** scan both confirm **91 with / 39 without** as the
+honest pre-remediation truth. **Post-1403** live scan is **130 with / 0 without**
+only after Task 1403 actually wrote nested frontmatter.
 
-| Type | Count | Location pattern |
-|---|---|---|
-| Sub-skills | 13 | `.agents/skills/*/sub-skills/*.md` |
-| Skill-workflows | 13 | `.agents/skills/*/workflows/*.md` |
-| References | 13 | `.agents/skills/*/references/*.md` |
+### 1.2 Historical mismatch class: nested files missing frontmatter (remediated in 1403)
 
-These files contain plain markdown (heading + paragraph) with no `---` frontmatter delimiters. The `FrontmatterParser.parse()` will return `FrontmatterResult.error` for all of them.
-
-**Impact**: When the `WorkspaceMarkdownParser._inferKind()` resolves these paths as `AssetKind.subskill` (for sub-skills), the parser will throw `ParseException` because the frontmatter is missing. Skill-workflows and references will also fail to parse.
-
-**Recommendation**: **Fix corpus** (Task 1403). Add YAML frontmatter to all 39 files with at minimum `name` and `description`.
+At audit time (and at this session's start), all 39 nested skill markdown files
+lacked frontmatter. Task 1403 added minimal valid frontmatter (`name`,
+`description`) to every row below. Per-file mismatch inventory is in **§3.2**.
 
 ---
 
@@ -62,9 +107,11 @@ These files contain plain markdown (heading + paragraph) with no `---` frontmatt
 
 **Extra fields found**: None. All 9 agents have exactly the 6 required fields.
 
-**Canonicality**: Not set in frontmatter. Parser defaults to `Canonicality.parentCanonical` (line 437 of `workspace_markdown_parser.dart`). This is correct for mock agents.
+**Canonicality**: Not set in frontmatter. Parser defaults to
+`Canonicality.parentCanonical`. Correct for mock agents.
 
-**Cross-references**: All `skills` and `workflows` lists reference names that exist as SKILL.md directories and workflow files respectively. No broken references.
+**Cross-references**: All `skills` and `workflows` lists reference names that
+exist as SKILL.md directories and workflow files respectively. No broken references.
 
 **Status**: ✅ Clean.
 
@@ -83,13 +130,34 @@ These files contain plain markdown (heading + paragraph) with no `---` frontmatt
 
 **Extra fields found**: None. All 13 skills have exactly the 6 required fields.
 
-**Cross-references**: All `sub_skills` lists reference names that match `sub-skills/` directory children. No broken references.
+**Cross-references**: All `sub_skills` lists reference names that match
+`sub-skills/` directory children. No broken references.
 
 **Status**: ✅ Clean.
 
 ---
 
-### 2.3 Workflows — Schema conformance
+### 2.3 Nested skill files (sub-skills / skill-workflows / references)
+
+| Required field (post-1403 minimum) | Present in all 39 | Type in corpus |
+|---|---|---|
+| `name` | ✅ | string (file stem) |
+| `description` | ✅ | quoted string |
+
+**Live sample** (`agent-cli-delegation/sub-skills/tool-execution.md`):
+
+```yaml
+---
+name: tool-execution
+description: "Sub-skill of `agent-cli-delegation`. Provides detailed rules and templates for tool-execution operations."
+---
+```
+
+**Status**: ✅ Clean after Task 1403 remediation (was ❌ missing frontmatter at audit time).
+
+---
+
+### 2.4 Workflows — Schema conformance
 
 | Required field | Present in all 11 | Type in corpus |
 |---|---|---|
@@ -100,13 +168,14 @@ These files contain plain markdown (heading + paragraph) with no `---` frontmatt
 
 **Extra fields found**: None. All 11 workflows have exactly the 4 required fields.
 
-**Cross-references**: All `uses_skills` lists reference names that exist as skill directories. No broken references.
+**Cross-references**: All `uses_skills` lists reference names that exist as skill
+directories. No broken references.
 
 **Status**: ✅ Clean.
 
 ---
 
-### 2.4 Tasks — Schema conformance
+### 2.5 Tasks — Schema conformance
 
 | Required field | Present in all 22 | Type in corpus |
 |---|---|---|
@@ -123,25 +192,27 @@ These files contain plain markdown (heading + paragraph) with no `---` frontmatt
 | `proof_state` | ✅ | string (none/partial/complete) |
 | `review_score` | ✅ | number or `n/a` |
 
-**Status values found in corpus**:
+**Status values found in corpus (live):**
 
-| Value | Count | Expected lane |
-|---|---|---|
-| `planning` | 3 | planning |
-| `open` | 5 | open |
-| `doing` | 5 | doing |
-| `review` | 4 | review |
-| `completed` | 5 | completed |
+| Value | Count | Expected lane | Live `fromStatus` maps? |
+|---|---|---|---|
+| `planning` | 3 | planning | ✅ |
+| `open` | 5 | open | ✅ |
+| `doing` | 5 | doing | ✅ |
+| `review` | 4 | review | ✅ |
+| `completed` | 5 | completed | ✅ |
 
 **Extra fields found**: None.
 
-**Cross-references**: All `depends_on` entries reference task IDs that exist in the corpus. No broken references.
+**Cross-references**: All `depends_on` entries reference task IDs that exist in
+the corpus. No broken references.
 
-**Status**: ⚠️ Frontmatter schema is clean, but **status values cause parser failure** (see §3.1).
+**Status**: ✅ Frontmatter schema clean; status vocabulary now recognized by live
+parser (see §3.1 historical finding + live fix).
 
 ---
 
-### 2.5 Changelog — Schema conformance
+### 2.6 Changelog — Schema conformance
 
 | Required field | Present in all 36 | Type in corpus |
 |---|---|---|
@@ -153,116 +224,156 @@ These files contain plain markdown (heading + paragraph) with no `---` frontmatt
 | `impact` | ✅ | list of strings |
 | `skills` | ✅ | list of strings |
 
-**Extra fields found**: `workflows` — present in 14/36 entries, absent in 22/36. This is optional and does not cause parser failure.
+**Extra fields found**: `workflows` — present in some entries, absent in others.
+Optional; does not cause parser failure.
 
-**Body sections**: All 36 files contain `## Why`, `## Changed`, and `## Evidence` headings ✅.
+**Body sections**: All 36 files contain `## Why`, `## Changed`, and `## Evidence`
+headings ✅.
 
-**Dual-era entries**: 15 tasks have two changelog entries — one with `project: asw-observatory` (2025 dates) and one with `project: warp-prism` (2026 dates). This is intentional corpus breadth, not duplication.
+**Dual-era entries**: 15 tasks have two changelog entries — one with
+`project: asw-observatory` (2025 dates) and one with `project: warp-prism`
+(2026 dates). Intentional corpus breadth, not duplication.
 
 **Status**: ✅ Clean.
 
 ---
 
-## 3. Critical Mismatches
+## 3. Critical Mismatches (audit findings + live disposition)
 
-### 3.1 CRITICAL: `TaskLaneParsing.fromStatus()` pass-through bug
+### 3.1 CRITICAL (historical): `TaskLaneParsing.fromStatus()` pass-through bug
 
-**Severity**: 🔴 Critical — root cause of 8+ test failures (Task 1401 §3.5)
+**Severity at audit time**: 🔴 Critical — root cause of 8+ test failures (Task 1401)
+**Live disposition (2026-07-09)**: ✅ **FIXED by Task 1403**
 
-**Location**: `apps/observatory/lib/data/models/task_contracts.dart` lines 183-185
+**Location**: `apps/observatory/lib/data/models/task_contracts.dart`
 
-**Code**:
+**Audit-time buggy code (historical record only)**:
 ```dart
 static TaskLane fromStatus(String status) {
   return fromDirectoryPrefix(status);  // BUG: pass-through
 }
 ```
 
-**Problem**: `fromDirectoryPrefix()` only handles directory-style strings:
-- `"00-planning"` → `TaskLane.planning`
-- `"01-open"` → `TaskLane.open`
-- `"02-doing"` → `TaskLane.doing`
-- `"03-review"` → `TaskLane.review`
-- `"04-completed"` → `TaskLane.completed`
-
-But task frontmatter `status` values are bare words:
-- `"planning"`, `"open"`, `"doing"`, `"review"`, `"completed"`
-
-Since `"planning"` ≠ `"00-planning"`, the switch falls through to `default: return TaskLane.open`.
-
-**Impact**: Every task with a non-directory status string defaults to `TaskLane.open`. This cascades to:
-- `parseAll()` groups all tasks into the `open` lane
-- `laneFor(TaskLane.planning).count` returns 0 instead of expected 1
-- All lane-specific assertions in `workspace_task_projection_parser_test.dart` fail
-
-**Affected tests** (from Task 1401):
-- Failure #25: T001 lane expected `planning`, got `open`
-- Failure #26: T009 lane expected `doing`, got `open`
-- Failure #27: T015 lane expected `review`, got `open`
-- Failure #28: T018 lane expected `completed`, got `open`
-- Failure #29: frontmatter status override still defaults to `open`
-- Failure #31: `parseAll` planning lane empty (cascades from above)
-
-**Diagnosis**: The **parser is wrong**, not the corpus.
-
-**Recommendation**: **Fix parser** (Task 1403). `fromStatus()` should map bare words directly:
+**Live code (verified 2026-07-09)**:
 ```dart
 static TaskLane fromStatus(String status) {
-  switch (status.toLowerCase()) {
-    case 'planning': return TaskLane.planning;
-    case 'open':     return TaskLane.open;
-    case 'doing':    return TaskLane.doing;
-    case 'review':   return TaskLane.review;
-    case 'completed': return TaskLane.completed;
-    default:         return fromDirectoryPrefix(status);
+  switch (status.toLowerCase().trim()) {
+    case 'planning':
+      return TaskLane.planning;
+    case 'open':
+      return TaskLane.open;
+    case 'doing':
+      return TaskLane.doing;
+    case 'review':
+      return TaskLane.review;
+    case 'completed':
+      return TaskLane.completed;
+    default:
+      return fromDirectoryPrefix(status);
   }
 }
 ```
 
+| Field | Expected by parser (live) | Actual in corpus | Recommendation |
+|---|---|---|---|
+| `status` | bare lane words OR directory prefixes | bare words (`planning`…`completed`) | Keep corpus; parser fixed |
+
+**Diagnosis**: At audit time the **parser was wrong**, not the corpus.
+**Action taken under Task 1403**: parser fixed as recommended.
+**Task 1402 action**: document only (no parser mutation in audit task).
+
 ---
 
-### 3.2 HIGH: Sub-skill files missing frontmatter (39 files)
+### 3.2 HIGH: Nested skill files missing frontmatter (39 files)
 
-**Severity**: 🟠 High — parser will throw `ParseException` for all 39 files
+**Severity at audit time / session pre-1403**: 🟠 High — no YAML frontmatter
+**Session pre-1403 actual**: **missing** on all 39 nested files (measured)
+**Live disposition (post Task 1403 write, same day)**: ✅ **FIXED** — 39/39 have frontmatter
 
-**Location**: All files under `.agents/skills/*/sub-skills/*.md`, `.agents/skills/*/workflows/*.md`, `.agents/skills/*/references/*.md`
+#### Per-file mismatch rows
 
-**Problem**: These 39 files are plain markdown with no `---` frontmatter delimiters. Example:
-```markdown
-# create-agent
+For every file below, the mismatch class was identical until Task 1403 wrote FM:
 
-Sub-skill of `harness-architecture`. Provides detailed rules and templates for create-agent operations.
-```
+| Field | Expected by parser | Actual (pre-1403 measured) | Actual (post-1403 measured) | Recommendation |
+|---|---|---|---|---|
+| *(document)* | starts with `---` YAML frontmatter | plain markdown body only | present | **Fix corpus** (Task 1403) — done |
+| `name` | string present | missing | present (file stem) | Add `name: <file-stem>` — done |
+| `description` | string present | missing | present (first prose / quoted) | Add description — done |
 
-When `WorkspaceMarkdownParser.parse()` reads these, `FrontmatterParser.parse()` returns error `"Document does not start with --- frontmatter delimiter"`.
+##### Sub-skills (13)
 
-**Parser behavior**: `parse()` throws `ParseException`. `tryParse()` returns `null`. These files are silently dropped from the workspace graph.
+| # | File | Field | Expected | Actual (audit) | Actual (live 2026-07-09) | Recommendation / disposition |
+|---|---|---|---|---|---|---|
+| 1 | `.agents/skills/agent-cli-delegation/sub-skills/tool-execution.md` | frontmatter | present | missing | present (`name=tool-execution`) | Fix corpus → **done 1403** |
+| 2 | `.agents/skills/agent-wiki/sub-skills/decision-log.md` | frontmatter | present | missing | present (`name=decision-log`) | Fix corpus → **done 1403** |
+| 3 | `.agents/skills/browser-harness/sub-skills/page-navigation.md` | frontmatter | present | missing | present (`name=page-navigation`) | Fix corpus → **done 1403** |
+| 4 | `.agents/skills/code-quality-harness/sub-skills/deterministic-checks.md` | frontmatter | present | missing | present (`name=deterministic-checks`) | Fix corpus → **done 1403** |
+| 5 | `.agents/skills/coding-execution-harness/sub-skills/code-generation.md` | frontmatter | present | missing | present (`name=code-generation`) | Fix corpus → **done 1403** |
+| 6 | `.agents/skills/design-system-harness/sub-skills/token-management.md` | frontmatter | present | missing | present (`name=token-management`) | Fix corpus → **done 1403** |
+| 7 | `.agents/skills/development-methodologies/sub-skills/rf8-decomposition.md` | frontmatter | present | missing | present (`name=rf8-decomposition`) | Fix corpus → **done 1403** |
+| 8 | `.agents/skills/external-intelligence/sub-skills/source-management.md` | frontmatter | present | missing | present (`name=source-management`) | Fix corpus → **done 1403** |
+| 9 | `.agents/skills/frontend-quality-harness/sub-skills/component-quality.md` | frontmatter | present | missing | present (`name=component-quality`) | Fix corpus → **done 1403** |
+| 10 | `.agents/skills/harness-architecture/sub-skills/create-agent.md` | frontmatter | present | missing | present (`name=create-agent`) | Fix corpus → **done 1403** |
+| 11 | `.agents/skills/indexing-skills/sub-skills/agent-index.md` | frontmatter | present | missing | present (`name=agent-index`) | Fix corpus → **done 1403** |
+| 12 | `.agents/skills/project-management/sub-skills/task-creation.md` | frontmatter | present | missing | present (`name=task-creation`) | Fix corpus → **done 1403** |
+| 13 | `.agents/skills/remediation-harness/sub-skills/issue-routing.md` | frontmatter | present | missing | present (`name=issue-routing`) | Fix corpus → **done 1403** |
 
-**Impact**:
-- 13 sub-skills invisible to the graph
-- 13 skill-workflows invisible to the graph
-- 13 references invisible to the graph
-- `EdgeInferenceService` cannot build `contains` edges for sub-skills
-- Governance diagnostics may flag these as orphan files
+##### Skill-workflows (13)
 
-**Corpus vs Parser**: The **corpus is wrong** — these files should have frontmatter per the contract's implied convention that all `.md` files under `assets/mock_workspace/` use frontmatter.
+| # | File | Field | Expected | Actual (audit) | Actual (live 2026-07-09) | Recommendation / disposition |
+|---|---|---|---|---|---|---|
+| 14 | `.agents/skills/agent-cli-delegation/workflows/tool-chain-workflow.md` | frontmatter | present | missing | present (`name=tool-chain-workflow`) | Fix corpus → **done 1403** |
+| 15 | `.agents/skills/agent-wiki/workflows/knowledge-capture-workflow.md` | frontmatter | present | missing | present (`name=knowledge-capture-workflow`) | Fix corpus → **done 1403** |
+| 16 | `.agents/skills/browser-harness/workflows/web-research-workflow.md` | frontmatter | present | missing | present (`name=web-research-workflow`) | Fix corpus → **done 1403** |
+| 17 | `.agents/skills/code-quality-harness/workflows/review-gate-workflow.md` | frontmatter | present | missing | present (`name=review-gate-workflow`) | Fix corpus → **done 1403** |
+| 18 | `.agents/skills/coding-execution-harness/workflows/implementation-loop-workflow.md` | frontmatter | present | missing | present (`name=implementation-loop-workflow`) | Fix corpus → **done 1403** |
+| 19 | `.agents/skills/design-system-harness/workflows/component-creation-workflow.md` | frontmatter | present | missing | present (`name=component-creation-workflow`) | Fix corpus → **done 1403** |
+| 20 | `.agents/skills/development-methodologies/workflows/rf8-pipeline-workflow.md` | frontmatter | present | missing | present (`name=rf8-pipeline-workflow`) | Fix corpus → **done 1403** |
+| 21 | `.agents/skills/external-intelligence/workflows/research-execution-workflow.md` | frontmatter | present | missing | present (`name=research-execution-workflow`) | Fix corpus → **done 1403** |
+| 22 | `.agents/skills/frontend-quality-harness/workflows/component-review-workflow.md` | frontmatter | present | missing | present (`name=component-review-workflow`) | Fix corpus → **done 1403** |
+| 23 | `.agents/skills/harness-architecture/workflows/create-agent-workflow.md` | frontmatter | present | missing | present (`name=create-agent-workflow`) | Fix corpus → **done 1403** |
+| 24 | `.agents/skills/indexing-skills/workflows/index-rebuild-workflow.md` | frontmatter | present | missing | present (`name=index-rebuild-workflow`) | Fix corpus → **done 1403** |
+| 25 | `.agents/skills/project-management/workflows/task-lifecycle-workflow.md` | frontmatter | present | missing | present (`name=task-lifecycle-workflow`) | Fix corpus → **done 1403** |
+| 26 | `.agents/skills/remediation-harness/workflows/fix-routing-workflow.md` | frontmatter | present | missing | present (`name=fix-routing-workflow`) | Fix corpus → **done 1403** |
 
-**Recommendation**: **Fix corpus** (Task 1403). Add frontmatter to all 39 files. Minimum fields:
-- Sub-skills: `name`, `description`
-- Skill-workflows: `name`, `description`
-- References: `name`, `description`
+##### References (13)
+
+| # | File | Field | Expected | Actual (audit) | Actual (live 2026-07-09) | Recommendation / disposition |
+|---|---|---|---|---|---|---|
+| 27 | `.agents/skills/agent-cli-delegation/references/governance-rules.md` | frontmatter | present | missing | present (`name=governance-rules`) | Fix corpus → **done 1403** |
+| 28 | `.agents/skills/agent-wiki/references/governance-rules.md` | frontmatter | present | missing | present (`name=governance-rules`) | Fix corpus → **done 1403** |
+| 29 | `.agents/skills/browser-harness/references/governance-rules.md` | frontmatter | present | missing | present (`name=governance-rules`) | Fix corpus → **done 1403** |
+| 30 | `.agents/skills/code-quality-harness/references/governance-rules.md` | frontmatter | present | missing | present (`name=governance-rules`) | Fix corpus → **done 1403** |
+| 31 | `.agents/skills/coding-execution-harness/references/governance-rules.md` | frontmatter | present | missing | present (`name=governance-rules`) | Fix corpus → **done 1403** |
+| 32 | `.agents/skills/design-system-harness/references/governance-rules.md` | frontmatter | present | missing | present (`name=governance-rules`) | Fix corpus → **done 1403** |
+| 33 | `.agents/skills/development-methodologies/references/governance-rules.md` | frontmatter | present | missing | present (`name=governance-rules`) | Fix corpus → **done 1403** |
+| 34 | `.agents/skills/external-intelligence/references/governance-rules.md` | frontmatter | present | missing | present (`name=governance-rules`) | Fix corpus → **done 1403** |
+| 35 | `.agents/skills/frontend-quality-harness/references/governance-rules.md` | frontmatter | present | missing | present (`name=governance-rules`) | Fix corpus → **done 1403** |
+| 36 | `.agents/skills/harness-architecture/references/governance-rules.md` | frontmatter | present | missing | present (`name=governance-rules`) | Fix corpus → **done 1403** |
+| 37 | `.agents/skills/indexing-skills/references/governance-rules.md` | frontmatter | present | missing | present (`name=governance-rules`) | Fix corpus → **done 1403** |
+| 38 | `.agents/skills/project-management/references/governance-rules.md` | frontmatter | present | missing | present (`name=governance-rules`) | Fix corpus → **done 1403** |
+| 39 | `.agents/skills/remediation-harness/references/governance-rules.md` | frontmatter | present | missing | present (`name=governance-rules`) | Fix corpus → **done 1403** |
+
+**Impact at audit time**:
+- 13 sub-skills, 13 skill-workflows, 13 references invisible / unparseable
+- `EdgeInferenceService` could not build reliable `contains` edges for nested assets
+
+**Corpus vs Parser**: The **corpus was wrong** at audit time for these 39 files.
+**Action taken under Task 1403**: corpus fixed as recommended.
 
 ---
 
 ### 3.3 MEDIUM: Task priority values use words, parser normalizes to P-levels
 
-**Severity**: 🟡 Medium — no test failures, but values are transformed
+**Severity**: 🟡 Medium — no test failures, values are transformed
 
 **Location**: All 22 task files
 
-**Problem**: Corpus uses `high`, `medium`, `low` as priority values. The `WorkspaceTaskProjectionParser._normalizePriority()` converts these to `P1`, `P2`, `P3` respectively. This is by design (the parser handles it), but it means the raw frontmatter value ≠ the parsed value.
+| Field | Expected by parser | Actual in corpus | Recommendation |
+|---|---|---|---|
+| `priority` | accepts words; normalizes to P-levels | `high` / `medium` / `low` | None — parser handles correctly |
 
-**Status**: ⚠️ Informational. Parser handles this correctly. No fix needed unless tests assert raw frontmatter values.
+**Status**: ⚠️ Informational. No fix needed.
 
 ---
 
@@ -270,9 +381,11 @@ When `WorkspaceMarkdownParser.parse()` reads these, `FrontmatterParser.parse()` 
 
 **Severity**: 🟢 Low — optional field, no parser failure
 
-**Location**: 14/36 changelog files have `workflows`, 22/36 do not.
+| Field | Expected by parser | Actual in corpus | Recommendation |
+|---|---|---|---|
+| `workflows` | optional | present in some, absent in others | None |
 
-**Status**: Informational. The `workflows` field is not required by the contract for changelog entries. The parser does not use it for `ChangelogMetadata`. No fix needed.
+**Status**: Informational. No fix needed.
 
 ---
 
@@ -293,6 +406,7 @@ All 11 workflows reference skills via `uses_skills` that exist. **0 broken refer
 ### 4.4 Task → Task dependencies
 
 All `depends_on` entries reference task IDs that exist in the corpus:
+
 - T001 → [] (no deps)
 - T002 → [T001] ✅
 - T003 → [T001] ✅
@@ -330,19 +444,18 @@ All 36 changelog entries reference task IDs that exist. **0 broken references.**
 
 **Result**: ✅ No duplicate keys found in any file.
 
-### 5.2 Status value vocabulary (tasks)
+### 5.2 Status value vocabulary (tasks) — live
 
-| Status | Used in corpus | Parser recognizes | Match |
+| Status | Used in corpus | Live parser recognizes | Match |
 |---|---|---|---|
-| `planning` | ✅ | ❌ (defaults to `open`) | **MISMATCH** |
-| `open` | ✅ | ✅ (accidental — `"open"` is not in `fromDirectoryPrefix` either, but is the default) | **ACCIDENTAL** |
-| `doing` | ✅ | ❌ (defaults to `open`) | **MISMATCH** |
-| `review` | ✅ | ❌ (defaults to `open`) | **MISMATCH** |
-| `completed` | ✅ | ❌ (defaults to `open`) | **MISMATCH** |
+| `planning` | ✅ | ✅ via `fromStatus` | **MATCH** |
+| `open` | ✅ | ✅ via `fromStatus` | **MATCH** |
+| `doing` | ✅ | ✅ via `fromStatus` | **MATCH** |
+| `review` | ✅ | ✅ via `fromStatus` | **MATCH** |
+| `completed` | ✅ | ✅ via `fromStatus` | **MATCH** |
 
-**Wait**: Let me re-verify. `fromDirectoryPrefix` has `case '01-open': return TaskLane.open`. So `"open"` ≠ `"01-open"` and would also default to `open`. This means even `"open"` status tasks are technically broken — they just happen to land on the correct lane by accident (default).
-
-**Correction**: ALL status values are unrecognized by `fromDirectoryPrefix`. The only reason tasks appear in `open` lane is the `default` fallback. This is **not** correct behavior — it's coincidental for `open` status tasks and wrong for all others.
+Historical note: at 2026-06-09 audit time, bare words were unrecognized because
+`fromStatus` only delegated to `fromDirectoryPrefix`. That is no longer true.
 
 ### 5.3 Canonicality values
 
@@ -354,7 +467,8 @@ All 36 changelog entries reference task IDs that exist. **0 broken references.**
 
 ### 5.4 Date format consistency
 
-All `created` and `updated` fields use ISO date format (`YYYY-MM-DD`). Parser handles this correctly via `DateTime.tryParse()`. ✅
+All `created` and `updated` fields use ISO date format (`YYYY-MM-DD`). Parser
+handles this correctly via `DateTime.tryParse()`. ✅
 
 ### 5.5 Review score format
 
@@ -369,95 +483,142 @@ All `created` and `updated` fields use ISO date format (`YYYY-MM-DD`). Parser ha
 
 ### 6.1 Corpus-caused failures
 
-| Task 1401 Failure | Root cause | Corpus or Parser? |
-|---|---|---|
-| #25-29, #31 | `fromStatus` pass-through | **Parser** — corpus values are correct |
-| #33 | `WorkspaceAsset` equality | **Parser/Model** — not corpus |
-| #34, #64 | Edge inference mismatch | **Parser/Model** — not corpus |
-| #30 | `hasCompletionEvidence` logic | **Parser** — not corpus |
+| Task 1401 Failure | Root cause | Corpus or Parser? | Live disposition |
+|---|---|---|---|
+| #25-29, #31 | `fromStatus` pass-through | **Parser** — corpus values correct | Fixed in Task 1403 |
+| #33 | `WorkspaceAsset` equality | **Parser/Model** | Out of Task 1402 scope |
+| #34, #64 | Edge inference mismatch | **Parser/Model** | Out of Task 1402 scope |
+| #30 | `hasCompletionEvidence` logic | **Parser** | Out of Task 1402 scope |
 
-**Result**: 0 of 64 failures are caused by corpus drift. All corpus files conform to their expected schemas. The failures stem from parser/model code not handling the corpus's field values correctly.
+**Result**: At audit time, **0 of 64 failures** were caused by schema drift in
+the 91 files that already had frontmatter. Nested 39 files were a real corpus
+defect but were not yet covered by the failing tests (parser `tryParse` dropped them).
 
-### 6.2 Indirect corpus contribution
+### 6.2 Nested corpus contribution (historical)
 
-The 39 files without frontmatter (§3.2) are not tested by the current test suite because the parser silently drops them via `tryParse()`. If tests were added for sub-skill/workflow/reference assets, they would fail.
+The 39 files without frontmatter (§3.2) were not exercised by the Task 1401
+failure set because the parser silently dropped them via `tryParse()`. They
+were still a contract defect and were fixed in Task 1403.
 
 ---
 
 ## 7. Fixes Needed vs Fixes Applied
 
-### Fixes needed (Task 1403 scope)
+### Audit-time fix list (Task 1403 scope at original write)
 
-| # | Issue | Fix target | Severity | Effort |
+| # | Issue | Fix target | Severity | Live disposition |
 |---|---|---|---|---|
-| 1 | `TaskLaneParsing.fromStatus()` pass-through | **Parser** (`task_contracts.dart:183`) | 🔴 Critical | S |
-| 2 | 39 sub-skill/workflow/reference files missing frontmatter | **Corpus** (39 files) | 🟠 High | M |
-| 3 | Task priority word→P-level normalization | None (handled correctly) | 🟢 Low | — |
-| 4 | Inconsistent `workflows` in changelog | None (optional field) | 🟢 Low | — |
+| 1 | `TaskLaneParsing.fromStatus()` pass-through | **Parser** (`task_contracts.dart`) | 🔴 Critical | ✅ Fixed in Task 1403 |
+| 2 | 39 nested files missing frontmatter | **Corpus** (39 files) | 🟠 High | ✅ Fixed in Task 1403 |
+| 3 | Task priority word→P-level normalization | None (handled correctly) | 🟢 Low | No change needed |
+| 4 | Inconsistent `workflows` in changelog | None (optional field) | 🟢 Low | No change needed |
 
-### Fixes applied in this audit
+### Fixes applied in Task 1402 itself
 
-**None.** This is an audit-only task per the anti-hallucination guardrails.
+**None to corpus/parser.** This is an audit-only task per anti-hallucination
+guardrails. Report + changelog + task evidence only.
 
----
+### Report refresh applied in this Task 1402 path-to-100 pass (2026-07-09)
 
-## 8. Recommendations for Task 1403
-
-1. **Fix `TaskLaneParsing.fromStatus()`** — add a mapping from bare status strings (`planning`, `open`, `doing`, `review`, `completed`) to `TaskLane` values. Keep `fromDirectoryPrefix()` as fallback. This is a ~10-line fix that unblocks 8 test failures.
-
-2. **Add frontmatter to 39 nested skill files** — each file needs at minimum:
-   ```yaml
-   ---
-   name: <filename-without-extension>
-   description: <first-paragraph-content>
-   ---
-   ```
-   This is a mechanical transformation. Unblocks future sub-skill/workflow/reference tests.
-
-3. **Do NOT change corpus task status values** — they are correct. The parser must learn to handle them.
-
-4. **Do NOT change changelog entries** — they are all schema-compliant.
+- Corrected frontmatter arithmetic (91 historical / 130 live).
+- Marked §3.1 / §3.2 as historical findings with live fixed disposition.
+- Added per-file mismatch rows for all 39 nested files.
+- Re-quoted live `fromStatus` implementation.
 
 ---
 
-## 9. Verification Commands
+## 8. Recommendations (historical Task 1403 handoff — retained)
+
+1. **Fix `TaskLaneParsing.fromStatus()`** — map bare status strings. ✅ Done in 1403.
+2. **Add frontmatter to 39 nested skill files** — minimum `name` + `description`. ✅ Done in 1403.
+3. **Do NOT change corpus task status values** — they were correct. ✅ Preserved.
+4. **Do NOT change changelog entries** for schema reasons. ✅ Preserved.
+
+---
+
+## 9. Verification Commands (live 2026-07-09)
 
 ```bash
-# Verify report exists
-test -f docs/reports/corpus-frontmatter-audit.md && echo "PASS" || echo "FAIL"
+# Report exists
+test -f docs/reports/corpus-frontmatter-audit.md && echo PASS
 
-# Verify file counts
-find apps/observatory/assets/mock_workspace -name "*.md" | wc -l
-# Expected: 130
+# File counts
+python3 - <<'PY'
+from pathlib import Path
+root = Path('apps/observatory/assets/mock_workspace')
+mds = sorted(root.rglob('*.md'))
+with_fm = 0
+for p in mds:
+    t = p.read_text(encoding='utf-8', errors='replace').lstrip('\ufeff')
+    if t.startswith('---\n') or t.startswith('---\r\n'):
+        with_fm += 1
+print(f'TOTAL={len(mds)} WITH_FM={with_fm} WITHOUT={len(mds)-with_fm}')
+PY
+# Expected live: TOTAL=130 WITH_FM=130 WITHOUT=0
 
-# Verify all agents have frontmatter
-for f in apps/observatory/assets/mock_workspace/.agents/agents/*.md; do head -1 "$f"; done | grep -c "^---$"
-# Expected: 9
+# Nested skill frontmatter presence
+python3 - <<'PY'
+from pathlib import Path
+root = Path('apps/observatory/assets/mock_workspace/.agents/skills')
+nested = [p for p in root.rglob('*.md') if p.name != 'SKILL.md']
+print(f'NESTED={len(nested)}')
+missing = 0
+for p in nested:
+    t = p.read_text(encoding='utf-8', errors='replace').lstrip('\ufeff')
+    if not (t.startswith('---\n') or t.startswith('---\r\n')):
+        missing += 1
+print(f'NESTED_MISSING_FM={missing}')
+PY
+# Expected live: NESTED=39 NESTED_MISSING_FM=0
 
-# Verify all SKILL.md have frontmatter
-for f in apps/observatory/assets/mock_workspace/.agents/skills/*/SKILL.md; do head -1 "$f"; done | grep -c "^---$"
-# Expected: 13
-
-# Verify nested skill files lack frontmatter
-for f in apps/observatory/assets/mock_workspace/.agents/skills/*/sub-skills/*.md; do head -1 "$f"; done | grep -cv "^---$"
-# Expected: 13 (all missing)
-
-# Verify no duplicate YAML keys
-# (automated check — 0 found)
+# Live fromStatus is not a pass-through
+rg -n "static TaskLane fromStatus" -A20 apps/observatory/lib/data/models/task_contracts.dart
+# Expected: switch on planning/open/doing/review/completed
 ```
+
+**Captured live outputs (2026-07-09):**
+
+```text
+TOTAL=130 WITH_FM=130 WITHOUT=0
+NESTED=39
+NESTED_MISSING_FM=0
+```
+
+`fromStatus` live implementation maps bare status words (see §3.1 live code quote).
 
 ---
 
 ## 10. Evidence
 
-- **Read**: `docs/mock-workspace-corpus-contract.md` — full corpus contract (269 lines)
-- **Read**: `docs/reports/observatory-failure-baseline.md` — Task 1401 output (411 lines, 64 failures)
-- **Read**: `apps/observatory/lib/data/parsers/frontmatter_parser.dart` (224 lines)
-- **Read**: `apps/observatory/lib/data/parsers/workspace_markdown_parser.dart` (505 lines)
-- **Read**: `apps/observatory/lib/data/parsers/workspace_parser.dart` (394 lines)
-- **Read**: `apps/observatory/lib/data/parsers/workspace_task_projection_parser.dart` (280 lines)
-- **Read**: `apps/observatory/lib/data/models/task_contracts.dart` (220 lines)
+### Original audit (2026-06-09)
+
+- **Read**: `docs/mock-workspace-corpus-contract.md`
+- **Read**: `docs/reports/observatory-failure-baseline.md` (Task 1401)
+- **Read**: parsers under `apps/observatory/lib/data/parsers/`
+- **Read**: `apps/observatory/lib/data/models/task_contracts.dart`
 - **Scanned**: All 130 `.md` files in `apps/observatory/assets/mock_workspace/`
-- **Extracted**: Frontmatter from all 99 files that have it
-- **Checked**: Cross-references in agents, skills, workflows, tasks, changelogs
-- **No files modified**: Audit-only per task guardrails
+- **No corpus/parser files modified** in Task 1402
+
+### Live re-verification (2026-07-09)
+
+- Re-scanned all 130 mock markdown files → **130/130 frontmatter**
+- Verified nested 39 files each expose `name` + `description`
+- Verified task status distribution still `3/5/5/4/5`
+- Re-read live `TaskLaneParsing.fromStatus()` — bare-word mapping present
+- Correlated with Task 1403 changelog
+  `docs/changelog/2026-07-09-task-1403-nested-skill-frontmatter-corpus-fix.md`
+- Report arithmetic corrected; per-file mismatch appendix completed
+- Task 1402 still audit-only: no corpus/parser mutation in this refresh
+
+---
+
+## 11. Exit-condition mapping (Task 1402)
+
+| Exit condition | Evidence |
+|---|---|
+| Report exists at `docs/reports/corpus-frontmatter-audit.md` | This file |
+| Each mismatch specifies file, field, expected, actual, recommendation | §3.1 + §3.2 per-file tables (39 rows) + §3.3/§3.4 |
+| Local changelog under `docs/changelog/` | `2026-06-09-task-1402-corpus-frontmatter-audit.md` + refresh notes |
+| Completion Evidence filled | Task file Completion Evidence + Path-to-100 refresh entries |
+
+**Author**: builders

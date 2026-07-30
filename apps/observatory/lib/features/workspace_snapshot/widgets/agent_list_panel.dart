@@ -1,6 +1,6 @@
 /// Agent list panel for the workspace snapshot page.
 ///
-/// Displays discovered agents using [DSAssetCard] primitives.
+/// Displays discovered agents using [PrismAssetCard] primitives.
 /// Cards are tappable to open the detail inspector.
 library;
 
@@ -19,7 +19,7 @@ class AgentListPanel extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     if (agents.isEmpty) {
-      return const DSStateSurface.empty(
+      return const PrismStateSurface.empty(
         icon: Icons.smart_toy_outlined,
         title: 'No agents found',
         subtitle: 'Place agent .md files in .agents/agents/',
@@ -33,8 +33,8 @@ class AgentListPanel extends ConsumerWidget {
       itemBuilder: (context, index) {
         final agent = agents[index];
         return Padding(
-          padding: const EdgeInsets.only(bottom: DSSpacing.sm),
-          child: DSAssetCard(
+          padding: const EdgeInsets.only(bottom: PrismSpacing.sm),
+          child: PrismAssetCard(
             name: agent.name,
             kind: agent.kind.name,
             description: agent.description.isNotEmpty

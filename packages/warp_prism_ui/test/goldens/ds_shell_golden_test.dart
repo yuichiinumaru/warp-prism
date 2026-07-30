@@ -57,6 +57,10 @@ Widget _testContent() {
 void main() {
   group('DSShell golden — default state', () {
     testWidgets('renders default DSShell with fixed viewport', (tester) async {
+      addTearDown(() async {
+        await tester.binding.setSurfaceSize(null);
+      });
+
       // Fixed viewport size for deterministic golden baseline.
       await tester.binding.setSurfaceSize(const Size(1024, 768));
 
@@ -75,9 +79,6 @@ void main() {
         find.byType(DSShell),
         matchesGoldenFile('goldens/shell_default.png'),
       );
-
-      // Reset surface size after test.
-      await tester.binding.setSurfaceSize(null);
     });
   });
 }

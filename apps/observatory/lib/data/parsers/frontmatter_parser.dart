@@ -1,20 +1,15 @@
 /// Generic YAML frontmatter decoder for markdown documents.
 ///
 /// Splits a document on `---` delimiters, parses the YAML frontmatter
-/// section into a `Map<String, dynamic>`, and returns both the parsed
-/// frontmatter and the remaining markdown body.
+/// section into a `Map<String, dynamic>` via `package:yaml`, and returns
+/// both the parsed frontmatter and the remaining markdown body.
 ///
-/// This parser handles the subset of YAML used by the Warp-Prism mock
-/// corpus: simple key-value pairs, nested lists (YAML block sequences),
-/// and scalar values (strings, booleans, numbers). It does NOT handle
-/// full YAML (anchors, complex mappings, multi-line strings, etc.).
-///
-/// For production use, the `yaml` package should be preferred. This
-/// self-contained decoder exists so the parser layer can compile and
-/// be tested without external dependencies beyond `flutter/foundation`.
+/// Full YAML decoding is used (maps, lists, quoted scalars with embedded
+/// commas, nested structures). Malformed YAML yields a typed error result.
 library;
 
 import 'package:flutter/foundation.dart';
+import 'package:yaml/yaml.dart';
 
 /// Result of parsing frontmatter from a markdown document.
 ///
@@ -78,6 +73,7 @@ class FrontmatterParser {
   /// - The document does not start with `---`
   /// - The closing `---` delimiter is missing
   /// - The frontmatter section is empty
+  /// - The YAML section is not a mapping / fails to decode
   FrontmatterResult parse(String raw) {
     if (raw.isEmpty) {
       return const FrontmatterResult.error('Empty document');
@@ -103,8 +99,7 @@ class FrontmatterParser {
         if (yamlSection.isEmpty) {
           return const FrontmatterResult.error('Empty frontmatter section');
         }
-        final frontmatter = _parseYaml(yamlSection);
-        return FrontmatterResult.success(frontmatter: frontmatter, body: '');
+        return _decodeYaml(yamlSection, body: '');
       }
       return const FrontmatterResult.error(
         'Missing closing --- frontmatter delimiter',
@@ -117,106 +112,57 @@ class FrontmatterParser {
     }
 
     final bodySection = afterFirst.substring(closeIndex + 4).trimLeft();
-
-    final frontmatter = _parseYaml(yamlSection);
-
-    return FrontmatterResult.success(
-      frontmatter: frontmatter,
-      body: bodySection,
-    );
+    return _decodeYaml(yamlSection, body: bodySection);
   }
 
-  /// Parse a simple YAML string into a Map.
-  ///
-  /// Handles:
-  /// - Simple scalar keys: `key: value`
-  /// - Quoted values: `key: "quoted value"`
-  /// - Boolean values: `key: true` / `key: false`
-  /// - Numeric values: `key: 42` / `key: 3.14`
-  /// - Null values: `key: null` / `key: ~` / `key:` (empty)
-  /// - Block sequence lists:
-  ///   ```yaml
-  ///   list:
-  ///     - item1
-  ///     - item2
-  ///   ```
-  /// - Inline lists: `list: [item1, item2]`
-  Map<String, dynamic> _parseYaml(String yaml) {
-    final result = <String, dynamic>{};
-    final lines = yaml.split('\n');
-
-    for (var i = 0; i < lines.length; i++) {
-      final line = lines[i];
-      if (line.trim().isEmpty || line.trim().startsWith('#')) continue;
-
-      // Check for top-level key: value
-      final match = RegExp(r'^(\w[\w_-]*):\s*(.*)').firstMatch(line);
-      if (match == null) continue;
-
-      final key = match.group(1)!;
-      final rawValue = match.group(2)!.trim();
-
-      if (rawValue.isEmpty) {
-        // Could be a block list on following lines
-        final listItems = _parseBlockList(lines, i + 1);
-        if (listItems != null) {
-          result[key] = listItems;
-        } else {
-          result[key] = null;
-        }
-      } else if (rawValue.startsWith('[') && rawValue.endsWith(']')) {
-        // Inline list
-        result[key] = _parseInlineList(rawValue);
-      } else {
-        result[key] = _parseScalar(rawValue);
+  /// Decode YAML with `package:yaml` into a plain Dart map.
+  FrontmatterResult _decodeYaml(String yamlSection, {required String body}) {
+    try {
+      final dynamic decoded = loadYaml(yamlSection);
+      if (decoded == null) {
+        return const FrontmatterResult.error('Empty frontmatter section');
       }
-    }
-
-    return result;
-  }
-
-  /// Parse a YAML block sequence (indented `- item` lines) starting at [startIndex].
-  List<String>? _parseBlockList(List<String> lines, int startIndex) {
-    final items = <String>[];
-    for (var i = startIndex; i < lines.length; i++) {
-      final line = lines[i];
-      if (line.trim().isEmpty) continue;
-      final listMatch = RegExp(r'^\s+-\s+(.*)').firstMatch(line);
-      if (listMatch == null) {
-        // Not a list item — if we found items, return them; otherwise not a list
-        return items.isEmpty ? null : items;
+      if (decoded is! YamlMap && decoded is! Map) {
+        return const FrontmatterResult.error(
+          'Frontmatter YAML must be a mapping',
+        );
       }
-      items.add(_unquote(listMatch.group(1)!.trim()));
+      final frontmatter = _toPlainMap(decoded);
+      return FrontmatterResult.success(frontmatter: frontmatter, body: body);
+    } on YamlException catch (e) {
+      return FrontmatterResult.error('Invalid YAML frontmatter: ${e.message}');
+    } catch (e) {
+      return FrontmatterResult.error('Invalid YAML frontmatter: $e');
     }
-    return items.isEmpty ? null : items;
   }
 
-  /// Parse an inline YAML list `[a, b, c]`.
-  List<String> _parseInlineList(String raw) {
-    final inner = raw.substring(1, raw.length - 1).trim();
-    if (inner.isEmpty) return [];
-    return inner.split(',').map((e) => _unquote(e.trim())).toList();
-  }
-
-  /// Parse a YAML scalar value.
-  dynamic _parseScalar(String raw) {
-    final unquoted = _unquote(raw);
-    if (unquoted == 'null' || unquoted == '~' || unquoted.isEmpty) return null;
-    if (unquoted == 'true') return true;
-    if (unquoted == 'false') return false;
-    final asInt = int.tryParse(unquoted);
-    if (asInt != null) return asInt;
-    final asDouble = double.tryParse(unquoted);
-    if (asDouble != null) return asDouble;
-    return unquoted;
-  }
-
-  /// Remove surrounding quotes from a value.
-  String _unquote(String raw) {
-    if ((raw.startsWith('"') && raw.endsWith('"')) ||
-        (raw.startsWith("'") && raw.endsWith("'"))) {
-      return raw.substring(1, raw.length - 1);
+  /// Convert YamlNode / nested structures into plain Dart values.
+  static Map<String, dynamic> _toPlainMap(dynamic value) {
+    final plain = _toPlain(value);
+    if (plain is Map<String, dynamic>) return plain;
+    if (plain is Map) {
+      return plain.map((k, v) => MapEntry(k.toString(), v));
     }
-    return raw;
+    return <String, dynamic>{};
+  }
+
+  static dynamic _toPlain(dynamic value) {
+    if (value is YamlMap) {
+      return <String, dynamic>{
+        for (final e in value.entries) e.key.toString(): _toPlain(e.value),
+      };
+    }
+    if (value is YamlList) {
+      return [for (final e in value) _toPlain(e)];
+    }
+    if (value is Map) {
+      return <String, dynamic>{
+        for (final e in value.entries) e.key.toString(): _toPlain(e.value),
+      };
+    }
+    if (value is List) {
+      return [for (final e in value) _toPlain(e)];
+    }
+    return value;
   }
 }

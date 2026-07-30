@@ -60,11 +60,11 @@ class AssetDetailEmpty extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: DSColors.obsidianBase,
+      color: PrismColors.obsidianBase,
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 320),
-          child: DSStateSurface.empty(
+          child: PrismStateSurface.empty(
             icon: Icons.touch_app_outlined,
             title: 'No asset selected',
             subtitle:
@@ -86,9 +86,9 @@ class AssetDetailLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: DSColors.obsidianBase,
+      color: PrismColors.obsidianBase,
       child: const Center(
-        child: CircularProgressIndicator(color: DSColors.accentCyan),
+        child: CircularProgressIndicator(color: PrismColors.accentCyan),
       ),
     );
   }
@@ -104,7 +104,7 @@ class AssetDetailError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: DSColors.obsidianBase,
+      color: PrismColors.obsidianBase,
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 320),
@@ -114,17 +114,17 @@ class AssetDetailError extends StatelessWidget {
               const Icon(
                 Icons.error_outline,
                 size: 48,
-                color: DSColors.statusError,
+                color: PrismColors.statusError,
               ),
-              const SizedBox(height: DSSpacing.lg),
-              DSText.headingMedium(
+              const SizedBox(height: PrismSpacing.lg),
+              const PrismText.headingMedium(
                 'Error loading asset',
-                color: DSColors.textSecondary,
+                color: PrismColors.textSecondary,
               ),
-              const SizedBox(height: DSSpacing.sm),
-              DSText.bodyMedium(message, color: DSColors.textTertiary),
+              const SizedBox(height: PrismSpacing.sm),
+              PrismText.bodyMedium(message, color: PrismColors.textTertiary),
               if (onRetry != null) ...[
-                const SizedBox(height: DSSpacing.lg),
+                const SizedBox(height: PrismSpacing.lg),
                 TextButton(onPressed: onRetry, child: const Text('Retry')),
               ],
             ],

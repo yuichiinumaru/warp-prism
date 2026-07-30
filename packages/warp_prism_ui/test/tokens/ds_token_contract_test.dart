@@ -7,7 +7,8 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:warp_prism_ui/warp_prism_ui.dart';
+import 'package:warp_prism_ui/src/tokens/tokens.dart';
+import 'package:warp_prism_ui/src/atoms/atoms.dart';
 
 void main() {
   group('DS Token Contract', () {
@@ -37,13 +38,22 @@ void main() {
       });
 
       test('semantic status tokens exist in primary/muted/dim triplets', () {
-        for (final _ in ['Success', 'Warning', 'Error', 'Info']) {
-          // Access via reflection-like pattern
-          expect(DSColors.statusSuccess, isA<Color>());
-          expect(DSColors.statusWarning, isA<Color>());
-          expect(DSColors.statusError, isA<Color>());
-          expect(DSColors.statusInfo, isA<Color>());
-        }
+        // Success
+        expect(DSColors.statusSuccess, isA<Color>());
+        expect(DSColors.statusSuccessMuted, isA<Color>());
+        expect(DSColors.statusSuccessDim, isA<Color>());
+        // Warning
+        expect(DSColors.statusWarning, isA<Color>());
+        expect(DSColors.statusWarningMuted, isA<Color>());
+        expect(DSColors.statusWarningDim, isA<Color>());
+        // Error
+        expect(DSColors.statusError, isA<Color>());
+        expect(DSColors.statusErrorMuted, isA<Color>());
+        expect(DSColors.statusErrorDim, isA<Color>());
+        // Info
+        expect(DSColors.statusInfo, isA<Color>());
+        expect(DSColors.statusInfoMuted, isA<Color>());
+        expect(DSColors.statusInfoDim, isA<Color>());
       });
 
       test('governance colors exist for all canonicality states', () {
@@ -373,6 +383,68 @@ void main() {
       });
     });
 
+    group('DSBreakpoints', () {
+      test('responsive thresholds are ordered and positive', () {
+        expect(DSBreakpoints.narrow, equals(600));
+        expect(DSBreakpoints.sidebarCollapse, equals(800));
+        expect(DSBreakpoints.timelineDetail, equals(1000));
+        expect(DSBreakpoints.masterDetailSideBySide, equals(1200));
+        expect(DSBreakpoints.narrow, lessThan(DSBreakpoints.sidebarCollapse));
+        expect(
+          DSBreakpoints.sidebarCollapse,
+          lessThan(DSBreakpoints.timelineDetail),
+        );
+        expect(
+          DSBreakpoints.timelineDetail,
+          lessThan(DSBreakpoints.masterDetailSideBySide),
+        );
+      });
+    });
+
+    group('DSOperationalState (barrel surface)', () {
+      test('15 operational states are exported from tokens barrel', () {
+        expect(DSOperationalState.values.length, equals(15));
+        expect(
+          DSOperationalState.values,
+          containsAll(<DSOperationalState>[
+            DSOperationalState.pending,
+            DSOperationalState.running,
+            DSOperationalState.approved,
+            DSOperationalState.rejected,
+            DSOperationalState.promoted,
+            DSOperationalState.archived,
+            DSOperationalState.healthy,
+            DSOperationalState.degraded,
+            DSOperationalState.error,
+            DSOperationalState.disabled,
+            DSOperationalState.unverified,
+            DSOperationalState.exposed,
+            DSOperationalState.redacted,
+            DSOperationalState.stale,
+            DSOperationalState.excluded,
+          ]),
+        );
+      });
+
+      test('operational color aliases exist on DSColors', () {
+        expect(DSColors.statusPending, isA<Color>());
+        expect(DSColors.statusRunning, isA<Color>());
+        expect(DSColors.statusApproved, isA<Color>());
+        expect(DSColors.statusRejected, isA<Color>());
+        expect(DSColors.statusPromoted, isA<Color>());
+        expect(DSColors.statusArchived, isA<Color>());
+        expect(DSColors.statusHealthy, isA<Color>());
+        expect(DSColors.statusDegraded, isA<Color>());
+        expect(DSColors.statusOpError, isA<Color>());
+        expect(DSColors.statusDisabled, isA<Color>());
+        expect(DSColors.statusUnverified, isA<Color>());
+        expect(DSColors.statusExposed, isA<Color>());
+        expect(DSColors.statusRedacted, isA<Color>());
+        expect(DSColors.statusStale, isA<Color>());
+        expect(DSColors.statusExcluded, isA<Color>());
+      });
+    });
+
     group('Barrel Export Coherence', () {
       test('all token classes are accessible from tokens barrel', () {
         // These would fail at import time if barrel is broken,
@@ -384,6 +456,10 @@ void main() {
         expect(DSShadows.elevation1, isNotNull);
         expect(DSMotion.fast, isNotNull);
         expect(DSSemantics.statusSuccess, isNotNull);
+        expect(DSBreakpoints.narrow, isNotNull);
+        expect(DSOperationalState.values, isNotEmpty);
+        expect(DSOperationalSeverity.values, isNotEmpty);
+        expect(DSOperationalCategory.values, isNotEmpty);
       });
 
       test('DSTextVariant enum has all 18 variants', () {

@@ -2,32 +2,36 @@
 ///
 /// Covers:
 /// - Parsing task markdown with Ganthritor-style frontmatter
-/// - Lane inference from directory path and frontmatter status
-/// - Metadata extraction: priority, owner, proof state, review score
+/// - Lane inference from directory path segments (path wins over status)
+/// - Metadata extraction: slug, status label, type, priority, owner, proof
 /// - Dependency, skill, and workflow linkage
-/// - Verification commands from fenced code blocks
+/// - Verification commands from Verification/Validation Commands sections
 /// - Exit conditions as structured checkbox items
-/// - Completion evidence extraction
-/// - Lane-neutral task ID references
-/// - Fixtures for all five canonical lanes
+/// - Completion evidence rows and markdown sections
+/// - Tolerant governed headings (emoji / parenthetical suffixes)
+/// - Committed five-lane fixture corpus (drift guard)
 ///
 /// Run: flutter test test/data/parsers/workspace_task_projection_parser_test.dart
+library;
+
+import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:warp_prism_observatory/data/parsers/workspace_task_projection_parser.dart';
 import 'package:warp_prism_observatory/data/models/task_contracts.dart';
+import 'package:warp_prism_observatory/data/parsers/workspace_task_projection_parser.dart';
 
 void main() {
   const parser = WorkspaceTaskProjectionParser();
 
   // =========================================================================
-  // Fixtures — one per lane
+  // Fixtures — one per lane (inline)
   // =========================================================================
 
   const planningFixture = '''---
 id: T001
 title: "Plan workspace onboarding epic"
 status: planning
+type: feature
 priority: high
 owner: architect-orchestrator
 created: "2026-05-15"
@@ -66,6 +70,7 @@ cat docs/tasks/00-planning/T001-plan-workspace-onboarding-epic.md | grep "Exit C
 id: T006
 title: "Parse YAML workspace manifest"
 status: open
+type: feature
 priority: high
 owner: builder-orchestrator
 created: "2026-05-20"
@@ -104,6 +109,7 @@ flutter test test/data/manifest_parser_test.dart
 id: T009
 title: "Implement task lane board UI"
 status: doing
+type: feature
 priority: high
 owner: builder-orchestrator
 created: "2026-06-01"
@@ -117,6 +123,8 @@ workflows:
   - gt-code-review
 depends_on:
   - T003
+  - T006
+blockers:
   - T006
 proof_state: partial
 review_score: 7.5
@@ -146,6 +154,7 @@ flutter test test/features/operate/lane_board_test.dart
 id: T015
 title: "Governance audit of task dependency chains"
 status: review
+type: audit
 priority: medium
 owner: gt-security-reviewer
 created: "2026-06-01"
@@ -187,6 +196,7 @@ find assets/mock_workspace/docs/tasks -name "*.md" -exec grep -l "depends_on" {}
 id: T018
 title: "Completed: mock agent corpus creation"
 status: completed
+type: feature
 priority: high
 owner: gt-wave-orchestrator
 created: "2026-05-10"
@@ -238,8 +248,11 @@ grep -l "^name:" assets/mock_workspace/.agents/agents/*.md | wc -l
       );
 
       expect(task.id, 'T001');
+      expect(task.slug, 'T001-plan-workspace-onboarding-epic');
       expect(task.title, 'Plan workspace onboarding epic');
       expect(task.lane, TaskLane.planning);
+      expect(task.statusLabel, 'planning');
+      expect(task.type, 'feature');
       expect(task.priority, 'P1'); // "high" → P1
       expect(task.owner, 'architect-orchestrator');
       expect(task.proofState, ProofState.none);
@@ -259,6 +272,11 @@ grep -l "^name:" assets/mock_workspace/.agents/agents/*.md | wc -l
       expect(task.exitConditions, hasLength(3));
       expect(task.exitConditions.every((e) => !e.isComplete), isTrue);
       expect(task.hasCompletionEvidence, isFalse);
+      expect(task.sections.map((s) => s.name), contains('Exit Conditions'));
+      expect(
+        task.sections.map((s) => s.name),
+        contains('Verification Commands'),
+      );
     });
 
     test('parses open lane task (T006)', () {
@@ -268,7 +286,10 @@ grep -l "^name:" assets/mock_workspace/.agents/agents/*.md | wc -l
       );
 
       expect(task.id, 'T006');
+      expect(task.slug, 'T006-parse-yaml-workspace-manifest');
       expect(task.lane, TaskLane.open);
+      expect(task.statusLabel, 'open');
+      expect(task.type, 'feature');
       expect(task.priority, 'P1');
       expect(task.dependsOn, ['T003']);
       expect(task.dependencyCount, 1);
@@ -283,11 +304,15 @@ grep -l "^name:" assets/mock_workspace/.agents/agents/*.md | wc -l
       );
 
       expect(task.id, 'T009');
+      expect(task.slug, 'T009-implement-task-lane-board-ui');
       expect(task.lane, TaskLane.doing);
+      expect(task.statusLabel, 'doing');
+      expect(task.type, 'feature');
       expect(task.proofState, ProofState.partial);
       expect(task.reviewScore, 7.5);
       expect(task.linkedSkills, hasLength(3));
       expect(task.dependsOn, ['T003', 'T006']);
+      expect(task.blockers, ['T006']);
       expect(task.dependencyCount, 2);
       // First exit condition is checked
       expect(task.exitConditions.first.isComplete, isTrue);
@@ -302,7 +327,10 @@ grep -l "^name:" assets/mock_workspace/.agents/agents/*.md | wc -l
       );
 
       expect(task.id, 'T015');
+      expect(task.slug, 'T015-governance-audit-task-dependency-chains');
       expect(task.lane, TaskLane.review);
+      expect(task.statusLabel, 'review');
+      expect(task.type, 'audit');
       expect(task.priority, 'P2'); // "medium" → P2
       expect(task.owner, 'gt-security-reviewer');
       expect(task.proofState, ProofState.complete);
@@ -320,13 +348,21 @@ grep -l "^name:" assets/mock_workspace/.agents/agents/*.md | wc -l
       );
 
       expect(task.id, 'T018');
+      expect(task.slug, 'T018-completed-mock-agent-corpus-creation');
       expect(task.lane, TaskLane.completed);
+      expect(task.statusLabel, 'completed');
+      expect(task.type, 'feature');
       expect(task.priority, 'P1'); // "high" → P1
       expect(task.proofState, ProofState.complete);
       expect(task.reviewScore, 9.5);
       expect(task.exitConditions.every((e) => e.isComplete), isTrue);
       expect(task.hasCompletionEvidence, isTrue);
       expect(task.verificationCommands, hasLength(2));
+      expect(task.completionEvidenceRows, isNotEmpty);
+      expect(
+        task.completionEvidenceRows.map((r) => r.label),
+        containsAll(['Files created', 'Validation', 'Reviewer']),
+      );
     });
   });
 
@@ -351,9 +387,10 @@ updated: "2026-01-01"
         filePath: 'docs/tasks/03-review/T999-test.md',
       );
       expect(task.lane, TaskLane.review);
+      expect(task.statusLabel, 'review'); // falls back to lane name
     });
 
-    test('frontmatter status overrides directory path', () {
+    test('directory path wins over stale frontmatter status', () {
       const content = '''---
 id: T999
 title: "Test task"
@@ -369,7 +406,8 @@ updated: "2026-01-01"
         content,
         filePath: 'docs/tasks/01-open/T999-test.md',
       );
-      expect(task.lane, TaskLane.completed);
+      expect(task.lane, TaskLane.open);
+      expect(task.statusLabel, 'completed'); // declared label preserved
     });
 
     test('defaults to open lane for unknown paths', () {
@@ -388,6 +426,43 @@ updated: "2026-01-01"
         filePath: 'some/other/path/T999-test.md',
       );
       expect(task.lane, TaskLane.open);
+    });
+
+    test('filename containing lane substring does not hijack lane', () {
+      const content = '''---
+id: T999
+title: "Archive note"
+status: review
+priority: low
+owner: test
+created: "2026-01-01"
+updated: "2026-01-01"
+---
+# Test''';
+
+      // Filename contains "00-planning" but actual directory is 03-review.
+      final task = parser.parseTask(
+        content,
+        filePath:
+            'docs/tasks/03-review/T999-notes-about-00-planning-migration.md',
+      );
+      expect(task.lane, TaskLane.review);
+    });
+
+    test('uses status only when no lane directory segment is present', () {
+      const content = '''---
+id: T999
+title: "Loose file"
+status: doing
+priority: low
+owner: test
+created: "2026-01-01"
+updated: "2026-01-01"
+---
+# Test''';
+
+      final task = parser.parseTask(content, filePath: 'inbox/T999-loose.md');
+      expect(task.lane, TaskLane.doing);
     });
   });
 
@@ -464,11 +539,14 @@ title: "Minimal task"
         filePath: 'docs/tasks/01-open/T001.md',
       );
       expect(task.id, 'T001');
+      expect(task.slug, 'T001');
       expect(task.title, 'Minimal task');
+      expect(task.type, 'task');
       expect(task.owner, 'unassigned');
       expect(task.priority, 'P2');
       expect(task.linkedSkills, isEmpty);
       expect(task.dependsOn, isEmpty);
+      expect(task.blockers, isEmpty);
     });
   });
 
@@ -502,6 +580,35 @@ flutter analyze
       expect(task.verificationCommands, ['flutter test', 'flutter analyze']);
     });
 
+    test('ignores code blocks outside verification/validation sections', () {
+      const content = '''---
+id: T001
+title: "Test"
+priority: low
+owner: test
+created: "2026-01-01"
+updated: "2026-01-01"
+---
+# Test
+
+## How
+```bash
+echo should-not-be-captured
+```
+
+## Validation Commands
+```bash
+flutter test scoped
+```
+''';
+
+      final task = parser.parseTask(
+        content,
+        filePath: 'docs/tasks/01-open/T001.md',
+      );
+      expect(task.verificationCommands, ['flutter test scoped']);
+    });
+
     test('extracts exit conditions as structured items', () {
       const content = '''---
 id: T001
@@ -528,6 +635,58 @@ updated: "2026-01-01"
       expect(task.exitConditions[0].text, 'First condition done');
       expect(task.exitConditions[1].isComplete, isFalse);
       expect(task.exitConditions[2].isComplete, isTrue);
+    });
+
+    test('tolerates governed headings with parenthetical suffixes and emoji', () {
+      const content = '''---
+id: T0610
+title: "Operate Task Projection Contract"
+status: doing
+type: feature
+priority: P0
+owner: builders
+created: "2026-06-30"
+updated: "2026-07-09"
+---
+# Task 0610
+
+## Exit Conditions (GDD/TDD)
+- [x] Projection model defines structured fields
+- [ ] Review score is 100
+
+## Verification Commands
+```bash
+flutter test test/data/parsers/workspace_task_projection_parser_test.dart
+```
+
+## 📋 Completion Evidence (preenchido pelo agente executor)
+- **Arquivos criados/modificados**: task_projection.dart
+- **Testes**: 24/24
+''';
+
+      final task = parser.parseTask(
+        content,
+        filePath:
+            'docs/tasks/02-doing/0610-warp-prism-operate-task-projection-contract.md',
+      );
+
+      expect(task.exitConditions, hasLength(2));
+      expect(task.exitConditions.first.isComplete, isTrue);
+      expect(task.verificationCommands, hasLength(1));
+      expect(task.completionEvidenceRows, hasLength(2));
+      expect(
+        task.completionEvidenceRows.first.label,
+        'Arquivos criados/modificados',
+      );
+      expect(
+        task.sections.map((s) => s.name),
+        containsAll([
+          'Exit Conditions',
+          'Verification Commands',
+          'Completion Evidence',
+        ]),
+      );
+      expect(task.hasCompletionEvidence, isTrue);
     });
 
     test('hasCompletionEvidence is false for "not yet" text', () {
@@ -650,6 +809,55 @@ updated: "2026-01-02"
   });
 
   // =========================================================================
+  // Committed corpus fixtures — drift guard
+  // =========================================================================
+
+  group('committed mock corpus fixtures', () {
+    // Resolve corpus relative to process CWD (package dir or monorepo root).
+    // See Task 1407 retirement audit F-1407-02.
+    final corpusRoot = Directory(_resolveMockTasksRoot());
+
+    final committedFixtures = <String, TaskLane>{
+      '00-planning/T001-plan-workspace-onboarding-epic.md': TaskLane.planning,
+      '01-open/T006-parse-yaml-workspace-manifest.md': TaskLane.open,
+      '02-doing/T009-implement-task-lane-board-ui.md': TaskLane.doing,
+      '03-review/T015-governance-audit-task-dependency-chains.md':
+          TaskLane.review,
+      '04-completed/T018-completed-mock-agent-corpus-creation.md':
+          TaskLane.completed,
+    };
+
+    test('parses one committed file per lane', () {
+      expect(
+        corpusRoot.existsSync(),
+        isTrue,
+        reason:
+            'mock corpus must exist under assets/mock_workspace/docs/tasks '
+            '(or apps/observatory/assets/... from monorepo root)',
+      );
+
+      for (final entry in committedFixtures.entries) {
+        final file = File('${corpusRoot.path}/${entry.key}');
+        expect(
+          file.existsSync(),
+          isTrue,
+          reason: 'missing fixture ${entry.key}',
+        );
+        final task = parser.parseTask(
+          file.readAsStringSync(),
+          filePath: '${corpusRoot.path}/${entry.key}',
+        );
+        expect(task.lane, entry.value, reason: entry.key);
+        expect(task.id, isNotEmpty, reason: entry.key);
+        expect(task.slug, isNotEmpty, reason: entry.key);
+        expect(task.statusLabel, isNotEmpty, reason: entry.key);
+        expect(task.title, isNotEmpty, reason: entry.key);
+        expect(task.sections, isNotEmpty, reason: entry.key);
+      }
+    });
+  });
+
+  // =========================================================================
   // tryParse — error handling
   // =========================================================================
 
@@ -697,4 +905,17 @@ updated: "2026-01-02"
       }
     });
   });
+}
+
+/// Resolves the committed mock tasks directory from either package CWD
+/// (`apps/observatory`) or monorepo root.
+String _resolveMockTasksRoot() {
+  const candidates = [
+    'assets/mock_workspace/docs/tasks',
+    'apps/observatory/assets/mock_workspace/docs/tasks',
+  ];
+  for (final path in candidates) {
+    if (Directory(path).existsSync()) return path;
+  }
+  return candidates.first;
 }

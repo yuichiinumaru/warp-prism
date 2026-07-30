@@ -168,7 +168,12 @@ class AssetSelectionController extends Notifier<AssetSelectionState> {
   }
 
   /// Build the canonical detail route path for an asset ID.
-  static String detailRoute(String assetId) => '/assets/$assetId';
+  ///
+  /// Path segment is percent-encoded so reserved characters in IDs do not
+  /// break GoRouter matching. Consumers should decode with
+  /// [Uri.decodeComponent] when reading the route parameter.
+  static String detailRoute(String assetId) =>
+      '/assets/${Uri.encodeComponent(assetId)}';
 
   void _resolveFromGraph(String assetId, WorkspaceGraphResult graph) {
     final asset = graph.getAsset(assetId);

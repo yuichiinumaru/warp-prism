@@ -1082,6 +1082,8 @@ AssetDetailDescriptor _buildFallbackDescriptor(
         '$kindLabel assets have partial detail support. '
         'Showing available identity, metadata, and tags. '
         'Kind-specific panels for $kindLabel are not yet implemented.',
+    incomingLinks: incoming,
+    outgoingLinks: outgoing,
   );
 }
 

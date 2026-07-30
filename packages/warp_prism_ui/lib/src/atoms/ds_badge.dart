@@ -15,6 +15,7 @@ class DSBadge extends StatelessWidget {
   final Color? backgroundColor;
   final DSBadgeVariant variant;
   final DSBadgeSize size;
+  final String? semanticLabel;
 
   const DSBadge({
     super.key,
@@ -24,6 +25,7 @@ class DSBadge extends StatelessWidget {
     this.backgroundColor,
     this.variant = DSBadgeVariant.filled,
     this.size = DSBadgeSize.medium,
+    this.semanticLabel,
   });
 
   // === NAMED CONSTRUCTORS ===
@@ -33,35 +35,36 @@ class DSBadge extends StatelessWidget {
     this.color,
     this.backgroundColor,
     this.size = DSBadgeSize.small,
+    this.semanticLabel,
   }) : label = null,
        variant = DSBadgeVariant.filled;
 
-  const DSBadge.dot({super.key, this.color})
+  const DSBadge.dot({super.key, this.color, this.semanticLabel})
     : label = null,
       count = null,
       backgroundColor = null,
       variant = DSBadgeVariant.dot,
       size = DSBadgeSize.small;
 
-  const DSBadge.success({super.key, this.label, this.count})
+  const DSBadge.success({super.key, this.label, this.count, this.semanticLabel})
     : color = DSColors.statusSuccess,
       backgroundColor = null,
       variant = DSBadgeVariant.filled,
       size = DSBadgeSize.medium;
 
-  const DSBadge.warning({super.key, this.label, this.count})
+  const DSBadge.warning({super.key, this.label, this.count, this.semanticLabel})
     : color = DSColors.statusWarning,
       backgroundColor = null,
       variant = DSBadgeVariant.filled,
       size = DSBadgeSize.medium;
 
-  const DSBadge.error({super.key, this.label, this.count})
+  const DSBadge.error({super.key, this.label, this.count, this.semanticLabel})
     : color = DSColors.statusError,
       backgroundColor = null,
       variant = DSBadgeVariant.filled,
       size = DSBadgeSize.medium;
 
-  const DSBadge.info({super.key, this.label, this.count})
+  const DSBadge.info({super.key, this.label, this.count, this.semanticLabel})
     : color = DSColors.statusInfo,
       backgroundColor = null,
       variant = DSBadgeVariant.filled,
@@ -80,7 +83,12 @@ class DSBadge extends StatelessWidget {
     int? count,
     DSBadgeVariant variant = DSBadgeVariant.filled,
     DSBadgeSize size = DSBadgeSize.medium,
+    String? semanticLabel,
   }) {
+    final defaultSemanticLabel = count != null
+        ? '${state.semanticLabel}, count $count'
+        : state.semanticLabel;
+
     return DSBadge(
       key: key,
       label: label ?? state.label,
@@ -88,6 +96,7 @@ class DSBadge extends StatelessWidget {
       color: state.color,
       variant: variant,
       size: size,
+      semanticLabel: semanticLabel ?? defaultSemanticLabel,
     );
   }
 
@@ -129,12 +138,15 @@ class DSBadge extends StatelessWidget {
     final effectiveColor = color ?? DSColors.accentCyan;
 
     if (variant == DSBadgeVariant.dot) {
-      return Container(
-        width: 8,
-        height: 8,
-        decoration: BoxDecoration(
-          color: effectiveColor,
-          shape: BoxShape.circle,
+      return Semantics(
+        label: semanticLabel,
+        child: Container(
+          width: 8,
+          height: 8,
+          decoration: BoxDecoration(
+            color: effectiveColor,
+            shape: BoxShape.circle,
+          ),
         ),
       );
     }
@@ -144,30 +156,33 @@ class DSBadge extends StatelessWidget {
         : label ?? '';
 
     final bgColor = variant == DSBadgeVariant.filled
-        ? effectiveColor.withOpacity(0.15)
+        ? effectiveColor.withValues(alpha: 0.15)
         : DSColors.transparent;
 
     final borderColor = variant == DSBadgeVariant.outlined
-        ? effectiveColor.withOpacity(0.5)
+        ? effectiveColor.withValues(alpha: 0.5)
         : DSColors.transparent;
 
-    return Container(
-      height: _height,
-      constraints: BoxConstraints(minWidth: _height),
-      padding: _padding,
-      decoration: BoxDecoration(
-        color: backgroundColor ?? bgColor,
-        borderRadius: BorderRadius.circular(DSRadii.full),
-        border: Border.all(color: borderColor, width: 1),
-      ),
-      child: Center(
-        child: Text(
-          content,
-          style: TextStyle(
-            fontSize: _fontSize,
-            fontWeight: FontWeight.w600,
-            color: effectiveColor,
-            height: 1,
+    return Semantics(
+      label: semanticLabel,
+      child: Container(
+        height: _height,
+        constraints: BoxConstraints(minWidth: _height),
+        padding: _padding,
+        decoration: BoxDecoration(
+          color: backgroundColor ?? bgColor,
+          borderRadius: BorderRadius.circular(DSRadii.full),
+          border: Border.all(color: borderColor, width: 1),
+        ),
+        child: Center(
+          child: Text(
+            content,
+            style: TextStyle(
+              fontSize: _fontSize,
+              fontWeight: FontWeight.w600,
+              color: effectiveColor,
+              height: 1,
+            ),
           ),
         ),
       ),

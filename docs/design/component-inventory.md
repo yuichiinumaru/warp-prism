@@ -1,335 +1,352 @@
-# Warp Prism — Control Surface Component Inventory
+# Warp Prism — CyberCore Control Surface Inventory
 
-> **Task**: 1102 — Warp Prism Control Surface Inventory
-> **Date**: 2026-06-08
-> **Status**: Active
-> **Evidence**: Direct inspection of `lib/design_system/`, `lib/features/`, `lib/data/models/`, and `assets/mock_workspace/`
-
----
-
-## 1. Design System Components (lib/design_system/)
-
-### 1.1 Tokens
-
-| Token Layer | Class | File | Lines | Purpose | Reusability |
-|------------|-------|------|-------|---------|-------------|
-| Colors | `DSColors` | `tokens/ds_colors.dart` | 180 | Obsidian backgrounds, energy accents (cyan/violet/gold), status, governance, text, border, lane, asset-kind colors. Includes `forAssetKind()`, `forLane()`, `forCanonicity()` lookup methods. | Universal — all surfaces |
-| Typography | `DSTypography` | `tokens/ds_typography.dart` | 186 | 18-style type scale (display/heading/body/label/code/numeric). JetBrainsMono (mono) + Inter (sans). | Universal |
-| Spacing | `DSSpacing` | `tokens/ds_spacing.dart` | 72 | Base scale (xxs→massive) + semantic spacing (insets, gaps, layout dimensions, sidebar/topbar/inspector sizes). | Universal |
-| Radii | `DSRadii` | `tokens/ds_radii.dart` | 47 | Base radii (none→full) + semantic radii (card, button, chip, input, panel, modal). | Universal |
-| Shadows | `DSShadows` | `tokens/ds_shadows.dart` | 144 | Elevation presets (1-4) + energy glow effects (cyan/violet/gold/success/error/warning). | Universal |
-| Motion | `DSMotion` | `tokens/ds_motion.dart` | 62 | Durations (instant→slowest) + curves (standard/enter/exit/emphasized/spring) + semantic animations (hover/focus/page/panel/stagger). | Universal |
-| Semantics | `DSSemantics` | `tokens/ds_semantics.dart` | 150 | Pre-composed semantic text styles: status (success/warning/error/info), governance (canonical/local/generated/appendOnly), asset kind, lane, proof state. | Universal |
-| Breakpoints | `DSBreakpoints` | `tokens/ds_breakpoints.dart` | ~30 | Responsive breakpoint constants (narrow/sidebarCollapse/masterDetailSideBySide/timelineDetail). | Universal |
-
-### 1.2 Atoms
-
-| Component | Class(es) | File | Operational States | Data Dependencies | Reusability |
-|-----------|-----------|------|--------------------|-------------------|-------------|
-| **Text** | `DSText`, `DSTextVariant` | `atoms/ds_text.dart` | 18 variant states (display/heading/body/label/code/numeric × large/medium/small) | `DSTypography`, `DSColors` | MVP — every surface |
-| **Icon** | `DSIcon`, `DSIconSize`, `DSIcons` | `atoms/ds_icon.dart` | 5 size states (tiny/small/medium/large/xlarge). Icon constants for navigation, asset kinds, status, actions, governance, lanes. | `DSColors` | MVP — every surface |
-| **Badge** | `DSBadge`, `DSBadgeSize`, `DSBadgeVariant` | `atoms/ds_badge.dart` | Variants: filled/outlined/dot. Semantic constructors: count/success/warning/error/info. | `DSColors` | MVP — dashboards, cards, lane headers |
-| **Chip** | `DSChip`, `DSChipSize` | `atoms/ds_chip.dart` | Interactive (selected/unselected/enabled/disabled), keyboard focusable. Factory constructors: `assetKind`, `lane`, `governance`, `removable`. | `DSColors`, `DSIcons` | MVP — filters, tags, lanes |
-| **Status Dot** | `DSStatusDot` | `atoms/ds_status_dot.dart` | 5 semantic constructors: success/warning/error/info/neutral. Optional animated pulsing glow. | `DSColors` | MVP — task cards, health indicators |
-| **Divider** | `DSDivider`, `DSGlowDivider` | `atoms/ds_divider.dart` | Variants: subtle/default/strong. Glow variant for energy accent separation. | `DSColors` | MVP — layouts |
-| **Glass Panel** | `DSGlassPanel`, `DSGlassPanelSimple` | `atoms/ds_glass_panel.dart` | Variants: subtle/elevated/modal. Simple variant without blur for performance. | `DSColors`, `DSShadows` | MVP — story panels, metric tiles, modals |
-| **Glow Border** | `DSGlowBorder` | `atoms/ds_glow_border.dart` | Animated energy glow border with color override. | `DSColors` | Defer — decorative |
-
-### 1.3 Molecules
-
-| Component | Class(es) | File | Operational States | Data Dependencies | Reusability |
-|-----------|-----------|------|--------------------|-------------------|-------------|
-| **Search Bar** | `DSSearchBar` | `molecules/ds_search_bar.dart` | Focused/unfocused, value present/empty, filter toggle | String value, filter state | MVP — topbar, catalog, overview |
-| **Filter Chip Group** | `DSFilterChipGroup`, `DSFilterOption` | `molecules/ds_filter_chip_group.dart` | Horizontal scrollable group, multi-select, empty state | List of filter options, selected set | MVP — Map/Operate/History filters |
-| **Asset Card** | `DSAssetCard` | `molecules/ds_asset_card.dart` | Normal/selected, kind-colored, description present/absent, tags present/absent, edge count | name, kind, description, canonicality, tags, edgeCount | MVP — Map catalog, search results |
-| **Task Card** | `DSTaskCard` | `molecules/ds_task_card.dart` | Normal/selected/focused, proof state color (complete/partial/missing/none), priority badge (P0/P1/P2), review score color, keyboard-interactive | id, title, lane, priority, owner, proofState, reviewScore, linkedSkills, dependencyCount | MVP — Operate lane board |
-| **Metric Tile** | `DSMetricTile`, `DSMetricTileCompact` | `molecules/ds_metric_tile.dart` | Trend state (up/down/flat) with color coding, optional subtitle, tap target | label, value, icon, color, trend | MVP — Overview dashboard, governance |
-| **Provenance Pill** | `DSProvenancePill`, `DSProvenanceSize` | `molecules/ds_provenance_pill.dart` | 6 canonicality states: parentCanonical/childLocal/generated/appendOnly/archive/mock. 3 sizes. Tooltip with explanation. | canonicality string | MVP — governance, asset cards |
-| **Evidence Row** | `DSEvidenceRow`, `DSEvidenceIndicator`, `DSEvidenceState` | `molecules/ds_evidence_row.dart` | 4 evidence states: verified/partial/missing/pending. Compact indicator variant. | label, value, state | MVP — task detail, governance |
-| **Timeline Marker** | `DSTimelineMarker` | `molecules/ds_timeline_marker.dart` | Normal/selected, type-colored (feature/fix/refactor/docs/chore), first/last in timeline, project/task badges | date, title, type, project, taskId, impacts | MVP — History timeline |
-| **State Surface** | `DSStateSurface`, `DSStateType` | `molecules/ds_state_surface.dart` | 3 states: **empty** (inbox icon), **loading** (spinner), **error** (error icon + retry). Compact mode. | stateType, icon, title, subtitle, actionLabel | MVP — all empty/loading/error states. **CRITICAL: needs expansion to 14+ operational states (see operational-state-vocabulary.md)** |
-
-### 1.4 Organisms
-
-| Component | Class(es) | File | Operational States | Data Dependencies | Reusability |
-|-----------|-----------|------|--------------------|-------------------|-------------|
-| **Shell** | `DSShell`, `DSShellResponsive` | `organisms/ds_shell.dart` | 4 responsive states: wide (side-by side), medium (overlay drawer + scrim), narrow (collapsed sidebar), very narrow (no sidebar). Inspector open/close. | sidebar, topbar, content, inspector widgets | MVP — app root |
-| **Sidebar** | `DSSidebar`, `DSSidebarItem` | `organisms/ds_sidebar.dart` | Expanded/collapsed, selected/unselected items, keyboard-navigable (arrow/Enter/Space), hover/focus visual states, badge counts. | items list, selectedId | MVP — app shell |
-| **Topbar** | `DSTopbar`, `DSTopbarAction` | `organisms/ds_topbar.dart` | Title or breadcrumb mode, search bar collapse at narrow widths, action buttons with keyboard focus/activation, badge counts. | title, breadcrumbs, searchBar, actions | MVP — app shell |
-| **Lane Board** | `DSLaneBoard`, `DSLane`, `DSLaneTask` | `organisms/ds_lane_board.dart` | 5-lane kanban layout, horizontal scroll, empty lane state (uses DSStateSurface.empty), responsive lane width (280-320px). | lanes list with tasks | MVP — Operate surface |
-| **Timeline** | `DSTimeline`, `DSTimelineEntry`, `DSTimelineGrouped`, `DSTimelineGroup` | `organisms/ds_timeline.dart` | Flat or grouped mode, empty state, selected entry, filter bar integration. | entries list, selectedId, filterBar | MVP — History surface |
-| **Detail Inspector** | `DSDetailInspector`, `DSDetailSection`, `DSPropertyRow`, `DSLinkRow` | `organisms/ds_detail_inspector.dart` | Kind-colored header, closeable, sections with counts, keyboard-navigable link rows, property/value pairs. | title, kind, sections list | MVP — Asset Detail, Map inspector |
-| **Story Panel** | `DSStoryPanel`, `DSStoryInsight`, `DSStoryNarrativeInsight`, `InsightRiskLevel`, `DSStoryCardQuick` | `organisms/ds_story_panel.dart` | 5 risk levels (none/low/medium/high/critical), empty insights state, evidence/connection metadata on narrative insights. Quick card variant for dashboards. | title, insights list | MVP — Overview, Governance storytelling |
-| **Graph Canvas** | `DSGraphCanvas`, `GraphNode`, `GraphEdge` | `organisms/ds_graph_canvas.dart` | Empty state, force-directed layout, node hover/select/drag, edge highlighting, pan/zoom, animated physics. | nodes list, edges list | MVP — Map graph. **NOTE: needs layout algorithm expansion per ADS gap analysis** |
-
-### 1.5 Templates
-
-| Template | Class(es) | File | Responsive States | Data Dependencies | Reusability |
-|----------|-----------|------|--------------------|-------------------|-------------|
-| **Master Detail** | `MasterDetailTemplate` | `templates/master_detail_template.dart` | 3 breakpoint states: ≥1200px side-by-side, 800-1199px overlay drawer + scrim, <800px full-screen detail with back arrow. Filter chip integration. | sidebarItems, masterContent, detailContent, filters | MVP — Map, Operate, Governance |
-| **Canvas** | `CanvasTemplate` | `templates/master_detail_template.dart` | Full-bleed canvas with overlay panel (inspector) and floating controls. | sidebarItems, canvas, overlayPanel | MVP — Map graph view |
-| **Timeline** | `TimelineTemplate` | `templates/master_detail_template.dart` | ≥1000px side-by-side timeline+detail, <1000px timeline only. Filter chip integration. | sidebarItems, entries, detailPanel | MVP — History surface |
-
-### 1.6 Gallery
-
-| Component | Class | File | Purpose |
-|-----------|-------|------|---------|
-| Gallery Page | `DSGalleryPage` | `gallery/design_system_gallery_page.dart` | Mandatory gallery route demonstrating all tokens/components/states |
-| Gallery Sections | `DSGallerySections` | `gallery/design_system_gallery_sections.dart` | Section generators for color tokens, typography, status semantics, badges, chips, cards, panels, task cards, asset cards, timeline items, graph nodes, empty/loading/error states |
+> **Task**: 1102 — Warp Prism Control Surface Inventory  
+> **Date**: 2026-07-09 (full rewrite; supersedes 2026-06-08 ADS/Observatory inventory; governance amend same day)  
+> **Status**: Source-backed inventory complete (DoD); screenshot-backed evidence **OPTIONAL / ABSENT** (deferred)  
+> **Review readiness**: **Ready for reviewer** under 2026-07-09 DoD — primary evidence = live monorepo + tables (§0.5)  
+> **Evidence class**: `source-backed` (live, **primary**) · `screenshot-backed` (absent, **optional**) · `unavailable` (historical `/tmp` screenshots)
 
 ---
 
-## 2. Feature-Level Widgets (lib/features/)
+## 0. Evidence Boundary And Provenance
 
-### 2.1 Overview Feature (`lib/features/overview/`)
+### 0.1 Authorized sources for this rebuild
 
-| Widget/Class | File | Purpose | Data Dependencies |
-|-------------|------|---------|-------------------|
-| `OverviewPage` | `overview_page.dart` | Top-level dashboard page — aggregates metric tiles, story panels, lane summary | `OverviewProvider` |
-| `OverviewProvider` | `overview_provider.dart` | Computes derived metrics from `WorkspaceSnapshot` | `WorkspaceSnapshot` |
-| `OverviewMetrics` | `overview_metrics.dart` | Aggregated counts (agents, skills, workflows, tasks, changelog), blocked tasks, review queue, governance warnings, lane breakdown | `WorkspaceSnapshot` |
-| `OverviewStoryInsight` | `overview_metrics.dart` | Narrative insight for current story panel (severity: `OverviewInsightSeverity`) | — |
+| Source | Absolute / monorepo path | Class | Used for |
+| --- | --- | --- | --- |
+| Cybernetics Core frontend (sibling monorepo) | `/home/sephiroth/working/ganthritor/cybernetics-core/apps/frontend` · rel. `cybernetics-core/apps/frontend` | `source-backed` | Routes, admin components, page states/actions, data deps |
+| CC UI patterns doc (in CC tree) | `.../apps/frontend/docs/ui-patterns.md` | `source-backed` | Admin component contracts + documented a11y risks |
+| Control-plane domain tabs | `.../apps/frontend/components/admin/control-plane-domain-tabs.tsx` | `source-backed` | Full IA tab map beyond primary sidebar |
+| Sidebar layout nav | `.../apps/frontend/app/[locale]/(sidebar)/layout.tsx` | `source-backed` | Primary sidebar routes + role filter |
+| Auth middleware | `.../apps/frontend/middleware.ts` | `source-backed` | Admin-only / public / read-only route classes |
+| Domain state enums | `.../apps/frontend/lib/{llm-diagnostics,llm-remote-exposure,combo-readiness}.ts`, `.../lib/constants.ts`, `.../types/search.ts`, `.../hooks/useConnection.ts`, `.../components/providers/provider-status-badge.tsx`, `.../components/admin/admin-data-state.tsx` | `source-backed` | Explicit operational/UI enums |
+| Warp Prism CC mirror app | `warp-prism/apps/cybercore/` | `secondary` | Downstream Flutter mirror only — **not** treated as CC route authority |
+| Backend feature catalog | `warp-prism/docs/reference/cybercore-backend-features/` | `secondary` | Domain vocabulary notes only |
+| Task 1420 evidence packet | `warp-prism/docs/reference/cybercore-control-surfaces/` | source index + optional screenshot status | Live source inventory; screenshots optional/absent |
+| Historical screenshots | `/tmp/opencode/cc-ui-screenshots-round2/*.md` | `unavailable` / optional | **Not present** — no visual state claims invented; not a hard gate |
 
-### 2.2 Map Feature (`lib/features/map/`)
+### 0.2 Explicit non-sources
 
-| Widget/Class | File | Purpose | Data Dependencies |
-|-------------|------|---------|-------------------|
-| `MapWorkspacePage` | `map_workspace_page.dart` | Top-level Map surface page with tabs (Agents, Skills, Workflows, Graph) | `MapWorkspaceProvider` |
-| `MapWorkspaceProvider` | `map_workspace_provider.dart` | State management for Map: search, filter, selection, catalog/graph projection | `WorkspaceSnapshot` |
-| `MapWorkspaceState` | `map_workspace_state.dart` | State model: subview (catalog/graph), search query, filters, selected asset | — |
-| `MapSubview` (enum) | `map_workspace_state.dart` | catalog vs graph mode | — |
-| `MapCatalogPanel` | `widgets/map_catalog_panel.dart` | Catalog view with tab-based asset listing (agents/skills/workflows) | `MapCatalogTab` enum |
-| `MapAssetCardGrid` | `widgets/map_asset_card_grid.dart` | Grid of `DSAssetCard` for catalog view | filtered assets list |
-| `MapGraphPanel` | `widgets/map_graph_panel.dart` | Graph mode with `DSGraphCanvas` and mode selector | `MapGraphProjection` |
-| `MapInspectorPanel` | `widgets/map_inspector_panel.dart` | Right-side detail inspector for selected asset | `MapSelectionController` |
-| `MapStatePanel` | `widgets/map_state_panel.dart` | State overlay for loading/empty/error (`MapSurfaceState` enum) | — |
-| `MapNoResultsState` | `widgets/map_no_results_state.dart` | Empty search results state | — |
-| `MapSearchBar` | (uses `DSSearchBar`) | Search input | — |
-| `MapFilterChips` | (uses `DSFilterChipGroup`) | Kind/status filter chips | — |
-| `MapSelectionController` | `map_selection_controller.dart` | Manages selected asset + inspector sections/rows | — |
-| `MapGraphProjection` | `graph/map_graph_projection.dart` | Converts `WorkspaceSnapshot` to `GraphNode`/`GraphEdge` lists | `WorkspaceSnapshot` |
-| `MapGraphMode` (enum) | `graph/map_graph_mode.dart` | containment / operational / evidence | — |
+| Non-source | Why rejected |
+| --- | --- |
+| Prior `component-inventory.md` (2026-06-08) | Inventories Warp Prism ADS/Observatory (`lib/design_system/`, mock corpus), not CC admin routes |
+| Observatory routes under `apps/observatory/` | ASW Observatory product surface, not CyberCore control plane |
+| Backend-only feature IDs without a live `page.tsx` | Would invent UI routes that do not exist in the frontend |
 
-### 2.3 Operate Feature (`lib/features/operate/`)
+### 0.3 Snapshot identity
 
-| Widget/Class | File | Purpose | Data Dependencies |
-|-------------|------|---------|-------------------|
-| `OperateWorkspaceView` | `operate_workspace_view.dart` | Top-level Operate surface: filter bar, search, count bar, lane board, story panel | `OperateWorkspaceViewModel` |
-| `OperateWorkspaceViewModel` | `operate_workspace_view_model.dart` | State: board state, lane states, filter options, search query | `WorkspaceSnapshot` |
-| `OperateBoardState` | `operate_workspace_view_model.dart` | Aggregated lane counts, filtered tasks, story diagnostics | — |
-| `OperateTaskDetailPanel` | `operate_task_detail_panel.dart` | Right-side task detail for selected task in lane board | `TaskProjection` |
-| `TaskProjection` | `task_projection.dart` | Normalized task view model from `WorkspaceAsset` frontmatter | `WorkspaceAsset` |
-| `TaskLaneProjection` | `task_projection.dart` | Lane + task projections for the board | — |
-| `OperateFilters` | `operate_filters.dart` | Filter state for lane, owner, priority, proof state | — |
-| `OperateStoryDiagnostics` | `operate_storytelling.dart` | Computes blocker clusters, lane mismatches, narrative insights | `WorkspaceSnapshot` |
-| `StoryRiskLevel` (enum) | `operate_storytelling.dart` | none/low/medium/high/critical | — |
-| `OperateInsight` | `operate_storytelling.dart` | Story insight with risk level for operate narrative | — |
-| `OperateTaskDetailMapper` | `operate_task_detail_mapper.dart` | Maps `TaskProjection` → `DSDetailInspector` sections | — |
+| Field | Value |
+| --- | --- |
+| CC frontend root | `/home/sephiroth/working/ganthritor/cybernetics-core/apps/frontend` |
+| Relative monorepo path | `cybernetics-core/apps/frontend` (sibling of `warp-prism/`) |
+| Git HEAD observed | `ec87953` (working tree may include later uncommitted UI) |
+| Sidebar product version string | `v2.4.22` (`layout.tsx` footer) |
+| Inventory capture date | 2026-07-09 |
+| Path re-verify date | 2026-07-09 (second architect/docs pass) |
+| Screenshot packet | **ABSENT / OPTIONAL** (`ls /tmp/opencode/cc-ui-screenshots-round2` → No such file; deferred follow-up) |
+| `page.tsx` count (app tree) | 28 routes (FS walk; see `docs/reference/cybercore-control-surfaces/route-inventory.md`) |
 
-### 2.4 History Feature (`lib/features/history/`)
+### 0.3.1 Path existence stamp (re-verified)
 
-| Widget/Class | File | Purpose | Data Dependencies |
-|-------------|------|---------|-------------------|
-| `HistoryWorkspacePage` | `presentation/history_page.dart` | Top-level History surface: mode selector (timeline/story/impact), filters, content | `HistoryController` |
-| `HistoryController` | `presentation/history_controller.dart` | State: view mode, filter category, project story groups, impact path nodes | `WorkspaceSnapshot` |
-| `HistoryViewMode` (enum) | `presentation/history_view_mode.dart` | timeline / story / impact | — |
-| `HistoryFilterCategory` (enum) | `presentation/history_controller.dart` | project / type / skill / task | — |
-| `HistoryState` | `presentation/history_controller.dart` | State model: entries, groups, impact paths, selected filters | — |
-| `HistoryStoryView` | `presentation/widgets/history_story_view.dart` | Grouped story cards by project/milestone | `ProjectStoryGroup` |
-| `HistoryImpactView` | `presentation/widgets/history_impact_view.dart` | Impact path visualization: changelog → task → skill/workflow | `ImpactPathNode` |
+All of the following resolve under `/home/sephiroth/working/ganthritor/cybernetics-core/apps/frontend/` (OK on 2026-07-09 re-verify):
 
-### 2.5 Governance Feature (`lib/features/governance/`)
+| Relative path | Role | Lines (approx) |
+| --- | --- | --- |
+| `app/[locale]/(sidebar)/layout.tsx` | Primary nav shell | — |
+| `app/[locale]/(sidebar)/providers/page.tsx` | Pilot A | 1143 |
+| `app/[locale]/(sidebar)/providers/new/page.tsx` | Provider create | — |
+| `app/[locale]/(sidebar)/providers/[id]/page.tsx` | Provider edit | — |
+| `app/[locale]/(sidebar)/mcp-servers/page.tsx` | Pilot B list | 497 |
+| `app/[locale]/(sidebar)/mcp-servers/[uuid]/page.tsx` | MCP detail | — |
+| `app/[locale]/(sidebar)/mcp-inspector/page.tsx` | Pilot B inspector | 384 |
+| `app/[locale]/(sidebar)/live-logs/page.tsx` | Pilot C | 351 |
+| `app/[locale]/(sidebar)/search/page.tsx` | Marketplace | 525 |
+| `app/[locale]/(sidebar)/models/page.tsx` | Model catalog | 420 |
+| `app/[locale]/(sidebar)/combos/page.tsx` | Combos | 737 |
+| `app/[locale]/(sidebar)/usage/page.tsx` | Usage metrics | 231 |
+| `app/[locale]/(sidebar)/costs/page.tsx` | Costs | 617 |
+| `app/[locale]/(sidebar)/settings/page.tsx` | Settings | 799 |
+| `app/[locale]/(sidebar)/api-keys/page.tsx` | API keys | 386 |
+| `app/[locale]/(sidebar)/llm-endpoints/page.tsx` | Endpoint exposure | 610 |
+| `app/[locale]/(sidebar)/media/page.tsx` | Media providers | 258 |
+| `app/[locale]/(sidebar)/namespaces/page.tsx` | Namespaces | 335 |
+| `app/[locale]/(sidebar)/endpoints/page.tsx` | MCP endpoints | 726 |
+| `app/[locale]/(sidebar)/discovery/page.tsx` | Harness discovery | 174 |
+| `app/[locale]/(sidebar)/harness/page.tsx` | Harness re-export | — |
+| `app/[locale]/(sidebar)/settings/aliases/page.tsx` | Model aliases | 198 |
+| `components/admin/control-plane-domain-tabs.tsx` | Domain IA | — |
+| `components/admin/admin-page-shell.tsx` | Page template | — |
+| `components/admin/admin-data-state.tsx` | loading/empty/error | — |
+| `components/admin/admin-panel.tsx` | Panels | — |
+| `components/admin/admin-table-shell.tsx` | Tables | — |
+| `components/admin/admin-data-toolbar.tsx` | Toolbar | — |
+| `components/admin/metric-grid.tsx` | Metrics | — |
+| `components/providers/provider-status-badge.tsx` | Status badge | — |
+| `components/providers/provider-connection-form.tsx` | Connection form | — |
+| `hooks/useConnection.ts` | Inspector connection | — |
+| `lib/constants.ts` | `ConnectionStatus` | — |
+| `lib/llm-diagnostics.ts` | `ProviderHealthStatus` | — |
+| `lib/llm-remote-exposure.ts` | `RemoteExposureState` | — |
+| `lib/combo-readiness.ts` | `ComboReadinessStatus` | — |
+| `types/search.ts` | Catalog status union | — |
+| `middleware.ts` | Authz route classes | — |
+| `docs/ui-patterns.md` | Component contracts / a11y | — |
 
-| Widget/Class | File | Purpose | Data Dependencies |
-|-------------|------|---------|-------------------|
-| `GovernanceOverviewPage` | `presentation/governance_overview_page.dart` | Diagnostic panels: orphan workflows, no-trigger skills, missing verification, canonicality summary, fan-in hotspots, review pressure | `WorkspaceSnapshot` |
-| `GovernanceIssueFilters` | `widgets/governance_issue_filters.dart` | Filter state for diagnostic severity/category | `GovernanceFilterState` |
-| `GovernanceIssueGroup` | `widgets/governance_issue_group.dart` | Grouped issue rows with severity badges | `GovernanceIssueGroupData` |
-| `GovernanceStorySummary` | `widgets/governance_story_summary.dart` | Risk story panel with severity badges (`GovernanceStorySeverity`) | `GovernanceRiskStory` |
-| `GovernanceBoundaryLegend` | `widgets/governance_boundary_legend.dart` | Canonicality legend (parent/child/generated/archive/mock) + read-only banner | `CanonicalityClass` |
-| `ReviewPressurePanel` | `widgets/review_pressure_panel.dart` | Review queue pressure indicator by lane with severity badges | `ReviewPressureSummary` |
-| `FanInHotspotsPanel` | `widgets/fan_in_hotspots_panel.dart` | High fan-in skill hotspots with severity badges | `FanInHotspot` |
-| `GovernanceDrilldownController` | `widgets/governance_drilldown_controller.dart` | Drills from diagnostic → affected asset | `GovernanceDrilldownTarget` |
-| `CanonicalityBoundarySummary` | `presentation/governance_overview_page.dart` | Count of assets by canonicality class | `WorkspaceSnapshot` |
+### 0.4 Required column schema
 
-### 2.6 Asset Detail Feature (`lib/features/asset_detail/`)
+Every surface/component row below uses:
 
-| Widget/Class | File | Purpose | Data Dependencies |
-|-------------|------|---------|-------------------|
-| `AssetDetailView` | `presentation/asset_detail_view.dart` | Router: dispatches to kind-specific detail views. Handles loading/error/empty. | `AssetDetailResult` |
-| `AssetDetailConsumer` | `presentation/asset_detail_consumer.dart` | Riverpod consumer that resolves asset by ID | asset ID |
-| `AssetDetailController` | `application/asset_detail_controller.dart` | Fetches asset + related assets from `WorkspaceSnapshot` | `WorkspaceSnapshot` |
-| `AssetDetailDescriptor` | `domain/asset_detail_descriptor.dart` | Descriptor: sections, properties, links — used by all detail views | — |
-| `AgentDetailView` | `presentation/agent_detail_view.dart` | Agent-specific detail: role, model, skills, workflows, task involvement | `WorkspaceAsset` |
-| `SkillDetailView` | `presentation/skill_detail_view.dart` | Skill-specific detail: triggers, subskills, workflows, scripts, references, links | `WorkspaceAsset` |
-| `WorkflowDetailView` | `presentation/workflow_detail_view.dart` | Workflow-specific detail: kind, skills, agents, triggers | `WorkspaceAsset` |
-| `TaskDetailView` | `presentation/task_detail_view.dart` | Task-specific detail: metadata, lane, dependencies, proof, evidence, related changelog/skills | `WorkspaceAsset` |
-| `ChangelogDetailView` | `presentation/changelog_detail_view.dart` | Changelog-specific detail: date, type, project, task, impact, skills, body | `WorkspaceAsset` |
-| `GenericAssetDetailView` | `presentation/generic_asset_detail_view.dart` | Fallback detail for unsupported kinds; shows partial-support banner | `WorkspaceAsset` |
-| `ResponsiveDetailShell` | `presentation/responsive_detail_shell.dart` | Responsive wrapper for detail views | — |
-| `DetailSectionBuilder` | `presentation/detail_section_builder.dart` | Builds `DSDetailSection` list from `AssetDetailDescriptor` | — |
-| `AssetDetailMapper` | `application/asset_detail_mapper.dart` | Maps `WorkspaceAsset` → `AssetDetailDescriptor` | — |
+| Column | Meaning |
+| --- | --- |
+| **Surface / Component** | Human name |
+| **Route or path** | URL route and/or source file path under CC frontend |
+| **Atomic layer** | atom / molecule / organism / template / page / shell |
+| **Operational layer** | control-plane domain (Providers, MCP, Harness, Usage, Settings, Auth) |
+| **States** | Explicit UI/data states observed in source |
+| **Actions** | User-invokable operations observed in source |
+| **Data dependencies** | tRPC/REST/query hooks or client libs |
+| **Risk** | High / Medium / Low (operator impact if wrong) |
+| **Accessibility** | Documented or source-visible a11y concerns |
+| **Prism candidate** | Live Warp Prism ADS mapping under `packages/warp_prism_ui/lib/src/` |
+| **Disposition** | `MVP` / `defer` / `discard` / `needs-research` |
+| **Evidence** | `source-backed` only unless screenshots arrive |
 
-### 2.7 Shell Feature (`lib/features/shell/`)
+Paths below are relative to `cybernetics-core/apps/frontend/` unless noted. Absolute root for every relative path:
 
-| Widget/Class | File | Purpose | Data Dependencies |
-|-------------|------|---------|-------------------|
-| `ShellStateHandler` | `shell_state_handler.dart` | Abstract state handler for shell-level routing/navigation state | — |
+`/home/sephiroth/working/ganthritor/cybernetics-core/apps/frontend/`
 
-### 2.8 Workspace Snapshot Feature (`lib/features/workspace_snapshot/`)
+### 0.5 Governance amend — screenshot exit (2026-07-09 APPLIED)
 
-| Widget/Class | File | Purpose | Data Dependencies |
-|-------------|------|---------|-------------------|
-| `WorkspaceSnapshotPage` | `workspace_snapshot_page.dart` | Unified workspace page: topbar, tabs, content sections, metric tiles, lane summary, detail inspector | `WorkspaceSnapshotNotifier` |
-| `WorkspaceSnapshotNotifier` | `workspace_snapshot_provider.dart` | Async notifier: loads `WorkspaceSnapshot`, manages search/filter/graph state | `WorkspaceSnapshot` |
-| `WorkspaceSearchBar` | `widgets/workspace_search_bar.dart` | Search bar consuming provider state | provider search state |
-| `WorkspaceFilterChips` | `widgets/workspace_filter_chips.dart` | Filter chips for kind/lane/provenance | provider filter state |
-| `WorkspaceDerivedMetrics` | `widgets/workspace_derived_metrics.dart` | Metric tiles row (agents/skills/workflows/tasks/changelog/edges) | `WorkspaceSnapshot` |
-| `WorkspaceDetailInspector` | `widgets/workspace_detail_inspector.dart` | Right-side inspector for selected asset with edge rows | selected asset |
-| `WorkspaceGraphPanel` | `widgets/workspace_graph_panel.dart` | Graph mode toggle (containment/operational/evidence) + `DSGraphCanvas` | `GraphProjection` |
-| `AgentListPanel` | `widgets/agent_list_panel.dart` | List of agent `DSAssetCard` | agents list |
-| `SkillListPanel` | `widgets/skill_list_panel.dart` | List of skill `DSAssetCard` | skills list |
-| `WorkflowListPanel` | `widgets/workflow_list_panel.dart` | List of workflow `DSAssetCard` | workflows list |
-| `TaskLanePanel` | `widgets/task_lane_panel.dart` | `DSLaneBoard` with lane sections from snapshot | `WorkspaceSnapshot` |
-| `ChangelogListPanel` | `widgets/changelog_list_panel.dart` | `DSTimeline` from changelog entries | changelog entries |
-| `GraphProjection` | `workspace_snapshot_provider.dart` | Converts snapshot to `GraphNode`/`GraphEdge` | `WorkspaceSnapshot` |
-| `GraphNode`, `GraphEdge` | `workspace_snapshot_provider.dart` | Local graph node/edge classes for workspace snapshot | — |
+> **Question**: Can Task 1102 become `ready_for_reviewer` on source-backed inventory alone when screenshots are unavailable?  
+> **Answer**: **Yes** — after **explicit logged governance amend** (not silent waiver). Screenshots reclassified **optional / deferred**.
 
----
+| Finding | Result |
+| --- | --- |
+| Screenshot round status | **Unavailable** — `/tmp/opencode/cc-ui-screenshots-round2` missing; no in-repo screenshot reports; will not arrive from that path |
+| Primary evidence (DoD) | **Live monorepo paths + inventory tables** (`cybernetics-core/apps/frontend` + this inventory + Task 1420 packet) |
+| Task exit condition language (amended) | Primary = live monorepo + tables; if screenshots unavailable, **do not invent** visual data; mark optional/deferred |
+| Anti-hallucination guardrail (amended) | Never invent routes or screenshot reports; visual claims stay out of scope until real reports exist |
+| Prior independent rejection (F2) | 2026-06-17 rejected **silent** codebase substitution for the screenshot gate — addressed by **explicit amend**, not greenwash |
+| **Amend decision** | **APPLIED** — screenshot hard-gate reclassified optional; source-backed inventory is DoD |
+| **ready_for_reviewer** | **yes** (formal independent reviewer still pending; task may remain in `02-doing/` for handoff) |
 
-## 3. Data Models (lib/data/models/)
+**What source-backed inventory satisfies (DoD):**
 
-| Model | File | Purpose | Key Enums/Classes |
-|-------|------|---------|-------------------|
-| **Normalized Graph Backbone** | `workspace_graph.dart` | Canonical data contract for all parsers/repositories | `AssetKind` (9 kinds), `EdgeKind` (7 kinds), `Canonicality` (6 values), `WorkspaceAsset`, `WorkspaceEdge` |
-| **Task Contracts** | `task_contracts.dart` | Typed task metadata from frontmatter | `TaskLane` (5 lanes), `ProofState` (none/partial/complete/verified), `TaskMetadata` |
-| **Changelog Contracts** | `changelog_contracts.dart` | Typed changelog metadata from frontmatter | `ChangelogType` (8 types), `ChangelogMetadata` |
-| **Governance Diagnostics** | `governance_diagnostics.dart` | Typed governance diagnostic primitives | `DiagnosticSeverity` (4 levels), `DiagnosticCategory` (9 categories), `GovernanceDiagnostic` |
-| **Workspace Snapshot** | `workspace_snapshot.dart` | Aggregate workspace loading result | `WorkspaceSnapshot`, `WorkspaceScanMetadata` |
-| **Legacy Models** | `models.dart` | Superseded — retained for backward compat | `Agent`, `Skill`, `Workflow`, `Task`, `ChangelogEntry`, `AssetType`, `AssetEdge` |
-| **Data Models Barrel** | `data_models.dart` | Barrel export for all models | — |
+- Table-based control-surface inventory with required columns.
+- Operational vocabulary with all 14 required state IDs (+ live Prism enums).
+- Pilot matrix with 2–3 real CC routes.
+- File presence of the three design docs.
+- No invented routes; no Flutter packages; no invented screenshots.
 
----
+**Optional deferred (not blocking `ready_for_reviewer`):**
 
-## 4. Mock Workspace Corpus (assets/mock_workspace/)
-
-### 4.1 Agents (9)
-
-| Agent | File | Skills | Workflows |
-|-------|------|--------|-----------|
-| architect-orchestrator | `.agents/agents/architect-orchestrator.md` | project-management, harness-architecture, development-methodologies | gt-ganthritor-onboard, architect-orchestration, plan-evidence-to-tasks |
-| builder-orchestrator | `.agents/agents/builder-orchestrator.md` | coding-execution-harness, frontend-quality-harness, design-system-harness | builder-orchestration, gt-code-review, gt-verify-task-completion |
-| reviewer-orchestrator | `.agents/agents/reviewer-orchestrator.md` | code-quality-harness, project-management, agent-wiki | reviewer-orchestration, gt-code-review, gt-verify-task-completion |
-| gt-harness-architect | `.agents/agents/gt-harness-architect.md` | harness-architecture, project-management | gt-harness-architecture, architect-orchestration |
-| gt-code-quality-reviewer | `.agents/agents/gt-code-quality-reviewer.md` | code-quality-harness, agent-wiki | gt-code-review, gt-verify-task-completion |
-| gt-security-reviewer | `.agents/agents/gt-security-reviewer.md` | code-quality-harness, external-intelligence | gt-code-review, gt-research-orchestration |
-| gt-external-intelligence-analyst | `.agents/agents/gt-external-intelligence-analyst.md` | external-intelligence, browser-harness | gt-research-orchestration |
-| gt-task-architect | `.agents/agents/gt-task-architect.md` | project-management, harness-architecture, development-methodologies | gt-create-tasks, plan-evidence-to-tasks, audit-tasks |
-| gt-wave-orchestrator | `.agents/agents/gt-wave-orchestrator.md` | project-management, harness-architecture, agent-cli-delegation | gt-ganthritor-onboard, builder-orchestration, reviewer-orchestration |
-
-### 4.2 Skills (13)
-
-| Skill Directory | Triggers | Sub-skills |
-|----------------|----------|------------|
-| harness-architecture/ | create agent, create skill, create workflow, harness governance | create-agent, create-skill, create-workflow, harness-management |
-| project-management/ | task management, changelog, handoff, agent memory | tasklist-sync, changelog-engine, manage-changelog, decompose-slices |
-| development-methodologies/ | RF8, methodology, decomposition | rf8-methodology |
-| code-quality-harness/ | review, audit, proof, verification, security, scoring | code-review, security-review, task-verification |
-| coding-execution-harness/ | implement, code, build, develop | code-execution, frontend-execution |
-| agent-wiki/ | learnings, decisions, errors, reviews, fixes, audits | — |
-| indexing-skills/ | index, regenerate, rebuild | agent-index, skill-index, workflow-index |
-| external-intelligence/ | research, analyze external, browser | browser-harness |
-| frontend-quality-harness/ | frontend review, UI review, accessibility | frontend-accessibility, design-system-review |
-| design-system-harness/ | design system, tokens, components | token-harvesting, component-catalog |
-| browser-harness/ | browse, scrape, fetch web | — |
-| remediation-harness/ | fix, repair, remediate | — |
-| agent-cli-delegation/ | delegate, CLI, spawn | — |
-
-### 4.3 Tasks (22 across 5 lanes)
-
-| Lane | Count | Tasks | Operational States Found |
-|------|-------|-------|--------------------------|
-| 00-planning | 3 | T001, T002, T003 | status: planning, proof_state: none, priority: high/medium |
-| 01-open | 5 | T004, T005, T006, T007, T008 | status: open, proof_state: none, priority: medium/low |
-| 02-doing | 5 | T009, T010, T011, T012, T013 | status: doing, proof_state: none/partial, priority: high/medium, review_score: 7.5/8.0 |
-| 03-review | 4 | T014, T015, T016, T017 | status: review, proof_state: partial/complete/none, priority: high/medium, review_score: 8.0/8.5/7.0 |
-| 04-completed | 5 | T018, T019, T020, T021, T022 | status: completed, proof_state: complete, priority: high/medium, review_score: 9.0-9.5 |
-
-### 4.4 Changelog Entries (28+)
-
-Total: 35 changelog entries under `docs/changelog/`. Types found: feature, fix, refactor, docs, chore. Impacts include: parser, graph-model, agent-corpus, skill-hierarchy, workflow-fixtures, ds-tokens, frontmatter, task-board, changelog-renderer, edge-inference, spacing, sidebar, topbar, metric-tiles, search-integration, manifest, changelog-migration.
+1. Screenshot report corpus import + index (`screenshot-evidence-index.md` filled with real paths) — follow-up task if ever available.
+2. Vendored in-repo CC frontend snapshot for offline reproducibility.
 
 ---
 
-## 5. Operational State Gaps (Current vs Required)
+## 1. Information Architecture (Live Routes)
 
-### 5.1 Current DSStateType (3 states)
+### 1.1 Primary sidebar (`app/[locale]/(sidebar)/layout.tsx` → `getMenuItems`)
 
-Source: `lib/design_system/molecules/ds_state_surface.dart` line 194
+| Surface | Route | Roles | Icon | Page source | Disposition |
+| --- | --- | --- | --- | --- | --- |
+| Marketplace (MCP catalog search) | `/search` | `client` | Search | `app/[locale]/(sidebar)/search/page.tsx` | MVP |
+| Providers | `/providers` | `admin` | Plug | `app/[locale]/(sidebar)/providers/page.tsx` | MVP |
+| MCP Servers (installed) | `/mcp-servers` | `admin` | Server | `app/[locale]/(sidebar)/mcp-servers/page.tsx` | MVP |
+| Harness | `/harness` | `admin`, `client` | Wrench | re-exports discovery (`harness/page.tsx` → `discovery/page.tsx`) | MVP |
+| Usage | `/usage` | `admin` | BarChart3 | `app/[locale]/(sidebar)/usage/page.tsx` | MVP |
+| Settings | `/settings` | `admin` | Settings | `app/[locale]/(sidebar)/settings/page.tsx` | MVP |
 
-```
-enum DSStateType { empty, loading, error }
-```
+### 1.2 Control-plane domain tabs (`components/admin/control-plane-domain-tabs.tsx`)
 
-This only covers **data-loading states**, not operational states of the workspace entities themselves.
+These routes exist as `page.tsx` files and appear as secondary tabs when the active path matches a domain group. **Not invented** — each `href` is declared in `DOMAIN_GROUPS`.
 
-### 5.2 Existing State Scattered Across Components
+| Domain group | Tab label | Route | Page source (lines ~) | Disposition |
+| --- | --- | --- | --- | --- |
+| Providers | Connections | `/providers` | `providers/page.tsx` (1143) | MVP |
+| Providers | Model Catalog | `/models` | `models/page.tsx` (420) | MVP |
+| Providers | Model Aliases | `/settings/aliases` | `settings/aliases/page.tsx` (198) | defer |
+| Providers | Media Providers | `/media` | `media/page.tsx` (258) | defer |
+| Providers | Combos | `/combos` | `combos/page.tsx` (737) | MVP |
+| Providers | Endpoint Modes | `/providers#endpoint-modes` | same providers page hash | needs-research |
+| MCP Servers | Marketplace | `/search` | `search/page.tsx` (525) | MVP |
+| MCP Servers | Installed Servers | `/mcp-servers` | `mcp-servers/page.tsx` (497) | MVP |
+| MCP Servers | Inspector | `/mcp-inspector` | `mcp-inspector/page.tsx` (384) | MVP |
+| MCP Servers | MCP Namespaces | `/namespaces` | `namespaces/page.tsx` (335) | defer |
+| MCP Servers | MCP Endpoints | `/endpoints` | `endpoints/page.tsx` (726) | defer |
+| Harness | Skills | `/harness?tab=skills` | `discovery/page.tsx` (174) via harness re-export | MVP |
+| Harness | Workflows | `/harness?tab=workflows` (+ alias `/workflows` redirect) | discovery + `workflows/page.tsx` redirect | MVP |
+| Harness | Hooks | `/harness?tab=hooks` | discovery | defer |
+| Harness | Profiles | `/harness?tab=profiles` | discovery | defer |
+| Usage | Metrics | `/usage` | `usage/page.tsx` (231) | MVP |
+| Usage | Costs & Budgets | `/costs` | `costs/page.tsx` (617) | MVP |
+| Usage | Live Logs | `/live-logs` | `live-logs/page.tsx` (351) | MVP |
+| Settings | General | `/settings` | `settings/page.tsx` (799) | MVP |
+| Settings | API Keys | `/api-keys` | `api-keys/page.tsx` (386) | MVP |
+| Settings | Endpoint Exposure | `/llm-endpoints` | `llm-endpoints/page.tsx` (610) | MVP |
 
-| Component | States Implemented | Gap |
-|-----------|-------------------|-----|
-| `DSTaskCard` | proofState: complete/partial/missing/none; priority: P0/P1/P2 | Missing: running, approved, rejected, blocked, stale |
-| `DSProvenancePill` | canonicality: parentCanonical/childLocal/generated/appendOnly/archive/mock | Adequate for canonicality |
-| `DSEvidenceRow` | evidence: verified/partial/missing/pending | Adequate for evidence |
-| `DSSemantics` | proof: complete/partial/missing/pending | Incomplete — see vocabulary |
-| `DSStatusDot` | success/warning/error/info/neutral | Missing: degraded, disabled, running |
-| Mock tasks | status: planning/open/doing/review/completed; proof_state: none/partial/complete | Missing: healthy, degraded, disabled, pending, running, approved, rejected, redacted, exposed, stale, unverified, promoted, archived |
+### 1.3 Nested / auxiliary routes (source-backed, not all in sidebar)
 
-### 5.3 Required Expansion
+| Surface | Route | Source | Notes | Disposition |
+| --- | --- | --- | --- | --- |
+| Root redirect | `/` | `(sidebar)/page.tsx` | Redirect/loading into app | discard (no UI surface) |
+| Provider create | `/providers/new` | `providers/new/page.tsx` | Connection form | MVP |
+| Provider edit | `/providers/[id]` | `providers/[id]/page.tsx` | Connection detail/edit | MVP |
+| MCP server detail | `/mcp-servers/[uuid]` | `mcp-servers/[uuid]/page.tsx` + tool components | Tool management | MVP |
+| Namespace detail | `/namespaces/[uuid]` | `namespaces/[uuid]/page.tsx` | Servers + tools tables | defer |
+| Login | `/login` | `app/[locale]/login/page.tsx` | Auth | MVP (shell gate) |
+| Register | `/register` | `app/[locale]/register/page.tsx` | Auth | defer |
+| CORS error | `/cors-error` | `app/[locale]/cors-error/page.tsx` | Error surface | defer |
+| OAuth callback | `/fe-oauth/callback` | `app/fe-oauth/callback/page.tsx` | OAuth return | needs-research |
 
-See `docs/design/operational-state-vocabulary.md` for the comprehensive 14+ state vocabulary that addresses these gaps.
+### 1.4 Middleware route classes (`middleware.ts`)
+
+| Class | Routes (explicit in source) |
+| --- | --- |
+| Public | `/login`, `/register`, `/`, `/cors-error` |
+| Read-only (no auth) | `/search`, `/discovery` |
+| Admin-only (middleware list; incomplete vs full admin IA) | `/mcp-servers`, `/namespaces`, `/endpoints`, `/mcp-inspector`, `/live-logs`, `/settings`, `/costs` |
+
+> **Note**: Sidebar + domain tabs expose additional admin pages (e.g. `/providers`, `/usage`, `/combos`, `/api-keys`, `/llm-endpoints`) that are **not** all listed in `adminOnlyRoutes`. Role filtering also happens client-side via `clientMode` + `getMenuItems().roles`. Disposition for middleware parity: **needs-research** (authz consistency risk).
 
 ---
 
-## 6. Component Classification: MVP / Defer / Discard / Needs Research
+## 2. Control Surface Inventory (Pages)
 
-### MVP (Required for first working prototype)
-
-All tokens (8), all atoms (8), all molecules (9), all organisms (8), all templates (3), gallery, and the following features: Shell, Overview, Map (catalog + graph), Operate (lane board), History (timeline), Governance (diagnostics), Asset Detail (all kind variants), Workspace Snapshot.
-
-### Defer (After Melos migration, per EPIC-11 Wave 2-3)
-
-| Component | Reason | Task |
-|-----------|--------|------|
-| Data Table | Critical gap — not yet implemented | Task 1112 |
-| Command Palette | Critical gap — not yet implemented | Task 1113 |
-| Log/Event Viewer | Critical gap — not yet implemented | Task 1114 |
-| Loading Skeleton | Important gap — only spinner exists | Task 1115 |
-| Error Boundary | Important gap — not yet implemented | Task 1115 |
-| Notification Toast | Important gap — not yet implemented | Task 1116 |
-| Drag-and-Drop Task Board | Important gap — lane board has no DnD | Task 1120 |
-| Health Dashboard Components | Partial — DSStatusDot + DSMetricTile exist but no compound health cards | Task 1119 |
-
-### Needs Research
-
-| Item | Question | Evidence |
-|------|----------|----------|
-| Graph layout algorithms | Current DSGraphCanvas only has force-directed. Need hierarchical/tree, layered DAG, radial. What is the best Flutter graph layout library? | `docs/reports/ads-gap-analysis-20260608.md` GAP-I1 |
-| Inter font | Not declared in pubspec.yaml. Should we add Inter or use system sans-serif? | `docs/reports/warp-prism-ds-inventory.md` §9.2 |
-| ThemeExtension bridge | DS tokens are static constants; no Theme.of(context) integration. Is ThemeExtension needed? | `docs/reports/warp-prism-ds-inventory.md` §9.2 |
+| Surface | Route / path | Atomic layer | Operational layer | States (source) | Actions (source) | Data dependencies | Risk | Accessibility | Prism candidate | Disposition | Evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| App shell + sidebar | `(sidebar)/layout.tsx` + `components/ui/sidebar.tsx` | shell | all | clientMode on/off; session null/present; effectiveRole admin/client | toggle client/dev mode; sign out; language; theme; nav | `authClient.getSession` | High | No `aria-current` on active item (ui-patterns §5.2); focus ring issues when collapsed | `DSShell`, `DSSidebar`, `DSTopbar` | MVP | source-backed |
+| Domain tabs | `components/admin/control-plane-domain-tabs.tsx` | molecule | all | active tab match / no group (hidden) | navigate tabs | pathname + searchParams | Medium | Has `aria-label="{group} sections"` | `DSTabBar` / `DSTabView` | MVP | source-backed |
+| Providers list | `/providers` · `providers/page.tsx` | page | Providers | loading/empty/error (`AdminDataState`); preset `configured`/`unsupported`; connection `isActive` + test `success`/`error`/`unknown`; legacy import `importable`/`blocked`/`duplicate`/`unsupported`; redaction secret counts | filter; search; create; edit; delete; test connection; legacy preflight/import | `trpc.frontend.llmProviders.*` | High | Filter group lacks `role=group`; backup textarea a11y (ui-patterns) | `DSDataTable`, `DSSearchBar`, `DSFilterChipGroup`, `DSStateSurface`, `DSHealthCard`, `DSStatusDot` | MVP | source-backed |
+| Provider new/edit | `/providers/new`, `/providers/[id]` | page | Providers | form validation; pending mutation; active/inactive | save; cancel; bind credentials | provider connection form + tRPC mutations | High | Form labels present via shadcn Form | `DSDetailInspector`, form atoms | MVP | source-backed |
+| Model catalog | `/models` · `models/page.tsx` | page | Providers | loading/error/empty filters; stale discovered rows metric | filter provider/capability/search | model catalog tRPC queries | Medium | Table scroll region unlabeled | `DSDataTable`, `DSMetricTile`, `DSStateSurface` | MVP | source-backed |
+| Combos | `/combos` · `combos/page.tsx` | page | Providers | combo readiness `ready` / `provider-warning` / `inactive-provider` / `missing-provider` / `empty`; entry `ready`/`warning`/`inactive`/`missing`/`reference` | create/edit/delete combo; set endpoint mode | `listCombos`, `createCombo`, `updateCombo`, `deleteCombo`, `setComboEndpointMode`, providers list | High | Status conveyed partly by badge color | `DSDataTable`, `DSBadge`, `DSStateSurface`, `DSHealthCard` | MVP | source-backed |
+| Media providers | `/media` | page | Providers | active/inactive badges; TTS/image kind filters; mutation pending | enable/update media config | `llmProviders.list` + `update` | Medium | Kind toggles not grouped as radiogroup | `DSFilterChipGroup`, `DSBadge` | defer | source-backed |
+| Model aliases | `/settings/aliases` | page | Providers | loading/error | alias CRUD (page-local) | config/alias APIs | Medium | — | `DSDataTable` | defer | source-backed |
+| MCP marketplace | `/search` · `search/page.tsx` | page | MCP | catalog status `ready`/`needs_env`/`needs_review`/`unsupported`; loading skeleton; error banner; add-server errors | search; paginate; bulk add servers | React Query → catalog HTTP API | Medium | Loading not announced (ui-patterns §5.3) | `DSSearchBar`, `DSAssetCard`, `DSSkeletonCard`, `DSStateSurface` | MVP | source-backed |
+| MCP servers list | `/mcp-servers` | page | MCP | list loading/error; create pending/error; empty list | create server dialog; open detail; export/import | `trpc.frontend.mcpServers.list/create` | High | Result count not `aria-live` (ui-patterns) | `DSDataTable`, `DSStateSurface`, `DSToast` | MVP | source-backed |
+| MCP server detail | `/mcp-servers/[uuid]` | page | MCP | tools load states; enable/disable tool | tool management CRUD; refresh | server + tools tRPC | High | Nested tables a11y | `DSDetailInspector`, `DSDataTable`, `DSChip` | MVP | source-backed |
+| MCP inspector | `/mcp-inspector` | page | MCP | connection `disconnected`/`connecting`/`connected`/`error`/`error-connecting-to-proxy`; server list error | select server; connect/disconnect; ping; list tools/resources/prompts | `mcpServers.list` + `useConnection` | High | Connection status color-only risk | `DSLogViewer`, `DSStatusDot`, `DSStateSurface`, `DSSplitPane` | MVP | source-backed |
+| Namespaces | `/namespaces`, `/namespaces/[uuid]` | page | MCP | create form errors; servers loading; empty | create namespace; manage servers/tools | `namespaces.*`, `mcpServers.list` | Medium | — | `DSDataTable`, `DSDetailInspector` | defer | source-backed |
+| MCP endpoints | `/endpoints` | page | MCP | form validation; submit pending; namespace loading | create endpoint; rate limits; auth flags | `endpoints.create`, `namespaces.list` | High | Complex form error association | form + `DSDetailInspector` | defer | source-backed |
+| Harness / discovery | `/harness`, `/discovery` | page | Harness | tabs skills/workflows/hooks/profiles; loading/error; pagination | tab switch; search; paginate | `/api/discovery/*` + `/api/profiles` `/api/hooks` | Medium | Tab a11y depends on custom tabs | `DSTabView`, `DSSearchBar`, `DSAssetCard` | MVP | source-backed |
+| Workflows alias | `/workflows` | page | Harness | redirect only | redirect → harness?tab=workflows | next redirect | Low | n/a | n/a | discard | source-backed |
+| Usage metrics | `/usage` | page | Usage | loading/error/empty provider & model groups | period controls | `llmProviders.getUsageStats` | Medium | Metric icons may lack labels (ui-patterns) | `DSMetricTile`, `DSStateSurface`, `DSSparkline` | MVP | source-backed |
+| Costs & budgets | `/costs` | page | Usage | loading/error/empty events; budget policies list states | period; view events; manage policies | cost/budget tRPC | High | — | `DSMetricTile`, `DSDataTable`, `DSStateSurface` | MVP | source-backed |
+| Live logs | `/live-logs` | page | Usage | provider health `ready`/`failing`/`inactive`/`unknown`; auto-refresh on/off; empty logs; redacted log rows | toggle auto-refresh; refresh; clear; export support bundle | `llmProviders.list` + client log store + redaction helpers | High | Live updates need polite live region | `DSLogViewer`, `DSLogFilterBar`, `DSMetricTile`, `DSHealthCard` | MVP | source-backed |
+| Settings general | `/settings` | page | Settings | many config booleans disabled/enabled; mutation error toasts; pending | toggle signup/SSO/basic auth; MCP timeouts; session lifetime | `trpc.frontend.config.*` | High | Switch labels association | `DSStateSurface`, settings form molecules | MVP | source-backed |
+| API keys | `/api-keys` | page | Settings | list; create once-visible secret; delete pending | create; copy; delete | `apiKeys.list/create/delete` | High | Secret reveal timing; copy buttons need labels | `DSDataTable`, `DSToast`, redaction display | MVP | source-backed |
+| Endpoint exposure | `/llm-endpoints` | page | Settings | remote state `disabled`/`configured`/`enabled`/`error`; redacted origin; audit empty/error/loading; API-key posture | copy URLs; inspect audit (no tunnel create) | remote exposure fetch + `apiKeys.list` | High | Redacted fields must announce redaction | `DSMetricTile`, `DSCodeBlock`, `DSLogViewer`, `DSStateSurface` | MVP | source-backed |
+| Login / register | `/login`, `/register` | page | Auth | form error; submitting; redirect | sign in / sign up | `authClient` | High | Standard form a11y | form atoms | MVP | source-backed |
 
 ---
 
-## 7. Source Evidence
+## 3. Admin Component Inventory (Shared Control Primitives)
 
-| Source | Relevance |
-|--------|-----------|
-| `lib/design_system/` (38 files) | Direct DS component inspection |
-| `lib/features/` (62 files) | Feature-level widget inspection |
-| `lib/data/models/` (7 files) | Data model and enum inspection |
-| `assets/mock_workspace/` | Mock corpus counts and frontmatter patterns |
-| `docs/reports/warp-prism-ds-inventory.md` | Prior DS inventory (Task 0014) |
-| `docs/reports/ads-gap-analysis-20260608.md` | ADS gap analysis — 8 present, 6 partial, 6 missing |
-| `docs/reports/cybercore-domain-ui-mapping-20260608.md` | CyberCore entity → component → screen mapping |
-| `docs/prompt.txt` | Original product contract (784 lines) |
-| `docs/design/charter.md` | Project charter (Task 1101) |
-| `docs/tasks/00-planning/EPIC-00` through `EPIC-11` | All 12 EPIC planning artifacts |
+Source: `components/admin/*` + contracts in `docs/ui-patterns.md`.
+
+| Component | Path | Atomic layer | Operational layer | States | Actions | Data dependencies | Risk | Accessibility | Prism candidate | Disposition | Evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| AdminPageShell | `components/admin/admin-page-shell.tsx` | template | all pages | title/desc/actions present or absent | host page actions slot | none | Low | h1 present; actions not named region | page header pattern / `DSTopbar` title mode | MVP | source-backed |
+| AdminDataState | `components/admin/admin-data-state.tsx` | molecule | all data pages | `loading` / `empty` / `error` | optional action node | none | Medium | `role=alert` on error only; missing `aria-live` loading/empty | `DSStateSurface` (`DSStateType`) | MVP | source-backed |
+| AdminPanel / ConfigPanel / DangerZone | `components/admin/admin-panel.tsx` | organism | settings/providers | `default` / `danger` | header actions | none | Medium | No `aria-labelledby`; danger lacks region label | `DSGlassPanel`, `DSStoryPanel` | MVP | source-backed |
+| AdminTableShell | `components/admin/admin-table-shell.tsx` | organism | list pages | desktop/mobile split | host table actions | none | Medium | Desktop scroll region unlabeled; mobile cards lack h3 | `DSDataTable` + responsive shell | MVP | source-backed |
+| AdminDataToolbar | `components/admin/admin-data-toolbar.tsx` | molecule | list pages | search/filter layout | host controls | none | Low | Not in `role=search` landmark | `DSSearchBar` + `DSFilterChipGroup` | MVP | source-backed |
+| MetricGrid / MetricCard | `components/admin/metric-grid.tsx` | molecule | dashboards | value present | optional | none | Low | Icon may lack `aria-hidden` | `DSMetricTile` | MVP | source-backed |
+| ControlPlaneDomainTabs | `components/admin/control-plane-domain-tabs.tsx` | molecule | IA | active/inactive | navigate | router | Medium | has section `aria-label` | `DSTabBar` | MVP | source-backed |
+| LlmOpsPeriodControls | `components/admin/llm-ops-period-controls.tsx` | molecule | Usage/Costs | selected period | change period | parent | Low | — | filter chips / select | MVP | source-backed |
+| ProviderStatusBadge | `components/providers/provider-status-badge.tsx` | atom | Providers | Inactive; Active; Error; Untested | display only | `isActive`, `testStatus` | Medium | Color+text (ok) | `DSBadge` + `DSOperationalState` mapping | MVP | source-backed |
+| Provider connection form | `components/providers/provider-connection-form.tsx` | organism | Providers | validation; pending | submit credentials | form + provider metadata | High | Dropdown width a11y | form organisms | MVP | source-backed |
+| Edit MCP server / endpoint / namespace | `components/edit-*.tsx` | organism | MCP | dialog open; pending; error | edit entity | tRPC mutations | High | Menu min-width patterns | detail editors | defer | source-backed |
+| Skeletons | `components/skeletons/*` | atom | MCP/search | loading placeholder | none | none | Low | Decorative | `DSSkeletonCard`, `DSSkeletonTableRows`, `DSShimmer` | MVP | source-backed |
+| Logs status indicator | `components/logs-status-indicator.tsx` | atom | Usage | indicator variants | none | log stream | Medium | — | `DSStatusDot` | MVP | source-backed |
+| Domain warning banner | `components/domain-warning-banner.tsx` | molecule | shell | origin mismatch warn/hidden | none | app URL config | Medium | — | `DSToast` / banner | defer | source-backed |
+| shadcn UI kit | `components/ui/*` | atoms/molecules | all | component-local | various | none | Low–Med | See ui-patterns §5 | Map selectively; do not port wholesale | needs-research | source-backed |
+
+### 3.1 Proposed-but-not-implemented (ui-patterns only — not inventory as live)
+
+| Proposal | Status | Disposition |
+| --- | --- | --- |
+| `McpChipPicker` | Documented only in `ui-patterns.md` §3 | needs-research |
+| `GuidanceCard` | Documented only in `ui-patterns.md` §4 | needs-research |
+| Declarative `NavItem` contract | Proposed; layout still imperative | needs-research |
+
+---
+
+## 4. Explicit Domain State Enums (Source)
+
+Absolute root: `/home/sephiroth/working/ganthritor/cybernetics-core/apps/frontend/`.
+
+| Domain enum | Values (source) | Absolute citation | Maps toward Prism ops states |
+| --- | --- | --- | --- |
+| `AdminDataStateVariant` | `"loading" \| "empty" \| "error"` | `.../components/admin/admin-data-state.tsx:5` | UI `DSStateType` (not operational) |
+| `ProviderStatusBadge` labels | Inactive / Active / Error / Untested from `isActive` + `testStatus?: "success"\|"error"\|"unknown"` | `.../components/providers/provider-status-badge.tsx:4-24` | disabled; healthy; error; unverified |
+| `ProviderHealthStatus` | `"ready" \| "failing" \| "inactive" \| "unknown"` | `.../lib/llm-diagnostics.ts:15` | healthy; error; disabled; unverified |
+| `RemoteExposureState` | `z.enum(["disabled","configured","enabled","error"])` | `.../lib/llm-remote-exposure.ts:3-8` | disabled; pending; exposed (+promoted); error |
+| Catalog search status | `"ready" \| "needs_env" \| "needs_review" \| "unsupported"` | `.../types/search.ts:13` | healthy; degraded; unverified; rejected |
+| `ComboReadinessStatus` | ready, provider-warning, inactive-provider, missing-provider, empty | `.../lib/combo-readiness.ts:25-30` | healthy; degraded; disabled; error; empty UI |
+| `ComboEntryReadinessStatus` | ready, warning, inactive, missing, reference | `.../lib/combo-readiness.ts:32-37` | healthy; degraded; disabled; error; derived ref |
+| `ConnectionStatus` | connecting, disconnected, connected, error, error-connecting-to-proxy | `.../lib/constants.ts` (+ `hooks/useConnection.ts`) | running; disabled; healthy; error |
+| Legacy import mapping status | importable, blocked, duplicate, unsupported | `.../app/[locale]/(sidebar)/providers/page.tsx` helpers | approved/pending; rejected; stale/rejected |
+| Preset status | configured, unsupported (+ implied incomplete) | same providers page | promoted; rejected |
+| Middleware route classes | public / readOnly / adminOnly (partial vs full IA) | `.../middleware.ts:97-110` | authz risk → needs-research |
+
+---
+
+## 5. Disposition Summary
+
+| Disposition | Count (approx) | Examples |
+| --- | --- | --- |
+| **MVP** | Primary shell + Providers + MCP list/detail/inspector + Marketplace + Combos + Usage/Costs/Live logs + Settings/API keys/Exposure + Admin* primitives | First pilot proof set |
+| **defer** | Media, aliases, namespaces, endpoints CRUD depth, register, cors-error | After pilots |
+| **discard** | `/` redirect-only, `/workflows` pure redirect | No independent UI |
+| **needs-research** | Middleware vs sidebar authz parity; `#endpoint-modes` hash UX; OAuth callback; full shadcn port; proposed McpChipPicker/GuidanceCard; screenshot visual defects | Requires screenshot packet or deeper security review |
+
+---
+
+## 6. Warp Prism ADS Crosswalk (Live Paths Only)
+
+| CC need | Live Prism path (`packages/warp_prism_ui/lib/src/`) | Gap |
+| --- | --- | --- |
+| Page shell | `organisms/ds_shell.dart`, `ds_sidebar.dart`, `ds_topbar.dart` | Domain tabs need `ds_tab_bar.dart` wiring |
+| Loading/empty/error | `molecules/ds_state_surface.dart` (`DSStateType` **7** values: empty, loading, error, disabled, stale, degraded, excluded) | CC `AdminDataState` only 3 — Prism already broader |
+| Operational status | `tokens/ds_operational_state.dart` (**15** values) | Need explicit mappers from CC domain enums |
+| Metrics | `molecules/ds_metric_tile.dart` | parity OK |
+| Tables | `organisms/ds_data_table.dart` | mobile card split not identical to AdminTableShell |
+| Logs | `organisms/ds_log_viewer.dart`, `ds_log_filter_bar.dart` | redaction semantics need product rules |
+| Health | `molecules/ds_health_card.dart`, `ds_status_grid.dart`, `ds_uptime_bar.dart` | map ProviderHealthStatus |
+| Search/filter | `ds_search_bar.dart`, `ds_filter_chip_group.dart` | OK |
+| Toast | `ds_toast.dart` | OK |
+| Code / secrets | `ds_code_block.dart` | redacted display contract |
+| Graph topology | `ds_graph_canvas.dart` | **No live CC graph editor route found** in current frontend pages |
+
+> Historical note: pre-Melos paths `lib/design_system/` no longer exist. Do not cite them.
+
+---
+
+## 7. Screenshot Evidence Status
+
+| Claim type | Status |
+| --- | --- |
+| Route exists because `page.tsx` exists | **Allowed** (source-backed) |
+| Component contract from TSX props / enums | **Allowed** (source-backed) |
+| Visual defect, color contrast, spacing from screenshots | **Out of scope / optional** — `/tmp/opencode/cc-ui-screenshots-round2` absent; no in-repo screenshot index; do not invent |
+| “22 screenshot routes” historical claim | **Not re-asserted** without files |
+| Task 1102 screenshot exit / ready_for_reviewer | **Screenshot optional** — DoD source-backed; `ready_for_reviewer: yes` — see §0.5 |
+
+---
+
+## 8. Relationship To `apps/cybercore` (Warp Prism Mirror)
+
+`apps/cybercore/` implements a **read-only Flutter mirror** with routes `/dashboard`, `/registry`, `/tasks`, `/audit`, `/governance`. That IA is a Warp Prism product choice (Task 1108+), **not** a copy of live Next.js CC routes. This inventory does **not** treat those five routes as CyberCore control surfaces.
+
+---
+
+## 9. Open Gaps (Non-Blocking / Follow-Up)
+
+1. **Optional deferred**: Import screenshot reports and fill `screenshot-evidence-index.md` if ever available (follow-up task). Not required for Task 1102 DoD after 2026-07-09 amend (§0.5).
+2. Optional: vendor a reviewed CC frontend snapshot under `docs/reference/cybercore-control-surfaces/` (sibling monorepo citation is currently authorized for source evidence).
+3. Resolve middleware `adminOnlyRoutes` vs full admin IA mismatch (security review) — `middleware.ts` lists only `/mcp-servers`, `/namespaces`, `/endpoints`, `/mcp-inspector`, `/live-logs`, `/settings`, `/costs`.
+4. Keep CC domain enum → `DSOperationalState` grades honest (`explicit` | `derived` | `speculative`) in `operational-state-vocabulary.md`.
+5. Independent formal re-review of source-backed inventory package (task left in `02-doing/` for handoff).

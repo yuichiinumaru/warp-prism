@@ -257,19 +257,34 @@ class WorkspaceScanMetadata {
   /// Number of files that failed to parse.
   final int parseErrors;
 
+  /// Paths of files that failed to parse (partial-success surface).
+  ///
+  /// Length matches [parseErrors] when the repository records paths.
+  final List<String> parseErrorPaths;
+
   /// Optional error message if the scan encountered a critical failure.
   final String? error;
+
+  /// Absolute or root-relative paths of symlinks that were not followed.
+  ///
+  /// Populated when the filesystem scanner runs with `followLinks: false`
+  /// (the default) and encounters symlink scan roots or entries (e.g.
+  /// parent-canonical harness mounts such as
+  /// `.agents/skills` → `../../.agents/skills`).
+  final List<String> skippedSymlinks;
 
   const WorkspaceScanMetadata({
     required this.rootPath,
     required this.scannedAt,
     this.filesScanned = 0,
     this.parseErrors = 0,
+    this.parseErrorPaths = const [],
     this.error,
+    this.skippedSymlinks = const [],
   });
 
   @override
   String toString() =>
       'WorkspaceScanMetadata(root: $rootPath, files: $filesScanned, '
-      'errors: $parseErrors)';
+      'errors: $parseErrors, skippedSymlinks: ${skippedSymlinks.length})';
 }

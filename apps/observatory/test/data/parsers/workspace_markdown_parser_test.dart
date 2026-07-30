@@ -8,6 +8,8 @@
 //
 // Run: flutter test test/data/parsers/workspace_markdown_parser_test.dart
 
+import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:warp_prism_observatory/data/parsers/frontmatter_parser.dart';
 import 'package:warp_prism_observatory/data/parsers/workspace_markdown_parser.dart';
@@ -182,6 +184,187 @@ Body''';
       final result = parser.parse(input);
       expect(result.isOk, false);
       expect(result.error, contains('Empty frontmatter'));
+    });
+
+    test('parses nested maps via package:yaml', () {
+      const input = '''---
+name: nested
+model:
+  provider: omniroute
+  name: architect
+---
+body''';
+
+      final result = parser.parse(input);
+      expect(result.isOk, true);
+      final model = result.frontmatter['model'] as Map;
+      expect(model['provider'], 'omniroute');
+      expect(model['name'], 'architect');
+    });
+
+    test('preserves commas inside quoted inline list items', () {
+      const input = '''---
+name: quoted-commas
+tags: ["a, b", "c"]
+---
+''';
+
+      final result = parser.parse(input);
+      expect(result.isOk, true);
+      expect(result.frontmatter['tags'], ['a, b', 'c']);
+    });
+
+    test('error: invalid YAML mapping content', () {
+      const input = '''---
+: not a valid key line that breaks yaml?
+[
+---
+body''';
+
+      final result = parser.parse(input);
+      expect(result.isOk, false);
+      expect(result.error, isNotNull);
+    });
+  });
+
+  // ===========================================================================
+  // File-backed fixtures under test/fixtures/mock_workspace/
+  // ===========================================================================
+  group('File-backed fixtures (test/fixtures/mock_workspace)', () {
+    const parser = WorkspaceMarkdownParser();
+    const fmParser = FrontmatterParser();
+
+    Directory fixtureRoot() {
+      final candidates = [
+        Directory('test/fixtures/mock_workspace'),
+        Directory('apps/observatory/test/fixtures/mock_workspace'),
+      ];
+      for (final d in candidates) {
+        if (d.existsSync()) return d;
+      }
+      fail(
+        'Fixture root test/fixtures/mock_workspace not found '
+        '(cwd=${Directory.current.path})',
+      );
+    }
+
+    String readFixture(String relativePath) {
+      final root = fixtureRoot();
+      final file = File('${root.path}/$relativePath');
+      expect(
+        file.existsSync(),
+        isTrue,
+        reason: 'Missing fixture file: ${file.path}',
+      );
+      return file.readAsStringSync();
+    }
+
+    test('reads agent fixture from disk', () {
+      final content = readFixture('.agents/agents/architect-orchestrator.md');
+      final asset = parser.parse(
+        content,
+        filePath:
+            'test/fixtures/mock_workspace/.agents/agents/architect-orchestrator.md',
+      );
+      expect(asset.kind, AssetKind.agent);
+      expect(asset.name, 'architect-orchestrator');
+      expect(asset.tags, contains('orchestrator'));
+      expect(asset.edges.where((e) => e.kind == EdgeKind.uses).length, 6);
+    });
+
+    test('reads skill fixture from disk', () {
+      final content = readFixture(
+        '.agents/skills/harness-architecture/SKILL.md',
+      );
+      final asset = parser.parse(
+        content,
+        filePath:
+            'test/fixtures/mock_workspace/.agents/skills/harness-architecture/SKILL.md',
+      );
+      expect(asset.kind, AssetKind.skill);
+      expect(asset.name, 'harness-architecture');
+      expect(asset.triggers, isNotEmpty);
+      expect(
+        asset.edges.where((e) => e.kind == EdgeKind.contains).length,
+        4,
+      );
+    });
+
+    test('reads workflow fixture from disk', () {
+      final content = readFixture('.agents/workflows/gt-code-review.md');
+      final asset = parser.parse(
+        content,
+        filePath:
+            'test/fixtures/mock_workspace/.agents/workflows/gt-code-review.md',
+      );
+      expect(asset.kind, AssetKind.workflow);
+      expect(asset.name, 'gt-code-review');
+      expect(
+        asset.edges.where((e) => e.kind == EdgeKind.dependsOn).length,
+        3,
+      );
+    });
+
+    test('reads task fixture from disk', () {
+      final content = readFixture(
+        'docs/tasks/02-doing/7521-build-asw-parser.md',
+      );
+      final asset = parser.parse(
+        content,
+        filePath:
+            'test/fixtures/mock_workspace/docs/tasks/02-doing/7521-build-asw-parser.md',
+      );
+      expect(asset.kind, AssetKind.task);
+      expect(asset.name, contains('ASW'));
+      expect(asset.frontmatter['id'], 7521);
+    });
+
+    test('reads changelog fixture from disk', () {
+      final content = readFixture(
+        'docs/changelog/2026-06-05-7521-asw-parser.md',
+      );
+      final asset = parser.parse(
+        content,
+        filePath:
+            'test/fixtures/mock_workspace/docs/changelog/2026-06-05-7521-asw-parser.md',
+      );
+      expect(asset.kind, AssetKind.changelog);
+      expect(asset.edges.any((e) => e.kind == EdgeKind.changedBy), isTrue);
+      expect(
+        asset.edges.any((e) => e.targetId == 'task:7521'),
+        isTrue,
+      );
+    });
+
+    test('malformed no_frontmatter fixture fails for the right reason', () {
+      final content = readFixture('malformed/no_frontmatter.md');
+      final result = fmParser.parse(content);
+      expect(result.isOk, false);
+      expect(result.error, contains('does not start with ---'));
+      expect(
+        () => parser.parse(
+          content,
+          filePath: 'test/fixtures/mock_workspace/malformed/no_frontmatter.md',
+        ),
+        throwsA(isA<ParseException>()),
+      );
+    });
+
+    test('malformed empty_frontmatter fixture fails', () {
+      final content = readFixture('malformed/empty_frontmatter.md');
+      final result = fmParser.parse(content);
+      expect(result.isOk, false);
+      expect(result.error, contains('Empty frontmatter'));
+    });
+
+    test('malformed unclosed_frontmatter fixture fails', () {
+      final content = readFixture('malformed/unclosed_frontmatter.md');
+      // Fixture must not contain a closing --- after the opener.
+      final afterOpen = content.trimLeft().substring(3);
+      expect(afterOpen.contains('\n---'), isFalse);
+      final result = fmParser.parse(content);
+      expect(result.isOk, false);
+      expect(result.error, contains('Missing closing'));
     });
   });
 
@@ -471,6 +654,8 @@ impact:
   - graph-model
 skills:
   - harness-architecture
+workflows:
+  - builder-orchestration
 ---
 
 # ASW parser mock data added
@@ -508,15 +693,21 @@ All parser tests pass.''';
       expect(clMeta.type, ChangelogType.feature);
       expect(clMeta.impact, ['parser', 'graph-model']);
       expect(clMeta.skills, ['harness-architecture']);
+      expect(clMeta.workflows, ['builder-orchestration']);
       expect(clMeta.why, isNotNull);
       expect(clMeta.why, contains('real markdown'));
       expect(clMeta.changed, isNotNull);
       expect(clMeta.evidence, isNotNull);
 
-      // Verify edge to task
-      expect(asset.edges.length, 1);
-      expect(asset.edges.first.targetId, 'task:7521');
-      expect(asset.edges.first.kind, EdgeKind.changedBy);
+      // Verify multi-hop edges: task + skill + workflow
+      final edgeTargets = asset.edges.map((e) => e.targetId).toSet();
+      expect(edgeTargets, contains('task:7521'));
+      expect(edgeTargets, contains('skill:harness-architecture'));
+      expect(edgeTargets, contains('workflow:builder-orchestration'));
+      expect(
+        asset.edges.any((e) => e.kind == EdgeKind.changedBy),
+        isTrue,
+      );
     });
 
     test('changelog with chore type', () {
@@ -823,28 +1014,203 @@ type: feature
       expect(asset.edges.first.kind, EdgeKind.changedBy);
       expect(asset.edges.first.targetId, 'task:42');
     });
+  });
 
-    test('skill edges: contains sub-skills', () {
-      const input = '''---
-name: parent-skill
-sub_skills:
-  - child-a
-  - child-b
-  - child-c
----
-''';
-      final asset = parser.parse(
-        input,
-        filePath: 'assets/mock_workspace/.agents/skills/parent/SKILL.md',
+  // ===========================================================================
+  // History fixture ledger corpus — real assets/mock_workspace markdown
+  // ===========================================================================
+  group('History fixture ledger corpus (on-disk)', () {
+    const parser = WorkspaceMarkdownParser();
+
+    Directory _corpusRoot() {
+      // Resolve from package root (apps/observatory) when tests run via
+      // `flutter test` with cwd = package root.
+      final candidates = [
+        Directory('assets/mock_workspace'),
+        Directory('../assets/mock_workspace'),
+        Directory('apps/observatory/assets/mock_workspace'),
+      ];
+      for (final dir in candidates) {
+        if (dir.existsSync()) return dir;
+      }
+      fail(
+        'Could not locate assets/mock_workspace. '
+        'Run from apps/observatory package root.',
       );
-      final containsEdges = asset.edges
-          .where((e) => e.kind == EdgeKind.contains)
+    }
+
+    test('changelog corpus has 12+ entries with History frontmatter', () {
+      final root = _corpusRoot();
+      final changelogDir = Directory('${root.path}/docs/changelog');
+      expect(changelogDir.existsSync(), isTrue);
+
+      final files = changelogDir
+          .listSync()
+          .whereType<File>()
+          .where((f) => f.path.endsWith('.md'))
           .toList();
-      expect(containsEdges.length, 3);
+      expect(files.length, greaterThanOrEqualTo(12));
+
+      final projects = <String>{};
+      final types = <String>{};
+      final tasks = <String>{};
+      final skills = <String>{};
+      final workflows = <String>{};
+      final impactTags = <String>{};
+      var multiHop = 0;
+
+      for (final file in files) {
+        final content = file.readAsStringSync();
+        final asset = parser.parse(content, filePath: file.path);
+        expect(asset.kind, AssetKind.changelog);
+
+        final meta =
+            asset.frontmatter['_changelogMetadata'] as ChangelogMetadata;
+        expect(meta.id, isNotEmpty);
+        expect(meta.project, isNotEmpty);
+        expect(meta.task, isNotEmpty);
+        expect(meta.date.year, greaterThan(2000));
+
+        projects.add(meta.project);
+        types.add(meta.type.name);
+        tasks.add(meta.task);
+        skills.addAll(meta.skills);
+        workflows.addAll(meta.workflows);
+        impactTags.addAll(meta.impact);
+
+        final hasTaskEdge = asset.edges.any(
+          (e) => e.kind == EdgeKind.changedBy && e.targetId.startsWith('task:'),
+        );
+        expect(hasTaskEdge, isTrue, reason: '${file.path} missing task edge');
+
+        if (meta.task.isNotEmpty &&
+            (meta.skills.isNotEmpty || meta.workflows.isNotEmpty)) {
+          multiHop++;
+        }
+      }
+
+      // Demonstrable History filters
+      expect(projects, isNotEmpty);
+      expect(types.length, greaterThanOrEqualTo(2));
+      expect(tasks.length, greaterThanOrEqualTo(3));
+      expect(skills, isNotEmpty);
+      expect(impactTags, isNotEmpty);
+      // At least 3 multi-hop stories: changelog -> task -> skill/workflow
+      expect(multiHop, greaterThanOrEqualTo(3));
+      // Workflow facet present on corpus (History enrichment)
+      expect(workflows, isNotEmpty);
+    });
+
+    test('task lanes 00-planning..04-completed each have fixtures', () {
+      final root = _corpusRoot();
+      final lanes = [
+        '00-planning',
+        '01-open',
+        '02-doing',
+        '03-review',
+        '04-completed',
+      ];
+      for (final lane in lanes) {
+        final dir = Directory('${root.path}/docs/tasks/$lane');
+        expect(dir.existsSync(), isTrue, reason: 'missing lane $lane');
+        final count = dir
+            .listSync()
+            .whereType<File>()
+            .where((f) => f.path.endsWith('.md'))
+            .length;
+        expect(count, greaterThanOrEqualTo(1), reason: 'empty lane $lane');
+      }
+    });
+
+    test('changelog task/skill/workflow ids resolve in mock workspace', () {
+      final root = _corpusRoot();
+
+      final taskIds = <String>{};
+      for (final lane in [
+        '00-planning',
+        '01-open',
+        '02-doing',
+        '03-review',
+        '04-completed',
+      ]) {
+        final dir = Directory('${root.path}/docs/tasks/$lane');
+        for (final file in dir.listSync().whereType<File>()) {
+          if (!file.path.endsWith('.md')) continue;
+          final name = file.uri.pathSegments.last;
+          final match = RegExp(r'(T\d+)').firstMatch(name);
+          if (match != null) taskIds.add(match.group(1)!);
+          final content = file.readAsStringSync();
+          final asset = parser.parse(content, filePath: file.path);
+          final id = asset.frontmatter['id']?.toString();
+          if (id != null && id.isNotEmpty) taskIds.add(id);
+        }
+      }
+
+      final skillIds = <String>{};
+      final skillsDir = Directory('${root.path}/.agents/skills');
+      if (skillsDir.existsSync()) {
+        for (final entity in skillsDir.listSync()) {
+          if (entity is Directory) skillIds.add(entity.uri.pathSegments
+              .where((s) => s.isNotEmpty)
+              .last);
+        }
+      }
+
+      final workflowIds = <String>{};
+      final wfDir = Directory('${root.path}/.agents/workflows');
+      if (wfDir.existsSync()) {
+        for (final file in wfDir.listSync().whereType<File>()) {
+          if (!file.path.endsWith('.md')) continue;
+          final stem = file.uri.pathSegments.last.replaceAll('.md', '');
+          workflowIds.add(stem);
+        }
+      }
+
+      final changelogDir = Directory('${root.path}/docs/changelog');
+      final missingTasks = <String>[];
+      final missingSkills = <String>[];
+      final missingWorkflows = <String>[];
+      var multiHopResolved = 0;
+
+      for (final file in changelogDir.listSync().whereType<File>()) {
+        if (!file.path.endsWith('.md')) continue;
+        final content = file.readAsStringSync();
+        final asset = parser.parse(content, filePath: file.path);
+        final meta =
+            asset.frontmatter['_changelogMetadata'] as ChangelogMetadata;
+
+        if (!taskIds.contains(meta.task)) {
+          missingTasks.add('${file.path}:${meta.task}');
+        }
+        for (final s in meta.skills) {
+          if (!skillIds.contains(s)) {
+            missingSkills.add('${file.path}:$s');
+          }
+        }
+        for (final w in meta.workflows) {
+          if (!workflowIds.contains(w)) {
+            missingWorkflows.add('${file.path}:$w');
+          }
+        }
+        if (taskIds.contains(meta.task) &&
+            (meta.skills.any(skillIds.contains) ||
+                meta.workflows.any(workflowIds.contains))) {
+          multiHopResolved++;
+        }
+      }
+
+      expect(missingTasks, isEmpty, reason: 'broken task refs: $missingTasks');
       expect(
-        containsEdges.map((e) => e.targetId),
-        contains('subskill:child-a'),
+        missingSkills,
+        isEmpty,
+        reason: 'broken skill refs: $missingSkills',
       );
+      expect(
+        missingWorkflows,
+        isEmpty,
+        reason: 'broken workflow refs: $missingWorkflows',
+      );
+      expect(multiHopResolved, greaterThanOrEqualTo(3));
     });
   });
 }

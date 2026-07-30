@@ -1,426 +1,509 @@
 # Public Barrel Audit — `warp_prism_ui`
 
-> **Task**: 1302
-> **Date**: 2026-06-09
-> **Executor**: builders
-> **Source**: `packages/warp_prism_ui/lib/warp_prism_ui.dart`
+> **Task**: 1302  
+> **Date**: 2026-07-18 (path-to-100 live re-audit session 2; closed +11 symbol drift after 263 freeze)  
+> **Original audit**: 2026-06-09  
+> **Executor**: gt-flutter-engineer (builders)  
+> **Source of truth**: `packages/warp_prism_ui/lib/warp_prism_ui.dart`  
+> **Alias surface**: `packages/warp_prism_ui/lib/src/prism_aliases.dart`
 
 ---
 
-## 1. Barrel Structure
+## 1. Live Barrel Structure
 
-The public barrel at `warp_prism_ui.dart` exports 7 sub-barrels:
+The public barrel is intentionally narrow. **DS\* implementation libraries are not
+exported.** Consumers receive Prism\* aliases plus intentional gallery entrypoints.
 
-| # | Export | Layer |
-|---|--------|-------|
-| 1 | `src/tokens/tokens.dart` | Tokens |
-| 2 | `src/atoms/atoms.dart` | Atoms |
-| 3 | `src/molecules/molecules.dart` | Molecules |
-| 4 | `src/organisms/organisms.dart` | Organisms |
-| 5 | `src/templates/templates.dart` | Templates |
-| 6 | `src/gallery/design_system_gallery_page.dart` | Gallery |
-| 7 | `src/gallery/design_system_gallery_sections.dart` | Gallery |
-| 8 | `src/prism_aliases.dart` | Aliases |
+| # | Export path | Role | Hides |
+|---|-------------|------|-------|
+| 1 | `src/prism_aliases.dart` | Sole Prism\* public API (typedefs + extension) | — |
+| 2 | `src/gallery/design_system_gallery_page.dart` | Gallery page | — |
+| 3 | `src/gallery/design_system_gallery_registry.dart` | Gallery registry const + helpers | `DSGallerySectionSpec` |
+| 4 | `src/gallery/design_system_gallery_sections.dart` | Gallery section builders | `DSGallerySections` |
+
+**Not exported** (internal / `src/` only):
+
+- `src/tokens/tokens.dart`
+- `src/atoms/atoms.dart`
+- `src/molecules/molecules.dart`
+- `src/organisms/organisms.dart`
+- `src/templates/templates.dart`
+- All other `src/**` implementation files
+
+> Historical note: older audit drafts listed layer sub-barrels as public. That
+> structure is obsolete after Prism namespace remediation. This document matches
+> the live four-export barrel only.
+
+> **2026-07-18 re-audit (session 2)**: Live inventory is **274** Prism API
+> symbols (**273** typedef + **1** extension). Prior freezes
+> (127/129/131 and 263) are **superseded**. +11 symbols since 263 freeze:
+> keyboard cheatsheet, media detail overlay, scale measure bar, toast risk tier.
 
 ---
 
 ## 2. Complete Public Symbol Manifest
 
-### 2.1 Tokens (9 types)
+### 2.1 Production / Experimental / Gallery — Prism API (`src/prism_aliases.dart`)
 
-| Symbol | Kind | Prism* Alias | Status |
-|--------|------|-------------|--------|
-| `DSBreakpoints` | abstract class | `PrismBreakpoints` | Production |
-| `DSColors` | abstract class | `PrismColors` | Production |
-| `DSMotion` | abstract class | `PrismMotion` | Production |
-| `DSOperationalCategory` | enum | `PrismOperationalCategory` | Production |
-| `DSOperationalSeverity` | enum | `PrismOperationalSeverity` | Production |
-| `DSOperationalState` | enum | `PrismOperationalState` | Production |
-| `DSOperationalStateUI` | extension | — (accessed via `PrismOperationalState.x`) | Production |
-| `DSRadii` | abstract class | `PrismRadii` | Production |
-| `DSSemantics` | abstract class | `PrismSemantics` | Production |
-| `DSShadows` | abstract class | `PrismShadows` | Production |
-| `DSSpacing` | abstract class | `PrismSpacing` | Production |
-| `DSTypography` | abstract class | `PrismTypography` | Production |
+**Count: 274 symbols** (273 `typedef` + 1 `extension`).
 
-### 2.2 Atoms (18 types)
+Classification key:
 
-| Symbol | Kind | Prism* Alias | Status |
-|--------|------|-------------|--------|
-| `DSBadge` | class | `PrismBadge` | Production |
-| `DSBadgeSize` | enum | — | Production |
-| `DSBadgeVariant` | enum | — | Production |
-| `DSChip` | class | — | Production |
-| `DSChipSize` | enum | — | Production |
-| `DSDivider` | class | — | Production |
-| `DSGlowBorder` | class | — | Production |
-| `DSGlowDivider` | class | — | Production |
-| `DSGlassPanel` | class | — | Production |
-| `DSGlassPanelSimple` | class | — | Production |
-| `DSGlassPanelVariant` | enum | — | Production |
-| `DSIcon` | class | `PrismIcon` | Production |
-| `DSIconSize` | enum | — | Production |
-| `DSIcons` | abstract class | — | Production |
-| `DSSparkline` | class | `PrismSparkline` | Production |
-| `DSStatusDot` | class | `PrismStatusDot` | Production |
-| `DSText` | class | `PrismText` | Production |
-| `DSTextVariant` | enum | — | Production |
+- **Production** — stable consumer API
+- **Experimental** — drag-drop surface still evolving; keep exported, do not treat as frozen
+- **Gallery** — Prism-named gallery surface (preferred over hidden DSGallery\*)
 
-### 2.3 Molecules (33 types)
+#### TOKENS — Operational State (13)
 
-| Symbol | Kind | Prism* Alias | Status |
-|--------|------|-------------|--------|
-| `DSAssetCard` | class | `PrismAssetCard` | Production |
-| `DSDraggableCard` | class | — | Experimental |
-| `DSDragMoveEvent` | class | — | Experimental |
-| `DSDragPayload` | class | — | Experimental |
-| `DSDragReorderEvent` | class | — | Experimental |
-| `DSDropTarget` | class | — | Experimental |
-| `DSEvidenceIndicator` | class | `PrismEvidenceIndicator` | Production |
-| `DSEvidenceRow` | class | `PrismEvidenceRow` | Production |
-| `DSEvidenceState` | enum | `PrismEvidenceState` | Production |
-| `DSFilterChipGroup` | class | `PrismFilterChipGroup` | Production |
-| `DSFilterOption` | class | `PrismFilterOption` | Production |
-| `DSHealthCard` | class | `PrismHealthCard` | Production |
-| `DSMetricTile` | class | `PrismMetricTile` | Production |
-| `DSMetricTileCompact` | class | `PrismMetricTileCompact` | Production |
-| `DSMetricTileHealth` | enum | `PrismMetricTileHealth` | Production |
-| `DSProvenancePill` | class | `PrismProvenancePill` | Production |
-| `DSProvenanceSize` | enum | `PrismProvenanceSize` | Production |
-| `DSSearchBar` | class | `PrismSearchBar` | Production |
-| `DSShimmer` | class | `PrismShimmer` | Production |
-| `DSSkeletonCard` | class | `PrismSkeletonCard` | Production |
-| `DSSkeletonTableRows` | class | `PrismSkeletonTableRows` | Production |
-| `DSSkeletonTextLine` | class | `PrismSkeletonTextLine` | Production |
-| `DSStateSurface` | class | `PrismStateSurface` | Production |
-| `DSStateType` | enum | `PrismStateType` | Production |
-| `DSTaskCard` | class | `PrismTaskCard` | Production |
-| `DSTimelineMarker` | class | `PrismTimelineMarker` | Production |
-| `DSToast` | class | `PrismToast` | Production |
-| `DSToastEntry` | class | — | Production |
-| `DSToastManager` | class | `PrismToastManager` | Production |
-| `DSToastManagerState` | class | — | Production |
-| `DSToastSeverity` | enum | — | Production |
-| `DSTrend` | enum | `PrismTrend` | Production |
-| `DSUptimeBar` | class | `PrismUptimeBar` | Production |
+| Public symbol | Kind | Target | Status |
+|---|---|---|---|
+| `PrismOperationalState` | typedef | `DSOperationalState` | Production |
+| `PrismOperationalSeverity` | typedef | `DSOperationalSeverity` | Production |
+| `PrismOperationalCategory` | typedef | `DSOperationalCategory` | Production |
+| `PrismOperationalStateUI` | extension | on `DSOperationalState` | Production |
+| `PrismColors` | typedef | `DSColors` | Production |
+| `PrismCyberCoreTealSkin` | typedef | `DSCyberCoreTealSkin` | Production |
+| `PrismSpacing` | typedef | `DSSpacing` | Production |
+| `PrismTypography` | typedef | `DSTypography` | Production |
+| `PrismBreakpoints` | typedef | `DSBreakpoints` | Production |
+| `PrismRadii` | typedef | `DSRadii` | Production |
+| `PrismShadows` | typedef | `DSShadows` | Production |
+| `PrismMotion` | typedef | `DSMotion` | Production |
+| `PrismSemantics` | typedef | `DSSemantics` | Production |
 
-### 2.4 Organisms (75 types)
+#### ATOMS (1)
 
-| Symbol | Kind | Prism* Alias | Status |
-|--------|------|-------------|--------|
-| `DSDetailInspector` | class | — | Production |
-| `DSDetailSection` | class | — | Production |
-| `DSErrorBoundary` | class | `PrismErrorBoundary` | Production |
-| `DSFallbackView` | class | `PrismFallbackView` | Production |
-| `DSGraphCanvas` | class | — | Production |
-| `DSHealthCardData` | class | `PrismHealthCardData` | Production |
-| `DSLane` | class | `PrismLane` | Production |
-| `DSLaneBoard` | class | `PrismLaneBoard` | Production |
-| `DSLaneTask` | class | `PrismLaneTask` | Production |
-| `DSLinkRow` | class | — | Production |
-| `DSPropertyRow` | class | — | Production |
-| `DSShell` | class | — | Production |
-| `DSShellResponsive` | class | `PrismShellResponsive` | Production |
-| `DSSidebar` | class | `PrismSidebar` | Production |
-| `DSSidebarItem` | class | `PrismSidebarItem` | Production |
-| `DSStatusGrid` | class | `PrismStatusGrid` | Production |
-| `DSStoryCardQuick` | class | — | Production |
-| `DSStoryInsight` | class | `PrismStoryInsight` | Production |
-| `DSStoryNarrativeInsight` | class | — | Production |
-| `DSStoryPanel` | class | `PrismStoryPanel` | Production |
-| `DSTimeline` | class | `PrismTimeline` | Production |
-| `DSTimelineEntry` | class | `PrismTimelineEntry` | Production |
-| `DSTimelineGroup` | class | — | Production |
-| `DSTimelineGrouped` | class | — | Production |
-| `DSTopbar` | class | `PrismTopbar` | Production |
-| `DSTopbarAction` | class | — | Production |
-| `InsightRiskLevel` | enum | — | Production |
-| `GraphEdge` | class (legacy) | — | Production |
-| `GraphNode` | class (legacy) | — | Production |
+| Public symbol | Kind | Target | Status |
+|---|---|---|---|
+| `PrismStatusDot` | typedef | `DSStatusDot` | Production |
 
-**Organisms — Code Block sub-barrel** (`code_block/ds_code_block.dart`):
+#### MOLECULES (18)
 
-| Symbol | Kind | Prism* Alias | Status |
-|--------|------|-------------|--------|
-| `DSCodeBlock` | class | `PrismCodeBlock` | Production |
+| Public symbol | Kind | Target | Status |
+|---|---|---|---|
+| `PrismMetricTile` | typedef | `DSMetricTile` | Production |
+| `PrismMetricTileCompact` | typedef | `DSMetricTileCompact` | Production |
+| `PrismMetricTileHealth` | typedef | `DSMetricTileHealth` | Production |
+| `PrismTrend` | typedef | `DSTrend` | Production |
+| `PrismInteractiveSurface` | typedef | `DSInteractiveSurface` | Production |
+| `PrismStateSurface` | typedef | `DSStateSurface` | Production |
+| `PrismStateType` | typedef | `DSStateType` | Production |
+| `PrismTaskCard` | typedef | `DSTaskCard` | Production |
+| `PrismAssetCard` | typedef | `DSAssetCard` | Production |
+| `PrismSearchBar` | typedef | `DSSearchBar` | Production |
+| `PrismFilterChipGroup` | typedef | `DSFilterChipGroup` | Production |
+| `PrismFilterOption` | typedef | `DSFilterOption` | Production |
+| `PrismEvidenceRow` | typedef | `DSEvidenceRow` | Production |
+| `PrismEvidenceIndicator` | typedef | `DSEvidenceIndicator` | Production |
+| `PrismEvidenceState` | typedef | `DSEvidenceState` | Production |
+| `PrismProvenancePill` | typedef | `DSProvenancePill` | Production |
+| `PrismProvenanceSize` | typedef | `DSProvenanceSize` | Production |
+| `PrismTimelineMarker` | typedef | `DSTimelineMarker` | Production |
+| `PrismAccordion` | typedef | `DSAccordion` | Production |
+| `PrismAccordionItem` | typedef | `DSAccordionItem` | Production |
+| `PrismAccordionSection` | typedef | `DSAccordionSection` | Production |
 
-**Organisms — Markdown Renderer sub-barrel** (`markdown_renderer/ds_markdown_renderer.dart`):
+#### ORGANISMS (135)
 
-| Symbol | Kind | Prism* Alias | Status |
-|--------|------|-------------|--------|
-| `DSMarkdownRenderer` | class | `PrismMarkdownRenderer` | Production |
+| Public symbol | Kind | Target | Status |
+|---|---|---|---|
+| `PrismLaneBoard` | typedef | `DSLaneBoard` | Production |
+| `PrismLane` | typedef | `DSLane` | Production |
+| `PrismLaneTask` | typedef | `DSLaneTask` | Production |
+| `PrismPageShell` | typedef | `DSPageShell` | Production |
+| `PrismMapHudWorkspace` | typedef | `DSMapHudWorkspace` | Production |
+| `PrismToolStripSlideout` | typedef | `DSToolStripSlideout` | Production |
+| `PrismToolStripItem` | typedef | `DSToolStripItem` | Production |
+| `PrismFilterWorkbench` | typedef | `DSFilterWorkbench` | Production |
+| `PrismFilterSection` | typedef | `DSFilterSection` | Production |
+| `PrismFilterCriterion` | typedef | `DSFilterCriterion` | Production |
+| `PrismFilterCriterionKind` | typedef | `DSFilterCriterionKind` | Production |
+| `PrismTree` | typedef | `DSTree` | Production |
+| `PrismTreeNode` | typedef | `DSTreeNode` | Production |
+| `PrismAgentTranscript` | typedef | `DSAgentTranscript` | Production |
+| `PrismAgentMessage` | typedef | `DSAgentMessage` | Production |
+| `PrismAgentMessageBlock` | typedef | `DSAgentMessageBlock` | Production |
+| `PrismAgentRole` | typedef | `DSAgentRole` | Production |
+| `PrismAgentMessageBlockType` | typedef | `DSAgentMessageBlockType` | Production |
+| `PrismToolCallCard` | typedef | `DSToolCallCard` | Production |
+| `PrismToolCallData` | typedef | `DSToolCallData` | Production |
+| `PrismToolCallStatus` | typedef | `DSToolCallStatus` | Production |
+| `PrismMessageStatusHistory` | typedef | `DSMessageStatusHistory` | Production |
+| `PrismMessageStatusStep` | typedef | `DSMessageStatusStep` | Production |
+| `PrismMessageStatusStepState` | typedef | `DSMessageStatusStepState` | Production |
+| `PrismProviderHealthMatrix` | typedef | `DSProviderHealthMatrix` | Production |
+| `PrismProviderHealthCell` | typedef | `DSProviderHealthCell` | Production |
+| `PrismProviderHealthProvider` | typedef | `DSProviderHealthProvider` | Production |
+| `PrismMcpCapabilityInspector` | typedef | `DSMcpCapabilityInspector` | Production |
+| `PrismMcpCapabilityKind` | typedef | `DSMcpCapabilityKind` | Production |
+| `PrismMcpCapabilities` | typedef | `DSMcpCapabilities` | Production |
+| `PrismMcpToolItem` | typedef | `DSMcpToolItem` | Production |
+| `PrismMcpResourceItem` | typedef | `DSMcpResourceItem` | Production |
+| `PrismMcpPromptItem` | typedef | `DSMcpPromptItem` | Production |
+| `PrismMcpRootItem` | typedef | `DSMcpRootItem` | Production |
+| `PrismMcpPingResult` | typedef | `DSMcpPingResult` | Production |
+| `PrismMcpCapabilitySelection` | typedef | `DSMcpCapabilitySelection` | Production |
+| `PrismTimingWaterfall` | typedef | `DSTimingWaterfall` | Production |
+| `PrismTimingSpan` | typedef | `DSTimingSpan` | Production |
+| `PrismTimingWaterfallLayout` | typedef | `DSTimingWaterfallLayout` | Production |
+| `PrismTrafficInspector` | typedef | `DSTrafficInspector` | Production |
+| `PrismTrafficRequest` | typedef | `DSTrafficRequest` | Production |
+| `PrismTrafficDetailTab` | typedef | `DSTrafficDetailTab` | Production |
+| `PrismWorkflowCanvasStage` | typedef | `DSWorkflowCanvasStage` | Production |
+| `PrismWorkflowNode` | typedef | `DSWorkflowNode` | Production |
+| `PrismWorkflowEdge` | typedef | `DSWorkflowEdge` | Production |
+| `PrismWorkflowNodeKind` | typedef | `DSWorkflowNodeKind` | Production |
+| `PrismWorkflowEdgeKind` | typedef | `DSWorkflowEdgeKind` | Production |
+| `PrismWorkflowSelection` | typedef | `DSWorkflowSelection` | Production |
+| `PrismWorkflowCanvasLayout` | typedef | `DSWorkflowCanvasLayout` | Production |
+| `PrismViewPreset` | typedef | `DSViewPreset` | Production |
+| `PrismViewPresets` | typedef | `DSViewPresets` | Production |
+| `PrismWorkspaceShareSummary` | typedef | `DSWorkspaceShareSummary` | Production |
+| `PrismWorkspaceShareCard` | typedef | `DSWorkspaceShareCard` | Production |
+| `PrismExecutionConsole` | typedef | `DSExecutionConsole` | Production |
+| `PrismExecutionLine` | typedef | `DSExecutionLine` | Production |
+| `PrismExecutionLineLevel` | typedef | `DSExecutionLineLevel` | Production |
+| `PrismExecutionRunGroup` | typedef | `DSExecutionRunGroup` | Production |
+| `PrismExecutionRunStatus` | typedef | `DSExecutionRunStatus` | Production |
+| `PrismExecutionConsoleController` | typedef | `DSExecutionConsoleController` | Production |
+| `PrismLayerControlPanel` | typedef | `DSLayerControlPanel` | Production |
+| `PrismLayerGroup` | typedef | `DSLayerGroup` | Production |
+| `PrismLayerItem` | typedef | `DSLayerItem` | Production |
+| `PrismLayerFreshness` | typedef | `DSLayerFreshness` | Production |
+| `PrismTimeMachineScrubber` | typedef | `DSTimeMachineScrubber` | Production |
+| `PrismTimeDensityBucket` | typedef | `DSTimeDensityBucket` | Production |
+| `PrismTimeDensitySeverity` | typedef | `DSTimeDensitySeverity` | Production |
+| `PrismEntityIntelPanel` | typedef | `DSEntityIntelPanel` | Production |
+| `PrismEntitySelection` | typedef | `DSEntitySelection` | Production |
+| `PrismEntityIntelDossier` | typedef | `DSEntityIntelDossier` | Production |
+| `PrismEntityIntelBodyBuilder` | typedef | `DSEntityIntelBodyBuilder` | Production |
+| `PrismEntityIntelFixtures` | typedef | `DSEntityIntelFixtures` | Production |
+| `PrismEntityLocateSearch` | typedef | `DSEntityLocateSearch` | Production |
+| `PrismLocateCorpus` | typedef | `DSLocateCorpus` | Production |
+| `PrismLocateEntry` | typedef | `DSLocateEntry` | Production |
+| `PrismLocateResult` | typedef | `DSLocateResult` | Production |
+| `PrismArtifactWorkbench` | typedef | `DSArtifactWorkbench` | Production |
+| `PrismArtifact` | typedef | `DSArtifact` | Production |
+| `PrismArtifactType` | typedef | `DSArtifactType` | Production |
+| `PrismStatusTicker` | typedef | `DSStatusTicker` | Production |
+| `PrismStatusTickerItem` | typedef | `DSStatusTickerItem` | Production |
+| `PrismStatusTickerMode` | typedef | `DSStatusTickerMode` | Production |
+| `PrismStatusTickerController` | typedef | `DSStatusTickerController` | Production |
+| `PrismStatusTickerFixtures` | typedef | `DSStatusTickerFixtures` | Production |
+| `PrismWatchlistDock` | typedef | `DSWatchlistDock` | Production |
+| `PrismWatchlistItem` | typedef | `DSWatchlistItem` | Production |
+| `PrismWatchlistFixtures` | typedef | `DSWatchlistFixtures` | Production |
+| `PrismCoordinateStatusBar` | typedef | `DSCoordinateStatusBar` | Production |
+| `PrismCoordinateFeedHealth` | typedef | `DSCoordinateFeedHealth` | Production |
+| `PrismCoordinateFeedStatus` | typedef | `DSCoordinateFeedStatus` | Production |
+| `PrismCoordinateStatusFixtures` | typedef | `DSCoordinateStatusFixtures` | Production |
+| `PrismMapLegend` | typedef | `DSMapLegend` | Production |
+| `PrismMapLegendCategory` | typedef | `DSMapLegendCategory` | Production |
+| `PrismMapLegendItem` | typedef | `DSMapLegendItem` | Production |
+| `PrismMapLegendFixtures` | typedef | `DSMapLegendFixtures` | Production |
+| `PrismOsintWorkbench` | typedef | `DSOsintWorkbench` | Production |
+| `PrismOsintTool` | typedef | `DSOsintTool` | Production |
+| `PrismOsintResult` | typedef | `DSOsintResult` | Production |
+| `PrismOsintResultField` | typedef | `DSOsintResultField` | Production |
+| `PrismOsintHistoryEntry` | typedef | `DSOsintHistoryEntry` | Production |
+| `PrismOsintMapHandoff` | typedef | `DSOsintMapHandoff` | Production |
+| `PrismOsintFixtures` | typedef | `DSOsintFixtures` | Production |
+| `PrismOsintFixtureResolver` | typedef | `DSOsintFixtureResolver` | Production |
+| `PrismAiAnalystPanel` | typedef | `DSAiAnalystPanel` | Production |
+| `PrismAiAnalystTurn` | typedef | `DSAiAnalystTurn` | Production |
+| `PrismAiAnalystRole` | typedef | `DSAiAnalystRole` | Production |
+| `PrismAiAnalystTurnStatus` | typedef | `DSAiAnalystTurnStatus` | Production |
+| `PrismAiAnalystController` | typedef | `DSAiAnalystController` | Production |
+| `PrismAiAnalystReplyAdapter` | typedef | `DSAiAnalystReplyAdapter` | Production |
+| `PrismFloatingAnalyticsHud` | typedef | `DSFloatingAnalyticsHud` | Production |
+| `PrismFloatingAnalyticsSection` | typedef | `DSFloatingAnalyticsSection` | Production |
+| `PrismFloatingAnalyticsMetric` | typedef | `DSFloatingAnalyticsMetric` | Production |
+| `PrismFloatingAnalyticsHudController` | typedef | `DSFloatingAnalyticsHudController` | Production |
+| `PrismFloatingAnalyticsFixtures` | typedef | `DSFloatingAnalyticsFixtures` | Production |
+| `PrismOpsControlCluster` | typedef | `DSOpsControlCluster` | Production |
+| `PrismOpsLauncher` | typedef | `DSOpsLauncher` | Production |
+| `PrismOpsControlClusterFixtures` | typedef | `DSOpsControlClusterFixtures` | Production |
+| `PrismConnectorPanel` | typedef | `DSConnectorPanel` | Production |
+| `PrismConnectorPanelFixtures` | typedef | `DSConnectorPanelFixtures` | Production |
+| `PrismMapCanvasStage` | typedef | `DSMapCanvasStage` | Production |
+| `PrismMapCanvasStageController` | typedef | `DSMapCanvasStageController` | Production |
+| `PrismMapStageLayerEntry` | typedef | `DSMapStageLayerEntry` | Production |
+| `PrismMapStageFeature` | typedef | `DSMapStageFeature` | Production |
+| `PrismMapStageSelectionEvent` | typedef | `DSMapStageSelectionEvent` | Production |
+| `PrismMapStageSelectionKind` | typedef | `DSMapStageSelectionKind` | Production |
+| `PrismMapStagePopupBuilder` | typedef | `DSMapStagePopupBuilder` | Production |
+| `PrismMapStageSelectionListener` | typedef | `DSMapStageSelectionListener` | Production |
+| `PrismMapCanvasStageFixtures` | typedef | `DSMapCanvasStageFixtures` | Production |
+| `PrismTerminalWorkspace` | typedef | `DSTerminalWorkspace` | Production |
+| `PrismTerminalPane` | typedef | `DSTerminalPane` | Production |
+| `PrismTerminalLayoutMode` | typedef | `DSTerminalLayoutMode` | Production |
+| `PrismTerminalWorkspaceController` | typedef | `DSTerminalWorkspaceController` | Production |
+| `PrismAgentShellLineType` | typedef | `DSAgentShellLineType` | Production |
+| `PrismAgentShellLine` | typedef | `DSAgentShellLine` | Production |
+| `PrismAgentShellPanelController` | typedef | `DSAgentShellPanelController` | Production |
+| `PrismAgentShellPanel` | typedef | `DSAgentShellPanel` | Production |
 
-**Organisms — Data Table sub-barrel** (`data_table/ds_data_table.dart`):
+#### COMPONENTS — Additional promoted types (42)
 
-| Symbol | Kind | Prism* Alias | Status |
-|--------|------|-------------|--------|
-| `DSActionItem` | class | — | Production |
-| `DSActionsCell` | class | — | Production |
-| `DSBadgeCell` | class | — | Production |
-| `DSCellRenderer` | typedef | — | Production |
-| `DSDataColumn` | class | `PrismDataColumn` | Production |
-| `DSDataRow` | class | `PrismDataRow` | Production |
-| `DSDataTable` | class | `PrismDataTable` | Production |
-| `DSSecretCell` | class | — | Production |
-| `DSSortDirection` | enum | — | Production |
-| `DSSortState` | class | — | Production |
-| `DSStatusCell` | class | `PrismStatusCell` | Production |
-| `DSTablePagination` | class | — | Production |
-| `DSTimestampCell` | class | — | Production |
+| Public symbol | Kind | Target | Status |
+|---|---|---|---|
+| `PrismBadge` | typedef | `DSBadge` | Production |
+| `PrismIcon` | typedef | `DSIcon` | Production |
+| `PrismIcons` | typedef | `DSIcons` | Production |
+| `PrismText` | typedef | `DSText` | Production |
+| `PrismDataTable` | typedef | `DSDataTable` | Production |
+| `PrismDataColumn` | typedef | `DSDataColumn` | Production |
+| `PrismDataRow` | typedef | `DSDataRow` | Production |
+| `PrismStatusCell` | typedef | `DSStatusCell` | Production |
+| `PrismStatusGrid` | typedef | `DSStatusGrid` | Production |
+| `PrismHealthCardData` | typedef | `DSHealthCardData` | Production |
+| `PrismErrorBoundary` | typedef | `DSErrorBoundary` | Production |
+| `PrismFallbackView` | typedef | `DSFallbackView` | Production |
+| `PrismTimeline` | typedef | `DSTimeline` | Production |
+| `PrismTimelineEntry` | typedef | `DSTimelineEntry` | Production |
+| `PrismShellResponsive` | typedef | `DSShellResponsive` | Production |
+| `PrismSidebar` | typedef | `DSSidebar` | Production |
+| `PrismSidebarItem` | typedef | `DSSidebarItem` | Production |
+| `PrismTopbar` | typedef | `DSTopbar` | Production |
+| `PrismStoryPanel` | typedef | `DSStoryPanel` | Production |
+| `PrismStoryInsight` | typedef | `DSStoryInsight` | Production |
+| `PrismToast` | typedef | `DSToast` | Production |
+| `PrismToastManager` | typedef | `DSToastManager` | Production |
+| `PrismSparkline` | typedef | `DSSparkline` | Production |
+| `PrismUptimeBar` | typedef | `DSUptimeBar` | Production |
+| `PrismHealthCard` | typedef | `DSHealthCard` | Production |
+| `PrismShimmer` | typedef | `DSShimmer` | Production |
+| `PrismSkeletonCard` | typedef | `DSSkeletonCard` | Production |
+| `PrismSkeletonTextLine` | typedef | `DSSkeletonTextLine` | Production |
+| `PrismSkeletonTableRows` | typedef | `DSSkeletonTableRows` | Production |
+| `PrismVirtualList` | typedef | `DSVirtualList` | Production |
+| `PrismVirtualGrid` | typedef | `DSVirtualGrid` | Production |
+| `PrismTabBar` | typedef | `DSTabBar` | Production |
+| `PrismSplitPane` | typedef | `DSSplitPane` | Production |
+| `PrismCodeBlock` | typedef | `DSCodeBlock` | Production |
+| `PrismMarkdownRenderer` | typedef | `DSMarkdownRenderer` | Production |
+| `PrismCommandPalette` | typedef | `DSCommandPalette` | Production |
+| `PrismCommand` | typedef | `DSCommand` | Production |
+| `PrismLogViewer` | typedef | `DSLogViewer` | Production |
+| `PrismLogEntry` | typedef | `DSLogEntry` | Production |
+| `PrismLogSeverity` | typedef | `DSLogSeverity` | Production |
+| `PrismLogEntryWidget` | typedef | `DSLogEntryWidget` | Production |
+| `PrismLogFilterBar` | typedef | `DSLogFilterBar` | Production |
 
-**Organisms — Graph sub-barrel** (`graph/graph.dart`, `GraphNode`/`GraphEdge` hidden):
+#### ATOMS — Additional aliases (13)
 
-| Symbol | Kind | Prism* Alias | Status |
-|--------|------|-------------|--------|
-| `ForceDirectedConfig` | class | — | Experimental |
-| `ForceDirectedLayout` | class | — | Experimental |
-| `GraphCanvas` | class | — | Experimental |
-| `GraphEdgeId` | class | — | Experimental |
-| `GraphLayoutEngine` | abstract class | — | Experimental |
-| `GraphModel` | class | — | Experimental |
-| `GraphNodeId` | class | — | Experimental |
-| `GraphPainter` | class | — | Experimental |
-| `GraphPainterConfig` | class | — | Experimental |
-| `defaultNodeColor` | function | — | Experimental |
+| Public symbol | Kind | Target | Status |
+|---|---|---|---|
+| `PrismCheckbox` | typedef | `DSCheckbox` | Production |
+| `PrismChip` | typedef | `DSChip` | Production |
+| `PrismChipSize` | typedef | `DSChipSize` | Production |
+| `PrismDivider` | typedef | `DSDivider` | Production |
+| `PrismGlowDivider` | typedef | `DSGlowDivider` | Production |
+| `PrismGlassPanel` | typedef | `DSGlassPanel` | Production |
+| `PrismGlassPanelSimple` | typedef | `DSGlassPanelSimple` | Production |
+| `PrismGlassPanelVariant` | typedef | `DSGlassPanelVariant` | Production |
+| `PrismGlowBorder` | typedef | `DSGlowBorder` | Production |
+| `PrismBadgeSize` | typedef | `DSBadgeSize` | Production |
+| `PrismBadgeVariant` | typedef | `DSBadgeVariant` | Production |
+| `PrismIconSize` | typedef | `DSIconSize` | Production |
+| `PrismSwitch` | typedef | `DSSwitch` | Production |
+| `PrismTextVariant` | typedef | `DSTextVariant` | Production |
+| `PrismButton` | typedef | `DSButton` | Production |
+| `PrismButtonSize` | typedef | `DSButtonSize` | Production |
+| `PrismButtonVariant` | typedef | `DSButtonVariant` | Production |
+| `PrismTextField` | typedef | `DSTextField` | Production |
+| `PrismBreadcrumbs` | typedef | `DSBreadcrumbs` | Production |
+| `PrismBreadcrumbItem` | typedef | `DSBreadcrumbItem` | Production |
 
-**Organisms — Log Viewer sub-barrel** (`log_viewer/log_viewer.dart`):
+#### MOLECULES — Additional aliases (10)
 
-| Symbol | Kind | Prism* Alias | Status |
-|--------|------|-------------|--------|
-| `DSLogEntry` | class | — | Production |
-| `DSLogEntryWidget` | class | — | Production |
-| `DSLogFilterBar` | class | — | Production |
-| `DSLogSeverity` | enum | — | Production |
-| `DSLogSeverityUI` | extension | — | Production |
-| `DSLogViewer` | class | `PrismLogViewer` | Production |
+| Public symbol | Kind | Target | Status |
+|---|---|---|---|
+| `PrismDraggableCard` | typedef | `DSDraggableCard` | Experimental |
+| `PrismDragPayload` | typedef | `DSDragPayload` | Experimental |
+| `PrismDragMoveEvent` | typedef | `DSDragMoveEvent` | Experimental |
+| `PrismDragReorderEvent` | typedef | `DSDragReorderEvent` | Experimental |
+| `PrismDragReorderIntent` | typedef | `DSDragReorderIntent` | Experimental |
+| `PrismDragMoveLaneIntent` | typedef | `DSDragMoveLaneIntent` | Experimental |
+| `PrismDropTarget` | typedef | `DSDropTarget` | Experimental |
+| `PrismToastEntry` | typedef | `DSToastEntry` | Production |
+| `PrismToastSeverity` | typedef | `DSToastSeverity` | Production |
+| `PrismToastManagerState` | typedef | `DSToastManagerState` | Production |
 
-**Organisms — Command Palette sub-barrel** (`command_palette/command_palette.dart`):
+#### ORGANISMS — Additional aliases (19)
 
-| Symbol | Kind | Prism* Alias | Status |
-|--------|------|-------------|--------|
-| `DSCommand` | class | `PrismCommand` | Production |
-| `DSCommandCategory` | enum | — | Production |
-| `DSCommandPalette` | class | `PrismCommandPalette` | Production |
-| `DSCommandPaletteShortcut` | class | — | Production |
-| `showDSCommandPalette` | function | — | Production |
+| Public symbol | Kind | Target | Status |
+|---|---|---|---|
+| `PrismDetailInspector` | typedef | `DSDetailInspector` | Production |
+| `PrismDetailSection` | typedef | `DSDetailSection` | Production |
+| `PrismPropertyRow` | typedef | `DSPropertyRow` | Production |
+| `PrismLinkRow` | typedef | `DSLinkRow` | Production |
+| `PrismGraphCanvas` | typedef | `DSGraphCanvas` | Production |
+| `PrismEntityRelationCard` | typedef | `DSEntityRelationCard` | Production |
+| `PrismGraphNode` | typedef | `GraphNode` | Production |
+| `PrismGraphEdge` | typedef | `GraphEdge` | Production |
+| `PrismShell` | typedef | `DSShell` | Production |
+| `PrismTopbarAction` | typedef | `DSTopbarAction` | Production |
+| `PrismStoryCardQuick` | typedef | `DSStoryCardQuick` | Production |
+| `PrismStoryNarrativeInsight` | typedef | `DSStoryNarrativeInsight` | Production |
+| `PrismInsightRiskLevel` | typedef | `InsightRiskLevel` | Production |
+| `PrismTimelineGroup` | typedef | `DSTimelineGroup` | Production |
+| `PrismTimelineGrouped` | typedef | `DSTimelineGrouped` | Production |
+| `PrismTab` | typedef | `DSTab` | Production |
+| `PrismTabController` | typedef | `DSTabController` | Production |
+| `PrismTabView` | typedef | `DSTabView` | Production |
+| `PrismVirtualScrollConfig` | typedef | `DSVirtualScrollConfig` | Production |
 
-**Organisms — Tab Bar sub-barrel** (`tab_bar/tab_bar.dart`):
+#### DATA TABLE — Additional aliases (9)
 
-| Symbol | Kind | Prism* Alias | Status |
-|--------|------|-------------|--------|
-| `DSTab` | class | — | Production |
-| `DSTabBar` | class | `PrismTabBar` | Production |
-| `DSTabController` | class | — | Production |
-| `DSTabView` | class | — | Production |
+| Public symbol | Kind | Target | Status |
+|---|---|---|---|
+| `PrismActionItem` | typedef | `DSActionItem` | Production |
+| `PrismActionsCell` | typedef | `DSActionsCell` | Production |
+| `PrismBadgeCell` | typedef | `DSBadgeCell` | Production |
+| `PrismSecretCell` | typedef | `DSSecretCell` | Production |
+| `PrismTimestampCell` | typedef | `DSTimestampCell` | Production |
+| `PrismTablePagination` | typedef | `DSTablePagination` | Production |
+| `PrismSortState` | typedef | `DSSortState` | Production |
+| `PrismSortDirection` | typedef | `DSSortDirection` | Production |
+| `PrismCellRenderer` | typedef | `DSCellRenderer` | Production |
 
-**Organisms — Split Pane sub-barrel** (`split_pane/split_pane.dart`):
+#### COMMAND PALETTE — Additional aliases (2)
 
-| Symbol | Kind | Prism* Alias | Status |
-|--------|------|-------------|--------|
-| `DSSplitPane` | class | `PrismSplitPane` | Production |
+| Public symbol | Kind | Target | Status |
+|---|---|---|---|
+| `PrismCommandPaletteShortcut` | typedef | `DSCommandPaletteShortcut` | Production |
+| `PrismCommandCategory` | typedef | `DSCommandCategory` | Production |
 
-**Organisms — Virtual Scroll sub-barrel** (`virtual_scroll/virtual_scroll.dart`):
+#### GALLERY — Public Prism* surface (DSGallery* remains internal) (2)
 
-| Symbol | Kind | Prism* Alias | Status |
-|--------|------|-------------|--------|
-| `DSVirtualGrid` | class | `PrismVirtualGrid` | Production |
-| `DSVirtualList` | class | `PrismVirtualList` | Production |
-| `DSVirtualScrollConfig` | class | — | Production |
+| Public symbol | Kind | Target | Status |
+|---|---|---|---|
+| `PrismGallerySectionSpec` | typedef | `DSGallerySectionSpec` | Gallery |
+| `PrismGallerySections` | typedef | `DSGallerySections` | Gallery |
 
-### 2.5 Templates (3 types)
+#### EPIC-15 Wave I optional polish — Tasks 1522 / 1523 (O-24 / O-26 / O-27 / O-28) (11)
 
-| Symbol | Kind | Prism* Alias | Status |
-|--------|------|-------------|--------|
-| `CanvasTemplate` | class | — | Production |
-| `MasterDetailTemplate` | class | — | Production |
-| `TimelineTemplate` | class | — | Production |
+| Public symbol | Kind | Target | Status |
+|---|---|---|---|
+| `PrismKeyboardCheatsheet` | typedef | `DSKeyboardCheatsheet` | Production |
+| `PrismKeyboardShortcut` | typedef | `DSKeyboardShortcut` | Production |
+| `PrismKeyboardShortcutGroup` | typedef | `DSKeyboardShortcutGroup` | Production |
+| `PrismKeyboardCheatsheetFixtures` | typedef | `DSKeyboardCheatsheetFixtures` | Production |
+| `PrismScaleMeasureBar` | typedef | `DSScaleMeasureBar` | Production |
+| `PrismScaleSegment` | typedef | `DSScaleSegment` | Production |
+| `PrismScaleMeasureBarFixtures` | typedef | `DSScaleMeasureBarFixtures` | Production |
+| `PrismToastRiskTier` | typedef | `DSToastRiskTier` | Production |
+| `PrismMediaDetailOverlay` | typedef | `DSMediaDetailOverlay` | Production |
+| `PrismMediaDetailItem` | typedef | `DSMediaDetailItem` | Production |
+| `PrismMediaDetailFixtures` | typedef | `DSMediaDetailFixtures` | Production |
 
-### 2.6 Gallery (2 types)
+### 2.2 Non-Prism gallery entrypoints (4)
 
-| Symbol | Kind | Prism* Alias | Status |
-|--------|------|-------------|--------|
-| `DSGallerySections` | abstract class | — | Gallery-only |
-| `DesignSystemGalleryPage` | class | — | Gallery-only |
+Exported via gallery files. `DSGallerySectionSpec` / `DSGallerySections` are **hidden**.
 
-### 2.7 Prism* Aliases (72 typedefs)
-
-All aliases are in `src/prism_aliases.dart`. They are `typedef` declarations
-mapping `Prism*` names to `DS*` implementations.
+| Public symbol | Kind | File | Status |
+|---|---|---|---|
+| `DesignSystemGalleryPage` | class | `design_system_gallery_page.dart` | Gallery-only |
+| `dsGallerySections` | const | `design_system_gallery_registry.dart` | Gallery-only |
+| `dsGallerySectionIds` | getter | `design_system_gallery_registry.dart` | Gallery-only |
+| `dsGallerySectionTitles` | getter | `design_system_gallery_registry.dart` | Gallery-only |
 
 ---
 
-## 3. Summary Counts
+## 3. Aggregate Counts
 
-| Layer | Total Symbols | With Prism* Alias | No Alias |
-|-------|--------------|-------------------|----------|
-| Tokens | 12 | 10 | 2 |
-| Atoms | 18 | 4 | 14 |
-| Molecules | 33 | 20 | 13 |
-| Organisms | 75 | 30 | 45 |
-| Templates | 3 | 0 | 3 |
-| Gallery | 2 | 0 | 2 |
-| **Total** | **143** | **64** | **79** |
+| Bucket | Count |
+|---|---:|
+| Prism API (typedef + extension) | **274** |
+| — Production | 265 |
+| — Experimental (drag-drop) | 7 |
+| — Gallery Prism aliases | 2 |
+| Non-Prism gallery entrypoints | **4** |
+| **Total public top-level symbols** | **278** |
+| DS\* layer barrels re-exported | **0** |
+| Public DSGallery\* identifiers | **0** (hidden) |
 
----
+### 3.1 Source↔audit set equality
 
-## 4. Prism* Alias Coverage
-
-### 4.1 Types WITH Prism* Aliases (64)
-
-All token abstract classes, operational state enums, and the majority of
-production molecules and promoted organisms have aliases. See the tables above
-for the full list.
-
-### 4.2 Types WITHOUT Prism* Aliases (79)
-
-These fall into several categories:
-
-**Supporting types (enums, configs, events) — OK without alias:**
-`DSBadgeVariant`, `DSBadgeSize`, `DSChipSize`, `DSIconSize`, `DSGlassPanelVariant`,
-`DSTextVariant`, `DSToastSeverity`, `DSToastEntry`, `DSToastManagerState`,
-`DSSortDirection`, `DSSortState`, `DSCellRenderer`, `DSActionItem`,
-`DSVirtualScrollConfig`, `DSCommandCategory`, `DSLogSeverity`, `DSLogSeverityUI`,
-`DSDragPayload`, `DSDragReorderEvent`, `DSDragMoveEvent`, `InsightRiskLevel`,
-`DSTab`, `DSTabController`, `DSTimelineGroup`, `DSCommandPaletteShortcut`
-
-**Infrastructure atoms (used internally, not promoted) — OK without alias:**
-`DSDivider`, `DSGlowBorder`, `DSGlowDivider`, `DSGlassPanel`, `DSGlassPanelSimple`,
-`DSChip`, `DSIcons`
-
-**Organisms not yet promoted to Prism* namespace — REVIEW NEEDED:**
-`DSShell`, `DSDetailInspector`, `DSDetailSection`, `DSPropertyRow`, `DSLinkRow`,
-`DSTopbarAction`, `DSTimelineGrouped`, `DSStoryCardQuick`, `DSStoryNarrativeInsight`,
-`DSGraphCanvas`, `GraphNode` (legacy), `GraphEdge` (legacy),
-`DSBadgeCell`, `DSTimestampCell`, `DSSecretCell`, `DSActionsCell`, `DSTablePagination`,
-`DSLogEntry`, `DSLogEntryWidget`, `DSLogFilterBar`, `DSTabView`
-
-**Templates — no alias (Prism prefix not applied to templates):**
-`MasterDetailTemplate`, `CanvasTemplate`, `TimelineTemplate`
-
-**Gallery — no alias (demo-only):**
-`DesignSystemGalleryPage`, `DSGallerySections`
-
-**Graph composable layers — experimental, no alias:**
-`GraphNodeId`, `GraphEdgeId`, `GraphModel`, `GraphLayoutEngine`,
-`ForceDirectedConfig`, `ForceDirectedLayout`, `GraphPainter`, `GraphPainterConfig`,
-`GraphCanvas`, `defaultNodeColor`
-
----
-
-## 5. Experimental Components (Wave 4 — Not Yet Stabilized)
-
-| Component | Reason | Recommendation |
-|-----------|--------|----------------|
-| `DSDraggableCard` | Wave 4 drag-and-drop. API may change. | Keep in public barrel, add Prism* alias after stabilization |
-| `DSDragPayload` | Event model for drag-and-drop | Stabilize with DSDraggableCard |
-| `DSDragReorderEvent` | Event model for drag-and-drop | Stabilize with DSDraggableCard |
-| `DSDragMoveEvent` | Event model for drag-and-drop | Stabilize with DSDraggableCard |
-| `DSDropTarget` | Wave 4 drag-and-drop | Keep in public barrel, add Prism* alias after stabilization |
-| Graph composable layers (`GraphNodeId`, `GraphEdgeId`, `GraphModel`, `GraphLayoutEngine`, `ForceDirectedConfig`, `ForceDirectedLayout`, `GraphPainter`, `GraphPainterConfig`, `GraphCanvas`, `defaultNodeColor`) | Wave 4 graph decomposition. The typed model types (`GraphNode`, `GraphEdge`) are explicitly hidden from the organisms barrel to avoid collision with legacy types from `ds_graph_canvas.dart`. | Stabilize after graph migration is complete |
-| `DSStoryNarrativeInsight` | Extended insight type, not yet in gallery | Verify usage before promoting |
-| `DSStoryCardQuick` | Quick-glance card, not yet in gallery | Verify usage before promoting |
-
----
-
-## 6. `src/` Types Leaking Into Public API
-
-### 6.1 Gallery Code Exported Publicly
-
-**Finding**: `DesignSystemGalleryPage` and `DSGallerySections` are exported
-publicly alongside production components. These are demo/gallery-only types
-that import from `warp_prism_ui.dart` (the barrel itself) and use DS* names
-directly.
-
-**Impact**: Consumer apps see gallery types in their autocomplete. The gallery
-page references every DS type internally, so it creates a coupling surface
-between demo code and the production barrel.
-
-**Recommendation**: The gallery exports should be separated. Options:
-1. Move gallery to a separate export: `export 'package:warp_prism_ui/warp_prism_gallery.dart'`
-2. Or keep gallery in the barrel but add a doc comment marking it as non-production.
-
-### 6.2 Legacy Graph Types Collision
-
-**Finding**: `ds_graph_canvas.dart` exports `GraphNode` and `GraphEdge` (legacy
-string-ID types). The `graph/graph.dart` sub-barrel also exports `GraphNode` and
-`GraphEdge` (typed model types). The organisms barrel resolves this with
-`export 'graph/graph.dart' hide GraphNode, GraphEdge;`.
-
-**Impact**: The legacy `GraphNode`/`GraphEdge` from `ds_graph_canvas.dart` use
-`String` IDs. The new typed versions from `graph_model.dart` use `GraphNodeId`
-and `GraphEdgeId`. Both are public but the typed versions are hidden.
-
-**Recommendation**: After graph migration, hide the legacy types and expose the
-typed model. This is blocked by graph stabilization.
-
-### 6.3 DSToastManagerState Leaked
-
-**Finding**: `DSToastManagerState` is a public `State<>` class exported from
-`ds_toast_manager.dart`. State classes should typically be private.
-
-**Impact**: Minor. Consumer code could depend on the State class directly.
-
-**Recommendation**: Consider making `DSToastManagerState` private in a future
-cleanup, or document it as an implementation detail.
-
----
-
-## 7. Recommendations
-
-### 7.1 Add Prism* Aliases For
-
-These production types are missing Prism* aliases and are commonly used by
-consumer-facing code:
-
-| Type | Suggested Alias | Priority |
-|------|----------------|----------|
-| `DSChip` | `PrismChip` | Medium |
-| `DSIcons` | `PrismIcons` | Medium |
-| `DSToastSeverity` | `PrismToastSeverity` | Low |
-| `DSToastEntry` | `PrismToastEntry` | Low |
-| `DSTab` | `PrismTab` | Low |
-| `DSTabController` | `PrismTabController` | Low |
-| `DSTabView` | `PrismTabView` | Low |
-| `DSShell` | `PrismShell` | Medium |
-| `DSDetailInspector` | `PrismDetailInspector` | Medium |
-| `DSTopbarAction` | `PrismTopbarAction` | Low |
-
-### 7.2 Separate Gallery From Production
-
-Create a separate gallery barrel or add explicit documentation that gallery
-exports are non-production. Current structure:
-
+```text
+src_set (typedef+extension Prism*) = 274
+audit_set (table rows `Prism*`)     = 274
+missing = 0
+extra   = 0
 ```
-warp_prism_ui.dart  →  exports gallery (demo) alongside production
-```
 
-Recommended:
-
-```
-warp_prism_ui.dart       →  production only (tokens + atoms + molecules + organisms + templates + aliases)
-warp_prism_gallery.dart  →  gallery/demo (imports from warp_prism_ui.dart)
-```
-
-### 7.3 Stabilize Experimental Components Before Consumer Release
-
-The drag-and-drop and graph composable layer components should not be relied
-upon by consumer apps until they complete stabilization. Add `@experimental`
-annotations or doc comments marking them.
-
-### 7.4 Enforce Barrel-Only Imports
-
-The boundary test harness (Task 1205) should verify that consumer apps only
-import from `package:warp_prism_ui/warp_prism_ui.dart` and never from
-`src/` paths directly.
-
----
-
-## 8. Validation
+Regenerate proof:
 
 ```bash
-# Barrel compiles
-dart analyze packages/warp_prism_ui/   # PASS (info-level lints only)
+rg -c '^typedef Prism' packages/warp_prism_ui/lib/src/prism_aliases.dart
+rg -c '^extension Prism' packages/warp_prism_ui/lib/src/prism_aliases.dart
+# set-diff table backticks vs source → empty missing/extra
 
-# Manifest file exists
-test -f docs/design/public-barrel-audit.md   # PASS
+# Automated lock (Task 1302 regression guard — fails on inventory freeze):
+dart run packages/warp_prism_ui/tool/verify_public_barrel_audit.dart --repo-root .
 ```
+
+---
+
+## 4. Classification Notes
+
+- **Experimental drag-drop** (7): `PrismDragMoveEvent`, `PrismDragMoveLaneIntent`, `PrismDragPayload`, `PrismDragReorderEvent`, `PrismDragReorderIntent`, `PrismDraggableCard`, `PrismDropTarget`.
+- **Gallery Prism aliases** (2): `PrismGallerySectionSpec`, `PrismGallerySections`.
+- **Intent aliases retained** for keyboard DnD boundary harness.
+- **`PrismInsightRiskLevel` retained** under organisms/story surface.
+- Recent +11 (post-263 freeze): `PrismKeyboardCheatsheet`, `PrismKeyboardCheatsheetFixtures`,
+  `PrismKeyboardShortcut`, `PrismKeyboardShortcutGroup`, `PrismMediaDetailFixtures`,
+  `PrismMediaDetailItem`, `PrismMediaDetailOverlay`, `PrismScaleMeasureBar`,
+  `PrismScaleMeasureBarFixtures`, `PrismScaleSegment`, `PrismToastRiskTier`.
+- Historical experimental names `PrismDragHandle` / `PrismDropZone` are **gone**; live
+  surface uses `PrismDraggableCard` / `PrismDropTarget` (+ events/intents/payload).
+
+---
+
+## 5. Gallery Separation Recommendation
+
+Gallery is mixed into the public barrel **by design** (design-system documentation
+entrypoint). Separation options (not implemented — export-removal guardrail):
+
+1. Keep current four-export barrel; document gallery as gallery-only (this audit).
+2. Future optional: `package:warp_prism_ui/gallery.dart` secondary entry for
+   gallery-only consumers; production apps import main barrel only.
+
+**Do not remove** gallery exports while Observatory or catalog tests depend on them.
+
+---
+
+## 6. Boundary Enforcement
+
+Task 1205 harness (`packages/warp_prism_ui/test/boundaries/boundary_test.dart`):
+
+- Consumers must import `package:warp_prism_ui/warp_prism_ui.dart` only (no `src/`).
+- Public DS declarations must have Prism aliases.
+- Public barrel must hide DS\* names from consumers.
+
+---
+
+## 7. Validation Snapshot (2026-07-18 session 2)
+
+```text
+test -f docs/design/public-barrel-audit.md
+rg -c '^typedef Prism' packages/warp_prism_ui/lib/src/prism_aliases.dart  # 273
+rg -c '^extension Prism' packages/warp_prism_ui/lib/src/prism_aliases.dart # 1
+dart analyze packages/warp_prism_ui/lib/warp_prism_ui.dart \
+  packages/warp_prism_ui/lib/src/prism_aliases.dart
+# No issues found!
+dart run packages/warp_prism_ui/test/boundaries/boundary_test.dart --repo-root .
+# Checks: 7/7 PASS, 0 FAIL, 0 violation(s)
+```
+
+---
+
+## 8. Regression Guards
+
+1. Four-export barrel only; no DS layer re-exports.
+2. Keep `hide DSGallerySectionSpec` / `hide DSGallerySections`.
+3. Boundary harness must stay green (currently 7 checks).
+4. Intent aliases + `PrismInsightRiskLevel` must remain listed.
+5. **Re-audit when new `typedef Prism*` land** — set equality must stay empty.
+

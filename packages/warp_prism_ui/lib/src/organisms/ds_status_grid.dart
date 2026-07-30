@@ -73,6 +73,14 @@ class DSStatusGrid extends StatelessWidget {
   /// Callback when a health card is tapped.
   final ValueChanged<DSHealthCardData>? onItemTap;
 
+  /// When `true`, the grid uses [shrinkWrap] + never-scroll physics for
+  /// embedding inside an outer scroll view (gallery, nested dashboards).
+  ///
+  /// When `false` (**default**), the grid expands and scrolls itself —
+  /// required for the 50+ service primary-surface contract (lazy
+  /// [GridView.builder] as the primary scrollable).
+  final bool embedInScrollView;
+
   const DSStatusGrid({
     super.key,
     required this.items,
@@ -84,36 +92,29 @@ class DSStatusGrid extends StatelessWidget {
     this.showFilterBar = false,
     this.onFilterToggle,
     this.onItemTap,
+    this.embedInScrollView = false,
   });
 
   @override
   Widget build(BuildContext context) {
     final filteredItems = _applyFilter(items, activeFilter);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        // Filter bar
-        if (showFilterBar) ...[
-          _buildFilterBar(),
-          const SizedBox(height: DSSpacing.md),
-        ],
-
-        // Grid or empty state
-        if (filteredItems.isEmpty)
-          DSStateSurface.empty(
+    final grid = filteredItems.isEmpty
+        ? const DSStateSurface.empty(
             icon: Icons.filter_list_off,
             title: 'No services match filter',
             subtitle: 'Try adjusting the operational state filter',
             compact: true,
           )
-        else
-          Semantics(
+        : Semantics(
             label: 'Service health grid: ${filteredItems.length} services',
             child: GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
+              // Primary surface (default): scrollable + lazy.
+              // Embed mode: shrinkWrap + never-scroll for outer parents.
+              shrinkWrap: embedInScrollView,
+              physics: embedInScrollView
+                  ? const NeverScrollableScrollPhysics()
+                  : const AlwaysScrollableScrollPhysics(),
               gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: maxCrossAxisExtent,
                 mainAxisSpacing: mainAxisSpacing,
@@ -134,7 +135,32 @@ class DSStatusGrid extends StatelessWidget {
                 );
               },
             ),
-          ),
+          );
+
+    if (!embedInScrollView) {
+      // Primary surface: column with optional filter + Expanded scrollable grid.
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (showFilterBar) ...[
+            _buildFilterBar(),
+            const SizedBox(height: DSSpacing.md),
+          ],
+          Expanded(child: grid),
+        ],
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Filter bar
+        if (showFilterBar) ...[
+          _buildFilterBar(),
+          const SizedBox(height: DSSpacing.md),
+        ],
+        grid,
       ],
     );
   }

@@ -3,8 +3,8 @@ import 'app_shell.dart';
 import 'pages/overview_page.dart';
 import 'pages/map_page.dart';
 import 'pages/operate_page.dart';
-import '../features/history/presentation/history_page.dart';
-import '../features/governance/presentation/governance_overview_page.dart';
+import 'pages/history_page.dart';
+import '../features/governance/presentation/governance_page_shell.dart';
 import 'pages/asset_detail_page.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
 import '../features/workspace_snapshot/workspace_snapshot_page.dart';
@@ -32,7 +32,7 @@ import '../features/workspace_snapshot/workspace_snapshot_page.dart';
 ///   /workspace-snapshot/task/:id               → Deep-link to task detail
 ///   /workspace-snapshot/changelog/:id          → Deep-link to changelog detail
 final appRouter = GoRouter(
-  initialLocation: '/design-system',
+  initialLocation: '/overview',
   routes: [
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
@@ -71,7 +71,7 @@ final appRouter = GoRouter(
           routes: [
             GoRoute(
               path: '/history',
-              builder: (context, state) => const HistoryWorkspacePage(),
+              builder: (context, state) => const HistoryPageShell(),
             ),
           ],
         ),
@@ -80,7 +80,7 @@ final appRouter = GoRouter(
           routes: [
             GoRoute(
               path: '/governance',
-              builder: (context, state) => const GovernanceOverviewPage(),
+              builder: (context, state) => const GovernancePageShell(),
             ),
           ],
         ),
@@ -96,16 +96,18 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/assets/:assetId',
       builder: (context, state) {
-        final assetId = state.pathParameters['assetId'] ?? 'unknown';
+        final raw = state.pathParameters['assetId'] ?? 'unknown';
+        final assetId = Uri.decodeComponent(raw);
         return AssetDetailPage(assetId: assetId);
       },
     ),
-    // Legacy alias — redirects to canonical /assets/:id
+    // Legacy alias — redirects to canonical /assets/:id (encoded)
     GoRoute(
       path: '/asset/:id',
       redirect: (context, state) {
-        final id = state.pathParameters['id'] ?? 'unknown';
-        return '/assets/$id';
+        final raw = state.pathParameters['id'] ?? 'unknown';
+        final id = Uri.decodeComponent(raw);
+        return '/assets/${Uri.encodeComponent(id)}';
       },
     ),
     // Design System Gallery — DS proof surface, outside shell

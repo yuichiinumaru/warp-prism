@@ -1,12 +1,98 @@
 # EPIC 10 — Polish Baseline Audit
 
-> **Generated**: 2026-06-07 by Task 1000
-> **Scope**: Reconcile Flutter codebase, stale README, and EPIC 10 polish goals
-> **Method**: Read-only audit of every file listed in the task Where table
+> **Generated**: 2026-06-07 by Task 1000 (historical root-`lib/` snapshot)
+> **Live refresh**: 2026-07-09 by gt-evidence-refresher (builders) — monorepo path remap + validation unblocked
+> **Scope**: Reconcile Flutter codebase, stack docs, and EPIC 10 polish goals
+> **Method**: Original read-only audit of Where-table hosts; 2026-07-09 revalidation against Melos monorepo paths
 
 ---
 
-## 1. Executive Summary
+## 0. Live Monorepo Delta (2026-07-09) — SOURCE OF TRUTH FOR PATHS
+
+The 2026-06-07 body (§1–§11) remains the **historical baseline snapshot** of the pre-Melos root-`lib/` tree. It is **not** the live file map. Use this section for current ownership.
+
+### 0.1 Topology
+
+| Surface | Live path | Status vs 2026-06-07 |
+|---------|-----------|----------------------|
+| Workspace root | Melos `pubspec.yaml` (`workspace: packages/**, apps/**`) | **Changed** — not a single Flutter app |
+| Root `lib/` | **ABSENT** | Historical host paths non-reproducible |
+| Design system | `packages/warp_prism_ui/lib/src/` | Migrated; **128** package `*.dart` files total (**86** lib + **42** under `test/`; **40** `*_test.dart`) |
+| Observatory app | `apps/observatory/` | `main.dart` + features: shell, overview, map, operate, history, governance, asset_detail |
+| Catalog / gallery | `apps/catalog/` + `packages/warp_prism_ui/lib/src/gallery/` | **Exists** (was missing) |
+| CyberCore pilot | `apps/cybercore/` | Out of EPIC 10 host scope |
+| README | Flutter + Melos monorepo docs | **Resolved** — no longer Next.js/v0 |
+| Flutter SDK | Flutter 3.44.1 / Dart 3.12.1 | **Unblocked** |
+
+### 0.2 Path Remap (task Where table → live hosts)
+
+| Historical (2026-06-07) | Live monorepo host |
+|-------------------------|--------------------|
+| `lib/design_system/templates/master_detail_template.dart` | `packages/warp_prism_ui/lib/src/templates/master_detail_template.dart` |
+| `lib/design_system/organisms/ds_shell.dart` | `packages/warp_prism_ui/lib/src/organisms/ds_shell.dart` |
+| `lib/design_system/organisms/ds_sidebar.dart` | `packages/warp_prism_ui/lib/src/organisms/ds_sidebar.dart` |
+| `lib/design_system/organisms/ds_topbar.dart` | `packages/warp_prism_ui/lib/src/organisms/ds_topbar.dart` |
+| `lib/design_system/organisms/ds_lane_board.dart` | `packages/warp_prism_ui/lib/src/organisms/ds_lane_board.dart` |
+| `lib/design_system/atoms/ds_glass_panel.dart` | `packages/warp_prism_ui/lib/src/atoms/ds_glass_panel.dart` |
+| `lib/data/parsers/workspace_parser.dart` | `apps/observatory/lib/data/parsers/workspace_parser.dart` |
+| `lib/data/models/models.dart` | `apps/observatory/lib/data/models/models.dart` (legacy; backbone under same models dir) |
+| *(missing)* `main.dart` / pages | `apps/observatory/lib/main.dart` + `lib/features/*` |
+| *(missing)* gallery | `packages/warp_prism_ui/lib/src/gallery/design_system_gallery_page.dart` |
+| *(missing)* demo script | `docs/demo/epic-10-demo-script.md` |
+| *(missing)* breakpoint tokens | `packages/warp_prism_ui/lib/src/tokens/ds_breakpoints.dart` |
+
+### 0.3 Stack Divergence — Live Reclassification
+
+| Item | 2026-06-07 | 2026-07-09 live | Classification |
+|------|------------|-----------------|----------------|
+| `README.md` Next.js | **stale doc** | Flutter/Melos monorepo README | **Resolved** (runtime-aligned doc) |
+| Flutter package identity | root `pubspec` as app | Melos workspace + `warp_prism_ui` / apps | **runtime truth** |
+| Root `lib/` tree | **runtime truth** | **ABSENT** after migration | **historical only** |
+| `main.dart` absence | **blocked decision** | Observatory/catalog/cybercore mains exist | **Resolved as host** |
+| Flutter SDK missing | validation **BLOCKED** | SDK present; scoped analyze/test runnable | **Resolved** (machine gate) |
+| Mock `.md` vs `.yaml` | **stale doc** / format gap | Still a corpus-contract concern (see mock corpus tasks) | **partial / separate lane** |
+
+### 0.4 EPIC 10 Goal Status Delta (inventory only — not full re-audit)
+
+| Goal slice | Historical finding | Live observation (spot-check) |
+|------------|--------------------|-------------------------------|
+| 1010 Accessibility | textTertiary fail; no Focus/Semantics | `textTertiary` = `#8888A0`; FocusTraversal/Semantics present in shell/topbar/molecules; contrast tests exist |
+| 1020 Responsive | hardcoded 1200/800/1000; no narrow | `DSBreakpoints` token exists; shell docs narrow 600px |
+| 1030 States | empty only; no loading/error | shimmer/skeleton molecules + state surface tests present |
+| 1040 Glass | tiers + Simple fallback | Still present (`subtle`/`elevated`/`modal` + Simple) |
+| 1050 Demo narrative | no gallery/demo path | Gallery page + `docs/demo/epic-10-demo-script.md` exist; feature screens host narrative |
+
+**Handoff table in §4 is HISTORICAL** (2026-06-07 basename scopes + risks). For live edit targets use **§0.2 path remap** and **§0.6 live handoff**. Later EPIC 10 slice tasks own implementation progress; this baseline’s durable value is the goal→file ownership map plus the live path remap and live handoff below.
+
+### 0.5 Validation Results (2026-07-09)
+
+| Command | Result | Notes |
+|---------|--------|-------|
+| `flutter --version` | Flutter 3.44.1 / Dart 3.12.1 | Unblocked |
+| `test -d lib` | `ROOT_LIB:ABSENT` | Confirms historical paths superseded |
+| Host path existence (Where remap) | All **EXISTS** | See §0.2 |
+| `dart analyze --format=machine packages/warp_prism_ui/lib` | **82 issues: ERROR 0, WARNING 1, INFO 81** | UI package host for polish widgets |
+| `dart analyze --format=machine` observatory demo-feature scope (`lib/main.dart`, `lib/app`, shell/map/operate/history/governance/overview) | **48 issues: ERROR 0, WARNING 0, INFO 48** | Demo host surfaces; not monorepo-wide claim |
+| `flutter test` (scoped polish) `packages/warp_prism_ui/test/accessibility_focus_contrast_test.dart` + `state_surface_test.dart` | **+43 All tests passed!** | Docs-audit proof only; full monorepo suite not claimed |
+| Test inventory | ui 40, observatory 39, catalog 1, cybercore 2 `*_test.dart` | Was 0 at original audit |
+
+### 0.6 Live Handoff Table for Tasks 1010–1050 (monorepo-qualified)
+
+| Task | Scope | Live candidate hosts (read/modify) | Main residual risk (inventory) |
+|------|-------|------------------------------------|--------------------------------|
+| **1010 — Accessibility** | Contrast, focus, keyboard, semantics | `packages/warp_prism_ui/lib/src/tokens/ds_colors.dart`, `…/atoms/ds_text.dart`, `…/organisms/ds_sidebar.dart`, `…/ds_topbar.dart`, `…/ds_lane_board.dart`, `…/ds_shell.dart` (`FocusTraversalGroup`), `…/tokens/ds_semantics.dart`, `…/test/accessibility_focus_contrast_test.dart` | Contrast floor and focus/semantics already land in UI package; residual risk is **coverage gaps** on secondary molecules/organisms and demo-host proof in observatory, not “missing app”. |
+| **1020 — Responsive** | Breakpoints, collapse, overflow | `packages/warp_prism_ui/lib/src/tokens/ds_breakpoints.dart`, `…/organisms/ds_shell.dart`, `…/ds_topbar.dart`, `…/ds_sidebar.dart`, `…/ds_lane_board.dart`, `…/templates/master_detail_template.dart`, observatory feature shells under `apps/observatory/lib/features/{shell,map,operate,history,governance,overview}/` | Tokens exist (`narrow`=600); risk is **inconsistent consumer use** and topbar/search collapse coherence across feature hosts, not absence of breakpoints. |
+| **1030 — States** | Empty / loading / error coherence | `packages/warp_prism_ui/lib/src/molecules/ds_state_surface.dart`, `…/ds_shimmer.dart`, `…/ds_skeleton_*.dart`, `…/organisms/ds_lane_board.dart`, `…/ds_timeline.dart`, `…/test/state_surface_test.dart`, observatory data load surfaces (`apps/observatory/lib/data/`, feature workspaces) | Widget kit exists; risk is **wiring consistency** on real load paths (parser/provider/feature empty-loading-error), not greenfield widgets. |
+| **1040 — Performance / Glass** | Blur tiers, lazy builders, budget | `packages/warp_prism_ui/lib/src/atoms/ds_glass_panel.dart` (`subtle`/`elevated`/`modal` + `DSGlassPanelSimple`), `…/atoms/ds_glow_border.dart`, `…/organisms/ds_story_panel.dart`, `docs/reports/epic-10-glass-performance-budget.md` (if present) | Tiers + Simple fallback still present; risk is **nested blur / overuse on dense screens**, not missing glass API. |
+| **1050 — Demo Narrative** | Storytelling copy, demo flow, gallery | `packages/warp_prism_ui/lib/src/gallery/design_system_gallery_page.dart`, `…/organisms/ds_story_panel.dart`, `…/ds_timeline.dart`, `docs/demo/epic-10-demo-script.md`, `apps/observatory/lib/features/*` (Map/Operate/History/Governance hosts), `apps/catalog/` | Gallery + demo script **exist**; residual risk is **end-to-end narrative coherence** across observatory routes, not “no demo surface”. |
+
+> §0.6 is the **live** handoff. §4 keeps the original 2026-06-07 wording for audit trail only.
+
+---
+
+## 1. Executive Summary (HISTORICAL — 2026-06-07)
+
+> **SUPERSEDED for live paths and blockers** by §0. Kept as the original Task 1000 audit narrative.
 
 The Warp-Prism project is a Flutter desktop-first ASW Observatory prototype. It contains a **40-file design system** (tokens, atoms, molecules, organisms, templates) and a **data layer** (models + YAML parser), but has **no `main.dart`, no app router, no pages, and no runnable Flutter application shell**. The `README.md` is stale Next.js boilerplate from v0. Flutter SDK is **not installed** on the audit machine, so `flutter analyze` and `flutter test` could not be executed.
 
@@ -14,7 +100,9 @@ EPIC 10 polish work is **conditionally blocked**: the design system widgets exis
 
 ---
 
-## 2. Stack Divergence Classification
+## 2. Stack Divergence Classification (HISTORICAL — 2026-06-07)
+
+> Live reclassification: §0.3. Historical table preserved for audit trail.
 
 | Item | Classification | Evidence | Recommendation |
 |------|---------------|----------|----------------|
@@ -26,7 +114,9 @@ EPIC 10 polish work is **conditionally blocked**: the design system widgets exis
 
 ---
 
-## 3. EPIC 10 Goal → Real Flutter File Matrix
+## 3. EPIC 10 Goal → Real Flutter File Matrix (HISTORICAL — 2026-06-07)
+
+> **Not live status.** Status columns below snapshot pre-Melos root-`lib/` polish gaps. For live path ownership see §0.2; for 2026-07-09 goal delta see §0.4; for monorepo-qualified handoff see §0.6.
 
 ### 3.1 Accessibility (contrast, focus, keyboard)
 
@@ -92,7 +182,9 @@ EPIC 10 polish work is **conditionally blocked**: the design system widgets exis
 
 ---
 
-## 4. Handoff Table for Tasks 1010-1050
+## 4. Handoff Table for Tasks 1010-1050 (HISTORICAL — 2026-06-07)
+
+> **Superseded for live edit targets by §0.6.** Paths below are basenames from the original root-`lib/` design system; resolve through §0.2. Risks that say “no gallery / no app / no SDK” are historical — do not re-open them as current blockers.
 
 | Task | Scope | Candidate Files (Read/Modify) | Main Risk |
 |------|-------|------------------------------|-----------|
@@ -104,7 +196,9 @@ EPIC 10 polish work is **conditionally blocked**: the design system widgets exis
 
 ---
 
-## 5. Detailed Inventories
+## 5. Detailed Inventories (HISTORICAL — 2026-06-07)
+
+> Live package inventory and a11y/responsive/state surfaces have grown under `packages/warp_prism_ui/`. Treat this section as the original audit trail, not current gap status.
 
 ### 5.1 Accessibility Surfaces
 
@@ -165,7 +259,7 @@ All breakpoints are **hardcoded literals**, not centralized tokens:
 
 ---
 
-## 6. Dart File Inventory (40 files)
+## 6. Dart File Inventory (40 files) (HISTORICAL — 2026-06-07 root-`lib/`)
 
 ### Tokens (8 files)
 - `ds_colors.dart` — 178 lines, comprehensive color palette
@@ -223,7 +317,9 @@ All breakpoints are **hardcoded literals**, not centralized tokens:
 
 ---
 
-## 7. Model Gap Analysis
+## 7. Model Gap Analysis (HISTORICAL — 2026-06-07)
+
+> Live models live under `apps/observatory/lib/data/models/` (including legacy `models.dart` plus newer backbone/contracts). Do not treat the gap table below as a current data-layer audit.
 
 | Prompt Requirement | models.dart Reality | Gap |
 |-------------------|-------------------|-----|
@@ -237,15 +333,19 @@ All breakpoints are **hardcoded literals**, not centralized tokens:
 
 ## 8. Validation Command Results
 
+> **Live 2026-07-09 results**: see §0.5 (SDK unblocked; scoped analyze/test). Table below is the original blocked audit.
+
 | Command | Result | Notes |
 |---------|--------|-------|
-| `flutter analyze` | **BLOCKED** | Flutter SDK not found on machine. No `flutter` binary in PATH. |
-| `flutter test` | **BLOCKED** | Flutter SDK not found. No test files exist (0 `*_test.dart` files found). |
-| `flutter pub get` | **BLOCKED** | Flutter SDK not found. |
+| `flutter analyze` | **BLOCKED** (historical) | Flutter SDK not found on machine. No `flutter` binary in PATH. |
+| `flutter test` | **BLOCKED** (historical) | Flutter SDK not found. No test files exist (0 `*_test.dart` files found). |
+| `flutter pub get` | **BLOCKED** (historical) | Flutter SDK not found. |
 
 ---
 
 ## 9. Blockers for EPIC 10
+
+> **Historical blockers (2026-06-07).** Live status: items 1–4 largely **resolved** by monorepo + bootstrap (see §0). Model/mock/API items tracked by later foundation/data tasks, not re-litigated here.
 
 1. **No main.dart / app shell**: EPIC 10 polish requires screens to polish. No `main.dart`, `app.dart`, `router.dart`, or any page exists.
 2. **No Flutter SDK on audit machine**: Cannot validate with `flutter analyze` or `flutter test`.
@@ -257,7 +357,9 @@ All breakpoints are **hardcoded literals**, not centralized tokens:
 
 ---
 
-## 10. What Can Be Polished Now vs What Is Blocked
+## 10. What Can Be Polished Now vs What Is Blocked (HISTORICAL — 2026-06-07)
+
+> Live: app shell, gallery, demo script, tests, and Flutter SDK exist (§0). The “blocked until screens exist” list is historical.
 
 ### Can proceed (design system widget-level polish):
 - Contrast ratio fixes in `ds_colors.dart` (textTertiary)
@@ -279,7 +381,9 @@ All breakpoints are **hardcoded literals**, not centralized tokens:
 
 ---
 
-## 11. Operational Recommendations
+## 11. Operational Recommendations (HISTORICAL — 2026-06-07)
+
+> Live status: README is Melos/Flutter-aligned; mains exist; `DSBreakpoints` and contrast floor work advanced under later EPIC 10 slices. Keep only still-open residual risks from §0.4/§0.6.
 
 1. **Immediate**: Replace `README.md` with Flutter project documentation.
 2. **Before EPIC 10 tasks**: Create `main.dart` + app shell + router so polish can be visually verified.

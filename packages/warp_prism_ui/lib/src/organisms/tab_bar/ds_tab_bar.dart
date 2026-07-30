@@ -167,7 +167,7 @@ class _DSTabBarState extends State<DSTabBar> {
         height: DSSpacing.topbarHeight,
         decoration: BoxDecoration(
           color: bgColor,
-          border: Border(
+          border: const Border(
             bottom: BorderSide(color: DSColors.borderSubtle, width: 1),
           ),
         ),
@@ -213,7 +213,7 @@ class _DSTabBarState extends State<DSTabBar> {
                             gradient: LinearGradient(
                               begin: Alignment.centerLeft,
                               end: Alignment.centerRight,
-                              colors: [bgColor, bgColor.withOpacity(0)],
+                              colors: [bgColor, bgColor.withValues(alpha: 0)],
                             ),
                           ),
                         ),
@@ -233,7 +233,7 @@ class _DSTabBarState extends State<DSTabBar> {
                             gradient: LinearGradient(
                               begin: Alignment.centerRight,
                               end: Alignment.centerLeft,
-                              colors: [bgColor, bgColor.withOpacity(0)],
+                              colors: [bgColor, bgColor.withValues(alpha: 0)],
                             ),
                           ),
                         ),
@@ -295,12 +295,12 @@ class _TabHeaderState extends State<_TabHeader> {
     // Hover: subtle elevated background
     // Inactive: transparent
     final bgColor = isActive
-        ? DSColors.accentCyan.withOpacity(0.08)
+        ? DSColors.accentCyan.withValues(alpha: 0.08)
         : (_isHovered ? DSColors.obsidianHover : DSColors.transparent);
     final textColor = isActive ? DSColors.accentCyan : DSColors.textSecondary;
     final iconColor = isActive ? DSColors.accentCyan : DSColors.textTertiary;
     final borderColor = isActive
-        ? DSColors.accentCyan.withOpacity(0.5)
+        ? DSColors.accentCyan.withValues(alpha: 0.5)
         : DSColors.transparent;
 
     Widget tabWidget = Semantics(
@@ -396,7 +396,7 @@ class _TabHeaderState extends State<_TabHeader> {
                       height: 0,
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: DSColors.accentCyan.withOpacity(0.5),
+                          color: DSColors.accentCyan.withValues(alpha: 0.5),
                           width: 2,
                         ),
                       ),
@@ -415,7 +415,7 @@ class _TabHeaderState extends State<_TabHeader> {
         decoration: BoxDecoration(
           border: Border(
             bottom: BorderSide(
-              color: DSColors.accentCyan.withOpacity(0.5),
+              color: DSColors.accentCyan.withValues(alpha: 0.5),
               width: 2,
             ),
           ),
@@ -448,7 +448,7 @@ class _CloseButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bgColor = isHovered
-        ? DSColors.statusError.withOpacity(0.2)
+        ? DSColors.statusError.withValues(alpha: 0.2)
         : DSColors.transparent;
     final iconColor = isHovered
         ? DSColors.statusError

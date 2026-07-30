@@ -1,16 +1,20 @@
 /// Inspector panel for the Map surface.
 ///
+/// **Unit-adapter only (Task 0513 path-to-100):** production Map routes
+/// mount universal [AssetDetailView] via [AssetDetailConsumer] and do
+/// **not** embed this panel. Keep [MapInspectorPanel] for focused unit
+/// tests that exercise [MapSelectionController] section building without
+/// the descriptor pipeline. Prefer production smoke via AssetDetailConsumer.
+///
 /// Renders the selected asset's detail sections using the
-/// [DSDetailInspector] organism. When no asset is selected,
-/// shows an explicit "no selection" state. This panel is
-/// feature-local — it adapts normalized [WorkspaceAsset] data
-/// into inspector sections without blocking on EPIC 09's
-/// universal detail page.
+/// [PrismDetailInspector] organism. When no asset is selected,
+/// shows an explicit "no selection" state.
 library;
 
 import 'package:flutter/material.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
 import '../map_selection_controller.dart';
+import 'map_state_panel.dart';
 
 /// Inspector panel for the Map workspace.
 ///
@@ -30,15 +34,18 @@ class MapInspectorPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     final asset = controller.selectedAsset;
 
-    // No-selection state: explicit, not a silent blank.
+    // No-selection state: explicit MapSurfaceState, not a silent blank.
     if (asset == null) {
-      return _NoSelectionState();
+      return const ColoredBox(
+        color: PrismColors.obsidianBase,
+        child: MapStatePanel(state: MapSurfaceState.noSelection),
+      );
     }
 
     // Build sections from the selected asset.
     final sections = controller.buildInspectorSections();
 
-    return DSDetailInspector(
+    return PrismDetailInspector(
       title: asset.name,
       kind: asset.kind.name,
       subtitle: asset.description.isNotEmpty ? asset.description : null,
@@ -47,42 +54,16 @@ class MapInspectorPanel extends StatelessWidget {
     );
   }
 
-  /// Convert a [MapInspectorSection] to a [DSDetailSection].
-  DSDetailSection _toDetailSection(MapInspectorSection section) {
-    return DSDetailSection(
+  /// Convert a [MapInspectorSection] to a [PrismDetailSection].
+  PrismDetailSection _toDetailSection(MapInspectorSection section) {
+    return PrismDetailSection(
       title: section.title,
       count: section.count,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: section.rows
-            .map((row) => DSPropertyRow(label: row.label, value: row.value))
+            .map((row) => PrismPropertyRow(label: row.label, value: row.value))
             .toList(),
-      ),
-    );
-  }
-}
-
-/// Empty state shown when no asset is selected for inspection.
-///
-/// Distinct from loading, error, and empty corpus states.
-/// Communicates clearly that the user needs to select an asset.
-class _NoSelectionState extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: DSColors.obsidianBase,
-      child: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 320),
-          child: DSStateSurface.empty(
-            icon: Icons.touch_app_outlined,
-            title: 'No asset selected',
-            subtitle:
-                'Select an asset from the catalog or graph to view its details, '
-                'relationships, and provenance.',
-            compact: true,
-          ),
-        ),
       ),
     );
   }

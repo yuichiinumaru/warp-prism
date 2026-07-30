@@ -7,10 +7,16 @@
 /// Provides both:
 /// - [buildDescriptorFromSnapshot]: for pre-loaded asset data
 /// - [resolveAssetDetail]: for ID-based lookup with fallback
+/// - [assetDetailDescriptorProvider]: Riverpod family over graph state
+/// - [selectedAssetDetailDescriptorProvider]: selection-synced descriptor
 library;
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:warp_prism_observatory/app/asset_selection_controller.dart';
 import 'package:warp_prism_observatory/data/models/workspace_graph.dart';
+import 'package:warp_prism_observatory/data/providers/workspace_providers.dart';
+import 'package:warp_prism_observatory/data/services/workspace_graph.dart';
 import '../domain/asset_detail_descriptor.dart';
 import 'asset_detail_mapper.dart';
 
@@ -28,7 +34,9 @@ AssetDetailDescriptor buildDescriptorFromSnapshot({
   required Map<String, String> assetNames,
 }) {
   final incoming = allEdges.where((e) => e.targetId == asset.id).toList();
-  final outgoing = asset.edges;
+  final outgoing = asset.edges.isNotEmpty
+      ? asset.edges
+      : allEdges.where((e) => e.sourceId == asset.id).toList();
 
   return buildAssetDetailDescriptor(
     asset: asset,
@@ -130,7 +138,20 @@ AssetDetailResult resolveAssetDetail({
 
   return AssetDetailResult(
     descriptor: descriptor,
-    resolved: !descriptor.isFallback,
+    // Graph resolution succeeded even when the kind uses partial fallback.
+    resolved: true,
+  );
+}
+
+/// Resolves an [AssetDetailResult] from a full [WorkspaceGraphResult].
+AssetDetailResult resolveAssetDetailFromGraph({
+  required String assetId,
+  required WorkspaceGraphResult graph,
+}) {
+  return resolveAssetDetail(
+    assetId: assetId,
+    assetIndex: graph.assetsById,
+    allEdges: graph.edges,
   );
 }
 
@@ -138,3 +159,45 @@ AssetDetailResult resolveAssetDetail({
 Map<String, WorkspaceAsset> buildAssetIndex(List<WorkspaceAsset> assets) {
   return {for (final a in assets) a.id: a};
 }
+
+// ---------------------------------------------------------------------------
+// Riverpod providers — async descriptor surface for screens/inspector
+// ---------------------------------------------------------------------------
+
+/// Family provider: resolve a descriptor for any asset ID from the live graph.
+///
+/// Consumers see [AsyncValue]<[AssetDetailResult]>:
+/// - loading while the workspace graph is loading
+/// - error when graph load fails
+/// - data with resolved/fallback descriptor semantics
+final assetDetailDescriptorProvider =
+    Provider.family<AsyncValue<AssetDetailResult>, String>((ref, assetId) {
+      final graphAsync = ref.watch(workspaceGraphAsyncProvider);
+      return graphAsync.when(
+        data: (graph) => AsyncValue.data(
+          resolveAssetDetailFromGraph(assetId: assetId, graph: graph),
+        ),
+        loading: () => const AsyncValue.loading(),
+        error: (error, stackTrace) => AsyncValue.error(error, stackTrace),
+      );
+    });
+
+/// Selection-synced descriptor for the active asset detail surface.
+///
+/// Returns `null` data when selection is idle. Otherwise maps the current
+/// [assetSelectionControllerProvider] assetId through the graph-backed
+/// descriptor family so route, inspector, and selection stay coherent.
+final selectedAssetDetailDescriptorProvider =
+    Provider<AsyncValue<AssetDetailResult?>>((ref) {
+      final selection = ref.watch(assetSelectionControllerProvider);
+      final assetId = selection.assetId;
+      if (assetId == null || assetId.isEmpty) {
+        return const AsyncValue.data(null);
+      }
+      final detail = ref.watch(assetDetailDescriptorProvider(assetId));
+      return detail.when(
+        data: (result) => AsyncValue.data(result),
+        loading: () => const AsyncValue.loading(),
+        error: (error, stackTrace) => AsyncValue.error(error, stackTrace),
+      );
+    });

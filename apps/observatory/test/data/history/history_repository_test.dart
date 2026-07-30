@@ -3,14 +3,22 @@
 /// Proves that:
 /// - Changelog frontmatter is parsed into typed HistoryEntry objects.
 /// - Chronological ordering is deterministic (newest first).
-/// - Filter facets are computed for project, type, task, skill, impact_tags.
+/// - Filter facets are computed for project, type, task, skill, workflow, impact_tags.
 /// - Story-mode groupings are built by project, type, and task.
-/// - Malformed entries are handled gracefully without exceptions.
-/// - Cross-reference edges resolve changelog -> task paths.
+/// - Malformed entries are preserved as data with warnings (never dropped).
+/// - Cross-reference edges resolve changelog -> task -> skill/workflow paths.
+/// - Real mock corpus fixtures load through the parser + repository path.
+library;
+
+import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:warp_prism_observatory/data/models/workspace_graph.dart';
 import 'package:warp_prism_observatory/data/models/changelog_contracts.dart';
+import 'package:warp_prism_observatory/data/models/task_contracts.dart';
+import 'package:warp_prism_observatory/data/parsers/workspace_markdown_parser.dart';
 import 'package:warp_prism_observatory/data/repositories/history_repository.dart';
+import 'package:warp_prism_observatory/data/repositories/mock_workspace_repository.dart';
 
 void main() {
   group('HistoryRepository', () {
@@ -23,17 +31,15 @@ void main() {
       expect(timeline.isNotEmpty, isTrue);
       expect(timeline.count, equals(assets.length));
 
-      // Newest first
+      // Newest first (null dates already sorted last by repository)
       for (var i = 0; i < timeline.entries.length - 1; i++) {
+        final current = timeline.entries[i].date;
+        final next = timeline.entries[i + 1].date;
+        if (current == null || next == null) continue;
         expect(
-          timeline.entries[i].date.isAfter(timeline.entries[i + 1].date) ||
-              timeline.entries[i].date.isAtSameMomentAs(
-                timeline.entries[i + 1].date,
-              ),
+          current.isAfter(next) || current.isAtSameMomentAs(next),
           isTrue,
-          reason:
-              'Entry ${timeline.entries[i].date} should be >= '
-              '${timeline.entries[i + 1].date}',
+          reason: 'Entry $current should be >= $next',
         );
       }
     });
@@ -42,7 +48,6 @@ void main() {
       final assets = _buildSampleChangelogAssets();
       final timeline = repo.buildTimeline(assets);
 
-      // Find the entry with task T012
       final t012Entry = timeline.entries.firstWhere((e) => e.task == 'T012');
       expect(t012Entry.project, equals('warp-prism'));
       expect(t012Entry.type, equals(ChangelogType.feature));
@@ -93,7 +98,7 @@ void main() {
       final harnessEntries = timeline.filterBySkill('harness-architecture');
       expect(harnessEntries, isNotEmpty);
       expect(
-        harnessEntries.every((e) => e.skills.contains('harness-architecture')),
+        harnessEntries.every((e) => e.resolvedSkills.contains('harness-architecture')),
         isTrue,
       );
     });
@@ -133,6 +138,35 @@ void main() {
       expect(timeline.facets.tasks, isEmpty);
       expect(timeline.facets.skills, isEmpty);
       expect(timeline.facets.impactTags, isEmpty);
+      expect(timeline.facets.workflows, isEmpty);
+    });
+
+    test('workflow facet includes direct and task-hop workflows', () {
+      final changelog = [
+        _buildChangelogAsset(
+          id: 'changelog:wf-direct',
+          date: DateTime(2026, 6, 5),
+          project: 'warp-prism',
+          task: 'T012',
+          type: ChangelogType.feature,
+          skills: const ['harness-architecture'],
+          workflows: const ['builder-orchestration'],
+        ),
+      ];
+      final tasks = [
+        _buildTaskAsset(
+          id: 'T012',
+          skills: const ['coding-execution-harness'],
+          workflows: const ['gt-harness-architecture'],
+        ),
+      ];
+
+      const repo = HistoryRepository();
+      final timeline = repo.buildTimeline(changelog, tasks: tasks);
+
+      expect(timeline.facets.workflows, contains('builder-orchestration'));
+      expect(timeline.facets.workflows, contains('gt-harness-architecture'));
+      expect(timeline.facets.skills, contains('coding-execution-harness'));
     });
   });
 
@@ -167,7 +201,6 @@ void main() {
       final timeline = repo.buildTimeline(assets);
 
       expect(timeline.byTask, isNotEmpty);
-      // Each group has at least one entry
       for (final group in timeline.byTask) {
         expect(group.count, greaterThan(0));
       }
@@ -196,8 +229,8 @@ void main() {
         project: 'test',
         task: '',
         type: ChangelogType.chore,
-        impactTags: [],
-        skills: [],
+        impactTags: const [],
+        skills: const [],
         path: '/test.md',
       );
       expect(entry.linkedTaskId, isNull);
@@ -212,8 +245,8 @@ void main() {
         project: 'test',
         task: '0310',
         type: ChangelogType.chore,
-        impactTags: [],
-        skills: [],
+        impactTags: const [],
+        skills: const [],
         path: '/test.md',
       );
       expect(entry.linkedTaskId, equals('task:0310'));
@@ -231,6 +264,7 @@ void main() {
       expect(timeline.byProject, isEmpty);
       expect(timeline.byType, isEmpty);
       expect(timeline.byTask, isEmpty);
+      expect(timeline.impactEdges, isEmpty);
     });
 
     test('assets without ChangelogMetadata are handled gracefully', () {
@@ -252,22 +286,26 @@ void main() {
       const repo = HistoryRepository();
       final timeline = repo.buildTimeline(assets);
 
-      // Should still build an entry from raw frontmatter
       expect(timeline.count, equals(1));
       expect(timeline.entries.first.project, equals('test'));
+      expect(timeline.entries.first.isMalformed, isTrue);
+      expect(
+        timeline.entries.first.warnings,
+        contains('missing_changelog_metadata'),
+      );
     });
 
-    test('assets with invalid dates sort to the end', () {
+    test('invalid-date entries are preserved as malformed data, not dropped', () {
       final assets = [
         const WorkspaceAsset(
-          id: 'changelog:good-date',
+          id: 'changelog:bad-date',
           kind: AssetKind.changelog,
-          name: 'good-date',
-          path: '/ws/docs/changelog/good.md',
+          name: 'bad-date',
+          path: '/ws/docs/changelog/bad.md',
           frontmatter: {
             'date': 'invalid-date',
             'project': 'test',
-            'task': '',
+            'task': 'T099',
             'type': 'chore',
           },
         ),
@@ -283,8 +321,41 @@ void main() {
       const repo = HistoryRepository();
       final timeline = repo.buildTimeline(assets);
 
-      // The real date should come first
-      expect(timeline.entries.first.date.year, equals(2026));
+      expect(timeline.count, equals(2), reason: 'must not drop invalid-date assets');
+      expect(timeline.entries.first.id, equals('changelog:real-date'));
+      expect(timeline.entries.first.date?.year, equals(2026));
+
+      final malformed = timeline.malformedEntries;
+      expect(malformed, isNotEmpty);
+      final bad = malformed.firstWhere((e) => e.id == 'changelog:bad-date');
+      expect(bad.date, isNull);
+      expect(bad.isMalformed, isTrue);
+      expect(bad.warnings, contains('invalid_date'));
+      expect(bad.task, equals('T099'));
+    });
+
+    test('missing date without metadata is preserved with warning', () {
+      final assets = [
+        const WorkspaceAsset(
+          id: 'changelog:no-date',
+          kind: AssetKind.changelog,
+          name: 'no-date',
+          path: '/ws/docs/changelog/no-date.md',
+          frontmatter: {
+            'project': 'warp-prism',
+            'task': 'T001',
+            'type': 'docs',
+          },
+        ),
+      ];
+
+      const repo = HistoryRepository();
+      final timeline = repo.buildTimeline(assets);
+
+      expect(timeline.count, equals(1));
+      expect(timeline.entries.first.isMalformed, isTrue);
+      expect(timeline.entries.first.warnings, contains('missing_date'));
+      expect(timeline.entries.first.date, isNull);
     });
 
     test('multiple entries with same date maintain stable order', () {
@@ -310,7 +381,6 @@ void main() {
       final timeline = repo.buildTimeline(assets);
 
       expect(timeline.count, equals(2));
-      // Both entries present
       final ids = timeline.entries.map((e) => e.id).toSet();
       expect(ids, contains('changelog:a'));
       expect(ids, contains('changelog:b'));
@@ -325,10 +395,219 @@ void main() {
 
       for (final entry in timeline.entries) {
         if (entry.hasTaskLink) {
-          // The linkedTaskId should be in format task:<taskId>
           expect(entry.linkedTaskId, startsWith('task:'));
         }
       }
+    });
+
+    test('materializes changelog -> task and changelog -> project edges', () {
+      final assets = _buildSampleChangelogAssets();
+      const repo = HistoryRepository();
+      final timeline = repo.buildTimeline(assets);
+
+      final t012 = timeline.entries.firstWhere((e) => e.task == 'T012');
+      expect(
+        t012.impactEdges.any(
+          (e) =>
+              e.kind == HistoryImpactHopKind.changelogToTask &&
+              e.targetId == 'task:T012',
+        ),
+        isTrue,
+      );
+      expect(
+        t012.impactEdges.any(
+          (e) =>
+              e.kind == HistoryImpactHopKind.changelogToProject &&
+              e.targetId == 'project:warp-prism',
+        ),
+        isTrue,
+      );
+    });
+
+    test('materializes multi-hop changelog -> task -> skill/workflow edges', () {
+      final changelog = [
+        _buildChangelogAsset(
+          id: 'changelog:2026-06-05-T012',
+          date: DateTime(2026, 6, 5),
+          project: 'warp-prism',
+          task: 'T012',
+          type: ChangelogType.feature,
+          skills: const ['harness-architecture'],
+          workflows: const ['builder-orchestration'],
+        ),
+      ];
+      final tasks = [
+        _buildTaskAsset(
+          id: 'T012',
+          skills: const [
+            'coding-execution-harness',
+            'harness-architecture',
+          ],
+          workflows: const [
+            'gt-harness-architecture',
+            'gt-verify-task-completion',
+          ],
+        ),
+      ];
+
+      const repo = HistoryRepository();
+      final timeline = repo.buildTimeline(changelog, tasks: tasks);
+      final entry = timeline.entries.single;
+
+      expect(
+        entry.impactEdges.any(
+          (e) => e.kind == HistoryImpactHopKind.changelogToTask,
+        ),
+        isTrue,
+      );
+      expect(
+        entry.impactEdges.any(
+          (e) =>
+              e.kind == HistoryImpactHopKind.taskToSkill &&
+              e.sourceId == 'task:T012' &&
+              e.targetId == 'skill:coding-execution-harness',
+        ),
+        isTrue,
+      );
+      expect(
+        entry.impactEdges.any(
+          (e) =>
+              e.kind == HistoryImpactHopKind.taskToWorkflow &&
+              e.sourceId == 'task:T012' &&
+              e.targetId == 'workflow:gt-harness-architecture',
+        ),
+        isTrue,
+      );
+      expect(
+        entry.impactEdges.any(
+          (e) =>
+              e.kind == HistoryImpactHopKind.changelogToSkill &&
+              e.targetId == 'skill:harness-architecture',
+        ),
+        isTrue,
+      );
+      expect(
+        entry.impactEdges.any(
+          (e) =>
+              e.kind == HistoryImpactHopKind.changelogToWorkflow &&
+              e.targetId == 'workflow:builder-orchestration',
+        ),
+        isTrue,
+      );
+
+      // Flat timeline edge bag includes the multi-hop edges
+      expect(
+        timeline.impactEdges.any(
+          (e) => e.kind == HistoryImpactHopKind.taskToSkill,
+        ),
+        isTrue,
+      );
+      expect(entry.resolvedWorkflows, contains('gt-harness-architecture'));
+      expect(entry.resolvedSkills, contains('coding-execution-harness'));
+    });
+  });
+
+  group('Real mock corpus integration', () {
+    test('builds timeline from assets/mock_workspace changelog fixtures', () async {
+      final root = _resolveMockWorkspaceRoot();
+      final changelogDir = Directory('$root/docs/changelog');
+      expect(
+        await changelogDir.exists(),
+        isTrue,
+        reason: 'mock changelog corpus must exist at $root/docs/changelog',
+      );
+
+      const parser = WorkspaceMarkdownParser();
+      final changelogAssets = <WorkspaceAsset>[];
+      await for (final entity in changelogDir.list()) {
+        if (entity is! File || !entity.path.endsWith('.md')) continue;
+        final content = await entity.readAsString();
+        final asset = parser.tryParse(content, filePath: entity.path);
+        if (asset != null) changelogAssets.add(asset);
+      }
+
+      expect(changelogAssets, isNotEmpty);
+
+      // Also load tasks so multi-hop edges can resolve against real fixtures.
+      final taskAssets = <WorkspaceAsset>[];
+      for (final lane in [
+        '00-planning',
+        '01-open',
+        '02-doing',
+        '03-review',
+        '04-completed',
+      ]) {
+        final dir = Directory('$root/docs/tasks/$lane');
+        if (!await dir.exists()) continue;
+        await for (final entity in dir.list()) {
+          if (entity is! File || !entity.path.endsWith('.md')) continue;
+          final content = await entity.readAsString();
+          final asset = parser.tryParse(content, filePath: entity.path);
+          if (asset != null) taskAssets.add(asset);
+        }
+      }
+
+      const repo = HistoryRepository();
+      final timeline = repo.buildTimeline(
+        changelogAssets,
+        tasks: taskAssets,
+      );
+
+      expect(timeline.isNotEmpty, isTrue);
+      expect(timeline.facets.projects, contains('warp-prism'));
+      expect(timeline.facets.types, isNotEmpty);
+      expect(timeline.facets.tasks, isNotEmpty);
+      expect(timeline.facets.impactTags, isNotEmpty);
+
+      // Chronological: first dated entry >= last dated entry
+      final dated = timeline.entries.where((e) => e.date != null).toList();
+      expect(dated, isNotEmpty);
+      expect(
+        !dated.first.date!.isBefore(dated.last.date!),
+        isTrue,
+      );
+
+      // At least one multi-hop path should resolve when task fixtures exist
+      final multiHop = timeline.impactEdges.where(
+        (e) =>
+            e.kind == HistoryImpactHopKind.taskToSkill ||
+            e.kind == HistoryImpactHopKind.taskToWorkflow,
+      );
+      expect(
+        multiHop,
+        isNotEmpty,
+        reason: 'real corpus should produce changelog->task->skill/workflow hops',
+      );
+
+      // Direct changelog skill edges from frontmatter
+      expect(
+        timeline.impactEdges.any(
+          (e) => e.kind == HistoryImpactHopKind.changelogToSkill,
+        ),
+        isTrue,
+      );
+    });
+
+    test('MockWorkspaceRepository load path feeds HistoryRepository', () async {
+      final root = _resolveMockWorkspaceRoot();
+      final repo = MockWorkspaceRepository(rootPath: root);
+      final state = await repo.load();
+
+      expect(state.isSuccess, isTrue, reason: state.errorMessage ?? 'load failed');
+      final snapshot = state.snapshot!;
+      expect(snapshot.changelogEntries, isNotEmpty);
+
+      const historyRepo = HistoryRepository();
+      final timeline = historyRepo.buildTimeline(
+        snapshot.changelogEntries,
+        tasks: snapshot.tasks,
+        skills: snapshot.skills,
+        workflows: snapshot.workflows,
+      );
+
+      expect(timeline.count, equals(snapshot.changelogEntries.length));
+      expect(timeline.facets.projects, isNotEmpty);
+      expect(timeline.impactEdges, isNotEmpty);
     });
   });
 }
@@ -337,7 +616,18 @@ void main() {
 // Test fixtures
 // ---------------------------------------------------------------------------
 
-/// Build a list of sample changelog assets for testing.
+String _resolveMockWorkspaceRoot() {
+  final candidates = [
+    'assets/mock_workspace',
+    'apps/observatory/assets/mock_workspace',
+  ];
+  for (final path in candidates) {
+    if (Directory(path).existsSync()) return path;
+  }
+  // Fall back to package-relative path used when tests run from monorepo root.
+  return 'assets/mock_workspace';
+}
+
 List<WorkspaceAsset> _buildSampleChangelogAssets() {
   return [
     _buildChangelogAsset(
@@ -346,8 +636,9 @@ List<WorkspaceAsset> _buildSampleChangelogAssets() {
       project: 'warp-prism',
       task: 'T012',
       type: ChangelogType.feature,
-      impactTags: ['graph', 'edge-inference', 'workspace-model'],
-      skills: ['harness-architecture', 'coding-execution-harness'],
+      impactTags: const ['graph', 'edge-inference', 'workspace-model'],
+      skills: const ['harness-architecture', 'coding-execution-harness'],
+      workflows: const ['builder-orchestration'],
       title: 'Edge Inference for Workspace Graph',
     ),
     _buildChangelogAsset(
@@ -356,8 +647,8 @@ List<WorkspaceAsset> _buildSampleChangelogAssets() {
       project: 'warp-prism',
       task: 'T015',
       type: ChangelogType.feature,
-      impactTags: ['governance', 'audit', 'dependency-chains', 'provenance'],
-      skills: ['harness-architecture', 'project-management'],
+      impactTags: const ['governance', 'audit', 'dependency-chains', 'provenance'],
+      skills: const ['harness-architecture', 'project-management'],
       title: 'Governance Audit of Task Dependency Chains',
     ),
     _buildChangelogAsset(
@@ -366,8 +657,8 @@ List<WorkspaceAsset> _buildSampleChangelogAssets() {
       project: 'warp-prism',
       task: 'T016',
       type: ChangelogType.feature,
-      impactTags: ['search', 'topbar', 'ui'],
-      skills: ['frontend-quality-harness'],
+      impactTags: const ['search', 'topbar', 'ui'],
+      skills: const ['frontend-quality-harness'],
       title: 'Topbar Search Integration',
     ),
     _buildChangelogAsset(
@@ -376,8 +667,8 @@ List<WorkspaceAsset> _buildSampleChangelogAssets() {
       project: 'warp-prism',
       task: 'T020',
       type: ChangelogType.chore,
-      impactTags: ['changelog', 'migration', 'frontmatter'],
-      skills: ['coding-execution-harness', 'agent-wiki'],
+      impactTags: const ['changelog', 'migration', 'frontmatter'],
+      skills: const ['coding-execution-harness', 'agent-wiki'],
       title: 'Changelog Frontmatter Migration',
     ),
     _buildChangelogAsset(
@@ -386,14 +677,13 @@ List<WorkspaceAsset> _buildSampleChangelogAssets() {
       project: 'warp-prism',
       task: 'T002',
       type: ChangelogType.feature,
-      impactTags: ['graph', 'visualization'],
-      skills: ['harness-architecture'],
+      impactTags: const ['graph', 'visualization'],
+      skills: const ['harness-architecture'],
       title: 'Graph Visualization Scope',
     ),
   ];
 }
 
-/// Build a single changelog WorkspaceAsset for testing.
 WorkspaceAsset _buildChangelogAsset({
   required String id,
   required DateTime date,
@@ -402,6 +692,7 @@ WorkspaceAsset _buildChangelogAsset({
   required ChangelogType type,
   List<String> impactTags = const [],
   List<String> skills = const [],
+  List<String> workflows = const [],
   String? title,
 }) {
   final clMeta = ChangelogMetadata(
@@ -428,7 +719,50 @@ WorkspaceAsset _buildChangelogAsset({
       'type': type.name,
       'impact': impactTags,
       'skills': skills,
+      'workflows': workflows,
       '_changelogMetadata': clMeta,
     },
+  );
+}
+
+WorkspaceAsset _buildTaskAsset({
+  required String id,
+  List<String> skills = const [],
+  List<String> workflows = const [],
+}) {
+  final meta = TaskMetadata(
+    id: id,
+    title: 'Task $id',
+    created: DateTime(2026, 6, 1),
+    updated: DateTime(2026, 6, 7),
+    skills: skills,
+    workflows: workflows,
+  );
+
+  return WorkspaceAsset(
+    id: 'task:$id',
+    kind: AssetKind.task,
+    name: meta.title,
+    path: '/ws/docs/tasks/02-doing/$id.md',
+    frontmatter: {
+      'id': id,
+      'skills': skills,
+      'workflows': workflows,
+      '_taskMetadata': meta,
+    },
+    edges: [
+      for (final skill in skills)
+        WorkspaceEdge(
+          sourceId: 'task:$id',
+          targetId: 'skill:$skill',
+          kind: EdgeKind.references,
+        ),
+      for (final workflow in workflows)
+        WorkspaceEdge(
+          sourceId: 'task:$id',
+          targetId: 'workflow:$workflow',
+          kind: EdgeKind.references,
+        ),
+    ],
   );
 }

@@ -6,14 +6,17 @@
 /// - Unresolved-ID fallback (empty, unknown, missing asset ID)
 /// - Risk-story derivation from boundary counts + diagnostics + hotspots
 /// - Story rendering in the summary widget
+/// - Composed page wiring: issue/hotspot/story drill-down hooks
 library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:warp_prism_observatory/data/models/governance_diagnostics.dart';
+import 'package:warp_prism_observatory/features/governance/presentation/governance_overview_page.dart';
 import 'package:warp_prism_observatory/features/governance/presentation/widgets/governance_drilldown_controller.dart';
 import 'package:warp_prism_observatory/features/governance/presentation/widgets/governance_story_summary.dart';
 import 'package:warp_prism_observatory/features/governance/presentation/widgets/fan_in_hotspots_panel.dart';
+import 'package:warp_prism_observatory/features/governance/presentation/widgets/governance_issue_group.dart';
 
 // ---------------------------------------------------------------------------
 // Fixtures
@@ -59,6 +62,13 @@ List<GovernanceDiagnostic> _mixedDiagnostics() => [
     severity: DiagnosticSeverity.warning,
     message: 'Task in completed lane but only partial proof',
   ),
+  _diag(
+    assetId: 'skill:hub-skill',
+    category: DiagnosticCategory.highFanIn,
+    severity: DiagnosticSeverity.warning,
+    message: 'Asset has 8 incoming edges',
+    // Fan-in context used by FanInHotspot.fromDiagnostics when present.
+  ),
 ];
 
 List<FanInHotspot> _testHotspots() => [
@@ -99,8 +109,9 @@ void main() {
 
         expect(target, isNotNull);
         expect(target!.assetId, 'task:0612');
-        expect(target.routePath, '/assets/task:0612');
+        expect(target.routePath, '/assets/task%3A0612');
         expect(target.sourceLabel, contains('orphanAsset'));
+        expect(target.isNavigable, isTrue);
       });
 
       test('preserves diagnostic category', () {
@@ -119,6 +130,11 @@ void main() {
 
         expect(target, isNull);
       });
+
+      test('returns null for unknown asset ID', () {
+        final diag = _diag(assetId: 'unknown');
+        expect(resolveDiagnosticDrilldown(diag), isNull);
+      });
     });
 
     group('resolveHotspotDrilldown', () {
@@ -127,9 +143,24 @@ void main() {
         final target = resolveHotspotDrilldown(hotspot);
 
         expect(target.assetId, 'skill:hub-skill');
-        expect(target.routePath, '/assets/skill:hub-skill');
+        expect(target.routePath, '/assets/skill%3Ahub-skill');
         expect(target.sourceLabel, contains('Fan-in hotspot'));
         expect(target.sourceLabel, contains('8 incoming'));
+        expect(target.isNavigable, isTrue);
+      });
+
+      test('unresolved hotspot degrades without throwing', () {
+        const hotspot = FanInHotspot(
+          assetId: '',
+          assetName: 'Ghost',
+          assetKind: 'skill',
+          incomingEdgeCount: 4,
+          threshold: 3,
+          severity: DiagnosticSeverity.warning,
+        );
+        final target = resolveHotspotDrilldown(hotspot);
+        expect(target.isNavigable, isFalse);
+        expect(target.sourceLabel, contains('Ghost'));
       });
     });
 
@@ -139,7 +170,7 @@ void main() {
 
         expect(target, isNotNull);
         expect(target!.assetId, 'agent:test');
-        expect(target.routePath, '/assets/agent:test');
+        expect(target.routePath, '/assets/agent%3Atest');
       });
 
       test('returns null for empty string', () {
@@ -319,6 +350,7 @@ void main() {
 
       expect(find.text('Test Story'), findsOneWidget);
       expect(find.text('Test narrative text'), findsOneWidget);
+      expect(find.text('Risk Stories'), findsOneWidget);
     });
 
     testWidgets('renders header', (tester) async {
@@ -361,11 +393,12 @@ void main() {
 
       expect(find.textContaining('View task:0612'), findsOneWidget);
 
-      // Tap the drilldown link
       await tester.tap(find.textContaining('View task:0612'));
+      await tester.pump();
       expect(captured, isNotNull);
       expect(captured!.assetId, 'task:0612');
-      expect(captured!.routePath, '/assets/task:0612');
+      expect(captured!.routePath, '/assets/task%3A0612');
+      expect(captured!.isNavigable, isTrue);
     });
 
     testWidgets('renders multi-asset drilldown link', (tester) async {
@@ -387,7 +420,7 @@ void main() {
       expect(find.textContaining('View 3 assets'), findsOneWidget);
     });
 
-    testWidgets('severity badge renders for non-healthy stories', (
+    testWidgets('severity value renders for non-healthy stories', (
       tester,
     ) async {
       final stories = [
@@ -405,7 +438,9 @@ void main() {
       expect(find.text('critical'), findsOneWidget);
     });
 
-    testWidgets('renders multiple stories', (tester) async {
+    testWidgets('renders multiple stories from fixture diagnostics', (
+      tester,
+    ) async {
       final stories = deriveGovernanceRiskStories(
         diagnostics: _mixedDiagnostics(),
         boundaryCounts: {'parentCanonical': 5},
@@ -417,11 +452,168 @@ void main() {
         _wrapInApp(GovernanceStorySummary(stories: stories)),
       );
 
-      // Should render all stories
       expect(find.text('Risk Stories'), findsOneWidget);
-      // At least 3 story rows
-      final containers = find.byType(Container);
-      expect(containers, findsWidgets);
+      expect(find.textContaining('Proof integrity'), findsOneWidget);
+      expect(find.textContaining('Orphan assets'), findsOneWidget);
+    });
+  });
+
+  group('Issue and hotspot drill-down hooks', () {
+    testWidgets('issue row fires drilldown with stable asset id', (
+      tester,
+    ) async {
+      final groups = buildIssueGroups([
+        _diag(
+          assetId: 'skill:orphan-skill',
+          category: DiagnosticCategory.orphanAsset,
+          message: 'Isolated skill',
+        ),
+      ]);
+
+      GovernanceDrilldownTarget? captured;
+      await tester.pumpWidget(
+        _wrapInApp(
+          GovernanceIssueGroup(
+            group: groups.first,
+            onDrilldown: (target) => captured = target,
+          ),
+        ),
+      );
+
+      expect(find.textContaining('Open detail'), findsOneWidget);
+      await tester.tap(find.textContaining('Open detail'));
+      await tester.pump();
+
+      expect(captured, isNotNull);
+      expect(captured!.assetId, 'skill:orphan-skill');
+      expect(captured!.routePath, '/assets/skill%3Aorphan-skill');
+    });
+
+    testWidgets('hotspot row fires drilldown with stable asset id', (
+      tester,
+    ) async {
+      GovernanceDrilldownTarget? captured;
+      await tester.pumpWidget(
+        _wrapInApp(
+          FanInHotspotsPanel(
+            hotspots: _testHotspots(),
+            onDrilldown: (target) => captured = target,
+          ),
+        ),
+      );
+
+      // First hotspot Open detail
+      await tester.tap(find.textContaining('Open detail').first);
+      await tester.pump();
+
+      expect(captured, isNotNull);
+      expect(captured!.assetId, 'skill:hub-skill');
+      expect(captured!.routePath, '/assets/skill%3Ahub-skill');
+    });
+
+    testWidgets('empty asset id issue does not crash and has no drilldown', (
+      tester,
+    ) async {
+      final groups = buildIssueGroups([
+        _diag(assetId: '', message: 'Missing id diagnostic'),
+      ]);
+
+      var called = false;
+      await tester.pumpWidget(
+        _wrapInApp(
+          GovernanceIssueGroup(
+            group: groups.first,
+            onDrilldown: (_) => called = true,
+          ),
+        ),
+      );
+
+      expect(find.textContaining('Open detail'), findsNothing);
+      expect(called, isFalse);
+    });
+  });
+
+  group('Composed GovernanceOverviewPage storytelling', () {
+    testWidgets('renders risk stories from summary diagnostics', (
+      tester,
+    ) async {
+      final summary = CanonicalityBoundarySummary(
+        counts: {'parentCanonical': 5, 'generated': 2},
+        totalAssets: 10,
+        diagnostics: _mixedDiagnostics(),
+        hotspots: _testHotspots(),
+      );
+
+      await tester.pumpWidget(
+        _wrapInApp(GovernanceOverviewPage(summary: summary)),
+      );
+
+      expect(find.text('Risk Stories'), findsOneWidget);
+      expect(find.textContaining('Proof integrity'), findsOneWidget);
+      expect(find.text('Fan-In Hotspots'), findsOneWidget);
+      expect(find.text('BOUNDARY OVERVIEW'), findsOneWidget);
+    });
+
+    testWidgets('story drilldown callback receives navigable target', (
+      tester,
+    ) async {
+      final summary = CanonicalityBoundarySummary(
+        counts: {'parentCanonical': 5},
+        totalAssets: 10,
+        diagnostics: [
+          _diag(
+            assetId: 'task:0612',
+            category: DiagnosticCategory.proofGap,
+            severity: DiagnosticSeverity.error,
+            message: 'No proof',
+          ),
+        ],
+      );
+
+      GovernanceDrilldownTarget? captured;
+      await tester.pumpWidget(
+        _wrapInApp(
+          GovernanceOverviewPage(
+            summary: summary,
+            onDrilldown: (target) => captured = target,
+          ),
+        ),
+      );
+
+      expect(find.textContaining('View task:0612'), findsOneWidget);
+      await tester.tap(find.textContaining('View task:0612'));
+      await tester.pump();
+
+      expect(captured, isNotNull);
+      expect(captured!.assetId, 'task:0612');
+      expect(captured!.isNavigable, isTrue);
+    });
+
+    testWidgets('unresolved snackbar fallback does not throw', (tester) async {
+      final summary = CanonicalityBoundarySummary(
+        counts: {'parentCanonical': 1},
+        totalAssets: 1,
+        diagnostics: const [],
+        hotspots: const [
+          FanInHotspot(
+            assetId: '',
+            assetName: 'Ghost Hub',
+            assetKind: 'skill',
+            incomingEdgeCount: 9,
+            threshold: 3,
+            severity: DiagnosticSeverity.warning,
+          ),
+        ],
+      );
+
+      await tester.pumpWidget(
+        _wrapInApp(GovernanceOverviewPage(summary: summary)),
+      );
+
+      // Unresolved hotspot shows non-interactive fallback, page still paints.
+      expect(find.text('Ghost Hub'), findsOneWidget);
+      expect(find.textContaining('Detail unavailable'), findsOneWidget);
+      expect(tester.takeException(), isNull);
     });
   });
 
@@ -447,6 +639,15 @@ void main() {
       expect(target.toString(), contains('task:001'));
       expect(target.toString(), contains('proof gap'));
     });
+
+    test('unresolved factory marks non-navigable', () {
+      final target = GovernanceDrilldownTarget.unresolved(
+        attemptedId: '',
+        sourceLabel: 'missing',
+      );
+      expect(target.isNavigable, isFalse);
+      expect(target.routePath, startsWith('/assets/'));
+    });
   });
 
   group('Graceful degradation', () {
@@ -457,7 +658,6 @@ void main() {
         totalAssets: 0,
       );
 
-      // Empty diagnostics + zero assets = no stories (no data at all)
       expect(stories, isEmpty);
     });
 

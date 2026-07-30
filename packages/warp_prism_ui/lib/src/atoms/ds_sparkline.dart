@@ -66,8 +66,9 @@ class DSSparkline extends StatelessWidget {
 
   String _defaultSemanticLabel() {
     if (data.isEmpty) return 'Trend chart: no data';
-    if (data.length == 1)
+    if (data.length == 1) {
       return 'Trend chart: value ${data.first.toStringAsFixed(1)}';
+    }
     final min = data.reduce(math.min);
     final max = data.reduce(math.max);
     return 'Trend chart: ${data.length} points, '

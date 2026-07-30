@@ -4,6 +4,8 @@
 /// node/edge projections under containment, operational, and evidence
 /// modes — and that an empty-edge dataset returns zero edges for any
 /// mode.
+library;
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:warp_prism_observatory/data/models/workspace_graph.dart';
 import 'package:warp_prism_observatory/features/map/graph/map_graph_mode.dart';

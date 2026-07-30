@@ -167,63 +167,88 @@ class DSStateSurface extends StatelessWidget {
         ? DSTypography.bodyMedium
         : DSTypography.headingSmall;
 
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.all(compact ? DSSpacing.md : DSSpacing.lg),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Icon or loading indicator
-            if (stateType == DSStateType.loading)
-              SizedBox(
-                width: iconSize,
-                height: iconSize,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation(effectiveColor),
-                ),
-              )
-            else
-              DSIcon(effectiveIcon, color: effectiveColor, size: iconSize),
+    return Semantics(
+      container: true,
+      label: _semanticLabel,
+      child: Center(
+        child: Padding(
+          padding: EdgeInsets.all(compact ? DSSpacing.md : DSSpacing.lg),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Icon or loading indicator
+              if (stateType == DSStateType.loading)
+                SizedBox(
+                  width: iconSize,
+                  height: iconSize,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation(effectiveColor),
+                  ),
+                )
+              else
+                DSIcon(effectiveIcon, color: effectiveColor, size: iconSize),
 
-            SizedBox(height: compact ? DSSpacing.sm : DSSpacing.md),
+              SizedBox(height: compact ? DSSpacing.sm : DSSpacing.md),
 
-            // Title — always present, always meaningful
-            Text(
-              title,
-              style: titleStyle.copyWith(
-                color: stateType == DSStateType.loading
-                    ? DSColors.textSecondary
-                    : DSColors.textPrimary,
-              ),
-              textAlign: TextAlign.center,
-            ),
-
-            // Subtitle — optional guidance
-            if (subtitle != null) ...[
-              const SizedBox(height: DSSpacing.xs),
+              // Title — always present, always meaningful
               Text(
-                subtitle!,
-                style: DSTypography.bodySmall.copyWith(
-                  color: DSColors.textTertiary,
+                title,
+                style: titleStyle.copyWith(
+                  color: stateType == DSStateType.loading
+                      ? DSColors.textSecondary
+                      : DSColors.textPrimary,
                 ),
                 textAlign: TextAlign.center,
               ),
-            ],
 
-            // Action button — optional
-            if (actionLabel != null && onAction != null) ...[
-              SizedBox(height: compact ? DSSpacing.sm : DSSpacing.md),
-              _StateActionButton(
-                label: actionLabel!,
-                color: effectiveColor,
-                onPressed: onAction!,
-              ),
+              // Subtitle — optional guidance
+              if (subtitle != null) ...[
+                const SizedBox(height: DSSpacing.xs),
+                Text(
+                  subtitle!,
+                  style: DSTypography.bodySmall.copyWith(
+                    color: DSColors.textTertiary,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+
+              // Action button — optional
+              if (actionLabel != null && onAction != null) ...[
+                SizedBox(height: compact ? DSSpacing.sm : DSSpacing.md),
+                _StateActionButton(
+                  label: actionLabel!,
+                  color: effectiveColor,
+                  onPressed: onAction!,
+                ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );
+  }
+
+  /// Semantic label for screen readers.
+  /// Maps each state type to an accessible description.
+  String get _semanticLabel {
+    switch (stateType) {
+      case DSStateType.empty:
+        return 'Empty: no data available';
+      case DSStateType.loading:
+        return 'Loading: fetching data';
+      case DSStateType.error:
+        return 'Error: operation failed';
+      case DSStateType.disabled:
+        return 'Disabled: intentionally off';
+      case DSStateType.stale:
+        return 'Stale: needs refresh';
+      case DSStateType.degraded:
+        return 'Degraded: reduced quality';
+      case DSStateType.excluded:
+        return 'Excluded: outside scope';
+    }
   }
 
   Color get _defaultColor {
@@ -302,22 +327,28 @@ class _StateActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton(
-      onPressed: onPressed,
-      style: OutlinedButton.styleFrom(
-        side: BorderSide(color: color.withOpacity(0.5)),
-        foregroundColor: color,
-        padding: const EdgeInsets.symmetric(
-          horizontal: DSSpacing.md,
-          vertical: DSSpacing.sm,
+    return Semantics(
+      button: true,
+      label: label,
+      hint: 'Tap to $label',
+      child: OutlinedButton(
+        onPressed: onPressed,
+        style: OutlinedButton.styleFrom(
+          side: BorderSide(color: color.withValues(alpha: 0.5)),
+          foregroundColor: color,
+          minimumSize: const Size(48, 48),
+          padding: const EdgeInsets.symmetric(
+            horizontal: DSSpacing.md,
+            vertical: DSSpacing.sm,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(DSRadii.md),
+          ),
         ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(DSRadii.md),
+        child: Text(
+          label,
+          style: DSTypography.labelMedium.copyWith(color: color),
         ),
-      ),
-      child: Text(
-        label,
-        style: DSTypography.labelMedium.copyWith(color: color),
       ),
     );
   }

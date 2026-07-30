@@ -94,12 +94,12 @@ class DSGlowBorder extends StatelessWidget {
         border: Border.all(color: color, width: width),
         boxShadow: [
           BoxShadow(
-            color: color.withOpacity(0.3),
+            color: color.withValues(alpha: 0.3),
             blurRadius: glowBlur,
             spreadRadius: glowSpread,
           ),
           BoxShadow(
-            color: color.withOpacity(0.1),
+            color: color.withValues(alpha: 0.1),
             blurRadius: glowBlur * 2,
             spreadRadius: glowSpread,
           ),
@@ -169,12 +169,12 @@ class _AnimatedGlowBorderState extends State<_AnimatedGlowBorder>
             border: Border.all(color: widget.color, width: widget.width),
             boxShadow: [
               BoxShadow(
-                color: widget.color.withOpacity(0.3 * _animation.value),
+                color: widget.color.withValues(alpha: 0.3 * _animation.value),
                 blurRadius: widget.glowBlur * _animation.value,
                 spreadRadius: widget.glowSpread,
               ),
               BoxShadow(
-                color: widget.color.withOpacity(0.1 * _animation.value),
+                color: widget.color.withValues(alpha: 0.1 * _animation.value),
                 blurRadius: widget.glowBlur * 2 * _animation.value,
                 spreadRadius: widget.glowSpread,
               ),

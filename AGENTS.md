@@ -43,9 +43,9 @@ Child-local surfaces are owned by Warp Prism:
 | `AGENTS.md` | This local constitution |
 | `.agents/rules/` | Warp Prism rules |
 | `.agents/workflows/` | Warp Prism rituals |
-| `.agents/profiles/` | Local role continuity if working from this child root |
+| `.memories/_by_lane/` | Local role continuity (parent-linked via `.memories`) |
 | `docs/tasks/` | Local task namespace |
-| `docs/changelog/` | Local child changelog notes |
+| `.changelog/` (compat `docs/changelog` → `../.changelog`) | Canonical child changelog ledger |
 | `docs/reports/` | Local audits, reports, and bootstrap evidence |
 
 Do not copy parent skills or agents into the child project. If a reusable
@@ -110,11 +110,11 @@ At minimum, read:
 
 ## 7. Changelog and Continuity
 
-For local Warp Prism-only changes, add a local changelog note under
-`docs/changelog/` unless a future child changelog engine supersedes this simple
-ledger. For parent-significant harness changes, also use the parent Ganthritor
+For local Warp Prism-only changes, add entries under `.changelog/` (compat
+symlink `docs/changelog` → `../.changelog`) via the manage-changelog engine.
+For parent-significant harness changes, also use the parent Ganthritor
 changelog engine.
 
-Use `agent-wiki` for durable role continuity. When running from `warp-prism/`,
-the symlinked parent script can write to child-local `.agents/profiles/` because
-it detects the current checkout profile namespace.
+Use `agent-wiki` / `agentlog` for durable role continuity under
+`.memories/_by_lane/<lane>/` (`.memories` → `../.memories/warp-prism`). Residual
+`.agents/profiles/` is not the live write root after profiles→memories migration.

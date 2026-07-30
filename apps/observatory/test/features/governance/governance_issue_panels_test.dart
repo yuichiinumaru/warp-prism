@@ -1,7 +1,7 @@
 /// Widget tests for governance issue panels (Task 0811).
 ///
 /// Verifies:
-/// - Issue groups render for orphaning, staleness, proof gaps, fan-in
+/// - Issue groups render for orphaning, staleness, proof gaps, ledger-link gaps
 /// - Category/severity filtering works
 /// - Each issue shows asset title, category, severity, explanation
 /// - Empty states render when no issues exist
@@ -18,12 +18,14 @@ GovernanceDiagnostic _diag({
   DiagnosticSeverity severity = DiagnosticSeverity.warning,
   DiagnosticCategory category = DiagnosticCategory.orphanAsset,
   String message = 'Test diagnostic message',
+  Map<String, dynamic> context = const {},
 }) {
   return GovernanceDiagnostic(
     assetId: assetId,
     severity: severity,
     category: category,
     message: message,
+    context: context,
     computedAt: DateTime(2026, 6, 7),
   );
 }
@@ -35,30 +37,38 @@ List<GovernanceDiagnostic> _mixedDiagnostics() {
       category: DiagnosticCategory.orphanAsset,
       severity: DiagnosticSeverity.warning,
       message: 'Skill has no incoming or outgoing edges',
+      context: const {'assetName': 'orphan-skill'},
     ),
     _diag(
       assetId: 'workflow:broken-ref',
       category: DiagnosticCategory.staleReference,
       severity: DiagnosticSeverity.error,
       message: 'References non-existent target',
+      context: const {'assetName': 'broken-ref'},
     ),
     _diag(
       assetId: 'task:0612',
       category: DiagnosticCategory.proofGap,
       severity: DiagnosticSeverity.error,
       message: 'Task in completed lane but has no proof',
+      context: const {'taskTitle': 'Implement Inspector'},
     ),
     _diag(
       assetId: 'task:0613',
       category: DiagnosticCategory.proofGap,
       severity: DiagnosticSeverity.warning,
       message: 'Task in completed lane but only partial proof',
+      context: const {'taskTitle': 'Partial Proof Task'},
     ),
     _diag(
-      assetId: 'skill:hub-skill',
-      category: DiagnosticCategory.brokenEdge,
+      assetId: 'changelog:cl-unlinked',
+      category: DiagnosticCategory.missingDependency,
       severity: DiagnosticSeverity.warning,
-      message: 'Asset has 5 incoming edges (fan-in ≥ 3)',
+      message: 'Changelog has no linked task',
+      context: const {
+        'assetName': 'cl-unlinked',
+        'gapKind': 'changelogWithoutTaskLink',
+      },
     ),
   ];
 }
@@ -87,7 +97,7 @@ void main() {
       expect(find.textContaining('1 issue'), findsOneWidget);
     });
 
-    testWidgets('renders issue message', (tester) async {
+    testWidgets('renders issue message explanation', (tester) async {
       final groups = buildIssueGroups(_mixedDiagnostics());
       await tester.pumpWidget(
         _wrapInApp(GovernanceIssueGroup(group: groups.first)),
@@ -98,12 +108,21 @@ void main() {
       );
     });
 
-    testWidgets('renders asset id', (tester) async {
+    testWidgets('renders asset title from context', (tester) async {
       final groups = buildIssueGroups(_mixedDiagnostics());
       await tester.pumpWidget(
         _wrapInApp(GovernanceIssueGroup(group: groups.first)),
       );
-      expect(find.text('skill:orphan-skill'), findsOneWidget);
+      expect(find.text('orphan-skill'), findsOneWidget);
+    });
+
+    testWidgets('renders category and severity on each issue', (tester) async {
+      final groups = buildIssueGroups(_mixedDiagnostics());
+      await tester.pumpWidget(
+        _wrapInApp(GovernanceIssueGroup(group: groups.first)),
+      );
+      expect(find.textContaining('orphanAsset'), findsOneWidget);
+      expect(find.textContaining('warning'), findsWidgets);
     });
 
     testWidgets('renders empty state when no issues in category', (
@@ -125,8 +144,8 @@ void main() {
         _wrapInApp(GovernanceIssueGroup(group: proofGroup)),
       );
       // proof gaps group has 2 issues: 1 error + 1 warning
-      expect(find.textContaining('error'), findsOneWidget);
-      expect(find.textContaining('warn'), findsOneWidget);
+      expect(find.text('1 error'), findsOneWidget);
+      expect(find.text('1 warn'), findsOneWidget);
     });
 
     testWidgets('renders description text', (tester) async {
@@ -136,20 +155,35 @@ void main() {
       );
       expect(find.textContaining('isolated in the graph'), findsOneWidget);
     });
+
+    testWidgets('renders changelog-without-task ledger gap group', (
+      tester,
+    ) async {
+      final groups = buildIssueGroups(_mixedDiagnostics());
+      final ledgerGroup = groups.firstWhere(
+        (g) => g.category == DiagnosticCategory.missingDependency,
+      );
+      await tester.pumpWidget(
+        _wrapInApp(GovernanceIssueGroup(group: ledgerGroup)),
+      );
+      expect(find.text('Changelog Without Task'), findsOneWidget);
+      expect(find.text('cl-unlinked'), findsOneWidget);
+      expect(find.text('Changelog has no linked task'), findsOneWidget);
+      expect(find.textContaining('missingDependency'), findsOneWidget);
+    });
   });
 
   group('buildIssueGroups', () {
-    test('creates four category groups', () {
+    test('creates four category groups for required risk panels', () {
       final groups = buildIssueGroups([]);
       expect(groups.length, 4);
       expect(
         groups.map((g) => g.category).toList(),
-        containsAll([
-          DiagnosticCategory.orphanAsset,
-          DiagnosticCategory.staleReference,
-          DiagnosticCategory.proofGap,
-          DiagnosticCategory.brokenEdge,
-        ]),
+        containsAll(kGovernanceRiskPanelCategories),
+      );
+      expect(
+        groups.map((g) => g.category).toList(),
+        isNot(contains(DiagnosticCategory.brokenEdge)),
       );
     });
 
@@ -164,14 +198,14 @@ void main() {
       final proofGroup = groups.firstWhere(
         (g) => g.category == DiagnosticCategory.proofGap,
       );
-      final fanInGroup = groups.firstWhere(
-        (g) => g.category == DiagnosticCategory.brokenEdge,
+      final ledgerGroup = groups.firstWhere(
+        (g) => g.category == DiagnosticCategory.missingDependency,
       );
 
       expect(orphanGroup.count, 1);
       expect(staleGroup.count, 1);
       expect(proofGroup.count, 2);
-      expect(fanInGroup.count, 1);
+      expect(ledgerGroup.count, 1);
     });
 
     test('counts errors and warnings correctly', () {
@@ -252,6 +286,20 @@ void main() {
       );
     });
 
+    test('filters ledger-link gaps by category', () {
+      final state = GovernanceFilterState(
+        selectedCategories: {DiagnosticCategory.missingDependency},
+      );
+      expect(
+        state.matches(_diag(category: DiagnosticCategory.missingDependency)),
+        isTrue,
+      );
+      expect(
+        state.matches(_diag(category: DiagnosticCategory.orphanAsset)),
+        isFalse,
+      );
+    });
+
     test('isActive is false when empty', () {
       const state = GovernanceFilterState();
       expect(state.isActive, isFalse);
@@ -291,7 +339,8 @@ void main() {
       expect(find.text('Orphans'), findsOneWidget);
       expect(find.text('Stale'), findsOneWidget);
       expect(find.text('Proof Gaps'), findsOneWidget);
-      expect(find.text('Fan-In'), findsOneWidget);
+      expect(find.text('Ledger Gaps'), findsOneWidget);
+      expect(find.text('Fan-In'), findsNothing);
     });
 
     testWidgets('renders severity filter labels', (tester) async {
@@ -324,6 +373,26 @@ void main() {
       expect(
         captured!.selectedCategories,
         contains(DiagnosticCategory.orphanAsset),
+      );
+    });
+
+    testWidgets('tapping ledger gaps filter selects missingDependency', (
+      tester,
+    ) async {
+      GovernanceFilterState? captured;
+      await tester.pumpWidget(
+        _wrapInApp(
+          GovernanceIssueFilters(
+            filterState: const GovernanceFilterState(),
+            onFilterChanged: (state) => captured = state,
+          ),
+        ),
+      );
+
+      await tester.tap(find.text('Ledger Gaps'));
+      expect(
+        captured!.selectedCategories,
+        contains(DiagnosticCategory.missingDependency),
       );
     });
 

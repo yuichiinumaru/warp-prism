@@ -8,7 +8,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:warp_prism_ui/warp_prism_ui.dart';
+import 'package:warp_prism_ui/src/tokens/tokens.dart';
+import 'package:warp_prism_ui/src/atoms/atoms.dart';
+import 'package:warp_prism_ui/src/molecules/molecules.dart';
+import 'package:warp_prism_ui/src/organisms/organisms.dart';
+import 'package:warp_prism_ui/src/prism_aliases.dart';
 
 void main() {
   // ===========================================================================
@@ -349,7 +353,7 @@ void main() {
 
     testWidgets('custom accent color overrides default', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: DSStateSurface.degraded(
             title: 'Custom Color',
             accentColor: DSColors.accentCyan,

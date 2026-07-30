@@ -8,7 +8,7 @@ import 'package:warp_prism_ui/warp_prism_ui.dart';
 /// Used by [GoRouter]'s [ShellRoute] to wrap all product pages in a
 /// consistent chrome with persistent sidebar + topbar.
 ///
-/// Responsive layout contract (references [DSBreakpoints]):
+/// Responsive layout contract (references [PrismBreakpoints]):
 ///   >= 1200px (wide):     full expanded sidebar + topbar + content + inspector
 ///   800-1199px (medium):  full expanded sidebar + topbar + content (no inspector)
 ///   600-799px (narrow):   collapsed sidebar + topbar + content
@@ -20,23 +20,23 @@ class AppShell extends StatelessWidget {
 
   /// Navigation items shared across sidebar and bottom navigation.
   static const navItems = [
-    DSSidebarItem(
+    PrismSidebarItem(
       id: 'overview',
       label: 'Overview',
       icon: Icons.dashboard_outlined,
     ),
-    DSSidebarItem(id: 'map', label: 'Map', icon: Icons.hub_outlined),
-    DSSidebarItem(
+    PrismSidebarItem(id: 'map', label: 'Map', icon: Icons.hub_outlined),
+    PrismSidebarItem(
       id: 'operate',
       label: 'Operate',
       icon: Icons.play_circle_outline,
     ),
-    DSSidebarItem(
+    PrismSidebarItem(
       id: 'history',
       label: 'History',
       icon: Icons.history_outlined,
     ),
-    DSSidebarItem(
+    PrismSidebarItem(
       id: 'governance',
       label: 'Governance',
       icon: Icons.gavel_outlined,
@@ -72,7 +72,7 @@ class AppShell extends StatelessWidget {
 
   /// Builds a collapsed (icon-only) sidebar for narrow layouts.
   Widget _buildCollapsedSidebar() {
-    return DSSidebar(
+    return PrismSidebar(
       items: navItems,
       selectedId: navItems[navigationShell.currentIndex].id,
       onItemTap: _onNavItemTap,
@@ -96,7 +96,7 @@ class AppShell extends StatelessWidget {
   Widget build(BuildContext context) {
     final currentIndex = navigationShell.currentIndex;
     final screenWidth = MediaQuery.sizeOf(context).width;
-    final isCompact = screenWidth < DSBreakpoints.narrow;
+    final isCompact = screenWidth < PrismBreakpoints.narrow;
 
     // Compact layout: no sidebar, bottom navigation instead.
     if (isCompact) {
@@ -112,14 +112,16 @@ class AppShell extends StatelessWidget {
     }
 
     // Medium and wide layouts use the responsive shell from the DS.
-    return DSShellResponsive(
-      sidebar: DSSidebar(
+    return PrismShellResponsive(
+      sidebar: PrismSidebar(
         items: navItems,
         selectedId: navItems[currentIndex].id,
         onItemTap: _onNavItemTap,
       ),
       collapsedSidebar: _buildCollapsedSidebar(),
-      topbar: DSTopbar(title: _titleByIndex[currentIndex] ?? 'ASW Observatory'),
+      topbar: PrismTopbar(
+        title: _titleByIndex[currentIndex] ?? 'ASW Observatory',
+      ),
       content: navigationShell,
       // Inspector is a shell concern. Feature surfaces can request it
       // via state management; for now the shell defers inspector display.
@@ -151,15 +153,15 @@ class _CompactShell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: DSColors.obsidianDeep,
+      backgroundColor: PrismColors.obsidianDeep,
       appBar: AppBar(
-        title: DSText.headingMedium(title),
-        backgroundColor: DSColors.obsidianBase,
-        foregroundColor: DSColors.textPrimary,
+        title: PrismText.headingMedium(title),
+        backgroundColor: PrismColors.obsidianBase,
+        foregroundColor: PrismColors.textPrimary,
         elevation: 0,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
-          child: Container(height: 1, color: DSColors.borderSubtle),
+          child: Container(height: 1, color: PrismColors.borderSubtle),
         ),
       ),
       body: content,
@@ -167,11 +169,11 @@ class _CompactShell extends StatelessWidget {
         currentIndex: currentIndex,
         onTap: onBottomNavTap,
         type: BottomNavigationBarType.fixed,
-        backgroundColor: DSColors.obsidianBase,
-        selectedItemColor: DSColors.accentCyan,
-        unselectedItemColor: DSColors.textTertiary,
-        selectedLabelStyle: DSTypography.labelSmall,
-        unselectedLabelStyle: DSTypography.labelSmall,
+        backgroundColor: PrismColors.obsidianBase,
+        selectedItemColor: PrismColors.accentCyan,
+        unselectedItemColor: PrismColors.textTertiary,
+        selectedLabelStyle: PrismTypography.labelSmall,
+        unselectedLabelStyle: PrismTypography.labelSmall,
         items: bottomNavItems,
       ),
     );

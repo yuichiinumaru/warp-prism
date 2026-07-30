@@ -1,6 +1,7 @@
 // Design System Tokens - Barrel Export
 export 'ds_breakpoints.dart';
 export 'ds_colors.dart';
+export 'ds_cybercore_teal_skin.dart';
 export 'ds_operational_state.dart';
 export 'ds_typography.dart';
 export 'ds_spacing.dart';

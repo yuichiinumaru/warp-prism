@@ -48,7 +48,14 @@ class DSMarkdownRenderer extends StatelessWidget {
       _ParagraphBlock(:final text) => _buildParagraph(text),
       _CodeBlock(:final source, :final language) => Padding(
         padding: const EdgeInsets.only(bottom: DSSpacing.md),
-        child: DSCodeBlock(source: source, language: language),
+        child: Semantics(
+          label: (language != null && language.isNotEmpty)
+              ? 'Fenced code block: $language'
+              : 'Fenced code block',
+          // Keep nested copy-button / code semantics reachable.
+          explicitChildNodes: true,
+          child: DSCodeBlock(source: source, language: language),
+        ),
       ),
       _BulletListBlock(:final items) => _buildBulletList(items),
       _OrderedListBlock(:final items) => _buildOrderedList(items),

@@ -1,14 +1,14 @@
-/// Converts [DetailSection] from the descriptor into [DSDetailSection]
-/// for the [DSDetailInspector] organism.
+/// Converts [DetailSection] from the descriptor into [PrismDetailSection]
+/// for the [PrismDetailInspector] organism.
 library;
 
 import 'package:flutter/material.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
 import '../domain/asset_detail_descriptor.dart';
 
-/// Converts a descriptor [DetailSection] into a DS [DSDetailSection].
-DSDetailSection toDSSection(DetailSection section) {
-  return DSDetailSection(
+/// Converts a descriptor [DetailSection] into a DS [PrismDetailSection].
+PrismDetailSection toDSSection(DetailSection section) {
+  return PrismDetailSection(
     title: section.title,
     icon: _iconForHint(section.iconHint, section.key),
     count: section.count,
@@ -17,26 +17,26 @@ DSDetailSection toDSSection(DetailSection section) {
       children: [
         // Property rows
         ...section.properties.map(
-          (p) => DSPropertyRow(label: p.label, value: p.value),
+          (p) => PrismPropertyRow(label: p.label, value: p.value),
         ),
 
         // Code blocks
         if (section.codeBlocks.isNotEmpty) ...[
           if (section.properties.isNotEmpty &&
               section.properties.first.value != 'No verification commands')
-            const SizedBox(height: DSSpacing.xs),
+            const SizedBox(height: PrismSpacing.xs),
           ...section.codeBlocks.map(
             (cmd) => Padding(
-              padding: const EdgeInsets.only(bottom: DSSpacing.xs),
+              padding: const EdgeInsets.only(bottom: PrismSpacing.xs),
               child: Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(DSSpacing.sm),
+                padding: const EdgeInsets.all(PrismSpacing.sm),
                 decoration: BoxDecoration(
-                  color: DSColors.obsidianDeep,
-                  borderRadius: BorderRadius.circular(DSRadii.sm),
-                  border: Border.all(color: DSColors.borderSubtle),
+                  color: PrismColors.obsidianDeep,
+                  borderRadius: BorderRadius.circular(PrismRadii.sm),
+                  border: Border.all(color: PrismColors.borderSubtle),
                 ),
-                child: DSText.code(cmd, color: DSColors.accentCyan),
+                child: PrismText.code(cmd, color: PrismColors.accentCyan),
               ),
             ),
           ),
@@ -45,13 +45,13 @@ DSDetailSection toDSSection(DetailSection section) {
         // Link rows
         if (section.links.isNotEmpty) ...[
           if (section.properties.isNotEmpty)
-            const SizedBox(height: DSSpacing.sm),
+            const SizedBox(height: PrismSpacing.sm),
           Wrap(
-            spacing: DSSpacing.xs,
-            runSpacing: DSSpacing.xs,
+            spacing: PrismSpacing.xs,
+            runSpacing: PrismSpacing.xs,
             children: section.links
                 .map(
-                  (link) => DSLinkRow(
+                  (link) => PrismLinkRow(
                     label: link.label,
                     icon: _iconForKind(link.kind),
                     color: _colorForKind(link.kind),
@@ -65,32 +65,32 @@ DSDetailSection toDSSection(DetailSection section) {
   );
 }
 
-/// Builds [DSDetailSection] list from a descriptor's sections.
-List<DSDetailSection> toDSSections(List<DetailSection> sections) {
+/// Builds [PrismDetailSection] list from a descriptor's sections.
+List<PrismDetailSection> toDSSections(List<DetailSection> sections) {
   return sections.map(toDSSection).toList();
 }
 
 /// Builds the link section for incoming/outgoing links.
-DSDetailSection buildLinksSection(
+PrismDetailSection buildLinksSection(
   String title,
   List<DetailLink> links, {
   bool isIncoming = true,
 }) {
-  return DSDetailSection(
+  return PrismDetailSection(
     title: title,
     icon: isIncoming ? Icons.call_received : Icons.call_made,
     count: links.length,
     child: links.isEmpty
-        ? DSText.bodySmall(
+        ? PrismText.bodySmall(
             isIncoming ? 'No incoming links' : 'No outgoing links',
-            color: DSColors.textTertiary,
+            color: PrismColors.textTertiary,
           )
         : Wrap(
-            spacing: DSSpacing.xs,
-            runSpacing: DSSpacing.xs,
+            spacing: PrismSpacing.xs,
+            runSpacing: PrismSpacing.xs,
             children: links
                 .map(
-                  (link) => DSLinkRow(
+                  (link) => PrismLinkRow(
                     label: '${isIncoming ? '←' : '→'} ${link.label}',
                     icon: _iconForKind(link.kind),
                     color: _colorForKind(link.kind),
@@ -175,15 +175,15 @@ IconData _iconForHint(String? hint, String key) {
 IconData _iconForKind(String kind) {
   switch (kind) {
     case 'task':
-      return DSIcons.task;
+      return PrismIcons.task;
     case 'skill':
-      return DSIcons.skill;
+      return PrismIcons.skill;
     case 'workflow':
-      return DSIcons.workflow;
+      return PrismIcons.workflow;
     case 'agent':
-      return DSIcons.agent;
+      return PrismIcons.agent;
     case 'changelog':
-      return DSIcons.changelog;
+      return PrismIcons.changelog;
     case 'dependsOn':
       return Icons.link;
     case 'references':
@@ -199,7 +199,7 @@ IconData _iconForKind(String kind) {
     case 'proves':
       return Icons.verified_outlined;
     default:
-      return DSIcons.link;
+      return PrismIcons.link;
   }
 }
 
@@ -207,20 +207,20 @@ IconData _iconForKind(String kind) {
 Color _colorForKind(String kind) {
   switch (kind) {
     case 'task':
-      return DSColors.assetTask;
+      return PrismColors.assetTask;
     case 'skill':
-      return DSColors.assetSkill;
+      return PrismColors.assetSkill;
     case 'workflow':
-      return DSColors.assetWorkflow;
+      return PrismColors.assetWorkflow;
     case 'agent':
-      return DSColors.assetAgent;
+      return PrismColors.assetAgent;
     case 'changelog':
-      return DSColors.assetChangelog;
+      return PrismColors.assetChangelog;
     case 'dependsOn':
-      return DSColors.statusWarning;
+      return PrismColors.statusWarning;
     case 'impact':
-      return DSColors.statusInfo;
+      return PrismColors.statusInfo;
     default:
-      return DSColors.textSecondary;
+      return PrismColors.textSecondary;
   }
 }

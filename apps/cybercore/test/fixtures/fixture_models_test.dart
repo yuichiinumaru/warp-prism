@@ -2,188 +2,209 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:warp_prism_cybercore/data/fixtures/fixtures.dart';
 
 void main() {
-  group('Fixture model parsing', () {
-    test('DashboardSummary.fromJson parses correctly', () {
+  group('Pilot fixture model parsing', () {
+    test('ProviderConnection.fromJson parses correctly', () {
       final json = {
-        'agentMetrics': {'total': 9, 'healthy': 7, 'degraded': 2},
-        'skillMetrics': {'total': 13, 'withTriggers': 10, 'noTriggers': 3},
-        'workflowMetrics': {'total': 11, 'active': 8, 'orphaned': 3},
-        'executionMetrics': {
-          'planning': 3,
-          'open': 5,
-          'doing': 5,
-          'review': 4,
-          'completed': 5,
-        },
-        'recentActivity': {
-          'total': 36,
-          'lastWeek': 12,
-          'types': {'feature': 14, 'fix': 8},
-        },
+        'id': 'prov-openai-prod',
+        'provider': 'openai',
+        'name': 'OpenAI Production',
+        'authType': 'apikey',
+        'priority': 1,
+        'globalPriority': 10,
+        'defaultModel': 'gpt-4o',
+        'isActive': true,
+        'testStatus': 'success',
+        'lastTested': '2026-07-09T10:15:00Z',
+        'lastError': null,
+        'lastErrorAt': null,
+        'errorCode': null,
+        'createdAt': '2026-05-01T12:00:00Z',
+        'updatedAt': '2026-07-09T10:15:00Z',
       };
 
-      final summary = DashboardSummary.fromJson(json);
-      expect(summary.agentMetrics.total, 9);
-      expect(summary.agentMetrics.healthy, 7);
-      expect(summary.agentMetrics.degraded, 2);
-      expect(summary.skillMetrics.total, 13);
-      expect(summary.workflowMetrics.orphaned, 3);
-      expect(summary.executionMetrics.totalTasks, 22);
-      expect(summary.recentActivity.types['feature'], 14);
-      expect(summary.totalEntities, 55);
+      final provider = ProviderConnection.fromJson(json);
+      expect(provider.id, 'prov-openai-prod');
+      expect(provider.provider, 'openai');
+      expect(provider.isActive, true);
+      expect(provider.operationalLabel, 'active');
+      expect(provider.defaultModel, 'gpt-4o');
     });
 
-    test('RegistryAgent.fromJson parses correctly', () {
+    test('ProviderConnection operationalLabel for error and inactive', () {
+      final error = ProviderConnection.fromJson({
+        'id': 'p1',
+        'provider': 'azure',
+        'name': 'Azure',
+        'authType': 'apikey',
+        'priority': 1,
+        'isActive': true,
+        'testStatus': 'error',
+      });
+      expect(error.operationalLabel, 'error');
+
+      final inactive = ProviderConnection.fromJson({
+        'id': 'p2',
+        'provider': 'google',
+        'name': 'Google',
+        'authType': 'oauth',
+        'priority': 2,
+        'isActive': false,
+        'testStatus': 'unknown',
+      });
+      expect(inactive.operationalLabel, 'inactive');
+
+      final untested = ProviderConnection.fromJson({
+        'id': 'p3',
+        'provider': 'groq',
+        'name': 'Groq',
+        'authType': 'apikey',
+        'priority': 3,
+        'isActive': true,
+        'testStatus': 'unknown',
+      });
+      expect(untested.operationalLabel, 'untested');
+    });
+
+    test('McpServer.fromJson parses correctly', () {
       final json = {
-        'id': 'agent:builders',
-        'name': 'builders',
-        'model': 'claude-sonnet-4-20250514',
-        'mode': 'code',
-        'description': 'Primary implementation agent',
-        'skills': ['flutter-harness'],
-        'workflows': ['onboard'],
-        'operationalState': 'healthy',
+        'uuid': 'mcp-filesystem-01',
+        'name': 'filesystem',
+        'description': 'Local filesystem',
+        'type': 'STDIO',
+        'command': 'npx',
+        'args': ['-y', '@modelcontextprotocol/server-filesystem'],
+        'env': {'FOO': 'bar'},
+        'url': null,
+        'created_at': '2026-05-12T10:00:00Z',
+        'bearerToken': null,
+        'headers': {},
+        'user_id': null,
+        'error_status': 'NONE',
+        'status': 'ACTIVE',
       };
 
-      final agent = RegistryAgent.fromJson(json);
-      expect(agent.id, 'agent:builders');
-      expect(agent.name, 'builders');
-      expect(agent.skills, ['flutter-harness']);
-      expect(agent.operationalState, 'healthy');
+      final server = McpServer.fromJson(json);
+      expect(server.uuid, 'mcp-filesystem-01');
+      expect(server.type, 'STDIO');
+      expect(server.isActive, true);
+      expect(server.hasError, false);
+      expect(server.operationalLabel, 'active');
+      expect(server.args.length, 2);
+      expect(server.env['FOO'], 'bar');
     });
 
-    test('RegistrySkill.fromJson parses correctly', () {
+    test('McpServer operationalLabel for error and inactive', () {
+      final errored = McpServer.fromJson({
+        'uuid': 'u1',
+        'name': 'postgres',
+        'description': null,
+        'type': 'STDIO',
+        'command': null,
+        'args': <String>[],
+        'env': <String, String>{},
+        'url': null,
+        'created_at': '2026-01-01T00:00:00Z',
+        'bearerToken': null,
+        'headers': <String, String>{},
+        'user_id': null,
+        'error_status': 'ERROR',
+        'status': 'ACTIVE',
+      });
+      expect(errored.operationalLabel, 'error');
+
+      final inactive = McpServer.fromJson({
+        'uuid': 'u2',
+        'name': 'memory',
+        'description': null,
+        'type': 'SSE',
+        'command': null,
+        'args': <String>[],
+        'env': <String, String>{},
+        'url': 'https://example.com',
+        'created_at': '2026-01-01T00:00:00Z',
+        'bearerToken': null,
+        'headers': <String, String>{},
+        'user_id': null,
+        'error_status': 'NONE',
+        'status': 'INACTIVE',
+      });
+      expect(inactive.operationalLabel, 'inactive');
+    });
+
+    test('LiveLogEntry.fromJson parses correctly', () {
       final json = {
-        'id': 'skill:flutter-harness',
-        'name': 'flutter-harness',
-        'triggers': ['flutter', 'dart'],
-        'subSkills': ['flutter-test'],
-        'canonicality': 'parentCanonical',
+        'id': 'log-001',
+        'timestamp': '2026-07-09T11:58:01.000Z',
+        'serverName': 'filesystem',
+        'level': 'info',
+        'message': 'Listed /workspace',
+        'error': null,
+        'redacted': false,
       };
 
-      final skill = RegistrySkill.fromJson(json);
-      expect(skill.id, 'skill:flutter-harness');
-      expect(skill.hasTriggers, true);
-      expect(skill.canonicality, 'parentCanonical');
+      final entry = LiveLogEntry.fromJson(json);
+      expect(entry.id, 'log-001');
+      expect(entry.serverName, 'filesystem');
+      expect(entry.level, 'info');
+      expect(entry.redacted, false);
+      expect(entry.timestamp.isUtc, true);
     });
 
-    test('RegistrySkill.hasTriggers is false when empty', () {
+    test('LiveLogsFixture.fromJson parses response envelope', () {
       final json = {
-        'id': 'skill:empty',
-        'name': 'empty',
-        'triggers': <String>[],
-        'subSkills': <String>[],
-        'canonicality': 'childLocal',
-      };
-
-      final skill = RegistrySkill.fromJson(json);
-      expect(skill.hasTriggers, false);
-    });
-
-    test('RegistryWorkflow.fromJson parses correctly', () {
-      final json = {
-        'id': 'workflow:onboard',
-        'name': 'onboard',
-        'kind': 'ritual',
-        'skills': ['development-methodologies'],
-        'agents': ['builders'],
-        'triggers': ['task-start'],
-      };
-
-      final workflow = RegistryWorkflow.fromJson(json);
-      expect(workflow.id, 'workflow:onboard');
-      expect(workflow.isOrphan, false);
-    });
-
-    test('RegistryWorkflow.isOrphan when no agents and skills', () {
-      final json = {
-        'id': 'workflow:orphan',
-        'name': 'orphan',
-        'kind': 'maintenance',
-        'skills': <String>[],
-        'agents': <String>[],
-        'triggers': <String>[],
-      };
-
-      final workflow = RegistryWorkflow.fromJson(json);
-      expect(workflow.isOrphan, true);
-    });
-
-    test('TaskExecution.fromJson parses correctly', () {
-      final json = {
-        'id': 'T001',
-        'title': 'Test task',
-        'lane': '02-doing',
-        'priority': 'P0',
-        'owner': 'builders',
-        'proofState': 'partial',
-        'reviewScore': 8.5,
-        'dependsOn': ['T000'],
-        'operationalState': 'running',
-      };
-
-      final task = TaskExecution.fromJson(json);
-      expect(task.id, 'T001');
-      expect(task.laneName, 'doing');
-      expect(task.reviewScore, 8.5);
-      expect(task.dependsOn.length, 1);
-    });
-
-    test('TaskExecution.fromJson handles null optional fields', () {
-      final json = {
-        'id': 'T002',
-        'title': 'Test task 2',
-        'lane': '00-planning',
-        'proofState': 'none',
-        'dependsOn': <String>[],
-        'operationalState': 'pending',
-      };
-
-      final task = TaskExecution.fromJson(json);
-      expect(task.priority, null);
-      expect(task.owner, null);
-      expect(task.reviewScore, null);
-    });
-
-    test('AuditEvent.fromJson parses correctly', () {
-      final json = {
-        'id': 'CL001',
-        'date': '2026-06-08T14:30:00Z',
-        'project': 'warp-prism',
-        'task': 'T010',
-        'type': 'feature',
-        'impact': 'high',
-        'skills': ['flutter-harness'],
-        'body': 'Test event',
-      };
-
-      final event = AuditEvent.fromJson(json);
-      expect(event.id, 'CL001');
-      expect(event.type, 'feature');
-      expect(event.displayDate, contains('2026-06-08'));
-    });
-
-    test('GovernanceDiagnostics.fromJson parses correctly', () {
-      final json = {
-        'orphanWorkflows': ['workflow-a'],
-        'noTriggerSkills': ['skill-b'],
-        'unverifiedTasks': [
-          {'taskId': 'T001', 'title': 'Test', 'priority': 'P0'},
+        'success': true,
+        'totalCount': 2,
+        'data': [
+          {
+            'id': 'log-001',
+            'timestamp': '2026-07-09T11:58:01.000Z',
+            'serverName': 'filesystem',
+            'level': 'info',
+            'message': 'ok',
+            'redacted': false,
+          },
+          {
+            'id': 'log-002',
+            'timestamp': '2026-07-09T11:59:00.000Z',
+            'serverName': 'github',
+            'level': 'error',
+            'message': 'fail',
+            'error': 'timeout',
+            'redacted': true,
+          },
         ],
-        'canonicalityBoundary': {'parentCanonical': 5, 'childLocal': 8},
-        'fanInHotspots': [
-          {'skillName': 'flutter-harness', 'referenceCount': 8},
-        ],
       };
 
-      final diag = GovernanceDiagnostics.fromJson(json);
-      expect(diag.orphanWorkflows.length, 1);
-      expect(diag.noTriggerSkills.length, 1);
-      expect(diag.unverifiedTasks.length, 1);
-      expect(diag.unverifiedTasks.first.taskId, 'T001');
-      expect(diag.canonicalityBoundary['parentCanonical'], 5);
-      expect(diag.fanInHotspots.first.referenceCount, 8);
-      expect(diag.totalIssues, 3);
+      final fixture = LiveLogsFixture.fromJson(json);
+      expect(fixture.success, true);
+      expect(fixture.totalCount, 2);
+      expect(fixture.data.length, 2);
+      expect(fixture.data.last.redacted, true);
+      expect(fixture.data.last.error, 'timeout');
+    });
+
+    test('McpInspectorState.fromJson parses correctly', () {
+      final json = {
+        'connectionStatus': 'connected',
+        'selectedServerUuid': 'mcp-filesystem-01',
+        'selectedServerName': 'filesystem',
+        'tools': [
+          {
+            'uuid': 'tool-list-dir',
+            'name': 'list_directory',
+            'description': 'List files',
+            'enabled': true,
+            'mcp_server_uuid': 'mcp-filesystem-01',
+          },
+        ],
+        'notes': 'fixture',
+      };
+
+      final state = McpInspectorState.fromJson(json);
+      expect(state.connectionStatus, 'connected');
+      expect(state.tools.length, 1);
+      expect(state.tools.first.enabled, true);
+      expect(state.selectedServerName, 'filesystem');
     });
   });
 }

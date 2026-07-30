@@ -80,7 +80,7 @@ void main() {
   });
 }
 
-/// Metadata for each operational state: label, builder, animated flag.
+/// Metadata for each golden case: stable PNG label, builder, animated flag.
 class _StateEntry {
   final String label;
   final DSStatusDot Function({double size, bool animated}) builder;
@@ -93,30 +93,70 @@ class _StateEntry {
   });
 }
 
-/// All 15 operational states plus 5 basic semantic constructors.
-const _allStates = <_StateEntry>[
-  // Basic semantic constructors
+/// Basic semantic constructors (not part of [DSOperationalState]).
+///
+/// Keep [DSStatusDot.error] here so the historical `status_dot_error.png`
+/// master remains the basic semantic constructor (no tooltip wrapper).
+const _basicSemanticStates = <_StateEntry>[
   _StateEntry(label: 'success', builder: DSStatusDot.success),
   _StateEntry(label: 'warning', builder: DSStatusDot.warning),
   _StateEntry(label: 'error', builder: DSStatusDot.error),
   _StateEntry(label: 'info', builder: DSStatusDot.info),
   _StateEntry(label: 'neutral', builder: DSStatusDot.neutral),
-  // Lifecycle
-  _StateEntry(label: 'pending', builder: DSStatusDot.pending),
-  _StateEntry(label: 'running', builder: DSStatusDot.running, animated: true),
-  _StateEntry(label: 'approved', builder: DSStatusDot.approved),
-  _StateEntry(label: 'rejected', builder: DSStatusDot.rejected),
-  _StateEntry(label: 'promoted', builder: DSStatusDot.promoted),
-  _StateEntry(label: 'archived', builder: DSStatusDot.archived),
-  // Health
-  _StateEntry(label: 'healthy', builder: DSStatusDot.healthy),
-  _StateEntry(label: 'degraded', builder: DSStatusDot.degraded),
-  _StateEntry(label: 'disabled', builder: DSStatusDot.disabled),
-  // Verification
-  _StateEntry(label: 'unverified', builder: DSStatusDot.unverified),
-  _StateEntry(label: 'exposed', builder: DSStatusDot.exposed, animated: true),
-  _StateEntry(label: 'redacted', builder: DSStatusDot.redacted),
-  // Governance
-  _StateEntry(label: 'stale', builder: DSStatusDot.stale),
-  _StateEntry(label: 'excluded', builder: DSStatusDot.excluded),
+];
+
+/// Named-constructor mapping for each [DSOperationalState] so golden PNG
+/// masters stay pixel-stable while the matrix is enum-driven.
+DSStatusDot _namedOperationalDot(DSOperationalState state, {double size = 8}) {
+  switch (state) {
+    case DSOperationalState.pending:
+      return DSStatusDot.pending(size: size);
+    case DSOperationalState.running:
+      return DSStatusDot.running(size: size);
+    case DSOperationalState.approved:
+      return DSStatusDot.approved(size: size);
+    case DSOperationalState.rejected:
+      return DSStatusDot.rejected(size: size);
+    case DSOperationalState.promoted:
+      return DSStatusDot.promoted(size: size);
+    case DSOperationalState.archived:
+      return DSStatusDot.archived(size: size);
+    case DSOperationalState.healthy:
+      return DSStatusDot.healthy(size: size);
+    case DSOperationalState.degraded:
+      return DSStatusDot.degraded(size: size);
+    case DSOperationalState.error:
+      // Prefer basic semantic master for the shared `error` PNG label.
+      return DSStatusDot.error(size: size);
+    case DSOperationalState.disabled:
+      return DSStatusDot.disabled(size: size);
+    case DSOperationalState.unverified:
+      return DSStatusDot.unverified(size: size);
+    case DSOperationalState.exposed:
+      return DSStatusDot.exposed(size: size);
+    case DSOperationalState.redacted:
+      return DSStatusDot.redacted(size: size);
+    case DSOperationalState.stale:
+      return DSStatusDot.stale(size: size);
+    case DSOperationalState.excluded:
+      return DSStatusDot.excluded(size: size);
+  }
+}
+
+/// Operational matrix derived from [DSOperationalState.values].
+///
+/// [DSOperationalState.error] is omitted to avoid clobbering the basic
+/// `error` golden label; color parity is covered by [DSStatusDot.error].
+final _allStates = <_StateEntry>[
+  ..._basicSemanticStates,
+  for (final state in DSOperationalState.values)
+    if (state != DSOperationalState.error)
+      _StateEntry(
+        label: state.name,
+        builder: ({double size = 8, bool animated = false}) =>
+            _namedOperationalDot(state, size: size),
+        animated:
+            state == DSOperationalState.running ||
+            state == DSOperationalState.exposed,
+      ),
 ];

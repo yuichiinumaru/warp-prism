@@ -2,7 +2,7 @@
 ///
 /// Explains the six canonicality classes (canonical, child-local,
 /// generated, append-only, archive, mock) with colors, icons, and
-/// descriptive tooltips sourced from existing DS tokens.
+/// descriptive tooltips sourced from existing Prism* tokens.
 library;
 
 import 'package:flutter/material.dart';
@@ -32,48 +32,48 @@ const _canonicalityClasses = [
     label: 'Canonical',
     description:
         'Authoritative source of truth. Parent-owned markdown that downstream consumers trust.',
-    color: DSColors.governanceCanonical,
-    icon: DSIcons.canonical,
+    color: PrismColors.governanceCanonical,
+    icon: PrismIcons.canonical,
   ),
   CanonicalityClass(
     key: 'childLocal',
     label: 'Child-Local',
     description:
         'Local overlay that may diverge from its parent canonical definition.',
-    color: DSColors.governanceLocal,
-    icon: DSIcons.local,
+    color: PrismColors.governanceLocal,
+    icon: PrismIcons.local,
   ),
   CanonicalityClass(
     key: 'generated',
     label: 'Generated',
     description:
         'Computed or built from other sources. Not hand-authored; derived from canonical data.',
-    color: DSColors.governanceGenerated,
-    icon: DSIcons.generated,
+    color: PrismColors.governanceGenerated,
+    icon: PrismIcons.generated,
   ),
   CanonicalityClass(
     key: 'appendOnly',
     label: 'Append-Only',
     description:
         'Immutable ledger. New entries may be added, but existing records cannot be modified.',
-    color: DSColors.governanceAppendOnly,
-    icon: DSIcons.appendOnly,
+    color: PrismColors.governanceAppendOnly,
+    icon: PrismIcons.appendOnly,
   ),
   CanonicalityClass(
     key: 'archive',
     label: 'Archive',
     description:
         'Historical record, no longer actively maintained or referenced by live workflows.',
-    color: DSColors.governanceArchive,
-    icon: DSIcons.archive,
+    color: PrismColors.governanceArchive,
+    icon: PrismIcons.archive,
   ),
   CanonicalityClass(
     key: 'mock',
     label: 'Mock',
     description:
         'Test or demo data. Should not be treated as production content.',
-    color: DSColors.governanceMock,
-    icon: DSIcons.mock,
+    color: PrismColors.governanceMock,
+    icon: PrismIcons.mock,
   ),
 ];
 
@@ -93,20 +93,20 @@ class GovernanceBoundaryLegend extends StatelessWidget {
       label: 'Canonicality boundary legend',
       explicitChildNodes: true,
       child: Container(
-        padding: const EdgeInsets.all(DSSpacing.lg),
+        padding: const EdgeInsets.all(PrismSpacing.lg),
         decoration: BoxDecoration(
-          color: DSColors.obsidianElevated,
-          borderRadius: BorderRadius.circular(DSRadii.lg),
-          border: Border.all(color: DSColors.borderSubtle),
+          color: PrismColors.obsidianElevated,
+          borderRadius: BorderRadius.circular(PrismRadii.lg),
+          border: Border.all(color: PrismColors.borderSubtle),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            DSText.labelLarge(
+            const PrismText.labelLarge(
               'CANONICALITY BOUNDARIES',
-              color: DSColors.textSecondary,
+              color: PrismColors.textSecondary,
             ),
-            const SizedBox(height: DSSpacing.md),
+            const SizedBox(height: PrismSpacing.md),
             ..._canonicalityClasses.map(
               (cls) => _LegendRow(cls: cls, count: counts?[cls.key]),
             ),
@@ -128,30 +128,23 @@ class _LegendRow extends StatelessWidget {
     return Tooltip(
       message: cls.description,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: DSSpacing.xs),
+        padding: const EdgeInsets.symmetric(vertical: PrismSpacing.xs),
         child: Row(
           children: [
-            // Color indicator
             Container(
               width: 12,
               height: 12,
               decoration: BoxDecoration(
                 color: cls.color,
-                borderRadius: BorderRadius.circular(DSRadii.full),
+                borderRadius: BorderRadius.circular(PrismRadii.full),
               ),
             ),
-            const SizedBox(width: DSSpacing.sm),
-
-            // Icon
-            DSIcon.small(cls.icon, color: cls.color),
-            const SizedBox(width: DSSpacing.sm),
-
-            // Label
-            Expanded(child: DSText.bodyMedium(cls.label, color: cls.color)),
-
-            // Count
+            const SizedBox(width: PrismSpacing.sm),
+            PrismIcon.small(cls.icon, color: cls.color),
+            const SizedBox(width: PrismSpacing.sm),
+            Expanded(child: PrismText.bodyMedium(cls.label, color: cls.color)),
             if (count != null)
-              DSText.numeric(count.toString(), color: cls.color),
+              PrismText.numeric(count.toString(), color: cls.color),
           ],
         ),
       ),
@@ -167,23 +160,29 @@ class GovernanceReadOnlyBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(
-        horizontal: DSSpacing.lg,
-        vertical: DSSpacing.md,
+        horizontal: PrismSpacing.lg,
+        vertical: PrismSpacing.md,
       ),
       decoration: BoxDecoration(
-        color: DSColors.accentCyan.withOpacity(0.08),
+        color: PrismColors.accentCyan.withValues(alpha: 0.08),
         border: Border(
-          bottom: BorderSide(color: DSColors.accentCyan.withOpacity(0.2)),
+          bottom: BorderSide(
+            color: PrismColors.accentCyan.withValues(alpha: 0.2),
+          ),
         ),
       ),
-      child: Row(
+      child: const Row(
         children: [
-          DSIcon(Icons.lock_outline, color: DSColors.accentCyan, size: 18),
-          const SizedBox(width: DSSpacing.sm),
+          PrismIcon(
+            Icons.lock_outline,
+            color: PrismColors.accentCyan,
+            size: 18,
+          ),
+          SizedBox(width: PrismSpacing.sm),
           Expanded(
-            child: DSText.bodySmall(
+            child: PrismText.bodySmall(
               'This surface is read-only. Governance boundaries are derived from repository diagnostics — no mutation affordances are provided.',
-              color: DSColors.textTertiary,
+              color: PrismColors.textTertiary,
             ),
           ),
         ],

@@ -1,8 +1,8 @@
 // Widget tests for DSErrorBoundary and DSFallbackView.
 //
-// These tests verify that the fallback view renders correctly with error
-// details, retry buttons, and proper styling. The error boundary integration
-// with Flutter's error handling is tested via the fallback view contract.
+// DSFallbackView: icon/title/retry/token styling.
+// DSErrorBoundary: real throw-in-build capture, custom fallbackBuilder,
+// retry rebuild, dispose restore of FlutterError.onError, nested stack.
 //
 // Run: flutter test test/molecules/ds_error_boundary_test.dart
 
@@ -177,43 +177,198 @@ void main() {
       expect(find.byType(DSErrorBoundary), findsOneWidget);
     });
 
-    testWidgets('shows default fallback when error state is set', (
-      tester,
-    ) async {
-      // Directly test the fallback display by pumping DSFallbackView
-      // (the error boundary's internal mechanism is tied to Flutter's
-      // error pipeline which is hard to test in isolation).
+    // Path-to-100: real catch / retry / restore / nested / custom-fallback proofs.
+    // These must fail if DSErrorBoundary install/capture/retry/dispose is broken.
+
+    testWidgets('child that throws in build shows fallback UI', (tester) async {
+      final previous = FlutterError.onError;
+      addTearDown(() {
+        FlutterError.onError = previous;
+      });
+
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: DSFallbackView(
-              error: 'Build error',
-              title: 'Something went wrong',
-            ),
+            body: DSErrorBoundary(child: _ThrowingChild(shouldThrow: true)),
           ),
         ),
       );
 
+      // Framework reports the exception; take it so the test harness is clean.
+      final thrown = tester.takeException();
+      expect(thrown, isNotNull);
+
+      // Post-frame capture → fallback.
+      await tester.pump();
+      await tester.pump();
+
+      expect(find.byType(DSFallbackView), findsOneWidget);
       expect(find.text('Something went wrong'), findsOneWidget);
       expect(find.byIcon(DSIcons.error), findsOneWidget);
     });
 
-    testWidgets('shows custom fallback builder output', (tester) async {
-      // Test the custom fallback builder contract
+    testWidgets('custom fallbackBuilder runs when child throws', (
+      tester,
+    ) async {
+      final previous = FlutterError.onError;
+      addTearDown(() {
+        FlutterError.onError = previous;
+      });
+
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: DSFallbackView(
-              error: 'Test error',
-              title: 'Custom fallback',
-              onRetry: () {},
+            body: DSErrorBoundary(
+              fallbackBuilder: (context, error, stackTrace) {
+                return Text('Custom fallback: $error');
+              },
+              child: const _ThrowingChild(shouldThrow: true),
             ),
           ),
         ),
       );
 
-      expect(find.text('Custom fallback'), findsOneWidget);
-      expect(find.text('Retry'), findsOneWidget);
+      tester.takeException();
+      await tester.pump();
+      await tester.pump();
+
+      expect(find.textContaining('Custom fallback:'), findsOneWidget);
+      expect(find.byType(DSFallbackView), findsNothing);
+    });
+
+    testWidgets('retry clears error and rebuilds healthy child', (
+      tester,
+    ) async {
+      final previous = FlutterError.onError;
+      addTearDown(() {
+        FlutterError.onError = previous;
+      });
+
+      // Static flag read on each build — flip before retry so the rebuild is healthy.
+      _ThrowingChild.nextShouldThrow = true;
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: DSErrorBoundary(
+              child: _ThrowingChild(healthyLabel: 'Recovered child'),
+            ),
+          ),
+        ),
+      );
+
+      tester.takeException();
+      await tester.pump();
+      await tester.pump();
+      expect(find.byType(DSFallbackView), findsOneWidget);
+
+      _ThrowingChild.nextShouldThrow = false;
+      await tester.tap(find.text('Retry'));
+      await tester.pump();
+      await tester.pump();
+
+      expect(find.text('Recovered child'), findsOneWidget);
+      expect(find.byType(DSFallbackView), findsNothing);
+    });
+
+    testWidgets('dispose restores previous FlutterError.onError', (
+      tester,
+    ) async {
+      void sentinel(FlutterErrorDetails details) {}
+      FlutterError.onError = sentinel;
+      addTearDown(() {
+        FlutterError.onError = FlutterError.presentError;
+      });
+
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(body: DSErrorBoundary(child: Text('Healthy child'))),
+        ),
+      );
+      expect(FlutterError.onError, isNot(equals(sentinel)));
+
+      await tester.pumpWidget(const SizedBox.shrink());
+      await tester.pump();
+
+      expect(FlutterError.onError, same(sentinel));
+    });
+
+    testWidgets('nested boundary dispose restores outer then root', (
+      tester,
+    ) async {
+      void rootHandler(FlutterErrorDetails details) {}
+      FlutterError.onError = rootHandler;
+      addTearDown(() {
+        FlutterError.onError = FlutterError.presentError;
+      });
+
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: DSErrorBoundary(
+              child: DSErrorBoundary(child: Text('Nested healthy')),
+            ),
+          ),
+        ),
+      );
+      expect(find.text('Nested healthy'), findsOneWidget);
+
+      // Drop both boundaries.
+      await tester.pumpWidget(const SizedBox.shrink());
+      await tester.pump();
+
+      expect(FlutterError.onError, same(rootHandler));
+    });
+
+    testWidgets('innermost nested boundary captures throw', (tester) async {
+      final previous = FlutterError.onError;
+      addTearDown(() {
+        FlutterError.onError = previous;
+      });
+
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: DSErrorBoundary(
+              child: Column(
+                children: [
+                  Text('Outer healthy'),
+                  DSErrorBoundary(child: _ThrowingChild(shouldThrow: true)),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+
+      tester.takeException();
+      await tester.pump();
+      await tester.pump();
+
+      // Outer still healthy; only the inner boundary shows fallback.
+      expect(find.text('Outer healthy'), findsOneWidget);
+      expect(find.byType(DSFallbackView), findsOneWidget);
+      expect(find.byType(DSErrorBoundary), findsNWidgets(2));
     });
   });
+}
+
+/// Test child that optionally throws during build.
+class _ThrowingChild extends StatelessWidget {
+  /// When non-null, overrides [nextShouldThrow] for this instance.
+  final bool? shouldThrow;
+  final String healthyLabel;
+
+  /// Shared flag so retry tests can flip behavior without rebuilding ancestors.
+  static bool nextShouldThrow = false;
+
+  const _ThrowingChild({this.shouldThrow, this.healthyLabel = 'Healthy child'});
+
+  @override
+  Widget build(BuildContext context) {
+    final willThrow = shouldThrow ?? nextShouldThrow;
+    if (willThrow) {
+      throw StateError('forced boundary test error');
+    }
+    return Text(healthyLabel);
+  }
 }

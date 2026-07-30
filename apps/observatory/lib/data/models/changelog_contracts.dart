@@ -37,8 +37,8 @@ enum ChangelogType {
 /// Structured metadata for a changelog entry, extracted from YAML frontmatter.
 ///
 /// Maps directly to the frontmatter schema: `id`, `date`, `project`,
-/// `task`, `type`, `impact`, `skills`. Body sections (Why, Changed,
-/// Evidence) are captured as string fields.
+/// `task`, `type`, `impact`, `skills`, `workflows`. Body sections (Why,
+/// Changed, Evidence) are captured as string fields.
 @immutable
 class ChangelogMetadata {
   /// Changelog entry identifier (e.g., "2026-06-05-0310-backbone-audit").
@@ -57,10 +57,15 @@ class ChangelogMetadata {
   final ChangelogType type;
 
   /// Areas impacted by this change (e.g., ["parser", "graph-model"]).
+  ///
+  /// Frontmatter may use either `impact` or `impact_tags`; both feed this list.
   final List<String> impact;
 
   /// Skills related to this change.
   final List<String> skills;
+
+  /// Workflows related to this change (History multi-hop impact paths).
+  final List<String> workflows;
 
   /// Why this change was made (from markdown body `## Why` section).
   final String? why;
@@ -79,6 +84,7 @@ class ChangelogMetadata {
     this.type = ChangelogType.chore,
     this.impact = const [],
     this.skills = const [],
+    this.workflows = const [],
     this.why,
     this.changed,
     this.evidence,
@@ -92,6 +98,7 @@ class ChangelogMetadata {
     ChangelogType? type,
     List<String>? impact,
     List<String>? skills,
+    List<String>? workflows,
     String? why,
     String? changed,
     String? evidence,
@@ -104,6 +111,7 @@ class ChangelogMetadata {
       type: type ?? this.type,
       impact: impact ?? this.impact,
       skills: skills ?? this.skills,
+      workflows: workflows ?? this.workflows,
       why: why ?? this.why,
       changed: changed ?? this.changed,
       evidence: evidence ?? this.evidence,
@@ -147,6 +155,9 @@ extension ChangelogTypeParsing on ChangelogType {
         return ChangelogType.audit;
       case 'migration':
         return ChangelogType.migration;
+      case 'remediation':
+        // Corpus uses remediation as a History filter synonym of fix.
+        return ChangelogType.fix;
       default:
         return ChangelogType.chore;
     }

@@ -25,56 +25,56 @@ class WorkspaceDerivedMetrics extends ConsumerWidget {
       error: (_, __) => const SizedBox.shrink(),
       data: (snapshot) {
         return Wrap(
-          spacing: DSSpacing.md,
-          runSpacing: DSSpacing.md,
+          spacing: PrismSpacing.md,
+          runSpacing: PrismSpacing.md,
           children: [
-            DSMetricTile(
+            PrismMetricTile(
               label: 'Blocked Tasks',
               value: '${snapshot.blockedTaskCount}',
               icon: Icons.block_outlined,
               color: snapshot.blockedTaskCount > 0
-                  ? DSColors.statusError
-                  : DSColors.statusSuccess,
+                  ? PrismColors.statusError
+                  : PrismColors.statusSuccess,
             ),
-            DSMetricTile(
+            PrismMetricTile(
               label: 'Review Queue',
               value: '${snapshot.reviewQueueCount}',
               icon: Icons.rate_review_outlined,
               color: snapshot.reviewQueueCount > 0
-                  ? DSColors.statusWarning
-                  : DSColors.statusSuccess,
+                  ? PrismColors.statusWarning
+                  : PrismColors.statusSuccess,
             ),
-            DSMetricTile(
+            PrismMetricTile(
               label: 'No Verification',
               value: '${snapshot.tasksWithoutVerification}',
               icon: Icons.warning_amber_outlined,
               color: snapshot.tasksWithoutVerification > 0
-                  ? DSColors.statusWarning
-                  : DSColors.statusSuccess,
+                  ? PrismColors.statusWarning
+                  : PrismColors.statusSuccess,
             ),
-            DSMetricTile(
+            PrismMetricTile(
               label: 'No Triggers',
               value: '${snapshot.skillsWithNoTriggers}',
               icon: Icons.notifications_off_outlined,
               color: snapshot.skillsWithNoTriggers > 0
-                  ? DSColors.statusInfo
-                  : DSColors.statusSuccess,
+                  ? PrismColors.statusInfo
+                  : PrismColors.statusSuccess,
             ),
-            DSMetricTile(
+            PrismMetricTile(
               label: 'Orphan Workflows',
               value: '${snapshot.orphanWorkflowCount}',
               icon: Icons.link_off_outlined,
               color: snapshot.orphanWorkflowCount > 0
-                  ? DSColors.statusWarning
-                  : DSColors.statusSuccess,
+                  ? PrismColors.statusWarning
+                  : PrismColors.statusSuccess,
             ),
-            DSMetricTile(
+            PrismMetricTile(
               label: 'Gov Warnings',
               value: '${snapshot.governanceWarningCount}',
               icon: Icons.gavel_outlined,
               color: snapshot.governanceWarningCount > 0
-                  ? DSColors.statusError
-                  : DSColors.statusSuccess,
+                  ? PrismColors.statusError
+                  : PrismColors.statusSuccess,
             ),
           ],
         );

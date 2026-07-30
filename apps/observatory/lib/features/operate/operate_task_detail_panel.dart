@@ -1,4 +1,4 @@
-/// Operate task detail panel — wraps [DSDetailInspector] with
+/// Operate task detail panel — wraps [PrismDetailInspector] with
 /// task-specific sections produced by [buildTaskDetailSections].
 ///
 /// Shows a forensic case file for the selected task: metadata, dependencies,
@@ -6,11 +6,11 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:warp_prism_observatory/features/operate/operate_task_detail_mapper.dart';
+import 'package:warp_prism_observatory/features/operate/task_projection.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
-import 'task_projection.dart';
-import 'operate_task_detail_mapper.dart';
 
-/// Panel that renders a [TaskProjection] as a [DSDetailInspector].
+/// Panel that renders a [TaskProjection] as a [PrismDetailInspector].
 class OperateTaskDetailPanel extends StatelessWidget {
   /// The selected task to inspect.
   final TaskProjection task;
@@ -22,7 +22,7 @@ class OperateTaskDetailPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DSDetailInspector(
+    return PrismDetailInspector(
       title: '${task.id} — ${task.title}',
       kind: 'task',
       subtitle: 'Lane: ${task.lane.name}  •  Priority: ${task.priority}',
@@ -39,21 +39,25 @@ class OperateTaskDetailEmpty extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: DSColors.obsidianBase,
+      color: PrismColors.obsidianBase,
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            DSIcon(Icons.task_outlined, color: DSColors.textTertiary, size: 48),
-            const SizedBox(height: DSSpacing.lg),
-            DSText.headingMedium(
-              'No task selected',
-              color: DSColors.textSecondary,
+            PrismIcon(
+              Icons.task_outlined,
+              color: PrismColors.textTertiary,
+              size: 48,
             ),
-            const SizedBox(height: DSSpacing.sm),
-            DSText.bodyMedium(
+            const SizedBox(height: PrismSpacing.lg),
+            PrismText.headingMedium(
+              'No task selected',
+              color: PrismColors.textSecondary,
+            ),
+            const SizedBox(height: PrismSpacing.sm),
+            PrismText.bodyMedium(
               'Select a task card from the board to inspect its details',
-              color: DSColors.textTertiary,
+              color: PrismColors.textTertiary,
             ),
           ],
         ),

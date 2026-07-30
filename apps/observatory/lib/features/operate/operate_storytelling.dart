@@ -13,7 +13,7 @@ library;
 
 import 'package:flutter/foundation.dart';
 import 'package:warp_prism_observatory/data/models/task_contracts.dart';
-import 'task_projection.dart';
+import 'package:warp_prism_observatory/features/operate/task_projection.dart';
 
 // ---------------------------------------------------------------------------
 // Storytelling Data Contracts
@@ -203,13 +203,34 @@ OperateStoryDiagnostics deriveOperateStoryDiagnostics(
   }
 
   // ---- Blocker Clusters ----
-  final blockedTasks = tasks.where((t) => t.dependsOn.isNotEmpty).toList();
-  final blockerMap = <String, List<TaskProjection>>{};
-  for (final task in blockedTasks) {
-    for (final dep in task.dependsOn) {
-      blockerMap.putIfAbsent(dep, () => []).add(task);
+  // Only count *unresolved* dependencies: missing from the board, or present
+  // but not completed with full/verified proof (Task 0613 path-to-100 residual).
+  bool isDependencyResolved(String depId) {
+    final dep = tasks.where((t) => t.id == depId).firstOrNull;
+    if (dep == null) return false;
+    if (dep.lane != TaskLane.completed) return false;
+    return dep.proofState == ProofState.complete ||
+        dep.proofState == ProofState.verified;
+  }
+
+  final unresolvedByTask = <TaskProjection, List<String>>{};
+  for (final task in tasks) {
+    if (task.dependsOn.isEmpty) continue;
+    final unresolved = task.dependsOn
+        .where((dep) => !isDependencyResolved(dep))
+        .toList();
+    if (unresolved.isNotEmpty) {
+      unresolvedByTask[task] = unresolved;
     }
   }
+
+  final blockerMap = <String, List<TaskProjection>>{};
+  for (final entry in unresolvedByTask.entries) {
+    for (final dep in entry.value) {
+      blockerMap.putIfAbsent(dep, () => []).add(entry.key);
+    }
+  }
+  final blockedTasks = unresolvedByTask.keys.toList();
   final blockerClusters =
       blockerMap.entries
           .where((e) => e.value.isNotEmpty)
@@ -229,13 +250,16 @@ OperateStoryDiagnostics deriveOperateStoryDiagnostics(
         .where((c) => !c.dependencyExists)
         .length;
 
+    final baseDetail = totalBlocked == 1
+        ? '1 task has unresolved dependencies'
+        : '$totalBlocked tasks have unresolved dependencies';
+    final missingSuffix = missingDeps > 0
+        ? ' ($missingDeps missing dependencies)'
+        : '';
     insights.add(
       OperateInsight(
         title: 'Blocker clusters',
-        detail: totalBlocked == 1
-            ? '1 task has unresolved dependencies'
-            : '$totalBlocked tasks have unresolved dependencies'
-                  '${missingDeps > 0 ? ' ($missingDeps missing dependencies)' : ''}',
+        detail: '$baseDetail$missingSuffix',
         riskLevel: missingDeps > 0
             ? StoryRiskLevel.high
             : totalBlocked >= 5

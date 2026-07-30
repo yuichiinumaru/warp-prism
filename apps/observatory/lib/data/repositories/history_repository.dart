@@ -6,12 +6,74 @@
 /// consume this read model instead of re-parsing or re-sorting entries.
 ///
 /// This service is pure and stateless — it takes parsed changelog assets
+/// (and optional task/skill/workflow assets for multi-hop impact edges)
 /// and returns a [HistoryTimeline].
 library;
 
 import 'package:flutter/foundation.dart';
 import '../models/workspace_graph.dart';
 import '../models/changelog_contracts.dart';
+import '../models/task_contracts.dart';
+
+/// Typed hop kind for history impact paths.
+enum HistoryImpactHopKind {
+  /// changelog entry -> task (what motivated this change).
+  changelogToTask,
+
+  /// changelog entry -> skill (direct frontmatter skill reference).
+  changelogToSkill,
+
+  /// changelog entry -> workflow (direct frontmatter workflow reference).
+  changelogToWorkflow,
+
+  /// task -> skill (resolved from task frontmatter / TaskMetadata).
+  taskToSkill,
+
+  /// task -> workflow (resolved from task frontmatter / TaskMetadata).
+  taskToWorkflow,
+
+  /// changelog entry -> project (project facet linkage).
+  changelogToProject,
+}
+
+/// A single typed impact edge in the History read model.
+///
+/// Materializes multi-hop paths such as
+/// `changelog -> task -> skill/workflow` and `changelog -> project`
+/// without forcing the UI to re-walk graph edges.
+@immutable
+class HistoryImpactEdge {
+  /// Source asset id (usually a changelog or task id).
+  final String sourceId;
+
+  /// Target asset id (task:, skill:, workflow:, or project:).
+  final String targetId;
+
+  /// Typed hop kind.
+  final HistoryImpactHopKind kind;
+
+  const HistoryImpactEdge({
+    required this.sourceId,
+    required this.targetId,
+    required this.kind,
+  });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is HistoryImpactEdge &&
+          runtimeType == other.runtimeType &&
+          sourceId == other.sourceId &&
+          targetId == other.targetId &&
+          kind == other.kind;
+
+  @override
+  int get hashCode => Object.hash(sourceId, targetId, kind);
+
+  @override
+  String toString() =>
+      'HistoryImpactEdge($sourceId -[${kind.name}]-> $targetId)';
+}
 
 /// A single entry in the history timeline, carrying all typed metadata
 /// needed for rendering, filtering, and drill-down.
@@ -23,8 +85,9 @@ class HistoryEntry {
   /// Human-readable title derived from frontmatter or body heading.
   final String title;
 
-  /// Date of the changelog entry.
-  final DateTime date;
+  /// Date of the changelog entry. Null when the source date is missing
+  /// or unparseable; such entries sort last and carry [isMalformed].
+  final DateTime? date;
 
   /// Project this change belongs to.
   final String project;
@@ -38,17 +101,57 @@ class HistoryEntry {
   /// Impact tags from frontmatter.
   final List<String> impactTags;
 
-  /// Skills referenced by this entry.
+  /// Skills referenced by this entry (direct frontmatter).
   final List<String> skills;
+
+  /// Workflows referenced by this entry (direct frontmatter).
+  final List<String> workflows;
 
   /// Filesystem path of the source asset.
   final String path;
+
+  /// Whether this entry is incomplete/malformed and needs graceful UI treatment.
+  final bool isMalformed;
+
+  /// Human-readable warnings describing malformed/missing fields.
+  final List<String> warnings;
+
+  /// Typed multi-hop impact edges for this entry.
+  final List<HistoryImpactEdge> impactEdges;
 
   /// Linked task asset id (resolved to graph id format).
   String? get linkedTaskId => task.isNotEmpty ? 'task:$task' : null;
 
   /// Whether this entry has a linked task in the graph.
   bool get hasTaskLink => task.isNotEmpty;
+
+  /// Skills reachable via direct frontmatter or task hop.
+  List<String> get resolvedSkills {
+    final fromEdges = impactEdges
+        .where(
+          (e) =>
+              e.kind == HistoryImpactHopKind.changelogToSkill ||
+              e.kind == HistoryImpactHopKind.taskToSkill,
+        )
+        .map((e) => e.targetId.replaceFirst(RegExp(r'^skill:'), ''))
+        .toList();
+    if (fromEdges.isEmpty) return skills;
+    return {...skills, ...fromEdges}.toList();
+  }
+
+  /// Workflows reachable via direct frontmatter or task hop.
+  List<String> get resolvedWorkflows {
+    final fromEdges = impactEdges
+        .where(
+          (e) =>
+              e.kind == HistoryImpactHopKind.changelogToWorkflow ||
+              e.kind == HistoryImpactHopKind.taskToWorkflow,
+        )
+        .map((e) => e.targetId.replaceFirst(RegExp(r'^workflow:'), ''))
+        .toList();
+    if (fromEdges.isEmpty) return workflows;
+    return {...workflows, ...fromEdges}.toList();
+  }
 
   const HistoryEntry({
     required this.id,
@@ -60,6 +163,10 @@ class HistoryEntry {
     required this.impactTags,
     required this.skills,
     required this.path,
+    this.workflows = const [],
+    this.isMalformed = false,
+    this.warnings = const [],
+    this.impactEdges = const [],
   });
 
   @override
@@ -75,7 +182,9 @@ class HistoryEntry {
 
   @override
   String toString() =>
-      'HistoryEntry($id, $project, ${type.name}, ${date.toIso8601String().substring(0, 10)})';
+      'HistoryEntry($id, $project, ${type.name}, '
+      '${date?.toIso8601String().substring(0, 10) ?? 'no-date'}'
+      '${isMalformed ? ', malformed' : ''})';
 }
 
 /// Available filter facets for the History surface.
@@ -97,7 +206,7 @@ class HistoryFacets {
   /// Unique skill references.
   final Set<String> skills;
 
-  /// Unique workflow references (from linked task/entry metadata).
+  /// Unique workflow references (from entry frontmatter and task hops).
   final Set<String> workflows;
 
   /// Unique impact tags across all entries.
@@ -125,7 +234,7 @@ class HistoryFacets {
   String toString() =>
       'HistoryFacets(projects: ${projects.length}, types: ${types.length}, '
       'tasks: ${tasks.length}, skills: ${skills.length}, '
-      'impactTags: ${impactTags.length})';
+      'workflows: ${workflows.length}, impactTags: ${impactTags.length})';
 }
 
 /// A story group aggregates changelog entries by a shared dimension
@@ -159,7 +268,7 @@ class HistoryStoryGroup {
 /// and optional story-mode groupings.
 @immutable
 class HistoryTimeline {
-  /// All entries sorted chronologically (newest first).
+  /// All entries sorted chronologically (newest first; malformed last).
   final List<HistoryEntry> entries;
 
   /// Available filter facets.
@@ -174,12 +283,16 @@ class HistoryTimeline {
   /// Entries grouped by task for story mode.
   final List<HistoryStoryGroup> byTask;
 
+  /// Flat list of all typed impact edges across entries.
+  final List<HistoryImpactEdge> impactEdges;
+
   const HistoryTimeline({
     required this.entries,
     required this.facets,
     required this.byProject,
     required this.byType,
     required this.byTask,
+    this.impactEdges = const [],
   });
 
   /// An empty timeline with no entries.
@@ -188,7 +301,8 @@ class HistoryTimeline {
       facets = const HistoryFacets.empty(),
       byProject = const [],
       byType = const [],
-      byTask = const [];
+      byTask = const [],
+      impactEdges = const [];
 
   /// Total number of entries.
   int get count => entries.length;
@@ -198,6 +312,10 @@ class HistoryTimeline {
 
   /// Whether the timeline has entries.
   bool get isNotEmpty => entries.isNotEmpty;
+
+  /// Entries that are incomplete/malformed.
+  List<HistoryEntry> get malformedEntries =>
+      entries.where((e) => e.isMalformed).toList();
 
   /// Filter entries by project.
   List<HistoryEntry> filterByProject(String project) =>
@@ -215,13 +333,18 @@ class HistoryTimeline {
   List<HistoryEntry> filterByImpactTag(String tag) =>
       entries.where((e) => e.impactTags.contains(tag)).toList();
 
-  /// Filter entries by skill.
+  /// Filter entries by skill (direct or resolved hop).
   List<HistoryEntry> filterBySkill(String skill) =>
-      entries.where((e) => e.skills.contains(skill)).toList();
+      entries.where((e) => e.resolvedSkills.contains(skill)).toList();
+
+  /// Filter entries by workflow (direct or resolved hop).
+  List<HistoryEntry> filterByWorkflow(String workflow) =>
+      entries.where((e) => e.resolvedWorkflows.contains(workflow)).toList();
 
   @override
   String toString() =>
-      'HistoryTimeline(${entries.length} entries, ${byProject.length} projects)';
+      'HistoryTimeline(${entries.length} entries, ${byProject.length} projects, '
+      '${impactEdges.length} impact edges)';
 }
 
 /// Computes the history read model from changelog [WorkspaceAsset] entries.
@@ -229,64 +352,62 @@ class HistoryTimeline {
 /// Usage:
 /// ```dart
 /// const repo = HistoryRepository();
-/// final timeline = repo.buildTimeline(changelogAssets);
+/// final timeline = repo.buildTimeline(
+///   changelogAssets,
+///   tasks: taskAssets,
+/// );
 /// ```
 class HistoryRepository {
   const HistoryRepository();
 
   /// Build a [HistoryTimeline] from a list of changelog [WorkspaceAsset]s.
   ///
+  /// Optional [tasks] enable multi-hop resolution
+  /// `changelog -> task -> skill/workflow`. Optional [skills]/[workflows]
+  /// are reserved for future existence checks and do not change hop emission.
+  ///
   /// Steps:
-  /// 1. Extract [ChangelogMetadata] from each asset's frontmatter.
-  /// 2. Build [HistoryEntry] objects with resolved metadata.
-  /// 3. Sort chronologically (newest first; malformed dates sort last).
-  /// 4. Compute filter facets.
-  /// 5. Build story-mode groupings.
-  HistoryTimeline buildTimeline(List<WorkspaceAsset> changelogAssets) {
+  /// 1. Extract [ChangelogMetadata] / raw frontmatter from each asset.
+  /// 2. Preserve incomplete entries as malformed data with warnings.
+  /// 3. Build [HistoryEntry] objects with typed impact edges.
+  /// 4. Sort chronologically (newest first; null dates last).
+  /// 5. Compute filter facets and story-mode groupings.
+  HistoryTimeline buildTimeline(
+    List<WorkspaceAsset> changelogAssets, {
+    List<WorkspaceAsset> tasks = const [],
+    List<WorkspaceAsset> skills = const [],
+    List<WorkspaceAsset> workflows = const [],
+  }) {
+    // Silence unused reserved parameters without changing the public API.
+    assert(skills.isEmpty || skills.isNotEmpty);
+    assert(workflows.isEmpty || workflows.isNotEmpty);
+
+    final taskIndex = _indexTasks(tasks);
     final rawEntries = <_RawEntry>[];
 
     for (final asset in changelogAssets) {
-      final meta =
-          asset.frontmatter['_changelogMetadata'] as ChangelogMetadata?;
-      if (meta != null) {
-        rawEntries.add(_RawEntry(asset: asset, meta: meta));
-      } else {
-        // Fallback: try to extract minimal info from frontmatter map
-        final fm = asset.frontmatter;
-        final date = _parseDate(fm['date']);
-        if (date != null) {
-          rawEntries.add(_RawEntry.fromMap(asset: asset, date: date));
-        }
-      }
+      rawEntries.add(_RawEntry.fromAsset(asset));
     }
 
-    // Sort: newest first, malformed dates at the end
+    // Sort: newest first, null/malformed dates at the end, stable by id.
     rawEntries.sort((a, b) {
-      if (a.date == null && b.date == null) return 0;
+      if (a.date == null && b.date == null) {
+        return a.asset.id.compareTo(b.asset.id);
+      }
       if (a.date == null) return 1;
       if (b.date == null) return -1;
-      return b.date!.compareTo(a.date!);
+      final byDate = b.date!.compareTo(a.date!);
+      if (byDate != 0) return byDate;
+      return a.asset.id.compareTo(b.asset.id);
     });
 
-    // Build HistoryEntry objects
-    final entries = rawEntries.map((raw) {
-      return HistoryEntry(
-        id: raw.asset.id,
-        title: _extractTitle(raw.asset),
-        date: raw.date ?? DateTime(2000, 1, 1), // Fallback for malformed
-        project: raw.project ?? 'unknown',
-        task: raw.task ?? '',
-        type: raw.type ?? ChangelogType.chore,
-        impactTags: raw.impactTags,
-        skills: raw.skills,
-        path: raw.asset.path,
-      );
-    }).toList();
+    final entries = rawEntries
+        .map((raw) => _toHistoryEntry(raw, taskIndex))
+        .toList();
 
-    // Compute facets
+    final allImpactEdges = entries.expand((e) => e.impactEdges).toList();
     final facets = _computeFacets(entries);
 
-    // Build story groupings
     final byProject = _groupBy(entries, (e) => e.project, 'Project');
     final byType = _groupBy(entries, (e) => e.type.name, 'Type');
     final byTask = _groupBy(
@@ -301,6 +422,100 @@ class HistoryRepository {
       byProject: byProject,
       byType: byType,
       byTask: byTask,
+      impactEdges: allImpactEdges,
+    );
+  }
+
+  HistoryEntry _toHistoryEntry(
+    _RawEntry raw,
+    Map<String, _TaskHopTargets> taskIndex,
+  ) {
+    final warnings = List<String>.from(raw.warnings);
+    final isMalformed = warnings.isNotEmpty;
+
+    final impactEdges = <HistoryImpactEdge>[];
+    final project = raw.project ?? 'unknown';
+    final task = raw.task ?? '';
+    final skills = raw.skills;
+    final workflows = raw.workflows;
+
+    if (project.isNotEmpty && project != 'unknown') {
+      impactEdges.add(
+        HistoryImpactEdge(
+          sourceId: raw.asset.id,
+          targetId: 'project:$project',
+          kind: HistoryImpactHopKind.changelogToProject,
+        ),
+      );
+    } else {
+      warnings.add('missing_project');
+    }
+
+    if (task.isNotEmpty) {
+      impactEdges.add(
+        HistoryImpactEdge(
+          sourceId: raw.asset.id,
+          targetId: 'task:$task',
+          kind: HistoryImpactHopKind.changelogToTask,
+        ),
+      );
+
+      final hop = taskIndex[task] ?? taskIndex[_normalizeTaskKey(task)];
+      if (hop != null) {
+        for (final skill in hop.skills) {
+          impactEdges.add(
+            HistoryImpactEdge(
+              sourceId: 'task:$task',
+              targetId: 'skill:$skill',
+              kind: HistoryImpactHopKind.taskToSkill,
+            ),
+          );
+        }
+        for (final workflow in hop.workflows) {
+          impactEdges.add(
+            HistoryImpactEdge(
+              sourceId: 'task:$task',
+              targetId: 'workflow:$workflow',
+              kind: HistoryImpactHopKind.taskToWorkflow,
+            ),
+          );
+        }
+      }
+    }
+
+    for (final skill in skills) {
+      impactEdges.add(
+        HistoryImpactEdge(
+          sourceId: raw.asset.id,
+          targetId: 'skill:$skill',
+          kind: HistoryImpactHopKind.changelogToSkill,
+        ),
+      );
+    }
+    for (final workflow in workflows) {
+      impactEdges.add(
+        HistoryImpactEdge(
+          sourceId: raw.asset.id,
+          targetId: 'workflow:$workflow',
+          kind: HistoryImpactHopKind.changelogToWorkflow,
+        ),
+      );
+    }
+
+    return HistoryEntry(
+      id: raw.asset.id,
+      title: _extractTitle(raw.asset),
+      date: raw.date,
+      project: project,
+      task: task,
+      type: raw.type ?? ChangelogType.chore,
+      impactTags: raw.impactTags,
+      skills: skills,
+      workflows: workflows,
+      path: raw.asset.path,
+      isMalformed: isMalformed || warnings.isNotEmpty,
+      warnings: warnings.toSet().toList(),
+      impactEdges: impactEdges,
     );
   }
 
@@ -310,13 +525,15 @@ class HistoryRepository {
     final types = <ChangelogType>{};
     final tasks = <String>{};
     final skills = <String>{};
+    final workflows = <String>{};
     final impactTags = <String>{};
 
     for (final entry in entries) {
       projects.add(entry.project);
       types.add(entry.type);
       if (entry.task.isNotEmpty) tasks.add(entry.task);
-      skills.addAll(entry.skills);
+      skills.addAll(entry.resolvedSkills);
+      workflows.addAll(entry.resolvedWorkflows);
       impactTags.addAll(entry.impactTags);
     }
 
@@ -325,7 +542,7 @@ class HistoryRepository {
       types: types,
       tasks: tasks,
       skills: skills,
-      workflows: const {}, // Resolved from graph edges, not entries alone
+      workflows: workflows,
       impactTags: impactTags,
     );
   }
@@ -359,26 +576,56 @@ class HistoryRepository {
 
   /// Extract a human-readable title from an asset.
   String _extractTitle(WorkspaceAsset asset) {
-    // Try frontmatter name or id
     final fm = asset.frontmatter;
     final name = fm['name']?.toString();
     if (name != null && name.isNotEmpty) return name;
 
-    // For changelog, try the body heading
     final id = fm['id']?.toString();
     if (id != null && id.isNotEmpty) return id;
 
-    // Fall back to asset name
     return asset.name;
   }
 
-  /// Parse a date from a dynamic value.
-  DateTime? _parseDate(dynamic value) {
-    if (value == null) return null;
-    if (value is DateTime) return value;
-    if (value is String) return DateTime.tryParse(value);
-    return null;
+  static Map<String, _TaskHopTargets> _indexTasks(List<WorkspaceAsset> tasks) {
+    final index = <String, _TaskHopTargets>{};
+    for (final task in tasks) {
+      final meta = task.frontmatter['_taskMetadata'] as TaskMetadata?;
+      final rawId =
+          meta?.id ??
+          task.frontmatter['id']?.toString() ??
+          task.id.replaceFirst(RegExp(r'^task:'), '');
+      final skills =
+          meta?.skills ?? _parseStringList(task.frontmatter['skills']);
+      final workflows =
+          meta?.workflows ?? _parseStringList(task.frontmatter['workflows']);
+      final targets = _TaskHopTargets(skills: skills, workflows: workflows);
+      index[rawId] = targets;
+      index[_normalizeTaskKey(rawId)] = targets;
+      // Also index bare numeric / T-prefixed variants.
+      final alt = rawId.startsWith('T') ? rawId.substring(1) : 'T$rawId';
+      index.putIfAbsent(alt, () => targets);
+      index.putIfAbsent(_normalizeTaskKey(alt), () => targets);
+    }
+    return index;
   }
+
+  static String _normalizeTaskKey(String taskId) {
+    return taskId.trim().toUpperCase();
+  }
+
+  static List<String> _parseStringList(dynamic value) {
+    if (value == null) return [];
+    if (value is List) return value.map((e) => e.toString()).toList();
+    return [];
+  }
+}
+
+/// Skills/workflows reachable from a task asset.
+class _TaskHopTargets {
+  final List<String> skills;
+  final List<String> workflows;
+
+  const _TaskHopTargets({required this.skills, required this.workflows});
 }
 
 /// Internal helper for raw entry processing.
@@ -390,23 +637,96 @@ class _RawEntry {
   final ChangelogType? type;
   final List<String> impactTags;
   final List<String> skills;
+  final List<String> workflows;
+  final List<String> warnings;
 
-  _RawEntry({required this.asset, required ChangelogMetadata meta})
-    : date = meta.date,
-      project = meta.project,
-      task = meta.task,
-      type = meta.type,
-      impactTags = meta.impact,
+  _RawEntry({
+    required this.asset,
+    required this.date,
+    required this.project,
+    required this.task,
+    required this.type,
+    required this.impactTags,
+    required this.skills,
+    required this.workflows,
+    required this.warnings,
+  });
+
+  /// Build from a parsed changelog asset, never dropping the entry.
+  factory _RawEntry.fromAsset(WorkspaceAsset asset) {
+    final warnings = <String>[];
+    final fm = asset.frontmatter;
+    final meta = fm['_changelogMetadata'] as ChangelogMetadata?;
+
+    DateTime? date;
+    String? project;
+    String? task;
+    ChangelogType? type;
+    List<String> impactTags;
+    List<String> skills;
+    List<String> workflows;
+
+    final rawDate = fm['date'];
+    final parsedRawDate = _parseDate(rawDate);
+
+    if (meta != null) {
+      // Prefer a real parse of the raw frontmatter date over the parser's
+      // DateTime.now() fallback for invalid strings.
+      if (rawDate != null && parsedRawDate == null) {
+        date = null;
+        warnings.add('invalid_date');
+      } else {
+        date = parsedRawDate ?? meta.date;
+      }
+      project = meta.project;
+      task = meta.task;
+      type = meta.type;
+      impactTags = meta.impact;
       skills = meta.skills;
+      workflows = _parseStringList(fm['workflows']);
+    } else {
+      date = parsedRawDate;
+      if (rawDate != null && date == null) {
+        warnings.add('invalid_date');
+      } else if (rawDate == null) {
+        warnings.add('missing_date');
+      }
+      project = fm['project']?.toString();
+      task = fm['task']?.toString();
+      type = ChangelogTypeParsing.fromString(fm['type']?.toString());
+      impactTags = _parseStringList(fm['impact']);
+      skills = _parseStringList(fm['skills']);
+      workflows = _parseStringList(fm['workflows']);
+      warnings.add('missing_changelog_metadata');
+    }
 
-  _RawEntry.fromMap({required this.asset, required this.date})
-    : project = asset.frontmatter['project']?.toString(),
-      task = asset.frontmatter['task']?.toString(),
-      type = ChangelogTypeParsing.fromString(
-        asset.frontmatter['type']?.toString(),
-      ),
-      impactTags = _parseStringList(asset.frontmatter['impact']),
-      skills = _parseStringList(asset.frontmatter['skills']);
+    if (project == null || project.isEmpty) {
+      warnings.add('missing_project');
+    }
+
+    return _RawEntry(
+      asset: asset,
+      date: date,
+      project: project,
+      task: task,
+      type: type,
+      impactTags: impactTags,
+      skills: skills,
+      workflows: workflows,
+      warnings: warnings,
+    );
+  }
+
+  static DateTime? _parseDate(dynamic value) {
+    if (value == null) return null;
+    if (value is DateTime) return value;
+    if (value is String) {
+      final trimmed = value.trim();
+      if (trimmed.isEmpty) return null;
+      return DateTime.tryParse(trimmed);
+    }
+    return null;
+  }
 
   static List<String> _parseStringList(dynamic value) {
     if (value == null) return [];

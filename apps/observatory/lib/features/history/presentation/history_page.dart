@@ -1,6 +1,6 @@
 /// History workspace page — the primary timeline experience.
 ///
-/// Renders a chronological changelog timeline using [DSTimeline],
+/// Renders a chronological changelog timeline using [PrismTimeline],
 /// wired to a [HistoryState] read model. Supports desktop-first
 /// master/detail layout with filter controls for project, type,
 /// task, skill/workflow, and impact_tags.
@@ -12,12 +12,12 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
-import 'package:warp_prism_observatory/data/models/changelog_contracts.dart';
-import '../../asset_detail/presentation/responsive_detail_shell.dart';
-import 'history_controller.dart';
-import 'history_view_mode.dart';
-import 'widgets/history_story_view.dart';
-import 'widgets/history_impact_view.dart';
+import 'package:warp_prism_observatory/data/repositories/history_repository.dart';
+import 'package:warp_prism_observatory/features/asset_detail/asset_detail.dart';
+import 'package:warp_prism_observatory/features/history/presentation/history_controller.dart';
+import 'package:warp_prism_observatory/features/history/presentation/history_view_mode.dart';
+import 'package:warp_prism_observatory/features/history/presentation/widgets/history_story_view.dart';
+import 'package:warp_prism_observatory/features/history/presentation/widgets/history_impact_view.dart';
 
 /// The main History workspace page.
 ///
@@ -42,6 +42,20 @@ class _HistoryWorkspacePageState extends State<HistoryWorkspacePage> {
   void initState() {
     super.initState();
     _state = widget.initialState ?? const HistoryState();
+  }
+
+  @override
+  void didUpdateWidget(covariant HistoryWorkspacePage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialState != null &&
+        widget.initialState != oldWidget.initialState) {
+      // Preserve local selection/filters when parent reloads data.
+      _state = widget.initialState!.copyWith(
+        activeFilters: _state.activeFilters,
+        selectedEntryId: _state.selectedEntryId,
+        viewMode: _state.viewMode,
+      );
+    }
   }
 
   void _toggleFilter(HistoryFilterCategory category, String value) {
@@ -77,17 +91,19 @@ class _HistoryWorkspacePageState extends State<HistoryWorkspacePage> {
 
   @override
   Widget build(BuildContext context) {
-    // Loading state
     if (_state.isLoading) {
       return const Center(
-        child: CircularProgressIndicator(color: DSColors.accentCyan),
+        child: PrismStateSurface.loading(
+          icon: Icons.hourglass_empty,
+          title: 'Loading history...',
+          subtitle: 'Parsing changelog timeline',
+        ),
       );
     }
 
-    // Error state
     if (_state.error != null) {
-      return DSStateSurface.error(
-        icon: DSIcons.error,
+      return PrismStateSurface.error(
+        icon: PrismIcons.error,
         title: 'Failed to load history',
         subtitle: _state.error!,
         actionLabel: null,
@@ -97,22 +113,17 @@ class _HistoryWorkspacePageState extends State<HistoryWorkspacePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // Mode switcher + Filter bar
         _buildToolbar(),
-
-        // Result count
         Padding(
           padding: const EdgeInsets.symmetric(
-            horizontal: DSSpacing.lg,
-            vertical: DSSpacing.xs,
+            horizontal: PrismSpacing.lg,
+            vertical: PrismSpacing.xs,
           ),
-          child: DSText.labelSmall(
+          child: PrismText.labelSmall(
             '${_state.filteredEntries.length} of ${_state.allEntries.length} entries',
-            color: DSColors.textTertiary,
+            color: PrismColors.textTertiary,
           ),
         ),
-
-        // Main content area
         Expanded(child: _buildContent()),
       ],
     );
@@ -121,18 +132,16 @@ class _HistoryWorkspacePageState extends State<HistoryWorkspacePage> {
   Widget _buildToolbar() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(
-        DSSpacing.lg,
-        DSSpacing.md,
-        DSSpacing.lg,
+        PrismSpacing.lg,
+        PrismSpacing.md,
+        PrismSpacing.lg,
         0,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // View mode switcher
           _buildViewModeSwitcher(),
-          const SizedBox(height: DSSpacing.sm),
-          // Filter bar (scrolls horizontally)
+          const SizedBox(height: PrismSpacing.sm),
           _buildFilterBar(),
         ],
       ),
@@ -150,14 +159,14 @@ class _HistoryWorkspacePageState extends State<HistoryWorkspacePage> {
             isActive: _state.viewMode == HistoryViewMode.timeline,
             onTap: () => _setViewMode(HistoryViewMode.timeline),
           ),
-          const SizedBox(width: DSSpacing.xs),
+          const SizedBox(width: PrismSpacing.xs),
           _ModeChip(
             label: 'Project Story',
             icon: Icons.auto_stories_outlined,
             isActive: _state.viewMode == HistoryViewMode.projectStory,
             onTap: () => _setViewMode(HistoryViewMode.projectStory),
           ),
-          const SizedBox(width: DSSpacing.xs),
+          const SizedBox(width: PrismSpacing.xs),
           _ModeChip(
             label: 'Impact Story',
             icon: Icons.account_tree_outlined,
@@ -179,25 +188,25 @@ class _HistoryWorkspacePageState extends State<HistoryWorkspacePage> {
             HistoryFilterCategory.project,
             Icons.folder_outlined,
           ),
-          const SizedBox(width: DSSpacing.md),
+          const SizedBox(width: PrismSpacing.md),
           _buildFilterCategory(
             'Type',
             HistoryFilterCategory.type,
             Icons.category_outlined,
           ),
-          const SizedBox(width: DSSpacing.md),
+          const SizedBox(width: PrismSpacing.md),
           _buildFilterCategory(
             'Task',
             HistoryFilterCategory.task,
-            DSIcons.task,
+            PrismIcons.task,
           ),
-          const SizedBox(width: DSSpacing.md),
+          const SizedBox(width: PrismSpacing.md),
           _buildFilterCategory(
             'Skills',
             HistoryFilterCategory.skillWorkflow,
-            DSIcons.skill,
+            PrismIcons.skill,
           ),
-          const SizedBox(width: DSSpacing.md),
+          const SizedBox(width: PrismSpacing.md),
           _buildFilterCategory(
             'Impacts',
             HistoryFilterCategory.impactTag,
@@ -221,11 +230,11 @@ class _HistoryWorkspacePageState extends State<HistoryWorkspacePage> {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        DSIcon.small(icon, color: DSColors.textTertiary),
-        const SizedBox(width: DSSpacing.xs),
-        DSFilterChipGroup(
+        PrismIcon.small(icon, color: PrismColors.textTertiary),
+        const SizedBox(width: PrismSpacing.xs),
+        PrismFilterChipGroup(
           options: options
-              .map((o) => DSFilterOption(value: o, label: o))
+              .map((o) => PrismFilterOption(value: o, label: o))
               .toList(),
           selected: selected,
           onToggle: (value) => _toggleFilter(category, value),
@@ -253,7 +262,16 @@ class _HistoryWorkspacePageState extends State<HistoryWorkspacePage> {
               .firstOrNull
         : null;
 
-    final timeline = DSTimeline(
+    if (entries.isEmpty) {
+      return const PrismStateSurface.empty(
+        icon: Icons.history_outlined,
+        title: 'No history entries',
+        subtitle:
+            'Changelog entries will appear here after the workspace timeline loads',
+      );
+    }
+
+    final timeline = PrismTimeline(
       entries: entries,
       selectedId: _state.selectedEntryId,
       onEntryTap: _selectEntry,
@@ -276,83 +294,58 @@ class _HistoryWorkspacePageState extends State<HistoryWorkspacePage> {
 
   Widget _buildProjectStory() {
     final groups = _state.toProjectStoryGroups();
-    return HistoryStoryView(
+    final selectedEntry = _state.selectedEntry;
+    final master = HistoryStoryView(
       groups: groups,
       onEntryTap: _selectEntry,
       selectedEntryId: _state.selectedEntryId,
+    );
+
+    return ResponsiveDetailShell(
+      showDetail: selectedEntry != null,
+      onDetailClose: () => setState(() {
+        _state = _state.copyWith(clearSelection: true);
+      }),
+      detailTitle: selectedEntry?.id,
+      detailKind: 'changelog',
+      masterContent: master,
+      detailContent: selectedEntry != null
+          ? _buildDetailPanel(selectedEntry)
+          : const SizedBox.shrink(),
     );
   }
 
   Widget _buildImpactStory() {
     final nodes = _state.toImpactPathNodes();
-    return HistoryImpactView(
+    final selectedEntry = _state.selectedEntry;
+    final master = HistoryImpactView(
       nodes: nodes,
       onEntryTap: _selectEntry,
       selectedEntryId: _state.selectedEntryId,
     );
+
+    return ResponsiveDetailShell(
+      showDetail: selectedEntry != null,
+      onDetailClose: () => setState(() {
+        _state = _state.copyWith(clearSelection: true);
+      }),
+      detailTitle: selectedEntry?.id,
+      detailKind: 'changelog',
+      masterContent: master,
+      detailContent: selectedEntry != null
+          ? _buildDetailPanel(selectedEntry)
+          : const SizedBox.shrink(),
+    );
   }
 
-  Widget _buildDetailPanel(ChangelogMetadata entry) {
-    return DSDetailInspector(
-      title: entry.id,
-      kind: 'changelog',
-      subtitle: '${entry.project} • ${entry.type.name}',
+  /// Universal changelog detail via descriptor → [AssetDetailView]
+  /// (Task 0905 path-to-100: no surface-local PrismDetailInspector).
+  Widget _buildDetailPanel(HistoryEntry entry) {
+    return AssetDetailView(
+      descriptor: descriptorFromHistoryEntry(entry),
       onClose: () => setState(() {
         _state = _state.copyWith(clearSelection: true);
       }),
-      sections: [
-        DSDetailSection(
-          title: 'Metadata',
-          icon: Icons.info_outline,
-          child: Column(
-            children: [
-              DSPropertyRow(label: 'Project', value: entry.project),
-              DSPropertyRow(label: 'Task', value: entry.task),
-              DSPropertyRow(label: 'Type', value: entry.type.name),
-              DSPropertyRow(
-                label: 'Date',
-                value:
-                    '${entry.date.year}-${entry.date.month.toString().padLeft(2, '0')}-${entry.date.day.toString().padLeft(2, '0')}',
-              ),
-            ],
-          ),
-        ),
-        if (entry.impact.isNotEmpty)
-          DSDetailSection(
-            title: 'Impact Tags',
-            icon: Icons.label_outline,
-            count: entry.impact.length,
-            child: Wrap(
-              spacing: DSSpacing.xs,
-              runSpacing: DSSpacing.xs,
-              children: entry.impact.map((t) => DSChip(label: t)).toList(),
-            ),
-          ),
-        if (entry.why != null)
-          DSDetailSection(
-            title: 'Why',
-            icon: Icons.question_mark,
-            child: DSText.bodySmall(entry.why!, color: DSColors.textSecondary),
-          ),
-        if (entry.changed != null)
-          DSDetailSection(
-            title: 'Changed',
-            icon: Icons.change_circle_outlined,
-            child: DSText.bodySmall(
-              entry.changed!,
-              color: DSColors.textSecondary,
-            ),
-          ),
-        if (entry.evidence != null)
-          DSDetailSection(
-            title: 'Evidence',
-            icon: Icons.fact_check,
-            child: DSText.bodySmall(
-              entry.evidence!,
-              color: DSColors.textSecondary,
-            ),
-          ),
-      ],
     );
   }
 }
@@ -373,39 +366,53 @@ class _ModeChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: DSSpacing.sm,
-            vertical: DSSpacing.xs,
-          ),
-          decoration: BoxDecoration(
-            color: isActive
-                ? DSColors.accentCyan.withOpacity(0.15)
-                : Colors.transparent,
-            borderRadius: BorderRadius.circular(DSRadii.sm),
-            border: Border.all(
-              color: isActive
-                  ? DSColors.accentCyan.withOpacity(0.4)
-                  : DSColors.borderSubtle,
+    return Semantics(
+      button: true,
+      selected: isActive,
+      label: label,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+        child: GestureDetector(
+          onTap: onTap,
+          behavior: HitTestBehavior.opaque,
+          child: MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: Container(
+              alignment: Alignment.center,
+              padding: const EdgeInsets.symmetric(
+                horizontal: PrismSpacing.sm,
+                vertical: PrismSpacing.xs,
+              ),
+              decoration: BoxDecoration(
+                color: isActive
+                    ? PrismColors.accentCyan.withValues(alpha: 0.15)
+                    : Colors.transparent,
+                borderRadius: BorderRadius.circular(PrismRadii.sm),
+                border: Border.all(
+                  color: isActive
+                      ? PrismColors.accentCyan.withValues(alpha: 0.4)
+                      : PrismColors.borderSubtle,
+                ),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  PrismIcon.small(
+                    icon,
+                    color: isActive
+                        ? PrismColors.accentCyan
+                        : PrismColors.textTertiary,
+                  ),
+                  const SizedBox(width: PrismSpacing.xs),
+                  PrismText.labelSmall(
+                    label,
+                    color: isActive
+                        ? PrismColors.accentCyan
+                        : PrismColors.textTertiary,
+                  ),
+                ],
+              ),
             ),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              DSIcon.small(
-                icon,
-                color: isActive ? DSColors.accentCyan : DSColors.textTertiary,
-              ),
-              const SizedBox(width: DSSpacing.xs),
-              DSText.labelSmall(
-                label,
-                color: isActive ? DSColors.accentCyan : DSColors.textTertiary,
-              ),
-            ],
           ),
         ),
       ),

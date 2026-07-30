@@ -47,6 +47,29 @@ class ForceDirectedConfig {
     this.nodeSpacing = 150.0,
     this.iterations = 200,
   });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ForceDirectedConfig &&
+          repulsion == other.repulsion &&
+          attraction == other.attraction &&
+          damping == other.damping &&
+          minDistance == other.minDistance &&
+          centerGravity == other.centerGravity &&
+          nodeSpacing == other.nodeSpacing &&
+          iterations == other.iterations;
+
+  @override
+  int get hashCode => Object.hash(
+    repulsion,
+    attraction,
+    damping,
+    minDistance,
+    centerGravity,
+    nodeSpacing,
+    iterations,
+  );
 }
 
 /// Force-directed layout engine.
@@ -58,6 +81,14 @@ class ForceDirectedLayout implements GraphLayoutEngine {
   final ForceDirectedConfig config;
 
   const ForceDirectedLayout({this.config = const ForceDirectedConfig()});
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ForceDirectedLayout && config == other.config;
+
+  @override
+  int get hashCode => config.hashCode;
 
   @override
   Map<GraphNodeId, Offset> layout(GraphModel model, Size canvasSize) {

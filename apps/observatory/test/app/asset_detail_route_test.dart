@@ -9,11 +9,17 @@
 /// - Legacy /asset/:id redirect
 library;
 
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:warp_prism_observatory/app/asset_selection_controller.dart';
+import 'package:warp_prism_observatory/app/pages/asset_detail_page.dart';
+import 'package:warp_prism_observatory/data/providers/workspace_providers.dart';
 import 'package:warp_prism_observatory/data/services/workspace_graph.dart';
 import 'package:warp_prism_observatory/data/models/workspace_graph.dart';
+import 'package:warp_prism_observatory/features/asset_detail/presentation/asset_detail_view.dart';
+import 'package:warp_prism_ui/warp_prism_ui.dart';
 
 const _sampleAsset = WorkspaceAsset(
   id: 'agent:test-agent',
@@ -179,14 +185,18 @@ void main() {
       expect(state.incomingEdges.first.sourceId, 'agent:test-agent');
     });
 
-    test('detailRoute builds canonical path', () {
+    test('detailRoute builds canonical encoded path', () {
       expect(
         AssetSelectionController.detailRoute('agent:test-agent'),
-        '/assets/agent:test-agent',
+        '/assets/${Uri.encodeComponent('agent:test-agent')}',
       );
       expect(
         AssetSelectionController.detailRoute('task:0315'),
-        '/assets/task:0315',
+        '/assets/${Uri.encodeComponent('task:0315')}',
+      );
+      expect(
+        AssetSelectionController.detailRoute('agent:test-agent'),
+        '/assets/agent%3Atest-agent',
       );
     });
   });
@@ -289,4 +299,164 @@ void main() {
       expect(asset!.name, 'Test Agent');
     });
   });
+
+  group('GoRouter asset detail route contract', () {
+    /// Minimal router mirroring production `/assets/:assetId` contract without
+    /// loading product shell branches (keeps suite OOM-safe and fast).
+    GoRouter buildContractRouter({String initialLocation = '/overview'}) {
+      return GoRouter(
+        initialLocation: initialLocation,
+        routes: [
+          GoRoute(
+            path: '/overview',
+            builder: (context, state) =>
+                const Scaffold(body: Center(child: Text('overview-surface'))),
+          ),
+          GoRoute(
+            path: '/assets/:assetId',
+            builder: (context, state) {
+              final assetId = state.pathParameters['assetId'] ?? 'unknown';
+              return AssetDetailPage(assetId: assetId);
+            },
+          ),
+          GoRoute(
+            path: '/asset/:id',
+            redirect: (context, state) {
+              final id = state.pathParameters['id'] ?? 'unknown';
+              return '/assets/$id';
+            },
+          ),
+          GoRoute(path: '/', redirect: (context, state) => '/overview'),
+        ],
+      );
+    }
+
+    Widget pumpRouter(
+      GoRouter router, {
+      WorkspaceGraphResult graph = _sampleGraph,
+    }) {
+      return ProviderScope(
+        overrides: [
+          workspaceGraphAsyncProvider.overrideWith(
+            () => _StaticGraphNotifier(graph),
+          ),
+        ],
+        child: MaterialApp.router(
+          theme: ThemeData(
+            brightness: Brightness.dark,
+            useMaterial3: true,
+            splashFactory: NoSplash.splashFactory,
+            highlightColor: Colors.transparent,
+            scaffoldBackgroundColor: PrismColors.obsidianDeep,
+          ),
+          routerConfig: router,
+        ),
+      );
+    }
+
+    testWidgets('deep-link open restores assetId into detail page', (
+      tester,
+    ) async {
+      final router = buildContractRouter(
+        initialLocation: '/assets/agent:test-agent',
+      );
+      await tester.pumpWidget(pumpRouter(router));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(AssetDetailView), findsOneWidget);
+      expect(find.text('Test Agent'), findsWidgets);
+      expect(find.text('Asset not found'), findsNothing);
+      expect(
+        router.routeInformationProvider.value.uri.toString(),
+        '/assets/agent:test-agent',
+      );
+    });
+
+    testWidgets('unknown assetId degrades to fallback without crash', (
+      tester,
+    ) async {
+      final router = buildContractRouter(initialLocation: '/assets/unknown');
+      await tester.pumpWidget(pumpRouter(router));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Asset not found'), findsOneWidget);
+      expect(find.text('unknown'), findsOneWidget);
+      expect(find.text('Go to Overview'), findsOneWidget);
+    });
+
+    testWidgets('legacy /asset/:id redirects to canonical /assets/:id', (
+      tester,
+    ) async {
+      final router = buildContractRouter(
+        initialLocation: '/asset/agent:test-agent',
+      );
+      await tester.pumpWidget(pumpRouter(router));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(AssetDetailView), findsOneWidget);
+      expect(find.text('Test Agent'), findsWidgets);
+      expect(
+        router.routeInformationProvider.value.uri.toString(),
+        '/assets/agent:test-agent',
+      );
+    });
+
+    testWidgets('close/back navigates away from detail to overview', (
+      tester,
+    ) async {
+      final router = buildContractRouter(
+        initialLocation: '/assets/agent:test-agent',
+      );
+      await tester.pumpWidget(pumpRouter(router));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(AssetDetailView), findsOneWidget);
+
+      // Leading back button on AssetDetailPage uses context.go('/overview').
+      await tester.tap(find.byTooltip('Back to Overview'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('overview-surface'), findsOneWidget);
+      expect(find.byType(AssetDetailView), findsNothing);
+      expect(router.routeInformationProvider.value.uri.toString(), '/overview');
+    });
+
+    testWidgets('detailRoute helper matches router path parameter shape', (
+      tester,
+    ) async {
+      final path = AssetSelectionController.detailRoute('agent:test-agent');
+      final router = buildContractRouter(initialLocation: path);
+      await tester.pumpWidget(pumpRouter(router));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(AssetDetailView), findsOneWidget);
+      expect(path, '/assets/agent%3Atest-agent');
+    });
+
+    testWidgets('missing graph asset degrades without navigation loop', (
+      tester,
+    ) async {
+      final router = buildContractRouter(
+        initialLocation: '/assets/agent:missing',
+      );
+      await tester.pumpWidget(pumpRouter(router));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Asset not found'), findsOneWidget);
+      expect(find.text('agent:missing'), findsOneWidget);
+      expect(
+        router.routeInformationProvider.value.uri.toString(),
+        '/assets/agent:missing',
+      );
+    });
+  });
+}
+
+class _StaticGraphNotifier extends WorkspaceGraphAsyncNotifier {
+  _StaticGraphNotifier(this._graph);
+
+  final WorkspaceGraphResult _graph;
+
+  @override
+  Future<WorkspaceGraphResult> build() async => _graph;
 }

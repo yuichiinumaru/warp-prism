@@ -1,6 +1,6 @@
 /// Skill list panel for the workspace snapshot page.
 ///
-/// Displays discovered skills and sub-skills using [DSAssetCard] primitives.
+/// Displays discovered skills and sub-skills using [PrismAssetCard] primitives.
 /// Cards are tappable to open the detail inspector.
 library;
 
@@ -19,7 +19,7 @@ class SkillListPanel extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     if (skills.isEmpty) {
-      return const DSStateSurface.empty(
+      return const PrismStateSurface.empty(
         icon: Icons.build_outlined,
         title: 'No skills found',
         subtitle: 'Place SKILL.md files in .agents/skills/*/',
@@ -37,15 +37,15 @@ class SkillListPanel extends ConsumerWidget {
       children: [
         // Top-level skills
         if (topSkills.isNotEmpty) ...[
-          DSText.labelMedium(
+          PrismText.labelMedium(
             'SKILLS (${topSkills.length})',
-            color: DSColors.textSecondary,
+            color: PrismColors.textSecondary,
           ),
-          const SizedBox(height: DSSpacing.sm),
+          const SizedBox(height: PrismSpacing.sm),
           ...topSkills.map(
             (skill) => Padding(
-              padding: const EdgeInsets.only(bottom: DSSpacing.sm),
-              child: DSAssetCard(
+              padding: const EdgeInsets.only(bottom: PrismSpacing.sm),
+              child: PrismAssetCard(
                 name: skill.name,
                 kind: skill.kind.name,
                 description: skill.description.isNotEmpty
@@ -62,16 +62,16 @@ class SkillListPanel extends ConsumerWidget {
 
         // Sub-skills
         if (subSkills.isNotEmpty) ...[
-          const SizedBox(height: DSSpacing.md),
-          DSText.labelMedium(
+          const SizedBox(height: PrismSpacing.md),
+          PrismText.labelMedium(
             'SUB-SKILLS (${subSkills.length})',
-            color: DSColors.textSecondary,
+            color: PrismColors.textSecondary,
           ),
-          const SizedBox(height: DSSpacing.sm),
+          const SizedBox(height: PrismSpacing.sm),
           ...subSkills.map(
             (skill) => Padding(
-              padding: const EdgeInsets.only(bottom: DSSpacing.sm),
-              child: DSAssetCard(
+              padding: const EdgeInsets.only(bottom: PrismSpacing.sm),
+              child: PrismAssetCard(
                 name: skill.name,
                 kind: skill.kind.name,
                 description: skill.description.isNotEmpty

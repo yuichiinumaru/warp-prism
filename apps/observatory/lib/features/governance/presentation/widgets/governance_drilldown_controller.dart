@@ -7,6 +7,7 @@
 library;
 
 import 'package:flutter/foundation.dart';
+import 'package:warp_prism_observatory/app/asset_selection_controller.dart';
 import 'package:warp_prism_observatory/data/models/governance_diagnostics.dart';
 import 'fan_in_hotspots_panel.dart';
 
@@ -29,16 +30,41 @@ class GovernanceDrilldownTarget {
   /// Category of the diagnostic that triggered this drilldown.
   final DiagnosticCategory? category;
 
+  /// Whether this target can be navigated (false for unresolved IDs).
+  final bool isNavigable;
+
   const GovernanceDrilldownTarget({
     required this.assetId,
     required this.routePath,
     required this.sourceLabel,
     this.category,
+    this.isNavigable = true,
   });
+
+  /// Fallback target when an asset ID cannot be resolved.
+  ///
+  /// Preserves the attempted ID for inspector display without claiming
+  /// a navigable detail route.
+  factory GovernanceDrilldownTarget.unresolved({
+    required String attemptedId,
+    required String sourceLabel,
+    DiagnosticCategory? category,
+  }) {
+    return GovernanceDrilldownTarget(
+      assetId: attemptedId,
+      routePath: AssetSelectionController.detailRoute(
+        attemptedId.isEmpty ? 'unknown' : attemptedId,
+      ),
+      sourceLabel: sourceLabel,
+      category: category,
+      isNavigable: false,
+    );
+  }
 
   @override
   String toString() =>
-      'GovernanceDrilldownTarget($assetId, from: $sourceLabel)';
+      'GovernanceDrilldownTarget($assetId, from: $sourceLabel, '
+      'navigable: $isNavigable)';
 }
 
 // ---------------------------------------------------------------------------
@@ -54,21 +80,33 @@ GovernanceDrilldownTarget? resolveDiagnosticDrilldown(
   GovernanceDiagnostic diagnostic,
 ) {
   final assetId = diagnostic.assetId;
-  if (assetId.isEmpty) return null;
+  if (assetId.isEmpty || assetId == 'unknown') return null;
 
   return GovernanceDrilldownTarget(
     assetId: assetId,
-    routePath: '/assets/$assetId',
+    routePath: AssetSelectionController.detailRoute(assetId),
     sourceLabel: '${diagnostic.category.name}: ${diagnostic.message}',
     category: diagnostic.category,
   );
 }
 
 /// Resolves a [FanInHotspot] into a [GovernanceDrilldownTarget].
+///
+/// Returns an unresolved fallback when the hotspot asset ID is empty so
+/// callers can degrade gracefully without crashing the panel.
 GovernanceDrilldownTarget resolveHotspotDrilldown(FanInHotspot hotspot) {
+  if (hotspot.assetId.isEmpty || hotspot.assetId == 'unknown') {
+    return GovernanceDrilldownTarget.unresolved(
+      attemptedId: hotspot.assetId,
+      sourceLabel:
+          'Fan-in hotspot: ${hotspot.assetName} '
+          '(${hotspot.incomingEdgeCount} incoming)',
+    );
+  }
+
   return GovernanceDrilldownTarget(
     assetId: hotspot.assetId,
-    routePath: '/assets/${hotspot.assetId}',
+    routePath: AssetSelectionController.detailRoute(hotspot.assetId),
     sourceLabel:
         'Fan-in hotspot: ${hotspot.assetName} '
         '(${hotspot.incomingEdgeCount} incoming)',
@@ -83,7 +121,7 @@ GovernanceDrilldownTarget? resolveAssetIdDrilldown(String assetId) {
 
   return GovernanceDrilldownTarget(
     assetId: assetId,
-    routePath: '/assets/$assetId',
+    routePath: AssetSelectionController.detailRoute(assetId),
     sourceLabel: 'Direct navigation to $assetId',
   );
 }

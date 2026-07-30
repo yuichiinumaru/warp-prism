@@ -172,6 +172,25 @@ void main() {
         expect(find.byType(GestureDetector), findsWidgets);
       });
 
+      testWidgets('medium scrim has dismiss semantics', (tester) async {
+        await tester.pumpWidget(
+          _wrapWithWidth(
+            width: 1000,
+            child: ResponsiveDetailShell(
+              showDetail: true,
+              onDetailClose: () {},
+              masterContent: const _MasterPlaceholder(),
+              detailContent: const _DetailPlaceholder(),
+            ),
+          ),
+        );
+
+        expect(
+          find.bySemanticsLabel('Dismiss detail overlay'),
+          findsOneWidget,
+        );
+      });
+
       testWidgets('does not render overlay when detail is hidden', (
         tester,
       ) async {
@@ -509,7 +528,7 @@ void main() {
   });
 
   // ==========================================================================
-  // Integration: responsive behavior matches DSBreakpoints contract
+  // Integration: responsive behavior matches PrismBreakpoints contract
   // ==========================================================================
   group('Breakpoint contract alignment', () {
     testWidgets('wide uses split-pane at exactly 1200px', (tester) async {
@@ -520,7 +539,7 @@ void main() {
 
       await tester.pumpWidget(
         _wrapWithWidth(
-          width: DSBreakpoints.masterDetailSideBySide,
+          width: PrismBreakpoints.masterDetailSideBySide,
           child: const ResponsiveDetailShell(
             showDetail: true,
             masterContent: _MasterPlaceholder(),

@@ -302,7 +302,10 @@ include Task 1101 as the current `Open` lane mismatch example.
    forward through states. Going backward (e.g., from `Ready For Review` to
    `Builder Done`) is allowed when a reviewer discovers an issue.
 5. **Review packets are required for `Ready For Review`.** Without a review
-   packet, a task stays in `Builder Done`.
+   packet, a task stays in `Builder Done`. Builders must fill the canonical
+   template at `docs/tasks/review-packet-template.md` (workflow:
+   `.agents/workflows/generate-review-packet.md`) before claiming
+   `Ready For Review`.
 6. **Lane moves are state-gated.** A task cannot move to `03-review/` unless it
    is in `Ready For Review` state. It cannot move to `04-completed/` unless it
    is in `Review Approved` state.
@@ -316,6 +319,8 @@ include Task 1101 as the current `Open` lane mismatch example.
 - **Source rule**: `.agents/rules/promotion-state-model.md`
 - **Pre-existing failure policy**: `.agents/rules/pre-existing-failure-policy.md` (builder source rule), `docs/governance/pre-existing-failure-policy.md` (canonical policy)
 - **Task template**: `docs/tasks/000-template.md` (includes `Review State` field)
+- **Review packet template**: `docs/tasks/review-packet-template.md` (canonical format — Task 1207)
+- **Review packet workflow**: `.agents/workflows/generate-review-packet.md` (Task 1207)
 - **Task governance**: `.agents/rules/task-governance.md`
 - **Definition of Done**: `.agents/rules/definition-of-done.md`
 - **EPIC-12 tasks**: 1201 (failure inventory), 1202 (this model), 1203 (gate

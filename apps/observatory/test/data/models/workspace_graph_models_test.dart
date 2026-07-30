@@ -343,6 +343,7 @@ void main() {
         'canonicalityDrift',
         'missingDependency',
         'brokenEdge',
+        'highFanIn',
         'staleIndex',
         'childParentDrift',
       ];
@@ -350,6 +351,18 @@ void main() {
       for (final r in required) {
         expect(names, contains(r), reason: 'DiagnosticCategory missing: $r');
       }
+      expect(
+        kImplementedDiagnosticCategories,
+        containsAll([
+          DiagnosticCategory.orphanAsset,
+          DiagnosticCategory.highFanIn,
+          DiagnosticCategory.reviewPressure,
+        ]),
+      );
+      expect(
+        kDeferredDiagnosticCategories,
+        contains(DiagnosticCategory.brokenEdge),
+      );
     });
   });
 }

@@ -1,6 +1,6 @@
 /// Workspace graph visualization panel.
 ///
-/// Renders the workspace asset graph using [DSGraphCanvas] with mode
+/// Renders the workspace asset graph using [PrismGraphCanvas] with mode
 /// switching between containment and operational projections.
 library;
 
@@ -14,17 +14,20 @@ import '../workspace_snapshot_provider.dart' hide GraphNode, GraphEdge;
 /// Shows a mode toggle and renders the graph canvas with projected
 /// nodes and edges from the workspace data.
 class WorkspaceGraphPanel extends ConsumerWidget {
-  const WorkspaceGraphPanel({super.key});
+  /// When false, freezes force-directed layout (useful for widget tests).
+  final bool enablePhysics;
+
+  const WorkspaceGraphPanel({super.key, this.enablePhysics = true});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final mode = ref.watch(graphModeProvider);
     final projection = ref.watch(graphProjectionProvider);
 
-    // Convert provider GraphNode/GraphEdge to DS GraphNode/GraphEdge
-    final dsNodes = projection.nodes
+    // Convert provider GraphNode/GraphEdge to Prism graph types
+    final prismNodes = projection.nodes
         .map(
-          (n) => GraphNode(
+          (n) => PrismGraphNode(
             id: n.id,
             label: n.label,
             type: n.type,
@@ -33,9 +36,9 @@ class WorkspaceGraphPanel extends ConsumerWidget {
         )
         .toList();
 
-    final dsEdges = projection.edges
+    final prismEdges = projection.edges
         .map(
-          (e) => GraphEdge(
+          (e) => PrismGraphEdge(
             sourceId: e.sourceId,
             targetId: e.targetId,
             edgeType: e.edgeType,
@@ -53,32 +56,33 @@ class WorkspaceGraphPanel extends ConsumerWidget {
             ref.read(graphModeProvider.notifier).state = newMode;
           },
         ),
-        const SizedBox(height: DSSpacing.sm),
+        const SizedBox(height: PrismSpacing.sm),
         // Node/edge counts
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: DSSpacing.sm),
+          padding: const EdgeInsets.symmetric(horizontal: PrismSpacing.sm),
           child: Row(
             children: [
-              DSText.labelSmall(
-                '${dsNodes.length} nodes',
-                color: DSColors.textTertiary,
+              PrismText.labelSmall(
+                '${prismNodes.length} nodes',
+                color: PrismColors.textTertiary,
               ),
-              const SizedBox(width: DSSpacing.md),
-              DSText.labelSmall(
-                '${dsEdges.length} edges',
-                color: DSColors.textTertiary,
+              const SizedBox(width: PrismSpacing.md),
+              PrismText.labelSmall(
+                '${prismEdges.length} edges',
+                color: PrismColors.textTertiary,
               ),
             ],
           ),
         ),
-        const SizedBox(height: DSSpacing.sm),
+        const SizedBox(height: PrismSpacing.sm),
         // Graph canvas
         Expanded(
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(DSRadii.card),
-            child: DSGraphCanvas(
-              nodes: dsNodes,
-              edges: dsEdges,
+            borderRadius: BorderRadius.circular(PrismRadii.card),
+            child: PrismGraphCanvas(
+              nodes: prismNodes,
+              edges: prismEdges,
+              enablePhysics: enablePhysics,
               onNodeTap: (node) {
                 selectAsset(ref, node.id);
               },
@@ -104,15 +108,15 @@ class _GraphModeToggle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        DSText.labelMedium('GRAPH MODE', color: DSColors.textSecondary),
-        const SizedBox(width: DSSpacing.md),
+        const PrismText.labelMedium('GRAPH MODE', color: PrismColors.textSecondary),
+        const SizedBox(width: PrismSpacing.md),
         _ModeButton(
           label: 'Containment',
           isActive: currentMode == GraphMode.containment,
           onTap: () => onModeChanged(GraphMode.containment),
           tooltip: 'skill → sub-skill → workflow',
         ),
-        const SizedBox(width: DSSpacing.xs),
+        const SizedBox(width: PrismSpacing.xs),
         _ModeButton(
           label: 'Operational',
           isActive: currentMode == GraphMode.operational,
@@ -139,13 +143,13 @@ class _ModeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = isActive ? DSColors.accentCyan : DSColors.textTertiary;
+    final color = isActive ? PrismColors.accentCyan : PrismColors.textTertiary;
     final bgColor = isActive
-        ? DSColors.accentCyan.withOpacity(0.15)
-        : DSColors.obsidianElevated;
+        ? PrismColors.accentCyan.withValues(alpha: 0.15)
+        : PrismColors.obsidianElevated;
     final borderColor = isActive
-        ? DSColors.accentCyan.withOpacity(0.5)
-        : DSColors.borderSubtle;
+        ? PrismColors.accentCyan.withValues(alpha: 0.5)
+        : PrismColors.borderSubtle;
 
     return Tooltip(
       message: tooltip,
@@ -154,17 +158,17 @@ class _ModeButton extends StatelessWidget {
         child: MouseRegion(
           cursor: SystemMouseCursors.click,
           child: AnimatedContainer(
-            duration: DSMotion.fast,
+            duration: PrismMotion.fast,
             padding: const EdgeInsets.symmetric(
-              horizontal: DSSpacing.md,
-              vertical: DSSpacing.xs,
+              horizontal: PrismSpacing.md,
+              vertical: PrismSpacing.xs,
             ),
             decoration: BoxDecoration(
               color: bgColor,
-              borderRadius: BorderRadius.circular(DSRadii.chip),
+              borderRadius: BorderRadius.circular(PrismRadii.chip),
               border: Border.all(color: borderColor, width: 1),
             ),
-            child: DSText.labelMedium(label, color: color),
+            child: PrismText.labelMedium(label, color: color),
           ),
         ),
       ),

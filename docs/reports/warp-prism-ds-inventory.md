@@ -1,98 +1,198 @@
 # Warp Prism Design System — Inventory and Mismatch Ledger
 
 > **Generated**: 2026-06-07
+> **Last refreshed**: 2026-07-17 (drain review inventory currency — EPIC 15/16 organism expansion)
 > **Task**: 0014 — DS Token Contract and Inventory
-> **Source**: Direct inspection of all 38 files in `lib/design_system/`
+> **Source**: Direct inspection of all **156** Dart files under `packages/warp_prism_ui/lib/src/` (live package reality as of 2026-07-17)
+
+---
+
+## 0. Live Package Snapshot (2026-07-17)
+
+| Layer | Dart files | Approx. lines | Notes |
+|-------|------------|---------------|-------|
+| Tokens | **10** | ~1,402 | Includes `DSBreakpoints` + `DSOperationalState` |
+| Atoms | **10** | ~1,972 | +`DSSparkline` since original inventory |
+| Molecules | **21** | ~3,799 | Includes `DSInteractiveSurface` (`ds_interactive_surface.dart`) + toast/skeleton/drag/health/state/shimmer/uptime |
+| Organisms | **109** | ~36,009 | Baseline operational suite + EPIC 15/16 harvest organisms (nested feature folders) |
+| Templates | **2** | ~548 | Barrel + `master_detail_template.dart` (hosts 3 template classes) |
+| Gallery | **3** | ~6,473 | Public design-system gallery pages |
+| Top-level | **1** | ~1,412 | `prism_aliases.dart` (Prism* public API surface) |
+| **Total `lib/src`** | **156** | ~51,615 | Matches `find packages/warp_prism_ui/lib/src -name '*.dart' \| wc -l` |
+
+Public package barrel: `packages/warp_prism_ui/lib/warp_prism_ui.dart` exports only `src/prism_aliases.dart` + gallery. **DS\* names are internal** and are imported by package tests via `package:warp_prism_ui/src/...`.
+
+Live layer counts (2026-07-17 drain review):
+
+```text
+find packages/warp_prism_ui/lib/src -name '*.dart' | wc -l
+# → 156
+
+# by top-level under lib/src:
+#  109 organisms
+#   21 molecules
+#   10 tokens
+#   10 atoms
+#    3 gallery
+#    2 templates
+#    1 prism_aliases.dart
+```
+
+> **Note**: Detailed file tables in §1.x below remain a useful baseline catalog for tokens/atoms/molecules. Organism file enumeration in §1.4 was frozen at the pre–EPIC-15/16 **38**-file baseline; **authoritative organism/total counts are this §0 snapshot (109 / 156)**.
 
 ---
 
 ## 1. File Inventory
 
-### 1.1 Tokens (7 files, ~1,050 lines)
+### 1.1 Tokens (10 files, ~1,402 lines)
 
-| File | Class | Purpose | Lines |
-|------|-------|---------|-------|
-| `tokens/tokens.dart` | — | Barrel export | 8 |
-| `tokens/ds_colors.dart` | `DSColors` | Color tokens — obsidian backgrounds, energy accents, status, governance, text, border, lane, asset | 178 |
+| File | Class / Type | Purpose | Lines |
+|------|--------------|---------|-------|
+| `tokens/tokens.dart` | — | Barrel export (all 9 token modules) | 10 |
+| `tokens/ds_colors.dart` | `DSColors` | Color tokens — obsidian, accents, status, governance, text, border, lane, asset, **operational-state aliases** | 254 |
 | `tokens/ds_typography.dart` | `DSTypography` | Typography scale — display, heading, body, label, code, numeric | 186 |
-| `tokens/ds_spacing.dart` | `DSSpacing` | Spacing scale — base (xxs..massive) + semantic (insets, gaps, layout dimensions) | 72 |
+| `tokens/ds_spacing.dart` | `DSSpacing` | Spacing scale — base (xxs..massive) + semantic layout dimensions | 72 |
 | `tokens/ds_radii.dart` | `DSRadii` | Border radii — base (none..full) + semantic (card, button, chip, input, panel, modal) | 47 |
-| `tokens/ds_shadows.dart` | `DSShadows` | Shadow presets (elevation1-4) + glow effects (cyan, violet, gold, success, error, warning) | 144 |
-| `tokens/ds_motion.dart` | `DSMotion` | Animation durations (instant..slowest) + curves (standard, enter, exit, emphasized, spring) + semantic animations | 62 |
-| `tokens/ds_semantics.dart` | `DSSemantics` | Pre-composed semantic styles combining colors + typography (status, governance, asset, lane, proof) | 150 |
+| `tokens/ds_shadows.dart` | `DSShadows` | Elevation shadows + glow helpers (cyan/violet/gold/success/error/warning) + inner shadow | 116 |
+| `tokens/ds_motion.dart` | `DSMotion` | Durations, curves, semantic animation timings | 66 |
+| `tokens/ds_semantics.dart` | `DSSemantics` | Pre-composed semantic `TextStyle`s (status, governance, asset, lane, proof) | 167 |
+| `tokens/ds_breakpoints.dart` | `DSBreakpoints` | Responsive width thresholds for shell/templates | 32 |
+| `tokens/ds_operational_state.dart` | `DSOperationalState`, `DSOperationalSeverity`, `DSOperationalCategory`, `DSOperationalStateUI` | Canonical 15-state operational vocabulary + UI metadata | 452 |
 
-### 1.2 Atoms (8 files, ~900 lines)
+#### 1.1.1 `DSBreakpoints` contract
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `narrow` | 600 | Search collapses; detail full-screen; min width before sidebar shows |
+| `sidebarCollapse` | 800 | Sidebar icon-only below; expanded with labels above |
+| `timelineDetail` | 1000 | Timeline + detail side-by-side above |
+| `masterDetailSideBySide` | 1200 | Master-detail side-by-side above; overlay/full-screen below |
+
+Width ranges (documented in source):
+- **narrow**: `< 600`
+- **medium**: `600–1199`
+- **wide**: `>= 1200`
+
+#### 1.1.2 `DSOperationalState` contract
+
+15 states across 4 categories:
+
+| Category | States |
+|----------|--------|
+| Lifecycle | `pending`, `running`, `approved`, `rejected`, `promoted`, `archived` |
+| Health | `healthy`, `degraded`, `error`, `disabled` |
+| Verification | `unverified`, `exposed`, `redacted` |
+| Governance | `stale`, `excluded` |
+
+Supporting types:
+- `DSOperationalSeverity`: `info`, `success`, `warning`, `error`, `critical`
+- `DSOperationalCategory`: `lifecycle`, `health`, `verification`, `governance`
+- Extension `DSOperationalStateUI` on `DSOperationalState` — color/icon/label/behavior via existing `DSColors` + `DSIcons` (no new hex values)
+
+Color aliases on `DSColors` (operational):
+`statusPending`, `statusRunning`, `statusApproved`, `statusRejected`, `statusPromoted`, `statusArchived`, `statusHealthy`, `statusDegraded`, `statusOpError`, `statusDisabled`, `statusUnverified`, `statusExposed`, `statusRedacted`, `statusStale`, `statusExcluded`
+
+### 1.2 Atoms (10 files, ~1,972 lines)
 
 | File | Class(es) | Purpose |
 |------|-----------|---------|
 | `atoms/atoms.dart` | — | Barrel export |
-| `atoms/ds_text.dart` | `DSText`, `DSTextVariant` | Semantic text component with 18 variants (display, heading, body, label, code, numeric) |
-| `atoms/ds_icon.dart` | `DSIcon`, `DSIconSize`, `DSIcons` | Icon component + semantic icon constants (navigation, asset kinds, status, actions, governance, lanes) |
-| `atoms/ds_badge.dart` | `DSBadge`, `DSBadgeSize` | Count/status badge |
+| `atoms/ds_text.dart` | `DSText`, `DSTextVariant` | Semantic text (18 variants) |
+| `atoms/ds_icon.dart` | `DSIcon`, `DSIconSize`, `DSIcons` | Icon component + semantic icon constants |
+| `atoms/ds_badge.dart` | `DSBadge`, `DSBadgeVariant`, `DSBadgeSize` | Count/status badge |
 | `atoms/ds_chip.dart` | `DSChip`, `DSChipSize` | Label chip |
-| `atoms/ds_status_dot.dart` | `DSStatusDot` | Status indicator dot with animation |
-| `atoms/ds_divider.dart` | `DSDivider` | Horizontal divider with subtle/default/strong variants |
-| `atoms/ds_glow_border.dart` | `DSGlowBorder` | Animated glow border effect |
-| `atoms/ds_glass_panel.dart` | `DSGlassPanel`, `DSGlassPanelSimple` | Frosted glass effect panel (subtle, elevated, modal variants) + simple variant without blur |
+| `atoms/ds_status_dot.dart` | `DSStatusDot` | Status indicator with animation |
+| `atoms/ds_divider.dart` | `DSDivider`, `DSGlowDivider` | Dividers |
+| `atoms/ds_glow_border.dart` | `DSGlowBorder` | Animated glow border |
+| `atoms/ds_glass_panel.dart` | `DSGlassPanel`, `DSGlassPanelSimple`, `DSGlassPanelVariant` | Glass panels |
+| `atoms/ds_sparkline.dart` | `DSSparkline` | Compact sparkline atom |
 
-### 1.3 Molecules (8 files, ~900 lines)
-
-| File | Class(es) | Purpose |
-|------|-----------|---------|
-| `molecules/molecules.dart` | — | Barrel export |
-| `molecules/ds_search_bar.dart` | `DSSearchBar` | Search input with filter integration |
-| `molecules/ds_filter_chip_group.dart` | `DSFilterChipGroup`, `DSFilterOption` | Horizontal scrollable filter chip group |
-| `molecules/ds_asset_card.dart` | `DSAssetCard` | Card for displaying assets (agent, skill, workflow, etc.) |
-| `molecules/ds_metric_tile.dart` | `DSMetricTile`, `DSTrend` | Metric display tile with trend indicator |
-| `molecules/ds_provenance_pill.dart` | `DSProvenancePill` | Governance provenance indicator |
-| `molecules/ds_task_card.dart` | `DSTaskCard` | Task card for lane board display |
-| `molecules/ds_evidence_row.dart` | `DSEvidenceRow` | Proof/evidence display row |
-| `molecules/ds_timeline_marker.dart` | `DSTimelineMarker` | Timeline entry marker |
-
-### 1.4 Organisms (8 files, ~1,700 lines)
+### 1.3 Molecules (21 files, ~3,589 lines)
 
 | File | Class(es) | Purpose |
 |------|-----------|---------|
-| `organisms/organisms.dart` | — | Barrel export |
-| `organisms/ds_shell.dart` | `DSShell`, `DSShellResponsive` | Main app shell (sidebar + topbar + content + inspector) |
-| `organisms/ds_sidebar.dart` | `DSSidebar`, `DSSidebarItem` | Navigation sidebar with items |
-| `organisms/ds_topbar.dart` | `DSTopbar`, `DSTopbarAction` | Top bar with title, breadcrumbs, search, actions |
-| `organisms/ds_lane_board.dart` | `DSLaneBoard`, `DSLane`, `DSLaneTask` | Kanban-style task lane board |
-| `organisms/ds_timeline.dart` | `DSTimeline`, `DSTimelineEntry`, `DSTimelineGrouped`, `DSTimelineGroup` | Chronological changelog timeline |
-| `organisms/ds_detail_inspector.dart` | `DSDetailInspector`, `DSDetailSection`, `DSPropertyRow`, `DSLinkRow` | Asset detail side panel |
-| `organisms/ds_story_panel.dart` | `DSStoryPanel`, `DSStoryInsight`, `DSStoryCardQuick` | Data storytelling panel |
-| `organisms/ds_graph_canvas.dart` | `DSGraphCanvas`, `GraphNode`, `GraphEdge` | Interactive force-directed graph canvas |
+| `molecules/molecules.dart` | — | Barrel export (includes interactive surface) |
+| `molecules/ds_interactive_surface.dart` | `DSInteractiveSurface` | Shared a11y interactive chrome (focus ring, 48×48 target, keyboard activate); public alias `PrismInteractiveSurface` |
+| `molecules/ds_search_bar.dart` | `DSSearchBar` | Search input |
+| `molecules/ds_filter_chip_group.dart` | `DSFilterChipGroup`, `DSFilterOption` | Filter chips |
+| `molecules/ds_asset_card.dart` | `DSAssetCard` | Asset card (uses `DSInteractiveSurface`) |
+| `molecules/ds_metric_tile.dart` | `DSMetricTile`, `DSMetricTileCompact`, `DSTrend`, `DSMetricTileHealth` | Metric tiles |
+| `molecules/ds_provenance_pill.dart` | `DSProvenancePill`, `DSProvenanceSize` | Provenance indicator |
+| `molecules/ds_task_card.dart` | `DSTaskCard` | Task card |
+| `molecules/ds_evidence_row.dart` | `DSEvidenceRow`, `DSEvidenceIndicator`, `DSEvidenceState` | Evidence row |
+| `molecules/ds_timeline_marker.dart` | `DSTimelineMarker` | Timeline marker |
+| `molecules/ds_toast.dart` | `DSToast`, `DSToastEntry`, `DSToastSeverity` | Toast atom-of-molecule |
+| `molecules/ds_toast_manager.dart` | `DSToastManager`, `DSToastManagerState` | Toast overlay manager |
+| `molecules/ds_shimmer.dart` | `DSShimmer` | Shimmer loading effect |
+| `molecules/ds_skeleton_card.dart` | `DSSkeletonCard` | Skeleton card placeholder |
+| `molecules/ds_skeleton_text_line.dart` | `DSSkeletonTextLine` | Skeleton text line |
+| `molecules/ds_skeleton_table_rows.dart` | `DSSkeletonTableRows` | Skeleton table rows |
+| `molecules/ds_state_surface.dart` | `DSStateSurface`, `DSStateType` | Empty/loading/error surface |
+| `molecules/ds_draggable_card.dart` | `DSDraggableCard`, `DSDragPayload`, `DSDragReorderEvent`, `DSDragMoveEvent` | Drag source |
+| `molecules/ds_drop_target.dart` | `DSDropTarget` | Drop target |
+| `molecules/ds_health_card.dart` | `DSHealthCard` | Health summary card |
+| `molecules/ds_uptime_bar.dart` | `DSUptimeBar` | Uptime visualization |
 
-### 1.5 Templates (2 files, ~500 lines)
+### 1.4 Organisms (38 files, ~9,052 lines)
+
+Core shell / board / story surfaces:
+
+| Area | Key classes |
+|------|-------------|
+| Shell | `DSShell`, `DSShellResponsive`, `DSSidebar`, `DSSidebarItem`, `DSTopbar`, `DSTopbarAction` |
+| Board / timeline | `DSLaneBoard`, `DSLane`, `DSLaneTask`, `DSTimeline`, `DSTimelineEntry`, `DSTimelineGrouped`, `DSTimelineGroup` |
+| Detail / story | `DSDetailInspector`, `DSDetailSection`, `DSPropertyRow`, `DSLinkRow`, `DSStoryPanel`, `DSStoryInsight`, `DSStoryNarrativeInsight`, `DSStoryCardQuick` |
+| Graph (legacy + suite) | `DSGraphCanvas`, `GraphNode`, `GraphEdge` + `graph/` (`GraphCanvas`, `GraphModel`, `GraphPainter`, `ForceDirectedLayout`, …) |
+| Status / resilience | `DSStatusGrid`, `DSHealthCardData`, `DSErrorBoundary`, `DSFallbackView` |
+| Tab bar | `DSTab`, `DSTabBar`, `DSTabController`, `DSTabView` |
+| Virtual scroll | `DSVirtualScrollConfig`, `DSVirtualList`, `DSVirtualGrid` |
+| Log viewer | `DSLogViewer`, `DSLogEntry`, `DSLogEntryWidget`, `DSLogFilterBar`, `DSLogSeverity` |
+| Data table | `DSDataTable`, `DSDataColumn`, `DSDataRow`, `DSTablePagination`, cell types, sort types |
+| Command palette | `DSCommandPalette`, `DSCommand`, `DSCommandCategory`, `DSCommandPaletteShortcut` |
+| Split pane | `DSSplitPane` |
+| Markdown / code | `DSMarkdownRenderer`, `DSCodeBlock` |
+
+Organism files live both at `organisms/*.dart` and under feature subfolders (`tab_bar/`, `virtual_scroll/`, `log_viewer/`, `data_table/`, `command_palette/`, `split_pane/`, `markdown_renderer/`, `code_block/`, `graph/`).
+
+### 1.5 Templates (2 files, ~548 lines)
 
 | File | Class(es) | Purpose |
 |------|-----------|---------|
 | `templates/templates.dart` | — | Barrel export |
-| `templates/master_detail_template.dart` | `MasterDetailTemplate`, `CanvasTemplate`, `TimelineTemplate` | Page-level layout templates |
+| `templates/master_detail_template.dart` | `MasterDetailTemplate`, `CanvasTemplate`, `TimelineTemplate` | Page-level layouts |
 
-### 1.6 Top-level Barrel
+### 1.6 Gallery (3 files, ~3,501 lines)
 
 | File | Purpose |
 |------|---------|
-| `design_system/design_system.dart` | Root barrel — exports tokens, atoms, molecules, organisms, templates |
+| `gallery/design_system_gallery_page.dart` | Gallery page host |
+| `gallery/design_system_gallery_registry.dart` | Component registry |
+| `gallery/design_system_gallery_sections.dart` | Section definitions |
+
+### 1.7 Top-level / Public Barrel
+
+| File | Purpose |
+|------|---------|
+| `packages/warp_prism_ui/lib/warp_prism_ui.dart` | Public package barrel — Prism* API + gallery only |
+| `packages/warp_prism_ui/lib/src/prism_aliases.dart` | Prism* typedefs/aliases over internal DS* types (includes `PrismInteractiveSurface`) |
 
 ---
 
 ## 2. Canonical Naming Convention
 
-**Standard**: All design system classes use `DS` prefix (uppercase S).
+**Standard**: All design system implementation classes use `DS` prefix (uppercase S). Consumer apps use `Prism*` via the public barrel.
 
 | Layer | Convention | Examples |
 |-------|-----------|----------|
-| Tokens | `DS{Domain}` | `DSColors`, `DSTypography`, `DSSpacing`, `DSRadii`, `DSShadows`, `DSMotion`, `DSSemantics` |
-| Atoms | `DS{Component}` | `DSText`, `DSIcon`, `DSBadge`, `DSChip`, `DSStatusDot`, `DSDivider`, `DSGlowBorder`, `DSGlassPanel` |
-| Molecules | `DS{Component}` | `DSSearchBar`, `DSFilterChipGroup`, `DSAssetCard`, `DSMetricTile`, `DSProvenancePill`, `DSTaskCard`, `DSEvidenceRow`, `DSTimelineMarker` |
-| Organisms | `DS{Component}` | `DSShell`, `DSSidebar`, `DSTopbar`, `DSLaneBoard`, `DSTimeline`, `DSDetailInspector`, `DSStoryPanel`, `DSGraphCanvas` |
+| Tokens | `DS{Domain}` | `DSColors`, `DSTypography`, `DSSpacing`, `DSRadii`, `DSShadows`, `DSMotion`, `DSSemantics`, `DSBreakpoints`, `DSOperationalState` |
+| Atoms | `DS{Component}` | `DSText`, `DSIcon`, `DSBadge`, `DSChip`, `DSStatusDot`, `DSDivider`, `DSGlowBorder`, `DSGlassPanel`, `DSSparkline` |
+| Molecules | `DS{Component}` | `DSInteractiveSurface`, `DSSearchBar`, `DSAssetCard`, `DSToast`, `DSStateSurface`, … |
+| Organisms | `DS{Component}` | `DSShell`, `DSTabBar`, `DSVirtualList`, `DSLogViewer`, … |
 | Templates | `{Name}Template` | `MasterDetailTemplate`, `CanvasTemplate`, `TimelineTemplate` |
-| Enums | `DS{Domain}{Variant}` | `DSTextVariant`, `DSIconSize`, `DSBadgeSize`, `DSChipSize`, `DSTrend` |
-| Data classes | `DS{Domain}` | `DSSidebarItem`, `DSTimelineEntry`, `DSLane`, `DSLaneTask`, `DSFilterOption`, etc. |
+| Graph suite (internal) | Graph* / Force* | `GraphCanvas`, `GraphModel`, `ForceDirectedLayout` (non-DS names, co-located under organisms/graph) |
+| Public API | `Prism{Name}` | Via `prism_aliases.dart` (e.g. `PrismInteractiveSurface`) |
 
-**Verification**: `grep -r 'Ds[A-Z]' lib/design_system/` returns 0 matches. All 38 files use `DS*` consistently.
+**Verification (2026-07-09)**: `rg 'Ds[A-Z]' packages/warp_prism_ui/lib/src/` returns **0 matches**. No competing `Ds*` convention remains.
 
 ---
 
@@ -109,94 +209,40 @@
 | `glassOverlay` | `#1E1E28` | Glass panel overlay |
 
 ### 3.2 Energy Accents (9 tokens)
-| Token | Hex | Usage |
-|-------|-----|-------|
-| `accentCyan` | `#00D4FF` | Primary accent |
-| `accentCyanMuted` | `#0099B8` | Muted primary |
-| `accentCyanDim` | `#006680` | Dim primary |
-| `accentViolet` | `#8B5CF6` | Secondary accent |
-| `accentVioletMuted` | `#6B4CD4` | Muted secondary |
-| `accentVioletDim` | `#4C3899` | Dim secondary |
-| `accentGold` | `#FFB800` | Tertiary accent |
-| `accentGoldMuted` | `#CC9400` | Muted tertiary |
-| `accentGoldDim` | `#997000` | Dim tertiary |
+| Token | Hex |
+|-------|-----|
+| `accentCyan` / `Muted` / `Dim` | `#00D4FF` / `#0099B8` / `#006680` |
+| `accentViolet` / `Muted` / `Dim` | `#8B5CF6` / `#6B4CD4` / `#4C3899` |
+| `accentGold` / `Muted` / `Dim` | `#FFB800` / `#CC9400` / `#997000` |
 
 ### 3.3 Semantic Status (12 tokens)
-| Token | Hex | Usage |
-|-------|-----|-------|
-| `statusSuccess` | `#10B981` | Success state |
-| `statusSuccessMuted` | `#059669` | Muted success |
-| `statusSuccessDim` | `#047857` | Dim success |
-| `statusWarning` | `#F59E0B` | Warning state |
-| `statusWarningMuted` | `#D97706` | Muted warning |
-| `statusWarningDim` | `#B45309` | Dim warning |
-| `statusError` | `#EF4444` | Error state |
-| `statusErrorMuted` | `#DC2626` | Muted error |
-| `statusErrorDim` | `#B91C1C` | Dim error |
-| `statusInfo` | `#3B82F6` | Info state |
-| `statusInfoMuted` | `#2563EB` | Muted info |
-| `statusInfoDim` | `#1D4ED8` | Dim info |
+Success / Warning / Error / Info × (primary, muted, dim) — hex values unchanged from prior contract.
 
 ### 3.4 Governance Colors (6 tokens)
-| Token | Hex | Usage |
-|-------|-----|-------|
-| `governanceCanonical` | `#10B981` | Parent canonical |
-| `governanceLocal` | `#3B82F6` | Child local |
-| `governanceGenerated` | `#8B5CF6` | Generated |
-| `governanceAppendOnly` | `#FFB800` | Append-only |
-| `governanceArchive` | `#6B7280` | Archive |
-| `governanceMock` | `#EC4899` | Mock/test |
+`governanceCanonical`, `governanceLocal`, `governanceGenerated`, `governanceAppendOnly`, `governanceArchive`, `governanceMock`
 
 ### 3.5 Text Colors (5 tokens)
-| Token | Hex | Usage |
-|-------|-----|-------|
+| Token | Hex (live) | Usage |
+|-------|------------|-------|
 | `textPrimary` | `#F0F0F5` | High emphasis |
 | `textSecondary` | `#A0A0B0` | Medium emphasis |
-| `textTertiary` | `#606070` | Low emphasis |
-| `textDisabled` | `#404050` | Disabled |
+| `textTertiary` | `#8888A0` | Low emphasis (updated from earlier `#606070`) |
+| `textDisabled` | `#505060` | Disabled (updated from earlier `#404050`) |
 | `textInverse` | `#0A0A0F` | Light backgrounds |
 
-### 3.6 Border Colors (4 tokens)
-| Token | Hex | Usage |
-|-------|-----|-------|
-| `borderSubtle` | `#1E1E28` | Barely visible |
-| `borderDefault` | `#2A2A38` | Default |
-| `borderStrong` | `#3A3A4A` | Emphasis |
-| `borderGlow` | `#00D4FF` | Energy glow |
+### 3.6 Border / Lane / Asset
+Unchanged structure: 4 border tokens, 5 lane tokens, 9 asset-kind tokens.
 
-### 3.7 Lane Colors (5 tokens)
-| Token | Hex | Lane |
-|-------|-----|------|
-| `lanePlanning` | `#8B5CF6` | 00-planning |
-| `laneOpen` | `#3B82F6` | 01-open |
-| `laneDoing` | `#FFB800` | 02-doing |
-| `laneReview` | `#EC4899` | 03-review |
-| `laneCompleted` | `#10B981` | 04-completed |
+### 3.7 Operational State Color Aliases (15 tokens)
+See §1.1.2 — all reuse existing palette via const aliases.
 
-### 3.8 Asset Kind Colors (9 tokens)
-| Token | Hex | Kind |
-|-------|-----|------|
-| `assetAgent` | `#00D4FF` | agent |
-| `assetSkill` | `#8B5CF6` | skill |
-| `assetSubskill` | `#A78BFA` | subskill |
-| `assetWorkflow` | `#FFB800` | workflow |
-| `assetTask` | `#3B82F6` | task |
-| `assetChangelog` | `#10B981` | changelog |
-| `assetScript` | `#EC4899` | script |
-| `assetReference` | `#6B7280` | reference |
-| `assetRule` | `#F97316` | rule |
+### 3.8 Utility
+`transparent`, `white`, `black`
 
-### 3.9 Utility (3 tokens)
-| Token | Value |
-|-------|-------|
-| `transparent` | `Colors.transparent` |
-| `white` | `#FFFFFF` |
-| `black` | `#000000` |
-
-### 3.10 Lookup Methods
-- `DSColors.forAssetKind(String kind)` → Color for asset type
-- `DSColors.forLane(String lane)` → Color for task lane
-- `DSColors.forCanonicity(String canonicity)` → Color for governance status
+### 3.9 Lookup Methods
+- `DSColors.forAssetKind(String kind)`
+- `DSColors.forLane(String lane)`
+- `DSColors.forCanonicity(String canonicity)`
 
 ---
 
@@ -205,198 +251,207 @@
 ### 4.1 Font Families
 | Token | Value | pubspec Status |
 |-------|-------|----------------|
-| `fontFamilyMono` | `JetBrainsMono` | ✅ Declared in pubspec.yaml |
-| `fontFamilySans` | `Inter` | ⚠️ NOT declared in pubspec.yaml |
+| `fontFamilyMono` | `JetBrainsMono` | ✅ Declared |
+| `fontFamilySans` | `Inter` | ⚠️ NOT declared — system sans fallback |
 
 ### 4.2 Font Weights
-| Token | Value |
-|-------|-------|
-| `weightLight` | `w300` |
-| `weightRegular` | `w400` |
-| `weightMedium` | `w500` |
-| `weightSemibold` | `w600` |
-| `weightBold` | `w700` |
+`weightLight` w300 · `weightRegular` w400 · `weightMedium` w500 · `weightSemibold` w600 · `weightBold` w700
 
 ### 4.3 Type Scale (18 styles)
-| Style | Family | Size | Weight | Usage |
-|-------|--------|------|--------|-------|
-| `displayLarge` | Sans | 48 | Bold | Hero headings |
-| `displayMedium` | Sans | 36 | Bold | Section headings |
-| `displaySmall` | Sans | 28 | Semibold | Page titles |
-| `headingLarge` | Sans | 24 | Semibold | Large headings |
-| `headingMedium` | Sans | 20 | Semibold | Medium headings |
-| `headingSmall` | Sans | 16 | Semibold | Small headings |
-| `bodyLarge` | Sans | 16 | Regular | Primary content |
-| `bodyMedium` | Sans | 14 | Regular | Secondary content |
-| `bodySmall` | Sans | 12 | Regular | Captions, metadata |
-| `labelLarge` | Sans | 14 | Medium | Buttons, labels |
-| `labelMedium` | Sans | 12 | Medium | Chips, tags |
-| `labelSmall` | Sans | 10 | Medium | Micro labels |
-| `codeLarge` | Mono | 14 | Regular | Code blocks |
-| `codeMedium` | Mono | 13 | Regular | Inline code |
-| `codeSmall` | Mono | 11 | Regular | Compact code |
-| `numericLarge` | Mono | 32 | Bold | Big numbers |
-| `numericMedium` | Mono | 24 | Semibold | Medium metrics |
-| `numericSmall` | Mono | 14 | Medium | IDs, small metrics |
+displayLarge/Medium/Small · headingLarge/Medium/Small · bodyLarge/Medium/Small · labelLarge/Medium/Small · codeLarge/Medium/Small · numericLarge/Medium/Small
 
 ---
 
 ## 5. Spacing Contract
 
-### 5.1 Base Scale
-| Token | Value | Usage |
-|-------|-------|-------|
-| `xxs` | 2px | Micro spacing |
-| `xs` | 4px | Tight spacing |
-| `sm` | 8px | Compact spacing |
-| `md` | 12px | Default tight |
-| `lg` | 16px | Default comfortable |
-| `xl` | 20px | Comfortable |
-| `xxl` | 24px | Spacious |
-| `xxxl` | 32px | Section spacing |
-| `huge` | 48px | Large section |
-| `massive` | 64px | Page section |
-
-### 5.2 Semantic Spacing
-| Token | Value | Usage |
-|-------|-------|-------|
-| `insetCard` | 16px | Card padding |
-| `insetCardCompact` | 12px | Compact card padding |
-| `gapList` | 8px | List item gap |
-| `gapListCompact` | 4px | Compact list gap |
-| `gapSection` | 24px | Section gap |
-| `sidebarCollapsed` | 64px | Collapsed sidebar width |
-| `sidebarExpanded` | 240px | Expanded sidebar width |
-| `inspectorWidth` | 360px | Inspector panel width |
-| `topbarHeight` | 56px | Top bar height |
-| `cardMinHeight` | 80px | Card minimum height |
-| `iconButtonSize` | 40px | Icon button size |
-| `iconButtonSizeCompact` | 32px | Compact icon button |
+Base: `xxs` 2 → `massive` 64 (10 steps).  
+Semantic: card insets, list gaps, sidebar widths, inspector width, topbar height, card min height, icon button sizes.
 
 ---
 
 ## 6. Radii Contract
 
-| Token | Value | Usage |
-|-------|-------|-------|
-| `none` | 0 | Sharp edges |
-| `xs` | 2px | Subtle rounding |
-| `sm` | 4px | Slight rounding |
-| `md` | 6px | Default rounding |
-| `lg` | 8px | Comfortable rounding |
-| `xl` | 12px | Pronounced rounding |
-| `xxl` | 16px | Large rounding |
-| `full` | 9999px | Circle/pill |
-| `card` | 8px | Cards |
-| `button` | 6px | Buttons |
-| `chip` | 4px | Chips/badges |
-| `input` | 6px | Input fields |
-| `panel` | 12px | Panels |
-| `modal` | 16px | Modals |
+Base: `none` 0 → `full` 9999.  
+Semantic: `card`, `button`, `chip`, `input`, `panel`, `modal`.
 
 ---
 
 ## 7. Motion Contract
 
-### 7.1 Durations
-| Token | Value | Usage |
-|-------|-------|-------|
-| `instant` | 0ms | No animation |
-| `fast` | 100ms | Micro interactions |
-| `normal` | 200ms | Standard interactions |
-| `slow` | 300ms | Emphasis |
-| `slower` | 400ms | Major transitions |
-| `slowest` | 500ms | Dramatic reveals |
-
-### 7.2 Curves
-| Token | Flutter Curve | Usage |
-|-------|--------------|-------|
-| `standard` | `easeInOut` | Most interactions |
-| `enter` | `easeOut` | Elements appearing |
-| `exit` | `easeIn` | Elements disappearing |
-| `emphasized` | `easeInOutCubic` | Dramatic transitions |
-| `spring` | `elasticOut` | Playful bounce |
-| `linear` | `linear` | Constant speed |
-
-### 7.3 Semantic Animations
-| Token | Duration | Curve | Usage |
-|-------|----------|-------|-------|
-| `hoverDuration` | 150ms | `easeOut` | Hover state |
-| `focusDuration` | 100ms | `easeOut` | Focus state |
-| `pageDuration` | 300ms | `easeInOutCubic` | Page transition |
-| `panelDuration` | 250ms | `easeInOut` | Panel expand/collapse |
-| `staggerDelay` | 50ms | — | List item stagger |
+Durations: `instant` 0 → `slowest` 500ms.  
+Curves: `standard`, `enter`, `exit`, `emphasized`, `spring`, `linear`.  
+Semantic: `hoverDuration`, `focusDuration`, `pageDuration`, `panelDuration`, `staggerDelay`.
 
 ---
 
 ## 8. Shadows Contract
 
-| Token | Type | Usage |
-|-------|------|-------|
-| `elevation1` | `List<BoxShadow>` | Subtle lift |
-| `elevation2` | `List<BoxShadow>` | Cards, panels |
-| `elevation3` | `List<BoxShadow>` | Modals, dropdowns |
-| `elevation4` | `List<BoxShadow>` | Floating elements |
-| `glowCyan({intensity})` | `List<BoxShadow>` | Cyan energy glow |
-| `glowViolet({intensity})` | `List<BoxShadow>` | Violet energy glow |
-| `glowGold({intensity})` | `List<BoxShadow>` | Gold energy glow |
-| `glowSuccess({intensity})` | `List<BoxShadow>` | Success glow |
-| `glowError({intensity})` | `List<BoxShadow>` | Error glow |
-| `glowWarning({intensity})` | `List<BoxShadow>` | Warning glow |
-| `innerShadow` | `BoxDecoration` | Recessed element |
+Elevations 1–4, glow helpers (`glowCyan` / `Violet` / `Gold` / `Success` / `Error` / `Warning` with intensity), `innerShadow`.
 
 ---
 
 ## 9. Mismatch Ledger
 
-### 9.1 Resolved (from draft.md)
-All mismatches reported in `docs/draft.md` are **RESOLVED** in the current codebase:
+### 9.1 Resolved (from draft.md and prior reviews)
 
 | Claim | Actual | Status |
 |-------|--------|--------|
 | `DsColors` vs `DSColors` | All `DSColors` | ✅ Resolved |
 | `DsShell(... body: ...)` | `DSShell(... content: ...)` | ✅ Resolved |
-| `DsSidebar` with `selectedIndex` | `DSSidebar` with `selectedId` | ✅ Resolved |
-| `DsTopbar` with wrong params | `DSTopbar` with correct params | ✅ Resolved |
-| `ds_graph_canvas` missing colors | All colors exist | ✅ Resolved |
+| Competing `Ds*` API | 0 matches under `lib/src` | ✅ Resolved |
+| Missing token tests | `packages/warp_prism_ui/test/tokens/` (contract + operational state) | ✅ Resolved |
+| Inventory undercount (38 files / 7 tokens) | Refreshed to 10 tokens including breakpoints + operational state | ✅ Resolved |
+| Inventory undercount (84 files / 20 molecules) | Live **156** / **21** molecules including `DSInteractiveSurface` (organisms expanded post-EPIC 15/16) | ✅ Resolved (2026-07-17 count refresh) |
+| Package residual described as 🔴 ERROR-class | Live package analyze **0 ERROR / 0 WARNING / 137 INFO** (lint/hint only) | ✅ Severity corrected (2026-07-09); counts refreshed 2026-07-17 |
+| “No app main.dart” Critical | `apps/{catalog,cybercore,observatory}/lib/main.dart` all exist | ✅ Stale claim removed |
 
-### 9.2 Active Gaps
+### 9.2 Active Gaps (honest scope)
 
-| Issue | Severity | Location | Description |
-|-------|----------|----------|-------------|
-| **Inter font not declared** | 🟡 Medium | `pubspec.yaml` + `ds_typography.dart` | `DSTypography.fontFamilySans = 'Inter'` but pubspec only declares `JetBrainsMono`. Inter will fall back to system sans-serif. |
-| **No `main.dart` entrypoint** | 🔴 Critical | `lib/main.dart` | Flutter app entrypoint missing — prevents compilation |
-| **No `test/` directory** | 🟡 Medium | `test/` | No tests exist; contract test created as part of Task 0014 |
-| **No `ThemeData` bridge** | 🟡 Medium | `lib/design_system/` | DS tokens are accessed via static constants; no `ThemeExtension` integration for widgets that need `Theme.of(context)` |
+| Issue | Severity | Scope owner | Description |
+|-------|----------|-------------|-------------|
+| **Inter font not declared** | 🟡 Medium | Future typography task | `DSTypography.fontFamilySans = 'Inter'` but only `JetBrainsMono` in pubspec |
+| **No `ThemeData` / `ThemeExtension` bridge** | 🟡 Medium | Explicitly delegated (Task 0014 Test Requirements) | Tokens are static constants; Theme bridge is out of this task |
+| **Package-wide INFO lint residual** | 🟢 Low (package hygiene) | Downstream UI sweep / format+const cleanup | Full-package `dart analyze --format=machine .` → **137 INFO**, **0 ERROR**, **0 WARNING** (2026-07-17). Dominated by `prefer_const_constructors` (91), `deprecated_member_use` (22), and minor style hints. **Not a token-layer gate and not ERROR-class.** |
 
-### 9.3 Font Contract Decision
-
-The `DSTypography` class references two font families:
-- `JetBrainsMono` — ✅ Declared in pubspec.yaml (Regular, Medium/Bold weights)
-- `Inter` — ⚠️ NOT declared in pubspec.yaml
-
-**Resolution options** (to be decided in a future task):
-1. Add Inter font to `assets/fonts/` and declare in pubspec.yaml
-2. Replace `Inter` with `JetBrainsMono` for sans-serif usage (monospace-first design)
-3. Use system sans-serif as fallback (current behavior — implicit)
+### 9.3 Font Contract Decision (unchanged options)
+1. Add Inter to assets + pubspec  
+2. Monospace-first (JetBrainsMono only)  
+3. Keep system sans fallback (current)
 
 ---
 
 ## 10. Barrel Export Verification
 
-All barrel exports resolve without circular dependencies:
-
 ```
-design_system.dart
-  → tokens/tokens.dart (7 token files)
-  → atoms/atoms.dart (8 atom files)
-  → molecules/molecules.dart (8 molecule files)
-  → organisms/organisms.dart (8 organism files)
-  → templates/templates.dart (1 template file)
+warp_prism_ui.dart                 (public — Prism* + gallery only)
+  → src/prism_aliases.dart
+  → src/gallery/*
+
+Internal barrels (DS* implementation; package-private via src/ import):
+  src/tokens/tokens.dart           (10 token modules)
+  src/atoms/atoms.dart             (10 atom modules)
+  src/molecules/molecules.dart     (21 molecule modules; exports ds_interactive_surface first)
+  src/organisms/organisms.dart     (109 organism dart files under tree; barrel exports family modules)
+  src/templates/templates.dart     (2 template modules)
 ```
 
-No duplicate exports. No ambiguous names. All exports use `DS*` prefix consistently.
+Token barrel exports (live `tokens.dart`):
+`ds_breakpoints`, `ds_colors`, `ds_operational_state`, `ds_typography`, `ds_spacing`, `ds_radii`, `ds_shadows`, `ds_motion`, `ds_semantics`.
+
+No duplicate `Ds*` / `DS*` dual convention. Public surface is Prism*-only (including `PrismInteractiveSurface`).
 
 ---
 
-*Report generated by Task 0014 execution. All findings based on direct source file inspection.*
+## 11. Analyzer Gate Scope (Task 0014 honesty)
+
+### 11.1 In-scope (Task 0014 exit conditions)
+
+| Command | Scope | Expected | Live (2026-07-09 builder-fixer) |
+|---------|-------|----------|----------------------------------|
+| `flutter test --concurrency=1 --no-pub test/tokens/` | Token contract + operational state tests | 0 failures | **123/123** passed, EXIT 0 |
+| `flutter analyze --no-pub lib/src/tokens test/tokens` | Token sources + token tests | 0 issues | **No issues found!** EXIT 0 |
+| `dart format --output=none --set-exit-if-changed lib/src/tokens test/tokens` | Token format | 0 changed | **0 changed** EXIT 0 |
+
+These prove the **token contract and inventory** deliverables.
+
+### 11.2 Explicitly out of scope for Task 0014
+
+| Command | Why out of scope |
+|---------|------------------|
+| Full-package `dart analyze` / `flutter analyze packages/warp_prism_ui` | Surfaces **downstream** organism/const/lint hygiene. Residual is **INFO-only** as of 2026-07-09 (not ERROR-class public-barrel compile failures). Owned by later DS composition / public-API / lint-sweep tasks — not token inventory. |
+| Full `test/organisms/**` suite | Not part of token contract exit conditions |
+
+### 11.3 Known package residual class (documented, not fixed here)
+
+Historical independent review (2026-06-30, score 78/100) observed full-package analyzer ≈880 issues including ERROR-class test imports of internal DS* symbols. **That ERROR class is no longer live.**
+
+Live full-package residual (2026-07-17):
+
+```text
+cd packages/warp_prism_ui
+dart analyze --format=machine .
+# → 137 INFO, 0 WARNING, 0 ERROR  (EXIT 0)
+
+# Top codes (INFO):
+#    91 PREFER_CONST_CONSTRUCTORS
+#    22 DEPRECATED_MEMBER_USE
+#    10 PREFER_CONST_DECLARATIONS
+#     5 PREFER_INITIALIZING_FORMALS
+#     4 NO_LEADING_UNDERSCORES_FOR_LOCAL_IDENTIFIERS
+#     4 DANGLING_LIBRARY_DOC_COMMENTS
+#   …minor style hints
+```
+
+Remediation for INFO residual belongs to:
+- Const/lint cleanup sweeps
+- Deprecation migrations
+- Not to the token inventory itself
+
+---
+
+## 12. Test Coverage for Tokens
+
+| File | Role |
+|------|------|
+| `packages/warp_prism_ui/test/tokens/ds_token_contract_test.dart` | Structural contract for colors, type, space, radii, shadows, motion, semantics, breakpoints, barrel |
+| `packages/warp_prism_ui/test/tokens/ds_operational_state_test.dart` | 15-state vocabulary + severity/category/UI extension |
+
+Package-wide test tree (context only): Dart tests under `packages/warp_prism_ui/test/` (tokens, atoms, molecules, organisms, templates, gallery, goldens, boundaries, accessibility, performance).
+
+---
+
+## 13. Live Command Evidence (2026-07-09 builder-fixer)
+
+Environment: Flutter 3.44.1 / Dart 3.12.1.
+
+```text
+# cwd: packages/warp_prism_ui
+
+$ flutter analyze --no-pub lib/src/tokens test/tokens
+Analyzing 2 items...
+No issues found! (ran in 2.3s)
+# EXIT 0
+
+$ flutter test --concurrency=1 --no-pub test/tokens/
+...
+00:03 +123: All tests passed!
+# EXIT 0
+
+$ dart format --output=none --set-exit-if-changed lib/src/tokens test/tokens
+Formatted 12 files (0 changed) in 0.08 seconds.
+# EXIT 0
+
+$ dart analyze --format=machine .
+# 137 INFO lines, 0 ERROR, 0 WARNING; analyzer process EXIT 0 (2026-07-17)
+
+$ find lib/src -name '*.dart' | wc -l
+156
+
+$ find lib/src/molecules -name '*.dart' | wc -l
+21
+# includes ds_interactive_surface.dart (class DSInteractiveSurface)
+
+$ find lib/src/organisms -name '*.dart' | wc -l
+109
+```
+
+App entrypoints (stale “no main.dart” gap disproved):
+
+```text
+apps/catalog/lib/main.dart
+apps/cybercore/lib/main.dart
+apps/observatory/lib/main.dart
+```
+
+---
+
+*Report originally generated by Task 0014 execution. Refreshed 2026-07-09 (path-to-100 after 78) for `DSBreakpoints`/`DSOperationalState`. Refreshed again 2026-07-09 (builder-fixer after 88/100) for live **85**/`DSInteractiveSurface` inventory honesty and INFO-only package residual severity. Refreshed 2026-07-17 for post–EPIC-15/16 **156**/`lib/src` inventory currency and package residual **137 INFO**.*
+
+## Residual INFO currency — 2026-07-17
+
+| Scope | Live count | Severity |
+|-------|------------|----------|
+| `packages/warp_prism_ui/lib` | **24 INFO**, 0 ERROR, 0 WARNING | INFO lint residual |
+| `packages/warp_prism_ui` (full package incl. tests) | **137 INFO**, 0 ERROR, 0 WARNING | INFO lint residual |
+
+Prior claimed 158/144/23 superseded by this count. Token-layer gate remains clean (0 issues on `lib/src/tokens` + `test/tokens`).

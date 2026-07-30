@@ -1,80 +1,98 @@
 import 'package:go_router/go_router.dart';
 import 'cybercore_shell.dart';
-import '../features/dashboard/dashboard_page.dart';
-import '../features/registry/registry_page.dart';
-import '../features/tasks/tasks_page.dart';
-import '../features/audit/audit_page.dart';
-import '../features/governance/governance_page.dart';
+import '../features/providers/providers_page.dart';
+import '../features/providers/provider_detail_page.dart';
+import '../features/providers/provider_new_page.dart';
+import '../features/mcp_servers/mcp_servers_page.dart';
+import '../features/mcp_servers/mcp_server_detail_page.dart';
+import '../features/mcp_inspector/mcp_inspector_page.dart';
+import '../features/live_logs/live_logs_page.dart';
 
-/// Canonical [GoRouter] for CyberCore.
+/// Creates a fresh [GoRouter] for CyberCore pilot shell.
 ///
-/// All route paths are defined here. Product surfaces use
-/// [StatefulShellRoute] so each branch preserves its navigation state
-/// behind the persistent [CyberCoreShell] sidebar + topbar.
+/// A factory (not a shared singleton) so widget tests do not share
+/// navigation state across [pumpWidget] invocations.
 ///
-/// Route contract:
-///   /              → redirects to /dashboard
-///   /dashboard     → System health overview
-///   /registry      → Capabilities & providers catalog
-///   /tasks         → Execution board (lane view)
-///   /audit         → Audit trail timeline
-///   /governance    → Diagnostics & compliance
-final appRouter = GoRouter(
-  initialLocation: '/dashboard',
+/// Route contract aligned to Task 1108 pilots A/B/C:
+///   /                  → redirects to /providers
+///   /providers         → Pilot A — provider connections list
+///   /providers/new     → Pilot A nested — read-only create form
+///   /providers/:id     → Pilot A nested — connection detail
+///   /mcp-servers       → Pilot B — installed MCP servers
+///   /mcp-servers/:uuid → Pilot B nested — server detail
+///   /mcp-inspector     → Pilot B — inspector (no live STDIO)
+///   /live-logs         → Pilot C — live log buffer
+///
+/// Observatory-proxy paths (/dashboard, /registry, /tasks, /audit,
+/// /governance) are intentionally not registered as primary nav.
+GoRouter createAppRouter() => GoRouter(
+  initialLocation: '/providers',
   routes: [
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
         return CyberCoreShell(navigationShell: navigationShell);
       },
       branches: [
-        // Dashboard
+        // Pilot A — Providers
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: '/dashboard',
-              builder: (context, state) => const DashboardPage(),
+              path: '/providers',
+              builder: (context, state) => const ProvidersPage(),
+              routes: [
+                GoRoute(
+                  path: 'new',
+                  builder: (context, state) => const ProviderNewPage(),
+                ),
+                GoRoute(
+                  path: ':id',
+                  builder: (context, state) => ProviderDetailPage(
+                    providerId: state.pathParameters['id']!,
+                  ),
+                ),
+              ],
             ),
           ],
         ),
-        // Registry
+        // Pilot B — MCP Servers
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: '/registry',
-              builder: (context, state) => const RegistryPage(),
+              path: '/mcp-servers',
+              builder: (context, state) => const McpServersPage(),
+              routes: [
+                GoRoute(
+                  path: ':uuid',
+                  builder: (context, state) =>
+                      McpServerDetailPage(uuid: state.pathParameters['uuid']!),
+                ),
+              ],
             ),
           ],
         ),
-        // Tasks
+        // Pilot B — MCP Inspector
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: '/tasks',
-              builder: (context, state) => const TasksPage(),
+              path: '/mcp-inspector',
+              builder: (context, state) => const McpInspectorPage(),
             ),
           ],
         ),
-        // Audit
+        // Pilot C — Live Logs
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: '/audit',
-              builder: (context, state) => const AuditPage(),
-            ),
-          ],
-        ),
-        // Governance
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: '/governance',
-              builder: (context, state) => const GovernancePage(),
+              path: '/live-logs',
+              builder: (context, state) => const LiveLogsPage(),
             ),
           ],
         ),
       ],
     ),
-    // Root redirect
-    GoRoute(path: '/', redirect: (context, state) => '/dashboard'),
+    GoRoute(path: '/', redirect: (context, state) => '/providers'),
   ],
 );
+
+/// Default app router for production entry. Prefer [createAppRouter] in tests.
+final appRouter = createAppRouter();

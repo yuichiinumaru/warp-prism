@@ -23,6 +23,52 @@ void main() {
       expect(find.byType(DSShimmer), findsOneWidget);
     });
 
+    testWidgets('wraps content in ExcludeSemantics (decorative)', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(body: DSShimmer(width: 100, height: 20)),
+        ),
+      );
+
+      // Scope under DSShimmer — MaterialApp/Scaffold may also use
+      // ExcludeSemantics in some Flutter versions.
+      expect(
+        find.descendant(
+          of: find.byType(DSShimmer),
+          matching: find.byType(ExcludeSemantics),
+        ),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('reduced motion shows solid base without animation', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        const MediaQuery(
+          data: MediaQueryData(disableAnimations: true),
+          child: MaterialApp(
+            home: Scaffold(body: DSShimmer(width: 100, height: 20)),
+          ),
+        ),
+      );
+
+      expect(find.byType(DSShimmer), findsOneWidget);
+      expect(
+        find.descendant(
+          of: find.byType(DSShimmer),
+          matching: find.byType(AnimatedBuilder),
+        ),
+        findsNothing,
+      );
+
+      // Pump time — widget must remain stable (no animation-driven rebuild).
+      await tester.pump(const Duration(milliseconds: 500));
+      expect(find.byType(DSShimmer), findsOneWidget);
+    });
+
     testWidgets('renders a Container widget', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(

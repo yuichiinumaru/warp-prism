@@ -37,7 +37,10 @@ class DSFilterChipGroup extends StatelessWidget {
                 option: options[i],
                 isSelected: selected.contains(options[i].value),
                 showCount: showCount,
-                onTap: () => onToggle?.call(options[i].value),
+                // Null onToggle = non-interactive: no onTap, not a button.
+                onTap: onToggle == null
+                    ? null
+                    : () => onToggle!(options[i].value),
               ),
             ],
           ],
@@ -78,23 +81,27 @@ class _FilterChipState extends State<_FilterChip> {
   Widget build(BuildContext context) {
     final color = widget.option.color ?? DSColors.accentCyan;
     final bgColor = widget.isSelected
-        ? color.withOpacity(0.2)
+        ? color.withValues(alpha: 0.2)
         : DSColors.obsidianElevated;
     final borderColor = widget.isSelected
-        ? color.withOpacity(0.5)
+        ? color.withValues(alpha: 0.5)
         : DSColors.borderSubtle;
     final textColor = widget.isSelected ? color : DSColors.textSecondary;
     final iconColor = widget.isSelected ? color : DSColors.textTertiary;
 
+    final interactive = widget.onTap != null;
+
     return Semantics(
       label: widget.option.label,
-      button: true,
+      button: interactive,
       selected: widget.isSelected,
       explicitChildNodes: true,
       child: Focus(
         focusNode: _focusNode,
+        canRequestFocus: interactive,
         onFocusChange: (focused) => setState(() => _isFocused = focused),
         onKeyEvent: (node, event) {
+          if (!interactive) return KeyEventResult.ignored;
           if (event is KeyDownEvent) {
             if (event.logicalKey == LogicalKeyboardKey.enter ||
                 event.logicalKey == LogicalKeyboardKey.space) {
@@ -106,60 +113,67 @@ class _FilterChipState extends State<_FilterChip> {
         },
         child: GestureDetector(
           onTap: widget.onTap,
-          child: MouseRegion(
-            cursor: SystemMouseCursors.click,
-            child: ExcludeSemantics(
-              child: AnimatedContainer(
-                duration: DSMotion.fast,
-                height: 28,
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                  color: bgColor,
-                  borderRadius: BorderRadius.circular(DSRadii.chip),
-                  border: Border.all(
-                    color: _isFocused
-                        ? DSColors.accentCyan.withOpacity(0.5)
-                        : borderColor,
-                    width: _isFocused ? 2 : 1,
-                  ),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (widget.option.icon != null) ...[
-                      Icon(widget.option.icon, size: 14, color: iconColor),
-                      const SizedBox(width: 6),
-                    ],
-                    Text(
-                      widget.option.label,
-                      style: DSTypography.labelMedium.copyWith(
-                        color: textColor,
-                      ),
+          behavior: HitTestBehavior.opaque,
+          child: Container(
+            alignment: Alignment.center,
+            constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+            child: MouseRegion(
+              cursor: interactive
+                  ? SystemMouseCursors.click
+                  : SystemMouseCursors.basic,
+              child: ExcludeSemantics(
+                child: AnimatedContainer(
+                  duration: DSMotion.fast,
+                  height: 28,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  decoration: BoxDecoration(
+                    color: bgColor,
+                    borderRadius: BorderRadius.circular(DSRadii.chip),
+                    border: Border.all(
+                      color: _isFocused
+                          ? DSColors.accentCyan.withValues(alpha: 0.5)
+                          : borderColor,
+                      width: _isFocused ? 2 : 1,
                     ),
-                    if (widget.showCount && widget.option.count != null) ...[
-                      const SizedBox(width: 6),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 5,
-                          vertical: 1,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (widget.option.icon != null) ...[
+                        Icon(widget.option.icon, size: 14, color: iconColor),
+                        const SizedBox(width: 6),
+                      ],
+                      Text(
+                        widget.option.label,
+                        style: DSTypography.labelMedium.copyWith(
+                          color: textColor,
                         ),
-                        decoration: BoxDecoration(
-                          color: widget.isSelected
-                              ? color.withOpacity(0.3)
-                              : DSColors.obsidianHover,
-                          borderRadius: BorderRadius.circular(DSRadii.full),
-                        ),
-                        child: Text(
-                          widget.option.count.toString(),
-                          style: DSTypography.labelSmall.copyWith(
+                      ),
+                      if (widget.showCount && widget.option.count != null) ...[
+                        const SizedBox(width: 6),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 5,
+                            vertical: 1,
+                          ),
+                          decoration: BoxDecoration(
                             color: widget.isSelected
-                                ? color
-                                : DSColors.textTertiary,
+                                ? color.withValues(alpha: 0.3)
+                                : DSColors.obsidianHover,
+                            borderRadius: BorderRadius.circular(DSRadii.full),
+                          ),
+                          child: Text(
+                            widget.option.count.toString(),
+                            style: DSTypography.labelSmall.copyWith(
+                              color: widget.isSelected
+                                  ? color
+                                  : DSColors.textTertiary,
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ],
-                  ],
+                  ),
                 ),
               ),
             ),

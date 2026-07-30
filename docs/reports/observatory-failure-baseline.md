@@ -1,411 +1,314 @@
 # Observatory Failure Baseline Inventory
 
-> **Date**: 2026-06-09
-> **Source**: `flutter test` in `apps/observatory/` (fresh run)
-> **Total tests**: 653
-> **Passed**: 589
-> **Failed**: 64
-> **Pass rate**: 90.2%
-> **Classification**: Inventory only — no tests were modified
+> **Date**: 2026-07-18 (path-to-100 residual close after drain rejection)
+> **Source**: Full-package `flutter test apps/observatory --concurrency=2 --no-pub`
+> + targeted `history_story_modes_test` + `flutter analyze apps/observatory --no-pub`
+> + suite universe listing (`find … *_test.dart` = **44**)
+> **Classification**: Inventory only — no production or test code modified under Task 1401
 > **Task origin**: Task 1401, EPIC-14 stabilization wave
-> **Predecessor**: `docs/reports/warp-prism-test-failure-baseline.md` (Task 1201)
+> **Predecessor**: `docs/reports/warp-prism-failure-baseline-inventory.md` (Task 1201)
+> **Supersedes as current**:
+> - 2026-06-09 inventory (653 / 589 / 64 runtime framing)
+> - mid-wave 2026-07-09 inventory (12 non-success / 1042 analyzer)
+> - fixer re-run 2026-07-09 inventory (1 residual suite / 2 history selection-sync errors / 816 green / 40 suites / 164 INFO)
+> - drain 2026-07-17 live still had residual claim stale vs product green
 
 ---
 
-## 1. Summary
+## 0. Honest status (read first)
 
-| Feature Area | Failures | Primary EPIC-14 Fix Task | Effort (S/M/L) |
-|---|---|---|---|
-| asset_detail | 24 | 1404 (Asset Detail Chain) | L |
-| parsers | 8 | 1403 (Parser Contract Chain) | S |
-| governance | 6 | 1406 (Governance & Diagnostics Chain) | M |
-| history | 7 | 1407 (History Chain) | M |
-| map | 6 | 1405 (Map Surface Chain) | M |
-| operate | 4 | 1404 (shared fix via TaskProjection contract) | S |
-| app/shell | 3 | 1405 (shared fix via router/shell) | S |
-| overview | 1 | 1406 (shared fix via metrics contract) | S |
-| models | 2 | 1403 (shared fix via backbone model) | S |
-| **TOTAL** | **64** | | |
+Live Observatory diagnostics are **fully green** for the package test suite.
+Prior residual F01 (`history_story_modes_test` selection-sync) is **remediated**.
 
----
-
-## 2. Root Cause Taxonomy
-
-Cross-cutting root causes that span multiple feature areas:
-
-| Root Cause | Failures | Description |
-|---|---|---|
-| View-mismatch | 26 | Widget implementation doesn't render what tests expect (text, layout, state) |
-| Mapper contract drift | 11 | `asset_detail_mapper` builds detail sections differently than tests expect |
-| Projection contract drift | 12 | `WorkspaceTaskProjectionParser`, `HistoryState`, `OverviewProvider` produce different shapes |
-| Model contract drift | 2 | `WorkspaceAsset` equality or `AssetKind` enum API mismatch |
-| Widget not implemented | 8 | `DSSearchBar`, `AssetDetailPage`, `DSShell`/`DSSidebar`/`DSTopbar` missing or different |
-| Chain position: View | 14 | GenericAssetDetailView `AssetKind.name` NoSuchMethodError (downstream of model) |
-| Chain position: Projection | 8 | Parser `fromStatus` mapping is pass-through (status strings ≠ directory prefixes) |
-
----
-
-## 3. Per-Failure Detail
-
-### 3.1 asset_detail — GenericAssetDetailView `AssetKind.name` (11 failures)
-
-**File**: `test/features/asset_detail/extended_detail_variants_test.dart`
-**Chain position**: View (downstream of Model)
-**Taxonomy class**: Contract drift
-**Fix task**: 1404
-
-| # | Test Name | Expected/Actual | Root Cause Hypothesis |
-|---|---|---|---|
-| 1 | GenericAssetDetailView (fallback) renders partial support banner for subskill | Text "Partial support" not found | `GenericAssetDetailView._buildSubtitle` calls `asset.kind.name` which throws `NoSuchMethodError` on `AssetKind` — view crash prevents rendering |
-| 2 | GenericAssetDetailView (fallback) renders partial support banner for script | Text "Partial support" not found | Same — `AssetKind.name` NoSuchMethodError |
-| 3 | GenericAssetDetailView (fallback) renders partial support banner for reference | Text "Partial support" not found | Same |
-| 4 | GenericAssetDetailView (fallback) renders partial support banner for rule | Text "Partial support" not found | Same |
-| 5 | GenericAssetDetailView (fallback) shows identity and metadata in fallback view | Text "Identity" not found | Same — entire view crashes before rendering any content |
-| 6 | AssetDetailView dispatcher dispatches subskill to GenericAssetDetailView | Text "Partial support" not found | Same — dispatched through `AssetDetailView` → `GenericAssetDetailView` → crash |
-| 7 | AssetDetailView dispatcher dispatches script to GenericAssetDetailView | Text "Partial support" not found | Same |
-| 8 | AssetDetailView dispatcher dispatches reference to GenericAssetDetailView | Text "Partial support" not found | Same |
-| 9 | AssetDetailView dispatcher dispatches rule to GenericAssetDetailView | Text "Partial support" not found | Same |
-| 10 | ChangelogDetailView renders ledger source and related task | Text "Ledger Source" not found | View-mismatch — `ChangelogDetailView` may not render expected section titles |
-| 11 | AgentDetailView renders tools section | Text "Tools" not found | View-mismatch — `AgentDetailView` may not render "Tools" section with expected text |
-
-**Cascade analysis**: Failures 1-5 are the root failure. Failures 6-9 cascade from the same `AssetKind.name` bug when the dispatcher routes to `GenericAssetDetailView`. Failures 10-11 are separate view-mismatch issues.
-
----
-
-### 3.2 asset_detail — Responsive Detail Shell (5 failures)
-
-**File**: `test/features/asset_detail/responsive_detail_integration_test.dart`
-**Chain position**: View
-**Taxonomy class**: Stale test / view-mismatch
-**Fix task**: 1404
-
-| # | Test Name | Expected/Actual | Root Cause Hypothesis |
-|---|---|---|---|
-| 12 | ResponsiveDetailShell Wide layout split pane uses Row layout | `find.byType(Row)` findsWidgets (expected) but test may fail on additional assertion | The `Row` check may be passing but an implicit `Scaffold` assertion fails — **this test actually passed in the failure list; needs re-verification** |
-| 13 | ResponsiveDetailShell Narrow layout renders full-screen detail with Scaffold and AppBar | `Scaffold` findsOneWidget but the test wrapper `_wrapWithWidth` also uses `Scaffold` → finds 2 | Test wrapper adds an outer Scaffold that the assertion doesn't account for |
-| 14 | Breakpoint contract alignment wide uses split-pane at exactly 1200px | `Scaffold` findsNothing expected, but the test wrapper's Scaffold is found | `ResponsiveDetailShell` at 1200px shouldn't add its own Scaffold, but test wrapper has one |
-| 15 | Breakpoint contract alignment narrow uses full-screen at 600px | `Scaffold` findsOneWidget expected, but finds 2 (wrapper + detail) | Test wrapper Scaffold + narrow-mode detail Scaffold = 2 |
-| 16 | Breakpoint contract alignment narrow at 799px uses full-screen | `Scaffold` findsOneWidget expected, but finds 2 | Same wrapper collision |
-
-**Note**: Tests 13-16 share the same root cause — the test wrapper `_wrapWithWidth` uses `MaterialApp(home: Scaffold(...))` which introduces a Scaffold that the test assertions don't account for. The `ResponsiveDetailShell` narrow layout also renders a Scaffold.
-
----
-
-### 3.3 asset_detail — Skill & Task Detail Views (6 failures)
-
-**File**: `test/features/asset_detail/skill_task_detail_widgets_test.dart`
-**Chain position**: Mapper/View
-**Taxonomy class**: Mapper contract drift
-**Fix task**: 1404
-
-| # | Test Name | Expected/Actual | Root Cause Hypothesis |
-|---|---|---|---|
-| 17 | SkillDetailView renders all 6 panels for a complete skill | Section titles not found (Role in Harness, Sub-structure, etc.) | `SkillDetailView` implementation doesn't render kind-specific sections from `descriptor.kindSections` |
-| 18 | TaskDetailView renders forensic sections with lane-neutral header | `task:0903` and `02-doing` not found | `TaskDetailView` doesn't render header or metadata from descriptor |
-| 19 | TaskDetailView renders dependencies as link rows | `Dependencies` text not found | Section not rendered |
-| 20 | TaskDetailView renders evidence section | `Evidence` text not found | Section not rendered |
-| 21 | TaskDetailView renders related skills and workflows | `Related Skills & Workflows` not found | Section not rendered |
-| 22 | TaskDetailView renders lifecycle section | `Lifecycle` not found | Section not rendered |
-
-**Pattern**: `SkillDetailView` and `TaskDetailView` appear to not render sections from `descriptor.kindSections`. Either the views delegate to a section builder that doesn't exist yet, or the views use a different internal API than the test fixtures construct.
-
----
-
-### 3.4 asset_detail — Descriptor Metadata Mapper (2 failures)
-
-**File**: `test/features/asset_detail/asset_detail_descriptor_test.dart`
-**Chain position**: Mapper
-**Taxonomy class**: Mapper contract drift
-**Fix task**: 1404
-
-| # | Test Name | Expected/Actual | Root Cause Hypothesis |
-|---|---|---|---|
-| 23 | Descriptor metadata section includes frontmatter metadata | `version` and `status` labels not found in `allSections` properties | `buildAssetDetailDescriptor` mapper doesn't flatten frontmatter keys into `DetailProperty` labels |
-| 24 | Descriptor metadata section includes task-specific fields | `priority` and `lane` labels not found | Task frontmatter keys not mapped to descriptor properties |
-
-**Pattern**: The `asset_detail_mapper` doesn't extract frontmatter key-value pairs into `DetailSection` properties. The test expects `result.descriptor.allSections.expand((s) => s.properties).toList()` to contain labels from frontmatter, but the mapper either doesn't produce a "Metadata" section or doesn't iterate frontmatter keys.
-
----
-
-### 3.5 parsers — Task Projection Parser (8 failures)
-
-**File**: `test/data/parsers/workspace_task_projection_parser_test.dart`
-**Chain position**: Projection
-**Taxonomy class**: Contract drift
-**Fix task**: 1403
-
-| # | Test Name | Expected/Actual | Root Cause Hypothesis |
-|---|---|---|---|
-| 25 | parses planning lane task (T001) | `task.lane` expected `TaskLane.planning` but got `TaskLane.open` | `TaskLaneParsing.fromStatus("planning")` delegates to `fromDirectoryPrefix("planning")` which doesn't match "00-planning" → defaults to `open` |
-| 26 | parses doing lane task (T009) | `task.lane` expected `TaskLane.doing` but got `TaskLane.open` | Same — `"doing"` ≠ `"02-doing"` |
-| 27 | parses review lane task (T015) | `task.lane` expected `TaskLane.review` but got `TaskLane.open` | Same — `"review"` ≠ `"03-review"` |
-| 28 | parses completed lane task (T018) | `task.lane` expected `TaskLane.completed` but got `TaskLane.open` | Same — `"completed"` ≠ `"04-completed"` |
-| 29 | frontmatter status overrides directory path | `task.lane` expected `TaskLane.completed` but got `TaskLane.open` | `fromStatus("completed")` → `fromDirectoryPrefix("completed")` → default → `open` |
-| 30 | hasCompletionEvidence is false for "not yet" text | `hasCompletionEvidence` expected false but was true | `TaskProjection.hasCompletionEvidence` checks `completionEvidenceSummary` nullability, not content pattern; parser may produce non-null evidence from italic text |
-| 31 | parseAll — OperateProjection groups tasks into five lanes | `laneFor(TaskLane.planning).count` expected 1 but was 0 | All tasks parsed as `open` lane (cascades from 25-28), so planning lane is empty |
-| 32 | parseAll — OperateProjection returns empty lane when no tasks match | `laneFor(TaskLane.planning).isEmpty` expected true — **may actually pass** if only doing task is provided | Needs re-verification |
-
-**Critical root cause**: `TaskLaneParsing.fromStatus` is a pass-through to `fromDirectoryPrefix` which only handles directory-style strings like `"00-planning"`, not status-style strings like `"planning"`. This single defect cascades through all lane-dependent tests.
-
----
-
-### 3.6 models — Workspace Graph Models (2 failures)
-
-**File**: `test/data/models/workspace_graph_models_test.dart`
-**Chain position**: Model
-**Taxonomy class**: Model contract drift
-**Fix task**: 1403
-
-| # | Test Name | Expected/Actual | Root Cause Hypothesis |
-|---|---|---|---|
-| 33 | WorkspaceAsset equality is based on id, kind, name, path, canonicality | `a == b` expected true but was false | `WorkspaceAsset` equality implementation may include `description` or other fields beyond the five stated fields, or equality is identity-based rather than value-based |
-| 34 | EdgeInferenceService inferWorkflowDependencies creates dependsOn edges | `edges[0].targetId` expected `"skill:compile"` but differs | `inferWorkflowDependencies` may not produce `dependsOn` edges — could produce `references` or `uses` instead, or the method signature differs |
-
----
-
-### 3.7 history — Story Modes (6 failures)
-
-**File**: `test/features/history/history_story_modes_test.dart`
-**Chain position**: View
-**Taxonomy class**: View-mismatch
-**Fix task**: 1407
-
-| # | Test Name | Expected/Actual | Root Cause Hypothesis |
-|---|---|---|---|
-| 35 | switching to project story mode renders story panels | `warp-prism` and `ganthritor` text not found | `HistoryStoryView` not rendering project group headers, or `HistoryWorkspacePage` doesn't delegate to story view for `projectStory` mode |
-| 36 | switching to impact story mode renders impact cards | `0612` and `0712` not found | `HistoryImpactView` not rendering entry ID fragments |
-| 37 | tapping mode chip changes mode | After tapping "Project Story", `warp-prism` not found | Mode change doesn't trigger re-render with story view |
-| 38 | HistoryImpactView renders impact path cards | Entry IDs not found | Widget doesn't render impact cards from `ImpactPathNode` |
-| 39 | HistoryImpactView shows gap indicator for missing task | "No task linked to this entry" not found | Gap indicator text different or not rendered |
-| 40 | HistoryImpactView shows gap indicator for missing skills | "No skills/workflows linked" not found | Gap indicator text different or not rendered |
-
----
-
-### 3.8 history — Timeline Page (2 failures)
-
-**File**: `test/features/history/history_page_test.dart`
-**Chain position**: Projection/View
-**Taxonomy class**: Contract drift
-**Fix task**: 1407
-
-| # | Test Name | Expected/Actual | Root Cause Hypothesis |
-|---|---|---|---|
-| 41 | HistoryWorkspacePage renders timeline entries in reverse chronological order | "4 of 4" not found | `HistoryWorkspacePage` doesn't render result count text in expected format |
-| 42 | HistoryWorkspacePage renders filter categories | "Project", "Type", "Task" text not found | Filter UI not rendering category labels, or using different label text |
-
----
-
-### 3.9 governance — Boundaries Overview (3 failures)
-
-**File**: `test/features/governance/governance_boundaries_overview_test.dart`
-**Chain position**: View/Projection
-**Taxonomy class**: View-mismatch
-**Fix task**: 1406
-
-| # | Test Name | Expected/Actual | Root Cause Hypothesis |
-|---|---|---|---|
-| 43 | GovernanceOverviewPage renders canonical count from fixture data | "18" text not found | `GovernanceOverviewPage` doesn't render count numbers from `CanonicalityBoundarySummary.counts` |
-| 44 | GovernanceOverviewPage renders generated count from fixture data | "8" text not found | Same — counts not rendered |
-| 45 | GovernanceOverviewPage renders all six boundary classes in legend | "Child-Local", "Append-Only", "Archive", "Mock" not found | `GovernanceBoundaryLegend` doesn't render all class labels, or renders them differently |
-
----
-
-### 3.10 governance — Analytics Panels (3 failures)
-
-**File**: `test/features/governance/governance_analytics_panels_test.dart`
-**Chain position**: View
-**Taxonomy class**: View-mismatch
-**Fix task**: 1406
-
-| # | Test Name | Expected/Actual | Root Cause Hypothesis |
-|---|---|---|---|
-| 46 | ReviewPressurePanel renders healthy state when empty | "No review pressure" not found | `ReviewPressurePanel` uses different healthy-state copy |
-| 47 | ReviewPressurePanel renders pressure indicators | "Implement Inspector" not found | Panel doesn't render indicator task titles |
-| 48 | ReviewPressurePanel renders lane breakdown chips | "03-review" not found | Lane chips not rendered, or rendered as different text |
-
----
-
-### 3.11 map — Workspace Page (3 failures)
-
-**File**: `test/features/map/map_workspace_page_test.dart`
-**Chain position**: View
-**Taxonomy class**: Widget not implemented
-**Fix task**: 1405
-
-| # | Test Name | Expected/Actual | Root Cause Hypothesis |
-|---|---|---|---|
-| 49 | MapWorkspacePage shows catalog panel on first tab (Agents) | `DSSearchBar` not found | `DSSearchBar` widget doesn't exist in `warp_prism_ui`, or `MapWorkspacePage` doesn't use it |
-| 50 | MapWorkspacePage switching tabs shows correct content | `DSSearchBar` not found | Same missing widget |
-| 51 | MapWorkspacePage renders with initial state specifying a subview | "Asset Graph" not found | Graph subview content text differs |
-
----
-
-### 3.12 map — Surface States (2 failures)
-
-**File**: `test/features/map/map_surface_states_test.dart`
-**Chain position**: View/Projection
-**Taxonomy class**: View-mismatch
-**Fix task**: 1405
-
-| # | Test Name | Expected/Actual | Root Cause Hypothesis |
-|---|---|---|---|
-| 52 | Map surface - happy path renders graph tab with projection when edges exist | "Containment" not found | Graph mode selector text differs or not rendered |
-| 53 | Map surface - error state error state shows retry button | "Retry" not found | `MapStatePanel` error state doesn't render retry button text |
-
----
-
-### 3.13 map — Selection & Inspector (1 failure)
-
-**File**: `test/features/map/map_selection_and_inspector_test.dart`
-**Chain position**: View
-**Taxonomy class**: View-mismatch
-**Fix task**: 1405
-
-| # | Test Name | Expected/Actual | Root Cause Hypothesis |
-|---|---|---|---|
-| 54 | MapInspectorPanel widget switches from selected to no-selection when cleared | "No asset selected" not found after clearing | `MapInspectorPanel` doesn't update to empty state when controller clears selection |
-
----
-
-### 3.14 map — Catalog Panel (1 failure)
-
-**File**: `test/features/map/map_catalog_panel_test.dart`
-**Chain position**: View
-**Taxonomy class**: View-mismatch
-**Fix task**: 1405
-
-| # | Test Name | Expected/Actual | Root Cause Hypothesis |
-|---|---|---|---|
-| 55 | MapNoResultsState widget shows message for query with no results | `find.text('No results for "nonexistent"')` not found | `MapNoResultsState` renders different copy or not at all |
-
----
-
-### 3.15 operate — Task Detail Inspector (4 failures)
-
-**File**: `test/features/operate/operate_task_detail_inspector_test.dart`
-**Chain position**: View
-**Taxonomy class**: View-mismatch
-**Fix task**: 1404 (shared fix)
-
-| # | Test Name | Expected/Actual | Root Cause Hypothesis |
-|---|---|---|---|
-| 56 | OperateTaskDetailPanel renders task identity as header | `textContaining('0612')` not found | `OperateTaskDetailPanel` doesn't render task ID in header |
-| 57 | OperateTaskDetailPanel renders evidence rows | "Completion Evidence" not found | Evidence section not rendered |
-| 58 | OperateTaskDetailPanel renders related skills and workflows | "Related Skills & Workflows" not found | Section not rendered |
-| 59 | OperateTaskDetailPanel renders body summary section | "Body Summary" not found | Section not rendered |
-
----
-
-### 3.16 app/shell — Smoke & Deep Link (3 failures)
-
-**File**: `test/app/app_shell_smoke_test.dart`, `test/app/deep_link_fallback_test.dart`
-**Chain position**: View
-**Taxonomy class**: Widget not implemented
-**Fix task**: 1405
-
-| # | Test Name | Expected/Actual | Root Cause Hypothesis |
-|---|---|---|---|
-| 60 | App shell smoke test app boots and renders the shell with default route | `DSShell`, `DSSidebar`, or `DSTopbar` not found | These widgets may not exist in `warp_prism_ui`, or `WarpPrismApp` uses a different shell implementation |
-| 61 | App shell smoke test default route lands on Overview | "Overview" not found | Overview page doesn't render the text "Overview" |
-| 62 | AssetDetailPage deep-link fallback renders detail for valid asset ID | "Asset Detail" not found | `AssetDetailPage` renders a different placeholder or full implementation |
-
----
-
-### 3.17 overview — Provider (1 failure)
-
-**File**: `test/features/overview/overview_provider_test.dart`
-**Chain position**: Projection
-**Taxonomy class**: Contract drift
-**Fix task**: 1406
-
-| # | Test Name | Expected/Actual | Root Cause Hypothesis |
-|---|---|---|---|
-| 63 | OverviewProvider counts governance diagnostics at warning or above | `governanceWarningCount` expected 2 but was different | `OverviewProvider.compute` doesn't count diagnostics at `warning` or above correctly — may only count `error` severity |
-
----
-
-### 3.18 graph builder — Edge Inference (1 failure)
-
-**File**: `test/data/services/workspace_graph_builder_test.dart`
-**Chain position**: Model/Projection
-**Taxonomy class**: Model contract drift
-**Fix task**: 1403
-
-| # | Test Name | Expected/Actual | Root Cause Hypothesis |
-|---|---|---|---|
-| 64 | EdgeInferenceService inferWorkflowDependencies creates dependsOn edges | Edge kind or target mismatch | `inferWorkflowDependencies` produces a different edge kind than `EdgeKind.dependsOn` |
-
----
-
-## 4. Group → EPIC-14 Task Mapping
-
-| Group | Failures | EPIC-14 Task | What the Fix Should Do |
-|---|---|---|---|
-| **Parsers** (3.5, 3.6, 3.18) | 11 | **1403** — Parser Contract Chain | Fix `TaskLaneParsing.fromStatus` to handle bare status strings; fix `WorkspaceAsset` equality; fix `EdgeInferenceService` edge kinds |
-| **Asset Detail** (3.1, 3.2, 3.3, 3.4, 3.15) | 28 | **1404** — Asset Detail Chain | Fix `AssetKind.name` NoSuchMethodError; implement `SkillDetailView`/`TaskDetailView` section rendering; fix `asset_detail_mapper` frontmatter extraction; fix responsive test wrapper scaffolds |
-| **Map** (3.11, 3.12, 3.13, 3.14, 3.16) | 10 | **1405** — Map Surface Chain | Implement `DSSearchBar` or update tests; fix `MapStatePanel` text; fix `MapInspectorPanel` state update; implement `AssetDetailPage` shell |
-| **Governance** (3.9, 3.10, 3.17) | 7 | **1406** — Governance & Diagnostics Chain | Fix `GovernanceOverviewPage` count rendering; fix `ReviewPressurePanel` text; fix `OverviewProvider.compute` warning counting |
-| **History** (3.7, 3.8) | 8 | **1407** — History Chain | Implement `HistoryStoryView`/`HistoryImpactView` rendering; fix `HistoryWorkspacePage` result count and filter UI |
-
----
-
-## 5. Effort Estimates
-
-| Group | Failures | Complexity | Estimated Effort | Notes |
+| Metric | 2026-06-09 (hist.) | Mid-wave 2026-07-09 (hist.) | Fixer 2026-07-09 (prior residual) | **Live 2026-07-18** |
 |---|---|---|---|---|
-| Parsers (1403) | 11 | Low-Medium | **S** | `fromStatus` is a 10-line fix + test. Equality/inference are single-method fixes. High value: unblocks 8 parser tests + 2 model tests + 1 graph test. |
-| Asset Detail (1404) | 28 | Medium-High | **L** | Multiple view implementations + mapper fix + `AssetKind` API. Highest failure count. |
-| Map (1405) | 10 | Medium | **M** | Mix of widget implementation + test adjustments. Depends on `warp_prism_ui` component availability. |
-| Governance (1406) | 7 | Low-Medium | **M** | Widget rendering fixes + metrics counting logic. Straightforward text/layout corrections. |
-| History (1407) | 8 | Medium | **M** | Story/impact view implementations + controller wiring. |
+| Inventory method | Full suite + `[E]` | 37 suites JSON | 40 suites JSON | Full suite + suite list (**44**) |
+| Fully green suites | not recorded | claimed 25 | 39 | **44** |
+| Non-success suites | claimed 64 runtime | claimed 12 | **1** | **0** |
+| Green test counter | claimed 589 | claimed 472 | 816 | **+810 All tests passed** |
+| Non-success tests | claimed 64 | claimed 12 | **2** | **0** |
+| Analyzer | not central | claimed 1042 err | 164 INFO | **126 INFO** (0 error / 0 warning), exit 0 |
+| Dominant failure class | view / mapper | DS\* compile | history selection sync | **none (package green)** |
+
+> [!IMPORTANT]
+> Do not re-assert the 2026-07-09 residual table as current. F01 is historical.
+> Suite universe advanced from **40 → 44** (four new suites listed in §1.2).
+> Pass totals differ by method (per-suite JSON sum vs full-suite counter); this
+> inventory anchors **full-suite `+810 All tests passed!`** as the live package proof.
+>
+> Expert re-stamp 2026-07-18 (gt-flutter-expert): suite universe still **44/44**,
+> `flutter analyze apps/observatory --no-pub` → **126 INFO** (0 error / 0 warning;
+> was 127 — prefer_const hygiene drift only). Residual table remains empty.
+>
+> Formal independent re-review 2026-07-18 (gt-flutter-code-reviewer): full suite
+> re-run → **+810 All tests passed** (currency vs prior same-day +808; residual
+> still **0**; suite universe still **44/44**; analyzer still **126 INFO**).
 
 ---
 
-## 6. Chain Position Analysis
+## 1. Live suite inventory (2026-07-18)
 
-### Top-down failures (corpus → parser → projection → view)
+### 1.1 Outcome summary
 
-**11 failures** — The parser group (3.5) is top-down: `TaskLaneParsing.fromStatus` produces wrong lanes, which cascades to `parseAll` grouping, which would cascade to any view consuming the Operate projection.
+| Outcome | Count |
+|---|---:|
+| Total `*_test.dart` suites | **44** |
+| Fully green suites | **44** |
+| Non-success suites | **0** |
+| Full-suite pass counter | **+810** |
+| Non-success tests | **0** |
+| Package result | **All tests passed!** |
 
-### Bottom-up failures (view stale → test fails)
+### 1.2 Suite universe (44 / 44 green)
 
-**26 failures** — The view-mismatch group (3.2, 3.3, 3.7, 3.11-3.15) is bottom-up: views either don't exist yet or render different content than tests expect. The code is the source of truth and tests need to match.
+Paths relative to `apps/observatory/test/`:
 
-### Model-level failures
-
-**3 failures** — The model contract group (3.6) is foundational: `WorkspaceAsset` equality and edge inference affect every downstream consumer.
-
-### Mixed (mapper in the middle)
-
-**11 failures** — The mapper group (3.4) sits between model and view: the mapper doesn't produce the detail sections that views and tests expect.
-
----
-
-## 7. Verification Commands
-
-```bash
-# Full observatory test suite
-cd apps/observatory && flutter test 2>&1 | grep "\[E\]" | wc -l
-# Expected: 64
-
-# Per-group verification
-cd apps/observatory && flutter test test/data/parsers/workspace_task_projection_parser_test.dart 2>&1 | tail -3
-cd apps/observatory && flutter test test/data/models/workspace_graph_models_test.dart 2>&1 | tail -3
-cd apps/observatory && flutter test test/features/asset_detail/ 2>&1 | tail -3
-cd apps/observatory && flutter test test/features/history/ 2>&1 | tail -3
-cd apps/observatory && flutter test test/features/governance/ 2>&1 | tail -3
-cd apps/observatory && flutter test test/features/map/ 2>&1 | tail -3
-cd apps/observatory && flutter test test/features/operate/ 2>&1 | tail -3
-cd apps/observatory && flutter test test/features/overview/ 2>&1 | tail -3
-cd apps/observatory && flutter test test/app/ 2>&1 | tail -3
+```text
+app/app_bootstrap_test.dart
+app/app_shell_smoke_test.dart
+app/asset_detail_route_test.dart
+app/deep_link_fallback_test.dart
+app/production_router_test.dart                    # NEW vs 40-suite universe
+app/shell_responsive_layout_test.dart
+data/history/history_repository_test.dart
+data/models/workspace_graph_models_test.dart
+data/parsers/workspace_markdown_parser_test.dart
+data/parsers/workspace_task_projection_parser_test.dart
+data/providers/workspace_providers_test.dart
+data/repositories/mock_workspace_repository_test.dart
+data/services/workspace_diagnostics_service_test.dart
+data/services/workspace_graph_builder_test.dart
+data/sources/preset_local_workspace_source_test.dart
+features/asset_detail/asset_detail_descriptor_test.dart
+features/asset_detail/extended_detail_variants_test.dart
+features/asset_detail/responsive_detail_integration_test.dart
+features/asset_detail/skill_task_detail_widgets_test.dart
+features/governance/governance_analytics_panels_test.dart
+features/governance/governance_boundaries_overview_test.dart
+features/governance/governance_drilldown_storytelling_test.dart
+features/governance/governance_issue_panels_test.dart
+features/governance/governance_page_shell_test.dart
+features/history/history_page_test.dart
+features/history/history_story_modes_test.dart     # prior residual; now green +31
+features/map/map_catalog_panel_test.dart
+features/map/map_graph_builder_edges_test.dart     # NEW vs 40-suite universe
+features/map/map_graph_panel_test.dart
+features/map/map_graph_projection_test.dart
+features/map/map_selection_and_inspector_test.dart
+features/map/map_surface_states_test.dart
+features/map/map_workspace_page_test.dart
+features/operate/operate_board_surface_test.dart
+features/operate/operate_path_wins_lane_test.dart  # NEW vs 40-suite universe
+features/operate/operate_storytelling_test.dart
+features/operate/operate_task_detail_inspector_test.dart
+features/overview/overview_page_test.dart
+features/overview/overview_provider_path_test.dart # NEW vs 40-suite universe
+features/overview/overview_provider_test.dart
+features/overview/overview_shell_test.dart
+features/shell/shell_state_handler_test.dart
+features/workspace_snapshot/workspace_snapshot_enhanced_test.dart
+features/workspace_snapshot/workspace_snapshot_page_test.dart
 ```
 
+### 1.3 Non-success suites (0 / 44)
+
+**None.** Live residual table is empty.
+
+### 1.4 Prior residual F01 — remediated (historical)
+
+| # | Suite | Kind | Prior status (2026-07-09) | Live 2026-07-18 | Chain position (historical) | Taxonomy (historical) |
+|---|---|---|---|---|---|---|
+| F01 | `features/history/history_story_modes_test.dart` | runtime | 30 pass / 2 error (selection sync) | **+31 All tests passed** | View / Test stale (was) | Widget assertion / selection sync (was) |
+
+Historical signatures (do not treat as live):
+
+```text
+# 2026-07-09 fixer residual (SUPERSEDED)
+selection from impact mode appears in inspector → Found 0 widgets with text "Impact Path"
+mode switch preserves selected entry → Bad state: Too many elements (ensureVisible)
+
+# 2026-07-18 reconfirm
+flutter test apps/observatory/test/features/history/history_story_modes_test.dart --no-pub
+→ +31: All tests passed!
+```
+
+### 1.5 Live command anchors
+
+```text
+find apps/observatory/test -name '*_test.dart' | wc -l
+→ 44
+
+flutter test apps/observatory --concurrency=2 --no-pub
+→ +810: All tests passed!
+
+flutter test apps/observatory/test/features/history/history_story_modes_test.dart --no-pub
+→ +31: All tests passed!
+
+flutter analyze apps/observatory --no-pub
+→ 127 issues found. (0 error / 0 warning / 127 info; exit 0)
+  # expert re-stamp 2026-07-18 later same day: 126 INFO (0/0/126; exit 0)
+```
+
+Saved logs (this pass): `tmp/1401-analyze.out`, `tmp/1401-full-suite.out`,
+`tmp/1401-suite-list.txt`.
+
 ---
 
-## 8. Evidence
+## 2. Analyzer baseline (package-level)
 
-- **Fresh test run**: 2026-06-09, `flutter test` in `apps/observatory/`, 653 tests, 589 pass, 64 fail
-- **Task 1201 baseline count confirmed**: 64 failures matches the Task 1201 pre-existing count
-- **Failure list extraction**: `grep "\[E\]"` from test output, 64 unique test entries confirmed
-- **Source files read**: All 14 failing test files and 6 key implementation files read before classification
-- **No tests modified**: Inventory only per task requirements
+Command:
+
+```bash
+flutter analyze apps/observatory --no-pub
+```
+
+Live result (2026-07-18 expert re-stamp; prior same-day log had 127 INFO):
+
+```text
+126 issues found. (ran in 1.0s)
+```
+
+| Severity | Count |
+|---|---:|
+| error | **0** |
+| warning | **0** |
+| info | **126** |
+| **total** | **126** |
+| process exit | **0** |
+
+### 2.1 What the infos are (class, not flood)
+
+Dominated by style infos such as `prefer_const_constructors`,
+`prefer_const_literals_to_create_immutables`, `unnecessary_import`,
+`dangling_library_doc_comments`, and similar. **No undefined DS\* / Prism\***
+compile errors in this baseline.
+
+### 2.2 DS\* vs Prism\* on Observatory lib (currency check)
+
+Mid-wave inventory claimed dominant root cause = hidden `DS*` after Prism public
+API migration. Live package is **green with 0 analyzer errors**. The DS\* compile
+cluster is **historical only**.
+
+---
+
+## 3. Root-cause taxonomy (current)
+
+| Class | Live volume | Notes |
+|---|---|---|
+| Compile / load | **0 suites** | Mid-wave DS\* flood cleared |
+| Runtime widget assertion | **0 suites** | F01 history selection sync remediated |
+| Corpus / parser | **0 failing suites** | Parser suites green |
+| Projection / mapper | **0 failing suites** | Not a live blocker |
+| Analyzer error residual | **0** | Info-only package analyze |
+
+### 3.1 Top-down vs bottom-up
+
+- **Top-down (corpus → parser)**: not a live failure mode (no failing suites).
+- **Bottom-up (view / test expectation)**: prior sole residual remediated; no live bottom-up failures.
+
+---
+
+## 4. Historical baselines (do not treat as current)
+
+### 4.1 2026-06-09 — claimed 653 / 589 / 64
+
+Superseded. Kept only for lineage. Do not promote as live.
+
+### 4.2 Mid-wave 2026-07-09 — claimed 12 non-success / 1042 analyzer
+
+Superseded. DS\* compile-dominant inventory incorrectly treated as current after
+Prism migration completed.
+
+### 4.3 Fixer re-run 2026-07-09 — 40 suites / 39 green / 2 history errors / 816 / 164 INFO
+
+Superseded as **current residual**. Valid as historical residual ledger for the
+selection-sync defect that later cleared. Do not re-assert F01 as live.
+
+### 4.4 Independent re-review claim — 39/39 / +736 / 0 fail
+
+Prior reviewer snapshot (partial suite universe). Live is **44** suites /
+**+810** / **0** fail.
+
+### 4.5 Drain review 2026-07-17 — product green vs inventory residual
+
+Drain re-review measured `history_story_modes` +31 and full suite +778 with
+inventory still claiming 2 residual errors — **Proof Reality reject**. This
+document closes that gap.
+
+---
+
+## 5. Files read (anti-hallucination evidence)
+
+### 5.1 Test files executed
+
+Every path under `apps/observatory/test/**/*_test.dart` (full set = **44**,
+listed in §1.2). Full-package run: `tmp/1401-full-suite.out`. Suite list:
+`tmp/1401-suite-list.txt`.
+
+### 5.2 Diagnostics / residual reconfirm
+
+| Path | Why |
+|---|---|
+| `apps/observatory/test/features/history/history_story_modes_test.dart` | Prior F01 residual; reconfirmed green +31 |
+| `tmp/1401-analyze.out` | Analyzer severity counts (prior 127 INFO; expert re-stamp 126) |
+| `tmp/1401-full-suite.out` | Package green +810 (formal re-review) |
+| `tmp/1401-suite-list.txt` | Suite universe 44 |
+| `docs/reports/review-wave-2026-07-17/task-1401-drain-review.md` | Drain residual contract |
+
+---
+
+## 6. Deterministic extraction method (not `[E]` grep)
+
+Preferred recipes:
+
+```bash
+# Package-level green proof (this pass anchor):
+flutter analyze apps/observatory --no-pub | tee tmp/1401-analyze.out
+flutter test apps/observatory --concurrency=2 --no-pub | tee tmp/1401-full-suite.out
+find apps/observatory/test -name '*_test.dart' | sort | tee tmp/1401-suite-list.txt | wc -l
+
+# Optional per-suite JSON (still valid when residual hunting):
+mkdir -p tmp/1401-suite-json
+echo -e "suite\texit\tpass\tfail\terror\tskip" > tmp/1401-suite-summary.tsv
+find apps/observatory/test -name '*_test.dart' | sort | while read f; do
+  base=$(echo "$f" | sed 's|apps/observatory/test/||;s|/|__|g;s|\.dart$||')
+  out="tmp/1401-suite-json/${base}.json"
+  flutter test "$f" --reporter=json --no-pub >"$out" 2>"tmp/1401-suite-json/${base}.err" || true
+done
+```
+
+Count rules:
+
+1. **Package green** iff full-suite ends with `All tests passed!` and zero
+   non-success suite exits when using per-suite mode.
+2. **Suite green** (JSON mode) iff process exit 0 **and** zero `failure` **and**
+   zero `error` in `testDone`.
+3. Do **not** use sole `[E]` line grep on expanded human output as proof.
+
+---
+
+## 7. Recommended follow-ups (out of Task 1401 inventory scope)
+
+| ID | Action | Owner hint |
+|---|---|---|
+| H1 | ~~Fix history selection-sync~~ — **DONE** (live green) | — |
+| H2 | Keep corpus frontmatter scan in CI (`no_fm=0`) after Task 1403 | Corpus governance |
+| H3 | Re-run this inventory before every promotion of Task 1401 | builders / reviewers |
+| H4 | Optional: reduce 126 analyzer INFO style noise | polish lane (not package blocker) |
+
+---
+
+## 8. Completion snapshot (Task 1401)
+
+| Check | Result |
+|---|---|
+| Inventory path | `docs/reports/observatory-failure-baseline.md` |
+| Live suite count | **44** |
+| Live green suites | **44** |
+| Live non-success suites | **0** |
+| Live full-suite result | **+810 All tests passed!** |
+| Live analyzer | **126 info / 0 error / 0 warning** (exit 0) |
+| F01 residual | **Historical / remediated** |
+| Historical 64-runtime / 12-compile / 2-error tables | Labeled historical only |
+| DS\* compile dominant cause | Obsolete |
+| VCS | No git/jj operations performed |

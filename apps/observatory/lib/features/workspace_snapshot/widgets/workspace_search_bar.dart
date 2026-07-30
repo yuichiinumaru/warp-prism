@@ -1,6 +1,6 @@
 /// Workspace search bar integration.
 ///
-/// Wraps [DSSearchBar] with Riverpod state management for the workspace
+/// Wraps [PrismSearchBar] with Riverpod state management for the workspace
 /// snapshot search feature.
 library;
 
@@ -24,7 +24,7 @@ class WorkspaceSearchBar extends ConsumerWidget {
     final activeFilterCount =
         kindFilters.length + laneFilters.length + canonFilters.length;
 
-    return DSSearchBar(
+    return PrismSearchBar(
       value: query,
       placeholder: 'Search assets by name, description, tags...',
       onChanged: (value) {

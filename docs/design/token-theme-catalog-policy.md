@@ -3,8 +3,9 @@
 > **Status**: Active policy
 > **Author**: Task 1105 — Warp Prism Token Theme Catalog Policy
 > **Date**: 2026-06-08
-> **Depends on**: Task 1101 (charter/naming), Task 1102 (control-surface inventory + operational-state vocabulary), Task 1104 (Melos monorepo architecture)
+> **Depends on**: Task 1101 (charter/naming — **Promoted** `04-completed/`); Task 1104 architecture artifact `docs/architecture/warp-prism-melos-monorepo-architecture.md` (task lane `03-review/` Ready For Review as of 2026-07-09, not yet Promoted); Task 1102 **source docs** `docs/design/operational-state-vocabulary.md` + `docs/design/component-inventory.md` (task still `02-doing/` / blocked on screenshots — not a gate on this policy's API accuracy)
 > **Blocks**: Task 1106 (component migration), Task 1107 (Melos migration), Task 1111 (expansion gate)
+> **Public API authority**: Live `packages/warp_prism_ui` barrel + `prism_aliases.dart` (per-class `Prism*` typedefs). No `PrismTokens`.
 
 ---
 
@@ -43,46 +44,55 @@ before using raw values in the component.
 
 ### 2.2 Existing Token Inventory
 
-Evidence from Task 0014 (token contract) and direct file inspection:
+Evidence from Task 0014 lineage and **live** `packages/warp_prism_ui/lib/src/tokens/`
+inspection (line counts refreshed 2026-07-09; treat counts as inventory hints, not
+API contracts):
 
-| Token Class | File | Line Count | Role |
-|-------------|------|------------|------|
-| `DSColors` | `tokens/ds_colors.dart` | 180 | Obsidian backgrounds, energy accents (cyan/violet/gold), status, governance, text, border, lane, asset-kind colors. Lookup methods: `forAssetKind()`, `forLane()`, `forCanonicity()`. |
-| `DSTypography` | `tokens/ds_typography.dart` | 186 | 18-style type scale: display/heading/body/label/code/numeric × large/medium/small. JetBrainsMono (mono) + Inter (sans). |
-| `DSSpacing` | `tokens/ds_spacing.dart` | 72 | Base scale (xxs→massive: 2/4/8/12/16/20/24/32/48/64px) + semantic spacing (insets, gaps, layout dimensions). |
-| `DSRadii` | `tokens/ds_radii.dart` | 47 | Base radii (none→full: 0/2/4/6/8/12/16/9999) + semantic radii (card/button/chip/input/panel/modal). |
-| `DSShadows` | `tokens/ds_shadows.dart` | 144 | 4 elevation presets + 6 energy glow effects (cyan/violet/gold/success/error/warning) + inner shadow. |
-| `DSMotion` | `tokens/ds_motion.dart` | 64 | 6 durations (zero→500ms) + 6 curves + semantic animations (hover/focus/page/panel/stagger). |
-| `DSSemantics` | `tokens/ds_semantics.dart` | 150 | Pre-composed semantic text styles: status, governance, asset kind, lane, proof state. Lookup methods: `forAssetKind()`, `forLane()`, `forProofState()`. |
-| `DSBreakpoints` | `tokens/ds_breakpoints.dart` | 32 | Responsive breakpoint constants: narrow (600), sidebarCollapse (800), masterDetailSideBySide (1200), timelineDetail (1000). |
+| Token Class | Public Alias | File | Lines | Role |
+|-------------|--------------|------|-------|------|
+| `DSColors` | `PrismColors` | `tokens/ds_colors.dart` | 254 | Obsidian backgrounds, energy accents (cyan/violet/gold), status, governance, text, border, lane, asset-kind colors, **and 15 operational-state semantic aliases**. Lookup methods: `forAssetKind()`, `forLane()`, `forCanonicity()`. |
+| `DSTypography` | `PrismTypography` | `tokens/ds_typography.dart` | 186 | 18-style type scale: display/heading/body/label/code/numeric × large/medium/small. JetBrainsMono (mono) + Inter (sans). |
+| `DSSpacing` | `PrismSpacing` | `tokens/ds_spacing.dart` | 72 | Base scale (xxs→massive: 2/4/8/12/16/20/24/32/48/64px) + semantic spacing (insets, gaps, layout dimensions). |
+| `DSRadii` | `PrismRadii` | `tokens/ds_radii.dart` | 47 | Base radii (none→full: 0/2/4/6/8/12/16/9999) + semantic radii (card/button/chip/input/panel/modal). |
+| `DSShadows` | `PrismShadows` | `tokens/ds_shadows.dart` | 116 | Elevation presets + energy glow effects (cyan/violet/gold/success/error/warning) + inner shadow. |
+| `DSMotion` | `PrismMotion` | `tokens/ds_motion.dart` | 66 | Durations + curves + semantic animations (hover/focus/page/panel/stagger). |
+| `DSSemantics` | `PrismSemantics` | `tokens/ds_semantics.dart` | 167 | Pre-composed semantic text styles: status, governance, asset kind, lane, proof state. Lookup methods: `forAssetKind()`, `forLane()`, `forProofState()`. |
+| `DSBreakpoints` | `PrismBreakpoints` | `tokens/ds_breakpoints.dart` | 32 | Responsive breakpoint constants: narrow (600), sidebarCollapse (800), masterDetailSideBySide (1200), timelineDetail (1000). |
+| `DSOperationalState` (+ severity/category enums) | `PrismOperationalState` (+ `PrismOperationalSeverity`, `PrismOperationalCategory`) | `tokens/ds_operational_state.dart` | 452 | Canonical 15-state vocabulary; UI metadata via `PrismOperationalStateUI` extension on the enum. |
+
+Also present: `tokens/tokens.dart` (barrel-style re-exports within the tokens folder — implementation detail, not a public `PrismTokens` facade).
 
 ### 2.3 Operational State Color Tokens
 
-Task 1102 defines 15 operational states. No new hex values are needed — all map
-to existing palette entries through semantic aliases. When implementing
-`OperationalState` color/behavior extensions (Task 1106+), use these mappings:
+The 15 operational states are defined in `docs/design/operational-state-vocabulary.md`
+and implemented live as **semantic aliases on `DSColors` / `PrismColors`** plus
+`PrismOperationalState` / `PrismOperationalStateUI`. **No new hex values are needed** —
+aliases map to existing palette entries.
 
-| Operational State | Color Source | Hex |
-|-------------------|-------------|-----|
-| Pending | `textTertiary` | `#8888A0` |
-| Running | `accentGold` | `#FFB800` |
-| Approved | `statusSuccess` | `#10B981` |
-| Rejected | `statusError` | `#EF4444` |
-| Promoted | `accentCyan` | `#00D4FF` |
-| Archived | `textDisabled` | `#505060` |
-| Healthy | `statusSuccess` | `#10B981` |
-| Degraded | `statusWarning` | `#F59E0B` |
-| Error | `statusError` | `#EF4444` |
-| Disabled | `textDisabled` | `#505060` |
-| Unverified | `textTertiary` | `#8888A0` |
-| Exposed | `statusError` | `#EF4444` |
-| Redacted | `accentViolet` | `#8B5CF6` |
-| Stale | `statusWarning` | `#F59E0B` |
-| Excluded | `textDisabled` | `#505060` |
+| Operational State | Live `PrismColors` alias | Color Source | Hex |
+|-------------------|--------------------------|--------------|-----|
+| Pending | `statusPending` | `textTertiary` | `#8888A0` |
+| Running | `statusRunning` | `accentGold` | `#FFB800` |
+| Approved | `statusApproved` | `statusSuccess` | `#10B981` |
+| Rejected | `statusRejected` | `statusError` | `#EF4444` |
+| Promoted | `statusPromoted` | `accentCyan` | `#00D4FF` |
+| Archived | `statusArchived` | `textDisabled` | `#505060` |
+| Healthy | `statusHealthy` | `statusSuccess` | `#10B981` |
+| Degraded | `statusDegraded` | `statusWarning` | `#F59E0B` |
+| Error | `statusOpError` | `statusError` | `#EF4444` |
+| Disabled | `statusDisabled` | `textDisabled` | `#505060` |
+| Unverified | `statusUnverified` | `textTertiary` | `#8888A0` |
+| Exposed | `statusExposed` | `statusError` | `#EF4444` |
+| Redacted | `statusRedacted` | `accentViolet` | `#8B5CF6` |
+| Stale | `statusStale` | `statusWarning` | `#F59E0B` |
+| Excluded | `statusExcluded` | `textDisabled` | `#505060` |
 
-Implementation task MUST add semantic alias tokens (e.g., `statusDegraded`,
-`statusPromoted`, `statusStale`) rather than hard-coding hex values in
-components. These aliases MUST be added to `DSColors` as static const fields.
+**Policy (already satisfied in live package)**: Components MUST use these semantic
+aliases (or `PrismOperationalState.*.color`) rather than hard-coding hex values.
+New operational-state colors, if ever needed, MUST be added to `DSColors` as
+static const fields and remain reachable via `PrismColors` / the operational-state
+extension — never as a nested `PrismTokens` namespace unless that facade is
+explicitly implemented and barrel-exported.
 
 ### 2.4 Naming Conventions
 
@@ -97,18 +107,54 @@ migration (Task 1107). They are the canonical names for the pre-Prism codebase.
 
 #### Prism* Prefix (Exported Public API)
 
-All public widgets, atoms, molecules, organisms, templates, and theme
-extensions exported by `warp_prism_ui` for consumer apps use the `Prism` prefix
-per `docs/design/naming.md` §4.1.
+All public widgets, atoms, molecules, organisms, templates, and token surfaces
+exported by `warp_prism_ui` for consumer apps use the `Prism` prefix
+per `docs/design/naming.md` §4.1, **as realized by live typedef aliases**.
 
-| Layer | Public Convention | Example |
-|-------|-------------------|---------|
-| Tokens | `PrismTokens` namespace | `PrismTokens.colors`, `PrismTokens.typography` |
-| Atoms | `Prism` + noun | `PrismText`, `PrismBadge`, `PrismStatusDot` |
-| Molecules | `Prism` + compound noun | `PrismAssetCard`, `PrismMetricTile`, `PrismTaskCard` |
-| Organisms | `Prism` + descriptive noun | `PrismShell`, `PrismSidebar`, `PrismGraphCanvas` |
-| Templates | `Prism` + layout name | `PrismMasterDetailTemplate` |
-| Theme extensions | `PrismTheme` + qualifier | `PrismThemeColors`, `PrismThemeTypography` |
+**Live public API (authoritative)**: Consumers import
+`package:warp_prism_ui/warp_prism_ui.dart`, which exports only
+`packages/warp_prism_ui/lib/src/prism_aliases.dart` (plus public gallery
+surfaces). Token and type access is **per-class typedefs**, not a nested
+`PrismTokens` namespace. There is **no** `PrismTokens` type, class, or export
+in the package (verified: `rg PrismTokens packages/warp_prism_ui` → no matches).
+
+| Layer | Public Convention | Live examples (`typedef` → DS*) |
+|-------|-------------------|----------------------------------|
+| **Tokens** | One `Prism*` typedef per token class | `PrismColors` → `DSColors`, `PrismSpacing` → `DSSpacing`, `PrismTypography` → `DSTypography`, `PrismRadii` → `DSRadii`, `PrismShadows` → `DSShadows`, `PrismMotion` → `DSMotion`, `PrismSemantics` → `DSSemantics`, `PrismBreakpoints` → `DSBreakpoints` |
+| **Operational state** | `PrismOperationalState` (+ related enums / UI extension) | `PrismOperationalState` → `DSOperationalState`; `PrismOperationalSeverity`, `PrismOperationalCategory`; `PrismOperationalStateUI` extension |
+| **Atoms** | `Prism` + noun | `PrismText`, `PrismBadge`, `PrismStatusDot`, `PrismChip`, `PrismGlassPanel`, … |
+| **Molecules** | `Prism` + compound noun | `PrismAssetCard`, `PrismMetricTile`, `PrismTaskCard`, `PrismSearchBar`, … |
+| **Organisms** | `Prism` + descriptive noun | `PrismShell`, `PrismSidebar`, `PrismGraphCanvas`, `PrismLaneBoard`, … |
+| **Templates** | `Prism` + layout name | Prefer `Prism*` aliases when promoted; internal template types may still be DS-named until alias promotion |
+| **Gallery** | `PrismGallery*` + page type | `PrismGallerySections`, `PrismGallerySectionSpec`, `DesignSystemGalleryPage` |
+| **Theme extensions** | `PrismTheme` + qualifier (**planned, not live**) | Future: `PrismThemeColors`, `PrismThemeTypography` — **not** present in the barrel today |
+
+**Consumer token access (live pattern)**:
+
+```dart
+import 'package:warp_prism_ui/warp_prism_ui.dart';
+
+// Correct — static members on per-class public aliases:
+final accent = PrismColors.accentCyan;
+final gap = PrismSpacing.gapSection;
+final title = PrismTypography.headingMedium;
+final r = PrismRadii.card;
+final glow = PrismShadows.glowCyan;
+final d = PrismMotion.hoverDuration;
+final bp = PrismBreakpoints.sidebarCollapse;
+final color = PrismOperationalState.running.color; // via PrismOperationalStateUI
+```
+
+**Historical / superseded naming (do not document as live API)**:
+
+| Superseded form | Why invalid | Use instead |
+|-----------------|-------------|-------------|
+| `PrismTokens.colors` / `PrismTokens.typography` / `PrismTokens.spacing` | No `PrismTokens` namespace exists in `warp_prism_ui` | `PrismColors`, `PrismTypography`, `PrismSpacing` |
+| Early `docs/design/naming.md` §4.1 “PrismTokens namespace” rows | Pre-implementation target wording; live package uses per-class typedefs (Task 1301+ remediation) | This section + `prism_aliases.dart` |
+
+If a nested `PrismTokens` facade is ever desired, it requires an **explicit
+implementation task** that adds the type and barrel export. Policy MUST NOT
+document that facade as current until the export exists.
 
 #### The Boundary Rule
 
@@ -116,20 +162,28 @@ per `docs/design/naming.md` §4.1.
 Consumer app import line:
   import 'package:warp_prism_ui/warp_prism_ui.dart';
 
-What they get:
-  PrismText, PrismBadge, PrismShell, PrismTokens, PrismThemeColors, ...
+What they get (examples — live barrel via prism_aliases.dart):
+  PrismColors, PrismSpacing, PrismTypography, PrismRadii, PrismShadows,
+  PrismMotion, PrismSemantics, PrismBreakpoints, PrismOperationalState,
+  PrismText, PrismBadge, PrismShell, PrismSidebar, PrismGallerySections, ...
 
-What they NEVER see:
-  DSText, DSBadge, DSShell, DSColors, DSSemantics, ...
+What they NEVER see (implementation layer under lib/src/):
+  DSText, DSBadge, DSShell, DSColors, DSSemantics, DSGallerySections, ...
+
+What they also NEVER see (nonexistent / not exported):
+  PrismTokens, PrismTokens.colors, PrismTokens.typography
 ```
 
-**Implementation**: The barrel export (`warp_prism_ui.dart`) re-exports `Prism*`
-aliases. `DS*` classes remain under `src/` as implementation detail. Consumer
-apps import only the barrel. A future lint rule (not this task) may enforce
-`Prism*` usage in `warp_prism_ui` exports.
+**Implementation**: The barrel (`packages/warp_prism_ui/lib/warp_prism_ui.dart`)
+re-exports `Prism*` aliases from `src/prism_aliases.dart` and intentionally
+hides `DS*` gallery implementation names. `DS*` classes remain under `src/` as
+implementation detail. Consumer apps import only the barrel. A future lint rule
+(not this task) may enforce `Prism*` usage at consumer call sites.
 
-**When to create Prism* aliases**: During Task 1107 (Melos migration) or when a
-component is first promoted to the public ADS layer. Not before.
+**When to create Prism* aliases**: When a component is promoted to the public
+ADS layer (or when remediation tasks expand the alias surface). New public
+types MUST add a `typedef PrismX = DSX` (or equivalent) in `prism_aliases.dart`
+before claiming promotion.
 
 ---
 
@@ -140,17 +194,22 @@ component is first promoted to the public ADS layer. Not before.
 The existing token classes (`DSColors`, `DSTypography`, etc.) are **static const
 abstract classes**. They are not `ThemeExtension` objects. There is no
 `Theme.of(context)` integration — all tokens are accessed via direct static
-reference (e.g., `DSColors.accentCyan`).
+reference on the **public** aliases or internal DS names (e.g.,
+`PrismColors.accentCyan` / `DSColors.accentCyan`).
 
-Source: `lib/design_system/tokens/ds_colors.dart` line 10: `abstract class DSColors`
+Live sources:
+- Implementation: `packages/warp_prism_ui/lib/src/tokens/ds_colors.dart` —
+  `abstract class DSColors`
+- Public aliases: `packages/warp_prism_ui/lib/src/prism_aliases.dart` —
+  `typedef PrismColors = DSColors` (and siblings listed in §2.4)
 
 ### 3.2 ThemeExtension Policy
 
 | Decision | Rationale |
 |----------|-----------|
-| **Defer ThemeExtension for MVP** | Current static-const approach works, is zero-cost, and matches the existing 38-file DS implementation. Introducing `ThemeExtension` now would require changing every component's token access pattern. |
-| **Plan ThemeExtension for PrismThemeColors / PrismThemeTypography** | When `Prism*` public API is introduced, wrap the two most commonly overridden token groups (colors, typography) into `ThemeExtension<PrismThemeColors>` and `ThemeExtension<PrismThemeTypography>`. |
-| **Who creates**: A future task (post-Task 1107) creates the extensions inside `warp_prism_ui/lib/src/tokens/`. | The extension classes live with the tokens, not with consumers. |
+| **Defer ThemeExtension for MVP** | Current static-const approach works, is zero-cost, and matches the live package implementation. Introducing `ThemeExtension` now would require changing every component's token access pattern. |
+| **Plan ThemeExtension for PrismThemeColors / PrismThemeTypography** | **Future only** — wrap the two most commonly overridden token groups (colors, typography) into `ThemeExtension<PrismThemeColors>` and `ThemeExtension<PrismThemeTypography>`. These types are **not** in the public barrel today. |
+| **Who creates**: A future task creates the extensions inside `warp_prism_ui/lib/src/tokens/` and exports Prism-named surfaces via `prism_aliases.dart` / the barrel. | The extension classes live with the tokens, not with consumers. |
 | **Who consumes**: Consumer apps provide the extension via `MaterialApp(theme: ThemeData(extensions: [PrismThemeColors(...)]))`. | Each app can override accent colors, status colors, or typography scale for its domain without forking the ADS. |
 | **Default values**: Extensions MUST provide a `defaultPrism()` factory that returns the canonical obsidian-glass palette. | Consumer apps that don't override get the default ADS visual identity. |
 
@@ -165,8 +224,12 @@ When ThemeExtension is implemented, the task MUST:
    with the 18-style type scale.
 3. Provide `defaultPrism()` factory on each extension returning the current
    hardcoded values.
-4. Update `PrismTokens.colors` and `PrismTokens.typography` to read from
-   `Theme.of(context).extension<PrismThemeColors>()` with fallback to defaults.
+4. Provide context-aware accessors that read
+   `Theme.of(context).extension<PrismThemeColors>()` /
+   `Theme.of(context).extension<PrismThemeTypography>()` with fallback to the
+   static defaults on `PrismColors` / `PrismTypography` (or documented
+   extension helpers). Do **not** invent a `PrismTokens` namespace unless that
+   type is explicitly implemented and barrel-exported in the same task.
 5. Write widget tests that verify theme override propagation.
 6. Update the catalog gallery to demonstrate theme override (light accent
    variant).
@@ -277,32 +340,41 @@ Every promoted component MUST have at least one catalog case.
 
 ### 5.4 Catalog Case Naming Convention
 
-Each catalog case in `DSGallerySections` is a static method:
+Each catalog case in `DSGallerySections` / `PrismGallerySections` is a static
+method. **Live section builders** (refreshed 2026-07-09 from
+`design_system_gallery_sections.dart`):
 
 ```
-buildTokensSection()        → token catalog cases
-buildAtomsSection()         → atom catalog cases
-buildMoleculesSection()     → molecule catalog cases
-buildOrganismsSection()     → organism catalog cases
-buildAccessibilitySection() → accessibility catalog cases
-buildTemplatesSection()     → template catalog cases
+buildTokensSection()              → token catalog cases
+buildAtomsSection()               → atom catalog cases
+buildMoleculesSection()           → molecule catalog cases
+buildOperationalStatesSection()   → 15-state vocabulary cases
+buildOrganismsSection()           → organism catalog cases
+buildDragAndDropSection()         → drag/drop cases
+buildAccessibilitySection()       → accessibility catalog cases
+buildToastsSection()              → toast cases
+buildDataTableSection()           → data table cases
+buildVirtualScrollSection()       → virtual scroll cases
+buildHealthDashboardSection()     → health dashboard cases
+buildTemplatesSection()           → template catalog cases
 ```
 
-New components are added to the appropriate section. If a new category is needed
-(e.g., `buildOperationalStatesSection()` for the 15-state vocabulary), a new
-section builder is added to `DSGallerySections`.
+New components are added to the appropriate existing section. If a new category
+is needed, a new section builder is added to `DSGallerySections` and a matching
+`PrismGallerySections` alias remains available via the public barrel.
 
 ### 5.5 Gallery-to-Catalog Evolution
 
 | Phase | What Exists | Where |
 |-------|-------------|-------|
-| **Current (pre-Melos)** | `DesignSystemGalleryPage` + `DSGallerySections` inside `lib/design_system/gallery/` | Root app, route `/design-system` |
-| **After Task 1107** | Same gallery pages moved to `packages/warp_prism_ui/lib/src/gallery/` | `warp_prism_ui` package |
-| **Catalog app (Task 1107)** | `apps/catalog/lib/main.dart` imports gallery page from `warp_prism_ui` | Thin shell app |
-| **Future expansion** | Catalog app adds search, category navigation, component isolation view, theme toggle | `apps/catalog/lib/` |
+| **Historical (pre-Melos)** | Gallery lived under root `lib/design_system/gallery/` | Root app route `/design-system` (obsolete path) |
+| **Current (post-package migration)** | `DesignSystemGalleryPage` + `DSGallerySections` / `PrismGallerySections` under `packages/warp_prism_ui/lib/src/gallery/` | `warp_prism_ui` package; consumer apps import via barrel |
+| **Catalog app** | Thin shell (`apps/catalog/` or equivalent) imports gallery page from `warp_prism_ui` | Catalog host only — no component ownership |
+| **Future expansion** | Catalog host adds search, category navigation, component isolation view, theme toggle | Catalog app `lib/` only |
 
-The gallery pages are **always inside `warp_prism_ui`** (not in the catalog app)
-so any consumer app can render the gallery as a route for development validation.
+The gallery pages are **always inside `warp_prism_ui`** (not owned by the catalog
+app) so any consumer app can render the gallery as a route for development
+validation.
 
 ### 5.6 Widgetbook Revisit Criteria
 
@@ -359,7 +431,10 @@ golden tests). Choose one convention and apply consistently.
 3. **Test body**: `await tester.pumpWidget(MaterialApp(home: Scaffold(body: PrismXxx(...)))); await expectLater(find.byType(PrismXxx), matchesGoldenFile(...));`
 4. **Update command**: `flutter test --update-goldens` (run in `packages/warp_prism_ui/`).
 5. **CI enforcement**: Golden tests MUST pass in CI. If a visual change is intentional, the builder updates the golden in the same PR.
-6. **Theme override**: Golden tests use the default `PrismTheme` (obsidian glass). Theme-override goldens are optional and live in a `goldens/themed/` subdirectory.
+6. **Theme override**: Golden tests use the default obsidian-glass static token
+   palette (`PrismColors` / related aliases). Theme-override goldens are
+   optional until `PrismTheme*` extensions exist (§3); if added, they live in a
+   `goldens/themed/` subdirectory.
 
 ### 6.4 Golden Test Maintenance
 
@@ -419,8 +494,8 @@ For each interactive component, the semantics test MUST verify:
 5. **Keyboard activation**: `Enter` and `Space` trigger `onTap` for interactive
    elements.
 6. **Contrast**: Text colors against background meet WCAG AA (≥4.5:1 for body,
-   ≥3:1 for large text/UI components). Existing `test/design_system/accessibility/`
-   provides the baseline.
+   ≥3:1 for large text/UI components). Existing
+   `packages/warp_prism_ui/test/accessibility/` provides the baseline.
 
 ### 7.4 WCAG Contrast Requirements
 
@@ -498,7 +573,7 @@ Task 1102 §4). The state matrix MUST document which state category applies:
 
 | Layer | Required Test Cases |
 |-------|---------------------|
-| **Tokens** | Instantiation test (const values accessible), value range tests (colors are valid, spacing is non-negative, radii are non-negative), barrel export coherence. Source: `test/design_system/tokens/ds_token_contract_test.dart` (Task 0014). |
+| **Tokens** | Instantiation test (const values accessible), value range tests (colors are valid, spacing is non-negative, radii are non-negative), barrel export coherence. Source: `packages/warp_prism_ui/test/tokens/ds_token_contract_test.dart` (Task 0014 lineage). |
 | **Atoms** | Default render, each named constructor, disabled state, focus behavior (if interactive), callback invocation. |
 | **Molecules** | Default render, each variant, empty/long-text edge cases, callback invocation, keyboard interaction (if interactive). |
 | **Organisms** | Default render, responsive breakpoint behavior, keyboard navigation (if interactive), empty state handling. |
@@ -574,14 +649,18 @@ comment linking to the ADS upgrade task.
 
 ### 11.2 Rationale
 
-1. The existing `DesignSystemGalleryPage` + `DSGallerySections` (Task 0017)
-   already demonstrates all 8 token classes, 8 atoms, 9 molecules, 8 organisms,
-   3 templates, and accessibility baselines in a functional, testable gallery.
+1. The existing `DesignSystemGalleryPage` + `DSGallerySections` /
+   `PrismGallerySections` (Task 0017 lineage; live under
+   `packages/warp_prism_ui/lib/src/gallery/`) already demonstrates tokens, atoms,
+   molecules, organisms, templates, operational states, and expanded surfaces
+   (toasts, data table, virtual scroll, health, drag/drop, accessibility) in a
+   functional, testable gallery. Exact component counts grow over time; the
+   **promotion gates** in §4 are the stable contract, not a fixed count.
 2. `warp_prism_ui` MUST remain dependency-free (only `flutter` SDK). Widgetbook
    introduces `widgetbook` and `widgetbook_annotation` as dependencies plus code
    generation.
 3. The custom catalog uses `flutter_test` + golden tests for visual regression,
-   which is sufficient for the current component count (~36 components).
+   which remains sufficient until §5.6 revisit criteria are met.
 4. Widgetbook can be introduced in `apps/catalog/` (not in `warp_prism_ui`)
    without restructuring when the revisit criteria (§5.6) are met.
 
@@ -607,12 +686,14 @@ If Widgetbook is adopted:
 |--------|-----------|
 | `docs/design/charter.md` (Task 1101) | Project scope, non-goals, first proof target (ADS Gallery). |
 | `docs/design/naming.md` (Task 1101) | Prism* prefix policy, DS* legacy classification, Voidframe supersession. |
-| `docs/design/operational-state-vocabulary.md` (Task 1102) | 15 operational states, color/icon/behavioral contracts, state transition diagrams, composite state matrix. |
-| `docs/design/component-inventory.md` (Task 1102) | Full component inventory (8 tokens, 8 atoms, 9 molecules, 8 organisms, 3 templates), operational state gaps, component classification. |
-| `docs/architecture/warp-prism-melos-monorepo-architecture.md` (Task 1104) | Melos monorepo decision, package boundaries, path dependency policy, Widgetbook vs custom catalog decision (§11), migration sequence. |
-| `lib/design_system/tokens/` (8 files) | Current token implementation: DSColors (180 lines), DSTypography (186), DSSpacing (72), DSRadii (47), DSShadows (144), DSMotion (64), DSSemantics (150), DSBreakpoints (32). |
-| `lib/design_system/gallery/` (2 files) | Current gallery: DesignSystemGalleryPage (127 lines), DSGallerySections (868 lines). Proof surface for all atomic layers. |
-| `test/design_system/` (12+ test files) | Current test coverage: token contract tests (40+), gallery render tests (13), accessibility tests, glass budget tests, responsive shell tests. |
+| `docs/design/operational-state-vocabulary.md` (Task 1102 **source doc**; task lane may lag) | 15 operational states, color/icon/behavioral contracts, state transition diagrams, composite state matrix. Live code: `PrismOperationalState` + `PrismColors.status*`. |
+| `docs/design/component-inventory.md` (Task 1102 **source doc**; task lane may lag) | Component inventory and classification baseline; live counts may exceed historical inventory — re-verify against `prism_aliases.dart` when promoting components. |
+| `docs/architecture/warp-prism-melos-monorepo-architecture.md` (Task 1104 artifact; task in `03-review/`) | Melos monorepo decision, package boundaries, path dependency policy, Widgetbook vs custom catalog decision (§11), migration sequence. |
+| `packages/warp_prism_ui/lib/src/tokens/` | Live token implementation: `DSColors`, `DSTypography`, `DSSpacing`, `DSRadii`, `DSShadows`, `DSMotion`, `DSSemantics`, `DSBreakpoints`, `DSOperationalState` (historical root `lib/design_system/tokens/` path is obsolete post-Melos). |
+| `packages/warp_prism_ui/lib/src/prism_aliases.dart` | Live public `Prism*` typedef surface (token + component aliases). **No `PrismTokens`.** |
+| `packages/warp_prism_ui/lib/warp_prism_ui.dart` | Public barrel: exports `prism_aliases.dart` + gallery pages; hides `DS*` gallery implementation names. |
+| `packages/warp_prism_ui/lib/src/gallery/` | Live gallery: `DesignSystemGalleryPage`, `DSGallerySections` / `PrismGallerySections`, registry. Proof surface for atomic layers. |
+| `packages/warp_prism_ui/test/` | Live package tests: tokens, atoms, molecules, organisms, gallery, accessibility, goldens, boundaries. |
 | Task 0014 (completed) | Token contract and inventory — canonical naming, Theme bridge gap identified. |
 | Task 0017 (completed) | Gallery route bootstrap — proves the DS gallery exists and renders. |
 | Task 0018 (completed) | Accessibility focus baseline — focus rings, keyboard activation, WCAG contrast rules for DSChip, DSFilterChipGroup, DSSidebar, DSTopbarAction, DSSearchBar, DSAssetCard. Source for §7.4 contrast requirements. |

@@ -8,6 +8,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
 import 'package:warp_prism_observatory/data/models/governance_diagnostics.dart';
+import 'governance_drilldown_controller.dart';
 
 /// A group of governance issues sharing the same category.
 @immutable
@@ -37,11 +38,20 @@ class GovernanceIssueGroupData {
       issues.where((i) => i.severity == DiagnosticSeverity.warning).length;
 }
 
-/// Pre-built issue group data for the four required categories.
+/// The four Task 0811 risk-panel categories, in display order.
+const List<DiagnosticCategory> kGovernanceRiskPanelCategories = [
+  DiagnosticCategory.orphanAsset,
+  DiagnosticCategory.staleReference,
+  DiagnosticCategory.proofGap,
+  DiagnosticCategory.missingDependency,
+];
+
+/// Pre-built issue group data for the four required risk-panel categories:
+/// orphaning, staleness, proof gaps, and changelog/ledger-link gaps.
 List<GovernanceIssueGroupData> buildIssueGroups(
   List<GovernanceDiagnostic> diagnostics,
 ) {
-  final groups = <GovernanceIssueGroupData>[
+  return [
     GovernanceIssueGroupData(
       category: DiagnosticCategory.orphanAsset,
       title: 'Orphan Assets',
@@ -49,7 +59,7 @@ List<GovernanceIssueGroupData> buildIssueGroups(
           'Assets with no incoming or outgoing edges — isolated in the graph '
           'and invisible to workflows that depend on connectivity.',
       icon: Icons.link_off,
-      color: DSColors.statusWarning,
+      color: PrismColors.statusWarning,
       issues: diagnostics
           .where((d) => d.category == DiagnosticCategory.orphanAsset)
           .toList(),
@@ -61,7 +71,7 @@ List<GovernanceIssueGroupData> buildIssueGroups(
           'Edges pointing to assets that no longer exist. These broken links '
           'indicate outdated metadata that needs cleanup.',
       icon: Icons.link_off,
-      color: DSColors.statusError,
+      color: PrismColors.statusError,
       issues: diagnostics
           .where((d) => d.category == DiagnosticCategory.staleReference)
           .toList(),
@@ -71,28 +81,27 @@ List<GovernanceIssueGroupData> buildIssueGroups(
       title: 'Proof Gaps',
       description:
           'Tasks in review or completed lanes without required proof or '
-          'evidence. Claims of completion cannot be verified.',
+          'evidence. Claims of completion cannot be verified — consistent '
+          'with Operate surface proof-risk language.',
       icon: Icons.fact_check,
-      color: DSColors.statusError,
+      color: PrismColors.statusError,
       issues: diagnostics
           .where((d) => d.category == DiagnosticCategory.proofGap)
           .toList(),
     ),
     GovernanceIssueGroupData(
-      category: DiagnosticCategory.brokenEdge,
-      title: 'High Fan-In Hotspots',
+      category: DiagnosticCategory.missingDependency,
+      title: 'Changelog Without Task',
       description:
-          'Assets receiving many incoming edges, indicating over-centralized '
-          'dependencies or hotspot risk.',
-      icon: Icons.warning_amber_outlined,
-      color: DSColors.statusWarning,
+          'Ledger entries with no linked task. Changelog evidence cannot be '
+          'traced to the work that motivated the change.',
+      icon: Icons.history_edu_outlined,
+      color: PrismColors.statusWarning,
       issues: diagnostics
-          .where((d) => d.category == DiagnosticCategory.brokenEdge)
+          .where((d) => d.category == DiagnosticCategory.missingDependency)
           .toList(),
     ),
   ];
-
-  return groups;
 }
 
 /// Renders a list of governance issue groups.
@@ -102,61 +111,63 @@ List<GovernanceIssueGroupData> buildIssueGroups(
 class GovernanceIssueGroup extends StatelessWidget {
   final GovernanceIssueGroupData group;
 
-  const GovernanceIssueGroup({super.key, required this.group});
+  /// Optional drill-down handler for issue asset IDs.
+  final void Function(GovernanceDrilldownTarget target)? onDrilldown;
+
+  const GovernanceIssueGroup({
+    super.key,
+    required this.group,
+    this.onDrilldown,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: DSColors.obsidianElevated,
-        borderRadius: BorderRadius.circular(DSRadii.lg),
-        border: Border.all(color: DSColors.borderSubtle),
+        color: PrismColors.obsidianElevated,
+        borderRadius: BorderRadius.circular(PrismRadii.lg),
+        border: Border.all(color: PrismColors.borderSubtle),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Group header
           _GroupHeader(group: group),
-
-          const DSDivider.subtle(),
-
-          // Group description
+          const PrismDivider.subtle(),
           Padding(
             padding: const EdgeInsets.fromLTRB(
-              DSSpacing.lg,
+              PrismSpacing.lg,
               0,
-              DSSpacing.lg,
-              DSSpacing.sm,
+              PrismSpacing.lg,
+              PrismSpacing.sm,
             ),
-            child: DSText.bodySmall(
+            child: PrismText.bodySmall(
               group.description,
-              color: DSColors.textTertiary,
+              color: PrismColors.textTertiary,
             ),
           ),
-
-          // Issue rows
           if (group.issues.isEmpty)
             Padding(
-              padding: const EdgeInsets.all(DSSpacing.lg),
+              padding: const EdgeInsets.all(PrismSpacing.lg),
               child: Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.check_circle_outline,
                     size: 16,
-                    color: DSColors.statusSuccess,
+                    color: PrismColors.statusSuccess,
                   ),
-                  const SizedBox(width: DSSpacing.sm),
-                  DSText.bodySmall(
+                  const SizedBox(width: PrismSpacing.sm),
+                  PrismText.bodySmall(
                     'No ${group.title.toLowerCase()} found — system is clean',
-                    color: DSColors.statusSuccess,
+                    color: PrismColors.statusSuccess,
                   ),
                 ],
               ),
             )
           else
-            ...group.issues.map((issue) => _IssueRow(issue: issue)),
-
-          const SizedBox(height: DSSpacing.sm),
+            ...group.issues.map(
+              (issue) => _IssueRow(issue: issue, onDrilldown: onDrilldown),
+            ),
+          const SizedBox(height: PrismSpacing.sm),
         ],
       ),
     );
@@ -171,44 +182,43 @@ class _GroupHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(DSSpacing.lg),
+      padding: const EdgeInsets.all(PrismSpacing.lg),
       child: Row(
         children: [
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: group.color.withOpacity(0.15),
-              borderRadius: BorderRadius.circular(DSRadii.md),
+              color: group.color.withValues(alpha: 0.15),
+              borderRadius: BorderRadius.circular(PrismRadii.md),
             ),
-            child: DSIcon(group.icon, color: group.color),
+            child: PrismIcon(group.icon, color: group.color),
           ),
-          const SizedBox(width: DSSpacing.md),
+          const SizedBox(width: PrismSpacing.md),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                DSText.headingSmall(group.title),
+                PrismText.headingSmall(group.title),
                 const SizedBox(height: 2),
-                DSText.bodySmall(
+                PrismText.bodySmall(
                   '${group.count} issue${group.count == 1 ? '' : 's'}',
-                  color: DSColors.textSecondary,
+                  color: PrismColors.textSecondary,
                 ),
               ],
             ),
           ),
-          // Severity breakdown
           if (group.errorCount > 0)
             _SeverityBadge(
               count: group.errorCount,
               label: 'error',
-              color: DSColors.statusError,
+              color: PrismColors.statusError,
             ),
           if (group.warningCount > 0) ...[
-            if (group.errorCount > 0) const SizedBox(width: DSSpacing.xs),
+            if (group.errorCount > 0) const SizedBox(width: PrismSpacing.xs),
             _SeverityBadge(
               count: group.warningCount,
               label: 'warn',
-              color: DSColors.statusWarning,
+              color: PrismColors.statusWarning,
             ),
           ],
         ],
@@ -233,26 +243,27 @@ class _SeverityBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.15),
-        borderRadius: BorderRadius.circular(DSRadii.sm),
+        color: color.withValues(alpha: 0.15),
+        borderRadius: BorderRadius.circular(PrismRadii.sm),
       ),
-      child: DSText.labelSmall('$count $label', color: color),
+      child: PrismText.labelSmall('$count $label', color: color),
     );
   }
 }
 
 class _IssueRow extends StatelessWidget {
   final GovernanceDiagnostic issue;
+  final void Function(GovernanceDrilldownTarget target)? onDrilldown;
 
-  const _IssueRow({required this.issue});
+  const _IssueRow({required this.issue, this.onDrilldown});
 
   @override
   Widget build(BuildContext context) {
     final severityColor = switch (issue.severity) {
-      DiagnosticSeverity.info => DSColors.statusInfo,
-      DiagnosticSeverity.warning => DSColors.statusWarning,
-      DiagnosticSeverity.error => DSColors.statusError,
-      DiagnosticSeverity.critical => DSColors.statusError,
+      DiagnosticSeverity.info => PrismColors.statusInfo,
+      DiagnosticSeverity.warning => PrismColors.statusWarning,
+      DiagnosticSeverity.error => PrismColors.statusError,
+      DiagnosticSeverity.critical => PrismColors.statusError,
     };
 
     final severityIcon = switch (issue.severity) {
@@ -262,39 +273,86 @@ class _IssueRow extends StatelessWidget {
       DiagnosticSeverity.critical => Icons.dangerous_outlined,
     };
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: DSSpacing.lg,
-        vertical: DSSpacing.xs,
+    final target = resolveDiagnosticDrilldown(issue);
+    final canDrill = target != null && onDrilldown != null;
+    final assetTitle =
+        issue.context['assetName']?.toString() ??
+        issue.context['taskTitle']?.toString() ??
+        issue.assetId;
+
+    final row = Container(
+      padding: const EdgeInsets.all(PrismSpacing.sm),
+      decoration: BoxDecoration(
+        color: PrismColors.obsidianBase,
+        borderRadius: BorderRadius.circular(PrismRadii.sm),
+        border: Border(left: BorderSide(color: severityColor, width: 3)),
       ),
-      child: Container(
-        padding: const EdgeInsets.all(DSSpacing.sm),
-        decoration: BoxDecoration(
-          color: DSColors.obsidianBase,
-          borderRadius: BorderRadius.circular(DSRadii.sm),
-          border: Border(left: BorderSide(color: severityColor, width: 3)),
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Icon(severityIcon, size: 16, color: severityColor),
-            const SizedBox(width: DSSpacing.sm),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  DSText.labelSmall(issue.assetId, color: severityColor),
-                  const SizedBox(height: 2),
-                  DSText.bodySmall(
-                    issue.message,
-                    color: DSColors.textSecondary,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(severityIcon, size: 16, color: severityColor),
+          const SizedBox(width: PrismSpacing.sm),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                PrismText.labelSmall(assetTitle, color: severityColor),
+                const SizedBox(height: 2),
+                PrismText.bodySmall(
+                  '${issue.category.name} · ${issue.severity.name}',
+                  color: PrismColors.textTertiary,
+                ),
+                const SizedBox(height: 2),
+                PrismText.bodySmall(
+                  issue.message,
+                  color: PrismColors.textSecondary,
+                ),
+                if (canDrill) ...[
+                  const SizedBox(height: 4),
+                  const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      PrismIcon.small(
+                        Icons.open_in_new,
+                        color: PrismColors.accentCyan,
+                      ),
+                      SizedBox(width: PrismSpacing.xs),
+                      PrismText.labelSmall(
+                        'Open detail',
+                        color: PrismColors.accentCyan,
+                      ),
+                    ],
+                  ),
+                ] else if (target == null && issue.assetId.isNotEmpty) ...[
+                  const SizedBox(height: 4),
+                  const PrismText.labelSmall(
+                    'Detail unavailable',
+                    color: PrismColors.textTertiary,
                   ),
                 ],
-              ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
+    );
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: PrismSpacing.lg,
+        vertical: PrismSpacing.xs,
+      ),
+      child: canDrill
+          ? Semantics(
+              button: true,
+              label: 'Open asset detail for ${issue.assetId}',
+              child: InkWell(
+                onTap: () => onDrilldown!(target),
+                borderRadius: BorderRadius.circular(PrismRadii.sm),
+                child: row,
+              ),
+            )
+          : row,
     );
   }
 }

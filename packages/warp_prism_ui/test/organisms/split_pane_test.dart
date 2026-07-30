@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
 
-/// Task 1122: DSSplitPane widget tests
+/// Task 1122: PrismSplitPane widget tests
 ///
 /// Covers: horizontal/vertical layout, draggable divider, min/max
 /// constraints, cursor hints, divider visibility.
@@ -21,7 +20,7 @@ void main() {
         body: SizedBox(
           width: 800,
           height: 600,
-          child: DSSplitPane(
+          child: PrismSplitPane(
             axis: axis,
             initialRatio: initialRatio,
             leadingMinExtent: leadingMinExtent,
@@ -44,7 +43,7 @@ void main() {
     );
   }
 
-  group('DSSplitPane', () {
+  group('PrismSplitPane', () {
     testWidgets('renders both panes horizontally', (tester) async {
       await tester.pumpWidget(buildSplitHarness());
 

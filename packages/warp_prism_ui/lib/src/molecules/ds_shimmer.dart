@@ -11,6 +11,8 @@ import '../tokens/tokens.dart';
 /// - Default colors derived from [DSColors] — no hardcoded values.
 /// - Default border radius uses [DSRadii.sm].
 /// - Duration defaults to 1500ms.
+/// - Decorative: wrapped in [ExcludeSemantics] (hidden from a11y tree).
+/// - Honors [MediaQuery.disableAnimationsOf] (reduced motion → solid base).
 ///
 /// Usage:
 /// ```dart
@@ -64,8 +66,13 @@ class _DSShimmerState extends State<DSShimmer>
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(vsync: this, duration: widget.duration)
-      ..repeat();
+    _controller = AnimationController(vsync: this, duration: widget.duration);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _syncAnimationToMotionPreference();
   }
 
   @override
@@ -73,10 +80,8 @@ class _DSShimmerState extends State<DSShimmer>
     super.didUpdateWidget(oldWidget);
     if (oldWidget.duration != widget.duration) {
       _controller.duration = widget.duration;
-      _controller
-        ..reset()
-        ..repeat();
     }
+    _syncAnimationToMotionPreference();
   }
 
   @override
@@ -85,38 +90,64 @@ class _DSShimmerState extends State<DSShimmer>
     super.dispose();
   }
 
+  /// Start/stop the sweep based on [MediaQuery.disableAnimationsOf].
+  void _syncAnimationToMotionPreference() {
+    final reduceMotion = MediaQuery.disableAnimationsOf(context);
+    if (reduceMotion) {
+      if (_controller.isAnimating) {
+        _controller.stop();
+      }
+      _controller.value = 0;
+    } else if (!_controller.isAnimating) {
+      _controller.repeat();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final effectiveBase = widget.baseColor ?? DSColors.obsidianHover;
     final effectiveHighlight = widget.highlightColor ?? DSColors.glassOverlay;
+    final reduceMotion = MediaQuery.disableAnimationsOf(context);
 
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, _) {
-        final stops = [
-          (_controller.value - 0.4).clamp(0.0, 1.0),
-          _controller.value,
-          (_controller.value + 0.4).clamp(0.0, 1.0),
-        ];
+    // Decorative loading affordance — exclude from the a11y tree.
+    return ExcludeSemantics(
+      child: reduceMotion
+          ? Container(
+              width: widget.width,
+              height: widget.height,
+              decoration: BoxDecoration(
+                color: effectiveBase,
+                borderRadius: BorderRadius.circular(widget.borderRadius),
+              ),
+            )
+          : AnimatedBuilder(
+              animation: _controller,
+              builder: (context, _) {
+                final stops = [
+                  (_controller.value - 0.4).clamp(0.0, 1.0),
+                  _controller.value,
+                  (_controller.value + 0.4).clamp(0.0, 1.0),
+                ];
 
-        return Container(
-          width: widget.width,
-          height: widget.height,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(widget.borderRadius),
-            gradient: LinearGradient(
-              begin: const Alignment(-1.0, 0.0),
-              end: const Alignment(1.0, 0.0),
-              colors: [
-                effectiveBase,
-                effectiveHighlight.withValues(alpha: 0.6),
-                effectiveBase,
-              ],
-              stops: stops,
+                return Container(
+                  width: widget.width,
+                  height: widget.height,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(widget.borderRadius),
+                    gradient: LinearGradient(
+                      begin: const Alignment(-1.0, 0.0),
+                      end: const Alignment(1.0, 0.0),
+                      colors: [
+                        effectiveBase,
+                        effectiveHighlight.withValues(alpha: 0.6),
+                        effectiveBase,
+                      ],
+                      stops: stops,
+                    ),
+                  ),
+                );
+              },
             ),
-          ),
-        );
-      },
     );
   }
 }

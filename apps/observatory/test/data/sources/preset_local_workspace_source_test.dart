@@ -279,5 +279,134 @@ updated: 2026-06-07
         expect(count, equals(1));
       }
     });
+
+    test(
+      'skips symlink scan roots by default and records skippedSymlinks',
+      () async {
+        // Real local agents dir (not a symlink)
+        final agentDir = Directory('${tempDir.path}/.agents/agents');
+        await agentDir.create(recursive: true);
+        await File('${agentDir.path}/local-agent.md').writeAsString('''
+---
+name: local-agent
+description: Local agent under real directory
+---
+# local-agent
+''');
+
+        // Parent-canonical style harness: real target outside scan root layout
+        final externalSkills = await Directory.systemTemp.createTemp(
+          'external_skills_',
+        );
+        addTearDown(() async {
+          if (await externalSkills.exists()) {
+            await externalSkills.delete(recursive: true);
+          }
+        });
+        final externalSkillDir = Directory('${externalSkills.path}/parent-skill');
+        await externalSkillDir.create(recursive: true);
+        await File('${externalSkillDir.path}/SKILL.md').writeAsString('''
+---
+name: parent-skill
+description: Skill from parent-canonical surface
+---
+# parent-skill
+''');
+
+        // Symlink .agents/skills → external parent surface
+        final agentsRoot = Directory('${tempDir.path}/.agents');
+        await agentsRoot.create(recursive: true);
+        await Link(
+          '${tempDir.path}/.agents/skills',
+        ).create(externalSkills.path);
+
+        const source = PresetLocalWorkspaceSource(); // followLinks: false
+        final snapshot = await source.load(tempDir.path);
+
+        expect(snapshot.agents.length, equals(1));
+        expect(snapshot.skills, isEmpty);
+        expect(
+          snapshot.metadata.skippedSymlinks,
+          contains('${tempDir.path}/.agents/skills'),
+        );
+        expect(snapshot.metadata.filesScanned, equals(1));
+      },
+    );
+
+    test(
+      'follows symlink scan roots when followLinks is true',
+      () async {
+        final externalSkills = await Directory.systemTemp.createTemp(
+          'external_skills_follow_',
+        );
+        addTearDown(() async {
+          if (await externalSkills.exists()) {
+            await externalSkills.delete(recursive: true);
+          }
+        });
+        final externalSkillDir = Directory(
+          '${externalSkills.path}/parent-skill',
+        );
+        await externalSkillDir.create(recursive: true);
+        await File('${externalSkillDir.path}/SKILL.md').writeAsString('''
+---
+name: parent-skill
+description: Skill from parent-canonical surface
+---
+# parent-skill
+''');
+
+        final agentsRoot = Directory('${tempDir.path}/.agents');
+        await agentsRoot.create(recursive: true);
+        await Link(
+          '${tempDir.path}/.agents/skills',
+        ).create(externalSkills.path);
+
+        const source = PresetLocalWorkspaceSource(followLinks: true);
+        final snapshot = await source.load(tempDir.path);
+
+        expect(snapshot.skills.length, equals(1));
+        expect(snapshot.skills.first.name, equals('parent-skill'));
+        expect(snapshot.metadata.skippedSymlinks, isEmpty);
+        expect(snapshot.metadata.filesScanned, equals(1));
+      },
+    );
+
+    test(
+      'skips symlink entries inside a real directory by default',
+      () async {
+        final agentDir = Directory('${tempDir.path}/.agents/agents');
+        await agentDir.create(recursive: true);
+        await File('${agentDir.path}/real-agent.md').writeAsString('''
+---
+name: real-agent
+description: Real agent file
+---
+# real-agent
+''');
+
+        final externalAgent = File('${tempDir.path}/external-agent.md');
+        await externalAgent.writeAsString('''
+---
+name: linked-agent
+description: Agent reached only via symlink entry
+---
+# linked-agent
+''');
+        await Link(
+          '${agentDir.path}/linked-agent.md',
+        ).create(externalAgent.path);
+
+        const source = PresetLocalWorkspaceSource();
+        final snapshot = await source.load(tempDir.path);
+
+        expect(snapshot.agents.length, equals(1));
+        expect(snapshot.agents.first.name, equals('real-agent'));
+        expect(
+          snapshot.metadata.skippedSymlinks,
+          contains('${agentDir.path}/linked-agent.md'),
+        );
+      },
+    );
   });
 }

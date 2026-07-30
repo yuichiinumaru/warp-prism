@@ -11,10 +11,11 @@
 library;
 
 import 'dart:async';
-import 'task_projection.dart';
-import 'operate_filters.dart';
+
 import 'package:warp_prism_observatory/data/models/task_contracts.dart';
-import 'operate_storytelling.dart';
+import 'package:warp_prism_observatory/features/operate/operate_filters.dart';
+import 'package:warp_prism_observatory/features/operate/operate_storytelling.dart';
+import 'package:warp_prism_observatory/features/operate/task_projection.dart';
 
 /// View model for the Operate board surface.
 class OperateWorkspaceViewModel {
@@ -185,13 +186,18 @@ class OperateWorkspaceViewModel {
     return tasks.where((task) {
       if (_filters.lane != null && task.lane != _filters.lane) return false;
       if (_filters.owner != null && task.owner != _filters.owner) return false;
-      if (_filters.skill != null && !task.linkedSkills.contains(_filters.skill))
+      if (_filters.skill != null &&
+          !task.linkedSkills.contains(_filters.skill)) {
         return false;
+      }
       if (_filters.workflow != null &&
-          !task.linkedWorkflows.contains(_filters.workflow))
+          !task.linkedWorkflows.contains(_filters.workflow)) {
         return false;
-      if (_filters.proofState != null && task.proofState != _filters.proofState)
+      }
+      if (_filters.proofState != null &&
+          task.proofState != _filters.proofState) {
         return false;
+      }
       if (_filters.query.isNotEmpty) {
         final q = _filters.query.toLowerCase();
         if (!task.title.toLowerCase().contains(q) &&

@@ -446,7 +446,7 @@ void main() {
       expect(dot.color, equals(DSColors.statusSuccess));
     });
 
-    testWidgets('defaults tooltip to state label', (tester) async {
+    testWidgets('uses state semanticLabel for tooltip', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -456,7 +456,7 @@ void main() {
       );
       expect(find.byType(Tooltip), findsOneWidget);
       final tooltip = tester.widget<Tooltip>(find.byType(Tooltip));
-      expect(tooltip.message, equals('Running'));
+      expect(tooltip.message, equals(DSOperationalState.running.semanticLabel));
     });
 
     testWidgets('accepts custom tooltip', (tester) async {
@@ -544,6 +544,52 @@ void main() {
         ),
       );
       expect(find.text('5'), findsOneWidget);
+    });
+
+    testWidgets('exposes semantic label', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(body: DSBadge.operational(DSOperationalState.running)),
+        ),
+      );
+
+      final Semantics badgeSemantics = tester.widget(
+        find
+            .descendant(
+              of: find.byType(DSBadge),
+              matching: find.byType(Semantics),
+            )
+            .first,
+      );
+
+      expect(
+        badgeSemantics.properties.label,
+        equals(DSOperationalState.running.semanticLabel),
+      );
+    });
+
+    testWidgets('exposes count in semantic label', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: DSBadge.operational(DSOperationalState.error, count: 5),
+          ),
+        ),
+      );
+
+      final Semantics badgeSemantics = tester.widget(
+        find
+            .descendant(
+              of: find.byType(DSBadge),
+              matching: find.byType(Semantics),
+            )
+            .first,
+      );
+
+      expect(
+        badgeSemantics.properties.label,
+        equals('${DSOperationalState.error.semanticLabel}, count 5'),
+      );
     });
 
     testWidgets('uses state color', (tester) async {

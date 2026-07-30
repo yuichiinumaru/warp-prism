@@ -76,12 +76,12 @@ class MapCatalogPanel extends StatelessWidget {
         // -- Search bar --
         Padding(
           padding: const EdgeInsets.fromLTRB(
-            DSSpacing.md,
-            DSSpacing.md,
-            DSSpacing.md,
-            DSSpacing.xs,
+            PrismSpacing.md,
+            PrismSpacing.md,
+            PrismSpacing.md,
+            PrismSpacing.xs,
           ),
-          child: DSSearchBar(
+          child: PrismSearchBar(
             placeholder: 'Search ${activeTab.label.toLowerCase()}...',
             value: query,
             onChanged: onQueryChanged,
@@ -96,12 +96,12 @@ class MapCatalogPanel extends StatelessWidget {
         if (filterOptions.isNotEmpty)
           Padding(
             padding: const EdgeInsets.fromLTRB(
-              DSSpacing.md,
-              DSSpacing.xs,
-              DSSpacing.md,
-              DSSpacing.sm,
+              PrismSpacing.md,
+              PrismSpacing.xs,
+              PrismSpacing.md,
+              PrismSpacing.sm,
             ),
-            child: DSFilterChipGroup(
+            child: PrismFilterChipGroup(
               options: filterOptions,
               selected: activeFilters,
               onToggle: onFilterToggle,
@@ -110,22 +110,31 @@ class MapCatalogPanel extends StatelessWidget {
 
         // -- Result count --
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: DSSpacing.md),
+          padding: const EdgeInsets.symmetric(horizontal: PrismSpacing.md),
           child: Row(
             children: [
-              DSText.labelSmall(
+              PrismText.labelSmall(
                 '${filteredAssets.length} result${filteredAssets.length == 1 ? '' : 's'}',
-                color: DSColors.textTertiary,
+                color: PrismColors.textTertiary,
               ),
               const Spacer(),
               if (activeFilters.isNotEmpty || query.isNotEmpty)
-                GestureDetector(
-                  onTap: onClearFilters,
-                  child: MouseRegion(
-                    cursor: SystemMouseCursors.click,
-                    child: DSText.labelSmall(
+                Semantics(
+                  button: true,
+                  label: 'Clear all filters',
+                  excludeSemantics: true,
+                  child: TextButton(
+                    onPressed: onClearFilters,
+                    style: TextButton.styleFrom(
+                      minimumSize: const Size(48, 48),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: PrismSpacing.sm,
+                      ),
+                      foregroundColor: PrismColors.accentCyan,
+                    ),
+                    child: const PrismText.labelSmall(
                       'Clear all',
-                      color: DSColors.accentCyan,
+                      color: PrismColors.accentCyan,
                     ),
                   ),
                 ),
@@ -133,7 +142,7 @@ class MapCatalogPanel extends StatelessWidget {
           ),
         ),
 
-        const SizedBox(height: DSSpacing.sm),
+        const SizedBox(height: PrismSpacing.sm),
 
         // -- Asset cards or no-results state --
         Expanded(
@@ -157,7 +166,7 @@ class MapCatalogPanel extends StatelessWidget {
   ///
   /// Extracts unique canonicality values and tag values from the
   /// asset collection to create filterable chips.
-  List<DSFilterOption> _buildFilterOptions(List<WorkspaceAsset> assets) {
+  List<PrismFilterOption> _buildFilterOptions(List<WorkspaceAsset> assets) {
     // Count assets by canonicality
     final canonicalityCounts = <String, int>{};
     // Count assets by tag
@@ -172,16 +181,16 @@ class MapCatalogPanel extends StatelessWidget {
       }
     }
 
-    final options = <DSFilterOption>[];
+    final options = <PrismFilterOption>[];
 
     // Canonicality filters
     for (final entry in canonicalityCounts.entries) {
       options.add(
-        DSFilterOption(
+        PrismFilterOption(
           value: 'can:${entry.key}',
           label: entry.key,
           icon: _canonicalityIcon(entry.key),
-          color: DSColors.forCanonicity(entry.key),
+          color: PrismColors.forCanonicity(entry.key),
           count: entry.value,
         ),
       );
@@ -192,7 +201,7 @@ class MapCatalogPanel extends StatelessWidget {
       ..sort((a, b) => b.value.compareTo(a.value));
     for (final entry in sortedTags.take(8)) {
       options.add(
-        DSFilterOption(
+        PrismFilterOption(
           value: 'tag:${entry.key}',
           label: entry.key,
           count: entry.value,
@@ -223,19 +232,19 @@ class MapCatalogPanel extends StatelessWidget {
   IconData _canonicalityIcon(String label) {
     switch (label) {
       case 'canonical':
-        return DSIcons.canonical;
+        return PrismIcons.canonical;
       case 'child-local':
-        return DSIcons.local;
+        return PrismIcons.local;
       case 'generated':
-        return DSIcons.generated;
+        return PrismIcons.generated;
       case 'append-only':
-        return DSIcons.appendOnly;
+        return PrismIcons.appendOnly;
       case 'archive':
-        return DSIcons.archive;
+        return PrismIcons.archive;
       case 'mock':
-        return DSIcons.mock;
+        return PrismIcons.mock;
       default:
-        return DSIcons.info;
+        return PrismIcons.info;
     }
   }
 }

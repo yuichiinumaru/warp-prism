@@ -131,6 +131,22 @@ class AssetDetailDescriptor {
   /// Total link count (incoming + outgoing).
   int get totalLinkCount => incomingLinks.length + outgoingLinks.length;
 
+  /// Related assets derived from distinct incoming + outgoing link targets.
+  ///
+  /// Deduplicates by [DetailLink.targetId], preferring the first occurrence
+  /// (incoming before outgoing) so consumers can render one related list
+  /// without re-deriving graph neighbors in widgets.
+  List<DetailLink> get relatedAssets {
+    final seen = <String>{};
+    final related = <DetailLink>[];
+    for (final link in [...incomingLinks, ...outgoingLinks]) {
+      if (seen.add(link.targetId)) {
+        related.add(link);
+      }
+    }
+    return related;
+  }
+
   /// Whether this descriptor has any content at all.
   bool get hasContent =>
       sharedSections.isNotEmpty ||
@@ -142,6 +158,8 @@ class AssetDetailDescriptor {
   factory AssetDetailDescriptor.fallback({
     required WorkspaceAsset asset,
     String message = 'This asset kind has limited detail support.',
+    List<DetailLink> incomingLinks = const [],
+    List<DetailLink> outgoingLinks = const [],
   }) {
     return AssetDetailDescriptor(
       asset: asset,
@@ -188,7 +206,23 @@ class AssetDetailDescriptor {
                 ),
             ],
           ),
+        if (incomingLinks.isNotEmpty)
+          DetailSection(
+            title: 'Incoming Links',
+            key: 'incoming',
+            count: incomingLinks.length,
+            links: incomingLinks,
+          ),
+        if (outgoingLinks.isNotEmpty)
+          DetailSection(
+            title: 'Outgoing Links',
+            key: 'outgoing',
+            count: outgoingLinks.length,
+            links: outgoingLinks,
+          ),
       ],
+      incomingLinks: incomingLinks,
+      outgoingLinks: outgoingLinks,
       isFallback: true,
       fallbackMessage: message,
     );

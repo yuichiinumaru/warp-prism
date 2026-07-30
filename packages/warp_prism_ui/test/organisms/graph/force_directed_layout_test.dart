@@ -2,6 +2,7 @@
 ///
 /// Task 1117: Tests that ForceDirectedLayout produces stable positions
 /// within canvas bounds for a 10-node, 15-edge graph in <100ms.
+library;
 import 'dart:ui';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:warp_prism_ui/src/organisms/graph/graph_model.dart';
@@ -137,9 +138,9 @@ void main() {
     test('single node is centered on canvas', () {
       const layout = ForceDirectedLayout();
       const canvasSize = Size(800, 600);
-      final singleModel = GraphModel(
+      const singleModel = GraphModel(
         nodes: [
-          const GraphNode(
+          GraphNode(
             id: GraphNodeId('solo'),
             label: 'Solo',
             type: 'agent',
@@ -181,6 +182,71 @@ void main() {
         greaterThan(20),
         reason: 'Average pairwise distance $avgDist is too small',
       );
+    });
+
+    test('nodeSpacing config is retained on ForceDirectedLayout', () {
+      const layout = ForceDirectedLayout(
+        config: ForceDirectedConfig(nodeSpacing: 275),
+      );
+      expect(layout.config.nodeSpacing, 275);
+    });
+
+    test('nodeSpacing gate affects attraction in simulateStep', () {
+      // Two nodes farther than small spacing → attraction applies and
+      // pulls them together. Same distance under large spacing → no pull.
+      final model = GraphModel(
+        nodes: [
+          const GraphNode(
+            id: GraphNodeId('a'),
+            label: 'A',
+            type: 'agent',
+          ),
+          const GraphNode(
+            id: GraphNodeId('b'),
+            label: 'B',
+            type: 'skill',
+          ),
+        ],
+        edges: [GraphEdge.create(sourceId: 'a', targetId: 'b')],
+      );
+
+      const tight = ForceDirectedLayout(
+        config: ForceDirectedConfig(
+          nodeSpacing: 50,
+          attraction: 0.1,
+          repulsion: 0,
+          centerGravity: 0,
+          damping: 1.0,
+        ),
+      );
+      const loose = ForceDirectedLayout(
+        config: ForceDirectedConfig(
+          nodeSpacing: 500,
+          attraction: 0.1,
+          repulsion: 0,
+          centerGravity: 0,
+          damping: 1.0,
+        ),
+      );
+
+      final tightPos = <GraphNodeId, Offset>{
+        const GraphNodeId('a'): Offset.zero,
+        const GraphNodeId('b'): const Offset(200, 0),
+      };
+      final tightVel = <GraphNodeId, Offset>{
+        const GraphNodeId('a'): Offset.zero,
+        const GraphNodeId('b'): Offset.zero,
+      };
+      final loosePos = Map<GraphNodeId, Offset>.from(tightPos);
+      final looseVel = Map<GraphNodeId, Offset>.from(tightVel);
+
+      tight.simulateStep(model, tightPos, tightVel, {});
+      loose.simulateStep(model, loosePos, looseVel, {});
+
+      // Tight spacing attracts a toward b (positive x force on a).
+      expect(tightPos[const GraphNodeId('a')]!.dx, greaterThan(0));
+      // Loose spacing leaves a unmoved (distance 200 < nodeSpacing 500).
+      expect(loosePos[const GraphNodeId('a')]!.dx, 0);
     });
   });
 }

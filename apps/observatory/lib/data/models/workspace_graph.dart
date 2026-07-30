@@ -1,8 +1,10 @@
 /// Normalized graph backbone for the Warp-Prism ASW Observatory.
 ///
 /// This is the canonical data contract that all parsers, repositories,
-/// graph builders, and providers should target. It supersedes the legacy
-/// [Asset]/[AssetType]/[AssetEdge] contract in `models.dart`.
+/// graph builders, and providers should target. The legacy freeform
+/// Asset/AssetType/AssetEdge contract was retired from the live package
+/// (Task 0310 path-to-100); historical sources live under
+/// `.archive/legacy-yaml-parser-20260718/`.
 library;
 
 import 'package:flutter/foundation.dart';
@@ -26,7 +28,7 @@ enum AssetKind {
 
 /// Typed edge label for the workspace graph.
 ///
-/// Replaces the freeform `edgeType: String` in the legacy [AssetEdge].
+/// Typed edge labels for workspace relationships.
 enum EdgeKind {
   /// super-skill -> sub-skill, skill -> skill-local workflow
   contains,
@@ -173,9 +175,24 @@ class WorkspaceAsset {
       'WorkspaceAsset(id: $id, kind: $kind, name: $name, path: $path)';
 }
 
+/// Normalize an asset id to `kindPrefix:bareName`.
+///
+/// Strips an existing matching prefix (including repeated double-prefix
+/// forms such as `skill:skill:code-gen`) before re-applying the prefix once.
+/// Bare names (`code-gen`) become `skill:code-gen` when [kindPrefix] is
+/// `"skill"`. Already-canonical ids are returned unchanged.
+String normalizeAssetId(String kindPrefix, String raw) {
+  final prefix = kindPrefix.endsWith(':') ? kindPrefix : '$kindPrefix:';
+  var bare = raw.trim();
+  while (bare.startsWith(prefix)) {
+    bare = bare.substring(prefix.length);
+  }
+  return '$prefix$bare';
+}
+
 /// A typed, directed edge in the workspace graph.
 ///
-/// Replaces the legacy [AssetEdge] which used a freeform [String] edge type.
+/// Directed, typed edge between two [WorkspaceAsset] nodes.
 @immutable
 class WorkspaceEdge {
   /// Source asset id.
@@ -211,13 +228,4 @@ class WorkspaceEdge {
 
   @override
   String toString() => 'WorkspaceEdge($sourceId -[${kind.name}]-> $targetId)';
-}
-
-/// Helper for list equality in [WorkspaceAsset] and [WorkspaceEdge].
-bool _listEquals<T>(List<T> a, List<T> b) {
-  if (a.length != b.length) return false;
-  for (var i = 0; i < a.length; i++) {
-    if (a[i] != b[i]) return false;
-  }
-  return true;
 }

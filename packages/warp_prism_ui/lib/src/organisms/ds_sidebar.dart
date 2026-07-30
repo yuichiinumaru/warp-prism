@@ -34,7 +34,7 @@ class DSSidebar extends StatelessWidget {
         width: expanded
             ? DSSpacing.sidebarExpanded
             : DSSpacing.sidebarCollapsed,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: DSColors.obsidianBase,
           border: Border(
             right: BorderSide(color: DSColors.borderSubtle, width: 1),
@@ -105,7 +105,7 @@ class _DefaultHeader extends StatelessWidget {
       label: 'ASW Observatory logo and title',
       header: true,
       child: Container(
-        height: DSSpacing.topbarHeight,
+        constraints: const BoxConstraints(minHeight: DSSpacing.topbarHeight),
         padding: EdgeInsets.symmetric(
           horizontal: expanded ? DSSpacing.lg : DSSpacing.sm,
         ),
@@ -116,7 +116,7 @@ class _DefaultHeader extends StatelessWidget {
               width: 32,
               height: 32,
               decoration: BoxDecoration(
-                gradient: LinearGradient(
+                gradient: const LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [DSColors.accentCyan, DSColors.accentViolet],
@@ -185,7 +185,7 @@ class _SidebarItemWidgetState extends State<_SidebarItemWidget> {
   Widget build(BuildContext context) {
     final color = widget.item.color ?? DSColors.accentCyan;
     final bgColor = widget.isSelected
-        ? color.withOpacity(0.15)
+        ? color.withValues(alpha: 0.15)
         : (_isFocused
               ? DSColors.obsidianActive
               : (_isHovered ? DSColors.obsidianHover : DSColors.transparent));
@@ -246,10 +246,15 @@ class _SidebarItemWidgetState extends State<_SidebarItemWidget> {
                   color: bgColor,
                   borderRadius: BorderRadius.circular(DSRadii.md),
                   border: widget.isSelected
-                      ? Border.all(color: color.withOpacity(0.3), width: 1)
+                      ? Border.all(
+                          color: color.withValues(alpha: 0.3),
+                          width: 1,
+                        )
                       : (_isFocused
                             ? Border.all(
-                                color: DSColors.accentCyan.withOpacity(0.5),
+                                color: DSColors.accentCyan.withValues(
+                                  alpha: 0.5,
+                                ),
                                 width: 2,
                               )
                             : null),

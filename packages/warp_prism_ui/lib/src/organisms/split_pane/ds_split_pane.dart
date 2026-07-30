@@ -185,7 +185,7 @@ class _DSSplitPaneState extends State<DSSplitPane> {
 
   void _handleKeyEvent(KeyEvent event, double totalExtent) {
     if (event is! KeyDownEvent) return;
-    final step = 0.02; // 2% per keypress
+    const step = 0.02; // 2% per keypress
     if (widget.axis == Axis.horizontal) {
       if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
         setState(() {
@@ -220,7 +220,6 @@ class _DSSplitPaneState extends State<DSSplitPane> {
         final divider = widget.dividerThickness;
         final available = totalExtent - divider;
         final leadingExtent = available * _ratio;
-        final trailingExtent = available * (1.0 - _ratio);
 
         final effectiveDividerColor =
             widget.dividerColor ?? DSColors.borderSubtle;
@@ -273,9 +272,9 @@ class _DSSplitPaneState extends State<DSSplitPane> {
                   height: isHorizontal ? double.infinity : divider,
                   decoration: BoxDecoration(
                     color: _isHovering || _isDragging
-                        ? DSColors.accentCyan.withOpacity(0.3)
+                        ? DSColors.accentCyan.withValues(alpha: 0.3)
                         : (_isFocused
-                              ? DSColors.accentCyan.withOpacity(0.2)
+                              ? DSColors.accentCyan.withValues(alpha: 0.2)
                               : effectiveDividerColor),
                   ),
                   child: Center(
@@ -284,7 +283,7 @@ class _DSSplitPaneState extends State<DSSplitPane> {
                       color: (_isHovering || _isDragging)
                           ? DSColors.accentCyan
                           : (_isFocused
-                                ? DSColors.accentCyan.withOpacity(0.7)
+                                ? DSColors.accentCyan.withValues(alpha: 0.7)
                                 : effectiveHandleColor),
                     ),
                   ),

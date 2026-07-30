@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'ds_colors.dart';
 import '../atoms/ds_icon.dart';
 
-/// ASW Observatory Design Tokens — Operational State Vocabulary
+/// Warp Prism Design Tokens — Operational State Vocabulary
 ///
-/// Canonical 15-state vocabulary covering CyberCore entity lifecycle,
-/// health, verification, and governance semantics.
+/// Canonical 15-state vocabulary covering operational entity lifecycle,
+/// health, verification, and governance semantics (app-agnostic).
 ///
 /// This is orthogonal to [DSStateType] which covers UI data-loading
 /// states (empty/loading/error). A screen may show [DSStateType.loading]

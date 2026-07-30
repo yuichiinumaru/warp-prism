@@ -1,11 +1,11 @@
 // Tests for AppShell responsive layout behavior.
 //
-// Verifies:
+// Verifies production AppShell (not a reimplementation):
 // 1. Wide layouts render expanded sidebar + topbar (no bottom nav)
 // 2. Narrow layouts render bottom navigation + AppBar (no sidebar)
-// 3. Medium layouts render collapsed sidebar + topbar
-// 4. Navigation items are present in both layouts
-// 5. Selected state is driven by route index
+// 3. Medium layouts render sidebar + topbar (no bottom nav)
+// 4. Navigation items are present and route-derived
+// 5. Inspector is not permanently visible on narrow layouts
 //
 // Run: flutter test test/app/shell_responsive_layout_test.dart
 
@@ -15,99 +15,47 @@ import 'package:go_router/go_router.dart';
 import 'package:warp_prism_observatory/app/app_shell.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
 
-/// Wraps [AppShell] in a [MaterialApp] with a controllable viewport size.
-Widget _buildTestHarness({
-  required double width,
-  required double height,
-  int initialIndex = 0,
-}) {
-  return MaterialApp(
-    home: SizedBox(
-      width: width,
-      height: height,
-      child: _FakeNavigationShell(currentIndex: initialIndex),
-    ),
+/// Minimal bootstrap router that mounts production [AppShell] without
+/// importing product feature modules (keeps the suite loadable and OOM-safe).
+GoRouter _buildShellRouter({String initialLocation = '/overview'}) {
+  return GoRouter(
+    initialLocation: initialLocation,
+    routes: [
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) {
+          return AppShell(navigationShell: navigationShell);
+        },
+        branches: [
+          for (final path in const [
+            '/overview',
+            '/map',
+            '/operate',
+            '/history',
+            '/governance',
+          ])
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: path,
+                  builder: (context, state) => Center(child: Text(path)),
+                ),
+              ],
+            ),
+        ],
+      ),
+      GoRoute(path: '/', redirect: (context, state) => '/overview'),
+    ],
   );
 }
 
-/// Minimal fake for [StatefulNavigationShell] to enable pumpWidget testing
-/// without full go_router bootstrapping.
-class _FakeNavigationShell extends StatefulWidget {
-  final int currentIndex;
-  const _FakeNavigationShell({required this.currentIndex});
-
-  @override
-  State<_FakeNavigationShell> createState() => _FakeNavigationShellState();
-}
-
-class _FakeNavigationShellState extends State<_FakeNavigationShell> {
-  late int _currentIndex;
-
-  @override
-  void initState() {
-    super.initState();
-    _currentIndex = widget.currentIndex;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // We can't use AppShell directly without a real StatefulNavigationShell,
-    // so we test the responsive layout logic by verifying DS organism composition.
-    final screenWidth = MediaQuery.sizeOf(context).width;
-    final isCompact = screenWidth < DSBreakpoints.narrow;
-
-    if (isCompact) {
-      // Compact: AppBar + BottomNavigationBar, no sidebar
-      return Scaffold(
-        backgroundColor: DSColors.obsidianDeep,
-        appBar: AppBar(
-          title: const Text('Test'),
-          backgroundColor: DSColors.obsidianBase,
-        ),
-        body: const Center(child: Text('Content')),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          onTap: (i) => setState(() => _currentIndex = i),
-          type: BottomNavigationBarType.fixed,
-          items: [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Overview'),
-            BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Map'),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.play_arrow),
-              label: 'Operate',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.history),
-              label: 'History',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.gavel),
-              label: 'Governance',
-            ),
-          ],
-        ),
-      );
-    }
-
-    // Medium + Wide: DSShellResponsive with sidebar
-    return DSShellResponsive(
-      sidebar: DSSidebar(
-        items: AppShell.navItems,
-        selectedId: AppShell.navItems[_currentIndex].id,
-        onItemTap: (id) {
-          final idx = AppShell.navItems.indexWhere((i) => i.id == id);
-          if (idx >= 0) setState(() => _currentIndex = idx);
-        },
-      ),
-      collapsedSidebar: DSSidebar(
-        items: AppShell.navItems,
-        selectedId: AppShell.navItems[_currentIndex].id,
-        expanded: false,
-      ),
-      topbar: const DSTopbar(title: 'Test'),
-      content: const Center(child: Text('Content')),
-    );
-  }
+Widget _pumpShellApp(GoRouter router) {
+  return MaterialApp.router(
+    theme: ThemeData(
+      brightness: Brightness.dark,
+      scaffoldBackgroundColor: PrismColors.obsidianDeep,
+    ),
+    routerConfig: router,
+  );
 }
 
 void main() {
@@ -120,15 +68,14 @@ void main() {
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
 
-      await tester.pumpWidget(_buildTestHarness(width: 1400, height: 900));
+      await tester.pumpWidget(_pumpShellApp(_buildShellRouter()));
       await tester.pumpAndSettle();
 
-      // Should render a sidebar
-      expect(find.byType(DSSidebar), findsWidgets);
-      // Should render a topbar
-      expect(find.byType(DSTopbar), findsOneWidget);
-      // Should NOT render bottom navigation on wide
+      expect(find.byType(PrismShellResponsive), findsOneWidget);
+      expect(find.byType(PrismSidebar), findsWidgets);
+      expect(find.byType(PrismTopbar), findsOneWidget);
       expect(find.byType(BottomNavigationBar), findsNothing);
+      expect(find.text('/overview'), findsOneWidget);
     });
 
     testWidgets(
@@ -139,17 +86,19 @@ void main() {
         addTearDown(tester.view.resetPhysicalSize);
         addTearDown(tester.view.resetDevicePixelRatio);
 
-        await tester.pumpWidget(_buildTestHarness(width: 400, height: 800));
+        await tester.pumpWidget(_pumpShellApp(_buildShellRouter()));
         await tester.pumpAndSettle();
 
-        // Should render bottom navigation
         expect(find.byType(BottomNavigationBar), findsOneWidget);
-        // Should NOT render DSSidebar
-        expect(find.byType(DSSidebar), findsNothing);
+        expect(find.byType(PrismSidebar), findsNothing);
+        expect(find.byType(PrismShellResponsive), findsNothing);
+        // Inspector must not stay permanently visible on compact layouts.
+        expect(find.byType(PrismDetailInspector), findsNothing);
+        expect(find.text('/overview'), findsOneWidget);
       },
     );
 
-    testWidgets('medium layout (900px) renders collapsed sidebar', (
+    testWidgets('medium layout (900px) renders sidebar and topbar', (
       tester,
     ) async {
       tester.view.physicalSize = const Size(900, 800);
@@ -157,15 +106,29 @@ void main() {
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
 
-      await tester.pumpWidget(_buildTestHarness(width: 900, height: 800));
+      await tester.pumpWidget(_pumpShellApp(_buildShellRouter()));
       await tester.pumpAndSettle();
 
-      // Should render DSSidebar (expanded or collapsed)
-      expect(find.byType(DSSidebar), findsWidgets);
-      // Should render topbar
-      expect(find.byType(DSTopbar), findsOneWidget);
-      // Should NOT render bottom navigation
+      expect(find.byType(PrismShellResponsive), findsOneWidget);
+      expect(find.byType(PrismSidebar), findsWidgets);
+      expect(find.byType(PrismTopbar), findsOneWidget);
       expect(find.byType(BottomNavigationBar), findsNothing);
+    });
+
+    testWidgets('route-driven selection lands on Map branch', (tester) async {
+      tester.view.physicalSize = const Size(1400, 900);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(
+        _pumpShellApp(_buildShellRouter(initialLocation: '/map')),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('/map'), findsOneWidget);
+      expect(find.byType(PrismTopbar), findsOneWidget);
+      expect(find.text('Map'), findsWidgets);
     });
 
     test('AppShell defines exactly 5 navigation items', () {
@@ -204,10 +167,10 @@ void main() {
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
 
-      await tester.pumpWidget(_buildTestHarness(width: 599, height: 800));
+      await tester.pumpWidget(_pumpShellApp(_buildShellRouter()));
       await tester.pumpAndSettle();
 
-      expect(find.byType(DSSidebar), findsNothing);
+      expect(find.byType(PrismSidebar), findsNothing);
       expect(find.byType(BottomNavigationBar), findsOneWidget);
     });
 
@@ -217,26 +180,27 @@ void main() {
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
 
-      await tester.pumpWidget(_buildTestHarness(width: 600, height: 800));
+      await tester.pumpWidget(_pumpShellApp(_buildShellRouter()));
       await tester.pumpAndSettle();
 
       // At exactly 600px (narrow breakpoint), sidebar should be visible
-      expect(find.byType(DSSidebar), findsWidgets);
+      expect(find.byType(PrismSidebar), findsWidgets);
+      expect(find.byType(BottomNavigationBar), findsNothing);
     });
 
-    testWidgets('sidebar width changes between narrow and wide', (
+    testWidgets('sidebar present at sidebarCollapse threshold (800px)', (
       tester,
     ) async {
-      // At 800px (sidebarCollapse), sidebar should be present
       tester.view.physicalSize = const Size(800, 800);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
 
-      await tester.pumpWidget(_buildTestHarness(width: 800, height: 800));
+      await tester.pumpWidget(_pumpShellApp(_buildShellRouter()));
       await tester.pumpAndSettle();
 
-      expect(find.byType(DSSidebar), findsWidgets);
+      expect(find.byType(PrismSidebar), findsWidgets);
+      expect(find.byType(PrismShellResponsive), findsOneWidget);
     });
   });
 }

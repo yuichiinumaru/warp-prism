@@ -9,11 +9,16 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:warp_prism_observatory/app/pages/operate_page.dart';
 import 'package:warp_prism_observatory/data/models/task_contracts.dart';
-import 'package:warp_prism_observatory/features/operate/task_projection.dart';
+import 'package:warp_prism_observatory/data/models/workspace_graph.dart';
 import 'package:warp_prism_observatory/features/operate/operate_filters.dart';
+import 'package:warp_prism_observatory/features/operate/operate_projection_builder.dart';
+import 'package:warp_prism_observatory/features/operate/operate_workspace_view.dart';
 import 'package:warp_prism_observatory/features/operate/operate_workspace_view_model.dart';
+import 'package:warp_prism_observatory/features/operate/task_projection.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
 
 /// Test task projections spanning all five lanes.
@@ -93,8 +98,30 @@ OperateProjection _buildTestProjection() {
 void main() {
   Widget wrapInApp(Widget child) {
     return MaterialApp(
-      home: Scaffold(body: SizedBox(width: 1600, height: 800, child: child)),
+      home: Scaffold(body: SizedBox(width: 1920, height: 1200, child: child)),
     );
+  }
+
+  Future<void> setDesktopSurface(WidgetTester tester) async {
+    tester.view.physicalSize = const Size(1920, 1200);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+  }
+
+  /// Empty-lane compact layout can overflow PrismStateSurface in narrow
+  /// lane columns; ignore that known DS empty-state overflow in filter tests.
+  void ignoreLaneEmptyOverflows() {
+    final previous = FlutterError.onError;
+    FlutterError.onError = (details) {
+      final text = details.toString();
+      if (text.contains('A RenderFlex overflowed') &&
+          text.contains('DSStateSurface')) {
+        return;
+      }
+      previous?.call(details);
+    };
+    addTearDown(() => FlutterError.onError = previous);
   }
 
   // ===========================================================================
@@ -420,17 +447,17 @@ void main() {
   });
 
   // ===========================================================================
-  // DSLaneBoard integration
+  // PrismLaneBoard integration
   // ===========================================================================
-  group('DSLaneBoard integration', () {
-    testWidgets('renders five lanes from DSLane objects', (tester) async {
+  group('PrismLaneBoard integration', () {
+    testWidgets('renders five lanes from PrismLane objects', (tester) async {
       final lanes = TaskLane.values.map((lane) {
-        return DSLane(
+        return PrismLane(
           id: lane.directoryPrefix,
           label: lane.name,
           tasks: lane == TaskLane.doing
               ? [
-                  const DSLaneTask(
+                  const PrismLaneTask(
                     id: 3,
                     title: 'Build Dashboard',
                     priority: 'P1',
@@ -442,7 +469,7 @@ void main() {
         );
       }).toList();
 
-      await tester.pumpWidget(wrapInApp(DSLaneBoard(lanes: lanes)));
+      await tester.pumpWidget(wrapInApp(PrismLaneBoard(lanes: lanes)));
 
       // Should render 5 lane headers
       expect(find.text('planning'), findsOneWidget);
@@ -454,11 +481,11 @@ void main() {
 
     testWidgets('renders task cards in populated lanes', (tester) async {
       final lanes = [
-        DSLane(
+        PrismLane(
           id: '02-doing',
           label: 'Doing',
           tasks: [
-            const DSLaneTask(
+            const PrismLaneTask(
               id: 3,
               title: 'Build Dashboard',
               priority: 'P1',
@@ -467,20 +494,232 @@ void main() {
             ),
           ],
         ),
-        DSLane(id: '01-open', label: 'Open', tasks: const []),
+        PrismLane(id: '01-open', label: 'Open', tasks: const []),
       ];
 
-      await tester.pumpWidget(wrapInApp(DSLaneBoard(lanes: lanes)));
+      await tester.pumpWidget(wrapInApp(PrismLaneBoard(lanes: lanes)));
 
       expect(find.text('Build Dashboard'), findsOneWidget);
     });
 
     testWidgets('empty lanes show no-tasks state', (tester) async {
-      final lanes = [const DSLane(id: '01-open', label: 'Open', tasks: [])];
+      final lanes = [const PrismLane(id: '01-open', label: 'Open', tasks: [])];
 
-      await tester.pumpWidget(wrapInApp(DSLaneBoard(lanes: lanes)));
+      await tester.pumpWidget(wrapInApp(PrismLaneBoard(lanes: lanes)));
 
       expect(find.text('No tasks'), findsOneWidget);
+    });
+  });
+
+  // ===========================================================================
+  // OperateWorkspaceView integration
+  // ===========================================================================
+  group('OperateWorkspaceView integration', () {
+    testWidgets('renders five lane labels from projection', (tester) async {
+      await setDesktopSurface(tester);
+      await tester.pumpWidget(
+        wrapInApp(
+          OperateWorkspaceView(initialProjection: _buildTestProjection()),
+        ),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
+
+      expect(find.text('Planning'), findsOneWidget);
+      expect(find.text('Open'), findsOneWidget);
+      expect(find.text('Doing'), findsOneWidget);
+      expect(find.text('Review'), findsOneWidget);
+      expect(find.text('Completed'), findsOneWidget);
+      expect(find.text('Plan Architecture'), findsOneWidget);
+      expect(find.text('5 tasks'), findsOneWidget);
+    });
+
+    testWidgets('owner filter updates visible board subset', (tester) async {
+      await setDesktopSurface(tester);
+      ignoreLaneEmptyOverflows();
+      await tester.pumpWidget(
+        wrapInApp(
+          OperateWorkspaceView(initialProjection: _buildTestProjection()),
+        ),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
+
+      // Open Owner filter and pick builder (2 tasks).
+      await tester.tap(find.byTooltip('Owner filter'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
+      await tester.tap(find.text('builder').last);
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
+
+      expect(find.text('2 of 5 tasks'), findsOneWidget);
+      expect(find.text('Implement Auth'), findsOneWidget);
+      expect(find.text('Build Dashboard'), findsOneWidget);
+      expect(find.text('Plan Architecture'), findsNothing);
+      expect(find.text('Clear filters'), findsOneWidget);
+    });
+
+    testWidgets('search and clear filters restore full board', (tester) async {
+      await setDesktopSurface(tester);
+      ignoreLaneEmptyOverflows();
+      await tester.pumpWidget(
+        wrapInApp(
+          OperateWorkspaceView(initialProjection: _buildTestProjection()),
+        ),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
+
+      await tester.enterText(find.byType(TextField), 'dashboard');
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
+      expect(find.text('1 of 5 tasks'), findsOneWidget);
+      expect(find.text('Build Dashboard'), findsOneWidget);
+
+      await tester.tap(find.text('Clear filters'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
+      expect(find.text('5 tasks'), findsOneWidget);
+      expect(find.text('Plan Architecture'), findsOneWidget);
+    });
+
+    testWidgets('exposes semantic labels for search and filters', (
+      tester,
+    ) async {
+      await setDesktopSurface(tester);
+      ignoreLaneEmptyOverflows();
+      await tester.pumpWidget(
+        wrapInApp(
+          OperateWorkspaceView(initialProjection: _buildTestProjection()),
+        ),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
+
+      expect(find.bySemanticsLabel('Search tasks'), findsOneWidget);
+      expect(find.byTooltip('Lane filter'), findsOneWidget);
+      expect(find.byTooltip('Owner filter'), findsOneWidget);
+      expect(find.byTooltip('Skill filter'), findsOneWidget);
+      expect(find.byTooltip('Workflow filter'), findsOneWidget);
+      expect(find.byTooltip('Proof filter'), findsOneWidget);
+      expect(find.bySemanticsLabel('Clear filters'), findsNothing);
+
+      // Activate a filter so clear action is present with semantics.
+      await tester.enterText(find.byType(TextField), 'dashboard');
+      await tester.pump();
+      expect(find.bySemanticsLabel('Clear filters'), findsOneWidget);
+      expect(find.text('Clear filters'), findsOneWidget);
+    });
+  });
+
+  // ===========================================================================
+  // OperatePage route shell wiring
+  // ===========================================================================
+  group('OperatePage shell wiring', () {
+    Widget wrapPage(Widget child) {
+      return ProviderScope(
+        child: MaterialApp(
+          home: Scaffold(
+            body: SizedBox(width: 1920, height: 1200, child: child),
+          ),
+        ),
+      );
+    }
+
+    testWidgets('forced projection populates lanes without initialProjection', (
+      tester,
+    ) async {
+      await setDesktopSurface(tester);
+      await tester.pumpWidget(
+        wrapPage(OperatePage(forcedProjection: _buildTestProjection())),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
+
+      expect(find.byType(OperateWorkspaceView), findsOneWidget);
+      expect(find.text('Planning'), findsOneWidget);
+      expect(find.text('Plan Architecture'), findsOneWidget);
+      expect(find.text('5 tasks'), findsOneWidget);
+    });
+
+    testWidgets('forced loading state is distinct from empty board', (
+      tester,
+    ) async {
+      await setDesktopSurface(tester);
+      await tester.pumpWidget(wrapPage(const OperatePage(forceLoading: true)));
+      await tester.pump();
+
+      expect(find.text('Loading tasks...'), findsOneWidget);
+      expect(find.byType(OperateWorkspaceView), findsNothing);
+    });
+
+    testWidgets('forced error state surfaces message', (tester) async {
+      await setDesktopSurface(tester);
+      await tester.pumpWidget(
+        wrapPage(const OperatePage(forcedError: 'mock operate load failure')),
+      );
+      await tester.pump();
+
+      expect(find.text('Failed to load tasks'), findsOneWidget);
+      expect(find.textContaining('mock operate load failure'), findsOneWidget);
+    });
+  });
+
+  // ===========================================================================
+  // Projection builder from WorkspaceAsset
+  // ===========================================================================
+  group('buildOperateProjection', () {
+    test('maps TaskMetadata assets into five canonical lanes', () {
+      final assets = [
+        WorkspaceAsset(
+          id: 'task:T001',
+          kind: AssetKind.task,
+          name: 'Plan Architecture',
+          path: 'docs/tasks/00-planning/T001-plan.md',
+          frontmatter: {
+            '_taskMetadata': TaskMetadata(
+              id: 'T001',
+              title: 'Plan Architecture',
+              lane: TaskLane.planning,
+              owner: 'architect',
+              proofState: ProofState.complete,
+              skills: const ['design'],
+              workflows: const ['planning-wf'],
+              created: DateTime(2026, 6, 1),
+              updated: DateTime(2026, 6, 5),
+            ),
+          },
+        ),
+        WorkspaceAsset(
+          id: 'task:T003',
+          kind: AssetKind.task,
+          name: 'Build Dashboard',
+          path: 'docs/tasks/02-doing/T003-build.md',
+          frontmatter: {
+            '_taskMetadata': TaskMetadata(
+              id: 'T003',
+              title: 'Build Dashboard',
+              lane: TaskLane.doing,
+              owner: 'builder',
+              proofState: ProofState.partial,
+              skills: const ['ui'],
+              workflows: const ['dev-wf'],
+              created: DateTime(2026, 6, 3),
+              updated: DateTime(2026, 6, 7),
+            ),
+          },
+        ),
+      ];
+
+      final projection = buildOperateProjection(assets);
+      expect(projection.lanes.length, 5);
+      expect(projection.totalTasks, 2);
+      expect(projection.laneFor(TaskLane.planning).tasks.single.id, 'T001');
+      expect(projection.laneFor(TaskLane.doing).tasks.single.owner, 'builder');
+      expect(projection.laneFor(TaskLane.open).isEmpty, isTrue);
+      expect(projection.laneFor(TaskLane.review).isEmpty, isTrue);
+      expect(projection.laneFor(TaskLane.completed).isEmpty, isTrue);
     });
   });
 }

@@ -115,8 +115,8 @@ class GraphPainter extends CustomPainter {
 
       final paint = Paint()
         ..color = isHighlighted
-            ? config.edgeHighlightColor.withOpacity(0.6)
-            : config.edgeColor.withOpacity(0.3)
+            ? config.edgeHighlightColor.withValues(alpha: 0.6)
+            : config.edgeColor.withValues(alpha: 0.3)
         ..strokeWidth = isHighlighted
             ? config.edgeHighlightStrokeWidth
             : config.edgeStrokeWidth

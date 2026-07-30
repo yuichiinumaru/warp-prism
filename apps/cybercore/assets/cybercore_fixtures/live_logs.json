@@ -1,0 +1,114 @@
+{
+  "success": true,
+  "totalCount": 12,
+  "data": [
+    {
+      "id": "log-001",
+      "timestamp": "2026-07-09T11:58:01.000Z",
+      "serverName": "filesystem",
+      "level": "info",
+      "message": "Listed /workspace — 42 entries",
+      "error": null,
+      "redacted": false
+    },
+    {
+      "id": "log-002",
+      "timestamp": "2026-07-09T11:58:12.000Z",
+      "serverName": "github",
+      "level": "info",
+      "message": "Fetched open issues for ganthritor/warp-prism",
+      "error": null,
+      "redacted": false
+    },
+    {
+      "id": "log-003",
+      "timestamp": "2026-07-09T11:58:30.000Z",
+      "serverName": "postgres",
+      "level": "error",
+      "message": "Query failed: connection refused",
+      "error": "ECONNREFUSED 127.0.0.1:5432",
+      "redacted": false
+    },
+    {
+      "id": "log-004",
+      "timestamp": "2026-07-09T11:59:00.000Z",
+      "serverName": "fetch",
+      "level": "warn",
+      "message": "Upstream latency 2.4s for https://api.example.com/docs",
+      "error": null,
+      "redacted": false
+    },
+    {
+      "id": "log-005",
+      "timestamp": "2026-07-09T11:59:15.000Z",
+      "serverName": "openai",
+      "level": "info",
+      "message": "Provider probe success — model gpt-4o",
+      "error": null,
+      "redacted": false
+    },
+    {
+      "id": "log-006",
+      "timestamp": "2026-07-09T11:59:40.000Z",
+      "serverName": "azure",
+      "level": "error",
+      "message": "Provider test failed",
+      "error": "Connection timed out after 30s",
+      "redacted": false
+    },
+    {
+      "id": "log-007",
+      "timestamp": "2026-07-09T12:00:01.000Z",
+      "serverName": "memory",
+      "level": "warn",
+      "message": "Server inactive — skip tool registration",
+      "error": null,
+      "redacted": false
+    },
+    {
+      "id": "log-008",
+      "timestamp": "2026-07-09T12:00:20.000Z",
+      "serverName": "github",
+      "level": "info",
+      "message": "Authorization header present: ***REDACTED***",
+      "error": null,
+      "redacted": true
+    },
+    {
+      "id": "log-009",
+      "timestamp": "2026-07-09T12:00:45.000Z",
+      "serverName": "desktop-commander",
+      "level": "info",
+      "message": "Process list snapshot (12 processes)",
+      "error": null,
+      "redacted": false
+    },
+    {
+      "id": "log-010",
+      "timestamp": "2026-07-09T12:01:00.000Z",
+      "serverName": "anthropic",
+      "level": "info",
+      "message": "Provider probe success — claude-sonnet-4",
+      "error": null,
+      "redacted": false
+    },
+    {
+      "id": "log-011",
+      "timestamp": "2026-07-09T12:01:30.000Z",
+      "serverName": "ollama",
+      "level": "error",
+      "message": "Local provider unavailable",
+      "error": "ECONNREFUSED 127.0.0.1:11434",
+      "redacted": false
+    },
+    {
+      "id": "log-012",
+      "timestamp": "2026-07-09T12:02:00.000Z",
+      "serverName": "fetch",
+      "level": "info",
+      "message": "Bearer token applied for session: ***REDACTED***",
+      "error": null,
+      "redacted": true
+    }
+  ]
+}

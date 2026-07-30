@@ -1,38 +1,117 @@
 # CyberCore Expansion Decision
 
-> **Task**: 1111 — CyberCore Pilot Mirror and Expansion Gate
-> **Date**: 2026-06-08
-> **Status**: Final
-> **Decision**: PAUSE expansion and live API, mandate remediation of ADS naming contract.
+> **Task**: 1111 — CyberCore Pilot Mirror and Expansion Gate  
+> **Date**: 2026-07-09 (post-1110 realign re-decision; supersedes same-day PAUSE for absent pilots)  
+> **Status**: Active decision  
+> **Evaluation**: `docs/design/cybercore-pilot-evaluation.md` (same-day post-realign)  
+> **Decision**: **EXPAND** deferred routes (conditional, fixture-backed) · **DENY** live API · pilot A/B/C **PASS**
 
-## 1. Primary Decision
+## 1. Primary decision (binary)
 
-**Decision:** The project must **PAUSE** route expansion and **PAUSE** live API authorization. A targeted remediation wave must occur to address the ADS namespace violation, after which the project will **CONTINUE fixture-backed**. 
+| Decision axis | Verdict | One-line rationale |
+| --- | --- | --- |
+| **Pilot A/B/C gate** | **PASS** | Routes, pages, pilot-domain fixtures, and minimum tests present (3/3) |
+| **Expand beyond pilot routes** | **EXPAND (conditional)** | One deferred live-CC route at a time, still fixture-backed; no Observatory invent |
+| **Authorize live CyberCore API** | **DENIED** | No repository abstraction; UI hard-binds `FixtureLoader`; auth/SDK gates open |
+| **Continue fixture-backed development** | **CONTINUE** | Authorized as the only data plane for next wave |
+| **Companion admin app / replacement** | **REJECTED** (unchanged from 1108) | First wave remains read-only mirror |
+| **ADS Prism\* remediation wave** | **NOT REQUIRED** | Namespace gate is PASS |
 
-## 2. Rationale
+**Headline:** The pilot **proves** ADS consumption against real CyberCore IA. Route expansion may proceed **only** as fixture-backed deferred routes from the 1108 matrix. Live networking remains **closed**.
 
-The pilot evaluation (`cybercore-pilot-evaluation.md`) demonstrated that the `warp_prism_ui` Design System seamlessly fits the CyberCore domain. The route parity requirements were successfully met, and the mock-backed approach clearly proves the viability of an ASW Observatory.
+---
 
-However, the pilot failed the fundamental boundary contract defined in Task 1105. `apps/cybercore` directly utilizes the legacy `DS*` internal aliases instead of the mandated `Prism*` public component API. Before further features or routes are built, this drift must be corrected. If we expand now, the technical debt will scale alongside new features.
+## 2. Rationale (evidence-backed)
 
-## 3. Non-Goals for Next Wave
+1. **Task 1108 authority:** First-wave MVP = Pilot A `/providers`, Pilot B `/mcp-servers` + `/mcp-inspector`, Pilot C `/live-logs`.
+2. **Task 1110 reality (post realign):** `apps/cybercore` implements exactly those pilot routes (plus nested provider/MCP detail). Observatory-proxy paths are not registered. Scoped tests **16/16 PASS**.
+3. **ADS health:** **PASS** — zero `DS*` under `apps/cybercore/lib`; ~183 `Prism*`; path dep on `warp_prism_ui`.
+4. **Fixtures:** Runtime JSON is pilot domain (providers / MCP / inspector / live logs). Design docs (`cybercore-fixture-schema.md`, parts of 1109 inventory) still describe ASW shapes → **doc residual**, not pilot FAIL.
+5. **Therefore:** Pausing for “missing pilots” is no longer justified. Authorizing live HTTP is still unjustified.
 
-To ensure laser focus, the following remain strictly out of scope for the immediate next wave:
-1. **Live API Integration**: No live networking or HTTP clients will be built.
-2. **New Routes**: No new CyberCore domain screens will be added until the 5 existing routes are strictly compliant.
-3. **Data Mutation**: Read-only rules remain enforced. No state write operations.
-4. **Auth Systems**: Flutter authentication flows remain deferred.
+---
 
-## 4. Gates for Live API Authorization
+## 3. Gates
 
-Live API authorization is **NOT GRANTED** at this time. To authorize live backend connectivity in the future, the following gates must be met:
-1. **Dart SDK Availability**: CyberCore Backend Features 1300-1304 (OpenAPI generated client SDK) must be complete and published.
-2. **Data Abstraction**: The Flutter app must extract `FixtureLoader` direct calls into abstract Repositories so UI code relies solely on interfaces, making the switch to HTTP clients a dependency-injection swap.
-3. **Auth Availability**: Feature 1302 (Auth Endpoints Stable) must be validated.
+### 3.1 Expand-routes gate — **MET** (conditional continue)
 
-## 5. Expansion Boundaries (Next Steps)
+All minimum criteria from the prior pause document are now true:
 
-The immediate next boundaries for expansion—once the pause is lifted—are strictly structural:
-1. **Remediation Task**: A new task must migrate `apps/cybercore` to use only `Prism*` prefixed components and tokens.
-2. **Repository Abstraction Layer**: Introduce a clean architecture boundary separating data fetching from UI screens.
-3. **Missing Component Build**: Fill remaining visual gaps by promoting necessary atoms/molecules (e.g., proper Datatables and Command Palettes) via strict promotion gates.
+1. Flutter routes include `/providers`, `/mcp-servers`, `/mcp-inspector`, `/live-logs` (+ nested A/B detail).
+2. Fixtures exist under `apps/cybercore/assets/cybercore_fixtures/` for those domains.
+3. Widget tests cover shell + Pilot A happy path + Pilot A non-happy + nav to Pilot C; unit tests cover A/B/C models.
+4. This 1111 re-evaluation scores pilots A/B/C **PASS**.
+
+**Conditional constraints on expansion:**
+
+| Rule | Enforcement |
+| --- | --- |
+| Only routes classified **defer** in Task 1108 live matrix | e.g. `/llm-endpoints`, `/combos`, `/usage`, `/costs` — not invented paths |
+| One new surface (or tightly coupled pair) per task | No big-bang admin rewrite |
+| Fixture-backed only | No network clients until §3.2 closes |
+| Prefer source-backed `page.tsx` evidence | Same discipline as 1102/1108 |
+| Prefer ADS reuse over app-local widgets | Path dep `warp_prism_ui` only |
+
+### 3.2 Live API authorization gates — **still closed**
+
+Live API authorization remains **DENIED** until **all** are true:
+
+| # | Gate | Status now |
+| --- | --- | --- |
+| 1 | Pilot routes A/B/C implemented fixture-backed and gate-green | **Closed / PASS** |
+| 2 | Repository / data abstraction so UI does not hard-bind to `FixtureLoader` | **Open** |
+| 3 | Task 1109 design docs refreshed for pilot DTOs + live read-model mapping tables | **Partial / open** (runtime ahead of docs) |
+| 4 | Auth posture defined (session/admin); Flutter auth deferred series closed or waived | **Open** |
+| 5 | Explicit integration task authorizes network clients (not 1110/1111) | **Not started** |
+| 6 | Mutations remain off unless a separate mutation-safety task authorizes them | **Enforced** |
+
+No partial “call only health” exception is granted by this gate.
+
+---
+
+## 4. Non-goals for the next wave
+
+1. **No live networking** in Flutter CyberCore.
+2. **No data mutation** (display of import/test outcomes as fixture data only).
+3. **No auth implementation** unless a dedicated auth task opens.
+4. **No `DS*` remediation task** for `apps/cybercore` (already Prism*).
+5. **No claim** that Observatory `/tasks` board is CyberCore Operate parity (Task 1102 rejects candidate X).
+6. **No reintroduction** of Observatory-proxy primary routes as pilots.
+7. **No replacement** of Next.js CyberCore frontend.
+8. **No screenshots invented** — screenshot packet remains optional/absent per 1102 DoD.
+9. **No bulk expansion** of all deferred routes in one task.
+
+---
+
+## 5. Expansion boundaries (ordered next steps)
+
+| Order | Action | Owner task class |
+| --- | --- | --- |
+| 1 | Optional: refresh 1109 fixture-schema + inventory to document pilot DTOs (close doc drift) | Task 1109 follow-on / docs |
+| 2 | Optional: deepen B/C widget tests (list happy path + empty) | Task 1110 residual or test hardening |
+| 3 | First deferred route (recommended candidates: `/llm-endpoints` or `/combos` per 1108 matrix) | New implementation task |
+| 4 | Repository abstraction + client interface (still fixture default) | Integration prep task |
+| 5 | Only after §3.2: live client wiring | Integration task |
+
+---
+
+## 6. Decision record
+
+| Field | Value |
+| --- | --- |
+| **Decision** | **EXPAND (conditional, fixture-backed) · DENY live API · ADS namespace PASS · pilots PASS** |
+| **Primary blocker (prior)** | Route parity: pilots A/B/C absent — **resolved by Task 1110 realign** |
+| **Primary remaining blocker for live API** | No repository abstraction + auth/SDK + explicit integration task |
+| **Non-blocker (corrected)** | `DS*` vs `Prism*`; Observatory shell quality |
+| **Revisit trigger (live API)** | Integration task lands §3.2 gates 2–5 |
+| **Author** | docs + light reviewer · Task 1111 · 2026-07-09 post-realign |
+
+---
+
+## 7. Supersession
+
+| Prior decision | Disposition |
+| --- | --- |
+| 2026-06-08 pause for ADS naming | **Superseded** — Prism* PASS |
+| 2026-07-09 early PAUSE for missing A/B/C | **Superseded** — pilots implemented; this document **EXPAND**s fixture-backed deferred routes |
+| Live API DENIED | **Retained** with updated gate table |

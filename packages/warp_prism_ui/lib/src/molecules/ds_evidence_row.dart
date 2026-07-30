@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../tokens/tokens.dart';
 import '../atoms/atoms.dart';
+import 'ds_interactive_surface.dart';
 
 /// ASW Observatory Molecule - Evidence Row
 ///
@@ -11,6 +12,7 @@ class DSEvidenceRow extends StatelessWidget {
   final DSEvidenceState state;
   final IconData? icon;
   final VoidCallback? onTap;
+  final FocusNode? focusNode;
 
   const DSEvidenceRow({
     super.key,
@@ -19,6 +21,7 @@ class DSEvidenceRow extends StatelessWidget {
     required this.state,
     this.icon,
     this.onTap,
+    this.focusNode,
   });
 
   Color get _stateColor {
@@ -49,59 +52,59 @@ class DSEvidenceRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return DSInteractiveSurface(
+      semanticLabel: 'Evidence row: $label, state: ${state.name}',
+      semanticValue: value,
       onTap: onTap,
-      child: MouseRegion(
-        cursor: onTap != null
-            ? SystemMouseCursors.click
-            : SystemMouseCursors.basic,
-        child: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: DSSpacing.md,
-            vertical: DSSpacing.sm,
-          ),
-          decoration: BoxDecoration(
-            color: DSColors.obsidianElevated,
-            borderRadius: BorderRadius.circular(DSRadii.sm),
-            border: Border.all(color: _stateColor.withOpacity(0.3), width: 1),
-          ),
-          child: Row(
-            children: [
-              // State indicator
-              Icon(_stateIcon, size: 16, color: _stateColor),
-              const SizedBox(width: DSSpacing.sm),
+      focusNode: focusNode,
+      excludeChildSemantics: true,
+      padding: const EdgeInsets.symmetric(
+        horizontal: DSSpacing.md,
+        vertical: DSSpacing.sm,
+      ),
+      decoration: BoxDecoration(
+        color: DSColors.obsidianElevated,
+        borderRadius: BorderRadius.circular(DSRadii.sm),
+        border: Border.all(color: _stateColor.withValues(alpha: 0.3), width: 1),
+      ),
+      child: Row(
+        children: [
+          // State indicator
+          Icon(_stateIcon, size: 16, color: _stateColor),
+          const SizedBox(width: DSSpacing.sm),
 
-              // Icon if provided
-              if (icon != null) ...[
-                DSIcon.small(icon!, color: DSColors.textTertiary),
-                const SizedBox(width: DSSpacing.sm),
+          // Icon if provided
+          if (icon != null) ...[
+            DSIcon.small(icon!, color: DSColors.textTertiary),
+            const SizedBox(width: DSSpacing.sm),
+          ],
+
+          // Label
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                DSText.labelMedium(label),
+                if (value != null) ...[
+                  const SizedBox(height: 2),
+                  DSText.bodySmall(
+                    value!,
+                    color: DSColors.textSecondary,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
               ],
-
-              // Label
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    DSText.labelMedium(label),
-                    if (value != null) ...[
-                      const SizedBox(height: 2),
-                      DSText.bodySmall(
-                        value!,
-                        color: DSColors.textSecondary,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-
-              // Arrow if interactive
-              if (onTap != null)
-                DSIcon.small(Icons.chevron_right, color: DSColors.textTertiary),
-            ],
+            ),
           ),
-        ),
+
+          // Arrow if interactive
+          if (onTap != null)
+            const DSIcon.small(
+              Icons.chevron_right,
+              color: DSColors.textTertiary,
+            ),
+        ],
       ),
     );
   }

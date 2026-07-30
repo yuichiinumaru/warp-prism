@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
 
-/// Task 1121: DSCodeBlock widget tests.
+/// Task 1121: PrismCodeBlock widget tests.
 ///
 /// Verifies: language detection, syntax highlighting output, clipboard action,
 /// line numbers toggle, empty content handling, and glass-panel styling.
 void main() {
-  group('DSCodeBlock', () {
+  group('PrismCodeBlock', () {
     // ---------------------------------------------------------------------------
     // Rendering
     // ---------------------------------------------------------------------------
     testWidgets('renders source text as RichText', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(body: DSCodeBlock(source: 'hello world')),
+          home: Scaffold(body: PrismCodeBlock(source: 'hello world')),
         ),
       );
 
@@ -27,7 +27,7 @@ void main() {
     testWidgets('renders empty state when source is empty', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(body: DSCodeBlock(source: '')),
+          home: Scaffold(body: PrismCodeBlock(source: '')),
         ),
       );
 
@@ -41,8 +41,8 @@ void main() {
       tester,
     ) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(body: DSCodeBlock(source: '{"key": "value"}')),
+        const MaterialApp(
+          home: Scaffold(body: PrismCodeBlock(source: '{"key": "value"}')),
         ),
       );
 
@@ -53,8 +53,8 @@ void main() {
       tester,
     ) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(body: DSCodeBlock(source: '[1, 2, 3]')),
+        const MaterialApp(
+          home: Scaffold(body: PrismCodeBlock(source: '[1, 2, 3]')),
         ),
       );
 
@@ -63,9 +63,9 @@ void main() {
 
     testWidgets('auto-detects Dart from import statement', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
-            body: DSCodeBlock(
+            body: PrismCodeBlock(
               source: "import 'package:flutter/material.dart';",
             ),
           ),
@@ -77,9 +77,9 @@ void main() {
 
     testWidgets('auto-detects Dart from class definition', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
-            body: DSCodeBlock(source: 'class MyClass extends Base {}'),
+            body: PrismCodeBlock(source: 'class MyClass extends Base {}'),
           ),
         ),
       );
@@ -89,9 +89,9 @@ void main() {
 
     testWidgets('auto-detects YAML from key-value patterns', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
-            body: DSCodeBlock(source: 'name: warp-prism\nversion: 0.1.0'),
+            body: PrismCodeBlock(source: 'name: warp-prism\nversion: 0.1.0'),
           ),
         ),
       );
@@ -101,8 +101,8 @@ void main() {
 
     testWidgets('auto-detects Markdown from heading', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(body: DSCodeBlock(source: '# Hello\n\nSome text')),
+        const MaterialApp(
+          home: Scaffold(body: PrismCodeBlock(source: '# Hello\n\nSome text')),
         ),
       );
 
@@ -111,8 +111,8 @@ void main() {
 
     testWidgets('shows Plain Text for unrecognized content', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(body: DSCodeBlock(source: 'just some random text')),
+        const MaterialApp(
+          home: Scaffold(body: PrismCodeBlock(source: 'just some random text')),
         ),
       );
 
@@ -123,7 +123,7 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: DSCodeBlock(source: 'just some text', language: 'json'),
+            body: PrismCodeBlock(source: 'just some text', language: 'json'),
           ),
         ),
       );
@@ -136,8 +136,8 @@ void main() {
     // ---------------------------------------------------------------------------
     testWidgets('shows line numbers by default', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(body: DSCodeBlock(source: 'line1\nline2\nline3')),
+        const MaterialApp(
+          home: Scaffold(body: PrismCodeBlock(source: 'line1\nline2\nline3')),
         ),
       );
 
@@ -150,9 +150,9 @@ void main() {
       tester,
     ) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
-            body: DSCodeBlock(source: 'line1\nline2', showLineNumbers: false),
+            body: PrismCodeBlock(source: 'line1\nline2', showLineNumbers: false),
           ),
         ),
       );
@@ -167,8 +167,8 @@ void main() {
     // ---------------------------------------------------------------------------
     testWidgets('shows copy button by default', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(body: DSCodeBlock(source: 'copy me')),
+        const MaterialApp(
+          home: Scaffold(body: PrismCodeBlock(source: 'copy me')),
         ),
       );
 
@@ -179,9 +179,9 @@ void main() {
       tester,
     ) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
-            body: DSCodeBlock(source: 'no copy', showCopyButton: false),
+            body: PrismCodeBlock(source: 'no copy', showCopyButton: false),
           ),
         ),
       );
@@ -191,8 +191,8 @@ void main() {
 
     testWidgets('copy button exists and is tappable', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(body: DSCodeBlock(source: 'copy this code')),
+        const MaterialApp(
+          home: Scaffold(body: PrismCodeBlock(source: 'copy this code')),
         ),
       );
 
@@ -208,9 +208,9 @@ void main() {
     // ---------------------------------------------------------------------------
     testWidgets('renders RichText for JSON content', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
-            body: DSCodeBlock(
+            body: PrismCodeBlock(
               source: '{"key": "value", "num": 42}',
               language: 'json',
             ),
@@ -231,9 +231,9 @@ void main() {
 
     testWidgets('renders RichText for Dart content', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
-            body: DSCodeBlock(
+            body: PrismCodeBlock(
               source: 'void main() {\n  print("hello");\n}',
               language: 'dart',
             ),
@@ -252,9 +252,9 @@ void main() {
 
     testWidgets('renders RichText for YAML content', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
-            body: DSCodeBlock(
+            body: PrismCodeBlock(
               source: 'name: test\nversion: 1.0',
               language: 'yaml',
             ),
@@ -274,32 +274,32 @@ void main() {
     // ---------------------------------------------------------------------------
     // Glass panel styling
     // ---------------------------------------------------------------------------
-    testWidgets('wraps content in DSGlassPanelSimple', (tester) async {
+    testWidgets('wraps content in PrismGlassPanelSimple', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(body: DSCodeBlock(source: 'styled code')),
+        const MaterialApp(
+          home: Scaffold(body: PrismCodeBlock(source: 'styled code')),
         ),
       );
 
-      // DSCodeBlock uses DSGlassPanelSimple for its container
-      expect(find.byType(DSGlassPanelSimple), findsWidgets);
+      // PrismCodeBlock uses PrismGlassPanelSimple for its container
+      expect(find.byType(PrismGlassPanelSimple), findsWidgets);
     });
 
     // ---------------------------------------------------------------------------
     // effectiveLanguage getter
     // ---------------------------------------------------------------------------
     test('effectiveLanguage returns explicit language when provided', () {
-      const block = DSCodeBlock(source: '{}', language: 'yaml');
+      const block = PrismCodeBlock(source: '{}', language: 'yaml');
       expect(block.effectiveLanguage, 'yaml');
     });
 
     test('effectiveLanguage auto-detects when language is null', () {
-      const block = DSCodeBlock(source: '{"key": 1}');
+      const block = PrismCodeBlock(source: '{"key": 1}');
       expect(block.effectiveLanguage, 'json');
     });
 
     test('effectiveLanguage returns null for unrecognized plain text', () {
-      const block = DSCodeBlock(source: 'random stuff here');
+      const block = PrismCodeBlock(source: 'random stuff here');
       expect(block.effectiveLanguage, isNull);
     });
   });

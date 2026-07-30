@@ -1,9 +1,46 @@
 # CyberCore Frontend Scope & Route Parity Matrix
 
-> **Task**: 1108 — CyberCore Frontend Scope and Route Parity Matrix
-> **Date**: 2026-06-08
-> **Status**: Active
-> **Evidence**: Mock corpus in `assets/mock_workspace/`, CyberCore backend feature catalog in `docs/reference/cybercore-backend-features/`, CyberCore domain mapping in `docs/reports/cybercore-domain-ui-mapping-20260608.md`, ADS component inventory in `docs/design/component-inventory.md`, pilot surface matrix in `docs/design/cybercore-pilot-surface-matrix.md`, operational state vocabulary in `docs/design/operational-state-vocabulary.md`, EPIC-11 in `docs/tasks/00-planning/EPIC-11-warp-prism-cybercore-frontend.md`
+> **Task**: 1108 — CyberCore Frontend Scope and Route Parity Matrix  
+> **Date**: 2026-07-09 (evidence refresh after Task 1102 rewrite)  
+> **Prior draft**: 2026-06-08 (backend-catalog + Observatory-proxy MVP — **superseded for route authority**)  
+> **Status**: Active — source-backed parity vs live CC frontend; screenshot-backed still blocked via Task 1102  
+> **Evidence authority (route inventory)**: live `cybernetics-core/apps/frontend` `page.tsx` walk + Task 1102 outputs  
+> **Secondary evidence**: `docs/reference/cybercore-control-surfaces/`, backend feature catalog (domain vocabulary only), EPIC-11
+
+---
+
+## 0. Evidence Boundary (2026-07-09)
+
+| Class | Status | Use in this document |
+| --- | --- | --- |
+| Live CC frontend routes (`page.tsx`) | **Available** — sibling monorepo | **Primary** route inventory and parity rows |
+| Task 1102 design outputs | **Source draft** (screenshot gate open) | Pilot selection, dispositions, state vocabulary |
+| Control-surfaces packet | **PARTIAL** source-backed | `docs/reference/cybercore-control-surfaces/route-inventory.md` |
+| Backend feature catalog | Available (35 files) | Domain entity notes only — **not** UI route authority |
+| Observatory / ASW mock corpus | Available | **Not** CyberCore control-surface routes (explicit non-source for pilots) |
+| Screenshot reports | **Absent** (`/tmp/opencode/cc-ui-screenshots-round2`) | No visual parity claims |
+| `apps/cybercore` Flutter router | Present (Task 1110+) | **Downstream mirror only** — not CC route authority |
+
+### Snapshot identity
+
+| Field | Value |
+| --- | --- |
+| CC frontend root | `/home/sephiroth/working/ganthritor/cybernetics-core/apps/frontend` |
+| Relative monorepo path | `cybernetics-core/apps/frontend` (sibling of `warp-prism/`) |
+| Git HEAD observed (CC) | `ec87953` |
+| `page.tsx` count (live walk) | **28** files under `app/` |
+| Capture date | 2026-07-09 |
+| No invented routes | Only FS-discovered `page.tsx` + domain-tab `href`s declared in source |
+
+### Supersession note (why this refresh)
+
+The 2026-06-08 draft:
+
+1. Inventories CyberCore **backend feature series** and ASW mock entities as the primary matrix.
+2. Selects Flutter MVP paths `/dashboard`, `/registry`, `/tasks`, `/audit`, `/governance` from **Observatory** feature reuse — not live Next.js admin routes.
+3. Cites a pre-rewrite pilot matrix (Task Board / Registry) that Task 1102 **rejected** (F6).
+
+Task 1102 (2026-07-09 rewrite) rebuilds inventory from live CC routes and selects pilots **A** `/providers`, **B** `/mcp-servers`+`/mcp-inspector`, **C** `/live-logs`. This document is realigned to that evidence. Historical Observatory-proxy paths remain documented as a **downstream drift** record, not as live CC routes.
 
 ---
 
@@ -11,398 +48,347 @@
 
 ### Decision: Read-Only Mirror (First Wave)
 
-The first CyberCore Flutter app (`apps/cybercore/`) will be a **read-only observatory mirror** — not a migration, not a companion admin app, and not an ADS-only consumer.
+The first CyberCore Flutter app (`apps/cybercore/`) remains a **read-only observatory mirror** of selected Cybernetics Core **admin/control-plane** surfaces — not a migration, not a companion admin app, and not an ADS-only consumer.
 
 | Scope Option | Decision | Rationale |
 |-------------|----------|-----------|
-| **Read-Only Mirror** | **CHOSEN** | Highest value-per-risk. Demonstrates CyberCore domain surfaces using mock data. Validates ADS components against real entity shapes. No live API dependency. No mutation risk. |
-| Migration / Replacement | REJECTED | No evidence that the existing Next.js frontend needs replacement. No auth/session infrastructure in Flutter yet. No OpenAPI client SDK generated yet (blocked by Feature 1300-1304 in `013-frontend-flutter.md`). |
-| Companion Admin App | REJECTED | Requires live backend API integration. Backend admin endpoints exist (Features 360-364, 530-539, 606, 934) but all are Go-only with no generated Dart SDK. Auth endpoints are blocked (Feature 1302). |
-| ADS Consumer Only | REJECTED | Too thin. Does not demonstrate CyberCore-specific domain shapes. Misses the opportunity to validate ADS components against real entity structures (capabilities, providers, routes, policies). |
+| **Read-Only Mirror** | **CHOSEN** | Matches EPIC-11 and Task 1102 non-goals. Fixture-backed, no live mutation, validates ADS against real CC IA. |
+| Migration / Replacement | REJECTED | No evidence the Next.js frontend must be replaced. No Flutter auth/SDK gate closed. |
+| Companion Admin App | REJECTED | Implies live API + mutation posture; out of first-wave product constraints. |
+| ADS Consumer Only | REJECTED | Too thin; pilots require domain-shaped fixtures (providers, MCP, logs), not ADS gallery alone. |
 
-### What "Read-Only Mirror" Means
+### What "Read-Only Mirror" Means (post-1102)
 
-1. **Mock-backed, not live**: All data comes from fixtures modeled after CyberCore entity shapes, not from API calls.
-2. **Domain-shaped, not generic**: Screens are organized by CyberCore domain sections (Registry, Execution, Audit, Governance), not by Warp Prism's current section names (Map, Operate, History, Governance).
-3. **ADS-validating**: Each route exercises a different combination of ADS atoms/molecules/organisms/templates to prove the design system works for CyberCore domain shapes.
-4. **Incremental path**: Later tasks can swap mock fixtures for real API clients route-by-route without rewriting the app shell or navigation.
-
----
-
-## 2. Route Parity Matrix
-
-### 2.1 CyberCore Backend Route Inventory
-
-Derived from `docs/reference/cybercore-backend-features/` (10 series, ~1,336 features) and the sidebar taxonomy from diegosouza-omniroute (`docs/reference/cybercore-backend-features/101-109`).
-
-| # | CyberCore IA Section | Backend Series | Key Entities | Admin CRUD | State Machines |
-|---|---------------------|---------------|--------------|------------|----------------|
-| 1 | **Dashboard** | 008 (Observability), 104 (Analytics) | System health, metrics, recent events | Read-only summary | — |
-| 2 | **Providers & Routing** | 003 (Capability Registry), 006 (Route Graphs) | Providers, Capabilities, CapabilitySets, RouteGraphs, RouteNodes | CRUD + lifecycle | Capability: draft→active→deprecated→removed, RouteGraph: draft→active→deprecated→removed |
-| 3 | **Interfaces / Exposures** | 003 (Exposures), 009 (MCP Surface) | Exposures, MCP surface configs, A2A agent cards | CRUD + lifecycle | Exposure: draft→active→deprecated→removed |
-| 4 | **Context Pipeline** | 008 (Limits, Cache), 016 (Compression) | Compression config, cache, thinking budget | Config only | — |
-| 5 | **Harness / Policies** | 005 (Policy Engine), 017 (Guardrails) | Policies, PolicyRules, PolicySnapshots, guardrails | CRUD + lifecycle | Policy: draft→active→archived |
-| 6 | **MCPs** | 009 (MCP & Sandbox) | MCPServers, MCPTools, MCPTool catalog, catalog sync | CRUD + health | MCPServer: registered→active→unavailable |
-| 7 | **Tools** | 009 (Tool Catalog), 024 (MCP Governance) | Tools, tool risk classification, tool quality | Read-only catalog + risk | Tool risk: low→medium→high→critical |
-| 8 | **Security & Ops** | 002 (Identity), 004 (Credentials), 105 (Audit) | Users, Sessions, APIKeys, Credentials, CredentialGrants, AuditEvents | CRUD + lifecycle | Credential: active→rotating→expired→revoked, Session: active→expired→revoked |
-| 9 | **Execution** | 007 (Execution), 008 (Observability) | ExecutionEnvelopes, ExecutionPlans, ExecutionResults | Read-only inspection | WorkflowExecution: created→running→completed/failed/cancelled |
-| 10 | **Plugins** | 012 (Plugin System) | Plugins, manifests, approval workflow | CRUD + approval | Plugin: registered→approved→enabled→disabled→removed |
-| 11 | **Agentic** | 107 (Agentic Features), 022 (A2A), 023 (Workflows) | AgentProfiles, Skills, Workflows, Memories, Hooks | CRUD + lifecycle | Memory: active→decayed→expired, Task A2A: submitted→working→completed/failed |
-| 12 | **Settings** | 109 (Configuration) | Config, feature flags, trust mode | Config forms | — |
-
-### 2.2 Mock Workspace Entity → CyberCore Domain Mapping
-
-This matrix maps each mock workspace entity type to its CyberCore domain equivalent and identifies which CyberCore IA sections it can prototype.
-
-| Mock Entity | Count | Mock Location | CyberCore Equivalent | CyberCore IA Sections | Mock Coverage |
-|------------|-------|--------------|---------------------|----------------------|---------------|
-| **Agent** (`.agents/agents/*.md`) | 9 | `assets/mock_workspace/.agents/agents/` | AgentProfile, User (admin/operator/viewer roles) | Agentic, Interfaces, Dashboard | High — each agent has name, model, mode, description, skills[], workflows[] |
-| **Skill** (`.agents/skills/*/SKILL.md`) | 13 | `assets/mock_workspace/.agents/skills/` | Capability, CapabilitySet | Providers & Routing, Tools, MCPs | High — each skill has triggers, sub-skills, references, scripts |
-| **Workflow** (`.agents/workflows/*.md`) | 11 | `assets/mock_workspace/.agents/workflows/` | WorkflowDefinition, Hook | Harness/Policies, Agentic | Medium — each workflow has kind, skills, agents, triggers |
-| **Task** (`docs/tasks/*/*.md`) | 22 | `assets/mock_workspace/docs/tasks/` | Task A2A, WorkflowExecution | Execution, Harness/Policies | Highest — full lifecycle: planning→open→doing→review→completed, proof_state, review_score, priority, owner, depends_on |
-| **Changelog Entry** (`docs/changelog/*.md`) | 36 | `assets/mock_workspace/docs/changelog/` | AuditEvent | Security & Ops (Audit) | High — each entry has date, project, task, type, impact, skills |
-| **Manifest** (`manifest.yaml`) | 1 | `assets/mock_workspace/manifest.yaml` | System config snapshot | Dashboard, Settings | Medium — aggregate counts, schema definition |
-
-### 2.3 Route Prototype Mapping
-
-Each CyberCore IA section is evaluated against what the mock corpus can demonstrate:
-
-| CyberCore IA Section | Mock Prototyping? | Best Mock Surface | ADS Template | Readiness |
-|---------------------|-------------------|-------------------|-------------|-----------|
-| **1. Dashboard** | **YES** | All 5 entity types aggregated | DashboardTemplate (metric tiles + story panels) | Ready — `OverviewProvider` + `OverviewMetrics` already exist |
-| **2. Providers & Routing** | **YES** | 9 agents + 13 skills + 11 workflows (topology graph) | CanvasTemplate (graph) + MasterDetailTemplate (catalog) | Ready — `MapWorkspacePage` + `DSGraphCanvas` already exist |
-| **3. Interfaces / Exposures** | **PARTIAL** | Skills as capability proxies, agents as exposure proxies | MasterDetailTemplate | Needs extension — no exposure-specific fixtures |
-| **4. Context Pipeline** | **NO** | No mock data maps to compression/cache/thinking | — | Defer — no mock surface available |
-| **5. Harness / Policies** | **PARTIAL** | Task governance diagnostics from mock task frontmatter | MasterDetailTemplate | Partial — `GovernanceOverviewPage` exists but policy-specific fixtures needed |
-| **6. MCPs** | **PARTIAL** | Skills with triggers/workflows as MCP tool proxies | MasterDetailTemplate | Needs extension — no MCP server-specific fixtures |
-| **7. Tools** | **PARTIAL** | Skills as tool proxies with risk classification | MasterDetailTemplate | Needs extension — no tool risk fixtures |
-| **8. Security & Ops** | **YES** | 36 changelog entries as AuditEvent proxies | TimelineTemplate | Ready — `HistoryWorkspacePage` + `DSTimeline` already exist |
-| **9. Execution** | **YES** | 22 tasks across 5 lanes (full lifecycle) | MasterDetailTemplate (lane board) | Ready — `OperateWorkspaceView` + `DSLaneBoard` already exist |
-| **10. Plugins** | **NO** | No mock data maps to plugin manifests/lifecycle | — | Defer — no mock surface available |
-| **11. Agentic** | **YES** | Agents + skills + workflows (full topology) | CanvasTemplate + MasterDetailTemplate | Ready — `MapWorkspacePage` covers agent/skill/workflow graph |
-| **12. Settings** | **NO** | No mock config data | — | Defer — no mock surface available |
-
-### 2.4 Cross-Reference: Existing Warp Prism Features → CyberCore Sections
-
-| Existing Warp Prism Feature | Current Section | CyberCore Section(s) | Reusability |
-|---------------------------|----------------|---------------------|-------------|
-| `lib/features/overview/` | Overview | Dashboard | Direct reuse — `OverviewPage` becomes CyberCore Dashboard |
-| `lib/features/map/` | Map | Providers & Routing, Agentic | Direct reuse — `MapWorkspacePage` becomes Registry |
-| `lib/features/operate/` | Operate | Execution | Direct reuse — `OperateWorkspaceView` becomes Task Board |
-| `lib/features/history/` | History | Security & Ops (Audit) | Direct reuse — `HistoryWorkspacePage` becomes Audit Trail |
-| `lib/features/governance/` | Governance | Harness/Policies, Tools | Direct reuse — `GovernanceOverviewPage` becomes Governance |
-| `lib/features/asset_detail/` | Asset Detail | All sections (detail drill-down) | Direct reuse — `AssetDetailView` + kind-specific views |
-| `lib/features/workspace_snapshot/` | Workspace Snapshot | Dashboard (backend) | Reuse for unified workspace view |
-| `lib/features/shell/` | Shell | All sections (app scaffold) | Direct reuse — `DSShell` becomes CyberCore app shell |
+1. **Source routes are live CC admin paths** (e.g. `/providers`), not ASW Map/Operate/History substitutes.
+2. **Mock/fixture-backed**: first wave does not call live CyberCore APIs (Task 1109 inventories contracts; later tasks may wire clients).
+3. **Mutations displayed as data**, not executed (import preflight, connection test badges, redacted secrets as fixture fields).
+4. **Incremental**: expand one source-backed route at a time after pilots prove pattern (Task 1111 gate).
 
 ---
 
-## 3. MVP Route List
+## 2. Live CyberCore Route Inventory
 
-### Selection Criteria
+### 2.1 Primary sidebar (`layout.tsx` → `getMenuItems`)
 
-| Criterion | Weight | Application |
-|-----------|--------|-------------|
-| Mock corpus coverage | High | Route must be demonstrable with existing mock data |
-| ADS component exercise | High | Route must exercise ≥3 unique ADS components |
-| CyberCore domain mapping | Medium | Route must map to ≥1 CyberCore IA section with entity-level fidelity |
-| Operational state coverage | Medium | Route must demonstrate ≥2 operational states |
-| Implementation simplicity | Low | Simpler is better for first proof |
+Source: `cybernetics-core/apps/frontend/app/[locale]/(sidebar)/layout.tsx`.
 
-### Selected Routes (5)
+| Surface | Live CC route | Roles (source) | Classification | Candidate Flutter path (first wave) |
+| --- | --- | --- | --- | --- |
+| Marketplace | `/search` | `client` | **defer** (pilot matrix score 6.8; secondary to admin control plane) | — (wave 2+) |
+| Providers | `/providers` | `admin` | **pilot** (Pilot A / MVP #1) | `/providers` |
+| MCP Servers | `/mcp-servers` | `admin` | **pilot** (Pilot B / MVP #2) | `/mcp-servers` |
+| Harness | `/harness` | `admin`, `client` | **defer** (thin discovery UI vs providers/MCP) | — |
+| Usage | `/usage` | `admin` | **defer** (after pilots; metrics polish) | — |
+| Settings | `/settings` | `admin` | **defer** (many toggles, low narrative) | — |
 
-#### Route 1: Dashboard
+### 2.2 Control-plane domain tabs (`control-plane-domain-tabs.tsx`)
 
-| Attribute | Value |
-|-----------|-------|
-| **Path** | `/dashboard` |
-| **CyberCore IA Section** | §1 Dashboard |
-| **Mock Source** | All 5 entity types aggregated (9 agents, 13 skills, 11 workflows, 22 tasks, 36 changelogs) |
-| **ADS Components** | `DSShell` (organism), `DSTopbar` (organism), `DSMetricTile` (molecule), `DSStoryPanel` (organism), `DSGlassPanel` (atom), `DSBadge` (atom), `DSStatusDot` (atom), `MasterDetailTemplate` |
-| **Operational States** | healthy, degraded, stale, pending, running, promoted (6 of 15) |
-| **Mock Fixture Shape** | Aggregated workspace metrics (total counts, lane breakdown, proof state distribution, review score summary, governance warnings) |
-| **CyberCore Entity Fidelity** | Maps to system health overview, active requests, recent events, quick stats (Feature 1307) |
-| **Existing Implementation** | `lib/features/overview/overview_page.dart` + `OverviewProvider` + `OverviewMetrics` |
-| **Rationale** | Highest value entry point. Proves metric tiles, story panels, and status components work for CyberCore's primary landing screen. Already implemented in Warp Prism — minimal new work. |
+Source: `components/admin/control-plane-domain-tabs.tsx` `DOMAIN_GROUPS` — every `href` is declared; none invented.
 
-#### Route 2: Registry (Capabilities & Providers)
+| Domain group | Tab | Live CC route | Classification | Notes |
+| --- | --- | --- | --- | --- |
+| Providers | Connections | `/providers` | **pilot** | Pilot A primary |
+| Providers | Model Catalog | `/models` | **defer** | After providers model |
+| Providers | Model Aliases | `/settings/aliases` | **defer** | |
+| Providers | Media Providers | `/media` | **defer** | |
+| Providers | Combos | `/combos` | **defer** | Depends on provider model (Pilot A) |
+| Providers | Endpoint Modes | `/providers#endpoint-modes` | **needs-research** | Hash target on providers page |
+| MCP Servers | Marketplace | `/search` | **defer** | |
+| MCP Servers | Installed Servers | `/mcp-servers` | **pilot** | Pilot B |
+| MCP Servers | Inspector | `/mcp-inspector` | **pilot** | Pilot B |
+| MCP Servers | MCP Namespaces | `/namespaces` | **defer** | Heavy forms |
+| MCP Servers | MCP Endpoints | `/endpoints` | **defer** | Heavy forms |
+| Harness | Skills | `/harness?tab=skills` | **defer** | |
+| Harness | Workflows | `/harness?tab=workflows` | **defer** | `/workflows` is redirect alias |
+| Harness | Hooks | `/harness?tab=hooks` | **defer** | alias `/discovery` |
+| Harness | Profiles | `/harness?tab=profiles` | **defer** | |
+| Usage | Metrics | `/usage` | **defer** | |
+| Usage | Costs & Budgets | `/costs` | **defer** | |
+| Usage | Live Logs | `/live-logs` | **pilot** | Pilot C (optional third) |
+| Settings | General | `/settings` | **defer** | |
+| Settings | API Keys | `/api-keys` | **defer** | Secrets risk; after pilots |
+| Settings | Endpoint Exposure | `/llm-endpoints` | **defer** | Strong story; schedule after pilots |
 
-| Attribute | Value |
-|-----------|-------|
-| **Path** | `/registry` |
-| **CyberCore IA Section** | §2 Providers & Routing, §11 Agentic |
-| **Mock Source** | 9 agents (as provider proxies), 13 skills (as capability proxies), 11 workflows (as workflow definition proxies) |
-| **ADS Components** | `DSGraphCanvas` (organism), `DSAssetCard` (molecule), `DSDetailInspector` (organism), `DSProvenancePill` (molecule), `DSFilterChipGroup` (molecule), `DSSearchBar` (molecule), `CanvasTemplate`, `MasterDetailTemplate` |
-| **Operational States** | healthy, degraded, stale, promoted, unverified, archived (6 of 15) |
-| **Mock Fixture Shape** | Agent frontmatter (name, model, mode, description, skills[], workflows[]), skill frontmatter (triggers, sub-skills, references, scripts), workflow frontmatter (kind, skills, agents) |
-| **CyberCore Entity Fidelity** | Maps to capability list (Feature 1308), provider list (Feature 1309), route graph visualization (Feature 130D) |
-| **Existing Implementation** | `lib/features/map/map_workspace_page.dart` + `MapWorkspaceProvider` + `DSGraphCanvas` |
-| **Rationale** | Exercises graph visualization (unique to this route), provenance/canonicality display, and catalog+detail split. Maps directly to the most common admin CRUD pattern in CyberCore. Already implemented in Warp Prism. |
+### 2.3 Full `page.tsx` parity matrix (live walk, 28 files)
 
-#### Route 3: Task Board (Execution)
+Authority: FS walk of `cybernetics-core/apps/frontend/app/**/page.tsx` (2026-07-09) cross-checked with `docs/reference/cybercore-control-surfaces/route-inventory.md` and `docs/design/component-inventory.md` §1.
 
-| Attribute | Value |
-|-----------|-------|
-| **Path** | `/tasks` |
-| **CyberCore IA Section** | §9 Execution |
-| **Mock Source** | 22 tasks across 5 lanes (00-planning→04-completed) with full frontmatter (id, title, status, priority, owner, created, updated, skills[], workflows[], depends_on[], proof_state, review_score) |
-| **ADS Components** | `DSLaneBoard` (organism), `DSTaskCard` (molecule), `DSDetailInspector` (organism), `DSEvidenceRow` (molecule), `DSStoryPanel` (organism), `DSFilterChipGroup` (molecule), `DSSearchBar` (molecule), `MasterDetailTemplate` |
-| **Operational States** | pending, running, approved, rejected, promoted, archived, unverified, exposed, degraded (9 of 15) |
-| **Mock Fixture Shape** | Task frontmatter with lane, priority, proof_state, review_score, depends_on — richest fixture in the corpus |
-| **CyberCore Entity Fidelity** | Maps to execution envelope detail (Feature 1315), task A2A lifecycle (submitted→working→completed/failed), workflow execution (created→running→completed/failed) |
-| **Existing Implementation** | `lib/features/operate/operate_workspace_view.dart` + `OperateWorkspaceViewModel` + `DSLaneBoard` |
-| **Rationale** | Highest operational state coverage (9 of 15). Most ADS components exercised. Strongest CyberCore domain mapping. Best storytelling potential. Already implemented in Warp Prism. |
+| Live CC route | Page source (rel. frontend) | Classification | Candidate Flutter mirror path | Wave / notes |
+| --- | --- | --- | --- | --- |
+| `/` | `app/[locale]/(sidebar)/page.tsx` | **discard** | n/a | Redirect/loading only |
+| `/search` | `.../search/page.tsx` | **defer** | `/search` (later) | Marketplace |
+| `/providers` | `.../providers/page.tsx` | **pilot** / **MVP** | `/providers` | Pilot A |
+| `/providers/new` | `.../providers/new/page.tsx` | **pilot** / **MVP** | `/providers/new` | Nested under A; read-only form fixture |
+| `/providers/[id]` | `.../providers/[id]/page.tsx` | **pilot** / **MVP** | `/providers/:id` | Nested under A |
+| `/models` | `.../models/page.tsx` | **defer** | `/models` | |
+| `/media` | `.../media/page.tsx` | **defer** | `/media` | |
+| `/combos` | `.../combos/page.tsx` | **defer** | `/combos` | After Pilot A |
+| `/settings/aliases` | `.../settings/aliases/page.tsx` | **defer** | `/settings/aliases` | |
+| `/mcp-servers` | `.../mcp-servers/page.tsx` | **pilot** / **MVP** | `/mcp-servers` | Pilot B |
+| `/mcp-servers/[uuid]` | `.../mcp-servers/[uuid]/page.tsx` | **pilot** / **MVP** | `/mcp-servers/:uuid` | Pilot B detail |
+| `/mcp-inspector` | `.../mcp-inspector/page.tsx` | **pilot** / **MVP** | `/mcp-inspector` | Pilot B; no live STDIO in WP |
+| `/namespaces` | `.../namespaces/page.tsx` | **defer** | `/namespaces` | |
+| `/namespaces/[uuid]` | `.../namespaces/[uuid]/page.tsx` | **defer** | `/namespaces/:uuid` | |
+| `/endpoints` | `.../endpoints/page.tsx` | **defer** | `/endpoints` | |
+| `/harness` | `.../harness/page.tsx` → discovery | **defer** | `/harness` | |
+| `/discovery` | `.../discovery/page.tsx` | **defer** | `/discovery` | Read-only public class in middleware |
+| `/workflows` | `.../workflows/page.tsx` | **discard** | n/a | Redirect → harness workflows tab |
+| `/usage` | `.../usage/page.tsx` | **defer** | `/usage` | |
+| `/costs` | `.../costs/page.tsx` | **defer** | `/costs` | |
+| `/live-logs` | `.../live-logs/page.tsx` | **pilot** / **MVP** | `/live-logs` | Pilot C |
+| `/settings` | `.../settings/page.tsx` | **defer** | `/settings` | |
+| `/api-keys` | `.../api-keys/page.tsx` | **defer** | `/api-keys` | High secret risk |
+| `/llm-endpoints` | `.../llm-endpoints/page.tsx` | **defer** | `/llm-endpoints` | Post-pilot exposure story |
+| `/login` | `app/[locale]/login/page.tsx` | **defer** / shell gate | `/login` | Auth; not first pilot surface |
+| `/register` | `app/[locale]/register/page.tsx` | **defer** | `/register` | |
+| `/cors-error` | `app/[locale]/cors-error/page.tsx` | **defer** | `/cors-error` | Error surface |
+| `/fe-oauth/callback` | `app/fe-oauth/callback/page.tsx` | **needs-research** | TBD | OAuth return; live-only semantics |
 
-#### Route 4: Audit Trail (History)
+**Classification vocabulary** (task-required): `MVP` · `pilot` · `defer` · `discard` · `needs-research`.  
+Pilots are the first-wave MVP subset; inventory rows marked MVP without pilot selection still exist in Task 1102 component inventory for later waves.
 
-| Attribute | Value |
-|-----------|-------|
-| **Path** | `/audit` |
-| **CyberCore IA Section** | §8 Security & Ops (Audit) |
-| **Mock Source** | 36 changelog entries with frontmatter (id, date, project, task, type, impact, skills[]) |
-| **ADS Components** | `DSTimeline` (organism), `DSTimelineMarker` (molecule), `DSFilterChipGroup` (molecule), `DSStoryPanel` (organism), `DSDetailInspector` (organism), `TimelineTemplate` |
-| **Operational States** | promoted, archived, stale, healthy, unverified (5 of 15) |
-| **Mock Fixture Shape** | Changelog entry frontmatter with date, project, task, type (feature/fix/refactor/docs/chore), impact, skills |
-| **CyberCore Entity Fidelity** | Maps to audit log viewer (Feature 130F), policy history (Feature 533), webhook delivery history |
-| **Existing Implementation** | `lib/features/history/history_page.dart` + `HistoryController` |
-| **Rationale** | Exercises timeline template (unique to this route). Demonstrates append-only audit pattern. Already implemented in Warp Prism. Lowest implementation cost. |
+### 2.4 Routes that do **not** exist in live CC frontend
 
-#### Route 5: Governance & Compliance
+The following paths appear in historical Task 1108 / Task 1110 Flutter work. They are **not** live CyberCore Next.js routes (no matching `page.tsx`). They must not be cited as CC source routes.
 
-| Attribute | Value |
-|-----------|-------|
-| **Path** | `/governance` |
-| **CyberCore IA Section** | §5 Harness/Policies, §7 Tools |
-| **Mock Source** | Task frontmatter (proof_state, review_score, depends_on), skill frontmatter (triggers presence), workflow orphan detection, agent-skill cross-reference |
-| **ADS Components** | `DSStoryPanel` (organism), `DSMetricTile` (molecule), `DSBadge` (atom), `DSChip` (molecule), `DSGlassPanel` (atom), `DSDetailInspector` (organism), `DSStatusDot` (atom), `MasterDetailTemplate` |
-| **Operational States** | healthy, degraded, stale, exposed, unverified (5 of 15) |
-| **Mock Fixture Shape** | Derived diagnostics: orphan workflows (no agent/skill references), skills with no triggers, tasks with missing proof, canonicality boundary summary, fan-in hotspots |
-| **CyberCore Entity Fidelity** | Maps to policy compliance dashboard, tool risk classification, circuit breaker dashboard (Feature 1316), plugin health |
-| **Existing Implementation** | `lib/features/governance/governance_overview_page.dart` + diagnostic widgets |
-| **Rationale** | Proves diagnostic/governance storytelling works for CyberCore compliance patterns. Exercises story panel with risk levels. Already implemented in Warp Prism. |
+| Path | Origin | Parity status |
+| --- | --- | --- |
+| `/dashboard` | Observatory proxy / apps/cybercore | **Not a live CC route** |
+| `/registry` | Observatory Map proxy | **Not a live CC route** |
+| `/tasks` | Observatory Operate proxy | **Not a live CC route** |
+| `/audit` | Observatory History proxy | **Not a live CC route** |
+| `/governance` | Observatory Governance proxy | **Not a live CC route** |
 
-### Route Summary
+Task 1102 pilot matrix explicitly **rejects** Observatory Operate board and Map graph as CyberCore pilots (candidates X/Y).
 
-| # | Route | Path | CyberCore Section | Mock Entities | ADS Components | States | Status |
-|---|-------|------|-------------------|---------------|---------------|--------|--------|
-| 1 | Dashboard | `/dashboard` | §1 Dashboard | All 5 types | 8 components | 6 states | Ready |
-| 2 | Registry | `/registry` | §2 Providers, §11 Agentic | Agents, Skills, Workflows | 8 components | 6 states | Ready |
-| 3 | Task Board | `/tasks` | §9 Execution | Tasks (22) | 8 components | 9 states | Ready |
-| 4 | Audit Trail | `/audit` | §8 Security & Ops | Changelog (36) | 6 components | 5 states | Ready |
-| 5 | Governance | `/governance` | §5 Policies, §7 Tools | Derived diagnostics | 8 components | 5 states | Ready |
+### 2.5 Backend catalog (secondary — not route authority)
 
-**Total unique ADS components exercised across all 5 routes**: 18 (all templates, all key organisms, all key molecules).
-**Total operational states demonstrated across all 5 routes**: 12 of 15 (disabled, redacted, excluded not demonstrated by mock corpus).
+`docs/reference/cybercore-backend-features/` (35 files, ~1,336 features) remains useful for entity/state-machine vocabulary and Task 1109 API inventory, but **does not define frontend routes**. Historical 12-section IA from backend series is **not** used as the live route parity spine after this refresh.
 
 ---
 
-## 4. Non-Goals
+## 3. First-Wave MVP Route List (aligned to Task 1102 pilots)
 
-The first CyberCore Flutter app will **NOT**:
+### Selection authority
+
+| Criterion | Source |
+| --- | --- |
+| Live `page.tsx` exists | Gate (this inventory) |
+| Task 1102 pilot scores A/B/C | `docs/design/cybercore-pilot-surface-matrix.md` |
+| Operational state density | 1102 vocabulary + inventory columns |
+| Read-only fixture feasibility | EPIC-11 + product constraints |
+| Screenshot confirmation | **Blocked** — does not invent visuals |
+
+### Pilot / MVP routes
+
+#### Route 1 — Providers Connections (Pilot A)
+
+| Attribute | Value |
+|-----------|-------|
+| **Live CC path** | `/providers` (+ `/providers/new`, `/providers/[id]`) |
+| **Classification** | **pilot** / **MVP** #1 |
+| **Source** | `providers/page.tsx` (~1143 lines), `providers/new`, `providers/[id]`, `components/providers/*` |
+| **Ops states (source)** | inactive/active/error/untested; importable/blocked/duplicate; loading/empty/error; redaction |
+| **Candidate Flutter paths** | `/providers`, `/providers/new`, `/providers/:id` |
+| **Prism candidates** | `DSShell`, `DSDataTable`, `DSSearchBar`, `DSFilterChipGroup`, `DSBadge`, `DSStatusDot`, `DSHealthCard`, `DSStateSurface`, `DSOperationalState` |
+| **API inventory feed (1109)** | `trpc.frontend.llmProviders.*` (list, test, legacy preflight) — read models only in mirror |
+| **Evidence** | source-backed; screenshot-backed **missing** |
+
+#### Route 2 — MCP Servers + Inspector (Pilot B)
+
+| Attribute | Value |
+|-----------|-------|
+| **Live CC paths** | `/mcp-servers`, `/mcp-servers/[uuid]`, `/mcp-inspector` |
+| **Classification** | **pilot** / **MVP** #2 |
+| **Source** | `mcp-servers/page.tsx`, `mcp-servers/[uuid]/*`, `mcp-inspector/page.tsx`, `hooks/useConnection.ts` |
+| **Ops states (source)** | list loading/error; connection connecting/connected/error; tool enablement |
+| **Candidate Flutter paths** | `/mcp-servers`, `/mcp-servers/:uuid`, `/mcp-inspector` |
+| **Prism candidates** | `DSDataTable`, `DSDetailInspector`, `DSLogViewer`, `DSSplitPane`, `DSStateSurface`, `DSStatusDot` |
+| **API inventory feed (1109)** | `trpc.frontend.mcpServers.*`, inspector proxy (no STDIO execution in WP) |
+| **Evidence** | source-backed; screenshot-backed **missing** |
+
+#### Route 3 — Live Logs + Health Strip (Pilot C)
+
+| Attribute | Value |
+|-----------|-------|
+| **Live CC path** | `/live-logs` |
+| **Classification** | **pilot** / **MVP** #3 (may slip to wave-2 if capacity forces two-only) |
+| **Source** | `live-logs/page.tsx`, `lib/llm-diagnostics.ts` |
+| **Ops states (source)** | provider health ready/failing/inactive/unknown; redacted logs; empty |
+| **Candidate Flutter path** | `/live-logs` |
+| **Prism candidates** | `DSLogViewer`, `DSLogFilterBar`, `DSMetricTile`, `DSHealthCard`, `DSStatusGrid` |
+| **API inventory feed (1109)** | providers list + client log buffer + redaction helpers |
+| **Evidence** | source-backed; screenshot-backed **missing** |
+
+### First-wave summary
+
+| # | Live CC route(s) | Flutter candidate | Classification | Task 1102 pilot |
+|---|------------------|-------------------|---------------|-----------------|
+| 1 | `/providers` (+ nested) | `/providers` (+ nested) | MVP pilot | A |
+| 2 | `/mcp-servers`, `/mcp-servers/[uuid]`, `/mcp-inspector` | same path shapes | MVP pilot | B |
+| 3 | `/live-logs` | `/live-logs` | MVP pilot | C |
+
+All other live routes in §2.3 are **defer**, **discard**, or **needs-research** until Task 1111 expansion gate.
+
+---
+
+## 4. Downstream Flutter Mirror Drift (`apps/cybercore`)
+
+`apps/cybercore/lib/app/router.dart` currently implements:
+
+| Flutter path | Maps to live CC? | Assessment |
+|--------------|------------------|------------|
+| `/dashboard` | No | Observatory-style proxy; **parity gap** vs live CC |
+| `/registry` | No | Not a live CC route |
+| `/tasks` | No | Rejected as CC pilot (Observatory Operate) |
+| `/audit` | No | Not a live CC route |
+| `/governance` | No | Not a live CC route |
+
+This document **does not** invent live CC routes to match those paths. Remediation of `apps/cybercore` route names is out of scope for Task 1108 docs refresh; it is a **known drift** for Tasks 1110/1111 consumers to reconcile against §3 candidate paths.
+
+---
+
+## 5. Non-Goals
+
+The first CyberCore Flutter wave will **NOT**:
 
 | # | Non-Goal | Rationale | When to Revisit |
 |---|---------|-----------|-----------------|
-| 1 | **Replace the existing Next.js frontend** | No evidence of need. No auth/SDK infrastructure in Flutter. No user request for migration. | Task 1111+ (after Flutter app proves value) |
-| 2 | **Connect to live CyberCore backend APIs** | No generated Dart client SDK (blocked by Features 1300-1304). No Flutter auth implementation (blocked by Feature 1302). | Task 1109 (API contract inventory) → Task 1110+ (app shell with generated client) |
-| 3 | **Implement write operations** (create, update, delete) | First wave is read-only observatory. Mutation requires auth, safety gates, and error handling infrastructure not yet built. | After auth and safety gates are documented |
-| 4 | **Reimplement all CyberCore routes** | 12 IA sections × 40+ domain entities = unbounded scope. 5 routes prove the pattern. | Wave 2-3 tasks per EPIC-11 |
-| 5 | **Add live SSE/WebSocket streaming** | No SSE endpoint contract stable (blocked by Feature 1303). Mock fixtures are sufficient for first proof. | After SSE endpoint stability (Feature 1303) |
-| 6 | **Introduce SQLite or client-side durable state** | Per AGENTS.md product constraints. Mock fixtures are stateless YAML/markdown. | Only if PostgreSQL/Redis governance is authorized |
-| 7 | **Build CyberCore-specific components into `warp_prism_ui`** | Per EPIC-11 guardrail: ADS package remains app-agnostic. CyberCore-specific state, routes, and DTOs belong in `apps/cybercore/`. | Never — this is a permanent boundary |
-| 8 | **Add login/auth flows** | No auth infrastructure in Flutter yet. Feature 1306 (Login Screen) is blocked by Feature 1302 (Auth Endpoints Stable). | After auth endpoints are stable |
-| 9 | **Support multimodal endpoints** (image gen, audio, video) | Mock corpus has no multimodal entity shapes. Backend support is in GAP catalog (Series 014). | Wave 3+ after core routes are proven |
-| 10 | **Add real-time notifications/toasts** | Requires live backend events. Not needed for mock-backed observatory. | After SSE/live event infrastructure exists |
+| 1 | **Replace the existing Next.js frontend** | EPIC-11 + 1102 non-goals | Task 1111+ only with explicit decision |
+| 2 | **Treat Observatory Map/Operate/History as CC routes** | F6 rejection; wrong product domain | Never as CC authority |
+| 3 | **Connect to live CyberCore APIs in first wave** | Fixture-first; SDK/auth gates | After 1109 + authorized integration task |
+| 4 | **Implement write operations** | Read-only mirror | Mutation safety + auth tasks |
+| 5 | **Reimplement all live CC routes** | Unbounded; pilots only | Expansion gate 1111 |
+| 6 | **Claim screenshot-backed visual parity** | Screenshot packet absent | When `/tmp` or in-repo screenshots land |
+| 7 | **Introduce SQLite / durable client state** | AGENTS.md constraints | Parent governance only |
+| 8 | **Put CyberCore-specific DTOs in `warp_prism_ui`** | ADS stays app-agnostic | Permanent boundary |
+| 9 | **Invent routes without `page.tsx`** | Anti-hallucination | Never |
+| 10 | **Modify `cybernetics-core/apps/frontend/`** | Read-only reference | Never from Warp Prism tasks |
 
 ---
 
-## 5. Migration Guardrails
+## 6. Migration Guardrails
 
-These guardrails prevent accidental full-frontend replacement or scope creep:
+### 6.1 Hard boundaries
 
-### 5.1 Hard Boundaries
+| # | Guardrail | Enforcement |
+|---|----------|-------------|
+| 1 | No edits to live CC Next.js frontend from Warp Prism work | Read-only monorepo citation only |
+| 2 | Flutter CyberCore work lives under `warp-prism/apps/cybercore/` | Melos workspace |
+| 3 | No invented CC routes | Must appear in live `page.tsx` walk or domain-tab `href` |
+| 4 | No mutation endpoints in first wave | Fixture display of action outcomes only |
+| 5 | ADS remains app-agnostic | Domain code in `apps/cybercore/` |
+| 6 | Task 1102 screenshot gate does not authorize inventing visual states | Source-backed only until screenshots exist |
 
-| # | Guardrail | Enforcement | Evidence |
-|---|----------|-------------|----------|
-| 1 | **No code in `cyberneticscore/apps/frontend/` may be modified** | Read-only reference. CyberCore Flutter work lives in `warp-prism/apps/cybercore/` only. | EPIC-11 guardrail: "Do not treat CyberCore pilot work as authorization to remove or rewrite the existing frontend." |
-| 2 | **No generated API client until Feature 1300-1304 complete** | Flutter app uses mock fixtures from `warp-prism/assets/`. No HTTP client, no API base URL, no live endpoints. | `docs/reference/cybercore-backend-features/013-frontend-flutter.md` |
-| 3 | **No mutation endpoints** | All CyberCore routes are read-only. No create/update/delete actions. No forms that submit to backend. | EPIC-11 guardrail: "First wave is read-only or fixed-fixture unless a later task explicitly opens mutation." |
-| 4 | **ADS stays app-agnostic** | CyberCore-specific providers, state, DTOs, and routes live in `apps/cybercore/`, never in `packages/warp_prism_ui/`. | EPIC-11 guardrail |
-| 5 | **Melos scaffold first** | CyberCore app cannot be created until Task 1107 (Melos migration) completes. App lives at `apps/cybercore/` inside the Melos workspace. | EPIC-11 dependency |
+### 6.2 Incremental expansion rules
 
-### 5.2 Incremental Expansion Rules
+| # | Rule |
+|---|------|
+| 1 | One source-backed route at a time after pilots |
+| 2 | Fixture contract before route implementation |
+| 3 | ADS reuse required; gaps → Tasks 1112–1123 |
+| 4 | Route contract: live path, fixture schema, ADS list, states, entity mapping |
+| 5 | Promote only with mapping + fixture + widget test + a11y check (EPIC-11 eval) |
 
-| # | Rule | Rationale |
-|---|------|-----------|
-| 1 | **One route at a time** | Each CyberCore route must be individually testable, documented, and reviewable before the next route begins. |
-| 2 | **Fixture-first** | Each route must have its mock fixture contract defined before the route implementation begins. |
-| 3 | **ADS reuse required** | Each route must use existing ADS components. New components go through ADS gap analysis and Wave 2-3 tasks. |
-| 4 | **No CyberCore-specific atoms/molecules** | If a CyberCore route needs a component that doesn't exist in the ADS, it goes through the ADS gap analysis (Tasks 1112-1123). |
-| 5 | **Route contract before implementation** | Each route needs: path, mock fixture schema, ADS component list, operational states demonstrated, CyberCore entity mapping. |
-| 6 | **CI gate** | `melos run analyze` and `melos run test` must pass for both `packages/warp_prism_ui` and `apps/cybercore` on every change. |
-
-### 5.3 Escalation Triggers
-
-If any of the following occur, stop and create a planning/architecture task before continuing:
+### 6.3 Escalation triggers
 
 | Trigger | Action |
 |---------|--------|
-| A route needs live API data | Create API contract inventory task (Task 1109) |
-| A route needs authentication | Create auth infrastructure task |
-| A route needs a new ADS component | Route through ADS gap analysis (Tasks 1112-1123) |
-| A route needs write operations | Create mutation safety gate task |
-| Scope creep beyond 5 MVP routes | Re-evaluate with user/stakeholder before proceeding |
+| Need live API | Task 1109 contracts → authorized integration task |
+| Need auth flows | Auth infrastructure task (not 1108) |
+| Need new ADS component | Gap analysis tasks 1112–1123 |
+| Need writes | Mutation safety gate task |
+| Scope beyond pilots A–C | Task 1111 expansion gate |
 
 ---
 
-## 6. Fixture Requirements
+## 7. API Inventory Feed Into Task 1109
 
-### 6.1 Per-Route Fixture Specification
+First-wave read models to inventory (from Task 1102 data deps — not full backend catalog):
 
-Each MVP route requires mock fixtures that map to CyberCore entity shapes. All fixtures derive from the existing mock corpus in `assets/mock_workspace/`.
-
-#### Route 1: Dashboard
-
-| Fixture | Source | Shape | CyberCore Entity |
-|---------|--------|-------|-----------------|
-| Agent count + health summary | `assets/mock_workspace/.agents/agents/` (9 files) | `{total: 9, healthy: N, degraded: N}` | AgentProfile summary |
-| Skill count + trigger coverage | `assets/mock_workspace/.agents/skills/` (13 dirs) | `{total: 13, withTriggers: N, noTriggers: N}` | Capability summary |
-| Workflow count + orphan status | `assets/mock_workspace/.agents/workflows/` (11 files) | `{total: 11, orphaned: N, active: N}` | WorkflowDefinition summary |
-| Task lane breakdown | `assets/mock_workspace/docs/tasks/` (22 files) | `{planning: 3, open: 5, doing: 5, review: 4, completed: 5}` | WorkflowExecution summary |
-| Changelog recent activity | `assets/mock_workspace/docs/changelog/` (36 files) | `{total: 36, lastWeek: N, types: {feature: N, fix: N, ...}}` | AuditEvent summary |
-| Governance warnings | Derived from cross-referencing | `{orphanWorkflows: N, noTriggerSkills: N, unverifiedTasks: N}` | Policy compliance summary |
-
-#### Route 2: Registry
-
-| Fixture | Source | Shape | CyberCore Entity |
-|---------|--------|-------|-----------------|
-| Agent list | `assets/mock_workspace/.agents/agents/*.md` | `[{name, model, mode, description, skills[], workflows[]}]` | AgentProfile list |
-| Skill list | `assets/mock_workspace/.agents/skills/*/SKILL.md` | `[{name, triggers[], subSkills[], references[], canonicality}]` | Capability list |
-| Workflow list | `assets/mock_workspace/.agents/workflows/*.md` | `[{name, kind, skills[], agents[], triggers[]}]` | WorkflowDefinition list |
-| Graph edges | Derived from agent→skill→workflow references | `[{source, target, kind}]` | RouteGraph (DAG) |
-| Canonicality | Derived from file location (parent vs child vs generated) | `{parentCanonical: N, childLocal: N, generated: N, mock: N}` | Plugin lifecycle (registered→approved→enabled) |
-
-#### Route 3: Task Board
-
-| Fixture | Source | Shape | CyberCore Entity |
-|---------|--------|-------|-----------------|
-| Task list with full frontmatter | `assets/mock_workspace/docs/tasks/*/*.md` | `[{id, title, status, priority, owner, created, updated, skills[], workflows[], depends_on[], proof_state, review_score}]` | Task A2A (submitted→working→completed/failed) |
-| Lane definitions | `assets/mock_workspace/manifest.yaml` task_lanes | `[{id, description}]` | ExecutionPlan stages |
-| Task dependencies | Derived from `depends_on[]` fields | `[{taskId, blockedBy[]}]` | Execution dependency chain |
-| Proof/verification state | Derived from `proof_state` field | `{none: N, partial: N, complete: N}` | Verification state |
-
-#### Route 4: Audit Trail
-
-| Fixture | Source | Shape | CyberCore Entity |
-|---------|--------|-------|-----------------|
-| Changelog entry list | `assets/mock_workspace/docs/changelog/*.md` | `[{id, date, project, task, type, impact, skills[], body}]` | AuditEvent (append-only, timestamped) |
-| Impact paths | Derived from task→skill→workflow references | `[{changelogEntry, task, skills[], workflows[]}]` | Audit trail: who did what to which resource |
-| Type distribution | Derived from `type` field | `{feature: N, fix: N, refactor: N, docs: N, chore: N}` | AuditEvent classification |
-
-#### Route 5: Governance
-
-| Fixture | Source | Shape | CyberCore Entity |
-|---------|--------|-------|-----------------|
-| Orphan workflows | Cross-reference: workflows not referenced by any agent or skill | `[{workflowName}]` | Policy violation |
-| No-trigger skills | Cross-reference: skills with empty or missing triggers | `[{skillName}]` | Capability health issue |
-| Unverified high-priority tasks | Cross-reference: tasks with `proof_state: none` + priority P0/P1 | `[{taskId, title, priority}]` | Exposure risk |
-| Canonicality boundary | Cross-reference: agents/skills by location (parent vs child vs mock) | `{parentCanonical: N, childLocal: N, mock: N}` | Trust level distribution |
-| Fan-in hotspots | Cross-reference: skills with ≥5 incoming references | `[{skillName, referenceCount}]` | Critical dependency |
-| Review pressure | Cross-reference: tasks in review lane vs reviewer capacity | `{reviewQueue: N, avgReviewScore: N}` | Quality gate health |
-
-### 6.2 Fixture File Location
-
-All CyberCore mock fixtures should be organized under:
-
-```
-warp-prism/
-├── assets/
-│   ├── mock_workspace/          # Existing mock corpus (source of truth)
-│   │   ├── .agents/
-│   │   ├── docs/
-│   │   └── manifest.yaml
-│   └── cybercore_fixtures/      # NEW: CyberCore-specific derived fixtures
-│       ├── dashboard_summary.json
-│       ├── registry_agents.json
-│       ├── registry_skills.json
-│       ├── registry_workflows.json
-│       ├── registry_graph_edges.json
-│       ├── task_board.json
-│       ├── audit_trail.json
-│       └── governance_diagnostics.json
-```
-
-> **Note**: `cybercore_fixtures/` files are **derived** from `mock_workspace/` — they are precomputed projections of the mock corpus into CyberCore entity shapes. The source of truth remains `mock_workspace/`. When the mock corpus changes, the derived fixtures must be regenerated.
-
-### 6.3 Fixture Contract
-
-Each fixture file must:
-1. Be valid JSON with a top-level schema version field.
-2. Reference the source mock entity IDs (not invented IDs).
-3. Include all fields required by the CyberCore entity shape it prototypes.
-4. Be parseable by a Dart model class in `apps/cybercore/lib/data/fixtures/`.
-5. Have a corresponding fixture loader test that validates the contract.
+| Pilot | Live routes | Data dependencies (source) | Priority |
+|-------|-------------|----------------------------|----------|
+| A | `/providers*` | `trpc.frontend.llmProviders.list`, testConnection, legacy preflight/import (read shapes) | P0 |
+| B | `/mcp-servers*`, `/mcp-inspector` | `trpc.frontend.mcpServers.*`, inspector connection hooks | P0 |
+| C | `/live-logs` | providers list + log buffer + redaction helpers | P0 / P1 |
+| Deferred | remaining §2.3 | Per inventory rows when expanded | Later |
 
 ---
 
-## 7. Implementation Sequencing
+## 8. Implementation Sequencing
 
-### 7.1 Wave 1 (This Task + Dependencies)
+| Order | Item | Depends on |
+|-------|------|------------|
+| 1 | Task 1102 source inventory + pilots (done as draft; screenshot blocked) | Live CC frontend |
+| 2 | **This document (1108)** — scope + parity | 1102 file-level outputs |
+| 3 | Task 1109 — API/data contracts for pilot routes | This matrix §7 |
+| 4 | Task 1110 — fixture-backed shell (reconcile route drift §4) | 1107, 1108, 1109 |
+| 5 | Task 1111 — expansion gate beyond pilots | Pilots proven |
 
-| Task | Deliverable | Depends On |
-|------|------------|------------|
-| **1107** | Melos monorepo scaffold (`apps/cybercore/` exists) | None |
-| **1108** | This document (scope + route parity) | Task 1102, EPIC-11 |
-| **1109** | API/data contract inventory for read-only surfaces | This task |
-| **1110** | CyberCore fixture-backed app shell MVP | Tasks 1107, 1108, 1109 |
+### Recommended pilot implementation order
 
-### 7.2 Route Implementation Order
-
-| Order | Route | Rationale |
-|-------|-------|-----------|
-| 1 | **Dashboard** | Simplest route. Aggregates existing data. Proves app shell. |
-| 2 | **Registry** | Exercises graph canvas. Proves catalog+detail split. |
-| 3 | **Task Board** | Most operational states. Proves lane board for CyberCore. |
-| 4 | **Audit Trail** | Exercises timeline. Proves append-only audit pattern. |
-| 5 | **Governance** | Exercises diagnostics. Proves compliance storytelling. |
-
-### 7.3 Per-Route Checklist
-
-Each route implementation must complete:
-
-- [ ] Fixture file exists in `assets/cybercore_fixtures/`
-- [ ] Fixture loader test passes
-- [ ] Route renders from fixture data (widget test)
-- [ ] Route uses only existing ADS components
-- [ ] Operational states documented and demonstrated
-- [ ] CyberCore entity mapping documented
-- [ ] No live API calls or HTTP clients
+| Step | Live route | Why |
+|------|------------|-----|
+| 1 | `/providers` | Richest single page; health + import story |
+| 2 | `/mcp-servers` + detail | Core product control plane |
+| 3 | `/mcp-inspector` | Connection state machine (read-only) |
+| 4 | `/live-logs` | Incident narrative + redaction |
 
 ---
 
-## 8. Risk Assessment
+## 9. Risk Assessment
 
 | Risk | Severity | Mitigation |
 |------|----------|------------|
-| Mock corpus does not cover all CyberCore entity shapes | Medium | Focus on the 5 routes where mock data has highest fidelity. Defer routes that need MCP servers, credentials, or plugin fixtures. |
-| Scope creep into live API integration | High | Migration guardrails §5.1 enforce mock-only until Features 1300-1304 complete. |
-| CyberCore-specific state leaks into ADS package | Medium | EPIC-11 guardrail: all CyberCore-specific code in `apps/cybercore/`. CI gate enforces. |
-| Parent frontend team perceives this as replacement initiative | Low | Scope decision §1 explicitly states: read-only mirror, not migration. Document this in every CyberCore task. |
-| Fixture drift from mock corpus | Low | §6.2 states fixtures are derived from `mock_workspace/`. Regeneration script should be created in Task 1110. |
+| Task 1102 still blocked on screenshots | High (promotion) | File-level source inventory usable; no visual claims; 1108 stays evidence-honest |
+| `apps/cybercore` paths diverge from live CC | High (implementation drift) | §4 documents gap; expansion/remediation must follow §3 candidates |
+| Treating backend features as routes | Medium | §0 / §2.5 forbid as route authority |
+| Secret/credential fixtures | High | Redaction fixtures only; never real secrets |
+| STDIO / MCP execution in mirror | High | Non-goal: no live inspector execution |
+| Scope creep to full IA | Medium | Pilots only; 1111 gate |
 
 ---
 
-## 9. Source Evidence
+## 10. Source Evidence
 
 | Source | Path | Relevance |
 |--------|------|-----------|
-| EPIC-11 | `docs/tasks/00-planning/EPIC-11-warp-prism-cybercore-frontend.md` | Epic scope, guardrails, wave definitions |
-| CyberCore Backend Features | `docs/reference/cybercore-backend-features/` (35 files, ~1,336 features) | Backend entity inventory, sidebar taxonomy, feature priorities |
-| Flutter Feature Reference | `docs/reference/cybercore-backend-features/013-frontend-flutter.md` | Blocked features, required prerequisites (1300-1323) |
-| Domain-to-UI Mapping | `docs/reports/cybercore-domain-ui-mapping-20260608.md` | 40+ entities → UI component mapping, 11 state machines |
-| Component Inventory | `docs/design/component-inventory.md` | Full ADS inventory (38 DS files, 62 feature files, 7 model files) |
-| Pilot Surface Matrix | `docs/design/cybercore-pilot-surface-matrix.md` | Candidate A (Task Board, 10 states), Candidate B (Registry, 7 states) |
-| Operational State Vocabulary | `docs/design/operational-state-vocabulary.md` | 15 operational states, 11 CyberCore state machines covered |
-| Mock Workspace Manifest | `assets/mock_workspace/manifest.yaml` | 9 agents, 13 skills, 11 workflows, 22 tasks, 36 changelogs |
-| Mock Workspace Corpus | `assets/mock_workspace/` | Full mock data (agents, skills, workflows, tasks, changelogs) |
-| ADS Gap Analysis | `docs/reports/ads-gap-analysis-20260608.md` | 8 present, 6 partial, 6 missing components |
-| Warp Prism AGENTS.md | `AGENTS.md` | Product constraints, read-only mandate, mock-first |
+| Live CC frontend | `/home/sephiroth/working/ganthritor/cybernetics-core/apps/frontend` | Route authority (`page.tsx`) |
+| Domain tabs | `.../components/admin/control-plane-domain-tabs.tsx` | Secondary IA tabs |
+| Sidebar layout | `.../app/[locale]/(sidebar)/layout.tsx` | Primary nav |
+| Route inventory packet | `docs/reference/cybercore-control-surfaces/route-inventory.md` | Indexed live routes |
+| Component inventory | `docs/design/component-inventory.md` (2026-07-09 rewrite) | Full control-surface columns |
+| Pilot surface matrix | `docs/design/cybercore-pilot-surface-matrix.md` (2026-07-09 rewrite) | Pilots A/B/C |
+| Operational state vocabulary | `docs/design/operational-state-vocabulary.md` (2026-07-09 rewrite) | State IDs + maps |
+| Task 1102 | `docs/tasks/02-doing/1102-warp-prism-control-surface-inventory.md` | Dependency; **Blocked** screenshots |
+| EPIC-11 | `docs/tasks/00-planning/EPIC-11-warp-prism-cybercore-frontend.md` | Scope guardrails |
+| Backend features (secondary) | `docs/reference/cybercore-backend-features/` | Entity vocabulary for 1109 |
+| Flutter mirror (secondary) | `apps/cybercore/lib/app/router.dart` | Downstream drift only |
+| AGENTS.md | `AGENTS.md` | Read-only / mock-first constraints |
+
+---
+
+## 11. Evidence Refresh Log
+
+| Date | Agent | Change |
+|------|-------|--------|
+| 2026-06-08 | builders | Original combined scope + parity from backend catalog + Observatory proxies |
+| 2026-07-09 | prior evidence refresh | File existence / changelog path fixes; content still Observatory-centric |
+| 2026-07-09 | docs/evidence (this pass) | **Content realign** to Task 1102 live-route rewrite: pilots A/B/C, full live route matrix, discard invented CC claim for Observatory paths, document `apps/cybercore` drift |
+
+### Validation (this pass)
+
+```text
+$ test -f docs/design/cybercore-scope-route-parity.md && echo PASS
+PASS
+$ test -f docs/design/component-inventory.md \
+  && test -f docs/design/cybercore-pilot-surface-matrix.md \
+  && test -f docs/design/operational-state-vocabulary.md && echo PASS
+PASS
+$ test -d /home/sephiroth/working/ganthritor/cybernetics-core/apps/frontend/app && echo CC_FRONTEND_OK
+CC_FRONTEND_OK
+$ find .../apps/frontend/app -name page.tsx | wc -l
+28
+$ ls /tmp/opencode/cc-ui-screenshots-round2
+# absent → screenshot gate remains open (Task 1102)
+```

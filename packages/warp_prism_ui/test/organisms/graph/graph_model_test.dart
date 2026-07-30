@@ -2,6 +2,7 @@
 ///
 /// Task 1117: Tests GraphModel construction, queries, typed IDs,
 /// and pure-data immutability.
+library;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:warp_prism_ui/src/organisms/graph/graph_model.dart';
 
@@ -101,10 +102,10 @@ void main() {
 
   group('GraphEdge', () {
     test('constructs with required fields', () {
-      final edge = GraphEdge(
-        id: const GraphEdgeId('a->b'),
-        sourceId: const GraphNodeId('a'),
-        targetId: const GraphNodeId('b'),
+      const edge = GraphEdge(
+        id: GraphEdgeId('a->b'),
+        sourceId: GraphNodeId('a'),
+        targetId: GraphNodeId('b'),
       );
 
       expect(edge.sourceId.value, 'a');
@@ -210,9 +211,9 @@ void main() {
     });
 
     test('adjacentNodes returns empty for isolated node', () {
-      final isolatedModel = GraphModel(
+      const isolatedModel = GraphModel(
         nodes: [
-          const GraphNode(
+          GraphNode(
             id: GraphNodeId('isolated'),
             label: 'Isolated',
             type: 'doc',

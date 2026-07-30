@@ -125,13 +125,16 @@ The legacy `models.dart` is **retained but superseded**. It is the only file imp
 
 ## 4. Validation Commands
 
-| Command | Expected Result | Actual Result |
-|---|---|---|
-| `flutter analyze lib/data/models` | 0 errors | **BLOCKED**: Flutter SDK not installed |
-| `flutter test test/data/models/workspace_graph_models_test.dart` | 0 failures | **BLOCKED**: Flutter SDK not installed |
-| `dart analyze lib/data/models` | 0 errors | **BLOCKED**: Dart SDK not standalone |
+> **Path note**: After monorepo migration, models live under
+> `apps/observatory/lib/data/models/` (not repo-root `lib/`).
 
-**Blocker**: Flutter SDK is not installed in the execution environment. All static analysis and test execution commands are blocked. The models are syntactically valid Dart based on manual inspection.
+| Command (cwd `apps/observatory`) | Expected Result | Actual Result |
+|---|---|---|
+| `flutter analyze lib/data/models test/data/models` | 0 errors | **PASS 2026-07-09**: No issues found! |
+| `flutter test test/data/models/workspace_graph_models_test.dart` | 0 failures | **PASS 2026-07-09**: +27 All tests passed! |
+
+**Prior blocker cleared**: Flutter 3.44.1 / Dart 3.12.1 available. Scoped
+OOM-safe analyze + model tests only.
 
 ---
 

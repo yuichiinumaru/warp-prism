@@ -189,11 +189,11 @@ class _DSChipState extends State<DSChip> {
     final isInteractive = widget.enabled && widget.onTap != null;
 
     final bgColor = widget.selected
-        ? effectiveColor.withOpacity(0.2)
+        ? effectiveColor.withValues(alpha: 0.2)
         : DSColors.obsidianElevated;
 
     final borderColor = widget.selected
-        ? effectiveColor.withOpacity(0.5)
+        ? effectiveColor.withValues(alpha: 0.5)
         : DSColors.borderSubtle;
 
     final textColor = widget.selected
@@ -225,11 +225,14 @@ class _DSChipState extends State<DSChip> {
         },
         child: GestureDetector(
           onTap: widget.enabled ? widget.onTap : null,
-          child: MouseRegion(
-            cursor: isInteractive
-                ? SystemMouseCursors.click
-                : SystemMouseCursors.basic,
-            child: ExcludeSemantics(
+          behavior: HitTestBehavior.opaque,
+          child: Container(
+            alignment: Alignment.center,
+            constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+            child: MouseRegion(
+              cursor: isInteractive
+                  ? SystemMouseCursors.click
+                  : SystemMouseCursors.basic,
               child: AnimatedContainer(
                 duration: DSMotion.fast,
                 height: _height,
@@ -241,7 +244,7 @@ class _DSChipState extends State<DSChip> {
                   borderRadius: BorderRadius.circular(DSRadii.chip),
                   border: Border.all(
                     color: _isFocused
-                        ? DSColors.accentCyan.withOpacity(0.5)
+                        ? DSColors.accentCyan.withValues(alpha: 0.5)
                         : borderColor,
                     width: _isFocused ? 2 : 1,
                   ),
@@ -249,27 +252,65 @@ class _DSChipState extends State<DSChip> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    if (widget.leadingIcon != null) ...[
-                      Icon(
-                        widget.leadingIcon,
-                        size: _iconSize,
-                        color: iconColor,
-                      ),
-                      SizedBox(width: widget.size == DSChipSize.small ? 4 : 6),
-                    ],
-                    Text(
-                      widget.label,
-                      style: TextStyle(
-                        fontSize: _fontSize,
-                        fontWeight: FontWeight.w500,
-                        color: textColor,
-                        height: 1,
+                    ExcludeSemantics(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (widget.leadingIcon != null) ...[
+                            Icon(
+                              widget.leadingIcon,
+                              size: _iconSize,
+                              color: iconColor,
+                            ),
+                            SizedBox(
+                              width: widget.size == DSChipSize.small ? 4 : 6,
+                            ),
+                          ],
+                          Text(
+                            widget.label,
+                            style: TextStyle(
+                              fontSize: _fontSize,
+                              fontWeight: FontWeight.w500,
+                              color: textColor,
+                              height: 1,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    if (widget.trailingIcon != null) ...[
+                    if (widget.trailingIcon != null &&
+                        widget.onTrailingTap != null) ...[
                       SizedBox(width: widget.size == DSChipSize.small ? 4 : 6),
-                      GestureDetector(
-                        onTap: widget.onTrailingTap,
+                      Semantics(
+                        label: 'Remove ${widget.label}',
+                        button: true,
+                        enabled: widget.enabled,
+                        child: SizedBox(
+                          width: 20, // visual width consumed in layout
+                          child: OverflowBox(
+                            minWidth: 48,
+                            maxWidth: 48,
+                            minHeight: 48,
+                            maxHeight: 48,
+                            child: GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: widget.enabled
+                                  ? widget.onTrailingTap
+                                  : null,
+                              child: Center(
+                                child: Icon(
+                                  widget.trailingIcon,
+                                  size: _iconSize - 2,
+                                  color: iconColor,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ] else if (widget.trailingIcon != null) ...[
+                      SizedBox(width: widget.size == DSChipSize.small ? 4 : 6),
+                      ExcludeSemantics(
                         child: Icon(
                           widget.trailingIcon,
                           size: _iconSize - 2,

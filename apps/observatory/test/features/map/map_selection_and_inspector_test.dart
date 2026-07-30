@@ -11,6 +11,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:warp_prism_observatory/data/models/workspace_graph.dart';
+import 'package:warp_prism_observatory/features/map/map_workspace_page.dart';
 import 'package:warp_prism_observatory/features/map/map_workspace_state.dart';
 import 'package:warp_prism_observatory/features/map/map_workspace_provider.dart';
 import 'package:warp_prism_observatory/features/map/map_selection_controller.dart';
@@ -340,8 +341,17 @@ void main() {
       final controller = MapSelectionController(provider);
       controller.selectAsset('skill:harness');
 
+      // Rebuild from provider stream so deselection is reflected in the panel.
       await tester.pumpWidget(
-        wrapInApp(MapInspectorPanel(controller: controller)),
+        wrapInApp(
+          StreamBuilder(
+            stream: provider.stateStream,
+            initialData: provider.state,
+            builder: (context, _) {
+              return MapInspectorPanel(controller: controller);
+            },
+          ),
+        ),
       );
 
       expect(find.text('Test Harness'), findsOneWidget);
@@ -353,5 +363,49 @@ void main() {
       expect(find.text('No asset selected'), findsWidgets);
       provider.dispose();
     });
+  });
+
+  // Path-to-100 residual (Task 0513): dual-origin selection → detail title
+  group('MapWorkspacePage dual-origin selection → AssetDetailView', () {
+    Widget wrapInApp(Widget child) {
+      return MaterialApp(home: Scaffold(body: child));
+    }
+
+    testWidgets(
+      'catalog selection opens universal AssetDetailView detail title',
+      (tester) async {
+        final assets = [
+          const WorkspaceAsset(
+            id: 'agent:orchestrator',
+            kind: AssetKind.agent,
+            name: 'Architect Orchestrator',
+            path: '.agents/agents/orchestrator.md',
+            description: 'Main orchestration agent',
+          ),
+          const WorkspaceAsset(
+            id: 'skill:harness',
+            kind: AssetKind.skill,
+            name: 'Test Harness',
+            path: '.agents/skills/harness.md',
+          ),
+        ];
+
+        await tester.pumpWidget(
+          wrapInApp(
+            MapWorkspacePage(
+              initialState: MapWorkspaceState(
+                catalogAssets: assets,
+                selectedAssetId: 'agent:orchestrator',
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // Universal detail path (not MapInspectorPanel) should show the name.
+        expect(find.text('Architect Orchestrator'), findsWidgets);
+        expect(find.byType(MapInspectorPanel), findsNothing);
+      },
+    );
   });
 }

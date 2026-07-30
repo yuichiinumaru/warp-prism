@@ -6,12 +6,11 @@
 // Run: flutter test test/health_dashboard_test.dart
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:warp_prism_ui/src/tokens/tokens.dart';
 import 'package:warp_prism_ui/src/atoms/atoms.dart';
 import 'package:warp_prism_ui/src/molecules/molecules.dart';
-import 'package:warp_prism_ui/src/molecules/ds_uptime_bar.dart';
-import 'package:warp_prism_ui/src/molecules/ds_health_card.dart';
 import 'package:warp_prism_ui/src/organisms/ds_status_grid.dart';
 
 void main() {
@@ -374,7 +373,7 @@ void main() {
 
     testWidgets('displays sparkline when trendData provided', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: SizedBox(
             width: 300,
             child: DSHealthCard(
@@ -445,7 +444,7 @@ void main() {
               operationalState: DSOperationalState.healthy,
               latency: const Duration(milliseconds: 50),
               uptimePercent: 0.999,
-              trendData: [10, 20, 30, 20, 10],
+              trendData: const [10, 20, 30, 20, 10],
               lastCheck: DateTime(2026, 6, 8, 12, 0),
             ),
           ),
@@ -473,6 +472,71 @@ void main() {
       );
       await tester.tap(find.text('Tappable'));
       expect(tapped, isTrue);
+    });
+
+    testWidgets(
+      'interactive onTap supports keyboard Enter/Space via DSInteractiveSurface',
+      (tester) async {
+        final handle = tester.ensureSemantics();
+        var activations = 0;
+        final focusNode = FocusNode();
+        addTearDown(focusNode.dispose);
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: SizedBox(
+                width: 300,
+                child: DSHealthCard(
+                  serviceName: 'Keyboard Card',
+                  operationalState: DSOperationalState.healthy,
+                  onTap: () => activations++,
+                  focusNode: focusNode,
+                ),
+              ),
+            ),
+          ),
+        );
+
+        final interactive = tester.getSemantics(find.byType(DSHealthCard));
+        expect(interactive.flagsCollection.isButton, isTrue);
+        expect(interactive.label, contains('Keyboard Card'));
+
+        await tester.tap(find.text('Keyboard Card'));
+        await tester.pump();
+        expect(activations, 1);
+
+        focusNode.requestFocus();
+        await tester.pump();
+        expect(focusNode.hasFocus, isTrue);
+
+        await tester.sendKeyEvent(LogicalKeyboardKey.enter);
+        await tester.pump();
+        expect(activations, 2);
+
+        await tester.sendKeyEvent(LogicalKeyboardKey.space);
+        await tester.pump();
+        expect(activations, 3);
+        handle.dispose();
+      },
+    );
+
+    testWidgets('non-interactive card is not a button', (tester) async {
+      final handle = tester.ensureSemantics();
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: SizedBox(
+            width: 300,
+            child: DSHealthCard(
+              serviceName: 'Passive',
+              operationalState: DSOperationalState.healthy,
+            ),
+          ),
+        ),
+      );
+      final data = tester.getSemantics(find.byType(DSHealthCard));
+      expect(data.flagsCollection.isButton, isFalse);
+      handle.dispose();
     });
   });
 
@@ -614,5 +678,63 @@ void main() {
       );
       expect(find.byType(DSFilterChipGroup), findsNothing);
     });
+
+    testWidgets(
+      'primary surface embedInScrollView:false uses scrollable physics',
+      (tester) async {
+        final many = List.generate(
+          60,
+          (i) => DSHealthCardData(
+            serviceName: 'Service $i',
+            operationalState: DSOperationalState.healthy,
+          ),
+        );
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: SizedBox(
+                width: 800,
+                height: 600,
+                child: DSStatusGrid(
+                  items: many,
+                  embedInScrollView: false,
+                ),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        final grid = tester.widget<GridView>(find.byType(GridView));
+        expect(grid.shrinkWrap, isFalse);
+        expect(grid.physics, isA<AlwaysScrollableScrollPhysics>());
+        // Lazy builder: not all 60 cards necessarily mounted initially.
+        expect(find.byType(DSHealthCard), findsWidgets);
+        expect(find.byType(DSHealthCard).evaluate().length, lessThan(60));
+      },
+    );
+
+    testWidgets(
+      'embedInScrollView:true uses shrinkWrap + never-scroll physics',
+      (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: SingleChildScrollView(
+              child: DSStatusGrid(
+                items: testItems,
+                embedInScrollView: true,
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        final grid = tester.widget<GridView>(find.byType(GridView));
+        expect(grid.shrinkWrap, isTrue);
+        expect(grid.physics, isA<NeverScrollableScrollPhysics>());
+        expect(find.byType(DSHealthCard), findsNWidgets(4));
+      },
+    );
   });
 }

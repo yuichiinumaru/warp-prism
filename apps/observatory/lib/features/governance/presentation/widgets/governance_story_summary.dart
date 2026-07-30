@@ -79,7 +79,7 @@ List<GovernanceRiskStory> deriveGovernanceRiskStories({
   // ---- Boundary Health Story ----
   if (totalAssets > 0) {
     final canonical = boundaryCounts['parentCanonical'] ?? 0;
-    final ratio = totalAssets > 0 ? canonical / totalAssets : 0.0;
+    final ratio = canonical / totalAssets;
     if (ratio < 0.5 && totalAssets > 2) {
       stories.add(
         GovernanceRiskStory(
@@ -91,7 +91,7 @@ List<GovernanceRiskStory> deriveGovernanceRiskStories({
           severity: GovernanceStorySeverity.warning,
         ),
       );
-    } else if (totalAssets > 0) {
+    } else {
       stories.add(
         GovernanceRiskStory(
           title: 'Boundary overview',
@@ -217,8 +217,8 @@ List<GovernanceRiskStory> deriveGovernanceRiskStories({
 
 /// Renders a panel of governance risk stories with drill-down support.
 ///
-/// Each story shows a severity indicator, title, narrative, and optional
-/// drill-down link to affected assets.
+/// Uses [PrismStoryPanel] for the shell narrative layer and adds
+/// per-story drill-down links for affected assets.
 class GovernanceStorySummary extends StatelessWidget {
   /// The risk stories to render.
   final List<GovernanceRiskStory> stories;
@@ -235,207 +235,122 @@ class GovernanceStorySummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: DSColors.obsidianElevated,
-        borderRadius: BorderRadius.circular(DSRadii.lg),
-        border: Border.all(color: DSColors.borderSubtle),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          // Header
-          Padding(
-            padding: const EdgeInsets.all(DSSpacing.lg),
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: DSColors.accentCyan.withOpacity(0.15),
-                    borderRadius: BorderRadius.circular(DSRadii.md),
-                  ),
-                  child: DSIcon(Icons.auto_stories, color: DSColors.accentCyan),
-                ),
-                const SizedBox(width: DSSpacing.md),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      DSText.headingSmall('Risk Stories'),
-                      const SizedBox(height: 2),
-                      DSText.bodySmall(
-                        'Concise narratives derived from governance diagnostics',
-                        color: DSColors.textSecondary,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
+    final accent = _panelAccent(stories);
 
-          const DSDivider.subtle(),
-
-          // Stories
-          if (stories.isEmpty)
-            _buildEmptyState()
-          else
-            ...stories.map(
-              (story) => _StoryRow(story: story, onDrilldown: onDrilldown),
-            ),
-
-          const SizedBox(height: DSSpacing.sm),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildEmptyState() {
-    return Padding(
-      padding: const EdgeInsets.all(DSSpacing.lg),
-      child: Row(
-        children: [
-          Icon(
-            Icons.check_circle_outline,
-            size: 16,
-            color: DSColors.statusSuccess,
-          ),
-          const SizedBox(width: DSSpacing.sm),
-          Expanded(
-            child: DSText.bodySmall(
-              'No governance data available yet. Risk stories will appear '
-              'after workspace diagnostics run.',
-              color: DSColors.statusSuccess,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _StoryRow extends StatelessWidget {
-  final GovernanceRiskStory story;
-  final void Function(GovernanceDrilldownTarget target)? onDrilldown;
-
-  const _StoryRow({required this.story, this.onDrilldown});
-
-  @override
-  Widget build(BuildContext context) {
-    final color = _severityColor(story.severity);
-    final icon = _severityIcon(story.severity);
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: DSSpacing.lg,
-        vertical: DSSpacing.xs,
-      ),
-      child: Container(
-        padding: const EdgeInsets.all(DSSpacing.sm),
-        decoration: BoxDecoration(
-          color: DSColors.obsidianBase,
-          borderRadius: BorderRadius.circular(DSRadii.sm),
-          border: Border(left: BorderSide(color: color, width: 3)),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Title row
-            Row(
-              children: [
-                Icon(icon, size: 16, color: color),
-                const SizedBox(width: DSSpacing.sm),
-                Expanded(child: DSText.labelMedium(story.title, color: color)),
-                if (story.severity != GovernanceStorySeverity.healthy)
-                  _StorySeverityBadge(label: story.severity.name, color: color),
-              ],
-            ),
-            const SizedBox(height: DSSpacing.xs),
-            // Narrative
-            DSText.bodySmall(story.narrative, color: DSColors.textSecondary),
-
-            // Drill-down link
-            if (story.involvedAssetIds.isNotEmpty && onDrilldown != null) ...[
-              const SizedBox(height: DSSpacing.xs),
-              GestureDetector(
-                onTap: () {
-                  final target = GovernanceDrilldownTarget(
-                    assetId: story.involvedAssetIds.first,
-                    routePath: '/assets/${story.involvedAssetIds.first}',
-                    sourceLabel: story.title,
-                  );
-                  onDrilldown!(target);
-                },
-                child: MouseRegion(
-                  cursor: SystemMouseCursors.click,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      DSIcon.small(
-                        Icons.open_in_new,
-                        color: DSColors.accentCyan,
-                      ),
-                      const SizedBox(width: DSSpacing.xs),
-                      DSText.labelSmall(
-                        story.involvedAssetIds.length == 1
-                            ? 'View ${story.involvedAssetIds.first}'
-                            : 'View ${story.involvedAssetIds.length} assets',
-                        color: DSColors.accentCyan,
-                      ),
-                    ],
-                  ),
-                ),
+    return PrismStoryPanel(
+      title: 'Risk Stories',
+      subtitle: 'Concise narratives derived from governance diagnostics',
+      icon: Icons.auto_stories,
+      accentColor: accent,
+      insights: stories.isEmpty
+          ? const [
+              PrismStoryInsight(
+                text: 'No governance data available yet',
+                detail:
+                    'Risk stories will appear after workspace diagnostics run.',
               ),
-            ],
-          ],
-        ),
-      ),
+            ]
+          : stories
+                .map(
+                  (story) => PrismStoryInsight(
+                    text: story.title,
+                    detail: story.narrative,
+                    value: story.severity == GovernanceStorySeverity.healthy
+                        ? null
+                        : story.severity.name,
+                    color: _severityColor(story.severity),
+                  ),
+                )
+                .toList(),
+      footer: stories.isEmpty
+          ? null
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                for (final story in stories)
+                  if (story.involvedAssetIds.isNotEmpty)
+                    _StoryDrilldownRow(story: story, onDrilldown: onDrilldown),
+              ],
+            ),
     );
+  }
+
+  Color _panelAccent(List<GovernanceRiskStory> stories) {
+    if (stories.any((s) => s.severity == GovernanceStorySeverity.critical)) {
+      return PrismColors.statusError;
+    }
+    if (stories.any((s) => s.severity == GovernanceStorySeverity.warning)) {
+      return PrismColors.statusWarning;
+    }
+    if (stories.any((s) => s.severity == GovernanceStorySeverity.info)) {
+      return PrismColors.statusInfo;
+    }
+    return PrismColors.accentCyan;
   }
 
   Color _severityColor(GovernanceStorySeverity severity) {
     switch (severity) {
       case GovernanceStorySeverity.healthy:
-        return DSColors.statusSuccess;
+        return PrismColors.statusSuccess;
       case GovernanceStorySeverity.info:
-        return DSColors.statusInfo;
+        return PrismColors.statusInfo;
       case GovernanceStorySeverity.warning:
-        return DSColors.statusWarning;
+        return PrismColors.statusWarning;
       case GovernanceStorySeverity.critical:
-        return DSColors.statusError;
-    }
-  }
-
-  IconData _severityIcon(GovernanceStorySeverity severity) {
-    switch (severity) {
-      case GovernanceStorySeverity.healthy:
-        return Icons.check_circle_outline;
-      case GovernanceStorySeverity.info:
-        return Icons.info_outline;
-      case GovernanceStorySeverity.warning:
-        return Icons.warning_amber_outlined;
-      case GovernanceStorySeverity.critical:
-        return Icons.error_outline;
+        return PrismColors.statusError;
     }
   }
 }
 
-class _StorySeverityBadge extends StatelessWidget {
-  final String label;
-  final Color color;
+class _StoryDrilldownRow extends StatelessWidget {
+  final GovernanceRiskStory story;
+  final void Function(GovernanceDrilldownTarget target)? onDrilldown;
 
-  const _StorySeverityBadge({required this.label, required this.color});
+  const _StoryDrilldownRow({required this.story, this.onDrilldown});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.15),
-        borderRadius: BorderRadius.circular(DSRadii.sm),
+    final firstId = story.involvedAssetIds.first;
+    final target = resolveAssetIdDrilldown(firstId);
+    final label = story.involvedAssetIds.length == 1
+        ? 'View $firstId'
+        : 'View ${story.involvedAssetIds.length} assets';
+
+    // Unresolved IDs degrade gracefully: show non-interactive label.
+    if (target == null || onDrilldown == null) {
+      return Padding(
+        padding: const EdgeInsets.only(top: PrismSpacing.xs),
+        child: PrismText.labelSmall(
+          'Affected: $firstId (detail unavailable)',
+          color: PrismColors.textTertiary,
+        ),
+      );
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(top: PrismSpacing.xs),
+      child: Semantics(
+        button: true,
+        label: 'Open asset detail for $firstId from ${story.title}',
+        child: InkWell(
+          onTap: () => onDrilldown!(target),
+          borderRadius: BorderRadius.circular(PrismRadii.sm),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const PrismIcon.small(
+                  Icons.open_in_new,
+                  color: PrismColors.accentCyan,
+                ),
+                const SizedBox(width: PrismSpacing.xs),
+                PrismText.labelSmall(label, color: PrismColors.accentCyan),
+              ],
+            ),
+          ),
+        ),
       ),
-      child: DSText.labelSmall(label, color: color),
     );
   }
 }

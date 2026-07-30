@@ -2,7 +2,7 @@
 
 > **Purpose**: Standardized format for summarizing task completion evidence for reviewers.
 > **Origin**: Task 1207 (Review Packet Generator)
-> **Dependency**: `docs/governance/promotion-state-model.md` (Task 1202)
+> **Dependency**: `.agents/rules/promotion-state-model.md` (Task 1202)
 
 This template defines the structure of a Review Packet. A review packet is a
 derived summary of a task's Completion Evidence, optimized for reviewer
@@ -119,16 +119,22 @@ All gates pass. The component is self-contained and follows ADS patterns. No reg
 
 ## 3. Example: Task 1107 — Melos Monorepo Migration
 
-This is a converted review packet for Task 1107, which migrated the repository
-to a Melos monorepo structure.
+> [!CAUTION]
+> **Historical snapshot — 2026-06-08.** This example was converted from
+> Task 1107's Completion Evidence as captured on 2026-06-08. The live Task
+> 1107 header (as of 2026-07-18) is in `docs/tasks/03-review/` (drain lane;
+> historical Package Gate Failed annotations are superseded by later waves).
+> **Do not treat this packet body as a current promotion recommendation** —
+> it remains a **historical snapshot** of 2026-06-08 evidence.
 
 ```markdown
 # Review Packet: Task 1107 — Warp Prism Melos Monorepo Migration
 
-> **Date**: 2026-06-08
+> **Date**: 2026-06-08 (historical snapshot — not current live state)
 > **Executor**: builders
-> **Promotion State**: Builder Done
+> **Promotion State**: Package Gate Failed (historical snapshot shows `Builder Done` evidence; live state is `Package Gate Failed`)
 > **Task Type**: Monorepo migration
+> **Live lane (2026-07-18)**: `docs/tasks/03-review/` — historical body only; not this packet’s promotion claim
 
 ## 1. Summary
 
@@ -172,59 +178,72 @@ as consumer shells.
 
 ## 6. Recommendation
 
-**Ready For Review**
+**Do Not Promote from this historical packet** (live task is in `03-review/`; packet body remains 2026-06-08 snapshot)
 
-Monorepo structure is sound. All packages compile and analyze cleanly. Test failures are classified and tracked in the failure baseline.
+Monorepo structure is sound. All packages compile and analyze cleanly. However, test failures block live promotion per the failure taxonomy.
 ```
 
 ---
 
 ## 4. Example: Task 1201 — Test Failure Baseline
 
-This is a converted review packet for Task 1201, which created the test
-failure inventory.
+> [!CAUTION]
+> **Historical snapshot — 2026-06-11.** This example was converted from
+> Task 1201's Completion Evidence as captured during its 2026-06-11 review
+> cycle. The live Task 1201 has since been promoted to
+> `docs/tasks/04-completed/` with a final `Promoted` status (verified
+> 2026-06-30). Counts below reflect the 2026-06-11 capture; the live baseline
+> has drifted since then (see Task 1201 Review Ledger rounds 2-4 for
+> current counts). **This packet is a historical conversion example, not a
+> live promotion recommendation.**
 
 ```markdown
 # Review Packet: Task 1201 — Test Failure Baseline Inventory
 
-> **Date**: 2026-06-09
+> **Date**: 2026-06-11 (historical snapshot — live task promoted 2026-06-19)
 > **Executor**: builders
-> **Promotion State**: Builder Done
+> **Promotion State**: Promoted (historical snapshot shows `Builder Done` evidence; live state is `Promoted` in `04-completed/`)
 > **Task Type**: Governance
+> **Live lane (2026-06-30)**: `docs/tasks/04-completed/` — `Promoted`
 
 ## 1. Summary
 
 Created a comprehensive inventory of all test failures across the 4 Melos
-packages. Classified failures as `wave4-regression` (24) or `pre-existing` (64).
-Established a baseline for measuring stabilization progress.
+packages. Classified failures by taxonomy per the promotion state model.
+Established a dated 2026-06-11 baseline for measuring stabilization progress.
+(This snapshot reflects 2026-06-11 counts; live baseline has since drifted.)
 
 ## 2. Files Changed
 
 | Status | File Path | Purpose |
 |--------|-----------|---------|
-| Created | `docs/reports/warp-prism-test-failure-baseline.md` | Failure inventory |
+| Created | `docs/reports/warp-prism-failure-baseline-inventory.md` | Failure inventory |
+| Created | `docs/changelog/20260611-000000-1201-warp-prism-failure-baseline-inventory-builders.md` | Changelog |
 
-## 3. Gate Results
+## 3. Gate Results (2026-06-11 capture)
 
 | Gate | Command | Result | Classification |
 |------|---------|--------|----------------|
-| Local Proof | `melos run test-fast` | PASS | N/A |
+| Local Proof | `flutter test packages/warp_prism_ui/` | PASS | `+854` all passed |
+| Local Proof | `flutter test apps/observatory/` | EXPECTED FAIL | `+641 -12` — 12 classified pre-existing |
+| Local Proof | `flutter test apps/catalog/` | PASS | `+10` all passed |
+| Local Proof | `flutter test apps/cybercore/` | PASS | `+12` all passed |
 
-## 4. Known Failures
+## 4. Known Failures (2026-06-11 capture)
 
 | Test/Component | Failure Class | Justification |
 |----------------|---------------|---------------|
-| UI package (24 tests) | `wave4-regression` | Tasks 1303/1304/1307/1309 will fix |
-| Observatory (64 tests) | `pre-existing` | EPIC-14 tasks will fix |
+| Observatory (12 failures) | `pre-existing (unrelated)` | Classified for follow-up stabilization; see inventory report for per-failure taxonomy |
 
 ## 5. Risk Notes
 
 - This is an inventory-only task; no tests were modified.
-- The baseline captures state after Task 1308 (toast fix).
+- The baseline captures state on 2026-06-11.
+- Counts have since drifted (UI `+862 -11`, Observatory `+646 -7` as of 2026-06-19).
 
 ## 6. Recommendation
 
-**Ready For Review**
+**Ready For Review** (as of 2026-06-11 snapshot)
 
-Documentation-only task. No code changes. Baseline is accurate and actionable.
+Documentation-only task. No code changes. Baseline is accurate and actionable as a dated governance deliverable.
 ```

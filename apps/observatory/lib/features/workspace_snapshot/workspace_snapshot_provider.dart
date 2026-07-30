@@ -5,6 +5,8 @@
 /// providers for search, filtering, graph mode, and detail inspection.
 library;
 
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:warp_prism_observatory/data/models/workspace_snapshot.dart';
 import 'package:warp_prism_observatory/data/models/workspace_graph.dart';
@@ -53,16 +55,40 @@ final workspaceSnapshotProvider =
 // Search
 // ---------------------------------------------------------------------------
 
-/// Current search query string.
+/// Current search query string (immediate; updated on every keystroke).
 final searchQueryProvider = StateProvider<String>((ref) => '');
 
-/// Debounced search query (triggers after 300ms of no changes).
-final debouncedSearchQueryProvider = Provider<String>((ref) {
-  // For simplicity, we pass through directly. A real debounce would use
-  // a timer-based notifier. The search itself is fast enough on typical
-  // workspace sizes that debounce is optional.
-  return ref.watch(searchQueryProvider);
-});
+/// Debounce window applied between [searchQueryProvider] and filtered views.
+const kSearchDebounceDuration = Duration(milliseconds: 300);
+
+/// Timer-backed debounced view of [searchQueryProvider].
+///
+/// Rapid updates coalesce: only the last value after [kSearchDebounceDuration]
+/// of quiet time is emitted. Cancels pending timers on dispose.
+class DebouncedSearchQuery extends Notifier<String> {
+  Timer? _timer;
+
+  @override
+  String build() {
+    ref.onDispose(() {
+      _timer?.cancel();
+      _timer = null;
+    });
+
+    ref.listen<String>(searchQueryProvider, (previous, next) {
+      _timer?.cancel();
+      _timer = Timer(kSearchDebounceDuration, () {
+        state = next;
+      });
+    });
+
+    return ref.read(searchQueryProvider);
+  }
+}
+
+/// Debounced search query (emits after [kSearchDebounceDuration] of no changes).
+final debouncedSearchQueryProvider =
+    NotifierProvider<DebouncedSearchQuery, String>(DebouncedSearchQuery.new);
 
 /// Search-filtered snapshot. Returns all assets matching the query.
 final searchResultsProvider = Provider<List<WorkspaceAsset>>((ref) {
@@ -168,7 +194,7 @@ final graphProjectionProvider = Provider<GraphProjection>((ref) {
   final mode = ref.watch(graphModeProvider);
   final query = ref.watch(debouncedSearchQueryProvider);
 
-  return _projectGraph(graph, mode, query);
+  return projectGraph(graph, mode, query);
 });
 
 /// Result of projecting a graph for a specific mode.
@@ -179,7 +205,7 @@ class GraphProjection {
   const GraphProjection({required this.nodes, required this.edges});
 }
 
-/// Graph node for the graph canvas (re-exports from DS).
+/// Graph node for the graph canvas (local projection model).
 class GraphNode {
   final String id;
   final String label;
@@ -208,7 +234,10 @@ class GraphEdge {
 }
 
 /// Pure function: project a graph into nodes/edges for a given mode.
-GraphProjection _projectGraph(
+///
+/// Public for unit tests and alternative call sites; [graphProjectionProvider]
+/// is the primary Riverpod entry point.
+GraphProjection projectGraph(
   WorkspaceGraphResult graph,
   GraphMode mode,
   String query,

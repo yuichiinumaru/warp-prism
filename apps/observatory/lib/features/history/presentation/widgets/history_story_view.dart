@@ -1,17 +1,18 @@
 /// Project Story view for the History workspace.
 ///
 /// Groups changelog entries by project and renders narrative panels
-/// explaining why changes matter, using [DSStoryPanel] as the
-/// presentation primitive.
+/// explaining why changes matter, using [PrismStoryPanel] as the
+/// presentation primitive. Narratives are computed from metadata only
+/// (no freeform prose).
 library;
 
 import 'package:flutter/material.dart';
+import 'package:warp_prism_observatory/features/history/presentation/history_controller.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
-import '../history_controller.dart';
 
 /// Renders project-story groups as narrative panels.
 ///
-/// Each group becomes a [DSStoryPanel] with insights derived from
+/// Each group becomes a [PrismStoryPanel] with insights derived from
 /// the entry metadata — no freeform prose, only computed narratives.
 class HistoryStoryView extends StatelessWidget {
   /// Project-story groups derived from the History read model.
@@ -33,7 +34,7 @@ class HistoryStoryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (groups.isEmpty) {
-      return DSStateSurface.empty(
+      return const PrismStateSurface.empty(
         icon: Icons.auto_stories_outlined,
         title: 'No project stories',
         subtitle:
@@ -42,13 +43,13 @@ class HistoryStoryView extends StatelessWidget {
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.all(DSSpacing.lg),
+      padding: const EdgeInsets.all(PrismSpacing.lg),
       itemCount: groups.length,
       itemBuilder: (context, index) {
         final group = groups[index];
         return Padding(
           padding: EdgeInsets.only(
-            bottom: index < groups.length - 1 ? DSSpacing.lg : 0,
+            bottom: index < groups.length - 1 ? PrismSpacing.lg : 0,
           ),
           child: _ProjectStoryCard(
             group: group,
@@ -75,48 +76,57 @@ class _ProjectStoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final insights = _buildInsights(group);
+    final hasSelected = group.entries.any((e) => e.id == selectedEntryId);
 
-    return DSStoryPanel(
-      title: group.project,
-      subtitle: group.summary,
-      icon: Icons.folder_outlined,
-      accentColor: DSColors.accentCyan,
-      insights: insights,
-      footer: _buildTaskList(group),
+    return Container(
+      decoration: hasSelected
+          ? BoxDecoration(
+              borderRadius: BorderRadius.circular(PrismRadii.md),
+              border: Border.all(
+                color: PrismColors.accentCyan.withValues(alpha: 0.5),
+                width: 2,
+              ),
+            )
+          : null,
+      child: PrismStoryPanel(
+        title: group.project,
+        subtitle: group.summary,
+        icon: Icons.folder_outlined,
+        accentColor: PrismColors.accentCyan,
+        insights: insights,
+        footer: _buildEntryList(group),
+      ),
     );
   }
 
-  List<DSStoryInsight> _buildInsights(ProjectStoryGroup group) {
-    final insights = <DSStoryInsight>[];
+  List<PrismStoryInsight> _buildInsights(ProjectStoryGroup group) {
+    final insights = <PrismStoryInsight>[];
 
-    // Entry count insight
     insights.add(
-      DSStoryInsight(
+      PrismStoryInsight(
         text:
             '${group.entries.length} changelog entr${group.entries.length == 1 ? 'y' : 'ies'} recorded',
         detail: 'Grouped by project to show cumulative progress',
       ),
     );
 
-    // Type breakdown
     final typeCounts = <String, int>{};
     for (final entry in group.entries) {
       typeCounts[entry.type.name] = (typeCounts[entry.type.name] ?? 0) + 1;
     }
     for (final tc in typeCounts.entries) {
       insights.add(
-        DSStoryInsight(
+        PrismStoryInsight(
           text: '${tc.value} ${tc.key} change${tc.value == 1 ? '' : 's'}',
           value: tc.value.toString(),
         ),
       );
     }
 
-    // Impact tags
-    final allTags = group.entries.expand((e) => e.impact).toSet();
+    final allTags = group.entries.expand((e) => e.impactTags).toSet();
     if (allTags.isNotEmpty) {
       insights.add(
-        DSStoryInsight(
+        PrismStoryInsight(
           text: 'Impact areas: ${allTags.join(', ')}',
           detail: 'Tags from frontmatter impact field',
         ),
@@ -126,17 +136,55 @@ class _ProjectStoryCard extends StatelessWidget {
     return insights;
   }
 
-  Widget _buildTaskList(ProjectStoryGroup group) {
-    final taskIds = group.taskIds;
-    if (taskIds.isEmpty) {
-      return DSText.bodySmall('No linked tasks', color: DSColors.textTertiary);
+  Widget _buildEntryList(ProjectStoryGroup group) {
+    if (group.entries.isEmpty) {
+      return const PrismText.bodySmall(
+        'No linked tasks',
+        color: PrismColors.textTertiary,
+      );
     }
 
     return Wrap(
-      spacing: DSSpacing.xs,
-      runSpacing: DSSpacing.xs,
-      children: taskIds.map((taskId) {
-        return DSChip(label: 'Task $taskId');
+      spacing: PrismSpacing.xs,
+      runSpacing: PrismSpacing.xs,
+      children: group.entries.map((entry) {
+        final label = entry.task.isNotEmpty ? 'Task ${entry.task}' : entry.id;
+        final isSelected = entry.id == selectedEntryId;
+        return Semantics(
+          button: true,
+          label: 'Select $label',
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: onEntryTap != null ? () => onEntryTap!(entry.id) : null,
+              borderRadius: BorderRadius.circular(PrismRadii.sm),
+              child: Container(
+                key: ValueKey('story-entry-${entry.id}'),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: PrismSpacing.sm,
+                  vertical: PrismSpacing.xs,
+                ),
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? PrismColors.accentCyan.withValues(alpha: 0.15)
+                      : PrismColors.obsidianElevated,
+                  borderRadius: BorderRadius.circular(PrismRadii.sm),
+                  border: Border.all(
+                    color: isSelected
+                        ? PrismColors.accentCyan.withValues(alpha: 0.5)
+                        : PrismColors.borderSubtle,
+                  ),
+                ),
+                child: PrismText.labelSmall(
+                  label,
+                  color: isSelected
+                      ? PrismColors.accentCyan
+                      : PrismColors.textSecondary,
+                ),
+              ),
+            ),
+          ),
+        );
       }).toList(),
     );
   }

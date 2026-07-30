@@ -12,6 +12,8 @@
 /// - **error**: a load/parse operation failed.
 ///
 /// Deep-link fallback is handled by [buildUnresolvedAssetFallback].
+///
+/// All UI primitives use the public Prism* API from `warp_prism_ui`.
 library;
 
 import 'package:flutter/material.dart';
@@ -34,7 +36,7 @@ abstract class ShellStateHandler {
     String? subtitle,
   }) {
     return Center(
-      child: DSStateSurface.loading(
+      child: PrismStateSurface.loading(
         icon: Icons.hourglass_empty,
         title: title,
         subtitle: subtitle,
@@ -44,7 +46,9 @@ abstract class ShellStateHandler {
 
   /// Compact loading indicator for inline use (e.g., inside panels).
   static Widget buildLoadingCompact({String title = 'Loading...'}) {
-    return Center(child: DSStateSurface.loading(title: title, compact: true));
+    return Center(
+      child: PrismStateSurface.loading(title: title, compact: true),
+    );
   }
 
   // ---------------------------------------------------------------------------
@@ -65,7 +69,7 @@ abstract class ShellStateHandler {
     return Center(
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 480),
-        child: DSStateSurface.empty(
+        child: PrismStateSurface.empty(
           icon: icon,
           title: 'No $surfaceName data',
           subtitle:
@@ -94,8 +98,8 @@ abstract class ShellStateHandler {
     return Center(
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 480),
-        child: DSStateSurface.error(
-          icon: DSIcons.error,
+        child: PrismStateSurface.error(
+          icon: PrismIcons.error,
           title: title,
           subtitle: errorMessage,
           actionLabel: onRetry != null ? 'Retry' : null,
@@ -129,59 +133,69 @@ abstract class ShellStateHandler {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            DSIcon(Icons.link_off, color: DSColors.statusWarning, size: 48),
-            const SizedBox(height: DSSpacing.lg),
-            DSText.headingSmall('Asset not found', color: DSColors.textPrimary),
-            const SizedBox(height: DSSpacing.sm),
-            DSText.bodyMedium(
-              'Could not resolve asset:',
-              color: DSColors.textSecondary,
+            const PrismIcon(
+              Icons.link_off,
+              color: PrismColors.statusWarning,
+              size: 48,
             ),
-            const SizedBox(height: DSSpacing.xs),
+            const SizedBox(height: PrismSpacing.lg),
+            const PrismText.headingSmall(
+              'Asset not found',
+              color: PrismColors.textPrimary,
+            ),
+            const SizedBox(height: PrismSpacing.sm),
+            const PrismText.bodyMedium(
+              'Could not resolve asset:',
+              color: PrismColors.textSecondary,
+            ),
+            const SizedBox(height: PrismSpacing.xs),
             Container(
               padding: const EdgeInsets.symmetric(
-                horizontal: DSSpacing.md,
-                vertical: DSSpacing.sm,
+                horizontal: PrismSpacing.md,
+                vertical: PrismSpacing.sm,
               ),
               decoration: BoxDecoration(
-                color: DSColors.obsidianElevated,
-                borderRadius: BorderRadius.circular(DSRadii.sm),
-                border: Border.all(color: DSColors.borderSubtle),
+                color: PrismColors.obsidianElevated,
+                borderRadius: BorderRadius.circular(PrismRadii.sm),
+                border: Border.all(color: PrismColors.borderSubtle),
               ),
-              child: DSText.labelMedium(assetId, color: DSColors.accentCyan),
+              child: PrismText.labelMedium(
+                assetId,
+                color: PrismColors.accentCyan,
+              ),
             ),
-            const SizedBox(height: DSSpacing.xs),
-            DSText.bodySmall(
+            const SizedBox(height: PrismSpacing.xs),
+            const PrismText.bodySmall(
               'The asset may have been removed, renamed, '
               'or the link may be incorrect.',
-              color: DSColors.textTertiary,
+              color: PrismColors.textTertiary,
             ),
-            const SizedBox(height: DSSpacing.lg),
+            const SizedBox(height: PrismSpacing.lg),
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 if (onRetry != null)
                   OutlinedButton.icon(
                     onPressed: onRetry,
-                    icon: const DSIcon.small(DSIcons.refresh),
+                    icon: const PrismIcon.small(PrismIcons.refresh),
                     label: const Text('Retry'),
                     style: OutlinedButton.styleFrom(
-                      foregroundColor: DSColors.accentCyan,
+                      foregroundColor: PrismColors.accentCyan,
                       side: BorderSide(
-                        color: DSColors.accentCyan.withOpacity(0.5),
+                        color: PrismColors.accentCyan.withValues(alpha: 0.5),
                       ),
                     ),
                   ),
                 if (onRetry != null && onNavigateHome != null)
-                  const SizedBox(width: DSSpacing.md),
+                  const SizedBox(width: PrismSpacing.md),
                 if (onNavigateHome != null)
                   OutlinedButton.icon(
                     onPressed: onNavigateHome,
-                    icon: const DSIcon.small(Icons.home_outlined),
+                    icon: const PrismIcon.small(Icons.home_outlined),
                     label: const Text('Go to Overview'),
                     style: OutlinedButton.styleFrom(
-                      foregroundColor: DSColors.textSecondary,
-                      side: BorderSide(color: DSColors.borderDefault),
+                      foregroundColor: PrismColors.textSecondary,
+                      side: const BorderSide(color: PrismColors.borderDefault),
                     ),
                   ),
               ],
@@ -197,12 +211,12 @@ abstract class ShellStateHandler {
   /// When the viewport is too narrow for the inspector panel, this
   /// explains that detail view requires a wider layout.
   static Widget buildNarrowLayoutInspectorFallback() {
-    return Center(
-      child: DSStateSurface.empty(
+    return const Center(
+      child: PrismStateSurface.empty(
         icon: Icons.view_sidebar_outlined,
         title: 'Detail panel unavailable',
         subtitle:
-            'Resize the window to at least ${DSBreakpoints.masterDetailSideBySide}px '
+            'Resize the window to at least ${PrismBreakpoints.masterDetailSideBySide}px '
             'wide to view asset details.',
         compact: true,
       ),

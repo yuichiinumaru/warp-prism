@@ -2,7 +2,8 @@
 // Task 1114: Log Viewer Component
 //
 // Tests cover: severity filter, source filter, text search, auto-scroll
-// behavior, expand/collapse, empty state, and severity coloring.
+// pause/resume + append, expand/collapse, absolute timestamps, a11y 48×48
+// targets, empty state, and 10K virtualization smoke.
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,66 @@ Widget _wrap(Widget child) {
   return MaterialApp(
     home: Scaffold(body: SizedBox(width: 800, height: 600, child: child)),
   );
+}
+
+/// Builds a long scrollable stream of log lines.
+List<DSLogEntry> _manyEntries(int count, {String prefix = 'Entry'}) {
+  return List.generate(
+    count,
+    (i) => DSLogEntry(
+      id: '$i',
+      timestamp: DateTime(2026, 6, 8, 10, 0, i % 60),
+      severity: DSLogSeverity.info,
+      source: 'src',
+      message: '$prefix $i',
+    ),
+  );
+}
+
+/// Harness that can append entries after the first pump (auto-scroll proof).
+class _AppendHarness extends StatefulWidget {
+  const _AppendHarness();
+
+  @override
+  State<_AppendHarness> createState() => _AppendHarnessState();
+}
+
+class _AppendHarnessState extends State<_AppendHarness> {
+  late List<DSLogEntry> _entries;
+
+  @override
+  void initState() {
+    super.initState();
+    _entries = _manyEntries(40);
+  }
+
+  void append() {
+    final i = _entries.length;
+    setState(() {
+      _entries = [
+        ..._entries,
+        DSLogEntry(
+          id: '$i',
+          timestamp: DateTime(2026, 6, 8, 10, 0, i % 60),
+          severity: DSLogSeverity.info,
+          source: 'src',
+          message: 'Entry $i',
+        ),
+      ];
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        TextButton(onPressed: append, child: const Text('Append')),
+        Expanded(
+          child: DSLogViewer(entries: _entries, showFilters: false),
+        ),
+      ],
+    );
+  }
 }
 
 /// Sample entries for testing.
@@ -467,6 +528,151 @@ void main() {
         // Check for formatted timestamps
         expect(find.text('10:00:00'), findsOneWidget);
         expect(find.text('10:00:01'), findsOneWidget);
+      });
+
+      testWidgets('shows absolute timestamps when showAbsoluteTime is true', (
+        tester,
+      ) async {
+        await tester.pumpWidget(
+          _wrap(
+            DSLogViewer(entries: _sampleEntries(), showAbsoluteTime: true),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.text('2026-06-08 10:00:00'), findsOneWidget);
+        expect(find.text('2026-06-08 10:00:01'), findsOneWidget);
+        // Relative-only form should not appear as the full cell text.
+        expect(find.text('10:00:00'), findsNothing);
+      });
+    });
+
+    group('auto-scroll behavior', () {
+      testWidgets('user scroll-up shows Latest; tap resumes', (tester) async {
+        // Enough entries to make the list scrollable.
+        final entries = _manyEntries(40);
+
+        await tester.pumpWidget(
+          _wrap(DSLogViewer(entries: entries, showFilters: false)),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.text('Latest'), findsNothing);
+
+        // Drag content toward later rows without landing at maxScrollExtent so
+        // pause-on-scroll-away-from-bottom fires.
+        final list = find.byType(Scrollable);
+        expect(list, findsOneWidget);
+        await tester.drag(list, const Offset(0, -300));
+        await tester.pumpAndSettle();
+
+        expect(find.text('Latest'), findsOneWidget);
+        expect(
+          find.bySemanticsLabel(RegExp(r'Resume auto-scroll to latest')),
+          findsOneWidget,
+        );
+
+        await tester.tap(
+          find.bySemanticsLabel(RegExp(r'Resume auto-scroll to latest')),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.text('Latest'), findsNothing);
+      });
+
+      testWidgets('appending entries auto-scrolls to the newest line', (
+        tester,
+      ) async {
+        await tester.pumpWidget(_wrap(const _AppendHarness()));
+        await tester.pumpAndSettle();
+
+        // List starts at top — last seed entry is not built.
+        expect(find.text('Entry 0'), findsOneWidget);
+        expect(find.text('Entry 39'), findsNothing);
+
+        await tester.tap(find.text('Append'));
+        await tester.pumpAndSettle();
+
+        // didUpdateWidget + auto-scroll should reveal the newly appended line.
+        expect(find.text('Entry 40'), findsOneWidget);
+        expect(find.text('Latest'), findsNothing);
+      });
+
+      testWidgets('Latest resume control meets 48×48 min size', (tester) async {
+        await tester.pumpWidget(
+          _wrap(DSLogViewer(entries: _manyEntries(40), showFilters: false)),
+        );
+        await tester.pumpAndSettle();
+
+        await tester.drag(find.byType(Scrollable), const Offset(0, -300));
+        await tester.pumpAndSettle();
+
+        final latest = find.bySemanticsLabel(
+          RegExp(r'Resume auto-scroll to latest'),
+        );
+        expect(latest, findsOneWidget);
+        final size = tester.getSize(latest);
+        expect(size.width, greaterThanOrEqualTo(kMinInteractiveDimension));
+        expect(size.height, greaterThanOrEqualTo(kMinInteractiveDimension));
+
+        final data = tester.getSemantics(latest);
+        expect(data.flagsCollection.isButton, isTrue);
+      });
+    });
+
+    group('a11y targets', () {
+      testWidgets('expand control is a button and meets 48×48', (tester) async {
+        await tester.pumpWidget(_wrap(DSLogViewer(entries: _sampleEntries())));
+        await tester.pumpAndSettle();
+
+        final expand = find.bySemanticsLabel('Expand log entry');
+        expect(expand, findsWidgets);
+
+        final first = expand.first;
+        final data = tester.getSemantics(first);
+        expect(data.flagsCollection.isButton, isTrue);
+
+        final size = tester.getSize(first);
+        expect(size.width, greaterThanOrEqualTo(kMinInteractiveDimension));
+        expect(size.height, greaterThanOrEqualTo(kMinInteractiveDimension));
+      });
+    });
+
+    group('virtualization smoke', () {
+      testWidgets('10K entries virtualize without building all rows', (
+        tester,
+      ) async {
+        var buildMarkers = 0;
+        final entries = List.generate(10000, (i) {
+          return DSLogEntry(
+            id: '$i',
+            timestamp: DateTime(2026, 6, 8, 10, 0, i % 60),
+            severity: DSLogSeverity.info,
+            source: 'src',
+            // Distinct message so finders can detect built rows.
+            message: 'Row-$i-marker',
+          );
+        });
+
+        await tester.pumpWidget(
+          _wrap(DSLogViewer(entries: entries, showFilters: false)),
+        );
+        // One frame is enough; settle is unnecessary for ListView.builder.
+        await tester.pump();
+
+        expect(find.text('10000 / 10000 entries'), findsOneWidget);
+        expect(find.text('Row-0-marker'), findsOneWidget);
+        // Far end of the list must not be in the element tree yet.
+        expect(find.text('Row-9999-marker'), findsNothing);
+
+        // Bound how many row markers landed in the tree (viewport + cache).
+        for (var i = 0; i < 10000; i++) {
+          if (find.text('Row-$i-marker').evaluate().isNotEmpty) {
+            buildMarkers++;
+          }
+        }
+        expect(buildMarkers, lessThan(80));
+        expect(buildMarkers, greaterThan(0));
       });
     });
 

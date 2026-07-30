@@ -1,0 +1,473 @@
+/// Catalog contract tests — ADS proof surface.
+///
+/// Verifies that the Design System Gallery renders all registered sections,
+/// has unique section IDs from the registry, covers state matrices per atomic
+/// design layer, handles high text scale, and adapts to responsive breakpoints.
+///
+/// Task 1305: Catalog Contract Expansion
+library;
+
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:warp_prism_ui/warp_prism_ui.dart';
+import 'package:warp_prism_ui/src/templates/templates.dart';
+import 'package:warp_prism_catalog/main.dart';
+
+/// Scroll the gallery [ListView] until [finder] is visible.
+///
+/// The gallery uses a lazy [ListView], so off-screen sections are not built
+/// until scrolled into view. This helper flings upward in increments until
+/// the target widget appears or a retry limit is hit.
+///
+/// Uses [pump] with a fixed duration instead of [pumpAndSettle] to avoid
+/// timeouts from infinite animations (e.g. DSShimmer).
+Future<void> _scrollUntilFound(
+  WidgetTester tester,
+  Finder finder, {
+  int maxFlings = 100,
+}) async {
+  for (var i = 0; i < maxFlings; i++) {
+    if (finder.evaluate().isNotEmpty) return;
+    await tester.fling(find.byType(ListView).first, const Offset(0, -600), 800);
+    await tester.pump(const Duration(milliseconds: 500));
+  }
+}
+
+/// Build the gallery inside [MaterialApp] + [Scaffold] so that Material
+/// widgets (e.g. [TextField] inside [DSSearchBar]) have a Material ancestor.
+Widget _buildGalleryInMaterial() {
+  return const MaterialApp(home: Scaffold(body: DesignSystemGalleryPage()));
+}
+
+void main() {
+  group('Catalog app', () {
+    testWidgets('renders gallery page without crashing', (tester) async {
+      await tester.pumpWidget(const WarpPrismCatalogApp());
+      expect(find.byType(WarpPrismCatalogApp), findsOneWidget);
+      expect(find.byType(DesignSystemGalleryPage), findsOneWidget);
+    });
+  });
+
+  group('Section registry', () {
+    test('registry IDs are unique and components note', () {
+      final ids = dsGallerySectionIds;
+      final uniqueIds = ids.toSet();
+
+      // Note: Component/case IDs are verified in their respective boundary tests.
+      // This test covers section IDs only, as they are the primary router targets
+      // for the gallery navigation.
+
+      expect(
+        ids.length,
+        equals(uniqueIds.length),
+        reason:
+            'Each section ID must be unique. '
+            'Found ${ids.length} IDs but only ${uniqueIds.length} unique. '
+            'Duplicates: ${_findDuplicates(ids)}',
+      );
+    });
+
+    test('registry titles match expected section count', () {
+      expect(
+        dsGallerySections.length,
+        equals(10),
+        reason:
+            'Gallery registry should contain exactly 10 sections. '
+            'If adding a new section, update this test expectation.',
+      );
+    });
+
+    testWidgets('all registered sections render without crash', (tester) async {
+      await tester.pumpWidget(_buildGalleryInMaterial());
+      await tester.pump();
+
+      // Derive section titles from the registry (single source of truth)
+      for (final section in dsGallerySections) {
+        await _scrollUntilFound(tester, find.text(section.title));
+        expect(
+          find.text(section.title),
+          findsOneWidget,
+          reason:
+              'Section "${section.title}" (id: ${section.id}) should render '
+              'in the gallery',
+        );
+      }
+    });
+
+    testWidgets('no duplicate section headings exist', (tester) async {
+      await tester.pumpWidget(_buildGalleryInMaterial());
+      await tester.pump();
+
+      // Verify each section title appears exactly once in the rendered tree
+      for (final section in dsGallerySections) {
+        await _scrollUntilFound(tester, find.text(section.title));
+        expect(
+          find.text(section.title),
+          findsOneWidget,
+          reason:
+              'Section heading "${section.title}" must be unique. '
+              'Found duplicates.',
+        );
+      }
+    });
+  });
+
+  group('State matrices', () {
+    testWidgets('atom layer: DSText variants and icon components render different state cases', (
+      tester,
+    ) async {
+      await tester.pumpWidget(_buildGalleryInMaterial());
+      await tester.pump();
+
+      await _scrollUntilFound(tester, find.text('Atoms'));
+
+      // Verify specific atom states (instead of just existence)
+      // Badges with explicit counts
+      expect(find.text('42'), findsOneWidget, reason: 'Badge count 42 should render');
+      expect(find.text('3'), findsOneWidget, reason: 'Badge count 3 should render');
+      expect(find.text('7'), findsOneWidget, reason: 'Badge count 7 should render');
+      
+      // Disabled state chip explicitly checked
+      final disabledChipText = find.text('Disabled');
+      await _scrollUntilFound(tester, disabledChipText);
+      expect(disabledChipText, findsWidgets);
+    });
+
+    testWidgets('molecule layer: DSStateSurface renders all UI data states', (
+      tester,
+    ) async {
+      await tester.pumpWidget(_buildGalleryInMaterial());
+      await tester.pump();
+
+      // Scroll to the Molecules section where DSStateSurface instances live
+      await _scrollUntilFound(tester, find.text('State Surfaces'));
+
+      expect(find.byType(PrismStateSurface), findsWidgets);
+
+      // Verify all state surface variants render
+      // Empty state
+      expect(
+        find.text('No assets loaded'),
+        findsOneWidget,
+        reason: 'DSStateSurface.empty should render',
+      );
+      // Loading state
+      expect(
+        find.text('Loading workspace...'),
+        findsOneWidget,
+        reason: 'DSStateSurface.loading should render',
+      );
+      // Error state
+      expect(
+        find.text('Failed to parse workspace'),
+        findsOneWidget,
+        reason: 'DSStateSurface.error should render',
+      );
+      // Disabled state
+      expect(
+        find.text('Feature disabled'),
+        findsOneWidget,
+        reason: 'DSStateSurface.disabled should render',
+      );
+      // Stale state
+      expect(
+        find.text('Data outdated'),
+        findsOneWidget,
+        reason: 'DSStateSurface.stale should render',
+      );
+      // Degraded state
+      expect(
+        find.text('Partial data available'),
+        findsOneWidget,
+        reason: 'DSStateSurface.degraded should render',
+      );
+      // Excluded state
+      expect(
+        find.text('Filtered out by governance'),
+        findsOneWidget,
+        reason: 'DSStateSurface.excluded should render',
+      );
+    });
+
+    testWidgets(
+      'organism layer: DSOperationalState tiles render all 15 states',
+      (tester) async {
+        await tester.pumpWidget(_buildGalleryInMaterial());
+        await tester.pump();
+
+        await _scrollUntilFound(tester, find.text('Operational States'));
+
+        // Verify each operational state label renders
+        for (final state in PrismOperationalState.values) {
+          expect(
+            find.text(state.label),
+            findsWidgets,
+            reason: 'PrismOperationalState.${state.name} label should render',
+          );
+        }
+
+        // Verify operational badges and status dots render for all 15 states
+        expect(find.byType(PrismBadge), findsWidgets);
+        expect(find.byType(PrismStatusDot), findsWidgets);
+      },
+    );
+
+    testWidgets('template layer: template previews render with descriptions and we can render an explicit empty MasterDetailTemplate', (
+      tester,
+    ) async {
+      await tester.pumpWidget(_buildGalleryInMaterial());
+      await tester.pump();
+
+      await _scrollUntilFound(tester, find.text('Templates'));
+
+      // Verify template preview names
+      expect(find.text('MasterDetailTemplate'), findsOneWidget);
+      expect(find.text('CanvasTemplate'), findsOneWidget);
+      expect(find.text('TimelineTemplate'), findsOneWidget);
+
+      // Verify template descriptions exist (provides matrix coverage)
+      expect(
+        find.textContaining('Sidebar + topbar + master list'),
+        findsOneWidget,
+      );
+      expect(find.textContaining('full-bleed graph canvas'), findsOneWidget);
+      
+      // Prove that a layout template itself is resilient to empty/error internal states natively
+      // by mounting a bare MasterDetailTemplate with an error DSStateSurface
+      await tester.pumpWidget(MaterialApp(
+         home: MasterDetailTemplate(
+             sidebarItems: const [
+                 PrismSidebarItem(id: '1', label: 'Item 1', icon: Icons.inbox),
+             ],
+             selectedIndex: 0,
+             onSidebarItemSelected: (id) {},
+             title: 'Test Template',
+             masterContent: const PrismStateSurface.empty(title: 'No items available'),
+             detailContent: const SizedBox.shrink(),
+             showDetail: false,
+             onDetailClose: () {},
+         )
+      ));
+      await tester.pump();
+      
+      expect(find.text('No items available'), findsOneWidget, reason: 'PrismStateSurface.empty should render inside MasterDetailTemplate');
+    });
+  });
+
+  group('High text scale', () {
+    testWidgets('all sections render at 2.0 text scale without overflow', (
+      tester,
+    ) async {
+      tester.view.physicalSize = const Size(2400, 2400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      // Track overflow errors BEFORE pumpWidget to catch all layout errors
+      final overflowErrors = <FlutterErrorDetails>[];
+      final originalOnError = FlutterError.onError;
+      FlutterError.onError = overflowErrors.add;
+
+      try {
+        // Wrap with MediaQuery to enforce high text scale
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(
+              body: MediaQuery(
+                data: MediaQueryData(textScaler: TextScaler.linear(2.0)),
+                child: DesignSystemGalleryPage(),
+              ),
+            ),
+          ),
+        );
+
+        // Scroll through all sections to trigger layout
+        for (final section in dsGallerySections) {
+          await _scrollUntilFound(tester, find.text(section.title));
+          expect(
+            find.text(section.title),
+            findsOneWidget,
+            reason:
+                'Section "${section.title}" should render at 2.0 text scale',
+          );
+          await tester.pump(const Duration(milliseconds: 100));
+        }
+
+        // Count overflow and layout errors
+        final overflowCount = overflowErrors.where((details) {
+          final exception = details.exception.toString();
+          return exception.contains('A RenderFlex overflowed by') ||
+              exception.contains('overflow') ||
+              exception.contains('RenderBox was not laid out');
+        }).length;
+
+        if (overflowErrors.isNotEmpty) {
+          for (final err in overflowErrors) {
+          }
+        }
+        
+        expect(
+          overflowCount,
+          equals(0),
+          reason:
+              'High text scale (2.0) overflow count must be 0. '
+              'Found $overflowCount overflow(s).',
+        );
+      } finally {
+        FlutterError.onError = originalOnError;
+      }
+    });
+  });
+
+  group('Responsive layout', () {
+    testWidgets(
+      'renders all sections at compact width (800px) without overflow',
+      (tester) async {
+        tester.view.physicalSize = const Size(800, 600);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+
+        // Capture overflow errors
+        final overflowErrors = <FlutterErrorDetails>[];
+        final originalOnError = FlutterError.onError;
+        FlutterError.onError = overflowErrors.add;
+
+        try {
+          await tester.pumpWidget(_buildGalleryInMaterial());
+          await tester.pump();
+
+          expect(find.byType(DesignSystemGalleryPage), findsOneWidget);
+
+          for (final section in dsGallerySections) {
+            await _scrollUntilFound(tester, find.text(section.title));
+            expect(
+              find.text(section.title),
+              findsOneWidget,
+              reason: 'Section "${section.title}" should render at 800px',
+            );
+          }
+
+          // Verify no overflow at compact width
+          final hasOverflow = overflowErrors.any((details) {
+            return details.exception.toString().contains(
+              'A RenderFlex overflowed by',
+            );
+          });
+
+          expect(
+            hasOverflow,
+            isFalse,
+            reason: 'No overflow should occur at compact width (800px)',
+          );
+        } finally {
+          FlutterError.onError = originalOnError;
+        }
+      },
+    );
+
+    testWidgets(
+      'renders all sections at expanded width (1400px) without overflow',
+      (tester) async {
+        tester.view.physicalSize = const Size(1400, 900);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+
+        // Capture overflow errors
+        final overflowErrors = <FlutterErrorDetails>[];
+        final originalOnError = FlutterError.onError;
+        FlutterError.onError = overflowErrors.add;
+
+        try {
+          await tester.pumpWidget(_buildGalleryInMaterial());
+          await tester.pump();
+
+          expect(find.byType(DesignSystemGalleryPage), findsOneWidget);
+
+          for (final section in dsGallerySections) {
+            await _scrollUntilFound(tester, find.text(section.title));
+            expect(
+              find.text(section.title),
+              findsOneWidget,
+              reason: 'Section "${section.title}" should render at 1400px',
+            );
+          }
+
+          // Verify no overflow at expanded width
+          final hasOverflow = overflowErrors.any((details) {
+            return details.exception.toString().contains(
+              'A RenderFlex overflowed by',
+            );
+          });
+
+          expect(
+            hasOverflow,
+            isFalse,
+            reason: 'No overflow should occur at expanded width (1400px)',
+          );
+        } finally {
+          FlutterError.onError = originalOnError;
+        }
+      },
+    );
+
+    testWidgets('DSSidebar renders navigation items', (tester) async {
+      await tester.pumpWidget(_buildGalleryInMaterial());
+      await tester.pump();
+
+      await _scrollUntilFound(
+        tester,
+        find.text('DSSidebar (collapsed preview)'),
+      );
+      expect(find.byType(PrismSidebar), findsWidgets);
+
+      // Verify sidebar has navigation items (text appears multiple times in gallery)
+      expect(find.textContaining('Overview'), findsWidgets);
+      expect(find.textContaining('Map'), findsWidgets);
+    });
+
+    testWidgets('gallery list view maintains vertical boundaries and wraps across viewport sizes', (
+      tester,
+    ) async {
+      // Test at expanded width (1400px)
+      tester.view.physicalSize = const Size(1400, 900);
+      tester.view.devicePixelRatio = 1.0;
+
+      await tester.pumpWidget(_buildGalleryInMaterial());
+      await tester.pump();
+      await _scrollUntilFound(tester, find.text('Tokens'));
+      // Find the first Wrap inside the view which is Color Swatches
+      final Size tokensSizeExpanded = tester.getSize(find.byType(Wrap).first);
+
+      // Test at compact width (800px)
+      tester.view.physicalSize = const Size(800, 600);
+      await tester.pumpWidget(_buildGalleryInMaterial());
+      await tester.pump();
+      await _scrollUntilFound(tester, find.text('Tokens'));
+      final Size tokensSizeCompact = tester.getSize(find.byType(Wrap).first);
+
+      // Verify adaptation by checking wrap height increase
+      expect(
+        tokensSizeCompact.height,
+        greaterThan(tokensSizeExpanded.height),
+        reason: 'At narrower widths, elements wrap and height increases, proving layout adaptation',
+      );
+
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+    });
+  });
+}
+
+/// Find duplicate strings in a list.
+List<String> _findDuplicates(List<String> list) {
+  final seen = <String>{};
+  final duplicates = <String>{};
+  for (final item in list) {
+    if (!seen.add(item)) {
+      duplicates.add(item);
+    }
+  }
+  return duplicates.toList();
+}

@@ -31,3 +31,8 @@ pubspec.lock
 # Generated files
 *.g.dart
 *.freezed.dart
+
+# Ganthritor local agent surfaces
+tmp/
+.changelog/
+.memories/

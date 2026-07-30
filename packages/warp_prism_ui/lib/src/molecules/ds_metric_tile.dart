@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../tokens/tokens.dart';
 import '../atoms/atoms.dart';
+import 'ds_interactive_surface.dart';
 
 /// Metric Tile — displays a numeric metric with label, trend, and optional
 /// health state.
@@ -24,6 +25,7 @@ class DSMetricTile extends StatelessWidget {
   final String? subtitle;
   final DSTrend? trend;
   final VoidCallback? onTap;
+  final FocusNode? focusNode;
 
   /// Operational health state. Overrides [color] accent when set.
   final DSMetricTileHealth? health;
@@ -38,78 +40,76 @@ class DSMetricTile extends StatelessWidget {
     this.trend,
     this.onTap,
     this.health,
+    this.focusNode,
   });
 
   @override
   Widget build(BuildContext context) {
     final accentColor = _resolveAccentColor();
+    final healthSuffix = health != null && health != DSMetricTileHealth.healthy
+        ? ', ${health!.name}'
+        : '';
 
-    return Semantics(
-      label:
-          '$label: $value${health != null && health != DSMetricTileHealth.healthy ? ', ${health!.name}' : ''}',
-      child: GestureDetector(
-        onTap: onTap,
-        child: MouseRegion(
-          cursor: onTap != null
-              ? SystemMouseCursors.click
-              : SystemMouseCursors.basic,
-          child: DSGlassPanelSimple(
-            padding: const EdgeInsets.all(DSSpacing.insetCard),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
+    return DSInteractiveSurface(
+      semanticLabel: '$label: $value$healthSuffix',
+      onTap: onTap,
+      focusNode: focusNode,
+      excludeChildSemantics: true,
+      child: DSGlassPanelSimple(
+        padding: const EdgeInsets.all(DSSpacing.insetCard),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Header
+            Row(
               children: [
-                // Header
-                Row(
-                  children: [
-                    if (icon != null) ...[
-                      DSIcon.small(icon!, color: accentColor),
-                      const SizedBox(width: DSSpacing.xs),
-                    ],
-                    Expanded(
-                      child: DSText.labelMedium(
-                        label,
-                        color: DSColors.textSecondary,
-                      ),
-                    ),
-                    if (trend != null) _TrendIndicator(trend: trend!),
-                  ],
-                ),
-
-                const SizedBox(height: DSSpacing.sm),
-
-                // Value
-                DSText(
-                  value,
-                  variant: DSTextVariant.numericLarge,
-                  color: accentColor,
-                ),
-
-                // Health indicator
-                if (health != null && health != DSMetricTileHealth.healthy) ...[
-                  const SizedBox(height: DSSpacing.xs),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      DSStatusDot(
-                        color: accentColor,
-                        size: 6,
-                        animated: health == DSMetricTileHealth.error,
-                      ),
-                      const SizedBox(width: 4),
-                      DSText.labelSmall(health!.label, color: accentColor),
-                    ],
+                if (icon != null) ...[
+                  DSIcon.small(icon!, color: accentColor),
+                  const SizedBox(width: DSSpacing.xs),
+                ],
+                Expanded(
+                  child: DSText.labelMedium(
+                    label,
+                    color: DSColors.textSecondary,
                   ),
-                ],
-
-                // Subtitle
-                if (subtitle != null) ...[
-                  const SizedBox(height: DSSpacing.xs),
-                  DSText.bodySmall(subtitle!, color: DSColors.textTertiary),
-                ],
+                ),
+                if (trend != null) _TrendIndicator(trend: trend!),
               ],
             ),
-          ),
+
+            const SizedBox(height: DSSpacing.sm),
+
+            // Value
+            DSText(
+              value,
+              variant: DSTextVariant.numericLarge,
+              color: accentColor,
+            ),
+
+            // Health indicator
+            if (health != null && health != DSMetricTileHealth.healthy) ...[
+              const SizedBox(height: DSSpacing.xs),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  DSStatusDot(
+                    color: accentColor,
+                    size: 6,
+                    animated: health == DSMetricTileHealth.error,
+                  ),
+                  const SizedBox(width: 4),
+                  DSText.labelSmall(health!.label, color: accentColor),
+                ],
+              ),
+            ],
+
+            // Subtitle
+            if (subtitle != null) ...[
+              const SizedBox(height: DSSpacing.xs),
+              DSText.bodySmall(subtitle!, color: DSColors.textTertiary),
+            ],
+          ],
         ),
       ),
     );
@@ -168,6 +168,7 @@ class DSMetricTileCompact extends StatelessWidget {
   final String value;
   final Color? color;
   final VoidCallback? onTap;
+  final FocusNode? focusNode;
 
   /// Operational health state. Overrides [color] accent when set.
   final DSMetricTileHealth? health;
@@ -179,6 +180,7 @@ class DSMetricTileCompact extends StatelessWidget {
     this.color,
     this.onTap,
     this.health,
+    this.focusNode,
   });
 
   @override
@@ -187,38 +189,31 @@ class DSMetricTileCompact extends StatelessWidget {
         ? health!.color
         : (color ?? DSColors.accentCyan);
 
-    return Semantics(
-      label: '$label: $value',
-      child: GestureDetector(
-        onTap: onTap,
-        child: MouseRegion(
-          cursor: onTap != null
-              ? SystemMouseCursors.click
-              : SystemMouseCursors.basic,
-          child: Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: DSSpacing.md,
-              vertical: DSSpacing.sm,
-            ),
-            decoration: BoxDecoration(
-              color: DSColors.obsidianElevated,
-              borderRadius: BorderRadius.circular(DSRadii.card),
-              border: Border.all(color: DSColors.borderSubtle, width: 1),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                DSText(
-                  value,
-                  variant: DSTextVariant.numericMedium,
-                  color: accentColor,
-                ),
-                const SizedBox(width: DSSpacing.sm),
-                DSText.labelSmall(label, color: DSColors.textSecondary),
-              ],
-            ),
+    return DSInteractiveSurface(
+      semanticLabel: '$label: $value',
+      onTap: onTap,
+      focusNode: focusNode,
+      excludeChildSemantics: true,
+      padding: const EdgeInsets.symmetric(
+        horizontal: DSSpacing.md,
+        vertical: DSSpacing.sm,
+      ),
+      decoration: BoxDecoration(
+        color: DSColors.obsidianElevated,
+        borderRadius: BorderRadius.circular(DSRadii.card),
+        border: Border.all(color: DSColors.borderSubtle, width: 1),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          DSText(
+            value,
+            variant: DSTextVariant.numericMedium,
+            color: accentColor,
           ),
-        ),
+          const SizedBox(width: DSSpacing.sm),
+          DSText.labelSmall(label, color: DSColors.textSecondary),
+        ],
       ),
     );
   }

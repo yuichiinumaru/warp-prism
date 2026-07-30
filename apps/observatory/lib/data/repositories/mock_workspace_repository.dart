@@ -8,6 +8,17 @@
 /// them, parses them, and aggregates them. It does not write, repair,
 /// or move corpus files.
 ///
+/// ## Load contract (error vs partial-success)
+///
+/// | Outcome | When |
+/// |---------|------|
+/// | `error` | Root directory missing; IO/exception; **or** every scanned file fails parse (`filesScanned > 0`, `totalAssets == 0`, `parseErrors > 0`) |
+/// | `empty` | Root exists but zero files scanned (structure present, no `.md` assets) |
+/// | `success` | At least one asset parsed. `metadata.parseErrors` / `parseErrorPaths` may be non-empty for **partial success** |
+///
+/// Partial success is intentional: the UI can render a usable snapshot while
+/// surfacing failed paths. Total parse failure is an error, not empty.
+///
 /// The mock workspace tree follows the standard layout:
 /// ```
 /// assets/mock_workspace/
@@ -66,14 +77,14 @@ class MockWorkspaceRepository implements WorkspaceRepository {
       final tasks = <WorkspaceAsset>[];
       final changelogEntries = <WorkspaceAsset>[];
       var filesScanned = 0;
-      var parseErrors = 0;
+      final parseErrorPaths = <String>[];
 
       // Scan .agents/agents/*.md
       await _scanDirectory(
         '$rootPath/.agents/agents',
         agents,
         onFile: () => filesScanned++,
-        onError: () => parseErrors++,
+        onError: parseErrorPaths.add,
       );
 
       // Scan .agents/skills/*/SKILL.md and sub-skills
@@ -89,7 +100,7 @@ class MockWorkspaceRepository implements WorkspaceRepository {
               if (asset != null) {
                 skills.add(asset);
               } else {
-                parseErrors++;
+                parseErrorPaths.add(skillFile.path);
               }
             }
 
@@ -99,7 +110,7 @@ class MockWorkspaceRepository implements WorkspaceRepository {
               skills,
               filter: (f) => f.path.endsWith('SKILL.md'),
               onFile: () => filesScanned++,
-              onError: () => parseErrors++,
+              onError: parseErrorPaths.add,
             );
 
             // Skill-local workflows
@@ -107,7 +118,7 @@ class MockWorkspaceRepository implements WorkspaceRepository {
               '${skillDir.path}/workflows',
               workflows,
               onFile: () => filesScanned++,
-              onError: () => parseErrors++,
+              onError: parseErrorPaths.add,
             );
           }
         }
@@ -118,7 +129,7 @@ class MockWorkspaceRepository implements WorkspaceRepository {
         '$rootPath/.agents/workflows',
         workflows,
         onFile: () => filesScanned++,
-        onError: () => parseErrors++,
+        onError: parseErrorPaths.add,
       );
 
       // Scan docs/tasks/{lane}/*.md
@@ -134,7 +145,7 @@ class MockWorkspaceRepository implements WorkspaceRepository {
           '$rootPath/docs/tasks/$lane',
           tasks,
           onFile: () => filesScanned++,
-          onError: () => parseErrors++,
+          onError: parseErrorPaths.add,
         );
       }
 
@@ -143,7 +154,7 @@ class MockWorkspaceRepository implements WorkspaceRepository {
         '$rootPath/docs/changelog',
         changelogEntries,
         onFile: () => filesScanned++,
-        onError: () => parseErrors++,
+        onError: parseErrorPaths.add,
       );
 
       final totalAssets =
@@ -152,6 +163,8 @@ class MockWorkspaceRepository implements WorkspaceRepository {
           workflows.length +
           tasks.length +
           changelogEntries.length;
+
+      final parseErrors = parseErrorPaths.length;
 
       final snapshot = WorkspaceSnapshot(
         agents: agents,
@@ -164,13 +177,26 @@ class MockWorkspaceRepository implements WorkspaceRepository {
           scannedAt: DateTime.now(),
           filesScanned: filesScanned,
           parseErrors: parseErrors,
+          parseErrorPaths: List.unmodifiable(parseErrorPaths),
         ),
       );
 
+      // Empty: structure may exist but no files were scanned.
       if (totalAssets == 0 && filesScanned == 0) {
         return WorkspaceLoadState.empty(rootPath: rootPath);
       }
 
+      // Total parse failure: files were found but none produced assets.
+      if (totalAssets == 0 && parseErrors > 0) {
+        return WorkspaceLoadState.error(
+          message:
+              'All $parseErrors scanned file(s) failed to parse. '
+              'Paths: ${parseErrorPaths.join(', ')}',
+          rootPath: rootPath,
+        );
+      }
+
+      // Success (possibly partial when parseErrors > 0).
       return WorkspaceLoadState.success(snapshot: snapshot, rootPath: rootPath);
     } catch (e) {
       return WorkspaceLoadState.error(
@@ -186,7 +212,7 @@ class MockWorkspaceRepository implements WorkspaceRepository {
     List<WorkspaceAsset> target, {
     bool Function(File)? filter,
     VoidCallback? onFile,
-    VoidCallback? onError,
+    void Function(String path)? onError,
   }) async {
     final dir = Directory(dirPath);
     if (!await dir.exists()) return;
@@ -199,7 +225,7 @@ class MockWorkspaceRepository implements WorkspaceRepository {
         if (asset != null) {
           target.add(asset);
         } else {
-          onError?.call();
+          onError?.call(entity.path);
         }
       }
     }

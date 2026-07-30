@@ -14,7 +14,7 @@ import 'package:warp_prism_ui/warp_prism_ui.dart';
 import '../domain/asset_detail_descriptor.dart';
 import 'detail_section_builder.dart';
 
-/// Renders a changelog entry's detail using the [DSDetailInspector].
+/// Renders a changelog entry's detail using the [PrismDetailInspector].
 class ChangelogDetailView extends StatelessWidget {
   final AssetDetailDescriptor descriptor;
   final VoidCallback? onClose;
@@ -29,7 +29,7 @@ class ChangelogDetailView extends StatelessWidget {
   Widget build(BuildContext context) {
     final asset = descriptor.asset;
 
-    final sections = <DSDetailSection>[
+    final sections = <PrismDetailSection>[
       // Shared sections (Identity)
       ...toDSSections(descriptor.sharedSections),
       // Kind-specific changelog panels
@@ -49,7 +49,7 @@ class ChangelogDetailView extends StatelessWidget {
         ),
     ];
 
-    return DSDetailInspector(
+    return PrismDetailInspector(
       title: asset.name,
       kind: asset.kind.name,
       subtitle: asset.description.isNotEmpty ? asset.description : null,

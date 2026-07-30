@@ -55,8 +55,11 @@ abstract class DSSpacing {
   /// Sidebar width - expanded
   static const double sidebarExpanded = 240;
 
-  /// Inspector panel width
+  /// Inspector panel width (canvas overlay / compact inspector)
   static const double inspectorWidth = 360;
+
+  /// Master-detail / responsive detail overlay drawer width (medium breakpoint)
+  static const double detailOverlayWidth = 400;
 
   /// Top bar height
   static const double topbarHeight = 56;

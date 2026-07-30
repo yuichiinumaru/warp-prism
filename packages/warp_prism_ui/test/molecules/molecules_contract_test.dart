@@ -4,9 +4,12 @@
 // required DS molecules. They verify constructors compile, atoms are
 // composed correctly, and interactive states produce expected changes.
 //
-// Run: flutter test test/design_system/molecules/molecules_contract_test.dart
+// Run: flutter test test/molecules/molecules_contract_test.dart
+
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:warp_prism_ui/src/molecules/molecules.dart';
 import 'package:warp_prism_ui/src/atoms/atoms.dart';
@@ -100,13 +103,27 @@ void main() {
       expect(find.text('Workflows'), findsOneWidget);
     });
 
-    testWidgets('selected chips show selected state', (tester) async {
+    testWidgets('selected chips show selected state (semantics)', (
+      tester,
+    ) async {
+      final handle = tester.ensureSemantics();
       await tester.pumpWidget(
         MaterialApp(
-          home: DSFilterChipGroup(options: options, selected: const {'agent'}),
+          // onToggle required for button semantics (null = non-interactive).
+          home: DSFilterChipGroup(
+            options: options,
+            selected: const {'agent'},
+            onToggle: (_) {},
+          ),
         ),
       );
-      expect(find.text('Agents'), findsOneWidget);
+
+      final labelFinder = find.bySemanticsLabel('Agents');
+      expect(labelFinder, findsOneWidget);
+      final semantics = tester.getSemantics(labelFinder);
+      expect(semantics.flagsCollection.isSelected, ui.Tristate.isTrue);
+      expect(semantics.flagsCollection.isButton, isTrue);
+      handle.dispose();
     });
 
     testWidgets('onToggle fires with correct value', (tester) async {
@@ -176,13 +193,25 @@ void main() {
       expect(find.text('A test skill'), findsOneWidget);
     });
 
-    testWidgets('selected state applies visual change', (tester) async {
+    testWidgets('selected state applies visual change (semantics)', (
+      tester,
+    ) async {
+      final handle = tester.ensureSemantics();
       await tester.pumpWidget(
         const MaterialApp(
-          home: DSAssetCard(name: 'selected', kind: 'agent', selected: true),
+          home: DSAssetCard(
+            name: 'selected card',
+            kind: 'agent',
+            selected: true,
+          ),
         ),
       );
-      expect(find.text('selected'), findsOneWidget);
+
+      final semantics = tester.getSemantics(find.byType(DSAssetCard));
+      expect(semantics.label, contains('selected card'));
+      expect(semantics.flagsCollection.isSelected, ui.Tristate.isTrue);
+
+      handle.dispose();
     });
 
     testWidgets('onTap fires callback', (tester) async {
@@ -290,18 +319,25 @@ void main() {
       expect(find.byType(DSStatusDot), findsOneWidget);
     });
 
-    testWidgets('selected state changes background', (tester) async {
+    testWidgets('selected state changes background (semantics)', (
+      tester,
+    ) async {
+      final handle = tester.ensureSemantics();
       await tester.pumpWidget(
         const MaterialApp(
           home: DSTaskCard(
             id: 1,
-            title: 'Selected',
+            title: 'Selected Task',
             lane: '02-doing',
             selected: true,
           ),
         ),
       );
-      expect(find.text('Selected'), findsOneWidget);
+
+      final semantics = tester.getSemantics(find.byType(DSTaskCard));
+      expect(semantics.label, contains('Selected Task'));
+      expect(semantics.flagsCollection.isSelected, ui.Tristate.isTrue);
+      handle.dispose();
     });
 
     testWidgets('onTap fires callback', (tester) async {
@@ -465,6 +501,26 @@ void main() {
       }
     });
 
+    testWidgets('provides correct semantics', (tester) async {
+      final handle = tester.ensureSemantics();
+      await tester.pumpWidget(
+        MaterialApp(
+          home: DSEvidenceRow(
+            label: 'Tests passed',
+            value: 'Coverage 100%',
+            state: DSEvidenceState.verified,
+            onTap: () {},
+          ),
+        ),
+      );
+
+      final semantics = tester.getSemantics(find.byType(DSEvidenceRow));
+      expect(semantics.label, contains('Evidence row: Tests passed'));
+      expect(semantics.flagsCollection.isButton, isTrue);
+
+      handle.dispose();
+    });
+
     testWidgets('onTap fires callback', (tester) async {
       var tapped = false;
       await tester.pumpWidget(
@@ -509,6 +565,30 @@ void main() {
       );
       expect(find.text('2026-06-07'), findsOneWidget);
       expect(find.text('Backbone models created'), findsOneWidget);
+    });
+
+    testWidgets('provides correct semantics', (tester) async {
+      final handle = tester.ensureSemantics();
+      await tester.pumpWidget(
+        MaterialApp(
+          home: DSTimelineMarker(
+            date: '2026-06-07',
+            title: 'Backbone models created',
+            selected: true,
+            onTap: () {},
+          ),
+        ),
+      );
+
+      final semantics = tester.getSemantics(find.byType(DSTimelineMarker));
+      expect(
+        semantics.label,
+        contains('Timeline entry: Backbone models created'),
+      );
+      expect(semantics.flagsCollection.isButton, isTrue);
+      expect(semantics.flagsCollection.isSelected, ui.Tristate.isTrue);
+
+      handle.dispose();
     });
 
     testWidgets('renders type badge when provided', (tester) async {
@@ -560,6 +640,8 @@ void main() {
           ),
         ),
       );
+
+      // Implicitly handled by the semantics test above, but we keep this test to prove the tree contains the widget
       expect(find.text('Selected'), findsOneWidget);
     });
 
@@ -658,5 +740,238 @@ void main() {
         expect(DSStateType.values.length, 7);
       },
     );
+  });
+
+  // ===========================================================================
+  // Interactive accessibility contract (keyboard / min-target / enabled)
+  // ===========================================================================
+  group('interactive molecule accessibility contract', () {
+    Future<void> pumpInteractive(WidgetTester tester, Widget child) async {
+      await tester.pumpWidget(MaterialApp(home: Scaffold(body: child)));
+    }
+
+    Future<void> expectKeyboardActivation(
+      WidgetTester tester, {
+      required Finder focusTarget,
+      required FocusNode focusNode,
+      required ValueGetter<int> activations,
+    }) async {
+      final before = activations();
+      await tester.tap(focusTarget);
+      await tester.pump();
+      expect(activations(), before + 1);
+
+      focusNode.requestFocus();
+      await tester.pump();
+      expect(focusNode.hasFocus, isTrue);
+      expect(FocusManager.instance.primaryFocus, same(focusNode));
+
+      await tester.sendKeyEvent(LogicalKeyboardKey.enter);
+      await tester.pump();
+      expect(activations(), before + 2);
+
+      await tester.sendKeyEvent(LogicalKeyboardKey.space);
+      await tester.pump();
+      expect(activations(), before + 3);
+    }
+
+    void expectMinTarget(WidgetTester tester, Finder finder) {
+      final size = tester.getSize(finder);
+      expect(size.width, greaterThanOrEqualTo(48));
+      expect(size.height, greaterThanOrEqualTo(48));
+    }
+
+    testWidgets('DSAssetCard interactive contract', (tester) async {
+      final handle = tester.ensureSemantics();
+      final focusNode = FocusNode();
+      addTearDown(focusNode.dispose);
+      var taps = 0;
+      await pumpInteractive(
+        tester,
+        DSAssetCard(
+          name: 'focusable',
+          kind: 'agent',
+          focusNode: focusNode,
+          onTap: () => taps++,
+        ),
+      );
+
+      final interactive = tester.getSemantics(find.byType(DSAssetCard));
+      expect(interactive.flagsCollection.isButton, isTrue);
+      expect(interactive.flagsCollection.isEnabled, ui.Tristate.isTrue);
+      expectMinTarget(tester, find.byType(DSAssetCard));
+      await expectKeyboardActivation(
+        tester,
+        focusTarget: find.text('focusable'),
+        focusNode: focusNode,
+        activations: () => taps,
+      );
+
+      await pumpInteractive(
+        tester,
+        const DSAssetCard(name: 'static', kind: 'agent'),
+      );
+      final passive = tester.getSemantics(find.byType(DSAssetCard));
+      expect(passive.flagsCollection.isButton, isFalse);
+      expect(passive.flagsCollection.isEnabled, ui.Tristate.isFalse);
+      handle.dispose();
+    });
+
+    testWidgets('DSMetricTile interactive contract', (tester) async {
+      final handle = tester.ensureSemantics();
+      final focusNode = FocusNode();
+      addTearDown(focusNode.dispose);
+      var taps = 0;
+      await pumpInteractive(
+        tester,
+        DSMetricTile(
+          label: 'Agents',
+          value: '9',
+          focusNode: focusNode,
+          onTap: () => taps++,
+        ),
+      );
+
+      final interactive = tester.getSemantics(find.byType(DSMetricTile));
+      expect(interactive.flagsCollection.isButton, isTrue);
+      expect(interactive.flagsCollection.isEnabled, ui.Tristate.isTrue);
+      expectMinTarget(tester, find.byType(DSMetricTile));
+      await expectKeyboardActivation(
+        tester,
+        focusTarget: find.text('Agents'),
+        focusNode: focusNode,
+        activations: () => taps,
+      );
+
+      await pumpInteractive(
+        tester,
+        const DSMetricTile(label: 'Passive', value: '0'),
+      );
+      final passive = tester.getSemantics(find.byType(DSMetricTile));
+      expect(passive.flagsCollection.isButton, isFalse);
+      expect(passive.flagsCollection.isEnabled, ui.Tristate.isFalse);
+      handle.dispose();
+    });
+
+    testWidgets('DSMetricTileCompact interactive contract', (tester) async {
+      final handle = tester.ensureSemantics();
+      final focusNode = FocusNode();
+      addTearDown(focusNode.dispose);
+      var taps = 0;
+      await pumpInteractive(
+        tester,
+        DSMetricTileCompact(
+          label: 'Tasks',
+          value: '20',
+          focusNode: focusNode,
+          onTap: () => taps++,
+        ),
+      );
+
+      final interactive = tester.getSemantics(find.byType(DSMetricTileCompact));
+      expect(interactive.flagsCollection.isButton, isTrue);
+      expect(interactive.flagsCollection.isEnabled, ui.Tristate.isTrue);
+      expectMinTarget(tester, find.byType(DSMetricTileCompact));
+      await expectKeyboardActivation(
+        tester,
+        focusTarget: find.text('Tasks'),
+        focusNode: focusNode,
+        activations: () => taps,
+      );
+      handle.dispose();
+    });
+
+    testWidgets('DSEvidenceRow interactive contract', (tester) async {
+      final handle = tester.ensureSemantics();
+      final focusNode = FocusNode();
+      addTearDown(focusNode.dispose);
+      var taps = 0;
+      await pumpInteractive(
+        tester,
+        DSEvidenceRow(
+          label: 'Coverage',
+          state: DSEvidenceState.verified,
+          focusNode: focusNode,
+          onTap: () => taps++,
+        ),
+      );
+
+      final interactive = tester.getSemantics(find.byType(DSEvidenceRow));
+      expect(interactive.flagsCollection.isButton, isTrue);
+      expect(interactive.flagsCollection.isEnabled, ui.Tristate.isTrue);
+      expectMinTarget(tester, find.byType(DSEvidenceRow));
+      await expectKeyboardActivation(
+        tester,
+        focusTarget: find.text('Coverage'),
+        focusNode: focusNode,
+        activations: () => taps,
+      );
+      handle.dispose();
+    });
+
+    testWidgets('DSTimelineMarker interactive contract', (tester) async {
+      final handle = tester.ensureSemantics();
+      final focusNode = FocusNode();
+      addTearDown(focusNode.dispose);
+      var taps = 0;
+      await pumpInteractive(
+        tester,
+        DSTimelineMarker(
+          date: '2026-07-09',
+          title: 'Timeline focus',
+          focusNode: focusNode,
+          onTap: () => taps++,
+        ),
+      );
+
+      final interactive = tester.getSemantics(find.byType(DSTimelineMarker));
+      expect(interactive.flagsCollection.isButton, isTrue);
+      expect(interactive.flagsCollection.isEnabled, ui.Tristate.isTrue);
+      expectMinTarget(tester, find.byType(DSTimelineMarker));
+      await expectKeyboardActivation(
+        tester,
+        focusTarget: find.text('Timeline focus'),
+        focusNode: focusNode,
+        activations: () => taps,
+      );
+      handle.dispose();
+    });
+
+    testWidgets('DSTaskCard interactive contract', (tester) async {
+      final handle = tester.ensureSemantics();
+      final focusNode = FocusNode();
+      addTearDown(focusNode.dispose);
+      var taps = 0;
+      await pumpInteractive(
+        tester,
+        DSTaskCard(
+          id: 15,
+          title: 'Task focus',
+          lane: '02-doing',
+          focusNode: focusNode,
+          onTap: () => taps++,
+        ),
+      );
+
+      final interactive = tester.getSemantics(find.byType(DSTaskCard));
+      expect(interactive.flagsCollection.isButton, isTrue);
+      expect(interactive.flagsCollection.isEnabled, ui.Tristate.isTrue);
+      expectMinTarget(tester, find.byType(DSTaskCard));
+      await expectKeyboardActivation(
+        tester,
+        focusTarget: find.text('Task focus'),
+        focusNode: focusNode,
+        activations: () => taps,
+      );
+
+      await pumpInteractive(
+        tester,
+        const DSTaskCard(id: 1, title: 'Static task', lane: '01-open'),
+      );
+      final passive = tester.getSemantics(find.byType(DSTaskCard));
+      expect(passive.flagsCollection.isButton, isFalse);
+      expect(passive.flagsCollection.isEnabled, ui.Tristate.isFalse);
+      handle.dispose();
+    });
   });
 }

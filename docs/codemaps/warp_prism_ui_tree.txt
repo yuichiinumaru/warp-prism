@@ -1,0 +1,157 @@
+╭───────────────────────────── lib ──────────────────────────────╮
+│ Files: 172 | Size: 1.6MB                                       │
+│ Top Extensions: .dart (172)                                    │
+╰────────────────────────────────────────────────────────────────╯
+[1mlib[0m
+├── [1;34m  src/[0m [2m(171 files, 1.6MB)[0m
+│   ├── [1;34m  atoms/[0m [2m(10 files, 52.1KB, all .dart)[0m
+│   │   └── [36matoms[0m[2m[0m          [36mds_glass_panel[0m[2m[0m [36mds_status_dot[0m[2m[0m  
+│   │       [36mds_badge[0m[2m[0m       [36mds_glow_border[0m[2m[0m [36mds_text[0m[2m[0m        
+│   │       [36mds_chip[0m[2m[0m        [36mds_icon[0m[2m[0m        
+│   │       [36mds_divider[0m[2m[0m     [36mds_sparkline[0m[2m[0m   
+│   ├── [1;34m  gallery/[0m [2m(3 files, 224.7KB, all .dart)[0m
+│   │   └── [36mdesign_system_gallery_page[0m[2m[0m        
+│   │       [36mdesign_system_gallery_registry[0m[2m[0m    
+│   │       [1m[36m⭐️ design_system_gallery_sections[0m[2m[0m 
+│   ├── [1;34m  molecules/[0m [2m(22 files, 125.5KB, all .dart)[0m
+│   │   └── [36mds_asset_card[0m[2m[0m          [36mds_shimmer[0m[2m[0m             
+│   │       [36mds_draggable_card[0m[2m[0m      [36mds_skeleton_card[0m[2m[0m       
+│   │       [36mds_drop_target[0m[2m[0m         [36mds_skeleton_table_rows[0m[2m[0m 
+│   │       [36mds_evidence_row[0m[2m[0m        [36mds_skeleton_text_line[0m[2m[0m  
+│   │       [36mds_filter_chip_group[0m[2m[0m   [36mds_state_surface[0m[2m[0m       
+│   │       [36mds_health_card[0m[2m[0m         [36mds_task_card[0m[2m[0m           
+│   │       [36mds_interactive_surface[0m[2m[0m [36mds_timeline_marker[0m[2m[0m     
+│   │       [36mds_metric_tile[0m[2m[0m         [36mds_toast[0m[2m[0m               
+│   │       [36mds_provenance_pill[0m[2m[0m     [36mds_toast_manager[0m[2m[0m       
+│   │       [36mds_scale_measure_bar[0m[2m[0m   [36mds_uptime_bar[0m[2m[0m          
+│   │       [36mds_search_bar[0m[2m[0m          [36mmolecules[0m[2m[0m              
+│   ├── [1;34m  organisms/[0m [2m(122 files, 1.1MB, all .dart)[0m
+│   │   ├── [1;34m  agent_shell_panel/[0m [2m(2 files, 11.2KB, all .dart)[0m
+│   │   │   └── [36magent_shell_panel[0m[2m[0m    [36mds_agent_shell_panel[0m[2m[0m 
+│   │   ├── [1;34m  agent_transcript/[0m [2m(3 files, 21.6KB, all .dart)[0m
+│   │   │   └── [36magent_transcript[0m[2m[0m    [36mds_agent_transcript[0m[2m[0m 
+│   │   │       [36mds_agent_message[0m[2m[0m    
+│   │   ├── [1;34m  ai_analyst_panel/[0m [2m(2 files, 39.5KB, all .dart)[0m
+│   │   │   └── [36mai_analyst_panel[0m[2m[0m    [36mds_ai_analyst_panel[0m[2m[0m 
+│   │   ├── [1;34m  artifact_workbench/[0m [2m(2 files, 26.0KB, all .dart)[0m
+│   │   │   └── [36martifact_workbench[0m[2m[0m    [36mds_artifact_workbench[0m[2m[0m 
+│   │   ├── [1;34m  code_block/[0m [2m(14.8KB)[0m
+│   │   │   └── [36mds_code_block.dart[0m[2m[0m 
+│   │   ├── [1;34m  command_palette/[0m [2m(2 files, 30.0KB, all .dart)[0m
+│   │   │   └── [36mcommand_palette[0m[2m[0m    [36mds_command_palette[0m[2m[0m 
+│   │   ├── [1;34m  connector_panel/[0m [2m(2 files, 10.5KB, all .dart)[0m
+│   │   │   └── [36mconnector_panel[0m[2m[0m    [36mds_connector_panel[0m[2m[0m 
+│   │   ├── [1;34m  coordinate_status_bar/[0m [2m(2 files, 11.8KB, all .dart)[0m
+│   │   │   └── [36mcoordinate_status_bar[0m[2m[0m    [36mds_coordinate_status_bar[0m[2m[0m 
+│   │   ├── [1;34m  data_table/[0m [2m(34.3KB)[0m
+│   │   │   └── [36mds_data_table.dart[0m[2m[0m 
+│   │   ├── [1;34m  entity_intel_panel/[0m [2m(2 files, 23.1KB, all .dart)[0m
+│   │   │   └── [36mds_entity_intel_panel[0m[2m[0m [36mentity_intel_panel[0m[2m[0m    
+│   │   ├── [1;34m  entity_locate_search/[0m [2m(2 files, 29.4KB, all .dart)[0m
+│   │   │   └── [36mds_entity_locate_search[0m[2m[0m [36mentity_locate_search[0m[2m[0m    
+│   │   ├── [1;34m  entity_relation_card/[0m [2m(4 files, 19.3KB, all .dart)[0m
+│   │   │   └── [36mds_entity_relation_card[0m[2m[0m       
+│   │   │       [36mentity_relation_card[0m[2m[0m          
+│   │   │       [36mentity_relation_card_legend[0m[2m[0m   
+│   │   │       [36mentity_relation_card_sections[0m[2m[0m 
+│   │   ├── [1;34m  execution_console/[0m [2m(2 files, 44.2KB, all .dart)[0m
+│   │   │   └── [1m[36m⭐️ ds_execution_console[0m[2m[0m [36mexecution_console[0m[2m[0m       
+│   │   ├── [1;34m  filter_workbench/[0m [2m(2 files, 42.6KB, all .dart)[0m
+│   │   │   └── [36mds_filter_workbench[0m[2m[0m [36mfilter_workbench[0m[2m[0m    
+│   │   ├── [1;34m  floating_analytics_hud/[0m [2m(6 files, 30.5KB, all .dart)[0m
+│   │   │   └── [36mds_floating_analytics_fixtures[0m[2m[0m       
+│   │   │       [36mds_floating_analytics_hud[0m[2m[0m            
+│   │   │       [36mds_floating_analytics_hud_chrome[0m[2m[0m     
+│   │   │       [36mds_floating_analytics_hud_controller[0m[2m[0m 
+│   │   │       [36mds_floating_analytics_models[0m[2m[0m         
+│   │   │       [36mfloating_analytics_hud[0m[2m[0m               
+│   │   ├── [1;34m  graph/[0m [2m(6 files, 32.1KB, all .dart)[0m
+│   │   │   └── [36mforce_directed_layout[0m[2m[0m [36mgraph_layout_engine[0m[2m[0m   
+│   │   │       [36mgraph[0m[2m[0m                 [36mgraph_model[0m[2m[0m           
+│   │   │       [36mgraph_canvas[0m[2m[0m          [36mgraph_painter[0m[2m[0m         
+│   │   ├── [1;34m  keyboard_cheatsheet/[0m [2m(2 files, 14.9KB, all .dart)[0m
+│   │   │   └── [36mds_keyboard_cheatsheet[0m[2m[0m [36mkeyboard_cheatsheet[0m[2m[0m    
+│   │   ├── [1;34m  layer_control_panel/[0m [2m(2 files, 29.7KB, all .dart)[0m
+│   │   │   └── [36mds_layer_control_panel[0m[2m[0m [36mlayer_control_panel[0m[2m[0m    
+│   │   ├── [1;34m  log_viewer/[0m [2m(6 files, 24.1KB, all .dart)[0m
+│   │   │   └── [36mds_log_entry_model[0m[2m[0m  [36mds_log_severity[0m[2m[0m     
+│   │   │       [36mds_log_entry_widget[0m[2m[0m [36mds_log_viewer[0m[2m[0m       
+│   │   │       [36mds_log_filter_bar[0m[2m[0m   [36mlog_viewer[0m[2m[0m          
+│   │   ├── [1;34m  map_canvas_stage/[0m [2m(5 files, 40.4KB, all .dart)[0m
+│   │   │   └── [36mds_map_canvas_stage[0m[2m[0m            
+│   │   │       [36mds_map_canvas_stage_controller[0m[2m[0m 
+│   │   │       [36mmap_canvas_stage[0m[2m[0m               
+│   │   │       [36mmap_stage_contracts[0m[2m[0m            
+│   │   │       [36mmap_stage_placeholder_widgets[0m[2m[0m  
+│   │   ├── [1;34m  map_hud_workspace/[0m [2m(2 files, 9.8KB, all .dart)[0m
+│   │   │   └── [36mds_map_hud_workspace[0m[2m[0m [36mmap_hud_workspace[0m[2m[0m    
+│   │   ├── [1;34m  map_legend/[0m [2m(2 files, 20.9KB, all .dart)[0m
+│   │   │   └── [36mds_map_legend[0m[2m[0m [36mmap_legend[0m[2m[0m    
+│   │   ├── [1;34m  markdown_renderer/[0m [2m(14.0KB)[0m
+│   │   │   └── [36mds_markdown_renderer.dart[0m[2m[0m 
+│   │   ├── [1;34m  mcp_capability_inspector/[0m [2m(2 files, 50.5KB, all .dart)[0m
+│   │   │   └── [1m[36m⭐️ ds_mcp_capability_inspector[0m[2m[0m 
+│   │   │       [36mmcp_capability_inspector[0m[2m[0m       
+│   │   ├── [1;34m  media_detail_overlay/[0m [2m(2 files, 17.9KB, all .dart)[0m
+│   │   │   └── [36mds_media_detail_overlay[0m[2m[0m [36mmedia_detail_overlay[0m[2m[0m    
+│   │   ├── [1;34m  message_status_history/[0m [2m(2 files, 12.2KB, all .dart)[0m
+│   │   │   └── [36mds_message_status_history[0m[2m[0m [36mmessage_status_history[0m[2m[0m    
+│   │   ├── [1;34m  ops_control_cluster/[0m [2m(2 files, 14.1KB, all .dart)[0m
+│   │   │   └── [36mds_ops_control_cluster[0m[2m[0m [36mops_control_cluster[0m[2m[0m    
+│   │   ├── [1;34m  osint_workbench/[0m [2m(2 files, 43.2KB, all .dart)[0m
+│   │   │   └── [1m[36m⭐️ ds_osint_workbench[0m[2m[0m [36mosint_workbench[0m[2m[0m       
+│   │   ├── [1;34m  page_shell/[0m [2m(2 files, 8.1KB, all .dart)[0m
+│   │   │   └── [36mds_page_shell[0m[2m[0m [36mpage_shell[0m[2m[0m    
+│   │   ├── [1;34m  provider_health_matrix/[0m [2m(2 files, 23.5KB, all .dart)[0m
+│   │   │   └── [36mds_provider_health_matrix[0m[2m[0m [36mprovider_health_matrix[0m[2m[0m    
+│   │   ├── [1;34m  split_pane/[0m [2m(2 files, 11.6KB, all .dart)[0m
+│   │   │   └── [36mds_split_pane[0m[2m[0m [36msplit_pane[0m[2m[0m    
+│   │   ├── [1;34m  status_ticker/[0m [2m(2 files, 23.4KB, all .dart)[0m
+│   │   │   └── [36mds_status_ticker[0m[2m[0m [36mstatus_ticker[0m[2m[0m    
+│   │   ├── [1;34m  tab_bar/[0m [2m(5 files, 25.6KB, all .dart)[0m
+│   │   │   └── [36mds_tab[0m[2m[0m            [36mds_tab_view[0m[2m[0m       
+│   │   │       [36mds_tab_bar[0m[2m[0m        [36mtab_bar[0m[2m[0m           
+│   │   │       [36mds_tab_controller[0m[2m[0m 
+│   │   ├── [1;34m  terminal_workspace/[0m [2m(3 files, 26.2KB, all .dart)[0m
+│   │   │   └── [36mds_terminal_workspace[0m[2m[0m        
+│   │   │       [36mds_terminal_workspace_models[0m[2m[0m 
+│   │   │       [36mterminal_workspace[0m[2m[0m           
+│   │   ├── [1;34m  time_machine_scrubber/[0m [2m(2 files, 26.4KB, all .dart)[0m
+│   │   │   └── [36mds_time_machine_scrubber[0m[2m[0m [36mtime_machine_scrubber[0m[2m[0m    
+│   │   ├── [1;34m  timing_waterfall/[0m [2m(2 files, 16.2KB, all .dart)[0m
+│   │   │   └── [36mds_timing_waterfall[0m[2m[0m [36mtiming_waterfall[0m[2m[0m    
+│   │   ├── [1;34m  tool_call_card/[0m [2m(2 files, 17.1KB, all .dart)[0m
+│   │   │   └── [36mds_tool_call_card[0m[2m[0m [36mtool_call_card[0m[2m[0m    
+│   │   ├── [1;34m  tool_strip_slideout/[0m [2m(2 files, 15.6KB, all .dart)[0m
+│   │   │   └── [36mds_tool_strip_slideout[0m[2m[0m [36mtool_strip_slideout[0m[2m[0m    
+│   │   ├── [1;34m  traffic_inspector/[0m [2m(2 files, 32.1KB, all .dart)[0m
+│   │   │   └── [36mds_traffic_inspector[0m[2m[0m [36mtraffic_inspector[0m[2m[0m    
+│   │   ├── [1;34m  tree/[0m [2m(3 files, 21.6KB, all .dart)[0m
+│   │   │   └── [36mds_tree[0m[2m[0m      [36mds_tree_node[0m[2m[0m [36mtree[0m[2m[0m         
+│   │   ├── [1;34m  view_presets/[0m [2m(2 files, 6.1KB, all .dart)[0m
+│   │   │   └── [36mds_view_presets[0m[2m[0m [36mview_presets[0m[2m[0m    
+│   │   ├── [1;34m  virtual_scroll/[0m [2m(2 files, 15.9KB, all .dart)[0m
+│   │   │   └── [36mds_virtual_scroll[0m[2m[0m [36mvirtual_scroll[0m[2m[0m    
+│   │   ├── [1;34m  watchlist_dock/[0m [2m(2 files, 18.8KB, all .dart)[0m
+│   │   │   └── [36mds_watchlist_dock[0m[2m[0m [36mwatchlist_dock[0m[2m[0m    
+│   │   ├── [1;34m  workflow_canvas_stage/[0m [2m(2 files, 35.0KB, all .dart)[0m
+│   │   │   └── [36mds_workflow_canvas_stage[0m[2m[0m [36mworkflow_canvas_stage[0m[2m[0m    
+│   │   ├── [1;34m  workspace_share_card/[0m [2m(2 files, 8.5KB, all .dart)[0m
+│   │   │   └── [36mds_workspace_share_card[0m[2m[0m [36mworkspace_share_card[0m[2m[0m    
+│   │   └── [36mds_detail_inspector[0m[2m[0m [36mds_sidebar[0m[2m[0m          
+│   │       [36mds_error_boundary[0m[2m[0m   [36mds_status_grid[0m[2m[0m      
+│   │       [36mds_fallback_view[0m[2m[0m    [36mds_story_panel[0m[2m[0m      
+│   │       [36mds_graph_canvas[0m[2m[0m     [36mds_timeline[0m[2m[0m         
+│   │       [36mds_lane_board[0m[2m[0m       [36mds_topbar[0m[2m[0m           
+│   │       [36mds_shell[0m[2m[0m            [36morganisms[0m[2m[0m           
+│   ├── [1;34m  templates/[0m [2m(2 files, 16.0KB, all .dart)[0m
+│   │   └── [36mmaster_detail_template[0m[2m[0m [36mtemplates[0m[2m[0m              
+│   ├── [1;34m  tokens/[0m [2m(11 files, 49.4KB, all .dart)[0m
+│   │   └── [36mds_breakpoints[0m[2m[0m         [36mds_semantics[0m[2m[0m           
+│   │       [36mds_colors[0m[2m[0m              [36mds_shadows[0m[2m[0m             
+│   │       [36mds_cybercore_teal_skin[0m[2m[0m [36mds_spacing[0m[2m[0m             
+│   │       [36mds_motion[0m[2m[0m              [36mds_typography[0m[2m[0m          
+│   │       [36mds_operational_state[0m[2m[0m   [36mtokens[0m[2m[0m                 
+│   │       [36mds_radii[0m[2m[0m               
+│   └── [1m[36m⭐️ prism_aliases.dart[0m[2m[0m 
+└── [36mwarp_prism_ui.dart[0m[2m[0m 

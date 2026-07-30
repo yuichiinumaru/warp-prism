@@ -2,14 +2,14 @@
 ///
 /// Gives warp-prism a real Map route with a feature-local state contract
 /// and a DS-composed shell hosting the catalog panel, graph panel, and
-/// inspector panel.
+/// universal [AssetDetailView] via [AssetDetailConsumer].
 ///
 /// The page exposes four subviews: Agents, Skills, Workflows, and Graph.
 /// The first three render the catalog panel with search, filters, and
 /// asset cards driven by repository data. Graph renders the interactive
 /// graph canvas. All subviews share a single selection state via
-/// [MapSelectionController], and the inspector panel renders asset
-/// details for the selected asset.
+/// [MapSelectionController]; selection opens the shared responsive detail
+/// shell with descriptor-backed [AssetDetailView].
 library;
 
 import 'package:flutter/material.dart';
@@ -20,49 +20,64 @@ import 'map_workspace_provider.dart';
 import 'map_selection_controller.dart';
 import 'widgets/map_catalog_panel.dart';
 import 'widgets/map_graph_panel.dart';
-import 'widgets/map_inspector_panel.dart';
 import 'widgets/map_state_panel.dart';
 import 'graph/map_graph_projection.dart';
 
-/// Map workspace page with four tabs and an inspector panel.
+/// Map workspace page with four tabs and shared responsive asset detail.
 ///
 /// This page is a StatefulWidget that manages its own [MapWorkspaceProvider].
-/// It composes DS primitives and renders the catalog panel for the three
-/// catalog tabs (Agents, Skills, Workflows), the graph panel for Graph,
-/// and an inspector panel when an asset is selected.
+/// It composes public [Prism]* primitives and renders the catalog panel for
+/// the three catalog tabs (Agents, Skills, Workflows), the graph panel for
+/// Graph, and [AssetDetailView] when an asset is selected.
 class MapWorkspacePage extends StatefulWidget {
-  /// Optional initial state for testing.
+  /// Optional initial state for testing / parent shell injection.
   final MapWorkspaceState? initialState;
 
-  const MapWorkspacePage({super.key, this.initialState});
+  /// Optional retry callback for workspace reload (e.g. invalidate
+  /// [workspaceSnapshotAsyncProvider] from [MapPageShell]).
+  ///
+  /// When null, the error Retry control only clears the local error flag
+  /// (test-friendly). When set, Retry invokes this callback so the shell
+  /// reloads the workspace snapshot rather than papering over the error.
+  final VoidCallback? onRetry;
+
+  const MapWorkspacePage({super.key, this.initialState, this.onRetry});
 
   @override
   State<MapWorkspacePage> createState() => _MapWorkspacePageState();
 }
 
-class _MapWorkspacePageState extends State<MapWorkspacePage>
-    with SingleTickerProviderStateMixin {
+class _MapWorkspacePageState extends State<MapWorkspacePage> {
   late final MapWorkspaceProvider _provider;
   late final MapSelectionController _selectionController;
-  late final TabController _tabController;
+  late final PrismTabController _tabController;
 
+  /// Fixed Map subviews — order is the public tab contract for Task 0510.
   static const _tabs = [
     (
       subview: MapSubview.agents,
+      id: 'agents',
       label: 'Agents',
       icon: Icons.smart_toy_outlined,
     ),
     (
       subview: MapSubview.skills,
+      id: 'skills',
       label: 'Skills',
       icon: Icons.psychology_outlined,
     ),
     (
       subview: MapSubview.workflows,
+      id: 'workflows',
       label: 'Workflows',
       icon: Icons.account_tree_outlined,
     ),
-    (subview: MapSubview.graph, label: 'Graph', icon: Icons.hub_outlined),
+    (
+      subview: MapSubview.graph,
+      id: 'graph',
+      label: 'Graph',
+      icon: Icons.hub_outlined,
+    ),
   ];
 
   @override
@@ -70,13 +85,40 @@ class _MapWorkspacePageState extends State<MapWorkspacePage>
     super.initState();
     _provider = MapWorkspaceProvider(initialState: widget.initialState);
     _selectionController = MapSelectionController(_provider);
-    _tabController = TabController(length: _tabs.length, vsync: this);
 
-    // Sync tab controller with state
-    _tabController.index = _tabs.indexWhere(
+    final initialIndex = _tabs.indexWhere(
       (t) => t.subview == _provider.state.activeSubview,
     );
+    // Content is rendered from MapWorkspaceState via IndexedStack below;
+    // PrismTab only needs headers for the public PrismTabBar surface.
+    _tabController = PrismTabController(
+      tabs: [
+        for (final t in _tabs)
+          PrismTab(
+            id: t.id,
+            label: t.label,
+            icon: t.icon,
+            content: (_) => const SizedBox.shrink(),
+          ),
+      ],
+      activeIndex: initialIndex < 0 ? 0 : initialIndex,
+    );
     _tabController.addListener(_onTabChanged);
+  }
+
+  @override
+  void didUpdateWidget(MapWorkspacePage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Merge every new parent-provided state *instance*. Do not gate solely on
+    // [MapWorkspaceState.==]: [WorkspaceAsset.==] is identity-light
+    // (id/kind/name/path/canonicality) and can miss description/tags/triggers/
+    // edges updates that must still refresh the catalog. [syncState] is
+    // merge-safe for interactive UI fields.
+    if (widget.initialState != null &&
+        !identical(widget.initialState, oldWidget.initialState)) {
+      _provider.syncState(widget.initialState!);
+      _syncTabControllerToState(_provider.state.activeSubview);
+    }
   }
 
   @override
@@ -88,9 +130,16 @@ class _MapWorkspacePageState extends State<MapWorkspacePage>
   }
 
   void _onTabChanged() {
-    if (!_tabController.indexIsChanging) return;
-    final subview = _tabs[_tabController.index].subview;
-    _provider.changeSubview(subview);
+    final index = _tabController.activeIndex;
+    if (index < 0 || index >= _tabs.length) return;
+    _provider.changeSubview(_tabs[index].subview);
+  }
+
+  void _syncTabControllerToState(MapSubview subview) {
+    final index = _tabs.indexWhere((t) => t.subview == subview);
+    if (index >= 0 && index != _tabController.activeIndex) {
+      _tabController.select(index);
+    }
   }
 
   void _onQueryChanged(String query) {
@@ -109,8 +158,18 @@ class _MapWorkspacePageState extends State<MapWorkspacePage>
     _selectionController.selectAsset(assetId);
   }
 
-  void _onNodeTap(GraphNode node) {
+  void _onNodeTap(PrismGraphNode node) {
     _selectionController.selectAsset(node.id);
+  }
+
+  /// Retry: prefer shell reload callback; fall back to clearing local error.
+  void _onRetry() {
+    final retry = widget.onRetry;
+    if (retry != null) {
+      retry();
+      return;
+    }
+    _provider.clearError();
   }
 
   @override
@@ -131,10 +190,7 @@ class _MapWorkspacePageState extends State<MapWorkspacePage>
               ? _selectionController.selectedAsset?.kind.name
               : null,
           detailBuilder: (context, assetId) {
-            return MapInspectorPanel(
-              controller: _selectionController,
-              onClose: () => _selectionController.deselectAsset(),
-            );
+            return _buildUniversalDetail(assetId, state);
           },
           child: _buildMasterContent(context, state),
         );
@@ -142,13 +198,41 @@ class _MapWorkspacePageState extends State<MapWorkspacePage>
     );
   }
 
+  /// Universal asset detail via descriptor → [AssetDetailView]
+  /// (Task 0905 path-to-100: no surface-local MapInspectorPanel).
+  Widget _buildUniversalDetail(String assetId, MapWorkspaceState state) {
+    final asset = _selectionController.selectedAsset;
+    if (asset == null) {
+      return const AssetDetailEmpty();
+    }
+
+    final allEdges = state.resolvedGraphEdges;
+    final assetNames = {for (final a in state.catalogAssets) a.id: a.name};
+    final descriptor = descriptorFromWorkspaceAsset(
+      asset,
+      allEdges: allEdges,
+      assetNames: assetNames,
+    );
+
+    return AssetDetailView(
+      descriptor: descriptor,
+      onClose: () => _selectionController.deselectAsset(),
+    );
+  }
+
   Widget _buildMasterContent(BuildContext context, MapWorkspaceState state) {
+    final activeIndex = _tabs
+        .indexWhere((t) => t.subview == state.activeSubview)
+        .clamp(0, _tabs.length - 1);
+
     return Column(
       children: [
-        _buildTabBar(context, state),
+        PrismTabBar(controller: _tabController),
         Expanded(
-          child: TabBarView(
-            controller: _tabController,
+          // IndexedStack keeps each subview mounted so catalog scroll/query
+          // state is not discarded when switching tabs.
+          child: IndexedStack(
+            index: activeIndex,
             children: [
               _buildCatalogTab(context, state, MapCatalogTab.agents),
               _buildCatalogTab(context, state, MapCatalogTab.skills),
@@ -158,44 +242,6 @@ class _MapWorkspacePageState extends State<MapWorkspacePage>
           ),
         ),
       ],
-    );
-  }
-
-  // ---------------------------------------------------------------------------
-  // Tab bar
-  // ---------------------------------------------------------------------------
-
-  Widget _buildTabBar(BuildContext context, MapWorkspaceState state) {
-    return Container(
-      decoration: BoxDecoration(
-        color: DSColors.obsidianBase,
-        border: Border(
-          bottom: BorderSide(color: DSColors.borderSubtle, width: 1),
-        ),
-      ),
-      child: TabBar(
-        controller: _tabController,
-        indicatorColor: DSColors.accentCyan,
-        indicatorSize: TabBarIndicatorSize.label,
-        labelColor: DSColors.accentCyan,
-        unselectedLabelColor: DSColors.textTertiary,
-        labelStyle: DSTypography.labelMedium,
-        unselectedLabelStyle: DSTypography.labelMedium,
-        tabs: _tabs
-            .map(
-              (t) => Tab(
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    DSIcon(t.icon, iconSize: DSIconSize.small),
-                    const SizedBox(width: DSSpacing.xs),
-                    Text(t.label),
-                  ],
-                ),
-              ),
-            )
-            .toList(),
-      ),
     );
   }
 
@@ -222,17 +268,27 @@ class _MapWorkspacePageState extends State<MapWorkspacePage>
         state: MapSurfaceState.error,
         detail: state.error,
         actionLabel: 'Retry',
-        onAction: () => _provider.clearError(),
+        onAction: _onRetry,
       );
     }
 
-    // Empty corpus state (no assets at all for this tab)
+    // Empty corpus state (no assets at all in workspace)
     if (state.catalogAssets.isEmpty) {
-      return MapStatePanel(state: MapSurfaceState.emptyCorpus);
+      return const MapStatePanel(state: MapSurfaceState.emptyCorpus);
     }
 
-    // No-results state (query/filter eliminated all assets)
-    if (state.filteredAssets.isEmpty && state.assetsForTab.isNotEmpty) {
+    // Empty family: workspace has assets, but none for this catalog tab
+    // and no filters are hiding them.
+    if (state.assetsForTab.isEmpty && !state.hasFilters) {
+      return MapStatePanel(
+        state: MapSurfaceState.emptyFamily,
+        detail: 'No ${tab.label.toLowerCase()} in this workspace corpus.',
+      );
+    }
+
+    // No-results: query/filter eliminated all visible assets for this tab
+    // (includes empty-family + active filters, not only non-empty families).
+    if (state.filteredAssets.isEmpty) {
       return MapStatePanel(
         state: MapSurfaceState.noResults,
         query: state.query,
@@ -263,7 +319,7 @@ class _MapWorkspacePageState extends State<MapWorkspacePage>
   Widget _buildGraphTab(BuildContext context, MapWorkspaceState state) {
     // Loading state
     if (state.isLoading) {
-      return MapStatePanel(
+      return const MapStatePanel(
         state: MapSurfaceState.loading,
         detail: 'Loading graph data...',
       );
@@ -275,17 +331,18 @@ class _MapWorkspacePageState extends State<MapWorkspacePage>
         state: MapSurfaceState.error,
         detail: state.error,
         actionLabel: 'Retry',
-        onAction: () => _provider.clearError(),
+        onAction: _onRetry,
       );
     }
 
     // Empty corpus
     if (state.catalogAssets.isEmpty) {
-      return MapStatePanel(state: MapSurfaceState.emptyCorpus);
+      return const MapStatePanel(state: MapSurfaceState.emptyCorpus);
     }
 
-    // Build edges from all catalog assets
-    final allEdges = state.catalogAssets.expand((a) => a.edges).toList();
+    // Prefer WorkspaceGraphBuilder edges (inferred + frontmatter) when the
+    // shell injected them; fall back to per-asset frontmatter edges in tests.
+    final allEdges = state.resolvedGraphEdges;
 
     // Compute the graph projection for the current mode
     final projection = projectGraph(
@@ -294,11 +351,8 @@ class _MapWorkspacePageState extends State<MapWorkspacePage>
       mode: state.activeGraphMode,
     );
 
-    // Graph no-edges state
-    if (projection.isEmpty) {
-      return MapStatePanel(state: MapSurfaceState.graphNoEdges);
-    }
-
+    // Keep the graph panel (and mode selector) mounted even when the active
+    // mode has zero edges so users can switch modes without leaving Graph.
     return MapGraphPanel(
       projection: projection,
       onModeChanged: (mode) => _provider.changeGraphMode(mode),

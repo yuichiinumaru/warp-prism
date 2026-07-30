@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../tokens/tokens.dart';
 import '../atoms/atoms.dart';
+import 'ds_interactive_surface.dart';
 
 /// ASW Observatory Molecule - Task Card
 ///
 /// Card for displaying task in lane board or list.
 /// Supports keyboard focus and activation.
-class DSTaskCard extends StatefulWidget {
+///
+/// Remains a separate auxiliary molecule from [DSAssetCard]: task-lane fields
+/// (priority, proof state, owner, review score, dependencies, linked skills)
+/// have no equivalent in the generic asset-card contract.
+class DSTaskCard extends StatelessWidget {
   final int id;
   final String title;
   final String lane;
@@ -19,6 +23,7 @@ class DSTaskCard extends StatefulWidget {
   final int? dependencyCount;
   final bool selected;
   final VoidCallback? onTap;
+  final FocusNode? focusNode;
 
   const DSTaskCard({
     super.key,
@@ -33,20 +38,13 @@ class DSTaskCard extends StatefulWidget {
     this.dependencyCount,
     this.selected = false,
     this.onTap,
+    this.focusNode,
   });
 
-  @override
-  State<DSTaskCard> createState() => _DSTaskCardState();
-}
-
-class _DSTaskCardState extends State<DSTaskCard> {
-  bool _isFocused = false;
-  final FocusNode _focusNode = FocusNode();
-
-  Color get _laneColor => DSColors.forLane(widget.lane);
+  Color get _laneColor => DSColors.forLane(lane);
 
   Color get _proofColor {
-    switch (widget.proofState?.toLowerCase()) {
+    switch (proofState?.toLowerCase()) {
       case 'complete':
         return DSColors.statusSuccess;
       case 'partial':
@@ -59,179 +57,132 @@ class _DSTaskCardState extends State<DSTaskCard> {
   }
 
   @override
-  void dispose() {
-    _focusNode.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final bgColor = widget.selected
-        ? _laneColor.withOpacity(0.1)
+    final bgColor = selected
+        ? _laneColor.withValues(alpha: 0.1)
         : DSColors.obsidianElevated;
-    final borderColor = widget.selected
-        ? _laneColor.withOpacity(0.5)
+    final borderColor = selected
+        ? _laneColor.withValues(alpha: 0.5)
         : DSColors.borderSubtle;
 
-    // Build semantic label summarizing the card
-    final parts = <String>[
-      'Task ${widget.id}',
-      widget.title,
-      'lane ${widget.lane}',
-    ];
-    if (widget.priority != null) parts.add('priority ${widget.priority}');
-    if (widget.owner != null) parts.add('owner ${widget.owner}');
-    if (widget.proofState != null) parts.add('proof ${widget.proofState}');
+    final parts = <String>['Task $id', title, 'lane $lane'];
+    if (priority != null) parts.add('priority $priority');
+    if (owner != null) parts.add('owner $owner');
+    if (proofState != null) parts.add('proof $proofState');
 
-    return Semantics(
-      label: parts.join(', '),
-      button: true,
-      selected: widget.selected,
-      child: Focus(
-        focusNode: _focusNode,
-        onFocusChange: (focused) => setState(() => _isFocused = focused),
-        onKeyEvent: (node, event) {
-          if (event is KeyDownEvent) {
-            if (event.logicalKey == LogicalKeyboardKey.enter ||
-                event.logicalKey == LogicalKeyboardKey.space) {
-              widget.onTap?.call();
-              return KeyEventResult.handled;
-            }
-          }
-          return KeyEventResult.ignored;
-        },
-        child: GestureDetector(
-          onTap: widget.onTap,
-          child: MouseRegion(
-            cursor: SystemMouseCursors.click,
-            child: AnimatedContainer(
-              duration: DSMotion.fast,
-              padding: const EdgeInsets.all(DSSpacing.insetCardCompact),
-              decoration: BoxDecoration(
-                color: bgColor,
-                borderRadius: BorderRadius.circular(DSRadii.card),
-                border: Border.all(
-                  color: _isFocused
-                      ? DSColors.accentCyan.withOpacity(0.5)
-                      : borderColor,
-                  width: _isFocused ? 2 : 1,
+    return DSInteractiveSurface(
+      semanticLabel: parts.join(', '),
+      selected: selected,
+      onTap: onTap,
+      focusNode: focusNode,
+      excludeChildSemantics: true,
+      animationDuration: DSMotion.fast,
+      padding: const EdgeInsets.all(DSSpacing.insetCardCompact),
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: BorderRadius.circular(DSRadii.card),
+        border: Border.all(color: borderColor, width: 1),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header row
+          Row(
+            children: [
+              // Task ID
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: _laneColor.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(DSRadii.xs),
                 ),
+                child: DSText.code('#$id', color: _laneColor),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Header row
-                  Row(
-                    children: [
-                      // Task ID
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 6,
-                          vertical: 2,
-                        ),
-                        decoration: BoxDecoration(
-                          color: _laneColor.withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(DSRadii.xs),
-                        ),
-                        child: DSText.code('#${widget.id}', color: _laneColor),
-                      ),
-                      const SizedBox(width: DSSpacing.xs),
+              const SizedBox(width: DSSpacing.xs),
 
-                      // Priority
-                      if (widget.priority != null) ...[
-                        _PriorityBadge(priority: widget.priority!),
-                        const SizedBox(width: DSSpacing.xs),
-                      ],
+              // Priority
+              if (priority != null) ...[
+                _PriorityBadge(priority: priority!),
+                const SizedBox(width: DSSpacing.xs),
+              ],
 
-                      const Spacer(),
+              const Spacer(),
 
-                      // Proof state indicator
-                      if (widget.proofState != null)
-                        DSStatusDot(
-                          color: _proofColor,
-                          tooltip: 'Proof: ${widget.proofState}',
-                        ),
-                    ],
-                  ),
+              // Proof state indicator
+              if (proofState != null)
+                DSStatusDot(color: _proofColor, tooltip: 'Proof: $proofState'),
+            ],
+          ),
 
-                  const SizedBox(height: DSSpacing.sm),
+          const SizedBox(height: DSSpacing.sm),
 
-                  // Title
-                  DSText.bodyMedium(
-                    widget.title,
-                    maxLines: 2,
+          // Title
+          DSText.bodyMedium(
+            title,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+
+          const SizedBox(height: DSSpacing.sm),
+
+          // Footer row
+          Row(
+            children: [
+              // Owner
+              if (owner != null) ...[
+                const DSIcon.small(
+                  Icons.person_outline,
+                  color: DSColors.textTertiary,
+                ),
+                const SizedBox(width: 4),
+                Expanded(
+                  child: DSText.labelSmall(
+                    owner!,
+                    color: DSColors.textTertiary,
+                    maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
+                ),
+              ],
 
-                  const SizedBox(height: DSSpacing.sm),
+              // Dependency count
+              if (dependencyCount != null && dependencyCount! > 0) ...[
+                const SizedBox(width: DSSpacing.sm),
+                const DSIcon.small(DSIcons.link, color: DSColors.textTertiary),
+                const SizedBox(width: 2),
+                DSText.labelSmall(
+                  dependencyCount.toString(),
+                  color: DSColors.textTertiary,
+                ),
+              ],
 
-                  // Footer row
-                  Row(
-                    children: [
-                      // Owner
-                      if (widget.owner != null) ...[
-                        DSIcon.small(
-                          Icons.person_outline,
-                          color: DSColors.textTertiary,
-                        ),
-                        const SizedBox(width: 4),
-                        Expanded(
-                          child: DSText.labelSmall(
-                            widget.owner!,
-                            color: DSColors.textTertiary,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-
-                      // Dependency count
-                      if (widget.dependencyCount != null &&
-                          widget.dependencyCount! > 0) ...[
-                        const SizedBox(width: DSSpacing.sm),
-                        DSIcon.small(
-                          DSIcons.link,
-                          color: DSColors.textTertiary,
-                        ),
-                        const SizedBox(width: 2),
-                        DSText.labelSmall(
-                          widget.dependencyCount.toString(),
-                          color: DSColors.textTertiary,
-                        ),
-                      ],
-
-                      // Review score
-                      if (widget.reviewScore != null) ...[
-                        const SizedBox(width: DSSpacing.sm),
-                        _ReviewScore(score: widget.reviewScore!),
-                      ],
-                    ],
-                  ),
-
-                  // Linked skills
-                  if (widget.linkedSkills != null &&
-                      widget.linkedSkills!.isNotEmpty) ...[
-                    const SizedBox(height: DSSpacing.sm),
-                    Wrap(
-                      spacing: 4,
-                      runSpacing: 4,
-                      children: widget.linkedSkills!
-                          .take(2)
-                          .map(
-                            (skill) => DSChip(
-                              label: skill,
-                              size: DSChipSize.small,
-                              color: DSColors.assetSkill,
-                            ),
-                          )
-                          .toList(),
-                    ),
-                  ],
-                ],
-              ),
-            ),
+              // Review score
+              if (reviewScore != null) ...[
+                const SizedBox(width: DSSpacing.sm),
+                _ReviewScore(score: reviewScore!),
+              ],
+            ],
           ),
-        ),
+
+          // Linked skills
+          if (linkedSkills != null && linkedSkills!.isNotEmpty) ...[
+            const SizedBox(height: DSSpacing.sm),
+            Wrap(
+              spacing: 4,
+              runSpacing: 4,
+              children: linkedSkills!
+                  .take(2)
+                  .map(
+                    (skill) => DSChip(
+                      label: skill,
+                      size: DSChipSize.small,
+                      color: DSColors.assetSkill,
+                    ),
+                  )
+                  .toList(),
+            ),
+          ],
+        ],
       ),
     );
   }
@@ -262,7 +213,7 @@ class _PriorityBadge extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
         decoration: BoxDecoration(
-          color: _color.withOpacity(0.15),
+          color: _color.withValues(alpha: 0.15),
           borderRadius: BorderRadius.circular(DSRadii.xs),
         ),
         child: Text(
@@ -296,7 +247,7 @@ class _ReviewScore extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
         decoration: BoxDecoration(
-          color: _color.withOpacity(0.15),
+          color: _color.withValues(alpha: 0.15),
           borderRadius: BorderRadius.circular(DSRadii.xs),
         ),
         child: Row(

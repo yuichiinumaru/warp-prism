@@ -97,3 +97,225 @@ mismatch_or_missing=[]
 - No Flutter application source files were modified by this remediation.
 - The remediation intentionally did not move tasks between lanes.
 - The remediation corrected a false statement in Task 0010: `warp-prism/docs/draft.md` exists, but it is secondary planning evidence and must not replace fresh source and command evidence.
+
+---
+
+## Current-state re-audit (2026-07-09)
+
+> Historical section above records the **2026-06-06** 55-file open-lane snapshot after renumbering.
+> Most of those tasks have since moved into `02-doing` / `03-review` / `04-completed`.
+> This section is the **live** namespace integrity proof for Task 1070 evidence refresh.
+> Commands use repo-relative paths from `warp-prism/` (no absolute host paths).
+
+### Scope decision
+
+| Scope | Purpose |
+| --- | --- |
+| `docs/tasks/01-open/` | Exit-condition open-lane ID + structure gate (current population) |
+| `docs/tasks/{01-open,02-doing,03-review,04-completed}/` | Cross-lane ID uniqueness (lane movement must not reintroduce collisions) |
+| `Task 0001`–`Task 0006` refs under `docs/tasks/` | EPIC-02 wave legitimacy vs stale renumber candidates |
+
+Flutter SDK is **not required** for this governance-only verification.
+
+### Open-lane ID audit (live)
+
+```bash
+python3 - <<'PY'
+from pathlib import Path
+import re
+from collections import defaultdict
+root = Path('docs/tasks/01-open')
+rows, errors = [], []
+for path in sorted(root.glob('*.md')):
+    text = path.read_text(encoding='utf-8')
+    header = re.search(r'^# Task (\d{4})\b', text, re.M)
+    file_id = path.name.split('-', 1)[0]
+    header_id = header.group(1) if header else None
+    rows.append((file_id, header_id, path.name))
+    if not header_id:
+        errors.append(f'MISSING_HEADER {path.name}')
+    elif file_id != header_id:
+        errors.append(f'MISMATCH file={file_id} header={header_id} {path.name}')
+by_file = defaultdict(list)
+by_header = defaultdict(list)
+for file_id, header_id, name in rows:
+    by_file[file_id].append(name)
+    if header_id:
+        by_header[header_id].append(name)
+file_dupes = {k: v for k, v in by_file.items() if len(v) > 1}
+header_dupes = {k: v for k, v in by_header.items() if len(v) > 1}
+print(f'total_files={len(rows)}')
+print(f'unique_file_ids={len(by_file)}')
+print(f'unique_header_ids={len(by_header)}')
+print(f'file_duplicate_ids={file_dupes}')
+print(f'header_duplicate_ids={header_dupes}')
+print(f'mismatch_or_missing={errors}')
+PY
+```
+
+Result:
+
+```text
+total_files=1
+unique_file_ids=1
+unique_header_ids=1
+file_duplicate_ids={}
+header_duplicate_ids={}
+mismatch_or_missing=[]
+OPEN_LANE_ID_AUDIT: PASS
+```
+
+### Open-lane structure audit (live)
+
+Anchored checks: header, filename/header match, lane-neutral identity block, Review State, placeholders, Where, Completion Evidence, read-before-modify signal.
+
+```text
+structure_errors=[
+  '1103-warp-prism-flutter-tooling-and-scaffold.md: missing lane-neutral identity block',
+  '1103-warp-prism-flutter-tooling-and-scaffold.md: missing Review State header field'
+]
+OPEN_STRUCTURE_AUDIT: FAIL
+```
+
+**Residual ownership**: Task 1103 is already marked **SUPERSEDED** in-file (Melos migration via Tasks 1104/1107). Structure residuals are owned by Task 1103 cancellation/narrowing, not by namespace renumbering. Filename/header for 1103 agree (`1103`/`1103`).
+
+### All executable lanes — ID uniqueness (live)
+
+Lane counts: `01-open=1`, `02-doing=33`, `03-review=60`, `04-completed=15` → **109** task files.
+
+```text
+all_lanes_total_files=109
+unique_file_ids=108
+unique_header_ids=108
+file_duplicate_ids=[('1308', [
+  '03-review/1308-warp-prism-toast-async-lifecycle-stabilization.md',
+  '04-completed/1308-warp-prism-toast-async-lifecycle-stabilization.md'
+])]
+header_duplicate_ids=[same as above]
+mismatch_or_missing=[]
+```
+
+**Residual**: Task 1308 appears in both `03-review` and `04-completed` (same identity, dual-lane copy). Not a multi-task ID collision from renumbering; lane hygiene residual owned by Task 1308 reviewers/completers. No filename/header mismatches anywhere.
+
+### EPIC-02 `0001`–`0006` wave still unique
+
+| ID | Live path |
+| --- | --- |
+| 0001 | `03-review/0001-warp-prism-mock-workspace-contract-baseline.md` |
+| 0002 | `04-completed/0002-warp-prism-agent-and-workflow-markdown-fixtures.md` |
+| 0003 | `04-completed/0003-warp-prism-skill-hierarchy-markdown-fixtures.md` |
+| 0004 | `03-review/0004-warp-prism-task-lane-markdown-corpus.md` |
+| 0005 | `04-completed/0005-warp-prism-changelog-markdown-corpus.md` |
+| 0006 | `03-review/0006-warp-prism-mock-corpus-validation-and-legacy-archive.md` |
+
+Renumbered waves present uniquely: `0410`–`0413`, `0510`–`0514`, `0610`–`0613`.
+
+### `Task 0001`–`Task 0006` reference sample (2026-07-09)
+
+78 refs under `docs/tasks/`. Top hosts: EPIC-02 corpus tasks themselves, Task 1202 policy examples, Task 0710 History dependency on Task 0005, and Task 1070 explanatory text. Classification: **EPIC-02-local or explanatory** — no residual EPIC-04/05/06 collision references observed in the live sample.
+
+### Flutter source
+
+No `packages/` or `apps/` files modified by Task 1070 evidence refresh (governance-only).
+
+---
+
+## Current-state re-audit (2026-07-18)
+
+> The **2026-07-09** section above is a **prior** live snapshot (open=1/1103;
+> dual-lane 1308; 109 files / 108 unique). Drain review 2026-07-17 rejected on
+> stale map currency (open 3; dual 1604–1607). This section is the **current**
+> namespace integrity proof after residual collapse.
+
+### Scope decision
+
+| Scope | Purpose |
+| --- | --- |
+| `docs/tasks/01-open/` `NNNN-*.md` only | Open-lane ID + structure gate |
+| `docs/tasks/{01-open,02-doing,03-review,04-completed}/` `NNNN-*.md` | Cross-lane ID uniqueness |
+| Non-`NNNN-*.md` files in executable lanes | Documented hygiene (not ID collisions) |
+| `Task 0001`–`Task 0006` refs | EPIC-02 wave legitimacy |
+
+Executable tasks are files matching `^\d+-.*\.md`. EPIC planning docs do not
+count toward uniqueness gates.
+
+### Open-lane ID + structure audit (live 2026-07-18)
+
+```text
+total_files=0
+unique_file_ids=0
+unique_header_ids=0
+file_duplicate_ids={}
+header_duplicate_ids={}
+mismatch_or_missing=[]
+structure_errors=[]
+OPEN_LANE_ID_AUDIT: PASS
+OPEN_STRUCTURE_AUDIT: PASS
+```
+
+Open population is empty (drain-era optional open tasks 1522/1523/1616 are now
+in `02-doing/`). SUPERSEDED 1103 structure residual is **closed as open-lane
+item** — single copy lives in `04-completed/`.
+
+### All executable lanes — ID uniqueness (live 2026-07-18)
+
+Lane counts (**executable `NNNN-*.md` only**):
+`01-open=0`, `02-doing=23`, `03-review=0`, `04-completed=126` → **149** files.
+
+```text
+all_lanes_total_files=149
+unique_file_ids=149
+unique_header_ids=149
+file_duplicate_ids=[]
+header_duplicate_ids=[]
+mismatch_or_missing=[]
+ALL_LANES_ID_AUDIT: PASS
+```
+
+### Prior dual-lane residuals — closed
+
+| ID | Drain 2026-07-17 claim | Live 2026-07-18 |
+| --- | --- | --- |
+| 1103 | structure residual (was open) | `04-completed/` only |
+| 1308 | dual review+completed (earlier) | `04-completed/` only |
+| 1604 | dual doing+completed | `04-completed/` only |
+| 1605 | dual doing+completed | `04-completed/` only |
+| 1606 | dual doing+completed | `04-completed/` only |
+| 1607 | dual doing+completed | `04-completed/` only |
+
+**Zero dual-lane same-ID copies** among executable tasks.
+
+### Non-executable MD in executable lanes (hygiene note)
+
+`03-review/` currently holds **15** `EPIC-*.md` planning files (not `NNNN-`
+executables). They are **not** task-ID collisions. Ownership: planning/lane
+hygiene (outside Task 1070 renumbering). Executable review lane count = **0**.
+
+### EPIC-02 `0001`–`0006` wave still unique
+
+| ID | Live path |
+| --- | --- |
+| 0001 | `04-completed/0001-warp-prism-mock-workspace-contract-baseline.md` |
+| 0002 | `04-completed/0002-warp-prism-agent-and-workflow-markdown-fixtures.md` |
+| 0003 | `04-completed/0003-warp-prism-skill-hierarchy-markdown-fixtures.md` |
+| 0004 | `04-completed/0004-warp-prism-task-lane-markdown-corpus.md` |
+| 0005 | `04-completed/0005-warp-prism-changelog-markdown-corpus.md` |
+| 0006 | `04-completed/0006-warp-prism-mock-corpus-validation-and-legacy-archive.md` |
+
+Renumbered waves present uniquely: `0410`–`0413`, `0510`–`0514`, `0610`–`0613`
+(0510/0511 currently `02-doing/`; rest `04-completed/`).
+
+### `Task 0001`–`Task 0006` reference sample (2026-07-18, expert re-stamp)
+
+**80** refs under `docs/tasks/` (`rg -c 'Task 000[1-6]'` summed). Sample hosts:
+EPIC-02 corpus task files, Task 1070 explanatory prose, Task 0710 / 1206
+lineage. Classification: **EPIC-02-local or explanatory** — no live
+EPIC-04/05/06 collision prose requiring edit under Task 1070 ownership.
+
+> Expert re-stamp 2026-07-18 (gt-flutter-expert): open=0, dual=0, 149/149 unique,
+> 0001–0006 unique under `04-completed/`, EPIC hygiene 15 non-exec in `03-review/`.
+
+### Flutter source
+
+No `packages/` or `apps/` files modified by this 2026-07-18 evidence refresh
+(governance-only).

@@ -71,5 +71,5 @@ changelog_frontmatter_schema:
   - impact
   - skills
 
-archive_destination: .archive/
-archive_policy: All 18 legacy files move to warp-prism/archive/mock_workspace/ preserving directory structure. No destructive deletion.
+archive_destination: .archive/mock_workspace/
+archive_policy: All 18 legacy files move to .archive/mock_workspace/ preserving directory structure. No destructive deletion.

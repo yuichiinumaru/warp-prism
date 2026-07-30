@@ -2,7 +2,7 @@
 ///
 /// Canonical providers: [workspaceSnapshotAsyncProvider],
 /// [workspaceGraphAsyncProvider], [workspaceMetricsAsyncProvider],
-/// [workspaceDiagnosticsAsyncProvider].
+/// [workspaceDiagnosticsAsyncProvider], [historyTimelineAsyncProvider].
 ///
 /// View-model contracts: [WorkspaceOverviewViewModel], [MapViewModel],
 /// [OperateViewModel], [HistoryViewModel], [GovernanceViewModel].

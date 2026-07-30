@@ -108,7 +108,15 @@ class GraphCanvas extends StatefulWidget {
 class _GraphCanvasState extends State<GraphCanvas>
     with SingleTickerProviderStateMixin {
   late AnimationController _physicsController;
-  late ForceDirectedLayout _forceLayout;
+
+  /// Resolved layout engine — respects [GraphCanvas.layoutEngine] when set.
+  late GraphLayoutEngine _layoutEngine;
+
+  /// Continuous physics only applies when the engine is [ForceDirectedLayout].
+  ForceDirectedLayout? get _forceLayout =>
+      _layoutEngine is ForceDirectedLayout
+      ? _layoutEngine as ForceDirectedLayout
+      : null;
 
   /// Current node positions (mutable, updated by physics and interaction).
   final Map<GraphNodeId, Offset> _positions = {};
@@ -130,10 +138,14 @@ class _GraphCanvasState extends State<GraphCanvas>
   IconData Function(String) get _nodeIcon =>
       widget.nodeIconResolver ?? defaultNodeIcon;
 
+  GraphLayoutEngine _resolveLayoutEngine() {
+    return widget.layoutEngine ?? const ForceDirectedLayout();
+  }
+
   @override
   void initState() {
     super.initState();
-    _forceLayout = ForceDirectedLayout();
+    _layoutEngine = _resolveLayoutEngine();
     _initializePositions();
 
     _physicsController = AnimationController(
@@ -141,12 +153,29 @@ class _GraphCanvasState extends State<GraphCanvas>
       duration: const Duration(seconds: 10),
     )..addListener(_updatePhysics);
 
-    if (widget.enablePhysics) {
+    if (widget.enablePhysics && _forceLayout != null) {
       _physicsController.repeat();
     }
   }
 
   void _initializePositions() {
+    // Prefer a one-shot layout pass from the resolved engine when the model
+    // has no pre-seeded positions. Fall back to seeded random scatter.
+    final needsLayout = widget.model.nodes.every(
+      (n) => n.position == Offset.zero,
+    );
+    if (needsLayout && widget.model.nodes.isNotEmpty) {
+      final laidOut = _layoutEngine.layout(
+        widget.model,
+        const Size(600, 400),
+      );
+      for (final node in widget.model.nodes) {
+        _positions[node.id] = laidOut[node.id] ?? Offset.zero;
+        _velocities[node.id] = Offset.zero;
+      }
+      return;
+    }
+
     final random = math.Random(42);
     for (final node in widget.model.nodes) {
       if (node.position != Offset.zero) {
@@ -163,8 +192,10 @@ class _GraphCanvasState extends State<GraphCanvas>
 
   void _updatePhysics() {
     if (!widget.enablePhysics) return;
+    final force = _forceLayout;
+    if (force == null) return;
 
-    _forceLayout.simulateStep(
+    force.simulateStep(
       widget.model,
       _positions,
       _velocities,
@@ -177,10 +208,24 @@ class _GraphCanvasState extends State<GraphCanvas>
   @override
   void didUpdateWidget(GraphCanvas oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.model != oldWidget.model) {
+    final engineChanged = widget.layoutEngine != oldWidget.layoutEngine;
+    if (engineChanged) {
+      _layoutEngine = _resolveLayoutEngine();
+    }
+    // Re-seed positions when the model or injected layout engine changes so
+    // custom engines are not dead wiring after the first mount.
+    if (engineChanged || widget.model != oldWidget.model) {
       _positions.clear();
       _velocities.clear();
       _initializePositions();
+    }
+    if (widget.enablePhysics &&
+        _forceLayout != null &&
+        !_physicsController.isAnimating) {
+      _physicsController.repeat();
+    } else if ((!widget.enablePhysics || _forceLayout == null) &&
+        _physicsController.isAnimating) {
+      _physicsController.stop();
     }
   }
 
@@ -193,7 +238,7 @@ class _GraphCanvasState extends State<GraphCanvas>
   @override
   Widget build(BuildContext context) {
     if (widget.model.nodes.isEmpty) {
-      return DSStateSurface.empty(
+      return const DSStateSurface.empty(
         icon: DSIcons.graph,
         title: 'No assets to display',
         subtitle: 'The workspace graph will appear here once assets are loaded',
@@ -243,73 +288,79 @@ class _GraphCanvasState extends State<GraphCanvas>
     final color = _nodeColor(node.type);
     final isHovered = _hoveredNodeId == node.id;
     final isSelected = _selectedNodeId == node.id;
+    final nodeLabel = node.label.isNotEmpty ? node.label : node.id.value;
 
-    return MouseRegion(
-      onEnter: (_) => setState(() => _hoveredNodeId = node.id),
-      onExit: (_) => setState(() => _hoveredNodeId = null),
-      child: GestureDetector(
-        onTap: () {
-          setState(() => _selectedNodeId = node.id);
-          widget.onNodeTap?.call(node);
-        },
-        onDoubleTap: () => widget.onNodeDoubleTap?.call(node),
-        onPanStart: (_) {
-          _draggingNodes.add(node.id);
-        },
-        onPanUpdate: (details) {
-          setState(() {
-            final current = _positions[node.id] ?? Offset.zero;
-            _positions[node.id] = current + details.delta / _scale;
-          });
-        },
-        onPanEnd: (_) {
-          _draggingNodes.remove(node.id);
-          final pos = _positions[node.id] ?? Offset.zero;
-          widget.onNodeDragEnd?.call(node.copyWith(position: pos), pos);
-        },
-        child: AnimatedContainer(
-          duration: DSMotion.fast,
-          width: 60,
-          height: 60,
-          decoration: BoxDecoration(
-            color: isSelected
-                ? color.withOpacity(0.3)
-                : DSColors.obsidianElevated.withOpacity(0.9),
-            borderRadius: BorderRadius.circular(DSRadii.lg),
-            border: Border.all(
+    return Semantics(
+      label: 'Graph node: $nodeLabel',
+      button: true,
+      selected: isSelected,
+      child: MouseRegion(
+        onEnter: (_) => setState(() => _hoveredNodeId = node.id),
+        onExit: (_) => setState(() => _hoveredNodeId = null),
+        child: GestureDetector(
+          onTap: () {
+            setState(() => _selectedNodeId = node.id);
+            widget.onNodeTap?.call(node);
+          },
+          onDoubleTap: () => widget.onNodeDoubleTap?.call(node),
+          onPanStart: (_) {
+            _draggingNodes.add(node.id);
+          },
+          onPanUpdate: (details) {
+            setState(() {
+              final current = _positions[node.id] ?? Offset.zero;
+              _positions[node.id] = current + details.delta / _scale;
+            });
+          },
+          onPanEnd: (_) {
+            _draggingNodes.remove(node.id);
+            final pos = _positions[node.id] ?? Offset.zero;
+            widget.onNodeDragEnd?.call(node.copyWith(position: pos), pos);
+          },
+          child: AnimatedContainer(
+            duration: DSMotion.fast,
+            constraints: const BoxConstraints(minWidth: 60, minHeight: 60),
+            padding: const EdgeInsets.all(4),
+            decoration: BoxDecoration(
               color: isSelected
-                  ? color
-                  : isHovered
-                  ? color.withOpacity(0.6)
-                  : DSColors.borderSubtle,
-              width: isSelected ? 2 : 1,
+                  ? color.withValues(alpha: 0.3)
+                  : DSColors.obsidianElevated.withValues(alpha: 0.9),
+              borderRadius: BorderRadius.circular(DSRadii.lg),
+              border: Border.all(
+                color: isSelected
+                    ? color
+                    : isHovered
+                    ? color.withValues(alpha: 0.6)
+                    : DSColors.borderSubtle,
+                width: isSelected ? 2 : 1,
+              ),
+              boxShadow: [
+                if (isHovered || isSelected)
+                  BoxShadow(
+                    color: color.withValues(alpha: 0.3),
+                    blurRadius: 12,
+                    spreadRadius: 2,
+                  ),
+                ...DSShadows.elevation2,
+              ],
             ),
-            boxShadow: [
-              if (isHovered || isSelected)
-                BoxShadow(
-                  color: color.withOpacity(0.3),
-                  blurRadius: 12,
-                  spreadRadius: 2,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                DSIcon(
+                  _nodeIcon(node.type),
+                  color: color,
+                  iconSize: DSIconSize.medium,
                 ),
-              ...DSShadows.elevation2,
-            ],
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              DSIcon(
-                _nodeIcon(node.type),
-                color: color,
-                iconSize: DSIconSize.medium,
-              ),
-              const SizedBox(height: 2),
-              DSText.labelSmall(
-                node.label.length > 8
-                    ? '${node.label.substring(0, 6)}...'
-                    : node.label,
-                color: DSColors.textSecondary,
-              ),
-            ],
+                const SizedBox(height: 2),
+                DSText.labelSmall(
+                  node.label.length > 8
+                      ? '${node.label.substring(0, 6)}...'
+                      : node.label,
+                  color: DSColors.textSecondary,
+                ),
+              ],
+            ),
           ),
         ),
       ),

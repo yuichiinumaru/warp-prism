@@ -1,6 +1,6 @@
 /// Task lane panel for the workspace snapshot page.
 ///
-/// Displays tasks grouped by lane using [DSTaskCard] primitives.
+/// Displays tasks grouped by lane using [PrismTaskCard] primitives.
 /// Cards are tappable to open the detail inspector.
 library;
 
@@ -20,7 +20,7 @@ class TaskLanePanel extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     if (tasks.isEmpty) {
-      return const DSStateSurface.empty(
+      return const PrismStateSurface.empty(
         icon: Icons.task_outlined,
         title: 'No tasks found',
         subtitle: 'Place task .md files in docs/tasks/{lane}/',
@@ -66,29 +66,29 @@ class _LaneSection extends ConsumerWidget {
               width: 4,
               height: 16,
               decoration: BoxDecoration(
-                color: DSColors.forLane(lane.directoryPrefix),
+                color: PrismColors.forLane(lane.directoryPrefix),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
-            const SizedBox(width: DSSpacing.sm),
-            DSText.labelMedium(
+            const SizedBox(width: PrismSpacing.sm),
+            PrismText.labelMedium(
               '${lane.directoryPrefix.toUpperCase()} (${tasks.length})',
-              color: DSColors.textSecondary,
+              color: PrismColors.textSecondary,
             ),
           ],
         ),
-        const SizedBox(height: DSSpacing.sm),
+        const SizedBox(height: PrismSpacing.sm),
         ...tasks.map((task) {
           final taskMeta = task.frontmatter['_taskMetadata'] as TaskMetadata?;
-          // Parse task id for DSTaskCard (expects int)
+          // Parse task id for PrismTaskCard (expects int)
           final taskId = int.tryParse(taskMeta?.id ?? '') ?? 0;
           return Padding(
-            padding: const EdgeInsets.only(bottom: DSSpacing.sm),
+            padding: const EdgeInsets.only(bottom: PrismSpacing.sm),
             child: GestureDetector(
               onTap: () => selectAsset(ref, task.id),
               child: MouseRegion(
                 cursor: SystemMouseCursors.click,
-                child: DSTaskCard(
+                child: PrismTaskCard(
                   id: taskId,
                   title: taskMeta?.title ?? task.name,
                   lane: lane.directoryPrefix,
@@ -102,7 +102,7 @@ class _LaneSection extends ConsumerWidget {
             ),
           );
         }),
-        const SizedBox(height: DSSpacing.md),
+        const SizedBox(height: PrismSpacing.md),
       ],
     );
   }

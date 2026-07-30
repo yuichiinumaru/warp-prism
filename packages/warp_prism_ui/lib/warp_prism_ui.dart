@@ -11,16 +11,25 @@
 /// - Organisms: Complex UI sections (sidebar, topbar, panels, etc.)
 /// - Templates: Page-level layouts (master-detail, canvas, timeline)
 /// - Gallery: Design system gallery/demo pages
+///
+/// Public API: All consumer apps should use Prism* names.
+/// DS* names are internal implementation details.
 library;
 
-export 'src/tokens/tokens.dart';
-export 'src/atoms/atoms.dart';
-export 'src/molecules/molecules.dart';
-export 'src/organisms/organisms.dart';
-export 'src/templates/templates.dart';
-export 'src/gallery/design_system_gallery_page.dart';
-export 'src/gallery/design_system_gallery_sections.dart';
-
-// Prism* public API aliases for promoted operational components.
-// Consumer apps should prefer these over DS* names.
+// Prism* public API aliases — the sole public surface for consumer apps.
+// All DS* implementation names are hidden from the public barrel.
 export 'src/prism_aliases.dart';
+
+// Operational state extension — available via PrismOperationalState typedef.
+// The extension DSOperationalStateUI on DSOperationalState is automatically
+// accessible through PrismOperationalState (typedef to DSOperationalState).
+// No explicit export of the DS-named extension is needed.
+
+// Gallery is intentionally public for design system documentation.
+// DSGallery* implementation names are hidden; consumers use PrismGallery*
+// aliases from prism_aliases.dart (and DesignSystemGalleryPage, which has
+// no DS prefix).
+export 'src/gallery/design_system_gallery_page.dart';
+export 'src/gallery/design_system_gallery_registry.dart'
+    hide DSGallerySectionSpec;
+export 'src/gallery/design_system_gallery_sections.dart' hide DSGallerySections;

@@ -2,7 +2,8 @@
 ///
 /// Computes typed [GovernanceDiagnostic] records from the canonical
 /// workspace graph. Covers orphan assets, stale references, proof gaps,
-/// and high fan-in hotspots.
+/// review pressure, changelog-without-task ledger gaps, and high fan-in
+/// hotspots ([DiagnosticCategory.highFanIn]).
 ///
 /// Diagnostics are read-only and explainable — each record carries enough
 /// context for drill-down to the affected asset(s).
@@ -87,7 +88,9 @@ class WorkspaceDiagnosticsService {
   /// 1. Orphan assets (no incoming or outgoing edges)
   /// 2. Stale references (edges pointing to non-existent assets)
   /// 3. Proof gaps (tasks in review/completed without proof)
-  /// 4. High fan-in hotspots (assets with many incoming edges)
+  /// 4. Review pressure (review-lane tasks with elevated priority)
+  /// 5. Changelog entries without a linked task (ledger-link gaps)
+  /// 6. High fan-in hotspots (assets with many incoming edges)
   DiagnosticsReport analyze(
     WorkspaceGraphResult graph, {
     int fanInThreshold = defaultFanInThreshold,
@@ -98,6 +101,8 @@ class WorkspaceDiagnosticsService {
     _detectOrphanAssets(graph, diagnostics, now);
     _detectStaleReferences(graph, diagnostics, now);
     _detectProofGaps(graph, diagnostics, now);
+    _detectReviewPressure(graph, diagnostics, now);
+    _detectChangelogWithoutTaskLink(graph, diagnostics, now);
     _detectHighFanIn(graph, diagnostics, now, fanInThreshold);
 
     return DiagnosticsReport(diagnostics: diagnostics);
@@ -250,6 +255,106 @@ class WorkspaceDiagnosticsService {
   }
 
   // ---------------------------------------------------------------------------
+  // Review pressure detection
+  // ---------------------------------------------------------------------------
+
+  /// A task in the review lane with elevated priority (P0/P1 or
+  /// critical/high labels) is review pressure.
+  void _detectReviewPressure(
+    WorkspaceGraphResult graph,
+    List<GovernanceDiagnostic> diagnostics,
+    DateTime now,
+  ) {
+    final tasks = graph.assetsByKind[AssetKind.task] ?? [];
+    for (final task in tasks) {
+      final meta = task.frontmatter['_taskMetadata'] as TaskMetadata?;
+      if (meta == null) continue;
+      if (meta.lane != TaskLane.review) continue;
+      if (!_isElevatedPriority(meta.priority)) continue;
+
+      diagnostics.add(
+        GovernanceDiagnostic(
+          assetId: task.id,
+          severity: _isCriticalPriority(meta.priority)
+              ? DiagnosticSeverity.error
+              : DiagnosticSeverity.warning,
+          category: DiagnosticCategory.reviewPressure,
+          message:
+              'Task "${meta.title}" is in review with elevated priority '
+              '${meta.priority} — queue pressure requires attention.',
+          context: {
+            'taskId': meta.id,
+            'taskTitle': meta.title,
+            'taskLane': meta.lane.directoryPrefix,
+            'priority': meta.priority,
+            'taskPath': task.path,
+          },
+          computedAt: now,
+        ),
+      );
+    }
+  }
+
+  bool _isElevatedPriority(String priority) {
+    final p = priority.trim().toUpperCase();
+    return p == 'P0' ||
+        p == 'P1' ||
+        p == 'CRITICAL' ||
+        p == 'HIGH' ||
+        p.contains('P0') ||
+        p.contains('P1');
+  }
+
+  bool _isCriticalPriority(String priority) {
+    final p = priority.trim().toUpperCase();
+    return p == 'P0' || p == 'CRITICAL' || p.contains('P0');
+  }
+
+  // ---------------------------------------------------------------------------
+  // Changelog without task link (ledger-link gaps)
+  // ---------------------------------------------------------------------------
+
+  /// A changelog entry with no `changedBy` edge to a task is a ledger-link
+  /// gap. Surfaces as [DiagnosticCategory.missingDependency] so Governance
+  /// risk panels can segment "changelog without linked task" findings.
+  void _detectChangelogWithoutTaskLink(
+    WorkspaceGraphResult graph,
+    List<GovernanceDiagnostic> diagnostics,
+    DateTime now,
+  ) {
+    final changelogs = graph.assetsByKind[AssetKind.changelog] ?? [];
+    if (changelogs.isEmpty) return;
+
+    final linkedChangelogIds = graph
+        .edgesByKind(EdgeKind.changedBy)
+        .map((e) => e.sourceId)
+        .toSet();
+
+    for (final cl in changelogs) {
+      if (linkedChangelogIds.contains(cl.id)) continue;
+
+      diagnostics.add(
+        GovernanceDiagnostic(
+          assetId: cl.id,
+          severity: DiagnosticSeverity.warning,
+          category: DiagnosticCategory.missingDependency,
+          message:
+              'Changelog "${cl.name}" has no linked task. Ledger entries '
+              'without a task link cannot be traced to the work that '
+              'motivated the change.',
+          context: {
+            'assetKind': cl.kind.name,
+            'assetPath': cl.path,
+            'assetName': cl.name,
+            'gapKind': 'changelogWithoutTaskLink',
+          },
+          computedAt: now,
+        ),
+      );
+    }
+  }
+
+  // ---------------------------------------------------------------------------
   // High fan-in hotspot detection
   // ---------------------------------------------------------------------------
 
@@ -277,7 +382,7 @@ class WorkspaceDiagnosticsService {
             severity: entry.value >= fanInThreshold * 2
                 ? DiagnosticSeverity.error
                 : DiagnosticSeverity.warning,
-            category: DiagnosticCategory.brokenEdge,
+            category: DiagnosticCategory.highFanIn,
             message:
                 'Asset "${asset?.name ?? entry.key}" has ${entry.value} '
                 'incoming edges (fan-in ≥ $fanInThreshold). High fan-in may '

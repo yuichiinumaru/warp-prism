@@ -9,8 +9,9 @@ import 'ds_log_severity.dart';
 /// Displays timestamp, severity indicator, source, and message.
 /// Expands to reveal [DSLogEntry.detail] (stack trace / metadata) on tap.
 ///
-/// The row height is fixed (via [itemExtent]) for virtualized list performance
-/// unless expanded.
+/// Collapsed rows honor [kMinInteractiveDimension] for the expand control.
+/// Row height is not fixed: expanded detail changes extent, so the parent
+/// list virtualizes via [ListView.builder] without a shared [itemExtent].
 class DSLogEntryWidget extends StatelessWidget {
   final DSLogEntry entry;
   final bool expanded;
@@ -75,79 +76,108 @@ class _LogRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: entry.hasDetail ? onToggleExpand : null,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: DSSpacing.md,
-          vertical: DSSpacing.xs,
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Severity icon
-            Padding(
-              padding: const EdgeInsets.only(top: 2),
-              child: DSIcon.small(
-                entry.severity.icon,
-                color: entry.severity.color,
-                semanticLabel: entry.severity.label,
+    final expandLabel = expanded ? 'Collapse log entry' : 'Expand log entry';
+    // When expandable, the whole row is one 48×48+ button with a single label
+    // (child text is excluded so it does not merge into a multi-line label).
+    return Semantics(
+      button: entry.hasDetail,
+      enabled: entry.hasDetail,
+      label: entry.hasDetail ? expandLabel : null,
+      excludeSemantics: entry.hasDetail,
+      child: Material(
+        type: MaterialType.transparency,
+        child: InkWell(
+          onTap: entry.hasDetail ? onToggleExpand : null,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              minHeight: kMinInteractiveDimension,
+              minWidth: kMinInteractiveDimension,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: DSSpacing.md,
+                vertical: DSSpacing.xs,
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Severity icon
+                  DSIcon.small(
+                    entry.severity.icon,
+                    color: entry.severity.color,
+                    semanticLabel: entry.severity.label,
+                  ),
+                  const SizedBox(width: DSSpacing.sm),
+
+                  // Timestamp
+                  SizedBox(
+                    width: showAbsoluteTime ? 148 : 80,
+                    child: DSText.labelSmall(
+                      _formatTimestamp(entry.timestamp),
+                      color: DSColors.textTertiary,
+                    ),
+                  ),
+                  const SizedBox(width: DSSpacing.sm),
+
+                  // Source badge
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+                    decoration: BoxDecoration(
+                      color: DSColors.obsidianElevated,
+                      borderRadius: BorderRadius.circular(DSRadii.chip),
+                    ),
+                    child: DSText.labelSmall(
+                      entry.source,
+                      color: DSColors.accentCyan,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  const SizedBox(width: DSSpacing.sm),
+
+                  // Message
+                  Expanded(
+                    child: DSText.bodySmall(
+                      entry.message,
+                      color: _messageColor(entry.severity),
+                      maxLines: expanded ? null : 2,
+                      overflow: expanded ? null : TextOverflow.ellipsis,
+                    ),
+                  ),
+
+                  // Expand chevron — dedicated 48×48 hit target
+                  if (entry.hasDetail)
+                    SizedBox(
+                      width: kMinInteractiveDimension,
+                      height: kMinInteractiveDimension,
+                      child: Center(
+                        child: DSIcon.small(
+                          expanded ? DSIcons.collapse : DSIcons.expand,
+                          color: DSColors.textTertiary,
+                        ),
+                      ),
+                    ),
+                ],
               ),
             ),
-            const SizedBox(width: DSSpacing.sm),
-
-            // Timestamp
-            SizedBox(
-              width: 80,
-              child: DSText.labelSmall(
-                _formatTimestamp(entry.timestamp),
-                color: DSColors.textTertiary,
-              ),
-            ),
-            const SizedBox(width: DSSpacing.sm),
-
-            // Source badge
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
-              decoration: BoxDecoration(
-                color: DSColors.obsidianElevated,
-                borderRadius: BorderRadius.circular(DSRadii.chip),
-              ),
-              child: DSText.labelSmall(
-                entry.source,
-                color: DSColors.accentCyan,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            const SizedBox(width: DSSpacing.sm),
-
-            // Message
-            Expanded(
-              child: DSText.bodySmall(
-                entry.message,
-                color: _messageColor(entry.severity),
-                maxLines: expanded ? null : 2,
-                overflow: expanded ? null : TextOverflow.ellipsis,
-              ),
-            ),
-
-            // Expand chevron
-            if (entry.hasDetail)
-              Padding(
-                padding: const EdgeInsets.only(left: DSSpacing.xs),
-                child: DSIcon.small(
-                  expanded ? DSIcons.collapse : DSIcons.expand,
-                  color: DSColors.textTertiary,
-                ),
-              ),
-          ],
+          ),
         ),
       ),
     );
   }
 
   String _formatTimestamp(DateTime ts) {
+    if (showAbsoluteTime) {
+      // ISO-8601 local absolute form: YYYY-MM-DD HH:mm:ss
+      final y = ts.year.toString().padLeft(4, '0');
+      final mo = ts.month.toString().padLeft(2, '0');
+      final d = ts.day.toString().padLeft(2, '0');
+      final h = ts.hour.toString().padLeft(2, '0');
+      final m = ts.minute.toString().padLeft(2, '0');
+      final s = ts.second.toString().padLeft(2, '0');
+      return '$y-$mo-$d $h:$m:$s';
+    }
     final h = ts.hour.toString().padLeft(2, '0');
     final m = ts.minute.toString().padLeft(2, '0');
     final s = ts.second.toString().padLeft(2, '0');

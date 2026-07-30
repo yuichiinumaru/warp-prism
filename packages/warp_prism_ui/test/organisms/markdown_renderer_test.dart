@@ -12,16 +12,16 @@ Finder findTextInRichText(String text) {
   });
 }
 
-/// Task 1121: DSMarkdownRenderer widget tests.
+/// Task 1121: PrismMarkdownRenderer widget tests.
 void main() {
-  group('DSMarkdownRenderer', () {
+  group('PrismMarkdownRenderer', () {
     // ---------------------------------------------------------------------------
     // Empty content
     // ---------------------------------------------------------------------------
     testWidgets('renders "No content" when data is empty', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(body: DSMarkdownRenderer(data: '')),
+          home: Scaffold(body: PrismMarkdownRenderer(data: '')),
         ),
       );
 
@@ -34,7 +34,7 @@ void main() {
     testWidgets('renders h1 heading', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(body: DSMarkdownRenderer(data: '# Hello World')),
+          home: Scaffold(body: PrismMarkdownRenderer(data: '# Hello World')),
         ),
       );
 
@@ -44,7 +44,7 @@ void main() {
     testWidgets('renders h2 heading', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(body: DSMarkdownRenderer(data: '## Section Title')),
+          home: Scaffold(body: PrismMarkdownRenderer(data: '## Section Title')),
         ),
       );
 
@@ -54,7 +54,7 @@ void main() {
     testWidgets('renders h3 heading', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(body: DSMarkdownRenderer(data: '### Subsection')),
+          home: Scaffold(body: PrismMarkdownRenderer(data: '### Subsection')),
         ),
       );
 
@@ -64,7 +64,7 @@ void main() {
     testWidgets('renders h4 heading', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(body: DSMarkdownRenderer(data: '#### Level 4')),
+          home: Scaffold(body: PrismMarkdownRenderer(data: '#### Level 4')),
         ),
       );
 
@@ -78,7 +78,7 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: DSMarkdownRenderer(data: 'This is **bold** text'),
+            body: PrismMarkdownRenderer(data: 'This is **bold** text'),
           ),
         ),
       );
@@ -91,7 +91,7 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: DSMarkdownRenderer(data: 'This is *italic* text'),
+            body: PrismMarkdownRenderer(data: 'This is *italic* text'),
           ),
         ),
       );
@@ -106,7 +106,7 @@ void main() {
     testWidgets('renders inline code', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(body: DSMarkdownRenderer(data: 'Use `const` keyword')),
+          home: Scaffold(body: PrismMarkdownRenderer(data: 'Use `const` keyword')),
         ),
       );
 
@@ -117,30 +117,30 @@ void main() {
     // ---------------------------------------------------------------------------
     // Code blocks
     // ---------------------------------------------------------------------------
-    testWidgets('renders fenced code block as DSCodeBlock', (tester) async {
+    testWidgets('renders fenced code block as PrismCodeBlock', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: DSMarkdownRenderer(
+            body: PrismMarkdownRenderer(
               data: 'Some text\n\n```json\n{"key": "value"}\n```\n\nMore text',
             ),
           ),
         ),
       );
 
-      expect(find.byType(DSCodeBlock), findsOneWidget);
+      expect(find.byType(PrismCodeBlock), findsOneWidget);
     });
 
     testWidgets('renders code block with language label', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: DSMarkdownRenderer(data: '```dart\nvoid main() {}\n```'),
+            body: PrismMarkdownRenderer(data: '```dart\nvoid main() {}\n```'),
           ),
         ),
       );
 
-      expect(find.byType(DSCodeBlock), findsOneWidget);
+      expect(find.byType(PrismCodeBlock), findsOneWidget);
       expect(find.text('Dart'), findsOneWidget);
     });
 
@@ -148,12 +148,43 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: DSMarkdownRenderer(data: '```\nplain code block\n```'),
+            body: PrismMarkdownRenderer(data: '```\nplain code block\n```'),
           ),
         ),
       );
 
-      expect(find.byType(DSCodeBlock), findsOneWidget);
+      expect(find.byType(PrismCodeBlock), findsOneWidget);
+    });
+
+    testWidgets('fenced code block exposes language Semantics label', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: PrismMarkdownRenderer(data: '```dart\nvoid main() {}\n```'),
+          ),
+        ),
+      );
+
+      expect(
+        find.bySemanticsLabel('Fenced code block: dart'),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('fenced code without language uses generic Semantics label', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: PrismMarkdownRenderer(data: '```\nplain code block\n```'),
+          ),
+        ),
+      );
+
+      expect(find.bySemanticsLabel('Fenced code block'), findsOneWidget);
     });
 
     // ---------------------------------------------------------------------------
@@ -163,7 +194,7 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: DSMarkdownRenderer(
+            body: PrismMarkdownRenderer(
               data: '- Item one\n- Item two\n- Item three',
             ),
           ),
@@ -178,7 +209,7 @@ void main() {
     testWidgets('renders bullet list with * prefix', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(body: DSMarkdownRenderer(data: '* Alpha\n* Beta')),
+          home: Scaffold(body: PrismMarkdownRenderer(data: '* Alpha\n* Beta')),
         ),
       );
 
@@ -193,7 +224,7 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: DSMarkdownRenderer(data: '1. First\n2. Second\n3. Third'),
+            body: PrismMarkdownRenderer(data: '1. First\n2. Second\n3. Third'),
           ),
         ),
       );
@@ -212,7 +243,7 @@ void main() {
     testWidgets('renders blockquote text', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(body: DSMarkdownRenderer(data: '> This is a quote')),
+          home: Scaffold(body: PrismMarkdownRenderer(data: '> This is a quote')),
         ),
       );
 
@@ -226,7 +257,7 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: DSMarkdownRenderer(
+            body: PrismMarkdownRenderer(
               data: 'Check [this link](https://example.com)',
             ),
           ),
@@ -243,7 +274,7 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: DSMarkdownRenderer(
+            body: PrismMarkdownRenderer(
               data:
                   '# Title\n'
                   '\n'
@@ -270,7 +301,7 @@ void main() {
       expect(findTextInRichText('A blockquote'), findsOneWidget);
       expect(findTextInRichText('Ordered 1'), findsOneWidget);
       expect(findTextInRichText('List item 1'), findsOneWidget);
-      expect(find.byType(DSCodeBlock), findsOneWidget);
+      expect(find.byType(PrismCodeBlock), findsOneWidget);
     });
 
     // ---------------------------------------------------------------------------
@@ -280,20 +311,20 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: DSMarkdownRenderer(data: '```dart\nvoid main() {'),
+            body: PrismMarkdownRenderer(data: '```dart\nvoid main() {'),
           ),
         ),
       );
 
       // Unclosed code block should still render
-      expect(find.byType(DSCodeBlock), findsOneWidget);
+      expect(find.byType(PrismCodeBlock), findsOneWidget);
     });
 
     testWidgets('handles unclosed bold marker gracefully', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: DSMarkdownRenderer(data: 'This has **unclosed bold'),
+            body: PrismMarkdownRenderer(data: 'This has **unclosed bold'),
           ),
         ),
       );
@@ -309,7 +340,7 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: DSMarkdownRenderer(data: 'Just a simple paragraph of text.'),
+            body: PrismMarkdownRenderer(data: 'Just a simple paragraph of text.'),
           ),
         ),
       );
@@ -324,7 +355,7 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: DSMarkdownRenderer(
+            body: PrismMarkdownRenderer(
               data: 'First line of paragraph\nSecond line of paragraph',
             ),
           ),

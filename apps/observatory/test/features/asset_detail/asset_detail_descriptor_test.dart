@@ -8,11 +8,15 @@
 /// - Empty/unresolved asset fallback
 library;
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:warp_prism_observatory/app/asset_selection_controller.dart';
 import 'package:warp_prism_observatory/data/models/workspace_graph.dart';
-import 'package:warp_prism_observatory/features/asset_detail/domain/asset_detail_descriptor.dart';
-import 'package:warp_prism_observatory/features/asset_detail/application/asset_detail_mapper.dart';
+import 'package:warp_prism_observatory/data/providers/workspace_providers.dart';
+import 'package:warp_prism_observatory/data/services/workspace_graph.dart';
 import 'package:warp_prism_observatory/features/asset_detail/application/asset_detail_controller.dart';
+import 'package:warp_prism_observatory/features/asset_detail/application/asset_detail_mapper.dart';
+import 'package:warp_prism_observatory/features/asset_detail/domain/asset_detail_descriptor.dart';
 
 // ---------------------------------------------------------------------------
 // Test Fixtures
@@ -132,6 +136,8 @@ void main() {
         allEdges: _testEdges(),
       );
 
+      // Graph resolution succeeds; kind support is partial/fallback.
+      expect(result.resolved, isTrue);
       expect(result.isFallback, isTrue);
       expect(result.descriptor.isFallback, isTrue);
     });
@@ -315,6 +321,12 @@ void main() {
       // task:0902 has 1 outgoing (dependsOn skill:test-runner)
       // and 1 incoming (changedBy changelog:...)
       expect(result.descriptor.totalLinkCount, 2);
+      expect(result.descriptor.relatedAssets.length, 2);
+      final relatedIds = result.descriptor.relatedAssets
+          .map((l) => l.targetId)
+          .toSet();
+      expect(relatedIds, contains('skill:test-runner'));
+      expect(relatedIds, contains('changelog:2026-06-07-task-0902'));
     });
 
     test('unknown target resolves to ID in link label', () {
@@ -459,6 +471,31 @@ void main() {
       expect(desc.isFallback, isTrue);
     });
 
+    test('fallback preserves incoming and outgoing links', () {
+      final asset = _scriptAsset();
+      final names = {
+        'script:setup.sh': 'Setup Script',
+        'agent:test-orchestrator': 'Test Orchestrator',
+      };
+      final desc = buildAssetDetailDescriptor(
+        asset: asset,
+        incoming: const [
+          WorkspaceEdge(
+            sourceId: 'agent:test-orchestrator',
+            targetId: 'script:setup.sh',
+            kind: EdgeKind.dependsOn,
+          ),
+        ],
+        outgoing: const [],
+        assetNames: names,
+      );
+
+      expect(desc.isFallback, isTrue);
+      expect(desc.incomingLinks, isNotEmpty);
+      expect(desc.incomingLinks.first.targetId, 'agent:test-orchestrator');
+      expect(desc.relatedAssets, isNotEmpty);
+    });
+
     test('produces descriptor for changelog kind', () {
       final asset = _changelogAsset();
       final names = {
@@ -478,4 +515,121 @@ void main() {
       expect(desc.sharedSections, isNotEmpty);
     });
   });
+
+  group('resolveAssetDetailFromGraph', () {
+    WorkspaceGraphResult graph() => WorkspaceGraphResult(
+      assetsById: _testAssetIndex(),
+      edges: _testEdges(),
+      assetsByKind: {
+        AssetKind.agent: [_agentAsset()],
+        AssetKind.skill: [_skillAsset()],
+        AssetKind.task: [_taskAsset()],
+        AssetKind.changelog: [_changelogAsset()],
+      },
+    );
+
+    test('maps graph-backed asset through mapper for supported kinds', () {
+      final result = resolveAssetDetailFromGraph(
+        assetId: 'agent:test-orchestrator',
+        graph: graph(),
+      );
+      expect(result.resolved, isTrue);
+      expect(result.isFallback, isFalse);
+      expect(result.descriptor.sharedSections, isNotEmpty);
+      expect(result.descriptor.outgoingLinks, isNotEmpty);
+    });
+
+    test('returns unresolved fallback when asset is missing from graph', () {
+      final result = resolveAssetDetailFromGraph(
+        assetId: 'agent:missing',
+        graph: graph(),
+      );
+      expect(result.resolved, isFalse);
+      expect(result.isFallback, isTrue);
+    });
+  });
+
+  group('assetDetailDescriptorProvider', () {
+    test('exposes AsyncValue data for supported asset ids', () async {
+      final g = WorkspaceGraphResult(
+        assetsById: _testAssetIndex(),
+        edges: _testEdges(),
+        assetsByKind: {
+          AssetKind.agent: [_agentAsset()],
+          AssetKind.skill: [_skillAsset()],
+          AssetKind.task: [_taskAsset()],
+          AssetKind.changelog: [_changelogAsset()],
+        },
+      );
+
+      final container = ProviderContainer(
+        overrides: [
+          workspaceGraphAsyncProvider.overrideWith(
+            () => _StaticGraphNotifier(g),
+          ),
+        ],
+      );
+      addTearDown(container.dispose);
+
+      // Warm the async graph notifier so the family sees data, not loading.
+      await container.read(workspaceGraphAsyncProvider.future);
+
+      final asyncResult = container.read(
+        assetDetailDescriptorProvider('agent:test-orchestrator'),
+      );
+      expect(asyncResult.hasValue, isTrue);
+      final result = asyncResult.requireValue;
+      expect(result.resolved, isTrue);
+      expect(result.descriptor.asset.id, 'agent:test-orchestrator');
+    });
+
+    test('selectedAssetDetailDescriptorProvider tracks selection', () async {
+      final g = WorkspaceGraphResult(
+        assetsById: _testAssetIndex(),
+        edges: _testEdges(),
+        assetsByKind: {
+          AssetKind.agent: [_agentAsset()],
+          AssetKind.skill: [_skillAsset()],
+          AssetKind.task: [_taskAsset()],
+          AssetKind.changelog: [_changelogAsset()],
+        },
+      );
+
+      final container = ProviderContainer(
+        overrides: [
+          workspaceGraphAsyncProvider.overrideWith(
+            () => _StaticGraphNotifier(g),
+          ),
+        ],
+      );
+      addTearDown(container.dispose);
+
+      await container.read(workspaceGraphAsyncProvider.future);
+
+      final idle = container.read(selectedAssetDetailDescriptorProvider);
+      expect(idle.requireValue, isNull);
+
+      container
+          .read(assetSelectionControllerProvider.notifier)
+          .select('skill:test-runner', graph: g);
+
+      final selected = container
+          .read(selectedAssetDetailDescriptorProvider)
+          .requireValue;
+      expect(selected, isNotNull);
+      expect(selected!.resolved, isTrue);
+      expect(selected.descriptor.asset.id, 'skill:test-runner');
+      expect(selected.descriptor.incomingLinks.length, 2);
+    });
+  });
+}
+
+/// Static graph notifier for provider override tests.
+class _StaticGraphNotifier extends WorkspaceGraphAsyncNotifier {
+  _StaticGraphNotifier(this._graph);
+
+  final WorkspaceGraphResult _graph;
+
+  @override
+  Future<WorkspaceGraphResult> build() async => _graph;
 }

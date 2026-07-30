@@ -1,6 +1,6 @@
 /// Changelog list panel for the workspace snapshot page.
 ///
-/// Displays discovered changelog entries using DS primitives.
+/// Displays discovered changelog entries using Prism primitives.
 /// Cards are tappable to open the detail inspector.
 library;
 
@@ -20,7 +20,7 @@ class ChangelogListPanel extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     if (changelogEntries.isEmpty) {
-      return const DSStateSurface.empty(
+      return const PrismStateSurface.empty(
         icon: Icons.history_outlined,
         title: 'No changelog entries found',
         subtitle: 'Place changelog .md files in docs/changelog/',
@@ -37,46 +37,46 @@ class ChangelogListPanel extends ConsumerWidget {
             entry.frontmatter['_changelogMetadata'] as ChangelogMetadata?;
 
         return Padding(
-          padding: const EdgeInsets.only(bottom: DSSpacing.sm),
+          padding: const EdgeInsets.only(bottom: PrismSpacing.sm),
           child: GestureDetector(
             onTap: () => selectAsset(ref, entry.id),
             child: MouseRegion(
               cursor: SystemMouseCursors.click,
-              child: DSGlassPanelSimple(
-                padding: const EdgeInsets.all(DSSpacing.insetCard),
+              child: PrismGlassPanelSimple(
+                padding: const EdgeInsets.all(PrismSpacing.insetCard),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Header row
                     Row(
                       children: [
-                        DSIcon.small(
-                          DSIcons.changelog,
-                          color: DSColors.accentViolet,
+                        const PrismIcon.small(
+                          PrismIcons.changelog,
+                          color: PrismColors.accentViolet,
                         ),
-                        const SizedBox(width: DSSpacing.sm),
+                        const SizedBox(width: PrismSpacing.sm),
                         Expanded(
-                          child: DSText.labelMedium(
+                          child: PrismText.labelMedium(
                             clMeta?.id ?? entry.name,
-                            color: DSColors.textPrimary,
+                            color: PrismColors.textPrimary,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
                         if (clMeta?.type != null)
-                          DSChip(
+                          PrismChip(
                             label: clMeta!.type.name,
-                            size: DSChipSize.small,
+                            size: PrismChipSize.small,
                           ),
                       ],
                     ),
 
                     // Description
                     if (entry.description.isNotEmpty) ...[
-                      const SizedBox(height: DSSpacing.xs),
-                      DSText.bodySmall(
+                      const SizedBox(height: PrismSpacing.xs),
+                      PrismText.bodySmall(
                         entry.description,
-                        color: DSColors.textSecondary,
+                        color: PrismColors.textSecondary,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -84,32 +84,32 @@ class ChangelogListPanel extends ConsumerWidget {
 
                     // Footer: project, task, date
                     if (clMeta != null) ...[
-                      const SizedBox(height: DSSpacing.sm),
+                      const SizedBox(height: PrismSpacing.sm),
                       Row(
                         children: [
                           if (clMeta.project.isNotEmpty) ...[
-                            DSText.labelSmall(
+                            PrismText.labelSmall(
                               clMeta.project,
-                              color: DSColors.textTertiary,
+                              color: PrismColors.textTertiary,
                             ),
-                            const SizedBox(width: DSSpacing.sm),
+                            const SizedBox(width: PrismSpacing.sm),
                           ],
                           if (clMeta.task.isNotEmpty) ...[
-                            DSIcon.small(
-                              DSIcons.task,
-                              color: DSColors.textTertiary,
+                            const PrismIcon.small(
+                              PrismIcons.task,
+                              color: PrismColors.textTertiary,
                             ),
                             const SizedBox(width: 4),
-                            DSText.labelSmall(
+                            PrismText.labelSmall(
                               clMeta.task,
-                              color: DSColors.textTertiary,
+                              color: PrismColors.textTertiary,
                             ),
-                            const SizedBox(width: DSSpacing.sm),
+                            const SizedBox(width: PrismSpacing.sm),
                           ],
                           const Spacer(),
-                          DSText.labelSmall(
+                          PrismText.labelSmall(
                             _formatDate(clMeta.date),
-                            color: DSColors.textTertiary,
+                            color: PrismColors.textTertiary,
                           ),
                         ],
                       ),

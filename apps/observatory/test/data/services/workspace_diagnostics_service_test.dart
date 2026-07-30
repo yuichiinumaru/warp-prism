@@ -172,12 +172,34 @@ void main() {
       final graph = _buildGraphWithHighFanIn();
       final report = service.analyze(graph, fanInThreshold: 2);
 
-      final hotspots = report.byCategory(DiagnosticCategory.brokenEdge);
+      final hotspots = report.byCategory(DiagnosticCategory.highFanIn);
       expect(hotspots, isNotEmpty);
       expect(
         hotspots.first.context['incomingEdgeCount'],
         greaterThanOrEqualTo(2),
       );
+    });
+
+    test('detects review pressure for elevated-priority review tasks', () {
+      final graph = _buildGraphWithReviewPressure();
+      final report = service.analyze(graph);
+
+      final pressure = report.byCategory(DiagnosticCategory.reviewPressure);
+      expect(pressure, isNotEmpty);
+      expect(pressure.first.context['priority'], equals('P0'));
+      expect(pressure.first.context['taskLane'], equals('03-review'));
+    });
+
+    test('detects changelog entries without linked task', () {
+      final graph = _buildGraphWithUnlinkedChangelog();
+      final report = service.analyze(graph);
+
+      final gaps = report.byCategory(DiagnosticCategory.missingDependency);
+      expect(gaps, isNotEmpty);
+      expect(gaps.first.severity, equals(DiagnosticSeverity.warning));
+      expect(gaps.first.message, contains('no linked task'));
+      expect(gaps.first.context['gapKind'], equals('changelogWithoutTaskLink'));
+      expect(gaps.first.assetId, equals('changelog:cl-orphan'));
     });
 
     test('diagnostics report provides category and severity counts', () {
@@ -352,6 +374,38 @@ WorkspaceGraphResult _buildGraphWithOrphan() {
   return const WorkspaceGraphBuilder().build(assets);
 }
 
+/// Build a graph with a changelog entry that has no task link.
+WorkspaceGraphResult _buildGraphWithUnlinkedChangelog() {
+  final assets = [
+    const WorkspaceAsset(
+      id: 'agent:main',
+      kind: AssetKind.agent,
+      name: 'Main',
+      path: '/ws/.agents/agents/main.md',
+      frontmatter: {
+        'skills': ['skill-a'],
+      },
+    ),
+    const WorkspaceAsset(
+      id: 'skill:skill-a',
+      kind: AssetKind.skill,
+      name: 'Skill A',
+      path: '/ws/.agents/skills/skill-a/SKILL.md',
+    ),
+    // Changelog with no `task` frontmatter → no changedBy edge
+    const WorkspaceAsset(
+      id: 'changelog:cl-orphan',
+      kind: AssetKind.changelog,
+      name: 'cl-orphan',
+      path: '/ws/docs/changelog/2026-06-07-cl-orphan.md',
+      canonicality: Canonicality.appendOnly,
+      frontmatter: {'id': 'cl-orphan', 'type': 'fix'},
+    ),
+  ];
+
+  return const WorkspaceGraphBuilder().build(assets);
+}
+
 /// Build a graph with a stale reference (edge to non-existent target).
 WorkspaceGraphResult _buildGraphWithStaleRef() {
   final assets = [
@@ -428,6 +482,32 @@ WorkspaceGraphResult _buildGraphWithPartialProof() {
           created: DateTime(2026, 6, 1),
           updated: DateTime(2026, 6, 1),
           proofState: ProofState.partial,
+        ),
+      },
+    ),
+  ];
+
+  return const WorkspaceGraphBuilder().build(assets);
+}
+
+/// Build a graph with a review-lane task under elevated priority.
+WorkspaceGraphResult _buildGraphWithReviewPressure() {
+  final assets = [
+    WorkspaceAsset(
+      id: 'task:rp-1',
+      kind: AssetKind.task,
+      name: 'Elevated review task',
+      path: '/ws/docs/tasks/03-review/rp-1.md',
+      frontmatter: {
+        'id': 'rp-1',
+        '_taskMetadata': TaskMetadata(
+          id: 'rp-1',
+          title: 'Elevated review task',
+          lane: TaskLane.review,
+          priority: 'P0',
+          created: DateTime(2026, 6, 1),
+          updated: DateTime(2026, 6, 7),
+          proofState: ProofState.complete,
         ),
       },
     ),

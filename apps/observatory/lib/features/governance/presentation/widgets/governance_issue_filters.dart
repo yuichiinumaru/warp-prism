@@ -75,12 +75,11 @@ class GovernanceIssueFilters extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Category filters
-        DSText.labelSmall('CATEGORY', color: DSColors.textTertiary),
-        const SizedBox(height: DSSpacing.xs),
+        const PrismText.labelSmall('CATEGORY', color: PrismColors.textTertiary),
+        const SizedBox(height: PrismSpacing.xs),
         Wrap(
-          spacing: DSSpacing.xs,
-          runSpacing: DSSpacing.xs,
+          spacing: PrismSpacing.xs,
+          runSpacing: PrismSpacing.xs,
           children: [
             _FilterChip(
               label: 'Orphans',
@@ -88,7 +87,7 @@ class GovernanceIssueFilters extends StatelessWidget {
               isActive: filterState.selectedCategories.contains(
                 DiagnosticCategory.orphanAsset,
               ),
-              color: DSColors.statusWarning,
+              color: PrismColors.statusWarning,
               onTap: () => _toggleCategory(DiagnosticCategory.orphanAsset),
             ),
             _FilterChip(
@@ -97,7 +96,7 @@ class GovernanceIssueFilters extends StatelessWidget {
               isActive: filterState.selectedCategories.contains(
                 DiagnosticCategory.staleReference,
               ),
-              color: DSColors.statusError,
+              color: PrismColors.statusError,
               onTap: () => _toggleCategory(DiagnosticCategory.staleReference),
             ),
             _FilterChip(
@@ -106,28 +105,27 @@ class GovernanceIssueFilters extends StatelessWidget {
               isActive: filterState.selectedCategories.contains(
                 DiagnosticCategory.proofGap,
               ),
-              color: DSColors.statusError,
+              color: PrismColors.statusError,
               onTap: () => _toggleCategory(DiagnosticCategory.proofGap),
             ),
             _FilterChip(
-              label: 'Fan-In',
-              icon: Icons.warning_amber_outlined,
+              label: 'Ledger Gaps',
+              icon: Icons.history_edu_outlined,
               isActive: filterState.selectedCategories.contains(
-                DiagnosticCategory.brokenEdge,
+                DiagnosticCategory.missingDependency,
               ),
-              color: DSColors.statusWarning,
-              onTap: () => _toggleCategory(DiagnosticCategory.brokenEdge),
+              color: PrismColors.statusWarning,
+              onTap: () =>
+                  _toggleCategory(DiagnosticCategory.missingDependency),
             ),
           ],
         ),
-        const SizedBox(height: DSSpacing.sm),
-
-        // Severity filters
-        DSText.labelSmall('SEVERITY', color: DSColors.textTertiary),
-        const SizedBox(height: DSSpacing.xs),
+        const SizedBox(height: PrismSpacing.sm),
+        const PrismText.labelSmall('SEVERITY', color: PrismColors.textTertiary),
+        const SizedBox(height: PrismSpacing.xs),
         Wrap(
-          spacing: DSSpacing.xs,
-          runSpacing: DSSpacing.xs,
+          spacing: PrismSpacing.xs,
+          runSpacing: PrismSpacing.xs,
           children: [
             _FilterChip(
               label: 'Error',
@@ -135,7 +133,7 @@ class GovernanceIssueFilters extends StatelessWidget {
               isActive: filterState.selectedSeverities.contains(
                 DiagnosticSeverity.error,
               ),
-              color: DSColors.statusError,
+              color: PrismColors.statusError,
               onTap: () => _toggleSeverity(DiagnosticSeverity.error),
             ),
             _FilterChip(
@@ -144,7 +142,7 @@ class GovernanceIssueFilters extends StatelessWidget {
               isActive: filterState.selectedSeverities.contains(
                 DiagnosticSeverity.warning,
               ),
-              color: DSColors.statusWarning,
+              color: PrismColors.statusWarning,
               onTap: () => _toggleSeverity(DiagnosticSeverity.warning),
             ),
             _FilterChip(
@@ -153,22 +151,20 @@ class GovernanceIssueFilters extends StatelessWidget {
               isActive: filterState.selectedSeverities.contains(
                 DiagnosticSeverity.info,
               ),
-              color: DSColors.statusInfo,
+              color: PrismColors.statusInfo,
               onTap: () => _toggleSeverity(DiagnosticSeverity.info),
             ),
           ],
         ),
-
-        // Clear all button
         if (filterState.isActive) ...[
-          const SizedBox(height: DSSpacing.sm),
+          const SizedBox(height: PrismSpacing.sm),
           GestureDetector(
             onTap: () => onFilterChanged(const GovernanceFilterState()),
-            child: MouseRegion(
+            child: const MouseRegion(
               cursor: SystemMouseCursors.click,
-              child: DSText.labelSmall(
+              child: PrismText.labelSmall(
                 'Clear all filters',
-                color: DSColors.accentCyan,
+                color: PrismColors.accentCyan,
               ),
             ),
           ),
@@ -225,27 +221,31 @@ class _FilterChip extends StatelessWidget {
         cursor: SystemMouseCursors.click,
         child: Container(
           padding: const EdgeInsets.symmetric(
-            horizontal: DSSpacing.sm,
-            vertical: DSSpacing.xs,
+            horizontal: PrismSpacing.sm,
+            vertical: PrismSpacing.xs,
           ),
           decoration: BoxDecoration(
-            color: isActive ? color.withOpacity(0.15) : Colors.transparent,
-            borderRadius: BorderRadius.circular(DSRadii.sm),
+            color: isActive
+                ? color.withValues(alpha: 0.15)
+                : Colors.transparent,
+            borderRadius: BorderRadius.circular(PrismRadii.sm),
             border: Border.all(
-              color: isActive ? color.withOpacity(0.4) : DSColors.borderSubtle,
+              color: isActive
+                  ? color.withValues(alpha: 0.4)
+                  : PrismColors.borderSubtle,
             ),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              DSIcon.small(
+              PrismIcon.small(
                 icon,
-                color: isActive ? color : DSColors.textTertiary,
+                color: isActive ? color : PrismColors.textTertiary,
               ),
-              const SizedBox(width: DSSpacing.xs),
-              DSText.labelSmall(
+              const SizedBox(width: PrismSpacing.xs),
+              PrismText.labelSmall(
                 label,
-                color: isActive ? color : DSColors.textTertiary,
+                color: isActive ? color : PrismColors.textTertiary,
               ),
             ],
           ),

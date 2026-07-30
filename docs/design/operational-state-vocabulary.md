@@ -1,366 +1,213 @@
 # Warp Prism — Operational State Vocabulary
 
-> **Task**: 1102 — Warp Prism Control Surface Inventory
-> **Date**: 2026-06-08
-> **Status**: Active
-> **Evidence**: Mock task frontmatter in `assets/mock_workspace/docs/tasks/`, CyberCore domain entity lifecycle states from `docs/reports/cybercore-domain-ui-mapping-20260608.md`, existing `DSStateType` in `lib/design_system/molecules/ds_state_surface.dart`
+> **Task**: 1102 — Warp Prism Control Surface Inventory  
+> **Date**: 2026-07-09 (reconciled rewrite; §0.5 governance amend same day)  
+> **Status**: Active vocabulary + live implementation alignment (source-backed DoD)  
+> **Review readiness**: **Ready for reviewer** under 2026-07-09 DoD — screenshots **optional / deferred** (see `component-inventory.md` §0.5 APPLIED)  
+> **Evidence**: Live CC frontend enums (source-backed, **primary**) + live Prism `DSOperationalState` / `DSStateType`; screenshot-backed **absent / optional**
 
 ---
 
-## 1. Current State
+## 1. Two Orthogonal Axes
 
-The existing `DSStateType` enum (source: `lib/design_system/molecules/ds_state_surface.dart` line 194) defines only 3 **data-loading states**:
+| Axis | Type | Live implementation | Purpose |
+| --- | --- | --- | --- |
+| **UI data surface states** | `DSStateType` | `packages/warp_prism_ui/lib/src/molecules/ds_state_surface.dart` | Whether the **view** can show data |
+| **Entity operational states** | `DSOperationalState` | `packages/warp_prism_ui/lib/src/tokens/ds_operational_state.dart` | Health/lifecycle/verification of an **entity** |
 
-```dart
-enum DSStateType { empty, loading, error }
+### 1.1 Live `DSStateType` (7 values — not 3)
+
+```text
+empty, loading, error, disabled, stale, degraded, excluded
 ```
 
-This is insufficient. The ASW Observatory and CyberCore pilot require **operational states** that describe the lifecycle, health, verification, and governance status of workspace entities — not merely whether a fetch succeeded.
+Maps directly to CC `AdminDataState` for the first three (`loading|empty|error`) and extends it.
 
-Additional state fragments exist scattered across components:
+### 1.2 Live `DSOperationalState` (15 values)
 
-| Source | States | Gap |
-|--------|--------|-----|
-| `DSTaskCard._proofColor` | complete, partial, missing, null | Only proof; no lifecycle states |
-| `DSSemantics.forProofState()` | complete, partial, missing, null | Same |
-| `DSStatusDot` constructors | success, warning, error, info, neutral | No degraded/disabled/running |
-| `DSColors.status*` | success, warning, error, info | No operational semantics |
-| Mock task frontmatter `status` | planning, open, doing, review, completed | Task lanes, not universal states |
-| Mock task frontmatter `proof_state` | none, partial, complete | Proof only |
-| `ProofState` enum (`task_contracts.dart`) | none, partial, complete, verified | 4 proof states |
-| `DiagnosticSeverity` enum | info, warning, error, critical | Diagnostic only |
-| `ChangelogType` enum | feature, fix, refactor, docs, chore, governance, audit, migration | Change type, not state |
-| CyberCore entity lifecycles | draft→active→deprecated→removed, closed→open→half-open, registered→approved→enabled→disabled→removed, etc. | 11 state machines from domain mapping report |
+| ID | Category | Required by Task 1102 |
+| --- | --- | --- |
+| `pending` | lifecycle | yes |
+| `running` | lifecycle | yes |
+| `approved` | lifecycle | yes |
+| `rejected` | lifecycle | yes |
+| `promoted` | lifecycle | yes |
+| `archived` | lifecycle | yes |
+| `healthy` | health | yes |
+| `degraded` | health | yes |
+| `error` | health | yes |
+| `disabled` | health | yes |
+| `unverified` | verification | yes |
+| `exposed` | verification | yes |
+| `redacted` | verification | yes |
+| `stale` | governance | yes |
+| `excluded` | governance | extra (kept; used by `DSStateType` overlap + filters) |
+
+All 14 task-required IDs are present; `excluded` is retained as the 15th live enum value.
 
 ---
 
 ## 2. Design Principles
 
-1. **Operational states are entity-lifecycle states**, not UI-loading states. They answer "what is the health/status/verification/lifecycle position of this entity?"
-2. **States are composable**: a task can be `running` AND `stale`; an agent can be `healthy` AND `promoted`. The vocabulary defines atomic state atoms; combinations are expressed through multiple state fields.
-3. **Each state has exactly one canonical color, one canonical icon, and one behavioral contract** — no ambiguity.
-4. **States map to real mock workspace evidence**: every state defined here can be found in the mock corpus task frontmatter or CyberCore domain entity mapping.
-5. **The vocabulary is flat and extensible**: new states are added as enum values, not nested hierarchies.
+1. **Operational ≠ loading.** A page can be `DSStateType.loading` while entities would be `healthy` once loaded.
+2. **Composable fields.** An entity may carry lifecycle + health + verification simultaneously (e.g. active provider + failing test + untested history).
+3. **Evidence grades** (mandatory for every mapping claim):
+   - `explicit` — same or synonymous string/enum in CC source
+   - `derived` — deterministic function of CC fields (documented)
+   - `speculative` — product intent only; not for gate completion
+4. **No screenshot invention.** Visual-only states without source enums stay `needs-research`.
+5. **Canonical UI metadata** lives on `DSOperationalStateUI` (color, icon, label, severity, allowsActions, isTerminal).
 
 ---
 
 ## 3. Universal Operational States
 
-### 3.1 Lifecycle States
+### 3.1 Lifecycle
 
-States that describe where an entity is in its lifecycle progression.
+| State | ID | Color token (Prism) | Behavioral contract | CC evidence (grade) | UI semantics |
+| --- | --- | --- | --- | --- | --- |
+| Pending | `pending` | statusPending | Exists; work not started | Remote exposure `configured` not yet `enabled` (`derived`); legacy import awaiting confirm (`derived`); create mutation idle form (`derived`) | Muted label; no progress bar |
+| Running | `running` | statusRunning | Active work / in-flight | MCP inspector `connecting` (`explicit`); create/test mutations `isPending` (`derived`) | Gold/amber activity; disable conflicting actions |
+| Approved | `approved` | statusApproved | Passed gate | Legacy mapping `importable` preflight success (`derived`); combo entry `ready` (`derived`) | Success chrome; allow promote/enable |
+| Rejected | `rejected` | statusRejected | Failed gate | Legacy `blocked`/`unsupported` (`explicit` status strings); catalog `unsupported` (`explicit`) | Error chrome; show reason |
+| Promoted | `promoted` | statusPromoted | Advanced trust/enablement | Remote exposure `enabled` (`explicit`); provider preset `configured` (`explicit`); provider `isActive` + test success (`derived`) | Accent highlight; “live” badge |
+| Archived | `archived` | statusArchived | Terminal retention | No dedicated CC “archived” enum found on primary admin pages | **needs-research** for CC entity archive; keep vocabulary for ASW/plugin lifecycle from backend docs (`speculative` for UI until source appears) |
 
-| State | ID | Canonical Color | Icon | Behavioral Contract | Mock Evidence | CyberCore Mapping |
-|-------|----|-----------------|------|---------------------|---------------|-------------------|
-| **Pending** | `pending` | `textTertiary` (`#8888A0`) | `DSIcons.pending` (schedule) | Entity exists but has not started processing. No active work. Awaiting assignment, dependency resolution, or queue position. | Task status `open` with `proof_state: none` (T004-T008) | draft (Capability, Exposure, Policy, RouteGraph) |
-| **Running** | `running` | `accentGold` (`#FFB800`) | `DSIcons.doing` (trending_up) | Entity is actively being worked on. Resources committed. Progress may be partial. | Task status `doing` (T009-T013) | running (WorkflowExecution), working (Task A2A) |
-| **Approved** | `approved` | `statusSuccess` (`#10B981`) | `DSIcons.success` (check_circle_outline) | Entity has passed review or approval gate. Ready for promotion or use. | Task `review_score: ≥8.0` + `proof_state: complete` in review lane (T015) | approved (Plugin lifecycle) |
-| **Rejected** | `rejected` | `statusError` (`#EF4444`) | `DSIcons.error` (error_outline) | Entity failed review or quality gate. Requires rework or archival. Returned to sender. | Task status `review` with `review_score: <6.0` or explicit return (T014 title: "Review returned") | rejected (review outcome) |
-| **Promoted** | `promoted` | `accentCyan` (`#00D4FF`) | `DSIcons.canonical` (verified_outlined) | Entity has been advanced to a higher trust or canonicality level. E.g., mock→childLocal, childLocal→parentCanonical. | Completed tasks with `proof_state: complete` + high `review_score` (T018-T022) | enabled (Plugin lifecycle), active (Capability, Exposure, Policy) |
-| **Archived** | `archived` | `textDisabled` (`#505060`) | `DSIcons.archive` (inventory_2_outlined) | Entity is no longer active but preserved for provenance. Read-only. Cannot transition back to running. | Completed tasks (T018-T022 final state), archived mock corpus files | removed (Capability, Exposure, Plugin), archived (Policy) |
+### 3.2 Health
 
-### 3.2 Health States
+| State | ID | Color token | Behavioral contract | CC evidence (grade) | UI semantics |
+| --- | --- | --- | --- | --- | --- |
+| Healthy | `healthy` | statusHealthy | Normal operation | `ProviderHealthStatus=ready` (`explicit`); badge Active+success (`explicit`); combo readiness `ready` (`explicit`) | Green success |
+| Degraded | `degraded` | statusDegraded | Partial/impaired | Combo `provider-warning` / entry `warning` (`explicit`); catalog `needs_env` (`derived`) | Warning amber; allow remediation |
+| Error | `error` | statusOpError | Failure needs intervention | Provider test `error` (`explicit`); health `failing` (`explicit`); exposure `error` (`explicit`); connection `error*` (`explicit`); AdminDataState error (`explicit` UI) | Destructive; alert role |
+| Disabled | `disabled` | statusDisabled | Intentionally off | Provider `isActive=false` / Inactive badge (`explicit`); exposure `disabled` (`explicit`); health `inactive` (`explicit`); settings feature toggles off (`explicit`) | Muted; re-enable affordance |
 
-States that describe the current health or quality of an entity.
+### 3.3 Verification
 
-| State | ID | Canonical Color | Icon | Behavioral Contract | Mock Evidence | CyberCore Mapping |
-|-------|----|-----------------|------|---------------------|---------------|-------------------|
-| **Healthy** | `healthy` | `statusSuccess` (`#10B981`) | `DSIcons.success` (check_circle_outline) | Entity is operating normally. All dependencies resolved. No warnings. Proof complete. | Completed tasks with `proof_state: complete` and `review_score: ≥9.0` (T018, T019) | healthy (Provider, MCPTool, MCP Server), closed (CircuitBreaker) |
-| **Degraded** | `degraded` | `statusWarning` (`#F59E0B`) | `DSIcons.warning` (warning_amber_outlined) | Entity is operational but with reduced quality, missing dependencies, or partial verification. Attention needed but not blocking. | Tasks with `proof_state: partial` in doing lane (T009, T010, T012) | degraded (Provider, MCPTool), half-open (CircuitBreaker) |
-| **Error** | `error` | `statusError` (`#EF4444`) | `DSIcons.error` (error_outline) | Entity has encountered a failure. May be recoverable. Requires intervention. | Tasks with `proof_state: none` in review lane (T017), governance warnings | down (Provider), unavailable (MCPServer), failed (WorkflowExecution) |
-| **Disabled** | `disabled` | `textDisabled` (`#505060`) | `DSIcons.block` (block) | Entity has been intentionally deactivated. Not available for use. May be re-enabled. Preserves configuration. | Not present in mock corpus (read-only observatory) | disabled (Plugin), suspended (User), paused (WebhookEndpoint) |
+| State | ID | Color token | Behavioral contract | CC evidence (grade) | UI semantics |
+| --- | --- | --- | --- | --- | --- |
+| Unverified | `unverified` | statusUnverified | No proof yet | Provider badge Untested / testStatus `unknown` (`explicit`); health `unknown` (`explicit`); catalog `needs_review` (`derived`) | Neutral pending mark |
+| Exposed | `exposed` | statusExposed | Published/visible with risk | Remote exposure `enabled` or public origin present (`derived` from exposure status); API URLs on llm-endpoints page (`derived`) | Warning/error if unreviewed; emphasize boundary copy |
+| Redacted | `redacted` | statusRedacted | Intentionally hidden | Live logs redaction helpers; legacy preflight `redactionStatus.secretsRedacted` + field counts (`explicit`); llm-endpoints audit metadata redacted before render (`explicit` comments/helpers) | Placeholder glyphs; never show raw secret |
 
-### 3.3 Verification States
+### 3.4 Governance
 
-States that describe the proof/verification position of an entity.
-
-| State | ID | Canonical Color | Icon | Behavioral Contract | Mock Evidence | CyberCore Mapping |
-|-------|----|-----------------|------|---------------------|---------------|-------------------|
-| **Unverified** | `unverified` | `textTertiary` (`#8888A0`) | `DSIcons.pending` (schedule) | Entity has not yet been subjected to verification. No proof attempted. | Tasks with `proof_state: none` (T001-T008, T011, T013) | N/A (proof is Warp Prism specific) |
-| **Exposed** | `exposed` | `statusError` (`#EF4444`) | `DSIcons.warning` (warning_amber_outlined) | Entity has been published or made visible but has not been reviewed for safety, correctness, or governance compliance. Risk of leakage. | Tasks in `open` or `doing` lanes with `proof_state: none` and high priority (P0/P1) | active but unreviewed exposure |
-| **Redacted** | `redacted` | `accentViolet` (`#8B5CF6`) | `DSIcons.local` (home_outlined) | Entity has been intentionally obscured or access-restricted. Sensitive content hidden. Display shows placeholder, not actual content. | Credential display in CyberCore (masked values) | Credential masked display, API key prefix-only |
-
-### 3.4 Governance States
-
-States that describe the staleness or provenance of an entity.
-
-| State | ID | Canonical Color | Icon | Behavioral Contract | Mock Evidence | CyberCore Mapping |
-|-------|----|-----------------|------|---------------------|---------------|-------------------|
-| **Stale** | `stale` | `statusWarning` (`#F59E0B`) | `DSIcons.warning` (warning_amber_outlined) | Entity has not been updated within expected timeframe, or depends on outdated data. May be functionally correct but governance risk. | Tasks in `doing` lane with old `updated` dates, skills with no recent changelog entries | staleIndex, staleReference (DiagnosticCategory) |
-| **Excluded** | `excluded` | `textDisabled` (`#505060`) | `DSIcons.block` (block) | Entity is intentionally excluded from a scope, filter, or analysis. Not an error — deliberate boundary. | Tasks not matching current filter, assets filtered out by kind/lane/provenance filter | N/A |
+| State | ID | Color token | Behavioral contract | CC evidence (grade) | UI semantics |
+| --- | --- | --- | --- | --- | --- |
+| Stale | `stale` | statusStale | Out of date | Models page metric “Discovered rows older than policy” (`explicit` product metric); stale data surface type (`DSStateType.stale`) | Warning refresh CTA |
+| Excluded | `excluded` | statusExcluded | Filtered out of scope | Client-mode hides admin nav items (`derived`); table filters excluding rows (`derived`); `DSStateType.excluded` | “Outside scope” empty, not error |
 
 ---
 
-## 4. Composite State Matrix
+## 4. CC Domain Enum → Prism Mapping Table
 
-A single entity can carry multiple state fields simultaneously. The following matrix shows which state fields apply to which asset kinds:
+Citations are under `/home/sephiroth/working/ganthritor/cybernetics-core/apps/frontend/` unless noted. Prism enums: `packages/warp_prism_ui/lib/src/tokens/ds_operational_state.dart`, `.../molecules/ds_state_surface.dart`.
 
-| Asset Kind | Lifecycle | Health | Verification | Governance |
-|------------|-----------|--------|--------------|------------|
-| Agent | — | healthy/degraded/error/disabled | — | stale |
-| Skill | — | healthy/degraded/error/disabled | — | stale |
-| Workflow | pending/running/approved/rejected/promoted/archived | healthy/degraded/error/disabled | — | stale |
-| Task | pending/running/approved/rejected/promoted/archived | healthy/degraded/error | unverified/exposed/redacted | stale/excluded |
-| Changelog | — | — | — | stale |
-| Script | — | healthy/degraded/error/disabled | — | stale |
-| Reference | — | — | unverified/exposed | stale |
-| Rule | pending/running/approved/rejected/archived | healthy/degraded/error | — | stale |
-
----
-
-## 5. State Transitions
-
-### 5.1 Task Lifecycle (Primary)
-
-```
-pending → running → approved → promoted → archived
-              ↘         ↗
-               rejected
-    pending → running → degraded → error → archived
-```
-
-### 5.2 Health Progression
-
-```
-healthy → degraded → error → disabled
-                ↘
-                 healthy (recovered)
-```
-
-### 5.3 Verification Progression
-
-```
-unverified → exposed → approved
-                ↘
-                 redacted (sensitive)
-```
-
-### 5.4 Governance Progression
-
-```
-(stale is terminal until refreshed)
-(stale) → (fresh) [after update]
-(excluded) → (included) [after filter change]
-```
+| CC source (path) | CC value | Prism `DSOperationalState` | Grade |
+| --- | --- | --- | --- |
+| `components/providers/provider-status-badge.tsx` | Inactive (`!isActive`) | `disabled` | explicit |
+| same | Active (`testStatus === "success"`) | `healthy` | explicit |
+| same | Error (`testStatus === "error"`) | `error` | explicit |
+| same | Untested (default active + unknown) | `unverified` | explicit |
+| `lib/llm-diagnostics.ts` `ProviderHealthStatus` | ready | `healthy` | explicit |
+| same | failing | `error` | explicit |
+| same | inactive | `disabled` | explicit |
+| same | unknown | `unverified` | explicit |
+| `lib/llm-remote-exposure.ts` `RemoteExposureState` | disabled | `disabled` | explicit |
+| same | configured | `pending` | derived |
+| same | enabled | `exposed` (+ optional `promoted` for go-live framing) | derived — primary risk UI = `exposed` |
+| same | error | `error` | explicit |
+| `types/search.ts` catalog `status` | ready | `healthy` | derived |
+| same | needs_env | `degraded` | derived |
+| same | needs_review | `unverified` | derived |
+| same | unsupported | `rejected` | derived |
+| `lib/combo-readiness.ts` `ComboReadinessStatus` | ready | `healthy` | explicit |
+| same | provider-warning | `degraded` | explicit |
+| same | inactive-provider | `disabled` | derived |
+| same | missing-provider | `error` | derived |
+| same | empty | *(UI `DSStateType.empty`)* | explicit UI, not ops |
+| `lib/constants.ts` `ConnectionStatus` (+ `hooks/useConnection.ts`) | disconnected | `disabled` | derived |
+| same | connecting | `running` | derived (name is operational lifecycle) |
+| same | connected | `healthy` (prefer over `running` when stable) | derived |
+| same | error / error-connecting-to-proxy | `error` | explicit |
+| `app/.../providers/page.tsx` legacy mapping | importable | `approved` or `pending` | derived |
+| same | blocked / unsupported | `rejected` | derived |
+| same | duplicate | `stale` or `rejected` | speculative — **needs-research** |
+| Live logs / legacy preflight redaction helpers | redacted fields | `redacted` | explicit |
+| — | — | `archived` | **no primary admin UI enum** — keep vocabulary; CC UI mapping needs-research |
 
 ---
 
-## 6. Color Token Integration
+## 5. UI Data States (`DSStateType`) vs CC AdminDataState
 
-### 6.1 New Color Tokens Required
-
-The existing `DSColors` class needs these additions:
-
-| Token | Hex | Usage |
-|-------|-----|-------|
-| `statusDegraded` | `#F59E0B` (reuse `statusWarning`) | Degraded health state |
-| `statusDisabled` | `#505060` (reuse `textDisabled`) | Disabled state |
-| `statusPending` | `#8888A0` (reuse `textTertiary`) | Pending/unverified state |
-| `statusPromoted` | `#00D4FF` (reuse `accentCyan`) | Promoted state |
-| `statusRedacted` | `#8B5CF6` (reuse `accentViolet`) | Redacted state |
-| `statusStale` | `#F59E0B` (reuse `statusWarning`) | Stale state |
-
-No new hex values are required — the existing token palette covers all operational states through semantic reuse. The new tokens are semantic aliases, not new colors.
-
-### 6.2 New Icon Mappings
-
-| State | Icon | DSIcons constant |
-|-------|------|------------------|
-| pending | `Icons.schedule` | `DSIcons.pending` (exists) |
-| running | `Icons.trending_up` | `DSIcons.doing` (exists) |
-| approved | `Icons.check_circle_outline` | `DSIcons.success` (exists) |
-| rejected | `Icons.error_outline` | `DSIcons.error` (exists) |
-| promoted | `Icons.verified_outlined` | `DSIcons.canonical` (exists) |
-| archived | `Icons.inventory_2_outlined` | `DSIcons.archive` (exists) |
-| healthy | `Icons.check_circle_outline` | `DSIcons.success` (exists) |
-| degraded | `Icons.warning_amber_outlined` | `DSIcons.warning` (exists) |
-| disabled | `Icons.block` | `DSIcons.block` (exists) |
-| unverified | `Icons.schedule` | `DSIcons.pending` (exists) |
-| exposed | `Icons.warning_amber_outlined` | `DSIcons.warning` (exists) |
-| redacted | `Icons.home_outlined` | `DSIcons.local` (exists) |
-| stale | `Icons.warning_amber_outlined` | `DSIcons.warning` (exists) |
-| excluded | `Icons.block` | `DSIcons.block` (exists) |
-
-All icons already exist in `DSIcons`. No new icon constants needed.
+| CC `AdminDataState` | Prism `DSStateType` | Notes |
+| --- | --- | --- |
+| loading | `loading` | direct |
+| empty | `empty` | direct |
+| error | `error` | direct; CC sets `role=alert` |
+| *(absent)* | `disabled` | use for feature-off pages |
+| *(absent)* | `stale` | use for expired catalog/metrics |
+| *(absent)* | `degraded` | partial page success |
+| *(absent)* | `excluded` | filtered-out scope |
 
 ---
 
-## 7. Implementation Contract
+## 6. Behavioral Contracts (Summary)
 
-### 7.1 Expanded DSStateType (Proposed)
+Full detail remains in `docs/design/operational-state-behavioral-contracts.md` and transitions in `operational-state-transitions.md`. Non-negotiables for ADS consumers:
 
-```dart
-/// Operational states for workspace entities.
-///
-/// Replaces the 3-state [DSStateType] (empty/loading/error) which
-/// remains for data-loading states only. [OperationalState] covers
-/// entity lifecycle, health, verification, and governance.
-enum OperationalState {
-  // Lifecycle
-  pending,
-  running,
-  approved,
-  rejected,
-  promoted,
-  archived,
+| State | allowsActions | isTerminal | showsWarning | severity |
+| --- | --- | --- | --- | --- |
+| pending | true | false | false | info |
+| running | true | false | false | info |
+| approved | true | false | false | success |
+| rejected | true | false | true | error |
+| promoted | true | false | false | success |
+| archived | false | true | false | info |
+| healthy | false* | false | false | success |
+| degraded | true | false | true | warning |
+| error | true | false | true | error |
+| disabled | true | false | false | info |
+| unverified | true | false | false | info |
+| exposed | true | false | true | error |
+| redacted | true | false | false | warning |
+| stale | true | false | true | warning |
+| excluded | false | true | false | info |
 
-  // Health
-  healthy,
-  degraded,
-  error,
-  disabled,
-
-  // Verification
-  unverified,
-  exposed,
-  redacted,
-
-  // Governance
-  stale,
-  excluded,
-}
-```
-
-### 7.2 DSStateType Preservation
-
-The existing `DSStateType` should **not** be removed. It describes UI/data-loading states (empty, loading, error) which are orthogonal to operational states. A screen can show `DSStateType.loading` while fetching data, then display entities that each carry an `OperationalState`.
-
-### 7.3 Extension Method (Proposed)
-
-```dart
-extension OperationalStateUI on OperationalState {
-  Color get color {
-    switch (this) {
-      case OperationalState.pending: return DSColors.statusPending;
-      case OperationalState.running: return DSColors.accentGold;
-      case OperationalState.approved: return DSColors.statusSuccess;
-      case OperationalState.rejected: return DSColors.statusError;
-      case OperationalState.promoted: return DSColors.accentCyan;
-      case OperationalState.archived: return DSColors.textDisabled;
-      case OperationalState.healthy: return DSColors.statusSuccess;
-      case OperationalState.degraded: return DSColors.statusWarning;
-      case OperationalState.error: return DSColors.statusError;
-      case OperationalState.disabled: return DSColors.textDisabled;
-      case OperationalState.unverified: return DSColors.textTertiary;
-      case OperationalState.exposed: return DSColors.statusError;
-      case OperationalState.redacted: return DSColors.accentViolet;
-      case OperationalState.stale: return DSColors.statusWarning;
-      case OperationalState.excluded: return DSColors.textDisabled;
-    }
-  }
-
-  IconData get icon { /* maps to DSIcons constants */ }
-  String get label { /* human-readable label */ }
-}
-```
-
-### 7.4 Status Dot Integration
-
-`DSStatusDot` needs new named constructors:
-
-```dart
-DSStatusDot.pending(...)
-DSStatusDot.running(animated: true, ...)
-DSStatusDot.approved(...)
-DSStatusDot.rejected(...)
-DSStatusDot.promoted(...)
-DSStatusDot.archived(...)
-DSStatusDot.degraded(...)
-DSStatusDot.disabled(...)
-DSStatusDot.stale(...)
-```
-
-### 7.5 Provenance Pill Integration
-
-`DSProvenancePill` handles canonicality (parentCanonical/childLocal/generated/appendOnly/archive/mock). Operational states are complementary — they layer on top. A task can be `running` (lifecycle) + `childLocal` (canonicality) + `degraded` (health) + `partial` (proof).
+\* `healthy` defaults `allowsActions=false` for pure status chips; parent surfaces may still expose unrelated actions (edit connection, open detail).
 
 ---
 
-## 8. Behavioral Contracts Per State
+## 7. Accessibility Semantics
 
-| State | Screen Reader Label | Visual Treatment | Action Availability |
-|-------|--------------------|--------------------|---------------------|
-| Pending | "Pending: awaiting start" | Muted border, neutral dot | Start/assign (if authorized) |
-| Running | "Running: in progress" | Gold animated dot, gold accent border | Pause/complete (if authorized) |
-| Approved | "Approved: passed review" | Green dot, green accent | Promote (if authorized) |
-| Rejected | "Rejected: failed review" | Red dot, red accent, strikethrough optional | Rework/re-submit |
-| Promoted | "Promoted: advanced" | Cyan dot, cyan accent, glow | Archive |
-| Archived | "Archived: read-only" | Disabled text, no accent | None (read-only) |
-| Healthy | "Healthy: operating normally" | Green dot | No action needed |
-| Degraded | "Degraded: reduced quality" | Yellow dot, yellow accent border | Investigate/repair |
-| Error | "Error: failure detected" | Red dot, red accent, alert icon | Retry/escalate |
-| Disabled | "Disabled: intentionally off" | Gray dot, gray text | Re-enable (if authorized) |
-| Unverified | "Unverified: no proof yet" | Neutral dot, dashed border | Verify/begin verification |
-| Exposed | "Exposed: visible but unreviewed" | Red dot, orange accent border | Review/approve/restrict |
-| Redacted | "Redacted: sensitive hidden" | Violet dot, masked text (••••) | Reveal (if authorized) |
-| Stale | "Stale: needs refresh" | Yellow dot, warning icon | Refresh/re-validate |
-| Excluded | "Excluded: outside scope" | Gray text, no dot | Include (filter change) |
+| Requirement | Implementation hook |
+| --- | --- |
+| Not color-alone | Always pair `DSOperationalStateUI.label` / `semanticLabel` with color |
+| Live updates | Wrap dynamic AdminDataState replacements in `aria-live=polite` (CC gap; Prism should not regress) |
+| Redaction | Announce “redacted” in `semanticLabel` when displaying placeholders |
+| Terminal states | Hide primary “continue” CTAs when `isTerminal` |
+
+Known CC gaps (from `ui-patterns.md`, still source-backed, not screenshot-proven): missing `aria-current` on sidebar, missing live regions on filters, table scroll regions unlabeled.
 
 ---
 
-## 9. Mock Corpus State Pattern Analysis
+## 8. What Was Wrong In The 2026-06-08 Draft
 
-### 9.1 Task Status Distribution (22 mock tasks)
-
-| status (frontmatter) | Count | Maps to OperationalState |
-|---------------------|-------|--------------------------|
-| planning | 3 | `pending` |
-| open | 5 | `pending` |
-| doing | 5 | `running` |
-| review | 4 | `running` (awaiting approval) |
-| completed | 5 | `approved` → `promoted` → `archived` |
-
-### 9.2 Proof State Distribution
-
-| proof_state | Count | Maps to Verification State |
-|------------|-------|---------------------------|
-| none | 12 | `unverified` |
-| partial | 5 | `exposed` (has some proof but incomplete) |
-| complete | 5 | N/A (verification complete — carries no separate operational state) |
-
-### 9.3 Review Score Distribution
-
-| Range | Count | Implies |
-|-------|-------|---------|
-| n/a (null) | 12 | No review attempted |
-| 7.0-7.9 | 3 | Borderline — may map to `degraded` |
-| 8.0-8.9 | 3 | Acceptable — `approved` |
-| 9.0-9.5 | 4 | Excellent — `approved` + `promoted` candidate |
-
-### 9.4 CyberCore Entity Lifecycle States (11 state machines)
-
-Source: `docs/reports/cybercore-domain-ui-mapping-20260608.md` §2
-
-| State Machine | States | Coverage by OperationalState |
-|--------------|--------|------------------------------|
-| Capability/Exposure lifecycle | draft→active→deprecated→removed | pending→running→degraded→archived |
-| Circuit breaker | closed→open→half-open→probe | healthy→error→degraded→running |
-| Plugin lifecycle | registered→approved→enabled→disabled→removed | pending→approved→promoted→disabled→archived |
-| Policy lifecycle | draft→active→archived | pending→running→archived |
-| Route graph lifecycle | draft→active→deprecated→removed | pending→running→degraded→archived |
-| Credential lifecycle | active→rotating→expired/revoked | running→running→error→archived |
-| Session lifecycle | active→expired/revoked | running→error→archived |
-| Task lifecycle (A2A) | submitted→working→completed/failed/cancelled | pending→running→approved/error/archived |
-| Workflow execution | created→running→completed/failed/cancelled | pending→running→approved/error/archived |
-| Memory lifecycle | active→decayed→expired | running→degraded→archived |
-| Tool risk classification | low→medium→high→critical | healthy→degraded→error→exposed |
-
-The 15-state `OperationalState` vocabulary covers all 11 CyberCore state machines through composition.
+| Issue | Correction |
+| --- | --- |
+| Claimed `DSStateType` has 3 values | Live enum has **7** |
+| Proposed future `OperationalState` | Already implemented as `DSOperationalState` (15) |
+| Cited `lib/design_system/...` | Melos path is `packages/warp_prism_ui/lib/src/...` |
+| Mapped states primarily from mock task lanes | Primary evidence is now **CC frontend enums** |
+| Overstated mock corpus as universal proof | Mock/ASW mappings are secondary; graded `derived`/`speculative` only when used |
 
 ---
 
-## 10. Source Evidence
+## 9. Screenshot Gap And Governance Amend (2026-07-09 APPLIED)
 
-| Source | Relevance |
-|--------|-----------|
-| `lib/design_system/molecules/ds_state_surface.dart` line 194 | Current 3-state DSStateType |
-| `lib/design_system/tokens/ds_semantics.dart` | Existing semantic text styles for status/governance/proof |
-| `lib/design_system/tokens/ds_colors.dart` | Existing color tokens for status/lane/governance |
-| `lib/design_system/atoms/ds_status_dot.dart` | Current 5-variant status dot |
-| `lib/design_system/atoms/ds_icon.dart` | Existing DSIcons constants |
-| `lib/data/models/task_contracts.dart` | ProofState (4 states), TaskLane (5 lanes) |
-| `lib/data/models/governance_diagnostics.dart` | DiagnosticSeverity (4 levels), DiagnosticCategory (9 categories) |
-| `assets/mock_workspace/docs/tasks/` (22 tasks) | Real task frontmatter status/proof_state/review_score patterns |
-| `docs/reports/cybercore-domain-ui-mapping-20260608.md` | 11 CyberCore entity state machines |
-| `docs/reports/ads-gap-analysis-20260608.md` GAP-I5 | Identified operational state vocabulary as a PARTIAL gap |
-| `docs/prompt.txt` lines 536-572 | Task card fields: proof state, review score, lane, priority |
+No screenshot packet is available (`/tmp/opencode/cc-ui-screenshots-round2` absent; no in-repo reports). Therefore:
+
+- Color contrast failures are **not** asserted.
+- “Looks broken in dark mode” style claims are **out of scope** until screenshots are imported (do not invent).
+- Vocabulary remains valid from **source enums + Prism tokens** (primary DoD evidence).
+- Per `component-inventory.md` §0.5 and Task 1102 governance amend (2026-07-09 **APPLIED**), screenshots are **optional / deferred** — not a hard exit gate. Source-backed vocabulary **satisfies** inventory DoD for `ready_for_reviewer: yes`. Visual claims stay out of scope until real screenshot reports exist (follow-up if ever available).

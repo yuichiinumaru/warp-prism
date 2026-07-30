@@ -8,11 +8,11 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
-import '../../../data/models/workspace_graph.dart';
+import 'package:warp_prism_observatory/data/models/workspace_graph.dart';
 import '../domain/asset_detail_descriptor.dart';
 import 'detail_section_builder.dart';
 
-/// Renders a generic/fallback detail using the [DSDetailInspector].
+/// Renders a generic/fallback detail using the [PrismDetailInspector].
 ///
 /// Shows a partial-support banner when the descriptor is a fallback,
 /// making it explicit that this kind has limited detail support.
@@ -30,7 +30,7 @@ class GenericAssetDetailView extends StatelessWidget {
   Widget build(BuildContext context) {
     final asset = descriptor.asset;
 
-    final sections = <DSDetailSection>[
+    final sections = <PrismDetailSection>[
       // Shared sections (Identity, Metadata, Tags)
       ...toDSSections(descriptor.sharedSections),
       // Any kind-specific sections (likely empty for fallback)
@@ -50,7 +50,7 @@ class GenericAssetDetailView extends StatelessWidget {
         ),
     ];
 
-    return DSDetailInspector(
+    return PrismDetailInspector(
       title: asset.name,
       kind: asset.kind.name,
       subtitle: _buildSubtitle(asset, descriptor),
@@ -88,13 +88,15 @@ class _PartialSupportBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(
-        horizontal: DSSpacing.sm,
-        vertical: DSSpacing.xs,
+        horizontal: PrismSpacing.sm,
+        vertical: PrismSpacing.xs,
       ),
       decoration: BoxDecoration(
-        color: DSColors.statusWarning.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(DSRadii.sm),
-        border: Border.all(color: DSColors.statusWarning.withOpacity(0.3)),
+        color: PrismColors.statusWarning.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(PrismRadii.sm),
+        border: Border.all(
+          color: PrismColors.statusWarning.withValues(alpha: 0.3),
+        ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -102,13 +104,13 @@ class _PartialSupportBanner extends StatelessWidget {
           const Icon(
             Icons.info_outline,
             size: 14,
-            color: DSColors.statusWarning,
+            color: PrismColors.statusWarning,
           ),
-          const SizedBox(width: DSSpacing.xs),
+          const SizedBox(width: PrismSpacing.xs),
           Flexible(
-            child: DSText.labelSmall(
-              'Partial support',
-              color: DSColors.statusWarning,
+            child: PrismText.labelSmall(
+              message,
+              color: PrismColors.statusWarning,
             ),
           ),
         ],

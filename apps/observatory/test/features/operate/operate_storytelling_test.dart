@@ -250,4 +250,48 @@ void main() {
       expect(cluster.size, 2);
     });
   });
+
+  // Path-to-100 residual (Task 0613): completed verified deps are not blockers
+  group('Unresolved dependency refinement', () {
+    test('completed verified dependency is not an unresolved blocker', () {
+      final tasks = [
+        _task(
+          id: 't-dep',
+          title: 'Dependency',
+          lane: TaskLane.completed,
+          proofState: ProofState.verified,
+        ),
+        _task(
+          id: 't-blocked',
+          title: 'Would-be blocked',
+          lane: TaskLane.doing,
+          dependsOn: const ['t-dep'],
+        ),
+      ];
+
+      final result = deriveOperateStoryDiagnostics(tasks);
+      final blockerInsights = result.insights.where(
+        (i) => i.title.contains('Blocker'),
+      );
+      expect(blockerInsights, isEmpty);
+    });
+
+    test('missing dependency still forms a blocker cluster', () {
+      final tasks = [
+        _task(
+          id: 't-blocked',
+          title: 'Blocked',
+          lane: TaskLane.doing,
+          dependsOn: const ['missing-dep'],
+        ),
+      ];
+
+      final result = deriveOperateStoryDiagnostics(tasks);
+      final blockerInsight = result.insights.firstWhere(
+        (i) => i.title.contains('Blocker'),
+      );
+      expect(blockerInsight.value, 1);
+      expect(blockerInsight.detail, contains('missing'));
+    });
+  });
 }

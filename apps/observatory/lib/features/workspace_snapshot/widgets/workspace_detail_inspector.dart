@@ -1,7 +1,7 @@
 /// Workspace asset detail inspector.
 ///
 /// Opens on card click, graph node click, or deep-link navigation.
-/// Uses [DSDetailInspector] to render identity, metadata, relationships,
+/// Uses [PrismDetailInspector] to render identity, metadata, relationships,
 /// and related assets for the selected workspace asset.
 library;
 
@@ -24,7 +24,7 @@ class WorkspaceDetailInspector extends ConsumerWidget {
     final asset = ref.watch(selectedAssetProvider);
 
     if (asset == null) {
-      return DSStateSurface.empty(
+      return const PrismStateSurface.empty(
         icon: Icons.touch_app_outlined,
         title: 'No asset selected',
         subtitle: 'Click a card or graph node to inspect',
@@ -36,26 +36,29 @@ class WorkspaceDetailInspector extends ConsumerWidget {
 
     final taskMeta = asset.frontmatter['_taskMetadata'] as TaskMetadata?;
 
-    final sections = <DSDetailSection>[
+    final sections = <PrismDetailSection>[
       // Identity section
-      DSDetailSection(
+      PrismDetailSection(
         title: 'Identity',
         icon: Icons.fingerprint,
         child: Column(
           children: [
-            DSPropertyRow(label: 'ID', value: asset.id),
-            DSPropertyRow(label: 'Kind', value: asset.kind.name),
-            DSPropertyRow(label: 'Path', value: asset.path),
-            DSPropertyRow(label: 'Provenance', value: asset.canonicality.name),
+            PrismPropertyRow(label: 'ID', value: asset.id),
+            PrismPropertyRow(label: 'Kind', value: asset.kind.name),
+            PrismPropertyRow(label: 'Path', value: asset.path),
+            PrismPropertyRow(
+              label: 'Provenance',
+              value: asset.canonicality.name,
+            ),
             if (asset.description.isNotEmpty)
-              DSPropertyRow(label: 'Description', value: asset.description),
+              PrismPropertyRow(label: 'Description', value: asset.description),
           ],
         ),
       ),
 
       // Metadata section (frontmatter fields)
       if (asset.frontmatter.isNotEmpty)
-        DSDetailSection(
+        PrismDetailSection(
           title: 'Metadata',
           icon: Icons.data_object,
           count: asset.frontmatter.length,
@@ -64,8 +67,10 @@ class WorkspaceDetailInspector extends ConsumerWidget {
                 .where((e) => !e.key.startsWith('_'))
                 .take(10)
                 .map(
-                  (e) =>
-                      DSPropertyRow(label: e.key, value: _formatValue(e.value)),
+                  (e) => PrismPropertyRow(
+                    label: e.key,
+                    value: _formatValue(e.value),
+                  ),
                 )
                 .toList(),
           ),
@@ -73,32 +78,39 @@ class WorkspaceDetailInspector extends ConsumerWidget {
 
       // Tags and triggers
       if (asset.tags.isNotEmpty || asset.triggers.isNotEmpty)
-        DSDetailSection(
+        PrismDetailSection(
           title: 'Tags & Triggers',
           icon: Icons.label_outline,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (asset.tags.isNotEmpty) ...[
-                DSText.labelSmall('Tags', color: DSColors.textTertiary),
+                const PrismText.labelSmall('Tags', color: PrismColors.textTertiary),
                 const SizedBox(height: 4),
                 Wrap(
                   spacing: 4,
                   runSpacing: 4,
                   children: asset.tags
-                      .map((t) => DSChip(label: t, size: DSChipSize.small))
+                      .map(
+                        (t) => PrismChip(label: t, size: PrismChipSize.small),
+                      )
                       .toList(),
                 ),
               ],
               if (asset.triggers.isNotEmpty) ...[
-                const SizedBox(height: DSSpacing.sm),
-                DSText.labelSmall('Triggers', color: DSColors.textTertiary),
+                const SizedBox(height: PrismSpacing.sm),
+                const PrismText.labelSmall(
+                  'Triggers',
+                  color: PrismColors.textTertiary,
+                ),
                 const SizedBox(height: 4),
                 Wrap(
                   spacing: 4,
                   runSpacing: 4,
                   children: asset.triggers
-                      .map((t) => DSChip(label: t, size: DSChipSize.small))
+                      .map(
+                        (t) => PrismChip(label: t, size: PrismChipSize.small),
+                      )
                       .toList(),
                 ),
               ],
@@ -108,20 +120,20 @@ class WorkspaceDetailInspector extends ConsumerWidget {
 
       // Task-specific metadata
       if (asset.kind == AssetKind.task && taskMeta != null)
-        DSDetailSection(
+        PrismDetailSection(
           title: 'Task Details',
           icon: Icons.task_alt,
           child: Column(
             children: [
-              DSPropertyRow(
+              PrismPropertyRow(
                 label: 'Lane',
                 value: taskMeta.lane.directoryPrefix,
               ),
-              DSPropertyRow(label: 'Priority', value: taskMeta.priority),
-              DSPropertyRow(label: 'Owner', value: taskMeta.owner),
-              DSPropertyRow(label: 'Proof', value: taskMeta.proofState.name),
+              PrismPropertyRow(label: 'Priority', value: taskMeta.priority),
+              PrismPropertyRow(label: 'Owner', value: taskMeta.owner),
+              PrismPropertyRow(label: 'Proof', value: taskMeta.proofState.name),
               if (taskMeta.reviewScore != null)
-                DSPropertyRow(
+                PrismPropertyRow(
                   label: 'Review',
                   value: taskMeta.reviewScore!.toStringAsFixed(1),
                 ),
@@ -130,7 +142,7 @@ class WorkspaceDetailInspector extends ConsumerWidget {
         ),
 
       // Relationships section
-      DSDetailSection(
+      PrismDetailSection(
         title: 'Relationships',
         icon: Icons.hub,
         count: incoming.length + outgoing.length,
@@ -138,9 +150,9 @@ class WorkspaceDetailInspector extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (outgoing.isNotEmpty) ...[
-              DSText.labelSmall(
+              PrismText.labelSmall(
                 'Outgoing (${outgoing.length})',
-                color: DSColors.textTertiary,
+                color: PrismColors.textTertiary,
               ),
               const SizedBox(height: 4),
               ...outgoing
@@ -154,10 +166,10 @@ class WorkspaceDetailInspector extends ConsumerWidget {
                   ),
             ],
             if (incoming.isNotEmpty) ...[
-              const SizedBox(height: DSSpacing.sm),
-              DSText.labelSmall(
+              const SizedBox(height: PrismSpacing.sm),
+              PrismText.labelSmall(
                 'Incoming (${incoming.length})',
-                color: DSColors.textTertiary,
+                color: PrismColors.textTertiary,
               ),
               const SizedBox(height: 4),
               ...incoming
@@ -171,16 +183,16 @@ class WorkspaceDetailInspector extends ConsumerWidget {
                   ),
             ],
             if (incoming.isEmpty && outgoing.isEmpty)
-              DSText.bodySmall(
+              const PrismText.bodySmall(
                 'No relationships',
-                color: DSColors.textTertiary,
+                color: PrismColors.textTertiary,
               ),
           ],
         ),
       ),
     ];
 
-    return DSDetailInspector(
+    return PrismDetailInspector(
       title: asset.name,
       kind: asset.kind.name,
       subtitle: asset.description.isNotEmpty ? asset.description : null,
@@ -192,8 +204,9 @@ class WorkspaceDetailInspector extends ConsumerWidget {
   static String _formatValue(dynamic value) {
     if (value == null) return 'null';
     if (value is List) return value.join(', ');
-    if (value is Map)
+    if (value is Map) {
       return value.entries.map((e) => '${e.key}: ${e.value}').join(', ');
+    }
     return value.toString();
   }
 }
@@ -212,9 +225,9 @@ class _EdgeRow extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 4),
-      child: DSLinkRow(
+      child: PrismLinkRow(
         label: '$direction ${edge.kind.name}: $targetId',
-        icon: DSIcons.link,
+        icon: PrismIcons.link,
         color: _edgeKindColor(edge.kind),
         onTap: onTap,
       ),
@@ -224,19 +237,19 @@ class _EdgeRow extends StatelessWidget {
   static Color _edgeKindColor(EdgeKind kind) {
     switch (kind) {
       case EdgeKind.contains:
-        return DSColors.accentViolet;
+        return PrismColors.accentViolet;
       case EdgeKind.routesTo:
-        return DSColors.accentCyan;
+        return PrismColors.accentCyan;
       case EdgeKind.dependsOn:
-        return DSColors.statusWarning;
+        return PrismColors.statusWarning;
       case EdgeKind.references:
-        return DSColors.textSecondary;
+        return PrismColors.textSecondary;
       case EdgeKind.changedBy:
-        return DSColors.statusSuccess;
+        return PrismColors.statusSuccess;
       case EdgeKind.proves:
-        return DSColors.accentGold;
+        return PrismColors.accentGold;
       case EdgeKind.uses:
-        return DSColors.statusInfo;
+        return PrismColors.statusInfo;
     }
   }
 }

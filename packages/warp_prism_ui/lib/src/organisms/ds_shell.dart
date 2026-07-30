@@ -22,42 +22,63 @@ class DSShell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: DSColors.obsidianDeep,
-      child: Row(
-        children: [
-          // Sidebar
-          sidebar,
-
-          // Main content area
-          Expanded(
-            child: Column(
-              children: [
-                // Topbar
-                if (topbar != null) topbar!,
-
-                // Content
-                Expanded(
-                  child: Row(
-                    children: [
-                      // Main content
-                      Expanded(child: content),
-
-                      // Inspector panel
-                      if (showInspector && inspector != null) ...[
-                        Container(width: 1, color: DSColors.borderSubtle),
-                        SizedBox(
-                          width: DSSpacing.inspectorWidth,
-                          child: inspector,
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-              ],
+    // Intentional keyboard order for desktop shell navigation:
+    // sidebar → topbar (search/actions) → content → inspector.
+    // Default ReadingOrderTraversalPolicy is geometric (top→bottom), which
+    // puts the topbar ahead of sidebar items and breaks shell tab order.
+    return FocusTraversalGroup(
+      policy: OrderedTraversalPolicy(),
+      child: Container(
+        color: DSColors.obsidianDeep,
+        child: Row(
+          children: [
+            // Sidebar — first in keyboard order
+            FocusTraversalOrder(
+              order: const NumericFocusOrder(0),
+              child: sidebar,
             ),
-          ),
-        ],
+
+            // Main content area
+            Expanded(
+              child: Column(
+                children: [
+                  // Topbar — second (search field, then actions)
+                  if (topbar != null)
+                    FocusTraversalOrder(
+                      order: const NumericFocusOrder(1),
+                      child: topbar!,
+                    ),
+
+                  // Content — third
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: FocusTraversalOrder(
+                            order: const NumericFocusOrder(2),
+                            child: content,
+                          ),
+                        ),
+
+                        // Inspector panel — fourth when visible
+                        if (showInspector && inspector != null) ...[
+                          Container(width: 1, color: DSColors.borderSubtle),
+                          FocusTraversalOrder(
+                            order: const NumericFocusOrder(3),
+                            child: SizedBox(
+                              width: DSSpacing.inspectorWidth,
+                              child: inspector,
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -168,7 +189,9 @@ class DSShellResponsive extends StatelessWidget {
                               child: GestureDetector(
                                 onTap: onInspectorClose,
                                 child: Container(
-                                  color: DSColors.obsidianDeep.withOpacity(0.4),
+                                  color: DSColors.obsidianDeep.withValues(
+                                    alpha: 0.4,
+                                  ),
                                 ),
                               ),
                             ),
@@ -179,7 +202,7 @@ class DSShellResponsive extends StatelessWidget {
                               bottom: 0,
                               width: DSSpacing.inspectorWidth,
                               child: Container(
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                   color: DSColors.obsidianElevated,
                                   border: Border(
                                     left: BorderSide(

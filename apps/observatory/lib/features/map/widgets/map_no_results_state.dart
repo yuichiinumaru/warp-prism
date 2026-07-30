@@ -57,12 +57,15 @@ class MapNoResultsState extends StatelessWidget {
     return Center(
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 400),
-        child: DSStateSurface.empty(
+        child: PrismStateSurface.empty(
           icon: Icons.search_off_outlined,
           title: title,
           subtitle: subtitle,
-          actionLabel: (hasQuery || hasFilters) ? 'Clear filters' : null,
-          onAction: onClearFilters,
+          // Only wire Clear when a real callback exists — never install no-ops.
+          actionLabel: (hasQuery || hasFilters) && onClearFilters != null
+              ? 'Clear filters'
+              : null,
+          onAction: (hasQuery || hasFilters) ? onClearFilters : null,
         ),
       ),
     );

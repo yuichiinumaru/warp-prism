@@ -116,10 +116,12 @@ void main() {
       );
 
       expect(find.text('DIAGNOSTICS'), findsOneWidget);
-      expect(find.textContaining('proofGap'), findsOneWidget);
+      // Appears in both the issue-group row and the diagnostics list after
+      // Task 0813 composed the governance surface.
+      expect(find.textContaining('proofGap'), findsWidgets);
       expect(
         find.text('Task claims completion but no evidence found'),
-        findsOneWidget,
+        findsWidgets,
       );
     });
 
@@ -173,8 +175,8 @@ void main() {
     testWidgets('renders counts when provided', (tester) async {
       await tester.pumpWidget(
         _wrapInApp(
-          GovernanceBoundaryLegend(
-            counts: const {'parentCanonical': 10, 'generated': 5},
+          const GovernanceBoundaryLegend(
+            counts: {'parentCanonical': 10, 'generated': 5},
           ),
         ),
       );

@@ -2,7 +2,7 @@
 ///
 /// Each mode selects a subset of [EdgeKind] values from the normalized
 /// workspace backbone, producing a different projection of the same
-/// asset graph for the [DSGraphCanvas] consumer.
+/// asset graph for the [PrismGraphCanvas] consumer.
 library;
 
 import 'package:warp_prism_observatory/data/models/workspace_graph.dart';

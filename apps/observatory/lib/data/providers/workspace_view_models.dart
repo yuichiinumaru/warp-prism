@@ -278,7 +278,7 @@ class GovernanceViewModel {
       countsBySeverity: report.countsBySeverity,
       orphanCount: report.byCategory(DiagnosticCategory.orphanAsset).length,
       proofGapCount: report.byCategory(DiagnosticCategory.proofGap).length,
-      hotspotCount: report.byCategory(DiagnosticCategory.brokenEdge).length,
+      hotspotCount: report.byCategory(DiagnosticCategory.highFanIn).length,
     );
   }
 

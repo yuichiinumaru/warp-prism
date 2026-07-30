@@ -23,16 +23,16 @@ class WarpPrismApp extends StatelessWidget {
     return ThemeData(
       brightness: Brightness.dark,
       useMaterial3: true,
-      scaffoldBackgroundColor: DSColors.obsidianDeep,
-      colorScheme: ColorScheme.dark(
-        primary: DSColors.accentCyan,
-        secondary: DSColors.accentViolet,
-        surface: DSColors.obsidianBase,
-        onPrimary: DSColors.white,
-        onSecondary: DSColors.white,
-        onSurface: DSColors.textPrimary,
+      scaffoldBackgroundColor: PrismColors.obsidianDeep,
+      colorScheme: const ColorScheme.dark(
+        primary: PrismColors.accentCyan,
+        secondary: PrismColors.accentViolet,
+        surface: PrismColors.obsidianBase,
+        onPrimary: PrismColors.white,
+        onSecondary: PrismColors.white,
+        onSurface: PrismColors.textPrimary,
       ),
-      fontFamily: DSTypography.fontFamilyMono,
+      fontFamily: PrismTypography.fontFamilyMono,
     );
   }
 }

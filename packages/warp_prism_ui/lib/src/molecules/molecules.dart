@@ -1,4 +1,5 @@
 // Design System Molecules - Barrel Export
+export 'ds_interactive_surface.dart';
 export 'ds_search_bar.dart';
 export 'ds_filter_chip_group.dart';
 export 'ds_asset_card.dart';
@@ -18,3 +19,7 @@ export 'ds_skeleton_card.dart';
 export 'ds_skeleton_table_rows.dart';
 export 'ds_draggable_card.dart';
 export 'ds_drop_target.dart';
+export 'ds_scale_measure_bar.dart';
+export 'accordion/accordion.dart';
+export 'dialog/dialog.dart';
+export 'select/select.dart';

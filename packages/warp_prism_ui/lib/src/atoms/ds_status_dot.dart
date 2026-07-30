@@ -230,7 +230,7 @@ class DSStatusDot extends StatelessWidget {
           animated ??
           (state == DSOperationalState.running ||
               state == DSOperationalState.exposed),
-      tooltip: tooltip ?? state.label,
+      tooltip: tooltip ?? state.semanticLabel,
     );
   }
 

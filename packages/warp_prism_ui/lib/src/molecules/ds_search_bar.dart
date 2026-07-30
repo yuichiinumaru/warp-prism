@@ -42,9 +42,11 @@ class _DSSearchBarState extends State<DSSearchBar> {
     _controller = TextEditingController(text: widget.value);
     _focusNode = FocusNode();
     _focusNode.addListener(() {
+      if (!mounted) return;
       setState(() => _isFocused = _focusNode.hasFocus);
     });
     _controller.addListener(() {
+      if (!mounted) return;
       // Rebuild to show/hide clear button when text changes.
       setState(() {});
     });
@@ -68,11 +70,11 @@ class _DSSearchBarState extends State<DSSearchBar> {
   @override
   Widget build(BuildContext context) {
     final borderColor = _isFocused
-        ? DSColors.accentCyan.withOpacity(0.5)
+        ? DSColors.accentCyan.withValues(alpha: 0.5)
         : DSColors.borderSubtle;
 
     return Container(
-      height: 40,
+      constraints: const BoxConstraints(minHeight: 48),
       decoration: BoxDecoration(
         color: DSColors.obsidianElevated,
         borderRadius: BorderRadius.circular(DSRadii.input),
@@ -87,28 +89,33 @@ class _DSSearchBarState extends State<DSSearchBar> {
           ),
           const SizedBox(width: 8),
           Expanded(
-            child: TextField(
-              controller: _controller,
-              focusNode: _focusNode,
-              autofocus: widget.autofocus,
-              style: DSTypography.bodyMedium.copyWith(
-                color: DSColors.textPrimary,
-              ),
-              decoration: InputDecoration(
-                hintText: widget.placeholder,
-                hintStyle: DSTypography.bodyMedium.copyWith(
-                  color: DSColors.textTertiary,
+            child: Semantics(
+              textField: true,
+              label: widget.placeholder ?? 'Search query',
+              child: TextField(
+                controller: _controller,
+                focusNode: _focusNode,
+                autofocus: widget.autofocus,
+                style: DSTypography.bodyMedium.copyWith(
+                  color: DSColors.textPrimary,
                 ),
-                border: InputBorder.none,
-                isDense: true,
-                contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                decoration: InputDecoration(
+                  hintText: widget.placeholder,
+                  hintStyle: DSTypography.bodyMedium.copyWith(
+                    color: DSColors.textTertiary,
+                  ),
+                  border: InputBorder.none,
+                  isDense: true,
+                  contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                ),
+                onChanged: widget.onChanged,
               ),
-              onChanged: widget.onChanged,
             ),
           ),
           if (_controller.text.isNotEmpty) ...[
             _IconButton(
               icon: DSIcons.close,
+              semanticLabel: 'Clear search query',
               onTap: () {
                 _controller.clear();
                 widget.onClear?.call();
@@ -125,7 +132,11 @@ class _DSSearchBarState extends State<DSSearchBar> {
             ),
             Stack(
               children: [
-                _IconButton(icon: DSIcons.filter, onTap: widget.onFilterTap),
+                _IconButton(
+                  icon: DSIcons.filter,
+                  semanticLabel: 'Open search filters',
+                  onTap: widget.onFilterTap,
+                ),
                 if (widget.activeFilterCount != null &&
                     widget.activeFilterCount! > 0)
                   Positioned(
@@ -149,20 +160,32 @@ class _DSSearchBarState extends State<DSSearchBar> {
 
 class _IconButton extends StatelessWidget {
   final IconData icon;
+  final String semanticLabel;
   final VoidCallback? onTap;
 
-  const _IconButton({required this.icon, this.onTap});
+  const _IconButton({
+    required this.icon,
+    required this.semanticLabel,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: DSColors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(DSRadii.sm),
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: DSIcon.small(icon, color: DSColors.textTertiary),
+    return Semantics(
+      button: true,
+      enabled: onTap != null,
+      label: semanticLabel,
+      child: SizedBox.square(
+        dimension: 48,
+        child: Material(
+          color: DSColors.transparent,
+          child: InkWell(
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(DSRadii.sm),
+            child: Center(
+              child: DSIcon.small(icon, color: DSColors.textTertiary),
+            ),
+          ),
         ),
       ),
     );

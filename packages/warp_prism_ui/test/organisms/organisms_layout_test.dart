@@ -1,12 +1,17 @@
-import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:warp_prism_ui/warp_prism_ui.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:warp_prism_ui/src/organisms/organisms.dart';
+import 'package:warp_prism_ui/src/tokens/tokens.dart';
 
 /// Task 0016: DS Organisms and Templates Alignment
 ///
 /// Widget tests proving that organisms compose correctly using only
 /// canonical DS tokens, atoms, and molecules — no adapters or
 /// invented parameters.
+///
+/// Imports use internal `src/` barrels because the public package surface
+/// is Prism* aliases only (Task 1301). DS* names remain the internal contract
+/// under test for organism/template alignment.
 void main() {
   group('DSShell composition', () {
     testWidgets('renders sidebar, topbar, and content in correct layout', (

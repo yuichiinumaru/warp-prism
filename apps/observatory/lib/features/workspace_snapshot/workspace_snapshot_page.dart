@@ -1,7 +1,7 @@
 /// Workspace Snapshot page — the main surface for Task 0019 + Task 0020.
 ///
 /// Loads the workspace snapshot from the configured root path and renders
-/// all discovered assets using DS primitives with enhanced features:
+/// all discovered assets using Prism primitives with enhanced features:
 /// - Global search bar with debounced filtering
 /// - Filter chips for asset kind, task lane, and provenance
 /// - Content tab with metric tiles, derived metrics, and asset lists
@@ -39,27 +39,60 @@ import 'widgets/workspace_derived_metrics.dart';
 /// - Tab switcher: Content view / Graph view
 /// - Detail inspector panel (opens on card click, graph node click, or deep-link)
 /// - Loading/error/empty states
-class WorkspaceSnapshotPage extends ConsumerWidget {
+///
+/// Deep-link [assetId] selection is applied once (init / assetId change), never
+/// re-scheduled on every rebuild, so closing the inspector stays closed.
+class WorkspaceSnapshotPage extends ConsumerStatefulWidget {
   final String? assetId;
 
   const WorkspaceSnapshotPage({super.key, this.assetId});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<WorkspaceSnapshotPage> createState() =>
+      _WorkspaceSnapshotPageState();
+}
+
+class _WorkspaceSnapshotPageState extends ConsumerState<WorkspaceSnapshotPage> {
+  /// Last deep-link id for which selection was applied (one-shot per id).
+  String? _appliedDeepLinkId;
+
+  @override
+  void initState() {
+    super.initState();
+    _scheduleDeepLinkSelection(widget.assetId);
+  }
+
+  @override
+  void didUpdateWidget(covariant WorkspaceSnapshotPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.assetId != oldWidget.assetId) {
+      // New route target: allow one application for the new id.
+      if (widget.assetId != _appliedDeepLinkId) {
+        _scheduleDeepLinkSelection(widget.assetId);
+      }
+    }
+  }
+
+  void _scheduleDeepLinkSelection(String? assetId) {
+    if (assetId == null || assetId.isEmpty) return;
+    if (_appliedDeepLinkId == assetId) return;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      if (_appliedDeepLinkId == assetId) return;
+      _appliedDeepLinkId = assetId;
+      selectAsset(ref, assetId);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final snapshotAsync = ref.watch(workspaceSnapshotProvider);
     final rootPath = ref.watch(workspaceRootProvider);
-
-    // Handle deep-link: pre-select asset if id is provided
-    if (assetId != null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        selectAsset(ref, assetId!);
-      });
-    }
-
     final selectedAsset = ref.watch(selectedAssetIdProvider);
 
     return Scaffold(
-      backgroundColor: DSColors.obsidianDeep,
+      backgroundColor: PrismColors.obsidianDeep,
       body: Column(
         children: [
           // Topbar with workspace root and scan status
@@ -72,11 +105,11 @@ class WorkspaceSnapshotPage extends ConsumerWidget {
           // Main content
           Expanded(
             child: snapshotAsync.when(
-              loading: () => const DSStateSurface.loading(
+              loading: () => const PrismStateSurface.loading(
                 title: 'Scanning workspace...',
                 subtitle: 'Reading .agents/ and docs/ directories',
               ),
-              error: (error, stack) => DSStateSurface.error(
+              error: (error, stack) => PrismStateSurface.error(
                 title: 'Failed to scan workspace',
                 subtitle: error.toString(),
                 onAction: () =>
@@ -84,7 +117,7 @@ class WorkspaceSnapshotPage extends ConsumerWidget {
               ),
               data: (snapshot) {
                 if (snapshot.totalAssets == 0) {
-                  return DSStateSurface.empty(
+                  return PrismStateSurface.empty(
                     icon: Icons.folder_open_outlined,
                     title: 'Empty workspace',
                     subtitle: 'No assets found in $rootPath',
@@ -104,10 +137,10 @@ class WorkspaceSnapshotPage extends ConsumerWidget {
                       SizedBox(
                         width: 400,
                         child: Container(
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             border: Border(
                               left: BorderSide(
-                                color: DSColors.borderSubtle,
+                                color: PrismColors.borderSubtle,
                                 width: 1,
                               ),
                             ),
@@ -140,7 +173,7 @@ class _WorkspaceTopbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DSTopbar(
+    return PrismTopbar(
       title: 'Workspace Snapshot',
       breadcrumbs: [rootPath],
       actions: [
@@ -151,9 +184,9 @@ class _WorkspaceTopbar extends StatelessWidget {
             child: CircularProgressIndicator(strokeWidth: 2),
           )
         else if (hasError)
-          const DSStatusDot.error(tooltip: 'Scan failed')
+          const PrismStatusDot.error(tooltip: 'Scan failed')
         else
-          const DSStatusDot.success(tooltip: 'Scan complete'),
+          const PrismStatusDot.success(tooltip: 'Scan complete'),
       ],
     );
   }
@@ -192,18 +225,21 @@ class _SnapshotBodyState extends ConsumerState<_SnapshotBody>
         // Search bar
         Padding(
           padding: const EdgeInsets.fromLTRB(
-            DSSpacing.lg,
-            DSSpacing.md,
-            DSSpacing.lg,
+            PrismSpacing.lg,
+            PrismSpacing.md,
+            PrismSpacing.lg,
             0,
           ),
           child: Row(
             children: [
-              Expanded(child: const WorkspaceSearchBar()),
-              const SizedBox(width: DSSpacing.md),
+              const Expanded(child: WorkspaceSearchBar()),
+              const SizedBox(width: PrismSpacing.md),
               // Rescan button
               IconButton(
-                icon: DSIcon.small(Icons.refresh, color: DSColors.textTertiary),
+                icon: const PrismIcon.small(
+                  Icons.refresh,
+                  color: PrismColors.textTertiary,
+                ),
                 onPressed: () =>
                     ref.read(workspaceSnapshotProvider.notifier).reload(),
                 tooltip: 'Rescan workspace',
@@ -215,19 +251,19 @@ class _SnapshotBodyState extends ConsumerState<_SnapshotBody>
         // Filter chips
         const Padding(
           padding: EdgeInsets.fromLTRB(
-            DSSpacing.lg,
-            DSSpacing.sm,
-            DSSpacing.lg,
+            PrismSpacing.lg,
+            PrismSpacing.sm,
+            PrismSpacing.lg,
             0,
           ),
           child: WorkspaceFilterChips(),
         ),
 
-        const SizedBox(height: DSSpacing.md),
+        const SizedBox(height: PrismSpacing.md),
 
         // Tab bar
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: DSSpacing.lg),
+          padding: const EdgeInsets.symmetric(horizontal: PrismSpacing.lg),
           child: Row(
             children: [
               _TabButton(
@@ -236,7 +272,7 @@ class _SnapshotBodyState extends ConsumerState<_SnapshotBody>
                 isActive: _tabController.index == 0,
                 onTap: () => _tabController.animateTo(0),
               ),
-              const SizedBox(width: DSSpacing.xs),
+              const SizedBox(width: PrismSpacing.xs),
               _TabButton(
                 label: 'Graph',
                 icon: Icons.account_tree_outlined,
@@ -247,7 +283,7 @@ class _SnapshotBodyState extends ConsumerState<_SnapshotBody>
           ),
         ),
 
-        const SizedBox(height: DSSpacing.sm),
+        const SizedBox(height: PrismSpacing.sm),
 
         // Tab content
         Expanded(
@@ -258,7 +294,7 @@ class _SnapshotBodyState extends ConsumerState<_SnapshotBody>
               _ContentTab(snapshot: widget.snapshot),
               // Graph tab
               const Padding(
-                padding: EdgeInsets.all(DSSpacing.lg),
+                padding: EdgeInsets.all(PrismSpacing.lg),
                 child: WorkspaceGraphPanel(),
               ),
             ],
@@ -285,10 +321,10 @@ class _TabButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = isActive ? DSColors.accentCyan : DSColors.textTertiary;
+    final color = isActive ? PrismColors.accentCyan : PrismColors.textTertiary;
     final bgColor = isActive
-        ? DSColors.accentCyan.withOpacity(0.15)
-        : DSColors.transparent;
+        ? PrismColors.accentCyan.withValues(alpha: 0.15)
+        : PrismColors.transparent;
 
     return GestureDetector(
       onTap: onTap,
@@ -296,24 +332,24 @@ class _TabButton extends StatelessWidget {
         cursor: SystemMouseCursors.click,
         child: Container(
           padding: const EdgeInsets.symmetric(
-            horizontal: DSSpacing.md,
-            vertical: DSSpacing.xs,
+            horizontal: PrismSpacing.md,
+            vertical: PrismSpacing.xs,
           ),
           decoration: BoxDecoration(
             color: bgColor,
-            borderRadius: BorderRadius.circular(DSRadii.chip),
+            borderRadius: BorderRadius.circular(PrismRadii.chip),
             border: Border.all(
               color: isActive
-                  ? DSColors.accentCyan.withOpacity(0.3)
-                  : DSColors.borderSubtle,
+                  ? PrismColors.accentCyan.withValues(alpha: 0.3)
+                  : PrismColors.borderSubtle,
             ),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              DSIcon.small(icon, color: color),
+              PrismIcon.small(icon, color: color),
               const SizedBox(width: 6),
-              DSText.labelMedium(label, color: color),
+              PrismText.labelMedium(label, color: color),
             ],
           ),
         ),
@@ -336,26 +372,29 @@ class _ContentTab extends ConsumerWidget {
     final laneFilters = ref.watch(laneFilterProvider);
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(DSSpacing.lg),
+      padding: const EdgeInsets.all(PrismSpacing.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Metric tiles row
           _MetricTilesRow(snapshot: snapshot),
 
-          const SizedBox(height: DSSpacing.lg),
+          const SizedBox(height: PrismSpacing.lg),
 
           // Derived metrics
-          DSText.labelMedium('DERIVED METRICS', color: DSColors.textSecondary),
-          const SizedBox(height: DSSpacing.sm),
+          const PrismText.labelMedium(
+            'DERIVED METRICS',
+            color: PrismColors.textSecondary,
+          ),
+          const SizedBox(height: PrismSpacing.sm),
           const WorkspaceDerivedMetrics(),
 
-          const SizedBox(height: DSSpacing.lg),
+          const SizedBox(height: PrismSpacing.lg),
 
           // Lane summary
           _LaneSummary(snapshot: snapshot),
 
-          const SizedBox(height: DSSpacing.xl),
+          const SizedBox(height: PrismSpacing.xl),
 
           // Filtered content
           if (query.isNotEmpty ||
@@ -368,7 +407,7 @@ class _ContentTab extends ConsumerWidget {
           ],
 
           // Scan metadata footer
-          const SizedBox(height: DSSpacing.xl),
+          const SizedBox(height: PrismSpacing.xl),
           _ScanMetadataFooter(snapshot: snapshot),
         ],
       ),
@@ -385,7 +424,7 @@ class _FilteredResults extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (assets.isEmpty) {
-      return const DSStateSurface.empty(
+      return const PrismStateSurface.empty(
         icon: Icons.search_off_outlined,
         title: 'No matching assets',
         subtitle: 'Try adjusting your search or filters',
@@ -395,15 +434,15 @@ class _FilteredResults extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        DSText.labelMedium(
+        PrismText.labelMedium(
           '${assets.length} RESULTS',
-          color: DSColors.textSecondary,
+          color: PrismColors.textSecondary,
         ),
-        const SizedBox(height: DSSpacing.sm),
+        const SizedBox(height: PrismSpacing.sm),
         ...assets.map(
           (asset) => Padding(
-            padding: const EdgeInsets.only(bottom: DSSpacing.sm),
-            child: DSAssetCard(
+            padding: const EdgeInsets.only(bottom: PrismSpacing.sm),
+            child: PrismAssetCard(
               name: asset.name,
               kind: asset.kind.name,
               description: asset.description.isNotEmpty
@@ -439,59 +478,59 @@ class _FullContentSections extends StatelessWidget {
         // Agents section
         if (snapshot.agents.isNotEmpty) ...[
           _SectionHeader(
-            icon: DSIcons.agent,
+            icon: PrismIcons.agent,
             title: 'Agents',
             count: snapshot.agents.length,
           ),
-          const SizedBox(height: DSSpacing.sm),
+          const SizedBox(height: PrismSpacing.sm),
           AgentListPanel(agents: snapshot.agents),
-          const SizedBox(height: DSSpacing.xl),
+          const SizedBox(height: PrismSpacing.xl),
         ],
 
         // Skills section
         if (snapshot.skills.isNotEmpty) ...[
           _SectionHeader(
-            icon: DSIcons.skill,
+            icon: PrismIcons.skill,
             title: 'Skills',
             count: snapshot.skills.length,
           ),
-          const SizedBox(height: DSSpacing.sm),
+          const SizedBox(height: PrismSpacing.sm),
           SkillListPanel(skills: snapshot.skills),
-          const SizedBox(height: DSSpacing.xl),
+          const SizedBox(height: PrismSpacing.xl),
         ],
 
         // Workflows section
         if (snapshot.workflows.isNotEmpty) ...[
           _SectionHeader(
-            icon: DSIcons.workflow,
+            icon: PrismIcons.workflow,
             title: 'Workflows',
             count: snapshot.workflows.length,
           ),
-          const SizedBox(height: DSSpacing.sm),
+          const SizedBox(height: PrismSpacing.sm),
           WorkflowListPanel(workflows: snapshot.workflows),
-          const SizedBox(height: DSSpacing.xl),
+          const SizedBox(height: PrismSpacing.xl),
         ],
 
         // Tasks section
         if (snapshot.tasks.isNotEmpty) ...[
           _SectionHeader(
-            icon: DSIcons.task,
+            icon: PrismIcons.task,
             title: 'Tasks',
             count: snapshot.tasks.length,
           ),
-          const SizedBox(height: DSSpacing.sm),
+          const SizedBox(height: PrismSpacing.sm),
           TaskLanePanel(tasks: snapshot.tasks),
-          const SizedBox(height: DSSpacing.xl),
+          const SizedBox(height: PrismSpacing.xl),
         ],
 
         // Changelog section
         if (snapshot.changelogEntries.isNotEmpty) ...[
           _SectionHeader(
-            icon: DSIcons.changelog,
+            icon: PrismIcons.changelog,
             title: 'Changelog',
             count: snapshot.changelogEntries.length,
           ),
-          const SizedBox(height: DSSpacing.sm),
+          const SizedBox(height: PrismSpacing.sm),
           ChangelogListPanel(changelogEntries: snapshot.changelogEntries),
         ],
       ],
@@ -508,44 +547,44 @@ class _MetricTilesRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      spacing: DSSpacing.md,
-      runSpacing: DSSpacing.md,
+      spacing: PrismSpacing.md,
+      runSpacing: PrismSpacing.md,
       children: [
-        DSMetricTile(
+        PrismMetricTile(
           label: 'Agents',
           value: '${snapshot.agents.length}',
           icon: Icons.smart_toy_outlined,
-          color: DSColors.accentCyan,
+          color: PrismColors.accentCyan,
         ),
-        DSMetricTile(
+        PrismMetricTile(
           label: 'Skills',
           value: '${snapshot.skills.length}',
           icon: Icons.build_outlined,
-          color: DSColors.accentViolet,
+          color: PrismColors.accentViolet,
         ),
-        DSMetricTile(
+        PrismMetricTile(
           label: 'Workflows',
           value: '${snapshot.workflows.length}',
           icon: Icons.account_tree_outlined,
-          color: DSColors.statusSuccess,
+          color: PrismColors.statusSuccess,
         ),
-        DSMetricTile(
+        PrismMetricTile(
           label: 'Tasks',
           value: '${snapshot.tasks.length}',
           icon: Icons.task_outlined,
-          color: DSColors.statusWarning,
+          color: PrismColors.statusWarning,
         ),
-        DSMetricTile(
+        PrismMetricTile(
           label: 'Changelog',
           value: '${snapshot.changelogEntries.length}',
           icon: Icons.history_outlined,
-          color: DSColors.statusInfo,
+          color: PrismColors.statusInfo,
         ),
-        DSMetricTile(
+        PrismMetricTile(
           label: 'Total',
           value: '${snapshot.totalAssets}',
           icon: Icons.dashboard_outlined,
-          color: DSColors.textPrimary,
+          color: PrismColors.textPrimary,
         ),
       ],
     );
@@ -570,16 +609,16 @@ class _LaneSummary extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        DSText.labelMedium('TASK LANES', color: DSColors.textSecondary),
-        const SizedBox(height: DSSpacing.sm),
+        const PrismText.labelMedium('TASK LANES', color: PrismColors.textSecondary),
+        const SizedBox(height: PrismSpacing.sm),
         Wrap(
-          spacing: DSSpacing.sm,
-          runSpacing: DSSpacing.sm,
+          spacing: PrismSpacing.sm,
+          runSpacing: PrismSpacing.sm,
           children: nonEmptyLanes.map((entry) {
-            return DSMetricTileCompact(
+            return PrismMetricTileCompact(
               label: entry.key.directoryPrefix,
               value: '${entry.value}',
-              color: DSColors.forLane(entry.key.directoryPrefix),
+              color: PrismColors.forLane(entry.key.directoryPrefix),
             );
           }).toList(),
         ),
@@ -604,11 +643,11 @@ class _SectionHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        DSIcon(icon, color: DSColors.accentCyan, size: 24),
-        const SizedBox(width: DSSpacing.sm),
-        DSText.headingSmall(title, color: DSColors.textPrimary),
-        const SizedBox(width: DSSpacing.sm),
-        DSChip(label: '$count', size: DSChipSize.small),
+        PrismIcon(icon, color: PrismColors.accentCyan, size: 24),
+        const SizedBox(width: PrismSpacing.sm),
+        PrismText.headingSmall(title, color: PrismColors.textPrimary),
+        const SizedBox(width: PrismSpacing.sm),
+        PrismChip(label: '$count', size: PrismChipSize.small),
       ],
     );
   }
@@ -623,22 +662,22 @@ class _ScanMetadataFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final meta = snapshot.metadata;
-    return DSGlassPanelSimple(
-      padding: const EdgeInsets.all(DSSpacing.md),
+    return PrismGlassPanelSimple(
+      padding: const EdgeInsets.all(PrismSpacing.md),
       child: Row(
         children: [
-          DSIcon.small(Icons.info_outline, color: DSColors.textTertiary),
-          const SizedBox(width: DSSpacing.sm),
+          const PrismIcon.small(Icons.info_outline, color: PrismColors.textTertiary),
+          const SizedBox(width: PrismSpacing.sm),
           Expanded(
-            child: DSText.bodySmall(
+            child: PrismText.bodySmall(
               'Scanned ${meta.filesScanned} files from ${meta.rootPath}'
               '${meta.parseErrors > 0 ? ' (${meta.parseErrors} parse errors)' : ''}',
-              color: DSColors.textTertiary,
+              color: PrismColors.textTertiary,
             ),
           ),
-          DSText.labelSmall(
+          PrismText.labelSmall(
             _formatTime(meta.scannedAt),
-            color: DSColors.textTertiary,
+            color: PrismColors.textTertiary,
           ),
         ],
       ),

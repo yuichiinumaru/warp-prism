@@ -20,6 +20,9 @@ enum MapSurfaceState {
   /// No assets exist in the workspace for this tab.
   emptyCorpus,
 
+  /// Workspace has assets, but none of the active catalog family.
+  emptyFamily,
+
   /// Assets exist but the current query/filter matches zero.
   noResults,
 
@@ -81,19 +84,29 @@ class MapStatePanel extends StatelessWidget {
   Widget _buildStateSurface() {
     switch (state) {
       case MapSurfaceState.loading:
-        return DSStateSurface.loading(
+        return PrismStateSurface.loading(
           icon: Icons.hourglass_empty,
           title: 'Loading map data...',
           subtitle: detail ?? 'Preparing workspace assets for visualization.',
         );
 
       case MapSurfaceState.emptyCorpus:
-        return DSStateSurface.empty(
+        return const PrismStateSurface.empty(
           icon: Icons.inventory_2_outlined,
           title: 'No assets in workspace',
           subtitle:
               'The workspace is loaded but contains no assets to display. '
               'Add agents, skills, or workflows to populate the map.',
+        );
+
+      case MapSurfaceState.emptyFamily:
+        return PrismStateSurface.empty(
+          icon: Icons.category_outlined,
+          title: 'No assets in this family',
+          subtitle:
+              detail ??
+              'The workspace has assets, but none match this catalog tab. '
+                  'Switch tabs or expand the corpus.',
         );
 
       case MapSurfaceState.noResults:
@@ -121,18 +134,21 @@ class MapStatePanel extends StatelessWidget {
           subtitle = 'No assets match the current view.';
         }
 
-        return DSStateSurface.empty(
+        // Only wire Clear when a real callback exists — never install no-ops.
+        final clearAction = onAction;
+        return PrismStateSurface.empty(
           icon: Icons.search_off_outlined,
           title: title,
           subtitle: subtitle,
-          actionLabel:
-              actionLabel ??
-              ((hasQuery || hasFilters) ? 'Clear filters' : null),
-          onAction: onAction,
+          actionLabel: clearAction != null
+              ? (actionLabel ??
+                    ((hasQuery || hasFilters) ? 'Clear filters' : null))
+              : null,
+          onAction: clearAction,
         );
 
       case MapSurfaceState.graphNoEdges:
-        return DSStateSurface.empty(
+        return const PrismStateSurface.empty(
           icon: Icons.device_hub_outlined,
           title: 'No edges in this mode',
           subtitle:
@@ -141,16 +157,19 @@ class MapStatePanel extends StatelessWidget {
         );
 
       case MapSurfaceState.error:
-        return DSStateSurface.error(
-          icon: DSIcons.error,
+        // Only wire Retry when a real callback exists — never install no-ops.
+        // PrismStateSurface hides the action when onAction is null.
+        final errorAction = onAction;
+        return PrismStateSurface.error(
+          icon: PrismIcons.error,
           title: 'Failed to load map data',
           subtitle: detail ?? 'An error occurred while loading workspace data.',
-          actionLabel: actionLabel ?? 'Retry',
-          onAction: onAction,
+          actionLabel: errorAction != null ? (actionLabel ?? 'Retry') : null,
+          onAction: errorAction,
         );
 
       case MapSurfaceState.noSelection:
-        return DSStateSurface.empty(
+        return const PrismStateSurface.empty(
           icon: Icons.touch_app_outlined,
           title: 'No asset selected',
           subtitle:

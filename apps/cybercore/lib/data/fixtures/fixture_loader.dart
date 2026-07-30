@@ -1,61 +1,61 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'dashboard_summary.dart';
-import 'registry_agent.dart';
-import 'registry_skill.dart';
-import 'registry_workflow.dart';
-import 'task_execution.dart';
-import 'audit_event.dart';
-import 'governance_diagnostics.dart';
+import 'provider_connection.dart';
+import 'mcp_server.dart';
+import 'live_log_entry.dart';
+import 'mcp_inspector_state.dart';
 
-/// Loads CyberCore fixture data from bundled JSON assets.
+/// Loads CyberCore pilot fixture data from bundled JSON assets.
 ///
 /// All fixtures are read-only. No network calls, no mutation.
 /// Each loader method returns the parsed fixture or throws [FormatException]
 /// if the JSON is malformed.
+///
+/// Pilot contract (Task 1108 A/B/C):
+///   providers, mcp_servers, mcp_inspector, live_logs
 class FixtureLoader {
   static const _basePath = 'assets/cybercore_fixtures';
 
-  /// Loads the dashboard summary fixture.
-  static Future<DashboardSummary> loadDashboardSummary() async {
-    final json = await _loadJson('$_basePath/dashboard_summary.json');
-    return DashboardSummary.fromJson(json);
+  /// Loads provider connections (Pilot A).
+  static Future<List<ProviderConnection>> loadProviders() async {
+    final list = await _loadJsonList('$_basePath/providers.json');
+    return list.map(ProviderConnection.fromJson).toList();
   }
 
-  /// Loads the registry agents fixture.
-  static Future<List<RegistryAgent>> loadRegistryAgents() async {
-    final list = await _loadJsonList('$_basePath/registry_agents.json');
-    return list.map(RegistryAgent.fromJson).toList();
+  /// Loads a single provider by id, or null if missing.
+  static Future<ProviderConnection?> loadProviderById(String id) async {
+    final all = await loadProviders();
+    for (final p in all) {
+      if (p.id == id) return p;
+    }
+    return null;
   }
 
-  /// Loads the registry skills fixture.
-  static Future<List<RegistrySkill>> loadRegistrySkills() async {
-    final list = await _loadJsonList('$_basePath/registry_skills.json');
-    return list.map(RegistrySkill.fromJson).toList();
+  /// Loads MCP servers (Pilot B).
+  static Future<List<McpServer>> loadMcpServers() async {
+    final list = await _loadJsonList('$_basePath/mcp_servers.json');
+    return list.map(McpServer.fromJson).toList();
   }
 
-  /// Loads the registry workflows fixture.
-  static Future<List<RegistryWorkflow>> loadRegistryWorkflows() async {
-    final list = await _loadJsonList('$_basePath/registry_workflows.json');
-    return list.map(RegistryWorkflow.fromJson).toList();
+  /// Loads a single MCP server by uuid, or null if missing.
+  static Future<McpServer?> loadMcpServerByUuid(String uuid) async {
+    final all = await loadMcpServers();
+    for (final s in all) {
+      if (s.uuid == uuid) return s;
+    }
+    return null;
   }
 
-  /// Loads the task board fixture.
-  static Future<List<TaskExecution>> loadTaskBoard() async {
-    final list = await _loadJsonList('$_basePath/task_board.json');
-    return list.map(TaskExecution.fromJson).toList();
+  /// Loads MCP inspector connection snapshot (Pilot B).
+  static Future<McpInspectorState> loadMcpInspector() async {
+    final json = await _loadJson('$_basePath/mcp_inspector.json');
+    return McpInspectorState.fromJson(json);
   }
 
-  /// Loads the audit trail fixture.
-  static Future<List<AuditEvent>> loadAuditTrail() async {
-    final list = await _loadJsonList('$_basePath/audit_trail.json');
-    return list.map(AuditEvent.fromJson).toList();
-  }
-
-  /// Loads the governance diagnostics fixture.
-  static Future<GovernanceDiagnostics> loadGovernanceDiagnostics() async {
-    final json = await _loadJson('$_basePath/governance_diagnostics.json');
-    return GovernanceDiagnostics.fromJson(json);
+  /// Loads live logs payload (Pilot C).
+  static Future<LiveLogsFixture> loadLiveLogs() async {
+    final json = await _loadJson('$_basePath/live_logs.json');
+    return LiveLogsFixture.fromJson(json);
   }
 
   static Future<Map<String, dynamic>> _loadJson(String path) async {

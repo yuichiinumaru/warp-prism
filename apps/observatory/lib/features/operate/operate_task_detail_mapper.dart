@@ -1,5 +1,5 @@
-/// Maps a [TaskProjection] into [DSDetailSection]s for the
-/// [DSDetailInspector] organism.
+/// Maps a [TaskProjection] into [PrismDetailSection]s for the
+/// [PrismDetailInspector] organism.
 ///
 /// Keeps all Operate-specific semantics out of the generic inspector shell
 /// so EPIC 09 can later generalize or absorb this mapper without rewriting
@@ -7,13 +7,13 @@
 library;
 
 import 'package:flutter/material.dart';
-import 'package:warp_prism_ui/warp_prism_ui.dart';
 import 'package:warp_prism_observatory/data/models/task_contracts.dart';
-import 'task_projection.dart';
+import 'package:warp_prism_observatory/features/operate/task_projection.dart';
+import 'package:warp_prism_ui/warp_prism_ui.dart';
 
-/// Creates the list of [DSDetailSection]s that represent a single task
+/// Creates the list of [PrismDetailSection]s that represent a single task
 /// as a forensic case file inside the inspector.
-List<DSDetailSection> buildTaskDetailSections(TaskProjection task) {
+List<PrismDetailSection> buildTaskDetailSections(TaskProjection task) {
   return [
     _buildMetadataSection(task),
     _buildDependenciesSection(task),
@@ -25,76 +25,110 @@ List<DSDetailSection> buildTaskDetailSections(TaskProjection task) {
   ];
 }
 
-DSDetailSection _buildMetadataSection(TaskProjection task) {
-  return DSDetailSection(
+PrismDetailSection _buildMetadataSection(TaskProjection task) {
+  return PrismDetailSection(
     title: 'Metadata',
     icon: Icons.info_outline,
     child: Column(
       children: [
-        DSPropertyRow(label: 'ID', value: task.id),
-        DSPropertyRow(label: 'Title', value: task.title),
-        DSPropertyRow(
+        PrismPropertyRow(label: 'ID', value: task.id),
+        if (task.slug.isNotEmpty)
+          PrismPropertyRow(label: 'Slug', value: task.slug),
+        PrismPropertyRow(label: 'Title', value: task.title),
+        PrismPropertyRow(
           label: 'Lane',
           value: task.lane.directoryPrefix,
-          valueColor: DSColors.forLane(task.lane.directoryPrefix),
+          valueColor: PrismColors.forLane(task.lane.directoryPrefix),
         ),
-        DSPropertyRow(label: 'Priority', value: task.priority),
-        DSPropertyRow(label: 'Owner', value: task.owner),
-        DSPropertyRow(label: 'Proof', value: task.proofState.name),
+        if (task.statusLabel.isNotEmpty)
+          PrismPropertyRow(label: 'Status', value: task.statusLabel),
+        PrismPropertyRow(label: 'Type', value: task.type),
+        PrismPropertyRow(label: 'Priority', value: task.priority),
+        PrismPropertyRow(label: 'Owner', value: task.owner),
+        PrismPropertyRow(label: 'Proof', value: task.proofState.name),
         if (task.reviewScore != null)
-          DSPropertyRow(
+          PrismPropertyRow(
             label: 'Review',
             value: task.reviewScore!.toStringAsFixed(1),
           ),
-        DSPropertyRow(label: 'File', value: task.filePath),
+        PrismPropertyRow(label: 'File', value: task.filePath),
       ],
     ),
   );
 }
 
-DSDetailSection _buildDependenciesSection(TaskProjection task) {
+PrismDetailSection _buildDependenciesSection(TaskProjection task) {
   final deps = task.dependsOn;
-  return DSDetailSection(
+  final blockers = task.blockers;
+  final total = deps.length + blockers.length;
+  return PrismDetailSection(
     title: 'Dependencies & Blockers',
     icon: Icons.link,
-    count: deps.length,
-    child: deps.isEmpty
-        ? DSText.bodySmall(
+    count: total,
+    child: total == 0
+        ? PrismText.bodySmall(
             'No dependencies declared',
-            color: DSColors.textTertiary,
+            color: PrismColors.textTertiary,
           )
-        : Wrap(
-            spacing: DSSpacing.xs,
-            runSpacing: DSSpacing.xs,
-            children: deps
-                .map(
-                  (dep) => DSLinkRow(
-                    label: dep,
-                    icon: DSIcons.task,
-                    color: DSColors.accentCyan,
-                  ),
-                )
-                .toList(),
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (deps.isNotEmpty)
+                Wrap(
+                  spacing: PrismSpacing.xs,
+                  runSpacing: PrismSpacing.xs,
+                  children: deps
+                      .map(
+                        (dep) => PrismLinkRow(
+                          label: dep,
+                          icon: PrismIcons.task,
+                          color: PrismColors.accentCyan,
+                        ),
+                      )
+                      .toList(),
+                ),
+              if (blockers.isNotEmpty) ...[
+                if (deps.isNotEmpty) const SizedBox(height: PrismSpacing.sm),
+                PrismText.labelSmall(
+                  'BLOCKERS',
+                  color: PrismColors.textTertiary,
+                ),
+                const SizedBox(height: PrismSpacing.xs),
+                Wrap(
+                  spacing: PrismSpacing.xs,
+                  runSpacing: PrismSpacing.xs,
+                  children: blockers
+                      .map(
+                        (b) => PrismLinkRow(
+                          label: b,
+                          icon: PrismIcons.task,
+                          color: PrismColors.statusError,
+                        ),
+                      )
+                      .toList(),
+                ),
+              ],
+            ],
           ),
   );
 }
 
-DSDetailSection _buildExitConditionsSection(TaskProjection task) {
+PrismDetailSection _buildExitConditionsSection(TaskProjection task) {
   final conditions = task.exitConditions;
-  return DSDetailSection(
+  return PrismDetailSection(
     title: 'Exit Conditions',
     icon: Icons.checklist,
     count: conditions.length,
     child: conditions.isEmpty
-        ? DSText.bodySmall(
+        ? PrismText.bodySmall(
             'No exit conditions defined',
-            color: DSColors.textTertiary,
+            color: PrismColors.textTertiary,
           )
         : Column(
             children: conditions
                 .map(
                   (ec) => Padding(
-                    padding: const EdgeInsets.only(bottom: DSSpacing.xs),
+                    padding: const EdgeInsets.only(bottom: PrismSpacing.xs),
                     child: Row(
                       children: [
                         Icon(
@@ -103,16 +137,16 @@ DSDetailSection _buildExitConditionsSection(TaskProjection task) {
                               : Icons.check_box_outline_blank,
                           size: 16,
                           color: ec.isComplete
-                              ? DSColors.statusSuccess
-                              : DSColors.textTertiary,
+                              ? PrismColors.statusSuccess
+                              : PrismColors.textTertiary,
                         ),
-                        const SizedBox(width: DSSpacing.sm),
+                        const SizedBox(width: PrismSpacing.sm),
                         Expanded(
-                          child: DSText.bodySmall(
+                          child: PrismText.bodySmall(
                             ec.text,
                             color: ec.isComplete
-                                ? DSColors.textPrimary
-                                : DSColors.textSecondary,
+                                ? PrismColors.textPrimary
+                                : PrismColors.textSecondary,
                           ),
                         ),
                       ],
@@ -124,31 +158,31 @@ DSDetailSection _buildExitConditionsSection(TaskProjection task) {
   );
 }
 
-DSDetailSection _buildVerificationCommandsSection(TaskProjection task) {
+PrismDetailSection _buildVerificationCommandsSection(TaskProjection task) {
   final commands = task.verificationCommands;
-  return DSDetailSection(
+  return PrismDetailSection(
     title: 'Verification Commands',
     icon: Icons.terminal,
     count: commands.length,
     child: commands.isEmpty
-        ? DSText.bodySmall(
+        ? PrismText.bodySmall(
             'No verification commands',
-            color: DSColors.textTertiary,
+            color: PrismColors.textTertiary,
           )
         : Column(
             children: commands
                 .map(
                   (cmd) => Padding(
-                    padding: const EdgeInsets.only(bottom: DSSpacing.xs),
+                    padding: const EdgeInsets.only(bottom: PrismSpacing.xs),
                     child: Container(
                       width: double.infinity,
-                      padding: const EdgeInsets.all(DSSpacing.sm),
+                      padding: const EdgeInsets.all(PrismSpacing.sm),
                       decoration: BoxDecoration(
-                        color: DSColors.obsidianDeep,
-                        borderRadius: BorderRadius.circular(DSRadii.sm),
-                        border: Border.all(color: DSColors.borderSubtle),
+                        color: PrismColors.obsidianDeep,
+                        borderRadius: BorderRadius.circular(PrismRadii.sm),
+                        border: Border.all(color: PrismColors.borderSubtle),
                       ),
-                      child: DSText.code(cmd, color: DSColors.accentCyan),
+                      child: PrismText.code(cmd, color: PrismColors.accentCyan),
                     ),
                   ),
                 )
@@ -157,36 +191,52 @@ DSDetailSection _buildVerificationCommandsSection(TaskProjection task) {
   );
 }
 
-DSDetailSection _buildEvidenceSection(TaskProjection task) {
+PrismDetailSection _buildEvidenceSection(TaskProjection task) {
   final evidenceState = task.hasCompletionEvidence
-      ? DSEvidenceState.verified
+      ? PrismEvidenceState.verified
       : (task.proofState == ProofState.partial
-            ? DSEvidenceState.partial
+            ? PrismEvidenceState.partial
             : (task.proofState == ProofState.complete ||
                       task.proofState == ProofState.verified
-                  ? DSEvidenceState.verified
-                  : DSEvidenceState.pending));
+                  ? PrismEvidenceState.verified
+                  : PrismEvidenceState.pending));
 
-  return DSDetailSection(
+  final rows = task.completionEvidenceRows;
+  return PrismDetailSection(
     title: 'Completion Evidence',
     icon: Icons.fact_check,
+    count: rows.isEmpty ? null : rows.length,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        DSEvidenceRow(
-          label: 'Evidence Status',
-          value: task.completionEvidenceSummary ?? 'Not yet provided',
-          state: evidenceState,
-        ),
+        if (rows.isEmpty)
+          PrismEvidenceRow(
+            label: 'Evidence Status',
+            value: task.completionEvidenceSummary ?? 'Not yet provided',
+            state: evidenceState,
+          )
+        else
+          ...rows.map(
+            (row) => Padding(
+              padding: const EdgeInsets.only(bottom: PrismSpacing.xs),
+              child: PrismEvidenceRow(
+                label: row.label ?? 'Evidence',
+                value: row.value,
+                state: row.isMeaningful
+                    ? PrismEvidenceState.verified
+                    : PrismEvidenceState.pending,
+              ),
+            ),
+          ),
         if (task.exitConditions.isNotEmpty) ...[
-          const SizedBox(height: DSSpacing.sm),
-          DSEvidenceRow(
-            label: 'Exit Conditions',
+          const SizedBox(height: PrismSpacing.sm),
+          PrismEvidenceRow(
+            label: 'Checklist progress',
             value:
                 '${task.exitConditions.where((e) => e.isComplete).length}/${task.exitConditions.length} complete',
             state: task.exitConditions.every((e) => e.isComplete)
-                ? DSEvidenceState.verified
-                : DSEvidenceState.partial,
+                ? PrismEvidenceState.verified
+                : PrismEvidenceState.partial,
           ),
         ],
       ],
@@ -194,20 +244,20 @@ DSDetailSection _buildEvidenceSection(TaskProjection task) {
   );
 }
 
-DSDetailSection _buildRelatedLinksSection(TaskProjection task) {
+PrismDetailSection _buildRelatedLinksSection(TaskProjection task) {
   final skills = task.linkedSkills;
   final workflows = task.linkedWorkflows;
   if (skills.isEmpty && workflows.isEmpty) {
-    return DSDetailSection(
+    return PrismDetailSection(
       title: 'Related Skills & Workflows',
       icon: Icons.extension,
-      child: DSText.bodySmall(
+      child: PrismText.bodySmall(
         'No linked skills or workflows',
-        color: DSColors.textTertiary,
+        color: PrismColors.textTertiary,
       ),
     );
   }
-  return DSDetailSection(
+  return PrismDetailSection(
     title: 'Related Skills & Workflows',
     icon: Icons.extension,
     count: skills.length + workflows.length,
@@ -215,35 +265,35 @@ DSDetailSection _buildRelatedLinksSection(TaskProjection task) {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (skills.isNotEmpty) ...[
-          DSText.labelSmall('SKILLS', color: DSColors.textTertiary),
-          const SizedBox(height: DSSpacing.xs),
+          PrismText.labelSmall('SKILLS', color: PrismColors.textTertiary),
+          const SizedBox(height: PrismSpacing.xs),
           Wrap(
-            spacing: DSSpacing.xs,
-            runSpacing: DSSpacing.xs,
+            spacing: PrismSpacing.xs,
+            runSpacing: PrismSpacing.xs,
             children: skills
                 .map(
-                  (s) => DSLinkRow(
+                  (s) => PrismLinkRow(
                     label: s,
-                    icon: DSIcons.skill,
-                    color: DSColors.accentViolet,
+                    icon: PrismIcons.skill,
+                    color: PrismColors.accentViolet,
                   ),
                 )
                 .toList(),
           ),
         ],
         if (workflows.isNotEmpty) ...[
-          if (skills.isNotEmpty) const SizedBox(height: DSSpacing.sm),
-          DSText.labelSmall('WORKFLOWS', color: DSColors.textTertiary),
-          const SizedBox(height: DSSpacing.xs),
+          if (skills.isNotEmpty) const SizedBox(height: PrismSpacing.sm),
+          PrismText.labelSmall('WORKFLOWS', color: PrismColors.textTertiary),
+          const SizedBox(height: PrismSpacing.xs),
           Wrap(
-            spacing: DSSpacing.xs,
-            runSpacing: DSSpacing.xs,
+            spacing: PrismSpacing.xs,
+            runSpacing: PrismSpacing.xs,
             children: workflows
                 .map(
-                  (w) => DSLinkRow(
+                  (w) => PrismLinkRow(
                     label: w,
-                    icon: DSIcons.workflow,
-                    color: DSColors.accentGold,
+                    icon: PrismIcons.workflow,
+                    color: PrismColors.accentGold,
                   ),
                 )
                 .toList(),
@@ -254,24 +304,27 @@ DSDetailSection _buildRelatedLinksSection(TaskProjection task) {
   );
 }
 
-DSDetailSection _buildBodySummarySection(TaskProjection task) {
+PrismDetailSection _buildBodySummarySection(TaskProjection task) {
   final body = task.bodyMarkdown.trim();
-  return DSDetailSection(
+  return PrismDetailSection(
     title: 'Body Summary',
     icon: Icons.description,
     child: body.isEmpty
-        ? DSText.bodySmall('No body content', color: DSColors.textTertiary)
+        ? PrismText.bodySmall(
+            'No body content',
+            color: PrismColors.textTertiary,
+          )
         : Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(DSSpacing.md),
+            padding: const EdgeInsets.all(PrismSpacing.md),
             decoration: BoxDecoration(
-              color: DSColors.obsidianDeep,
-              borderRadius: BorderRadius.circular(DSRadii.md),
-              border: Border.all(color: DSColors.borderSubtle),
+              color: PrismColors.obsidianDeep,
+              borderRadius: BorderRadius.circular(PrismRadii.md),
+              border: Border.all(color: PrismColors.borderSubtle),
             ),
-            child: DSText.bodySmall(
+            child: PrismText.bodySmall(
               body.length > 500 ? '${body.substring(0, 500)}...' : body,
-              color: DSColors.textSecondary,
+              color: PrismColors.textSecondary,
               maxLines: 12,
               overflow: TextOverflow.ellipsis,
             ),

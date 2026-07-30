@@ -193,7 +193,7 @@ void main() {
       final state = MapWorkspaceState(
         activeSubview: MapSubview.workflows,
         catalogAssets: _testAssets,
-        activeFilters: {'can:mock'},
+        activeFilters: const {'can:mock'},
       );
 
       expect(state.filteredAssets.length, 1);
@@ -204,7 +204,7 @@ void main() {
       final state = MapWorkspaceState(
         activeSubview: MapSubview.agents,
         catalogAssets: _testAssets,
-        activeFilters: {'tag:review'},
+        activeFilters: const {'tag:review'},
       );
 
       expect(state.filteredAssets.length, 1);
@@ -216,7 +216,7 @@ void main() {
         activeSubview: MapSubview.skills,
         catalogAssets: _testAssets,
         query: 'review',
-        activeFilters: {'can:child-local'},
+        activeFilters: const {'can:child-local'},
       );
 
       expect(state.filteredAssets.length, 1);
@@ -321,7 +321,7 @@ void main() {
         ),
       );
 
-      expect(find.byType(DSSearchBar), findsOneWidget);
+      expect(find.byType(PrismSearchBar), findsOneWidget);
     });
 
     testWidgets('renders asset cards', (tester) async {
@@ -339,7 +339,7 @@ void main() {
         ),
       );
 
-      expect(find.byType(DSAssetCard), findsNWidgets(2));
+      expect(find.byType(PrismAssetCard), findsNWidgets(2));
     });
 
     testWidgets('renders result count', (tester) async {
@@ -395,7 +395,7 @@ void main() {
         ),
       );
 
-      expect(find.byType(DSFilterChipGroup), findsOneWidget);
+      expect(find.byType(PrismFilterChipGroup), findsOneWidget);
     });
 
     testWidgets('renders singular result count for 1 result', (tester) async {
@@ -413,6 +413,45 @@ void main() {
 
       expect(find.text('1 result'), findsOneWidget);
     });
+
+    testWidgets('Clear all is a semantic button with ≥48dp target', (
+      tester,
+    ) async {
+      var cleared = false;
+      final assets = _testAssets
+          .where((a) => a.kind == AssetKind.agent)
+          .toList();
+
+      await tester.pumpWidget(
+        wrapInApp(
+          MapCatalogPanel(
+            activeTab: MapCatalogTab.agents,
+            filteredAssets: assets,
+            allAssets: assets,
+            query: 'orch',
+            activeFilters: const {'tag:core'},
+            onClearFilters: () => cleared = true,
+          ),
+        ),
+      );
+      await tester.pump();
+
+      // Accessible name from Semantics(label: 'Clear all filters').
+      final clearByLabel = find.bySemanticsLabel('Clear all filters');
+      expect(clearByLabel, findsOneWidget);
+
+      final size = tester.getSize(clearByLabel);
+      expect(size.width, greaterThanOrEqualTo(48));
+      expect(size.height, greaterThanOrEqualTo(48));
+
+      // Visible label remains "Clear all".
+      expect(find.text('Clear all'), findsOneWidget);
+      expect(find.byType(TextButton), findsOneWidget);
+
+      await tester.tap(clearByLabel);
+      await tester.pump();
+      expect(cleared, isTrue);
+    });
   });
 
   // ===========================================================================
@@ -425,7 +464,21 @@ void main() {
       );
 
       expect(find.text('No results for "nonexistent"'), findsOneWidget);
-      expect(find.text('Clear filters'), findsOneWidget);
+      // No callback → no Clear affordance (no-op fallbacks removed, Task 1030).
+      expect(find.text('Clear filters'), findsNothing);
+    });
+
+    testWidgets('null onClearFilters does not show Clear filters', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        wrapInApp(
+          const MapNoResultsState(query: 'x', activeFilters: {'tag:core'}),
+        ),
+      );
+
+      expect(find.text('No results for "x"'), findsOneWidget);
+      expect(find.text('Clear filters'), findsNothing);
     });
 
     testWidgets('shows message for filters with no results', (tester) async {

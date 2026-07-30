@@ -104,7 +104,7 @@ class _InspectorHeader extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: kindColor.withOpacity(0.15),
+                    color: kindColor.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(DSRadii.md),
                   ),
                   child: DSIcon(DSIcons.forAssetKind(kind), color: kindColor),
@@ -311,7 +311,7 @@ class _DSLinkRowState extends State<DSLinkRow> {
                 borderRadius: BorderRadius.circular(DSRadii.sm),
                 border: _isFocused
                     ? Border.all(
-                        color: DSColors.accentCyan.withOpacity(0.5),
+                        color: DSColors.accentCyan.withValues(alpha: 0.5),
                         width: 2,
                       )
                     : null,

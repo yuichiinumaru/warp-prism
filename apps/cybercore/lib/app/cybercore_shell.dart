@@ -8,6 +8,9 @@ import 'package:warp_prism_ui/warp_prism_ui.dart';
 /// navigation, topbar, and content area. Used by [GoRouter]'s
 /// [StatefulShellRoute] to wrap all product pages in consistent chrome.
 ///
+/// Primary nav aligns to Task 1108 pilots A/B/C:
+///   Providers, MCP Servers, MCP Inspector, Live Logs
+///
 /// Responsive layout contract (references [PrismBreakpoints]):
 ///   >= 1200px (wide):     full expanded sidebar + topbar + content
 ///   800-1199px (medium):  full expanded sidebar + topbar + content
@@ -18,60 +21,52 @@ class CyberCoreShell extends StatelessWidget {
 
   const CyberCoreShell({super.key, required this.navigationShell});
 
-  /// Navigation items for the CyberCore sidebar.
+  /// Navigation items for the CyberCore sidebar (pilot routes only).
   static const navItems = [
     PrismSidebarItem(
-      id: 'dashboard',
-      label: 'Dashboard',
-      icon: Icons.dashboard_outlined,
+      id: 'providers',
+      label: 'Providers',
+      icon: Icons.cloud_outlined,
       color: PrismColors.accentCyan,
     ),
     PrismSidebarItem(
-      id: 'registry',
-      label: 'Registry',
-      icon: Icons.hub_outlined,
+      id: 'mcp-servers',
+      label: 'MCP Servers',
+      icon: Icons.dns_outlined,
       color: PrismColors.accentViolet,
     ),
     PrismSidebarItem(
-      id: 'tasks',
-      label: 'Tasks',
-      icon: Icons.play_circle_outline,
+      id: 'mcp-inspector',
+      label: 'MCP Inspector',
+      icon: Icons.bug_report_outlined,
       color: PrismColors.accentGold,
     ),
     PrismSidebarItem(
-      id: 'audit',
-      label: 'Audit',
-      icon: Icons.history_outlined,
+      id: 'live-logs',
+      label: 'Live Logs',
+      icon: Icons.terminal_outlined,
       color: PrismColors.accentCyan,
-    ),
-    PrismSidebarItem(
-      id: 'governance',
-      label: 'Governance',
-      icon: Icons.gavel_outlined,
-      color: PrismColors.statusWarning,
     ),
   ];
 
   static const _routeByIndex = <int, String>{
-    0: '/dashboard',
-    1: '/registry',
-    2: '/tasks',
-    3: '/audit',
-    4: '/governance',
+    0: '/providers',
+    1: '/mcp-servers',
+    2: '/mcp-inspector',
+    3: '/live-logs',
   };
 
   static const _titleByIndex = <int, String>{
-    0: 'Dashboard',
-    1: 'Registry',
-    2: 'Tasks',
-    3: 'Audit',
-    4: 'Governance',
+    0: 'Providers',
+    1: 'MCP Servers',
+    2: 'MCP Inspector',
+    3: 'Live Logs',
   };
 
   void _onNavItemTap(String id) {
     final entry = _routeByIndex.entries.firstWhere(
       (e) => navItems[e.key].id == id,
-      orElse: () => const MapEntry(0, '/dashboard'),
+      orElse: () => const MapEntry(0, '/providers'),
     );
     navigationShell.goBranch(
       entry.key,
@@ -96,6 +91,12 @@ class CyberCoreShell extends StatelessWidget {
     final screenWidth = MediaQuery.sizeOf(context).width;
     final isCompact = screenWidth < PrismBreakpoints.narrow;
 
+    // Material ancestor required by ADS inputs (search bars, InkWell, etc.).
+    final content = Material(
+      color: PrismColors.obsidianDeep,
+      child: navigationShell,
+    );
+
     if (isCompact) {
       return _CompactShell(
         currentIndex: currentIndex,
@@ -104,7 +105,7 @@ class CyberCoreShell extends StatelessWidget {
         onBottomNavTap: (index) {
           _onNavItemTap(navItems[index].id);
         },
-        content: navigationShell,
+        content: content,
       );
     }
 
@@ -123,7 +124,7 @@ class CyberCoreShell extends StatelessWidget {
         header: const _CyberCoreHeader(expanded: false),
       ),
       topbar: PrismTopbar(title: _titleByIndex[currentIndex] ?? 'CyberCore'),
-      content: navigationShell,
+      content: content,
       showInspector: false,
     );
   }

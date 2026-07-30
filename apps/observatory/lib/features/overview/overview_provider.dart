@@ -10,7 +10,6 @@
 library;
 
 import 'package:warp_prism_observatory/data/models/data_models.dart';
-import 'package:warp_prism_observatory/data/models/governance_diagnostics.dart';
 import 'overview_metrics.dart';
 
 /// Computes derived metrics from workspace assets and diagnostics.

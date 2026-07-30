@@ -1,6 +1,6 @@
 /// Operate board surface for the ASW Observatory.
 ///
-/// Renders the five canonical task lanes using [DSLaneBoard] with
+/// Renders the five canonical task lanes using [PrismLaneBoard] with
 /// filter controls for lane, owner, skill, workflow, and proof state.
 /// The board surface composes DS primitives directly (not via the
 /// broken MasterDetailTemplate) and delegates all filter/group logic
@@ -9,11 +9,12 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:warp_prism_observatory/data/models/task_contracts.dart';
+import 'package:warp_prism_observatory/features/asset_detail/asset_detail.dart';
+import 'package:warp_prism_observatory/features/operate/operate_filters.dart';
+import 'package:warp_prism_observatory/features/operate/operate_storytelling.dart';
+import 'package:warp_prism_observatory/features/operate/operate_workspace_view_model.dart';
+import 'package:warp_prism_observatory/features/operate/task_projection.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
-import 'operate_workspace_view_model.dart';
-import 'operate_filters.dart';
-import 'task_projection.dart';
-import 'operate_storytelling.dart';
 
 /// Main Operate board surface.
 ///
@@ -55,49 +56,89 @@ class _OperateWorkspaceViewState extends State<OperateWorkspaceView> {
       initialData: _viewModel.state,
       builder: (context, snapshot) {
         final state = snapshot.data ?? _viewModel.state;
+        final selectedTask = _taskById(state, state.selectedTaskId);
 
-        return Column(
-          children: [
-            // Filter bar
-            _FilterBar(
-              filters: state.filters,
-              filterOptions: state.filterOptions,
-              viewModel: _viewModel,
-            ),
+        // Shared responsive detail shell (Task 0905) — same contract as
+        // Map/History: split-pane / overlay / full-screen by breakpoint.
+        return AssetDetailConsumer(
+          selectedAssetId: state.selectedTaskId,
+          onDetailClose: _viewModel.deselectTask,
+          detailTitle: selectedTask != null
+              ? '${selectedTask.id} — ${selectedTask.title}'
+              : null,
+          detailKind: 'task',
+          detailBuilder: (context, taskId) {
+            final task = _taskById(state, taskId);
+            if (task == null) {
+              return const AssetDetailEmpty(
+                message:
+                    'Select a task card from the board to inspect its details',
+              );
+            }
+            // Universal descriptor → AssetDetailView (Task 0905 path-to-100).
+            return AssetDetailView(
+              descriptor: descriptorFromTaskProjection(task),
+              onClose: _viewModel.deselectTask,
+            );
+          },
+          child: Column(
+            children: [
+              // Filter bar
+              _FilterBar(
+                filters: state.filters,
+                filterOptions: state.filterOptions,
+                viewModel: _viewModel,
+              ),
 
-            // Task counts
-            _CountBar(
-              filteredCount: state.filteredTaskCount,
-              totalCount: state.totalTaskCount,
-              isFiltered: state.filters.isActive,
-              onClearFilters: _viewModel.clearFilters,
-            ),
+              // Task counts
+              _CountBar(
+                filteredCount: state.filteredTaskCount,
+                totalCount: state.totalTaskCount,
+                isFiltered: state.filters.isActive,
+                onClearFilters: _viewModel.clearFilters,
+              ),
 
-            // Storytelling panel — only when there are signals
-            if (state.storyDiagnostics.hasSignals)
-              _OperateStoryPanel(diagnostics: state.storyDiagnostics),
+              // Storytelling panel — only when there are signals
+              if (state.storyDiagnostics.hasSignals)
+                _OperateStoryPanel(diagnostics: state.storyDiagnostics),
 
-            // Board or state
-            Expanded(child: _buildBoard(state)),
-          ],
+              // Board or state
+              Expanded(child: _buildBoard(state)),
+            ],
+          ),
         );
       },
     );
+  }
+
+  TaskProjection? _taskById(OperateBoardState state, String? taskId) {
+    if (taskId == null || taskId.isEmpty) {
+      return null;
+    }
+    for (final task in state.allTasks) {
+      if (task.id == taskId) {
+        return task;
+      }
+    }
+    return null;
   }
 
   Widget _buildBoard(OperateBoardState state) {
     // Loading state
     if (state.isLoading) {
       return Center(
-        child: DSStateSurface.loading(title: 'Loading tasks...', compact: true),
+        child: PrismStateSurface.loading(
+          title: 'Loading tasks...',
+          compact: true,
+        ),
       );
     }
 
     // Error state
     if (state.error != null) {
       return Center(
-        child: DSStateSurface.error(
-          icon: DSIcons.error,
+        child: PrismStateSurface.error(
+          icon: PrismIcons.error,
           title: 'Failed to load tasks',
           subtitle: state.error,
           actionLabel: 'Retry',
@@ -109,7 +150,7 @@ class _OperateWorkspaceViewState extends State<OperateWorkspaceView> {
     // Empty state
     if (state.allTasks.isEmpty) {
       return Center(
-        child: DSStateSurface.empty(
+        child: PrismStateSurface.empty(
           icon: Icons.inbox_outlined,
           title: 'No tasks found',
           subtitle:
@@ -118,25 +159,25 @@ class _OperateWorkspaceViewState extends State<OperateWorkspaceView> {
       );
     }
 
-    // Build DSLane objects from lane states
+    // Build PrismLane objects from lane states
     final lanes = state.lanes.map((laneState) {
-      return DSLane(
+      return PrismLane(
         id: laneState.lane.directoryPrefix,
         label: _laneLabel(laneState.lane),
         tasks: laneState.tasks.map(_toLaneTask).toList(),
       );
     }).toList();
 
-    return DSLaneBoard(
+    return PrismLaneBoard(
       lanes: lanes,
       selectedTaskId: state.selectedTaskId,
       onTaskTap: _viewModel.selectTask,
     );
   }
 
-  /// Convert a [TaskProjection] to a [DSLaneTask].
-  DSLaneTask _toLaneTask(TaskProjection task) {
-    return DSLaneTask(
+  /// Convert a [TaskProjection] to a [PrismLaneTask].
+  PrismLaneTask _toLaneTask(TaskProjection task) {
+    return PrismLaneTask(
       id: int.tryParse(task.id.replaceAll(RegExp(r'[^0-9]'), '')) ?? 0,
       title: task.title,
       priority: task.priority,
@@ -180,13 +221,13 @@ class _FilterBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(
-        horizontal: DSSpacing.md,
-        vertical: DSSpacing.sm,
+        horizontal: PrismSpacing.md,
+        vertical: PrismSpacing.sm,
       ),
       decoration: BoxDecoration(
-        color: DSColors.obsidianElevated,
+        color: PrismColors.obsidianElevated,
         border: Border(
-          bottom: BorderSide(color: DSColors.borderSubtle, width: 1),
+          bottom: BorderSide(color: PrismColors.borderSubtle, width: 1),
         ),
       ),
       child: Row(
@@ -198,7 +239,7 @@ class _FilterBar extends StatelessWidget {
               onChanged: viewModel.updateQuery,
             ),
           ),
-          const SizedBox(width: DSSpacing.md),
+          const SizedBox(width: PrismSpacing.md),
 
           // Filter dropdowns
           _FilterDropdown<TaskLane>(
@@ -209,7 +250,7 @@ class _FilterBar extends StatelessWidget {
             onChanged: (v) => viewModel.filterByLane(v),
             onClear: () => viewModel.filterByLane(null),
           ),
-          const SizedBox(width: DSSpacing.sm),
+          const SizedBox(width: PrismSpacing.sm),
 
           _FilterDropdown<String>(
             label: 'Owner',
@@ -219,7 +260,7 @@ class _FilterBar extends StatelessWidget {
             onChanged: (v) => viewModel.filterByOwner(v),
             onClear: () => viewModel.filterByOwner(null),
           ),
-          const SizedBox(width: DSSpacing.sm),
+          const SizedBox(width: PrismSpacing.sm),
 
           _FilterDropdown<String>(
             label: 'Skill',
@@ -229,7 +270,7 @@ class _FilterBar extends StatelessWidget {
             onChanged: (v) => viewModel.filterBySkill(v),
             onClear: () => viewModel.filterBySkill(null),
           ),
-          const SizedBox(width: DSSpacing.sm),
+          const SizedBox(width: PrismSpacing.sm),
 
           _FilterDropdown<String>(
             label: 'Workflow',
@@ -239,7 +280,7 @@ class _FilterBar extends StatelessWidget {
             onChanged: (v) => viewModel.filterByWorkflow(v),
             onClear: () => viewModel.filterByWorkflow(null),
           ),
-          const SizedBox(width: DSSpacing.sm),
+          const SizedBox(width: PrismSpacing.sm),
 
           _FilterDropdown<ProofState>(
             label: 'Proof',
@@ -306,36 +347,45 @@ class _SearchFieldState extends State<_SearchField> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 36,
-      child: TextField(
-        controller: _controller,
-        onChanged: widget.onChanged,
-        style: DSTypography.bodySmall.copyWith(color: DSColors.textPrimary),
-        decoration: InputDecoration(
-          hintText: 'Search tasks...',
-          hintStyle: DSTypography.bodySmall.copyWith(
-            color: DSColors.textTertiary,
+    return Semantics(
+      label: 'Search tasks',
+      textField: true,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: 48),
+        child: TextField(
+          controller: _controller,
+          onChanged: widget.onChanged,
+          style: PrismTypography.bodySmall.copyWith(
+            color: PrismColors.textPrimary,
           ),
-          prefixIcon: DSIcon.small(Icons.search, color: DSColors.textTertiary),
-          isDense: true,
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: DSSpacing.sm,
-            vertical: DSSpacing.xs,
-          ),
-          filled: true,
-          fillColor: DSColors.obsidianBase,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(DSRadii.sm),
-            borderSide: BorderSide(color: DSColors.borderSubtle),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(DSRadii.sm),
-            borderSide: BorderSide(color: DSColors.borderSubtle),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(DSRadii.sm),
-            borderSide: BorderSide(color: DSColors.accentCyan, width: 1.5),
+          decoration: InputDecoration(
+            hintText: 'Search tasks...',
+            hintStyle: PrismTypography.bodySmall.copyWith(
+              color: PrismColors.textTertiary,
+            ),
+            prefixIcon: PrismIcon.small(
+              Icons.search,
+              color: PrismColors.textTertiary,
+            ),
+            isDense: true,
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: PrismSpacing.sm,
+              vertical: PrismSpacing.xs,
+            ),
+            filled: true,
+            fillColor: PrismColors.obsidianBase,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(PrismRadii.sm),
+              borderSide: BorderSide(color: PrismColors.borderSubtle),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(PrismRadii.sm),
+              borderSide: BorderSide(color: PrismColors.borderSubtle),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(PrismRadii.sm),
+              borderSide: BorderSide(color: PrismColors.accentCyan, width: 1.5),
+            ),
           ),
         ),
       ),
@@ -366,17 +416,18 @@ class _FilterDropdown<T> extends StatelessWidget {
     return Semantics(
       label: '$label filter',
       button: true,
+      container: true,
       child: PopupMenuButton<T>(
-        tooltip: label,
+        tooltip: '$label filter',
         onSelected: onChanged,
         itemBuilder: (context) => [
           if (value != null)
             PopupMenuItem<T>(
               value: null,
               onTap: onClear,
-              child: DSText.bodySmall(
+              child: PrismText.bodySmall(
                 'Clear $label',
-                color: DSColors.textTertiary,
+                color: PrismColors.textTertiary,
               ),
             ),
           for (final item in items)
@@ -385,54 +436,58 @@ class _FilterDropdown<T> extends StatelessWidget {
               child: Row(
                 children: [
                   if (item == value)
-                    DSIcon.small(Icons.check, color: DSColors.accentCyan)
+                    PrismIcon.small(Icons.check, color: PrismColors.accentCyan)
                   else
                     const SizedBox(width: 16),
-                  const SizedBox(width: DSSpacing.xs),
-                  DSText.bodySmall(
+                  const SizedBox(width: PrismSpacing.xs),
+                  PrismText.bodySmall(
                     itemLabel(item),
                     color: item == value
-                        ? DSColors.accentCyan
-                        : DSColors.textPrimary,
+                        ? PrismColors.accentCyan
+                        : PrismColors.textPrimary,
                   ),
                 ],
               ),
             ),
         ],
-        child: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: DSSpacing.sm,
-            vertical: DSSpacing.xs,
-          ),
-          decoration: BoxDecoration(
-            color: value != null
-                ? DSColors.accentCyan.withOpacity(0.15)
-                : DSColors.obsidianBase,
-            borderRadius: BorderRadius.circular(DSRadii.sm),
-            border: Border.all(
-              color: value != null
-                  ? DSColors.accentCyan.withOpacity(0.4)
-                  : DSColors.borderSubtle,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: 48, minWidth: 48),
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: PrismSpacing.sm,
+              vertical: PrismSpacing.xs,
             ),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              DSText.labelSmall(
-                value != null ? itemLabel(value as T) : label,
+            decoration: BoxDecoration(
+              color: value != null
+                  ? PrismColors.accentCyan.withValues(alpha: 0.15)
+                  : PrismColors.obsidianBase,
+              borderRadius: BorderRadius.circular(PrismRadii.sm),
+              border: Border.all(
                 color: value != null
-                    ? DSColors.accentCyan
-                    : DSColors.textSecondary,
+                    ? PrismColors.accentCyan.withValues(alpha: 0.4)
+                    : PrismColors.borderSubtle,
               ),
-              const SizedBox(width: 4),
-              Icon(
-                Icons.arrow_drop_down,
-                size: 16,
-                color: value != null
-                    ? DSColors.accentCyan
-                    : DSColors.textTertiary,
-              ),
-            ],
+            ),
+            alignment: Alignment.center,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                PrismText.labelSmall(
+                  value != null ? itemLabel(value as T) : label,
+                  color: value != null
+                      ? PrismColors.accentCyan
+                      : PrismColors.textSecondary,
+                ),
+                const SizedBox(width: 4),
+                Icon(
+                  Icons.arrow_drop_down,
+                  size: 16,
+                  color: value != null
+                      ? PrismColors.accentCyan
+                      : PrismColors.textTertiary,
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -458,32 +513,41 @@ class _CountBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(
-        horizontal: DSSpacing.md,
-        vertical: DSSpacing.xs,
+        horizontal: PrismSpacing.md,
+        vertical: PrismSpacing.xs,
       ),
       decoration: BoxDecoration(
-        color: DSColors.obsidianBase,
+        color: PrismColors.obsidianBase,
         border: Border(
-          bottom: BorderSide(color: DSColors.borderSubtle, width: 0.5),
+          bottom: BorderSide(color: PrismColors.borderSubtle, width: 0.5),
         ),
       ),
       child: Row(
         children: [
-          DSText.labelSmall(
+          PrismText.labelSmall(
             isFiltered
                 ? '$filteredCount of $totalCount tasks'
                 : '$totalCount tasks',
-            color: DSColors.textTertiary,
+            color: PrismColors.textTertiary,
           ),
           const Spacer(),
           if (isFiltered)
-            GestureDetector(
-              onTap: onClearFilters,
-              child: MouseRegion(
-                cursor: SystemMouseCursors.click,
-                child: DSText.labelSmall(
+            Semantics(
+              button: true,
+              label: 'Clear filters',
+              excludeSemantics: true,
+              child: TextButton(
+                onPressed: onClearFilters,
+                style: TextButton.styleFrom(
+                  minimumSize: const Size(48, 48),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: PrismSpacing.sm,
+                  ),
+                  foregroundColor: PrismColors.accentCyan,
+                ),
+                child: PrismText.labelSmall(
                   'Clear filters',
-                  color: DSColors.accentCyan,
+                  color: PrismColors.accentCyan,
                 ),
               ),
             ),
@@ -495,7 +559,7 @@ class _CountBar extends StatelessWidget {
 
 /// Storytelling panel for the Operate surface.
 ///
-/// Renders operational risk insights using [DSStoryPanel] to make
+/// Renders operational risk insights using [PrismStoryPanel] to make
 /// blocked work, review pressure, and proof-risk tasks visible
 /// without opening each task individually.
 class _OperateStoryPanel extends StatelessWidget {
@@ -509,10 +573,10 @@ class _OperateStoryPanel extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(
-        horizontal: DSSpacing.md,
-        vertical: DSSpacing.sm,
+        horizontal: PrismSpacing.md,
+        vertical: PrismSpacing.sm,
       ),
-      child: DSStoryPanel(
+      child: PrismStoryPanel(
         title: 'Operational Risk',
         subtitle: _riskSubtitle(diagnostics.overallRiskLevel),
         icon: Icons.warning_amber_rounded,
@@ -525,15 +589,15 @@ class _OperateStoryPanel extends StatelessWidget {
   Color _riskColor(StoryRiskLevel level) {
     switch (level) {
       case StoryRiskLevel.none:
-        return DSColors.accentCyan;
+        return PrismColors.accentCyan;
       case StoryRiskLevel.low:
-        return DSColors.accentCyan;
+        return PrismColors.accentCyan;
       case StoryRiskLevel.medium:
-        return DSColors.statusWarning;
+        return PrismColors.statusWarning;
       case StoryRiskLevel.high:
-        return DSColors.statusError;
+        return PrismColors.statusError;
       case StoryRiskLevel.critical:
-        return DSColors.statusError;
+        return PrismColors.statusError;
     }
   }
 
@@ -552,8 +616,8 @@ class _OperateStoryPanel extends StatelessWidget {
     }
   }
 
-  DSStoryInsight _toStoryInsight(OperateInsight insight) {
-    return DSStoryInsight(
+  PrismStoryInsight _toStoryInsight(OperateInsight insight) {
+    return PrismStoryInsight(
       text: insight.title,
       detail: insight.detail,
       value: insight.value?.toString(),

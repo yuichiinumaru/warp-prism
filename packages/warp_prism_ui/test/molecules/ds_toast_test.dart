@@ -4,9 +4,12 @@
 // Tests cover: severity rendering, auto-dismiss, action button callback,
 // stacking behavior, and pause-on-hover.
 
+import 'dart:ui' show PointerDeviceKind;
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:warp_prism_ui/warp_prism_ui.dart';
+import 'package:warp_prism_ui/src/tokens/tokens.dart';
+import 'package:warp_prism_ui/src/molecules/molecules.dart';
 
 /// Helper: wraps a widget under test with MaterialApp + Scaffold.
 Widget _wrapInApp(Widget child) {
@@ -164,6 +167,39 @@ void main() {
 
       final copy = original.copyWith(clearActionLabel: true);
       expect(copy.actionLabel, isNull);
+    });
+
+    test('accepts entry-owned onAction and defaults dismissOnAction true', () {
+      var fired = false;
+      final entry = DSToastEntry(
+        id: 'test-1',
+        severity: DSToastSeverity.info,
+        title: 'Test',
+        actionLabel: 'Undo',
+        onAction: () => fired = true,
+      );
+      expect(entry.onAction, isNotNull);
+      expect(entry.dismissOnAction, isTrue);
+      entry.onAction!();
+      expect(fired, isTrue);
+    });
+
+    test('copyWith clears onAction and overrides dismissOnAction', () {
+      final original = DSToastEntry(
+        id: 'test-1',
+        severity: DSToastSeverity.info,
+        title: 'Test',
+        actionLabel: 'Undo',
+        onAction: () {},
+        dismissOnAction: true,
+      );
+
+      final copy = original.copyWith(
+        clearOnAction: true,
+        dismissOnAction: false,
+      );
+      expect(copy.onAction, isNull);
+      expect(copy.dismissOnAction, isFalse);
     });
   });
 
@@ -337,6 +373,29 @@ void main() {
       );
 
       expect(find.bySemanticsLabel('Error: Parse error'), findsOneWidget);
+    });
+
+    testWidgets('live-region semantics include title and message', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        _wrapInApp(
+          DSToast(
+            entry: DSToastEntry(
+              id: 't1',
+              severity: DSToastSeverity.success,
+              title: 'Task completed',
+              message: 'All proofs verified',
+              duration: Duration.zero,
+            ),
+          ),
+        ),
+      );
+
+      expect(
+        find.bySemanticsLabel('Success: Task completed. All proofs verified'),
+        findsOneWidget,
+      );
     });
 
     testWidgets('exposes action and dismiss semantics', (tester) async {
@@ -575,6 +634,30 @@ void main() {
       expect(size.height, greaterThanOrEqualTo(48));
     });
 
+    testWidgets('action button has minimum 48x48 touch target', (tester) async {
+      await tester.pumpWidget(
+        _wrapInApp(
+          DSToast(
+            entry: DSToastEntry(
+              id: 't1',
+              severity: DSToastSeverity.info,
+              title: 'Info',
+              actionLabel: 'Undo',
+              duration: Duration.zero,
+            ),
+            onAction: () {},
+          ),
+        ),
+      );
+
+      final actionButton = find.byType(TextButton);
+      expect(actionButton, findsOneWidget);
+
+      final size = tester.getSize(actionButton);
+      expect(size.width, greaterThanOrEqualTo(48));
+      expect(size.height, greaterThanOrEqualTo(48));
+    });
+
     testWidgets('manager action tap dismisses toast', (tester) async {
       final managerKey = GlobalKey<_ManagerTestHelperState>();
       await tester.pumpWidget(
@@ -630,6 +713,218 @@ void main() {
       expect(find.text('Toast 1'), findsNothing);
       expect(find.text('Toast 2'), findsOneWidget);
     });
+
+    testWidgets(
+      'pause-on-hover keeps toast visible past duration until unhover',
+      (tester) async {
+        final managerKey = GlobalKey<_ManagerTestHelperState>();
+        await tester.pumpWidget(
+          _wrapWithManager(_ManagerTestHelper(key: managerKey)),
+        );
+
+        managerKey.currentState!.showToastWith(
+          id: 'toast-hover',
+          title: 'Hover toast',
+          duration: const Duration(seconds: 1),
+        );
+        await tester.pump();
+        await tester.pump(DSMotion.slow);
+        expect(find.text('Hover toast'), findsOneWidget);
+
+        // Hover the toast via mouse (MouseRegion pause-on-hover contract).
+        final gesture = await tester.createGesture(
+          kind: PointerDeviceKind.mouse,
+        );
+        await gesture.addPointer(location: Offset.zero);
+        addTearDown(gesture.removePointer);
+        await tester.pump();
+        await gesture.moveTo(tester.getCenter(find.text('Hover toast')));
+        await tester.pump();
+
+        // Advance past auto-dismiss duration while hovered — still visible.
+        await tester.pump(const Duration(seconds: 1));
+        await tester.pump(DSMotion.slow);
+        expect(find.text('Hover toast'), findsOneWidget);
+
+        // Unhover — timer restarts with full duration; then dismisses.
+        await gesture.moveTo(const Offset(0, 0));
+        await tester.pump();
+        await tester.pump(const Duration(seconds: 1));
+        await tester.pump(DSMotion.slow);
+        await tester.pump(const Duration(milliseconds: 100));
+        expect(find.text('Hover toast'), findsNothing);
+      },
+    );
+
+    // Path-to-100 / F1: maxVisible front-removal must not leave a timer holding
+    // a stale list index that dismisses the wrong remaining toast (or crashes).
+    testWidgets(
+      'maxVisible eviction does not break remaining toast auto-dismiss by id',
+      (tester) async {
+        final managerKey = GlobalKey<_ManagerTestHelperState>();
+        await tester.pumpWidget(
+          _wrapWithManager(_ManagerTestHelper(key: managerKey), maxVisible: 2),
+        );
+
+        // Oldest toast gets a long timer; middle and newest stay at maxVisible.
+        // Durations are spaced so DSMotion.slow exit pumps cannot collapse them.
+        managerKey.currentState!.showToastWith(
+          id: 'toast-old',
+          title: 'Old toast',
+          duration: const Duration(seconds: 10),
+        );
+        managerKey.currentState!.showToastWith(
+          id: 'toast-mid',
+          title: 'Mid toast',
+          duration: const Duration(milliseconds: 500),
+        );
+        // Evicts toast-old via removeAt(0) while its Timer may still be live
+        // (cancelled on remove) — remaining entries shift to lower indices.
+        managerKey.currentState!.showToastWith(
+          id: 'toast-new',
+          title: 'New toast',
+          duration: const Duration(seconds: 2),
+        );
+        await tester.pump();
+        await tester.pump(DSMotion.slow);
+
+        expect(find.text('Old toast'), findsNothing);
+        expect(find.text('Mid toast'), findsOneWidget);
+        expect(find.text('New toast'), findsOneWidget);
+
+        // Mid auto-dismisses on its own duration; New must remain (id re-resolve).
+        await tester.pump(const Duration(milliseconds: 500));
+        await tester.pump(DSMotion.slow);
+        await tester.pump(const Duration(milliseconds: 100));
+        expect(find.text('Mid toast'), findsNothing);
+        expect(find.text('New toast'), findsOneWidget);
+
+        // New still auto-dismisses on its own schedule after index shift.
+        // Remaining time ≈ 2s − 500ms − DSMotion.slow − 100ms; pump past 2s total.
+        await tester.pump(const Duration(seconds: 2));
+        await tester.pump(DSMotion.slow);
+        await tester.pump(const Duration(milliseconds: 100));
+        expect(find.text('New toast'), findsNothing);
+      },
+    );
+
+    // Path-to-100: dismiss A while B is paused-by-hover; B still auto-dismisses.
+    testWidgets(
+      'dismiss toast A while B is hovered does not corrupt B auto-dismiss',
+      (tester) async {
+        final managerKey = GlobalKey<_ManagerTestHelperState>();
+        await tester.pumpWidget(
+          _wrapWithManager(_ManagerTestHelper(key: managerKey)),
+        );
+
+        managerKey.currentState!.showToastWith(
+          id: 'toast-a',
+          title: 'Toast A',
+          duration: const Duration(seconds: 5),
+        );
+        managerKey.currentState!.showToastWith(
+          id: 'toast-b',
+          title: 'Toast B',
+          duration: const Duration(milliseconds: 500),
+        );
+        await tester.pump();
+        await tester.pump(DSMotion.slow);
+
+        final gesture = await tester.createGesture(
+          kind: PointerDeviceKind.mouse,
+        );
+        await gesture.addPointer(location: Offset.zero);
+        addTearDown(gesture.removePointer);
+        await tester.pump();
+        await gesture.moveTo(tester.getCenter(find.text('Toast B')));
+        await tester.pump();
+
+        // Dismiss A while B is hovered — index shift must not break B's timer.
+        managerKey.currentState!.dismissToast('toast-a');
+        await tester.pump();
+        await tester.pump(DSMotion.slow);
+        await tester.pump(const Duration(milliseconds: 100));
+        expect(find.text('Toast A'), findsNothing);
+        expect(find.text('Toast B'), findsOneWidget);
+
+        // Re-enter then exit so MouseRegion exit fires after overlay rebuild
+        // (dismiss of A remounts hover regions and can drop enter/exit pairing).
+        await gesture.moveTo(tester.getCenter(find.text('Toast B')));
+        await tester.pump();
+        await gesture.moveTo(const Offset(-100, -100));
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 500));
+        await tester.pump(DSMotion.slow);
+        await tester.pump(const Duration(milliseconds: 100));
+        expect(find.text('Toast B'), findsNothing);
+      },
+    );
+
+    // Path-to-100: entry-owned onAction + dismissOnAction: false.
+    testWidgets(
+      'entry onAction fires without dismissing when dismissOnAction is false',
+      (tester) async {
+        var actionCount = 0;
+        final managerKey = GlobalKey<_ManagerTestHelperState>();
+        await tester.pumpWidget(
+          _wrapWithManager(_ManagerTestHelper(key: managerKey)),
+        );
+
+        DSToastManager.of(managerKey.currentContext!).show(
+          DSToastEntry(
+            id: 'toast-keep',
+            severity: DSToastSeverity.info,
+            title: 'Keep open',
+            actionLabel: 'Retry',
+            duration: Duration.zero,
+            dismissOnAction: false,
+            onAction: () => actionCount++,
+          ),
+        );
+        await tester.pump();
+        await tester.pump(DSMotion.slow);
+
+        await tester.tap(find.text('Retry'));
+        await tester.pump();
+        await tester.pump(DSMotion.slow);
+
+        expect(actionCount, 1);
+        expect(find.text('Keep open'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'entry onAction fires and dismisses when dismissOnAction true',
+      (tester) async {
+        var actionCount = 0;
+        final managerKey = GlobalKey<_ManagerTestHelperState>();
+        await tester.pumpWidget(
+          _wrapWithManager(_ManagerTestHelper(key: managerKey)),
+        );
+
+        DSToastManager.of(managerKey.currentContext!).show(
+          DSToastEntry(
+            id: 'toast-dismiss-action',
+            severity: DSToastSeverity.info,
+            title: 'Will dismiss',
+            actionLabel: 'Undo',
+            duration: Duration.zero,
+            dismissOnAction: true,
+            onAction: () => actionCount++,
+          ),
+        );
+        await tester.pump();
+        await tester.pump(DSMotion.slow);
+
+        await tester.tap(find.text('Undo'));
+        await tester.pump();
+        await tester.pump(DSMotion.slow);
+        await tester.pump(const Duration(milliseconds: 100));
+
+        expect(actionCount, 1);
+        expect(find.text('Will dismiss'), findsNothing);
+      },
+    );
   });
 }
 

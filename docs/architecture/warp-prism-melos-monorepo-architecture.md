@@ -150,7 +150,7 @@ warp-prism/                          # Monorepo root (current child-project root
 │   │   │   └── main.dart
 │   │   └── test/
 │   │
-│   └── cybercore/                   # CyberCore pilot app (future, Task 1110+)
+│   └── cybercore/                   # CyberCore pilot app (shell: 1107; content: 1110+)
 │       ├── pubspec.yaml
 │       ├── analysis_options.yaml
 │       ├── lib/
@@ -165,7 +165,7 @@ warp-prism/                          # Monorepo root (current child-project root
 | `warp_prism_ui` | `packages/warp_prism_ui/` | Reusable Flutter ADS — tokens, atoms, molecules, organisms, templates, gallery. App-agnostic. | Created in Task 1107 |
 | `warp_prism_observatory` | `apps/observatory/` | ASW Observatory Flutter app. First ADS consumer. | Relocated in Task 1107 |
 | `warp_prism_catalog` | `apps/catalog/` | ADS catalog/gallery app. ADS proof surface. | Created in Task 1107 |
-| `warp_prism_cybercore` | `apps/cybercore/` | CyberCore pilot app. Second ADS consumer. | Created in Task 1110 |
+| `warp_prism_cybercore` | `apps/cybercore/` | CyberCore pilot app. Second ADS consumer. | App shell/skeleton created in Task 1107; pilot content populated in Task 1110 |
 
 These names are already registered in `docs/design/naming.md` (Task 1101).
 

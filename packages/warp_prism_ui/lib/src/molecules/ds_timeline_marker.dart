@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../tokens/tokens.dart';
 import '../atoms/atoms.dart';
+import 'ds_interactive_surface.dart';
 
 /// ASW Observatory Molecule - Timeline Marker
 ///
@@ -16,6 +17,7 @@ class DSTimelineMarker extends StatelessWidget {
   final bool isLast;
   final bool selected;
   final VoidCallback? onTap;
+  final FocusNode? focusNode;
 
   const DSTimelineMarker({
     super.key,
@@ -29,6 +31,7 @@ class DSTimelineMarker extends StatelessWidget {
     this.isLast = false,
     this.selected = false,
     this.onTap,
+    this.focusNode,
   });
 
   Color get _typeColor {
@@ -51,153 +54,138 @@ class DSTimelineMarker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bgColor = selected
-        ? _typeColor.withOpacity(0.1)
+        ? _typeColor.withValues(alpha: 0.1)
         : DSColors.transparent;
 
-    return GestureDetector(
+    return DSInteractiveSurface(
+      semanticLabel: 'Timeline entry: $title, date: $date',
+      selected: selected,
       onTap: onTap,
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: Container(
-          color: bgColor,
-          child: IntrinsicHeight(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // Timeline line and dot
-                SizedBox(
-                  width: 32,
-                  child: Column(
-                    children: [
-                      // Top line
-                      if (!isFirst)
-                        Expanded(
-                          child: Container(
-                            width: 2,
-                            color: DSColors.borderSubtle,
-                          ),
-                        )
-                      else
-                        const Expanded(child: SizedBox()),
+      focusNode: focusNode,
+      excludeChildSemantics: true,
+      decoration: BoxDecoration(color: bgColor),
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Timeline line and dot
+            SizedBox(
+              width: 32,
+              child: Column(
+                children: [
+                  // Top line
+                  if (!isFirst)
+                    Expanded(
+                      child: Container(width: 2, color: DSColors.borderSubtle),
+                    )
+                  else
+                    const Expanded(child: SizedBox()),
 
-                      // Dot
-                      Container(
-                        width: 12,
-                        height: 12,
-                        decoration: BoxDecoration(
-                          color: _typeColor,
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: DSColors.obsidianBase,
-                            width: 2,
-                          ),
-                          boxShadow: selected
-                              ? [
-                                  BoxShadow(
-                                    color: _typeColor.withOpacity(0.5),
-                                    blurRadius: 8,
-                                  ),
-                                ]
-                              : null,
-                        ),
+                  // Dot
+                  Container(
+                    width: 12,
+                    height: 12,
+                    decoration: BoxDecoration(
+                      color: _typeColor,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: DSColors.obsidianBase,
+                        width: 2,
                       ),
-
-                      // Bottom line
-                      if (!isLast)
-                        Expanded(
-                          child: Container(
-                            width: 2,
-                            color: DSColors.borderSubtle,
-                          ),
-                        )
-                      else
-                        const Expanded(child: SizedBox()),
-                    ],
-                  ),
-                ),
-
-                // Content
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: DSSpacing.sm,
-                      vertical: DSSpacing.md,
+                      boxShadow: selected
+                          ? [
+                              BoxShadow(
+                                color: _typeColor.withValues(alpha: 0.5),
+                                blurRadius: 8,
+                              ),
+                            ]
+                          : null,
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                  ),
+
+                  // Bottom line
+                  if (!isLast)
+                    Expanded(
+                      child: Container(width: 2, color: DSColors.borderSubtle),
+                    )
+                  else
+                    const Expanded(child: SizedBox()),
+                ],
+              ),
+            ),
+
+            // Content
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: DSSpacing.sm,
+                  vertical: DSSpacing.md,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Header row
+                    Row(
                       children: [
-                        // Header row
-                        Row(
-                          children: [
-                            DSText.labelSmall(
-                              date,
-                              color: DSColors.textTertiary,
-                            ),
-                            if (type != null) ...[
-                              const SizedBox(width: DSSpacing.sm),
-                              _TypeBadge(type: type!, color: _typeColor),
-                            ],
-                            if (taskId != null) ...[
-                              const SizedBox(width: DSSpacing.sm),
-                              DSText.code(
-                                '#$taskId',
-                                color: DSColors.assetTask,
-                              ),
-                            ],
-                          ],
-                        ),
-
-                        const SizedBox(height: DSSpacing.xs),
-
-                        // Title
-                        DSText.bodyMedium(
-                          title,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-
-                        // Project
-                        if (project != null) ...[
-                          const SizedBox(height: DSSpacing.xs),
-                          Row(
-                            children: [
-                              DSIcon.small(
-                                Icons.folder_outlined,
-                                color: DSColors.textTertiary,
-                              ),
-                              const SizedBox(width: 4),
-                              DSText.labelSmall(
-                                project!,
-                                color: DSColors.textSecondary,
-                              ),
-                            ],
-                          ),
+                        DSText.labelSmall(date, color: DSColors.textTertiary),
+                        if (type != null) ...[
+                          const SizedBox(width: DSSpacing.sm),
+                          _TypeBadge(type: type!, color: _typeColor),
                         ],
-
-                        // Impacts
-                        if (impacts != null && impacts!.isNotEmpty) ...[
-                          const SizedBox(height: DSSpacing.sm),
-                          Wrap(
-                            spacing: 4,
-                            runSpacing: 4,
-                            children: impacts!
-                                .take(3)
-                                .map(
-                                  (impact) => DSChip(
-                                    label: impact,
-                                    size: DSChipSize.small,
-                                  ),
-                                )
-                                .toList(),
-                          ),
+                        if (taskId != null) ...[
+                          const SizedBox(width: DSSpacing.sm),
+                          DSText.code('#$taskId', color: DSColors.assetTask),
                         ],
                       ],
                     ),
-                  ),
+
+                    const SizedBox(height: DSSpacing.xs),
+
+                    // Title
+                    DSText.bodyMedium(
+                      title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+
+                    // Project
+                    if (project != null) ...[
+                      const SizedBox(height: DSSpacing.xs),
+                      Row(
+                        children: [
+                          const DSIcon.small(
+                            Icons.folder_outlined,
+                            color: DSColors.textTertiary,
+                          ),
+                          const SizedBox(width: 4),
+                          DSText.labelSmall(
+                            project!,
+                            color: DSColors.textSecondary,
+                          ),
+                        ],
+                      ),
+                    ],
+
+                    // Impacts
+                    if (impacts != null && impacts!.isNotEmpty) ...[
+                      const SizedBox(height: DSSpacing.sm),
+                      Wrap(
+                        spacing: 4,
+                        runSpacing: 4,
+                        children: impacts!
+                            .take(3)
+                            .map(
+                              (impact) =>
+                                  DSChip(label: impact, size: DSChipSize.small),
+                            )
+                            .toList(),
+                      ),
+                    ],
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
@@ -215,7 +203,7 @@ class _TypeBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.15),
+        color: color.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(DSRadii.xs),
       ),
       child: Text(

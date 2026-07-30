@@ -154,17 +154,32 @@ void main() {
 
     testWidgets('close button triggers onClose callback', (tester) async {
       var closed = false;
-      final task = _testTask();
+      // Minimal task keeps the inspector header (and close control) on-screen.
+      final task = _testTask(
+        exitConditions: const [],
+        verificationCommands: const [],
+        dependsOn: const [],
+        linkedSkills: const [],
+        linkedWorkflows: const [],
+        bodyMarkdown: 'short',
+      );
+      await tester.binding.setSurfaceSize(const Size(900, 900));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
       await tester.pumpWidget(
-        _wrapInApp(
-          OperateTaskDetailPanel(task: task, onClose: () => closed = true),
+        MaterialApp(
+          home: Scaffold(
+            body: OperateTaskDetailPanel(
+              task: task,
+              onClose: () => closed = true,
+            ),
+          ),
         ),
       );
 
-      // Find and tap the close button
       final closeBtn = find.byTooltip('Close');
       expect(closeBtn, findsOneWidget);
       await tester.tap(closeBtn);
+      await tester.pump();
       expect(closed, isTrue);
     });
   });

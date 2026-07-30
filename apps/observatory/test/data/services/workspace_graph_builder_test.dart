@@ -262,7 +262,7 @@ void main() {
       expect(edges, isEmpty);
     });
 
-    test('inferAgentUsage creates uses edges', () {
+    test('inferAgentUsage creates uses edges with exact targetIds', () {
       final edges = inference.inferAgentUsage(
         agentId: 'agent:builder',
         skills: ['skill:code-gen'],
@@ -270,6 +270,42 @@ void main() {
       );
       expect(edges.length, equals(2));
       expect(edges.every((e) => e.kind == EdgeKind.uses), isTrue);
+      expect(edges[0].targetId, equals('skill:code-gen'));
+      expect(edges[1].targetId, equals('workflow:deploy'));
+      // Never double-prefix already-prefixed inputs.
+      expect(edges.any((e) => e.targetId.contains('skill:skill:')), isFalse);
+      expect(
+        edges.any((e) => e.targetId.contains('workflow:workflow:')),
+        isFalse,
+      );
+    });
+
+    test('inferAgentUsage normalizes bare and double-prefixed ids', () {
+      final edges = inference.inferAgentUsage(
+        agentId: 'agent:builder',
+        skills: ['code-gen', 'skill:code-gen', 'skill:skill:code-gen'],
+        workflows: ['deploy', 'workflow:deploy'],
+      );
+      expect(edges.map((e) => e.targetId).toSet(), equals({
+        'skill:code-gen',
+        'workflow:deploy',
+      }));
+    });
+
+    test('normalizeAssetId strips repeated kind prefixes', () {
+      expect(normalizeAssetId('skill', 'code-gen'), equals('skill:code-gen'));
+      expect(
+        normalizeAssetId('skill', 'skill:code-gen'),
+        equals('skill:code-gen'),
+      );
+      expect(
+        normalizeAssetId('skill', 'skill:skill:code-gen'),
+        equals('skill:code-gen'),
+      );
+      expect(
+        normalizeAssetId('workflow', 'workflow:build'),
+        equals('workflow:build'),
+      );
     });
 
     test('inferPathContainment extracts skill from path', () {
@@ -286,6 +322,14 @@ void main() {
     test('inferPathContainment returns null for non-matching path', () {
       final edge = inference.inferPathContainment(
         workflowPath: '/root/.agents/workflows/build.md',
+        skillDirectoryPattern: 'harness',
+      );
+      expect(edge, isNull);
+    });
+
+    test('inferPathContainment returns null when skill ≠ pattern', () {
+      final edge = inference.inferPathContainment(
+        workflowPath: '/root/.agents/skills/other/workflows/build.md',
         skillDirectoryPattern: 'harness',
       );
       expect(edge, isNull);

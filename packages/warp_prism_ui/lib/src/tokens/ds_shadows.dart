@@ -33,12 +33,12 @@ abstract class DSShadows {
   /// Cyan glow - primary accent
   static List<BoxShadow> glowCyan({double intensity = 1.0}) => [
     BoxShadow(
-      color: DSColors.accentCyan.withOpacity(0.3 * intensity),
+      color: DSColors.accentCyan.withValues(alpha: 0.3 * intensity),
       blurRadius: 12,
       spreadRadius: -2,
     ),
     BoxShadow(
-      color: DSColors.accentCyan.withOpacity(0.1 * intensity),
+      color: DSColors.accentCyan.withValues(alpha: 0.1 * intensity),
       blurRadius: 24,
       spreadRadius: -4,
     ),
@@ -47,12 +47,12 @@ abstract class DSShadows {
   /// Violet glow - secondary accent
   static List<BoxShadow> glowViolet({double intensity = 1.0}) => [
     BoxShadow(
-      color: DSColors.accentViolet.withOpacity(0.3 * intensity),
+      color: DSColors.accentViolet.withValues(alpha: 0.3 * intensity),
       blurRadius: 12,
       spreadRadius: -2,
     ),
     BoxShadow(
-      color: DSColors.accentViolet.withOpacity(0.1 * intensity),
+      color: DSColors.accentViolet.withValues(alpha: 0.1 * intensity),
       blurRadius: 24,
       spreadRadius: -4,
     ),
@@ -61,12 +61,12 @@ abstract class DSShadows {
   /// Gold glow - tertiary accent
   static List<BoxShadow> glowGold({double intensity = 1.0}) => [
     BoxShadow(
-      color: DSColors.accentGold.withOpacity(0.3 * intensity),
+      color: DSColors.accentGold.withValues(alpha: 0.3 * intensity),
       blurRadius: 12,
       spreadRadius: -2,
     ),
     BoxShadow(
-      color: DSColors.accentGold.withOpacity(0.1 * intensity),
+      color: DSColors.accentGold.withValues(alpha: 0.1 * intensity),
       blurRadius: 24,
       spreadRadius: -4,
     ),
@@ -75,7 +75,7 @@ abstract class DSShadows {
   /// Success glow
   static List<BoxShadow> glowSuccess({double intensity = 1.0}) => [
     BoxShadow(
-      color: DSColors.statusSuccess.withOpacity(0.3 * intensity),
+      color: DSColors.statusSuccess.withValues(alpha: 0.3 * intensity),
       blurRadius: 12,
       spreadRadius: -2,
     ),
@@ -84,7 +84,7 @@ abstract class DSShadows {
   /// Error glow
   static List<BoxShadow> glowError({double intensity = 1.0}) => [
     BoxShadow(
-      color: DSColors.statusError.withOpacity(0.3 * intensity),
+      color: DSColors.statusError.withValues(alpha: 0.3 * intensity),
       blurRadius: 12,
       spreadRadius: -2,
     ),
@@ -93,7 +93,7 @@ abstract class DSShadows {
   /// Warning glow
   static List<BoxShadow> glowWarning({double intensity = 1.0}) => [
     BoxShadow(
-      color: DSColors.statusWarning.withOpacity(0.3 * intensity),
+      color: DSColors.statusWarning.withValues(alpha: 0.3 * intensity),
       blurRadius: 12,
       spreadRadius: -2,
     ),
@@ -106,9 +106,9 @@ abstract class DSShadows {
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
       colors: [
-        DSColors.black.withOpacity(0.15),
+        DSColors.black.withValues(alpha: 0.15),
         DSColors.transparent,
-        DSColors.white.withOpacity(0.02),
+        DSColors.white.withValues(alpha: 0.02),
       ],
       stops: const [0, 0.1, 1],
     ),

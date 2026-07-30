@@ -38,7 +38,7 @@ class EdgeInferenceService {
       edges.add(
         WorkspaceEdge(
           sourceId: skillId,
-          targetId: 'subskill:$sub',
+          targetId: normalizeAssetId('subskill', sub),
           kind: EdgeKind.contains,
         ),
       );
@@ -48,7 +48,7 @@ class EdgeInferenceService {
         edges.add(
           WorkspaceEdge(
             sourceId: skillId,
-            targetId: 'workflow:$wf',
+            targetId: normalizeAssetId('workflow', wf),
             kind: EdgeKind.contains,
           ),
         );
@@ -64,6 +64,8 @@ class EdgeInferenceService {
   /// Infer routing edges from a gateway skill.
   ///
   /// Skills with a `routes_to` frontmatter field route to their targets.
+  /// Targets that already carry a kind prefix are preserved; bare names
+  /// are left as-is (routing targets may be freeform ids).
   List<WorkspaceEdge> inferRouting({
     required String skillId,
     required List<String> routesTo,
@@ -92,7 +94,7 @@ class EdgeInferenceService {
         .map(
           (skill) => WorkspaceEdge(
             sourceId: workflowId,
-            targetId: 'skill:$skill',
+            targetId: normalizeAssetId('skill', skill),
             kind: EdgeKind.dependsOn,
           ),
         )
@@ -108,7 +110,7 @@ class EdgeInferenceService {
         .map(
           (dep) => WorkspaceEdge(
             sourceId: taskId,
-            targetId: 'task:$dep',
+            targetId: normalizeAssetId('task', dep),
             kind: EdgeKind.dependsOn,
           ),
         )
@@ -130,7 +132,7 @@ class EdgeInferenceService {
       edges.add(
         WorkspaceEdge(
           sourceId: agentId,
-          targetId: 'skill:$skill',
+          targetId: normalizeAssetId('skill', skill),
           kind: EdgeKind.references,
         ),
       );
@@ -139,7 +141,7 @@ class EdgeInferenceService {
       edges.add(
         WorkspaceEdge(
           sourceId: agentId,
-          targetId: 'workflow:$wf',
+          targetId: normalizeAssetId('workflow', wf),
           kind: EdgeKind.references,
         ),
       );
@@ -158,7 +160,7 @@ class EdgeInferenceService {
       edges.add(
         WorkspaceEdge(
           sourceId: taskId,
-          targetId: 'skill:$skill',
+          targetId: normalizeAssetId('skill', skill),
           kind: EdgeKind.references,
         ),
       );
@@ -167,7 +169,7 @@ class EdgeInferenceService {
       edges.add(
         WorkspaceEdge(
           sourceId: taskId,
-          targetId: 'workflow:$wf',
+          targetId: normalizeAssetId('workflow', wf),
           kind: EdgeKind.references,
         ),
       );
@@ -188,7 +190,7 @@ class EdgeInferenceService {
     return [
       WorkspaceEdge(
         sourceId: changelogId,
-        targetId: 'task:$task',
+        targetId: normalizeAssetId('task', task),
         kind: EdgeKind.changedBy,
       ),
     ];
@@ -228,10 +230,10 @@ class EdgeInferenceService {
 
   /// Infer usage edges from an agent's skills and workflows.
   ///
-  /// This is semantically different from [inferAgentReferences]:
+  /// This is semantically different from [inferAgentUsage]:
   /// `uses` implies active runtime dependency, while `references` is
-  /// a weaker cross-reference. Use `uses` when the frontmatter explicitly
-  /// declares runtime usage (e.g., `uses_skills:` field).
+  /// a weaker cross-reference. Bare names and already-prefixed ids both
+  /// normalize to a single `skill:` / `workflow:` prefix.
   List<WorkspaceEdge> inferAgentUsage({
     required String agentId,
     required List<String> skills,
@@ -242,7 +244,7 @@ class EdgeInferenceService {
       edges.add(
         WorkspaceEdge(
           sourceId: agentId,
-          targetId: 'skill:$skill',
+          targetId: normalizeAssetId('skill', skill),
           kind: EdgeKind.uses,
         ),
       );
@@ -251,7 +253,7 @@ class EdgeInferenceService {
       edges.add(
         WorkspaceEdge(
           sourceId: agentId,
-          targetId: 'workflow:$wf',
+          targetId: normalizeAssetId('workflow', wf),
           kind: EdgeKind.uses,
         ),
       );
@@ -266,9 +268,9 @@ class EdgeInferenceService {
   /// Infer containment from filesystem path structure.
   ///
   /// A workflow at `skills/<skill-name>/workflows/<wf>.md` is considered
-  /// skill-local and contained by that skill. This complements the
-  /// structured metadata when the frontmatter doesn't explicitly declare
-  /// the containment relationship.
+  /// skill-local and contained by that skill. When [skillDirectoryPattern]
+  /// is non-empty, the matched skill directory name must equal the pattern
+  /// or the edge is not inferred.
   WorkspaceEdge? inferPathContainment({
     required String workflowPath,
     required String skillDirectoryPattern,
@@ -280,10 +282,15 @@ class EdgeInferenceService {
     if (skillMatch == null) return null;
 
     final skillName = skillMatch.group(1)!;
+    if (skillDirectoryPattern.isNotEmpty &&
+        skillName != skillDirectoryPattern) {
+      return null;
+    }
+
+    final fileStem = workflowPath.split('/').last.replaceAll('.md', '');
     return WorkspaceEdge(
-      sourceId: 'skill:$skillName',
-      targetId:
-          'workflow:${workflowPath.split('/').last.replaceAll('.md', '')}',
+      sourceId: normalizeAssetId('skill', skillName),
+      targetId: normalizeAssetId('workflow', fileStem),
       kind: EdgeKind.contains,
     );
   }

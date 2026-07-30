@@ -33,7 +33,7 @@ class DSTimeline extends StatelessWidget {
 
         Expanded(
           child: entries.isEmpty
-              ? DSStateSurface.empty(
+              ? const DSStateSurface.empty(
                   icon: DSIcons.history,
                   title: 'No changelog entries',
                   subtitle: 'Changes will appear here as they are recorded',

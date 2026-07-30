@@ -15,7 +15,7 @@ import 'package:warp_prism_ui/warp_prism_ui.dart';
 import '../domain/asset_detail_descriptor.dart';
 import 'detail_section_builder.dart';
 
-/// Renders a task's forensic detail using the [DSDetailInspector].
+/// Renders a task's forensic detail using the [PrismDetailInspector].
 class TaskDetailView extends StatelessWidget {
   final AssetDetailDescriptor descriptor;
   final VoidCallback? onClose;
@@ -35,7 +35,7 @@ class TaskDetailView extends StatelessWidget {
       if (priority.isNotEmpty) 'Priority: $priority',
     ];
 
-    final sections = <DSDetailSection>[
+    final sections = <PrismDetailSection>[
       // Shared sections (Identity with lane-neutral header)
       ...toDSSections(descriptor.sharedSections),
       // Kind-specific forensic panels
@@ -55,7 +55,7 @@ class TaskDetailView extends StatelessWidget {
         ),
     ];
 
-    return DSDetailInspector(
+    return PrismDetailInspector(
       title: '${asset.id} — ${asset.name}',
       kind: 'task',
       subtitle: subtitleParts.isNotEmpty ? subtitleParts.join('  •  ') : null,

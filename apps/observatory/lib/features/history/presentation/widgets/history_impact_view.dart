@@ -6,8 +6,8 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:warp_prism_observatory/features/history/presentation/history_controller.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
-import '../history_controller.dart';
 
 /// Renders impact-path nodes as navigable causality chains.
 ///
@@ -37,7 +37,7 @@ class HistoryImpactView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (nodes.isEmpty) {
-      return DSStateSurface.empty(
+      return const PrismStateSurface.empty(
         icon: Icons.account_tree_outlined,
         title: 'No impact paths',
         subtitle:
@@ -46,13 +46,13 @@ class HistoryImpactView extends StatelessWidget {
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.all(DSSpacing.lg),
+      padding: const EdgeInsets.all(PrismSpacing.lg),
       itemCount: nodes.length,
       itemBuilder: (context, index) {
         final node = nodes[index];
         return Padding(
           padding: EdgeInsets.only(
-            bottom: index < nodes.length - 1 ? DSSpacing.sm : 0,
+            bottom: index < nodes.length - 1 ? PrismSpacing.sm : 0,
           ),
           child: _ImpactPathCard(
             node: node,
@@ -81,6 +81,8 @@ class _ImpactPathCard extends StatelessWidget {
     final entry = node.entry;
     final hasTask = node.resolvedTaskId != null;
     final hasSkills = node.resolvedSkills.isNotEmpty;
+    final hasWorkflows = node.resolvedWorkflows.isNotEmpty;
+    final hasDownstream = hasSkills || hasWorkflows;
 
     return GestureDetector(
       onTap: onTap,
@@ -89,74 +91,72 @@ class _ImpactPathCard extends StatelessWidget {
             ? SystemMouseCursors.click
             : SystemMouseCursors.basic,
         child: Container(
-          padding: const EdgeInsets.all(DSSpacing.md),
+          padding: const EdgeInsets.all(PrismSpacing.md),
           decoration: BoxDecoration(
-            color: DSColors.obsidianElevated,
-            borderRadius: BorderRadius.circular(DSRadii.md),
+            color: PrismColors.obsidianElevated,
+            borderRadius: BorderRadius.circular(PrismRadii.md),
             border: Border.all(
               color: isSelected
-                  ? DSColors.accentCyan.withOpacity(0.5)
-                  : DSColors.borderSubtle,
+                  ? PrismColors.accentCyan.withValues(alpha: 0.5)
+                  : PrismColors.borderSubtle,
               width: isSelected ? 2 : 1,
             ),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Changelog entry node
               _PathNode(
                 icon: Icons.description_outlined,
                 label: entry.id,
                 sublabel: '${entry.project} · ${entry.type.name}',
-                color: DSColors.accentCyan,
+                color: PrismColors.accentCyan,
               ),
-
-              // Arrow connector
               _PathConnector(
                 isGap: !hasTask,
                 gapMessage: !hasTask ? 'No linked task' : null,
               ),
-
-              // Task node
               if (hasTask)
                 _PathNode(
-                  icon: DSIcons.task,
+                  icon: PrismIcons.task,
                   label: 'Task ${entry.task}',
                   sublabel: 'Motivated this change',
-                  color: DSColors.statusSuccess,
+                  color: PrismColors.statusSuccess,
                 )
               else
-                _GapNode(label: 'No task linked to this entry'),
-
-              // Arrow connector to skills
+                const _GapNode(label: 'No task linked to this entry'),
               if (hasTask)
                 _PathConnector(
-                  isGap: !hasSkills,
-                  gapMessage: !hasSkills ? 'No skill/workflow links' : null,
+                  isGap: !hasDownstream,
+                  gapMessage: !hasDownstream ? 'No skill/workflow links' : null,
                 ),
-
-              // Skills/workflows node
-              if (hasTask && hasSkills)
+              if (hasTask && hasDownstream)
                 Wrap(
-                  spacing: DSSpacing.xs,
-                  runSpacing: DSSpacing.xs,
-                  children: node.resolvedSkills
-                      .map(
-                        (s) => _PathNode(
-                          icon: DSIcons.skill,
-                          label: s,
-                          sublabel: 'Skill touched',
-                          color: DSColors.statusWarning,
-                          compact: true,
-                        ),
-                      )
-                      .toList(),
+                  spacing: PrismSpacing.xs,
+                  runSpacing: PrismSpacing.xs,
+                  children: [
+                    ...node.resolvedSkills.map(
+                      (s) => _PathNode(
+                        icon: PrismIcons.skill,
+                        label: s,
+                        sublabel: 'Skill touched',
+                        color: PrismColors.statusWarning,
+                        compact: true,
+                      ),
+                    ),
+                    ...node.resolvedWorkflows.map(
+                      (w) => _PathNode(
+                        icon: Icons.account_tree_outlined,
+                        label: w,
+                        sublabel: 'Workflow touched',
+                        color: PrismColors.statusWarning,
+                        compact: true,
+                      ),
+                    ),
+                  ],
                 )
-              else if (hasTask && !hasSkills)
-                _GapNode(label: 'No skills/workflows linked'),
-
-              // Path completeness indicator
-              const SizedBox(height: DSSpacing.sm),
+              else if (hasTask && !hasDownstream)
+                const _GapNode(label: 'No skills/workflows linked'),
+              const SizedBox(height: PrismSpacing.sm),
               Row(
                 children: [
                   Icon(
@@ -165,17 +165,17 @@ class _ImpactPathCard extends StatelessWidget {
                         : Icons.info_outline,
                     size: 14,
                     color: node.hasCompletePath
-                        ? DSColors.statusSuccess
-                        : DSColors.statusWarning,
+                        ? PrismColors.statusSuccess
+                        : PrismColors.statusWarning,
                   ),
-                  const SizedBox(width: DSSpacing.xs),
-                  DSText.labelSmall(
+                  const SizedBox(width: PrismSpacing.xs),
+                  PrismText.labelSmall(
                     node.hasCompletePath
                         ? 'Complete impact path'
                         : 'Partial impact path — some links missing',
                     color: node.hasCompletePath
-                        ? DSColors.statusSuccess
-                        : DSColors.statusWarning,
+                        ? PrismColors.statusSuccess
+                        : PrismColors.statusWarning,
                   ),
                 ],
               ),
@@ -187,7 +187,6 @@ class _ImpactPathCard extends StatelessWidget {
   }
 }
 
-/// A node in the impact path visualization.
 class _PathNode extends StatelessWidget {
   final IconData icon;
   final String label;
@@ -207,28 +206,31 @@ class _PathNode extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(
-        horizontal: DSSpacing.sm,
-        vertical: compact ? DSSpacing.xs : DSSpacing.sm,
+        horizontal: PrismSpacing.sm,
+        vertical: compact ? PrismSpacing.xs : PrismSpacing.sm,
       ),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(DSRadii.sm),
-        border: Border.all(color: color.withOpacity(0.3)),
+        color: color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(PrismRadii.sm),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Row(
         mainAxisSize: compact ? MainAxisSize.min : MainAxisSize.max,
         children: [
-          DSIcon.small(icon, color: color),
-          const SizedBox(width: DSSpacing.xs),
+          PrismIcon.small(icon, color: color),
+          const SizedBox(width: PrismSpacing.xs),
           if (compact)
-            DSText.labelSmall(label, color: color)
+            PrismText.labelSmall(label, color: color)
           else
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  DSText.labelMedium(label, color: color),
-                  DSText.bodySmall(sublabel, color: DSColors.textTertiary),
+                  PrismText.labelMedium(label, color: color),
+                  PrismText.bodySmall(
+                    sublabel,
+                    color: PrismColors.textTertiary,
+                  ),
                 ],
               ),
             ),
@@ -238,7 +240,6 @@ class _PathNode extends StatelessWidget {
   }
 }
 
-/// Vertical connector between path nodes.
 class _PathConnector extends StatelessWidget {
   final bool isGap;
   final String? gapMessage;
@@ -256,12 +257,12 @@ class _PathConnector extends StatelessWidget {
             width: 2,
             height: 16,
             color: isGap
-                ? DSColors.statusWarning.withOpacity(0.4)
-                : DSColors.borderSubtle,
+                ? PrismColors.statusWarning.withValues(alpha: 0.4)
+                : PrismColors.borderSubtle,
           ),
           if (gapMessage != null) ...[
-            const SizedBox(width: DSSpacing.xs),
-            DSText.labelSmall(gapMessage!, color: DSColors.statusWarning),
+            const SizedBox(width: PrismSpacing.xs),
+            PrismText.labelSmall(gapMessage!, color: PrismColors.statusWarning),
           ],
         ],
       ),
@@ -269,7 +270,6 @@ class _PathConnector extends StatelessWidget {
   }
 }
 
-/// Renders a gap node when a link is missing.
 class _GapNode extends StatelessWidget {
   final String label;
 
@@ -279,23 +279,27 @@ class _GapNode extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(
-        horizontal: DSSpacing.sm,
-        vertical: DSSpacing.xs,
+        horizontal: PrismSpacing.sm,
+        vertical: PrismSpacing.xs,
       ),
       decoration: BoxDecoration(
-        color: DSColors.statusWarning.withOpacity(0.08),
-        borderRadius: BorderRadius.circular(DSRadii.sm),
+        color: PrismColors.statusWarning.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(PrismRadii.sm),
         border: Border.all(
-          color: DSColors.statusWarning.withOpacity(0.3),
+          color: PrismColors.statusWarning.withValues(alpha: 0.3),
           width: 1,
         ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.link_off, size: 14, color: DSColors.statusWarning),
-          const SizedBox(width: DSSpacing.xs),
-          DSText.labelSmall(label, color: DSColors.statusWarning),
+          const Icon(
+            Icons.link_off,
+            size: 14,
+            color: PrismColors.statusWarning,
+          ),
+          const SizedBox(width: PrismSpacing.xs),
+          PrismText.labelSmall(label, color: PrismColors.statusWarning),
         ],
       ),
     );

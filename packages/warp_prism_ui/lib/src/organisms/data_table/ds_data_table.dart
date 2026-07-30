@@ -203,14 +203,31 @@ class _DSSecretCellState extends State<DSSecretCell> {
         ),
         if (widget.fullValue != null) ...[
           const SizedBox(width: DSSpacing.xs),
-          GestureDetector(
-            onTap: () => setState(() => _revealed = !_revealed),
-            child: DSIcon.small(
-              _revealed
-                  ? Icons.visibility_off_outlined
-                  : Icons.visibility_outlined,
-              color: DSColors.textTertiary,
-              semanticLabel: _revealed ? 'Hide value' : 'Reveal value',
+          // Single a11y node: Semantics owns the label; exclude IconButton subtree.
+          Semantics(
+            button: true,
+            label: _revealed ? 'Hide value' : 'Reveal value',
+            excludeSemantics: true,
+            child: SizedBox(
+              width: kMinInteractiveDimension,
+              height: kMinInteractiveDimension,
+              child: IconButton(
+                onPressed: () => setState(() => _revealed = !_revealed),
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(
+                  minWidth: kMinInteractiveDimension,
+                  minHeight: kMinInteractiveDimension,
+                ),
+                splashRadius: kMinInteractiveDimension / 2,
+                tooltip: _revealed ? 'Hide value' : 'Reveal value',
+                icon: Icon(
+                  _revealed
+                      ? Icons.visibility_off_outlined
+                      : Icons.visibility_outlined,
+                  size: 16,
+                  color: DSColors.textTertiary,
+                ),
+              ),
             ),
           ),
         ],
@@ -232,15 +249,25 @@ class DSActionsCell extends StatelessWidget {
       children: actions.map((action) {
         return Padding(
           padding: const EdgeInsets.only(left: DSSpacing.xs),
-          child: Tooltip(
-            message: action.tooltip,
-            child: InkWell(
-              onTap: action.onTap,
-              borderRadius: BorderRadius.circular(DSRadii.sm),
-              child: Padding(
-                padding: const EdgeInsets.all(DSSpacing.xs),
-                child: DSIcon.small(
+          child: Semantics(
+            button: true,
+            label: action.tooltip,
+            excludeSemantics: true,
+            child: SizedBox(
+              width: kMinInteractiveDimension,
+              height: kMinInteractiveDimension,
+              child: IconButton(
+                onPressed: action.onTap,
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(
+                  minWidth: kMinInteractiveDimension,
+                  minHeight: kMinInteractiveDimension,
+                ),
+                splashRadius: kMinInteractiveDimension / 2,
+                tooltip: action.tooltip,
+                icon: Icon(
                   action.icon,
+                  size: 16,
                   color: action.color ?? DSColors.textSecondary,
                 ),
               ),
@@ -316,7 +343,7 @@ class DSTablePagination extends StatelessWidget {
           horizontal: DSSpacing.md,
           vertical: DSSpacing.sm,
         ),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           border: Border(
             top: BorderSide(color: DSColors.borderSubtle, width: 1),
           ),
@@ -330,7 +357,7 @@ class DSTablePagination extends StatelessWidget {
             ),
             const Spacer(),
             // Page size selector
-            DSText.labelSmall('Rows:', color: DSColors.textTertiary),
+            const DSText.labelSmall('Rows:', color: DSColors.textTertiary),
             const SizedBox(width: DSSpacing.xs),
             _PageSizeDropdown(
               pageSize: pageSize,
@@ -420,12 +447,20 @@ class _PageButton extends StatelessWidget {
       button: true,
       label: semanticLabel,
       enabled: enabled,
-      child: InkWell(
-        onTap: enabled ? onTap : null,
-        borderRadius: BorderRadius.circular(DSRadii.sm),
-        child: Padding(
-          padding: const EdgeInsets.all(DSSpacing.xs),
-          child: Icon(
+      excludeSemantics: true,
+      child: SizedBox(
+        width: kMinInteractiveDimension,
+        height: kMinInteractiveDimension,
+        child: IconButton(
+          onPressed: enabled ? onTap : null,
+          padding: EdgeInsets.zero,
+          constraints: const BoxConstraints(
+            minWidth: kMinInteractiveDimension,
+            minHeight: kMinInteractiveDimension,
+          ),
+          splashRadius: kMinInteractiveDimension / 2,
+          tooltip: semanticLabel,
+          icon: Icon(
             icon,
             size: 18,
             color: enabled ? DSColors.textSecondary : DSColors.textDisabled,
@@ -468,7 +503,7 @@ class _DSTableHeader extends StatelessWidget {
         horizontal: DSSpacing.md,
         vertical: DSSpacing.sm,
       ),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: DSColors.obsidianElevated,
         border: Border(
           bottom: BorderSide(color: DSColors.borderDefault, width: 1),
@@ -476,16 +511,17 @@ class _DSTableHeader extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // Select-all checkbox
+          // Select-all checkbox — WCAG 48×48 min interactive target.
           if (selectable) ...[
             SizedBox(
-              width: 40,
+              width: kMinInteractiveDimension,
+              height: kMinInteractiveDimension,
               child: Checkbox(
                 value: allSelected,
                 onChanged: onSelectAll,
                 activeColor: DSColors.accentCyan,
                 side: const BorderSide(color: DSColors.borderDefault),
-                visualDensity: VisualDensity.compact,
+                materialTapTargetSize: MaterialTapTargetSize.padded,
               ),
             ),
           ],
@@ -551,33 +587,54 @@ class _ColumnHeaderCell extends StatelessWidget {
       return label;
     }
 
-    return GestureDetector(
-      onTap: () => onSort?.call(column.id),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          label,
-          const SizedBox(width: DSSpacing.xs),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.arrow_drop_up,
-                size: 14,
-                color: isAscending
-                    ? DSColors.accentCyan
-                    : DSColors.textDisabled,
-              ),
-              Icon(
-                Icons.arrow_drop_down,
-                size: 14,
-                color: isDescending
-                    ? DSColors.accentCyan
-                    : DSColors.textDisabled,
-              ),
-            ],
+    final sortHint = isAscending
+        ? 'sorted ascending'
+        : isDescending
+        ? 'sorted descending'
+        : 'not sorted';
+    return Semantics(
+      button: true,
+      label: 'Sort by ${column.label}, $sortHint',
+      child: Material(
+        type: MaterialType.transparency,
+        child: InkWell(
+          onTap: () => onSort?.call(column.id),
+          borderRadius: BorderRadius.circular(DSRadii.sm),
+          focusColor: DSColors.accentCyan.withValues(alpha: 0.12),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              minWidth: kMinInteractiveDimension,
+              minHeight: kMinInteractiveDimension,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                label,
+                const SizedBox(width: DSSpacing.xs),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.arrow_drop_up,
+                      size: 14,
+                      color: isAscending
+                          ? DSColors.accentCyan
+                          : DSColors.textDisabled,
+                    ),
+                    Icon(
+                      Icons.arrow_drop_down,
+                      size: 14,
+                      color: isDescending
+                          ? DSColors.accentCyan
+                          : DSColors.textDisabled,
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-        ],
+        ),
       ),
     );
   }
@@ -592,7 +649,7 @@ class _ColumnVisibilityMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<String>(
-      icon: DSIcon.small(
+      icon: const DSIcon.small(
         Icons.view_column_outlined,
         color: DSColors.textTertiary,
         semanticLabel: 'Column visibility',
@@ -639,49 +696,60 @@ class _DSTableRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final visibleColumns = columns.where((c) => c.visible).toList();
 
-    return GestureDetector(
-      onTap: row.onTap,
-      child: MouseRegion(
-        cursor: row.onTap != null
-            ? SystemMouseCursors.click
-            : SystemMouseCursors.basic,
-        child: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: DSSpacing.md,
-            vertical: DSSpacing.sm,
-          ),
-          decoration: BoxDecoration(
-            color: row.selected
-                ? DSColors.accentCyan.withOpacity(0.05)
-                : isHovered
-                ? DSColors.obsidianHover
-                : DSColors.transparent,
-            border: Border(
-              bottom: BorderSide(color: DSColors.borderSubtle, width: 1),
+    // Row tap uses Semantics+InkWell (not bare GestureDetector) for a11y.
+    final rowBody = Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: DSSpacing.md,
+        vertical: DSSpacing.sm,
+      ),
+      decoration: BoxDecoration(
+        color: row.selected
+            ? DSColors.accentCyan.withValues(alpha: 0.05)
+            : isHovered
+            ? DSColors.obsidianHover
+            : DSColors.transparent,
+        border: const Border(
+          bottom: BorderSide(color: DSColors.borderSubtle, width: 1),
+        ),
+      ),
+      child: Row(
+        children: [
+          // Selection checkbox — WCAG 48×48 min interactive target.
+          if (selectable) ...[
+            SizedBox(
+              width: kMinInteractiveDimension,
+              height: kMinInteractiveDimension,
+              child: Checkbox(
+                value: row.selected,
+                onChanged: onSelect,
+                activeColor: DSColors.accentCyan,
+                side: const BorderSide(color: DSColors.borderDefault),
+                materialTapTargetSize: MaterialTapTargetSize.padded,
+              ),
             ),
-          ),
-          child: Row(
-            children: [
-              // Selection checkbox
-              if (selectable) ...[
-                SizedBox(
-                  width: 40,
-                  child: Checkbox(
-                    value: row.selected,
-                    onChanged: onSelect,
-                    activeColor: DSColors.accentCyan,
-                    side: const BorderSide(color: DSColors.borderDefault),
-                    visualDensity: VisualDensity.compact,
-                  ),
-                ),
-              ],
-              // Cell values
-              for (int i = 0; i < visibleColumns.length; i++) ...[
-                if (i > 0) const SizedBox(width: DSSpacing.md),
-                _buildCell(context, visibleColumns[i]),
-              ],
-            ],
-          ),
+          ],
+          // Cell values
+          for (int i = 0; i < visibleColumns.length; i++) ...[
+            if (i > 0) const SizedBox(width: DSSpacing.md),
+            _buildCell(context, visibleColumns[i]),
+          ],
+        ],
+      ),
+    );
+
+    if (row.onTap == null) {
+      return rowBody;
+    }
+
+    return Semantics(
+      button: true,
+      label: 'Select table row',
+      child: Material(
+        type: MaterialType.transparency,
+        child: InkWell(
+          onTap: row.onTap,
+          mouseCursor: SystemMouseCursors.click,
+          child: rowBody,
         ),
       ),
     );
@@ -777,7 +845,7 @@ class _TableSkeleton extends StatelessWidget {
             horizontal: DSSpacing.md,
             vertical: DSSpacing.sm,
           ),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: DSColors.obsidianElevated,
             border: Border(
               bottom: BorderSide(color: DSColors.borderDefault, width: 1),
@@ -785,7 +853,8 @@ class _TableSkeleton extends StatelessWidget {
           ),
           child: Row(
             children: [
-              if (selectable) const SizedBox(width: 40),
+              if (selectable)
+                const SizedBox(width: kMinInteractiveDimension),
               for (int i = 0; i < visibleColumns.length; i++) ...[
                 if (i > 0) const SizedBox(width: DSSpacing.md),
                 _skeletonBar(80, 14),
@@ -800,14 +869,15 @@ class _TableSkeleton extends StatelessWidget {
               horizontal: DSSpacing.md,
               vertical: DSSpacing.md,
             ),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               border: Border(
                 bottom: BorderSide(color: DSColors.borderSubtle, width: 1),
               ),
             ),
             child: Row(
               children: [
-                if (selectable) const SizedBox(width: 40),
+                if (selectable)
+                  const SizedBox(width: kMinInteractiveDimension),
                 for (int i = 0; i < visibleColumns.length; i++) ...[
                   if (i > 0) const SizedBox(width: DSSpacing.md),
                   _skeletonBar(visibleColumns[i].width ?? 120, 14),
@@ -1040,7 +1110,7 @@ class _DSDataTableState extends State<DSDataTable> {
                 compact: true,
               )
             else if (widget.rows.isEmpty)
-              DSStateSurface.empty(
+              const DSStateSurface.empty(
                 title: 'No data',
                 subtitle: 'No records match the current filters',
                 compact: true,

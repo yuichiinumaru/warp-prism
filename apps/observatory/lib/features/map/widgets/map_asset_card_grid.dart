@@ -1,6 +1,6 @@
 /// Reusable grid/list of asset cards for the Map catalog.
 ///
-/// Renders a list of [WorkspaceAsset] as [DSAssetCard] widgets in a
+/// Renders a list of [WorkspaceAsset] as [PrismAssetCard] widgets in a
 /// responsive Wrap layout. Provides asset-to-card adaptation so the
 /// catalog shows kind, canonicality, relationship count, and trigger
 /// context from the normalized data contract.
@@ -43,12 +43,12 @@ class MapAssetCardGrid extends StatelessWidget {
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.all(DSSpacing.md),
+      padding: const EdgeInsets.all(PrismSpacing.md),
       itemCount: assets.length,
       itemBuilder: (context, index) {
         final asset = assets[index];
         return Padding(
-          padding: const EdgeInsets.only(bottom: DSSpacing.sm),
+          padding: const EdgeInsets.only(bottom: PrismSpacing.sm),
           child: _AssetCardAdapter(
             asset: asset,
             isSelected: asset.id == selectedAssetId,
@@ -60,7 +60,7 @@ class MapAssetCardGrid extends StatelessWidget {
   }
 }
 
-/// Adapts a [WorkspaceAsset] to the [DSAssetCard] molecule.
+/// Adapts a [WorkspaceAsset] to the [PrismAssetCard] molecule.
 ///
 /// Extracts kind name, canonicality label, edge count, and relevant
 /// tags/triggers from the normalized asset contract.
@@ -87,7 +87,7 @@ class _AssetCardAdapter extends StatelessWidget {
     // Canonicality label
     final canonicalityLabel = _canonicalityLabel(asset.canonicality);
 
-    return DSAssetCard(
+    return PrismAssetCard(
       name: asset.name,
       kind: asset.kind.name,
       description: asset.description.isNotEmpty ? asset.description : null,

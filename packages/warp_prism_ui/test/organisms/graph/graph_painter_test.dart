@@ -2,6 +2,7 @@
 ///
 /// Task 1117: Tests that GraphPainter draws edges via PictureRecorder,
 /// handles highlighting, and produces a picture without errors.
+library;
 import 'dart:ui';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:warp_prism_ui/src/organisms/graph/graph_model.dart';
@@ -134,9 +135,9 @@ void main() {
     test('shouldRepaint returns true when model changes', () {
       final painter1 = GraphPainter(model: model, positions: positions);
 
-      final differentModel = GraphModel(
+      const differentModel = GraphModel(
         nodes: [
-          const GraphNode(
+          GraphNode(
             id: GraphNodeId('x'),
             label: 'Different',
             type: 'task',

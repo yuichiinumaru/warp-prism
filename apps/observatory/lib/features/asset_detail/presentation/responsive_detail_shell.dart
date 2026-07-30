@@ -9,6 +9,13 @@
 /// to this widget instead of building their own responsive detail
 /// layout. Selection state lives in [AssetSelectionController] —
 /// this widget is purely presentational.
+///
+/// **Deep-link contract (intentional):** Canonical `/assets/:assetId`
+/// routes render a focused full-page [AssetDetailView] outside this
+/// shell. In-shell breakpoints apply only to workspace surfaces that
+/// embed [AssetDetailConsumer] / [ResponsiveDetailShell] (Map, Operate,
+/// History). Deep-link and in-shell paths share the same universal
+/// descriptor + [AssetDetailView] content contract.
 library;
 
 import 'package:flutter/material.dart';
@@ -104,9 +111,9 @@ class _ResponsiveDetailShellState extends State<ResponsiveDetailShell>
       builder: (context, constraints) {
         final width = constraints.maxWidth;
 
-        if (width >= DSBreakpoints.masterDetailSideBySide) {
+        if (width >= PrismBreakpoints.masterDetailSideBySide) {
           return _buildSplitPane();
-        } else if (width >= DSBreakpoints.sidebarCollapse) {
+        } else if (width >= PrismBreakpoints.sidebarCollapse) {
           return _buildOverlay(context);
         } else {
           return _buildFullScreen(context);
@@ -120,7 +127,7 @@ class _ResponsiveDetailShellState extends State<ResponsiveDetailShell>
     return Row(
       children: [
         Expanded(flex: 3, child: widget.masterContent),
-        Container(width: 1, color: DSColors.borderSubtle),
+        Container(width: 1, color: PrismColors.borderSubtle),
         Expanded(flex: 2, child: widget.detailContent),
       ],
     );
@@ -133,19 +140,25 @@ class _ResponsiveDetailShellState extends State<ResponsiveDetailShell>
         // Master content (dimmed by scrim)
         widget.masterContent,
 
-        // Scrim (tap to close)
+        // Scrim (tap to close) — explicit button semantics for a11y.
         Positioned.fill(
-          child: GestureDetector(
-            onTap: widget.onDetailClose,
-            child: AnimatedBuilder(
-              animation: _overlayController,
-              builder: (context, child) {
-                return ColoredBox(
-                  color: DSColors.obsidianDeep.withOpacity(
-                    0.5 * _overlayController.value,
-                  ),
-                );
-              },
+          child: Semantics(
+            label: 'Dismiss detail overlay',
+            button: true,
+            excludeSemantics: true,
+            child: GestureDetector(
+              onTap: widget.onDetailClose,
+              behavior: HitTestBehavior.opaque,
+              child: AnimatedBuilder(
+                animation: _overlayController,
+                builder: (context, child) {
+                  return ColoredBox(
+                    color: PrismColors.obsidianDeep.withValues(
+                      alpha: 0.5 * _overlayController.value,
+                    ),
+                  );
+                },
+              ),
             ),
           ),
         ),
@@ -158,14 +171,14 @@ class _ResponsiveDetailShellState extends State<ResponsiveDetailShell>
           child: SlideTransition(
             position: _overlaySlide,
             child: SizedBox(
-              width: 400,
+              width: PrismSpacing.detailOverlayWidth,
               child: Material(
                 elevation: 8,
-                color: DSColors.obsidianElevated,
+                color: PrismColors.obsidianElevated,
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     border: Border(
-                      left: BorderSide(color: DSColors.borderSubtle),
+                      left: BorderSide(color: PrismColors.borderSubtle),
                     ),
                   ),
                   child: widget.detailContent,
@@ -181,16 +194,16 @@ class _ResponsiveDetailShellState extends State<ResponsiveDetailShell>
   /// Narrow layout: full-screen detail with back navigation.
   Widget _buildFullScreen(BuildContext context) {
     return Scaffold(
-      backgroundColor: DSColors.obsidianDeep,
+      backgroundColor: PrismColors.obsidianDeep,
       appBar: AppBar(
-        backgroundColor: DSColors.obsidianBase,
-        foregroundColor: DSColors.textPrimary,
+        backgroundColor: PrismColors.obsidianBase,
+        foregroundColor: PrismColors.textPrimary,
         elevation: 0,
         leading: Semantics(
           label: 'Close detail and return',
           button: true,
           child: IconButton(
-            icon: const DSIcon(Icons.arrow_back),
+            icon: const PrismIcon(Icons.arrow_back),
             onPressed: widget.onDetailClose,
             tooltip: 'Back',
             autofocus: true,
@@ -201,17 +214,17 @@ class _ResponsiveDetailShellState extends State<ResponsiveDetailShell>
           mainAxisSize: MainAxisSize.min,
           children: [
             if (widget.detailTitle != null)
-              DSText.headingMedium(widget.detailTitle!),
+              PrismText.headingMedium(widget.detailTitle!),
             if (widget.detailKind != null)
-              DSText.labelSmall(
+              PrismText.labelSmall(
                 widget.detailKind!.toUpperCase(),
-                color: DSColors.textTertiary,
+                color: PrismColors.textTertiary,
               ),
           ],
         ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
-          child: Container(height: 1, color: DSColors.borderSubtle),
+          child: Container(height: 1, color: PrismColors.borderSubtle),
         ),
       ),
       body: widget.detailContent,

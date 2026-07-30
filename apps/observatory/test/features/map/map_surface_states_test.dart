@@ -80,7 +80,7 @@ void main() {
 
       // Agents tab is active by default, should show the catalog panel
       expect(find.byType(MapCatalogPanel), findsOneWidget);
-      expect(find.byType(DSAssetCard), findsOneWidget); // 1 agent
+      expect(find.byType(PrismAssetCard), findsOneWidget); // 1 agent
       expect(find.text('Architect Orchestrator'), findsOneWidget);
     });
 
@@ -94,10 +94,11 @@ void main() {
           name: 'Agent A',
           path: 'a.md',
           edges: [
+            // Containment mode includes contains/routesTo edges.
             WorkspaceEdge(
               sourceId: 'agent:a1',
               targetId: 'skill:s1',
-              kind: EdgeKind.uses,
+              kind: EdgeKind.contains,
             ),
           ],
         ),
@@ -119,6 +120,7 @@ void main() {
           ),
         ),
       );
+      await tester.pump();
 
       // Graph mode selector should be visible
       expect(find.text('Containment'), findsWidgets);
@@ -132,7 +134,9 @@ void main() {
     testWidgets('shows loading state when isLoading is true', (tester) async {
       await tester.pumpWidget(
         wrapInApp(
-          MapWorkspacePage(initialState: MapWorkspaceState(isLoading: true)),
+          const MapWorkspacePage(
+            initialState: MapWorkspaceState(isLoading: true),
+          ),
         ),
       );
 
@@ -143,7 +147,7 @@ void main() {
     testWidgets('loading state has distinct copy per tab', (tester) async {
       await tester.pumpWidget(
         wrapInApp(
-          MapStatePanel(
+          const MapStatePanel(
             state: MapSurfaceState.loading,
             detail: 'Loading skills...',
           ),
@@ -161,9 +165,9 @@ void main() {
     testWidgets('shows empty corpus when no assets loaded', (tester) async {
       await tester.pumpWidget(
         wrapInApp(
-          MapWorkspacePage(
+          const MapWorkspacePage(
             initialState: MapWorkspaceState(
-              catalogAssets: const [],
+              catalogAssets: [],
               isLoading: false,
             ),
           ),
@@ -175,12 +179,21 @@ void main() {
 
     testWidgets('empty corpus is distinct from no-results', (tester) async {
       await tester.pumpWidget(
-        wrapInApp(MapStatePanel(state: MapSurfaceState.emptyCorpus)),
+        wrapInApp(const MapStatePanel(state: MapSurfaceState.emptyCorpus)),
       );
 
       expect(find.text('No assets in workspace'), findsOneWidget);
       // Should NOT show "No results" or search-related copy
       expect(find.textContaining('No results'), findsNothing);
+    });
+
+    testWidgets('empty family is distinct from empty corpus', (tester) async {
+      await tester.pumpWidget(
+        wrapInApp(const MapStatePanel(state: MapSurfaceState.emptyFamily)),
+      );
+
+      expect(find.text('No assets in this family'), findsOneWidget);
+      expect(find.text('No assets in workspace'), findsNothing);
     });
   });
 
@@ -213,7 +226,7 @@ void main() {
           MapWorkspacePage(
             initialState: MapWorkspaceState(
               catalogAssets: _testAssets,
-              activeFilters: {'can:mock'}, // no mock agents
+              activeFilters: const {'can:mock'}, // no mock agents
             ),
           ),
         ),
@@ -227,7 +240,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         wrapInApp(
-          MapStatePanel(
+          const MapStatePanel(
             state: MapSurfaceState.noResults,
             query: 'test',
             activeFilterCount: 2,
@@ -275,10 +288,12 @@ void main() {
       expect(find.text('Failed to load map data'), findsOneWidget);
     });
 
-    testWidgets('error state shows retry button', (tester) async {
+    testWidgets('error state with null onAction does not show Retry', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         wrapInApp(
-          MapStatePanel(
+          const MapStatePanel(
             state: MapSurfaceState.error,
             detail: 'Connection timeout',
           ),
@@ -286,10 +301,12 @@ void main() {
       );
 
       expect(find.text('Failed to load map data'), findsOneWidget);
-      expect(find.text('Retry'), findsWidgets);
+      expect(find.text('Retry'), findsNothing);
     });
 
-    testWidgets('error retry callback fires', (tester) async {
+    testWidgets('error state with real onAction shows Retry and invokes it', (
+      tester,
+    ) async {
       var retried = false;
       await tester.pumpWidget(
         wrapInApp(
@@ -300,6 +317,7 @@ void main() {
         ),
       );
 
+      expect(find.text('Retry'), findsOneWidget);
       await tester.tap(find.text('Retry'));
       expect(retried, isTrue);
     });
@@ -313,7 +331,7 @@ void main() {
       tester,
     ) async {
       await tester.pumpWidget(
-        wrapInApp(MapStatePanel(state: MapSurfaceState.noSelection)),
+        wrapInApp(const MapStatePanel(state: MapSurfaceState.noSelection)),
       );
 
       expect(find.text('No asset selected'), findsOneWidget);
@@ -338,7 +356,7 @@ void main() {
 
     testWidgets('no-selection is distinct from empty corpus', (tester) async {
       await tester.pumpWidget(
-        wrapInApp(MapStatePanel(state: MapSurfaceState.noSelection)),
+        wrapInApp(const MapStatePanel(state: MapSurfaceState.noSelection)),
       );
 
       expect(find.text('No asset selected'), findsOneWidget);
@@ -355,7 +373,7 @@ void main() {
       tester,
     ) async {
       await tester.pumpWidget(
-        wrapInApp(MapStatePanel(state: MapSurfaceState.graphNoEdges)),
+        wrapInApp(const MapStatePanel(state: MapSurfaceState.graphNoEdges)),
       );
 
       expect(find.text('No edges in this mode'), findsOneWidget);
@@ -364,7 +382,7 @@ void main() {
 
     testWidgets('graph no-edges is distinct from empty corpus', (tester) async {
       await tester.pumpWidget(
-        wrapInApp(MapStatePanel(state: MapSurfaceState.graphNoEdges)),
+        wrapInApp(const MapStatePanel(state: MapSurfaceState.graphNoEdges)),
       );
 
       expect(find.text('No edges in this mode'), findsOneWidget);

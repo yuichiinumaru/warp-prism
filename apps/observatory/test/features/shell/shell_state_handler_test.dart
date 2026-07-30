@@ -13,8 +13,17 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:warp_prism_observatory/features/shell/shell_state_handler.dart';
 
 void main() {
+  /// Test harness that avoids Material 3 InkSparkle (needs GPU shader stages
+  /// unavailable in headless CI / some Linux test backends).
   Widget wrapInApp(Widget child) {
-    return MaterialApp(home: Scaffold(body: child));
+    return MaterialApp(
+      theme: ThemeData(
+        useMaterial3: true,
+        splashFactory: NoSplash.splashFactory,
+        highlightColor: Colors.transparent,
+      ),
+      home: Scaffold(body: child),
+    );
   }
 
   // ===========================================================================
@@ -107,6 +116,7 @@ void main() {
 
       expect(find.text('Load workspace'), findsOneWidget);
       await tester.tap(find.text('Load workspace'));
+      await tester.pump();
       expect(tapped, isTrue);
     });
   });
@@ -142,6 +152,7 @@ void main() {
 
       expect(find.text('Retry'), findsOneWidget);
       await tester.tap(find.text('Retry'));
+      await tester.pump();
       expect(retried, isTrue);
     });
 
@@ -187,6 +198,7 @@ void main() {
 
       expect(find.text('Go to Overview'), findsOneWidget);
       await tester.tap(find.text('Go to Overview'));
+      await tester.pump();
       expect(navigated, isTrue);
     });
 
@@ -203,6 +215,7 @@ void main() {
 
       expect(find.text('Retry'), findsOneWidget);
       await tester.tap(find.text('Retry'));
+      await tester.pump();
       expect(retried, isTrue);
     });
 

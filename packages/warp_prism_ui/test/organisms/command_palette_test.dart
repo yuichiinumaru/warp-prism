@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
 
-/// Task 1113: DSCommandPalette widget tests.
+/// Task 1113: PrismCommandPalette widget tests.
 ///
 /// Covers: open/close, fuzzy search, category grouping, keyboard navigation
 /// (arrows + Enter + Escape), action execution, and visual structure.
@@ -12,61 +12,61 @@ void main() {
   // Helpers
   // ---------------------------------------------------------------------------
 
-  List<DSCommand> _sampleCommands() => const [
-    DSCommand(
+  List<PrismCommand> sampleCommands() => const [
+    PrismCommand(
       id: 'nav-map',
       label: 'Map Workspace',
       description: 'Navigate to the asset map',
       icon: Icons.map_outlined,
-      category: DSCommandCategory.navigate,
+      category: PrismCommandCategory.navigate,
     ),
-    DSCommand(
+    PrismCommand(
       id: 'nav-operate',
       label: 'Operate — Task Board',
       description: 'Navigate to the task board',
       icon: Icons.play_circle_outline,
-      category: DSCommandCategory.navigate,
+      category: PrismCommandCategory.navigate,
     ),
-    DSCommand(
+    PrismCommand(
       id: 'nav-governance',
       label: 'Governance View',
       description: 'Navigate to governance diagnostics',
       icon: Icons.shield_outlined,
-      category: DSCommandCategory.navigate,
+      category: PrismCommandCategory.navigate,
     ),
-    DSCommand(
+    PrismCommand(
       id: 'run-refresh',
       label: 'Refresh Workspace',
       description: 'Reload all workspace data',
       icon: Icons.refresh,
-      category: DSCommandCategory.run,
+      category: PrismCommandCategory.run,
     ),
-    DSCommand(
+    PrismCommand(
       id: 'run-theme',
       label: 'Toggle Theme',
       description: 'Switch between light and dark theme',
       icon: Icons.brightness_6,
-      category: DSCommandCategory.run,
+      category: PrismCommandCategory.run,
       shortcut: 'Ctrl+T',
     ),
-    DSCommand(
+    PrismCommand(
       id: 'recent-agent',
       label: 'Agent Alpha',
       description: 'Recently viewed agent',
       icon: Icons.smart_toy_outlined,
-      category: DSCommandCategory.recent,
+      category: PrismCommandCategory.recent,
     ),
   ];
 
-  Widget _buildApp({
-    required List<DSCommand> commands,
-    ValueChanged<DSCommand>? onExecute,
+  Widget buildApp({
+    required List<PrismCommand> commands,
+    ValueChanged<PrismCommand>? onExecute,
     VoidCallback? onClose,
     String? initialQuery,
   }) {
     return MaterialApp(
       home: Scaffold(
-        body: DSCommandPalette(
+        body: PrismCommandPalette(
           commands: commands,
           onExecute: onExecute,
           onClose: onClose,
@@ -79,16 +79,16 @@ void main() {
   // ---------------------------------------------------------------------------
   // Open/Close
   // ---------------------------------------------------------------------------
-  group('DSCommandPalette — open/close', () {
+  group('PrismCommandPalette — open/close', () {
     testWidgets('renders the palette with search field', (tester) async {
-      await tester.pumpWidget(_buildApp(commands: _sampleCommands()));
+      await tester.pumpWidget(buildApp(commands: sampleCommands()));
 
-      expect(find.byType(DSCommandPalette), findsOneWidget);
+      expect(find.byType(PrismCommandPalette), findsOneWidget);
       expect(find.byType(TextField), findsOneWidget);
     });
 
     testWidgets('shows placeholder text', (tester) async {
-      await tester.pumpWidget(_buildApp(commands: _sampleCommands()));
+      await tester.pumpWidget(buildApp(commands: sampleCommands()));
 
       expect(find.text('Type a command...'), findsOneWidget);
     });
@@ -97,8 +97,8 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: DSCommandPalette(
-              commands: _sampleCommands(),
+            body: PrismCommandPalette(
+              commands: sampleCommands(),
               placeholder: 'Search commands...',
             ),
           ),
@@ -111,7 +111,7 @@ void main() {
     testWidgets('onClose fires when Escape is pressed', (tester) async {
       var closed = false;
       await tester.pumpWidget(
-        _buildApp(commands: _sampleCommands(), onClose: () => closed = true),
+        buildApp(commands: sampleCommands(), onClose: () => closed = true),
       );
 
       await tester.sendKeyEvent(LogicalKeyboardKey.escape);
@@ -122,7 +122,7 @@ void main() {
     testWidgets('onClose fires when backdrop is tapped', (tester) async {
       var closed = false;
       await tester.pumpWidget(
-        _buildApp(commands: _sampleCommands(), onClose: () => closed = true),
+        buildApp(commands: sampleCommands(), onClose: () => closed = true),
       );
 
       // Tap outside the panel (top-left corner of the overlay)
@@ -135,18 +135,19 @@ void main() {
   // ---------------------------------------------------------------------------
   // Fuzzy search
   // ---------------------------------------------------------------------------
-  group('DSCommandPalette — fuzzy search', () {
+  group('PrismCommandPalette — fuzzy search', () {
     testWidgets('all commands visible when query is empty', (tester) async {
-      await tester.pumpWidget(_buildApp(commands: _sampleCommands()));
+      await tester.pumpWidget(buildApp(commands: sampleCommands()));
 
-      // All category headers should be visible
-      expect(find.text('NAVIGATE'), findsOneWidget);
-      expect(find.text('RUN'), findsOneWidget);
-      expect(find.text('RECENT'), findsOneWidget);
+      // All category headers are mounted (ListView is non-lazy). With 48dp
+      // row targets the last header may be offstage; still assert presence.
+      expect(find.text('NAVIGATE', skipOffstage: false), findsOneWidget);
+      expect(find.text('RUN', skipOffstage: false), findsOneWidget);
+      expect(find.text('RECENT', skipOffstage: false), findsOneWidget);
     });
 
     testWidgets('filters commands by substring match', (tester) async {
-      await tester.pumpWidget(_buildApp(commands: _sampleCommands()));
+      await tester.pumpWidget(buildApp(commands: sampleCommands()));
 
       await tester.enterText(find.byType(TextField), 'map');
       await tester.pump();
@@ -157,7 +158,7 @@ void main() {
     });
 
     testWidgets('case-insensitive matching', (tester) async {
-      await tester.pumpWidget(_buildApp(commands: _sampleCommands()));
+      await tester.pumpWidget(buildApp(commands: sampleCommands()));
 
       await tester.enterText(find.byType(TextField), 'THEME');
       await tester.pump();
@@ -166,7 +167,7 @@ void main() {
     });
 
     testWidgets('multi-token AND matching', (tester) async {
-      await tester.pumpWidget(_buildApp(commands: _sampleCommands()));
+      await tester.pumpWidget(buildApp(commands: sampleCommands()));
 
       await tester.enterText(find.byType(TextField), 'task board');
       await tester.pump();
@@ -176,7 +177,7 @@ void main() {
     });
 
     testWidgets('shows empty state when no match', (tester) async {
-      await tester.pumpWidget(_buildApp(commands: _sampleCommands()));
+      await tester.pumpWidget(buildApp(commands: sampleCommands()));
 
       await tester.enterText(find.byType(TextField), 'zzzznotfound');
       await tester.pump();
@@ -185,7 +186,7 @@ void main() {
     });
 
     testWidgets('matches description text', (tester) async {
-      await tester.pumpWidget(_buildApp(commands: _sampleCommands()));
+      await tester.pumpWidget(buildApp(commands: sampleCommands()));
 
       await tester.enterText(find.byType(TextField), 'governance diagnostics');
       await tester.pump();
@@ -195,7 +196,7 @@ void main() {
 
     testWidgets('initialQuery pre-populates search', (tester) async {
       await tester.pumpWidget(
-        _buildApp(commands: _sampleCommands(), initialQuery: 'theme'),
+        buildApp(commands: sampleCommands(), initialQuery: 'theme'),
       );
 
       expect(find.text('Toggle Theme'), findsOneWidget);
@@ -206,17 +207,17 @@ void main() {
   // ---------------------------------------------------------------------------
   // Category grouping
   // ---------------------------------------------------------------------------
-  group('DSCommandPalette — category grouping', () {
+  group('PrismCommandPalette — category grouping', () {
     testWidgets('shows category headers', (tester) async {
-      await tester.pumpWidget(_buildApp(commands: _sampleCommands()));
+      await tester.pumpWidget(buildApp(commands: sampleCommands()));
 
-      expect(find.text('NAVIGATE'), findsOneWidget);
-      expect(find.text('RUN'), findsOneWidget);
-      expect(find.text('RECENT'), findsOneWidget);
+      expect(find.text('NAVIGATE', skipOffstage: false), findsOneWidget);
+      expect(find.text('RUN', skipOffstage: false), findsOneWidget);
+      expect(find.text('RECENT', skipOffstage: false), findsOneWidget);
     });
 
     testWidgets('category chip filters results', (tester) async {
-      await tester.pumpWidget(_buildApp(commands: _sampleCommands()));
+      await tester.pumpWidget(buildApp(commands: sampleCommands()));
 
       // Tap the "Run" category chip
       await tester.tap(find.text('Run'));
@@ -231,7 +232,7 @@ void main() {
     });
 
     testWidgets('tapping active category resets to All', (tester) async {
-      await tester.pumpWidget(_buildApp(commands: _sampleCommands()));
+      await tester.pumpWidget(buildApp(commands: sampleCommands()));
 
       // Filter to Run
       await tester.tap(find.text('Run'));
@@ -245,21 +246,21 @@ void main() {
     });
 
     testWidgets('All chip is active by default', (tester) async {
-      await tester.pumpWidget(_buildApp(commands: _sampleCommands()));
+      await tester.pumpWidget(buildApp(commands: sampleCommands()));
 
       // The "All" chip should show all categories
-      expect(find.text('NAVIGATE'), findsOneWidget);
-      expect(find.text('RUN'), findsOneWidget);
-      expect(find.text('RECENT'), findsOneWidget);
+      expect(find.text('NAVIGATE', skipOffstage: false), findsOneWidget);
+      expect(find.text('RUN', skipOffstage: false), findsOneWidget);
+      expect(find.text('RECENT', skipOffstage: false), findsOneWidget);
     });
   });
 
   // ---------------------------------------------------------------------------
   // Keyboard navigation
   // ---------------------------------------------------------------------------
-  group('DSCommandPalette — keyboard navigation', () {
+  group('PrismCommandPalette — keyboard navigation', () {
     testWidgets('arrow down moves selection', (tester) async {
-      await tester.pumpWidget(_buildApp(commands: _sampleCommands()));
+      await tester.pumpWidget(buildApp(commands: sampleCommands()));
 
       // First item should be selected by default (index 0)
       // Press arrow down
@@ -267,23 +268,23 @@ void main() {
       await tester.pump();
 
       // The palette should still be showing (no crash)
-      expect(find.byType(DSCommandPalette), findsOneWidget);
+      expect(find.byType(PrismCommandPalette), findsOneWidget);
     });
 
     testWidgets('arrow up moves selection', (tester) async {
-      await tester.pumpWidget(_buildApp(commands: _sampleCommands()));
+      await tester.pumpWidget(buildApp(commands: sampleCommands()));
 
       await tester.sendKeyEvent(LogicalKeyboardKey.arrowDown);
       await tester.sendKeyEvent(LogicalKeyboardKey.arrowDown);
       await tester.sendKeyEvent(LogicalKeyboardKey.arrowUp);
       await tester.pump();
 
-      expect(find.byType(DSCommandPalette), findsOneWidget);
+      expect(find.byType(PrismCommandPalette), findsOneWidget);
     });
 
     testWidgets('arrow down wraps around', (tester) async {
-      final commands = _sampleCommands();
-      await tester.pumpWidget(_buildApp(commands: commands));
+      final commands = sampleCommands();
+      await tester.pumpWidget(buildApp(commands: commands));
 
       // Press arrow down more times than total commands to test wrapping
       for (var i = 0; i < commands.length + 2; i++) {
@@ -291,14 +292,14 @@ void main() {
       }
       await tester.pump();
 
-      expect(find.byType(DSCommandPalette), findsOneWidget);
+      expect(find.byType(PrismCommandPalette), findsOneWidget);
     });
 
     testWidgets('Enter executes the selected command', (tester) async {
       String? executedId;
-      final commands = _sampleCommands();
+      final commands = sampleCommands();
       await tester.pumpWidget(
-        _buildApp(commands: commands, onExecute: (cmd) => executedId = cmd.id),
+        buildApp(commands: commands, onExecute: (cmd) => executedId = cmd.id),
       );
 
       // First command (Map Workspace) is selected by default
@@ -313,8 +314,8 @@ void main() {
     ) async {
       String? executedId;
       await tester.pumpWidget(
-        _buildApp(
-          commands: _sampleCommands(),
+        buildApp(
+          commands: sampleCommands(),
           onExecute: (cmd) => executedId = cmd.id,
         ),
       );
@@ -329,7 +330,7 @@ void main() {
     testWidgets('Escape closes the palette', (tester) async {
       var closed = false;
       await tester.pumpWidget(
-        _buildApp(commands: _sampleCommands(), onClose: () => closed = true),
+        buildApp(commands: sampleCommands(), onClose: () => closed = true),
       );
 
       await tester.sendKeyEvent(LogicalKeyboardKey.escape);
@@ -342,14 +343,14 @@ void main() {
   // ---------------------------------------------------------------------------
   // Action execution
   // ---------------------------------------------------------------------------
-  group('DSCommandPalette — action execution', () {
+  group('PrismCommandPalette — action execution', () {
     testWidgets('onExecute callback fires with correct command', (
       tester,
     ) async {
-      DSCommand? received;
+      PrismCommand? received;
       await tester.pumpWidget(
-        _buildApp(
-          commands: _sampleCommands(),
+        buildApp(
+          commands: sampleCommands(),
           onExecute: (cmd) => received = cmd,
         ),
       );
@@ -365,15 +366,15 @@ void main() {
     testWidgets('command onExecute callback fires', (tester) async {
       var commandExecuted = false;
       final commands = [
-        DSCommand(
+        PrismCommand(
           id: 'test',
           label: 'Test Command',
-          category: DSCommandCategory.run,
+          category: PrismCommandCategory.run,
           onExecute: () => commandExecuted = true,
         ),
       ];
 
-      await tester.pumpWidget(_buildApp(commands: commands));
+      await tester.pumpWidget(buildApp(commands: commands));
       await tester.sendKeyEvent(LogicalKeyboardKey.enter);
       await tester.pump();
 
@@ -383,7 +384,7 @@ void main() {
     testWidgets('palette closes after execution', (tester) async {
       var closed = false;
       await tester.pumpWidget(
-        _buildApp(commands: _sampleCommands(), onClose: () => closed = true),
+        buildApp(commands: sampleCommands(), onClose: () => closed = true),
       );
 
       await tester.sendKeyEvent(LogicalKeyboardKey.enter);
@@ -393,10 +394,10 @@ void main() {
     });
 
     testWidgets('tap on command item executes it', (tester) async {
-      DSCommand? received;
+      PrismCommand? received;
       await tester.pumpWidget(
-        _buildApp(
-          commands: _sampleCommands(),
+        buildApp(
+          commands: sampleCommands(),
           onExecute: (cmd) => received = cmd,
         ),
       );
@@ -412,9 +413,9 @@ void main() {
   // ---------------------------------------------------------------------------
   // Visual structure
   // ---------------------------------------------------------------------------
-  group('DSCommandPalette — visual structure', () {
+  group('PrismCommandPalette — visual structure', () {
     testWidgets('shows category filter chips', (tester) async {
-      await tester.pumpWidget(_buildApp(commands: _sampleCommands()));
+      await tester.pumpWidget(buildApp(commands: sampleCommands()));
 
       expect(find.text('All'), findsOneWidget);
       expect(find.text('Navigate'), findsOneWidget);
@@ -423,28 +424,28 @@ void main() {
     });
 
     testWidgets('shows command icons', (tester) async {
-      await tester.pumpWidget(_buildApp(commands: _sampleCommands()));
+      await tester.pumpWidget(buildApp(commands: sampleCommands()));
 
-      // Should find multiple DSIcon widgets
-      expect(find.byType(DSIcon), findsWidgets);
+      // Should find multiple PrismIcon widgets
+      expect(find.byType(PrismIcon), findsWidgets);
     });
 
     testWidgets('shows shortcut hint when provided', (tester) async {
-      await tester.pumpWidget(_buildApp(commands: _sampleCommands()));
+      await tester.pumpWidget(buildApp(commands: sampleCommands()));
 
       // The "Toggle Theme" command has shortcut "Ctrl+T"
       expect(find.text('Ctrl+T'), findsOneWidget);
     });
 
     testWidgets('shows ESC hint in search field', (tester) async {
-      await tester.pumpWidget(_buildApp(commands: _sampleCommands()));
+      await tester.pumpWidget(buildApp(commands: sampleCommands()));
 
       // ESC hint in the search bar area
       expect(find.text('ESC'), findsWidgets); // one in search, one in footer
     });
 
     testWidgets('shows footer keyboard hints', (tester) async {
-      await tester.pumpWidget(_buildApp(commands: _sampleCommands()));
+      await tester.pumpWidget(buildApp(commands: sampleCommands()));
 
       expect(find.text('navigate'), findsOneWidget);
       expect(find.text('select'), findsOneWidget);
@@ -452,22 +453,22 @@ void main() {
     });
 
     testWidgets('empty commands list shows empty state', (tester) async {
-      await tester.pumpWidget(_buildApp(commands: const []));
+      await tester.pumpWidget(buildApp(commands: const []));
 
       expect(find.text('No matching commands'), findsOneWidget);
     });
   });
 
   // ---------------------------------------------------------------------------
-  // DSCommand model
+  // PrismCommand model
   // ---------------------------------------------------------------------------
-  group('DSCommand model', () {
+  group('PrismCommand model', () {
     test('constructs with required fields only', () {
-      const cmd = DSCommand(id: 'test', label: 'Test');
+      const cmd = PrismCommand(id: 'test', label: 'Test');
       expect(cmd.id, 'test');
       expect(cmd.label, 'Test');
       expect(cmd.icon, Icons.arrow_forward);
-      expect(cmd.category, DSCommandCategory.navigate);
+      expect(cmd.category, PrismCommandCategory.navigate);
       expect(cmd.description, isNull);
       expect(cmd.onExecute, isNull);
       expect(cmd.route, isNull);
@@ -476,12 +477,12 @@ void main() {
 
     test('constructs with all fields', () {
       var called = false;
-      final cmd = DSCommand(
+      final cmd = PrismCommand(
         id: 'full',
         label: 'Full Command',
         description: 'A full command',
         icon: Icons.star,
-        category: DSCommandCategory.run,
+        category: PrismCommandCategory.run,
         onExecute: () => called = true,
         route: '/test',
         shortcut: 'Ctrl+F',
@@ -491,7 +492,7 @@ void main() {
       expect(cmd.label, 'Full Command');
       expect(cmd.description, 'A full command');
       expect(cmd.icon, Icons.star);
-      expect(cmd.category, DSCommandCategory.run);
+      expect(cmd.category, PrismCommandCategory.run);
       expect(cmd.route, '/test');
       expect(cmd.shortcut, 'Ctrl+F');
 
@@ -501,14 +502,14 @@ void main() {
   });
 
   // ---------------------------------------------------------------------------
-  // DSCommandCategory enum
+  // PrismCommandCategory enum
   // ---------------------------------------------------------------------------
-  group('DSCommandCategory enum', () {
+  group('PrismCommandCategory enum', () {
     test('has navigate, run, recent values', () {
-      expect(DSCommandCategory.values.length, 3);
-      expect(DSCommandCategory.values, contains(DSCommandCategory.navigate));
-      expect(DSCommandCategory.values, contains(DSCommandCategory.run));
-      expect(DSCommandCategory.values, contains(DSCommandCategory.recent));
+      expect(PrismCommandCategory.values.length, 3);
+      expect(PrismCommandCategory.values, contains(PrismCommandCategory.navigate));
+      expect(PrismCommandCategory.values, contains(PrismCommandCategory.run));
+      expect(PrismCommandCategory.values, contains(PrismCommandCategory.recent));
     });
   });
 
@@ -518,11 +519,215 @@ void main() {
   group('Command palette barrel exports', () {
     test('all command palette classes accessible via organisms barrel', () {
       // Compile-time check — if any export is missing this won't compile
-      expect(DSCommandPalette, isNotNull);
-      expect(DSCommand, isNotNull);
-      expect(DSCommandCategory, isNotNull);
-      expect(showDSCommandPalette, isNotNull);
-      expect(DSCommandPaletteShortcut, isNotNull);
+      expect(PrismCommandPalette, isNotNull);
+      expect(PrismCommand, isNotNull);
+      expect(PrismCommandCategory, isNotNull);
+      // showDSCommandPalette has no Prism* function alias on the public barrel yet.
+      expect(PrismCommandPaletteShortcut, isNotNull);
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // Path-to-100: shortcut + a11y + footer count (F2–F6)
+  // ---------------------------------------------------------------------------
+  Future<void> pumpShortcutApp(
+    WidgetTester tester, {
+    required List<PrismCommand> commands,
+  }) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: PrismCommandPaletteShortcut(
+            commands: commands,
+            child: const Center(
+              child: Text('App body'),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+  }
+
+  Future<void> sendModK(
+    WidgetTester tester, {
+    LogicalKeyboardKey modifier = LogicalKeyboardKey.controlLeft,
+  }) async {
+    await tester.sendKeyDownEvent(modifier);
+    await tester.sendKeyDownEvent(LogicalKeyboardKey.keyK);
+    await tester.sendKeyUpEvent(LogicalKeyboardKey.keyK);
+    await tester.sendKeyUpEvent(modifier);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 200));
+    await tester.pumpAndSettle();
+  }
+
+  group('DSCommandPaletteShortcut', () {
+    testWidgets('Ctrl+K opens the command palette', (tester) async {
+      final commands = [
+        const PrismCommand(
+          id: 'go-home',
+          label: 'Go Home',
+          icon: Icons.home,
+          category: PrismCommandCategory.navigate,
+        ),
+      ];
+
+      await pumpShortcutApp(tester, commands: commands);
+
+      // Ensure child is present; autofocus Focus on shortcut should receive keys.
+      expect(find.text('App body'), findsOneWidget);
+      await sendModK(tester);
+
+      // Palette command list should be visible over the app body.
+      expect(find.text('Go Home'), findsOneWidget);
+      expect(find.text('App body'), findsOneWidget);
+    });
+
+    testWidgets('Cmd/Meta+K opens the command palette', (tester) async {
+      final commands = [
+        const PrismCommand(
+          id: 'go-settings',
+          label: 'Go Settings',
+          icon: Icons.settings,
+          category: PrismCommandCategory.navigate,
+        ),
+      ];
+
+      await pumpShortcutApp(tester, commands: commands);
+      await sendModK(tester, modifier: LogicalKeyboardKey.metaLeft);
+
+      expect(find.text('Go Settings'), findsOneWidget);
+    });
+
+    testWidgets(
+      're-entry guard: second Ctrl+K while open does not stack routes',
+      (tester) async {
+        final commands = [
+          const PrismCommand(
+            id: 'go-home',
+            label: 'Go Home',
+            icon: Icons.home,
+            category: PrismCommandCategory.navigate,
+          ),
+        ];
+
+        await pumpShortcutApp(tester, commands: commands);
+        await sendModK(tester);
+        expect(find.text('Go Home'), findsOneWidget);
+
+        // Second open while route still open must be ignored.
+        await sendModK(tester);
+        expect(find.text('Go Home'), findsOneWidget);
+        // Search field appears once per palette instance.
+        expect(find.byType(TextField), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'after Escape close, Ctrl+K reopens (mounted clears _isOpen)',
+      (tester) async {
+        final commands = [
+          const PrismCommand(
+            id: 'go-home',
+            label: 'Go Home',
+            icon: Icons.home,
+            category: PrismCommandCategory.navigate,
+          ),
+        ];
+
+        await pumpShortcutApp(tester, commands: commands);
+        await sendModK(tester);
+        expect(find.text('Go Home'), findsOneWidget);
+
+        await tester.sendKeyDownEvent(LogicalKeyboardKey.escape);
+        await tester.sendKeyUpEvent(LogicalKeyboardKey.escape);
+        await tester.pumpAndSettle();
+        expect(find.text('Go Home'), findsNothing);
+        expect(find.text('App body'), findsOneWidget);
+
+        await sendModK(tester);
+        expect(find.text('Go Home'), findsOneWidget);
+      },
+    );
+
+    testWidgets('category chips expose button semantics', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: PrismCommandPalette(
+              commands: const [
+                PrismCommand(
+                  id: '1',
+                  label: 'Nav One',
+                  icon: Icons.home,
+                  category: PrismCommandCategory.navigate,
+                ),
+              ],
+              onClose: () {},
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Chips render "Navigate" text with button semantics.
+      expect(find.text('Navigate'), findsOneWidget);
+      final navigateSemantics = tester.getSemantics(find.text('Navigate'));
+      expect(navigateSemantics.flagsCollection.isButton, isTrue);
+    });
+
+    testWidgets('command items expose button semantics', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: PrismCommandPalette(
+              commands: const [
+                PrismCommand(
+                  id: '1',
+                  label: 'Open Map',
+                  description: 'Go to map workspace',
+                  icon: Icons.map,
+                  category: PrismCommandCategory.navigate,
+                ),
+              ],
+              onClose: () {},
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final itemSemantics = tester.getSemantics(find.text('Open Map'));
+      expect(itemSemantics.flagsCollection.isButton, isTrue);
+    });
+
+    testWidgets('footer shows result count', (tester) async {
+      await tester.pumpWidget(
+        buildApp(commands: sampleCommands()),
+      );
+      await tester.pumpAndSettle();
+
+      // Sample set has 6 commands.
+      expect(find.text('6 results'), findsOneWidget);
+    });
+
+    testWidgets('footer shows singular result count', (tester) async {
+      await tester.pumpWidget(
+        buildApp(
+          commands: [
+            const PrismCommand(
+              id: 'only',
+              label: 'Only Command',
+              icon: Icons.star,
+              category: PrismCommandCategory.run,
+            ),
+          ],
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('1 result'), findsOneWidget);
     });
   });
 }

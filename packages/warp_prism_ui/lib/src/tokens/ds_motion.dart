@@ -1,6 +1,8 @@
 /// ASW Observatory Design Tokens - Motion/Animation
 ///
 /// Consistent animation curves and durations
+library;
+
 import 'package:flutter/animation.dart';
 
 abstract class DSMotion {

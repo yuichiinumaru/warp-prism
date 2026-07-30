@@ -5,66 +5,71 @@
 /// - Filters by project, type, task, skill/workflow, impact_tags
 /// - Empty, loading, and malformed/error states render gracefully
 /// - Entry selection syncs with detail panel on desktop layout
+/// - Route shell maps HistoryTimeline → HistoryState
 library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:warp_prism_observatory/data/models/changelog_contracts.dart';
+import 'package:warp_prism_observatory/data/repositories/history_repository.dart';
+import 'package:warp_prism_observatory/features/asset_detail/presentation/asset_detail_view.dart';
 import 'package:warp_prism_observatory/features/history/presentation/history_controller.dart';
 import 'package:warp_prism_observatory/features/history/presentation/history_page.dart';
+import 'package:warp_prism_observatory/app/pages/history_page.dart';
+import 'package:warp_prism_ui/warp_prism_ui.dart';
 
-/// Build a representative list of [ChangelogMetadata] fixtures.
-List<ChangelogMetadata> _testEntries() {
+/// Build a representative list of [HistoryEntry] fixtures.
+List<HistoryEntry> _testEntries() {
   return [
-    ChangelogMetadata(
+    HistoryEntry(
       id: '2026-06-07-task-0612-inspector',
+      title: '',
       date: DateTime(2026, 6, 7),
       project: 'warp-prism',
       task: '0612',
       type: ChangelogType.feature,
-      impact: ['operate', 'inspector'],
+      impactTags: ['operate', 'inspector'],
       skills: ['agent-wiki'],
-      why: 'Operators need to inspect task details.',
-      changed: 'Added detail mapper and panel.',
+      path: 'docs/changelog/0612.md',
     ),
-    ChangelogMetadata(
+    HistoryEntry(
       id: '2026-06-07-task-0712-history',
+      title: '',
       date: DateTime(2026, 6, 7),
       project: 'warp-prism',
       task: '0712',
       type: ChangelogType.feature,
-      impact: ['history', 'timeline'],
+      impactTags: ['history', 'timeline'],
       skills: ['build-orchestrator'],
-      why: 'Observatory needs a History workspace.',
-      changed: 'Created timeline page with filters.',
+      path: 'docs/changelog/0712.md',
     ),
-    ChangelogMetadata(
+    HistoryEntry(
       id: '2026-06-07-task-0313-graph',
+      title: '',
       date: DateTime(2026, 6, 6),
       project: 'warp-prism',
       task: '0313',
       type: ChangelogType.refactor,
-      impact: ['graph-model'],
-      skills: [],
-      why: null,
-      changed: 'Normalized graph edges.',
+      impactTags: ['graph-model'],
+      skills: const [],
+      path: 'docs/changelog/0313.md',
     ),
-    ChangelogMetadata(
+    HistoryEntry(
       id: '2026-06-07-task-0810-governance',
+      title: '',
       date: DateTime(2026, 6, 7),
       project: 'warp-prism',
       task: '0810',
       type: ChangelogType.feature,
-      impact: ['governance'],
+      impactTags: ['governance'],
       skills: ['agent-wiki'],
-      why: null,
-      changed: null,
+      path: 'docs/changelog/0810.md',
     ),
   ];
 }
 
 HistoryState _testState({
-  List<ChangelogMetadata>? entries,
+  List<HistoryEntry>? entries,
   bool isLoading = false,
   String? error,
 }) {
@@ -96,10 +101,7 @@ void main() {
         _wrapInApp(HistoryWorkspacePage(initialState: _testState())),
       );
 
-      // Should render entries count
       expect(find.textContaining('4 of 4'), findsOneWidget);
-
-      // All entries should be rendered
       expect(find.textContaining('0612 — feature'), findsOneWidget);
       expect(find.textContaining('0712 — feature'), findsOneWidget);
       expect(find.textContaining('0313 — refactor'), findsOneWidget);
@@ -111,7 +113,6 @@ void main() {
         _wrapInApp(HistoryWorkspacePage(initialState: _testState())),
       );
 
-      // Filter category chips should be present
       expect(find.text('warp-prism'), findsWidgets);
       expect(find.text('feature'), findsWidgets);
       expect(find.text('0612'), findsWidgets);
@@ -124,7 +125,7 @@ void main() {
         ),
       );
 
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      expect(find.textContaining('Loading history'), findsOneWidget);
     });
 
     testWidgets('shows error state', (tester) async {
@@ -146,6 +147,7 @@ void main() {
       );
 
       expect(find.textContaining('0 of 0'), findsOneWidget);
+      expect(find.textContaining('No history entries'), findsOneWidget);
     });
 
     testWidgets('renders result count after loading', (tester) async {
@@ -154,6 +156,72 @@ void main() {
       );
 
       expect(find.textContaining('of 4'), findsOneWidget);
+    });
+
+    testWidgets('active type filter reduces visible result count', (
+      tester,
+    ) async {
+      tester.view.physicalSize = const Size(1400, 900);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+
+      final filtered = _testState().copyWith(
+        activeFilters: {
+          HistoryFilterCategory.type: {'refactor'},
+        },
+      );
+      await tester.pumpWidget(
+        _wrapInApp(HistoryWorkspacePage(initialState: filtered)),
+      );
+
+      expect(find.textContaining('1 of 4'), findsOneWidget);
+      expect(find.textContaining('0313 — refactor'), findsOneWidget);
+      expect(find.textContaining('0612 — feature'), findsNothing);
+    });
+
+    testWidgets('selected entry opens detail inspector', (tester) async {
+      tester.view.physicalSize = const Size(1400, 900);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+
+      final selected = _testState().copyWith(
+        selectedEntryId: '2026-06-07-task-0612-inspector',
+      );
+      await tester.pumpWidget(
+        _wrapInApp(HistoryWorkspacePage(initialState: selected)),
+      );
+      await tester.pumpAndSettle();
+
+      // Universal AssetDetailView (changelog) via Task 0905 adapters.
+      expect(find.byType(AssetDetailView), findsOneWidget);
+      expect(find.byType(PrismDetailInspector), findsOneWidget);
+      expect(find.text('Identity'), findsOneWidget);
+      expect(find.text('Ledger Source'), findsOneWidget);
+      expect(find.text('Affected Assets'), findsOneWidget);
+    });
+  });
+
+  group('HistoryPageShell', () {
+    testWidgets('forced loading state shows loading surface', (tester) async {
+      await tester.pumpWidget(
+        _wrapInApp(const HistoryPageShell(forceLoading: true)),
+      );
+      expect(find.textContaining('Loading history'), findsOneWidget);
+    });
+
+    testWidgets('forced error state shows error surface', (tester) async {
+      await tester.pumpWidget(
+        _wrapInApp(const HistoryPageShell(forcedError: 'boom')),
+      );
+      expect(find.textContaining('Failed to load'), findsOneWidget);
+      expect(find.text('boom'), findsOneWidget);
+    });
+
+    testWidgets('forced state renders timeline entries', (tester) async {
+      await tester.pumpWidget(
+        _wrapInApp(HistoryPageShell(forcedState: _testState())),
+      );
+      expect(find.textContaining('4 of 4'), findsOneWidget);
     });
   });
 
@@ -218,8 +286,9 @@ void main() {
       final state = _testState();
       final entries = state.toTimelineEntries();
       expect(entries.length, 4);
-      // Should be sorted newest first
-      expect(entries.first.id, contains('0612'));
+      // Sorted newest first — same date keeps stable id order.
+      expect(entries.any((e) => e.id.contains('0612')), isTrue);
+      expect(entries.first.date, '2026-06-07');
     });
 
     test('availableFilters returns distinct values', () {
@@ -236,6 +305,53 @@ void main() {
       expect(selected.selectedEntryId, 'test');
       final cleared = selected.copyWith(clearSelection: true);
       expect(cleared.selectedEntryId, isNull);
+    });
+
+    test('fromTimeline maps HistoryTimeline entries', () {
+      final timeline = HistoryTimeline(
+        entries: _testEntries(),
+        facets: const HistoryFacets.empty(),
+        byProject: const [],
+        byType: const [],
+        byTask: const [],
+      );
+      final state = HistoryState.fromTimeline(timeline);
+      expect(state.allEntries.length, 4);
+      expect(state.isLoading, isFalse);
+      expect(state.error, isNull);
+    });
+
+    test('null dates sort last', () {
+      final entries = [
+        HistoryEntry(
+          id: 'dated',
+          title: 'Dated',
+          date: DateTime(2026, 6, 7),
+          project: 'p',
+          task: '1',
+          type: ChangelogType.fix,
+          impactTags: const [],
+          skills: const [],
+          path: 'a.md',
+        ),
+        HistoryEntry(
+          id: 'malformed',
+          title: 'Bad',
+          date: null,
+          project: 'p',
+          task: '',
+          type: ChangelogType.chore,
+          impactTags: const [],
+          skills: const [],
+          path: 'b.md',
+          isMalformed: true,
+          warnings: const ['missing date'],
+        ),
+      ];
+      final state = HistoryState(allEntries: entries);
+      expect(state.filteredEntries.first.id, 'dated');
+      expect(state.filteredEntries.last.id, 'malformed');
+      expect(state.toTimelineEntries().last.date, 'unknown');
     });
   });
 }

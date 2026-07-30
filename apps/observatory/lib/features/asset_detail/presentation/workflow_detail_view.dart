@@ -14,7 +14,7 @@ import 'package:warp_prism_ui/warp_prism_ui.dart';
 import '../domain/asset_detail_descriptor.dart';
 import 'detail_section_builder.dart';
 
-/// Renders a workflow's detail using the [DSDetailInspector].
+/// Renders a workflow's detail using the [PrismDetailInspector].
 class WorkflowDetailView extends StatelessWidget {
   final AssetDetailDescriptor descriptor;
   final VoidCallback? onClose;
@@ -25,7 +25,7 @@ class WorkflowDetailView extends StatelessWidget {
   Widget build(BuildContext context) {
     final asset = descriptor.asset;
 
-    final sections = <DSDetailSection>[
+    final sections = <PrismDetailSection>[
       // Shared sections (Identity)
       ...toDSSections(descriptor.sharedSections),
       // Kind-specific workflow panels
@@ -45,7 +45,7 @@ class WorkflowDetailView extends StatelessWidget {
         ),
     ];
 
-    return DSDetailInspector(
+    return PrismDetailInspector(
       title: asset.name,
       kind: asset.kind.name,
       subtitle: asset.description.isNotEmpty ? asset.description : null,

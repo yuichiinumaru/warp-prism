@@ -435,4 +435,21 @@ void main() {
       expect(find.byType(BackdropFilter), findsNothing);
     });
   });
+
+  // ===========================================================================
+  // DSTextField
+  // ===========================================================================
+  group('DSTextField contract', () {
+    testWidgets('constructor renders label and hint', (tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: DSTextField(label: 'Contract Label', hint: 'Contract Hint'),
+          ),
+        ),
+      );
+      expect(find.text('Contract Label'), findsOneWidget);
+      expect(find.text('Contract Hint'), findsOneWidget);
+    });
+  });
 }

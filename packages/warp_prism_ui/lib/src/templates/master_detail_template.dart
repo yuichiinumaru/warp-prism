@@ -103,15 +103,13 @@ class MasterDetailTemplate extends StatefulWidget {
 }
 
 class _MasterDetailTemplateState extends State<MasterDetailTemplate> {
-  bool _sidebarCollapsed = false;
-
   @override
   Widget build(BuildContext context) {
     return DSShell(
       sidebar: DSSidebar(
         items: widget.sidebarItems,
         selectedId: widget.sidebarItems[widget.selectedIndex].id,
-        expanded: !_sidebarCollapsed,
+        expanded: true,
         onItemTap: (id) {
           final index = widget.sidebarItems.indexWhere((item) => item.id == id);
           if (index != -1) {
@@ -166,7 +164,7 @@ class _MasterDetailTemplateState extends State<MasterDetailTemplate> {
                 child: GestureDetector(
                   onTap: widget.onDetailClose,
                   child: Container(
-                    color: DSColors.obsidianDeep.withOpacity(0.4),
+                    color: DSColors.obsidianDeep.withValues(alpha: 0.4),
                   ),
                 ),
               ),
@@ -175,9 +173,9 @@ class _MasterDetailTemplateState extends State<MasterDetailTemplate> {
                 right: 0,
                 top: 0,
                 bottom: 0,
-                width: 400,
+                width: DSSpacing.detailOverlayWidth,
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: DSColors.obsidianElevated,
                     border: Border(
                       left: BorderSide(color: DSColors.borderSubtle),
@@ -371,10 +369,10 @@ class CanvasTemplate extends StatelessWidget {
               right: DSSpacing.lg,
               top: DSSpacing.lg,
               bottom: DSSpacing.lg,
-              width: 360,
+              width: DSSpacing.inspectorWidth,
               child: Container(
                 decoration: BoxDecoration(
-                  color: DSColors.obsidianElevated.withOpacity(0.95),
+                  color: DSColors.obsidianElevated.withValues(alpha: 0.95),
                   borderRadius: BorderRadius.circular(DSRadii.lg),
                   border: Border.all(color: DSColors.borderSubtle),
                   boxShadow: DSShadows.elevation3,

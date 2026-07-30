@@ -26,21 +26,44 @@ class ReviewPressureIndicator {
     required this.explanation,
   });
 
-  /// Extract review-pressure indicators from proof-gap diagnostics.
+  /// Extract review-pressure indicators from diagnostics.
   ///
-  /// Proof-gap diagnostics in review/completed lanes represent tasks
-  /// that are under review pressure (they moved forward without proof).
+  /// Prefers dedicated [DiagnosticCategory.reviewPressure] emissions
+  /// (elevated-priority review-lane tasks). Also includes proof-gap
+  /// diagnostics in review/completed lanes, which historically modeled
+  /// "moved forward without proof" pressure for the same panel.
   static List<ReviewPressureIndicator> fromDiagnostics(
     List<GovernanceDiagnostic> diagnostics,
   ) {
     final indicators = <ReviewPressureIndicator>[];
 
     for (final d in diagnostics) {
-      if (d.category != DiagnosticCategory.proofGap) continue;
+      final isReviewPressure = d.category == DiagnosticCategory.reviewPressure;
+      final isProofGapPressure = d.category == DiagnosticCategory.proofGap;
+      if (!isReviewPressure && !isProofGapPressure) continue;
 
       final ctx = d.context;
       final lane = ctx['taskLane']?.toString() ?? 'unknown';
       final title = ctx['taskTitle']?.toString() ?? d.assetId;
+      final priority = ctx['priority']?.toString();
+
+      final String explanation;
+      if (isReviewPressure) {
+        explanation = priority == null
+            ? 'Task "$title" is in $lane under review pressure.'
+            : 'Task "$title" is in $lane with elevated priority $priority. '
+                  'Queue pressure requires reviewer attention.';
+      } else if (d.severity == DiagnosticSeverity.error) {
+        explanation =
+            'Task "$title" is in $lane with zero proof. '
+            'This creates review pressure because the task cannot '
+            'be verified before progressing further.';
+      } else {
+        explanation =
+            'Task "$title" is in $lane with only partial proof. '
+            'Reviewers must determine if the available evidence '
+            'is sufficient for advancement.';
+      }
 
       indicators.add(
         ReviewPressureIndicator(
@@ -48,13 +71,7 @@ class ReviewPressureIndicator {
           taskTitle: title,
           lane: lane,
           severity: d.severity,
-          explanation: d.severity == DiagnosticSeverity.error
-              ? 'Task "$title" is in $lane with zero proof. '
-                    'This creates review pressure because the task cannot '
-                    'be verified before progressing further.'
-              : 'Task "$title" is in $lane with only partial proof. '
-                    'Reviewers must determine if the available evidence '
-                    'is sufficient for advancement.',
+          explanation: explanation,
         ),
       );
     }
@@ -110,7 +127,8 @@ class ReviewPressureSummary {
           'for their current lane position.';
     }
     return '$totalUnderPressure task${totalUnderPressure == 1 ? '' : 's'} '
-        'creating review pressure across ${pressureByLane.length} lane${pressureByLane.length == 1 ? '' : 's'}. '
+        'creating review pressure across ${pressureByLane.length} '
+        'lane${pressureByLane.length == 1 ? '' : 's'}. '
         'Tasks advancing without proof accumulate review debt and '
         'risk undermining verification integrity.';
   }
@@ -134,39 +152,38 @@ class ReviewPressurePanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: DSColors.obsidianElevated,
-        borderRadius: BorderRadius.circular(DSRadii.lg),
-        border: Border.all(color: DSColors.borderSubtle),
+        color: PrismColors.obsidianElevated,
+        borderRadius: BorderRadius.circular(PrismRadii.lg),
+        border: Border.all(color: PrismColors.borderSubtle),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Header
           Padding(
-            padding: const EdgeInsets.all(DSSpacing.lg),
+            padding: const EdgeInsets.all(PrismSpacing.lg),
             child: Row(
               children: [
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: DSColors.statusError.withOpacity(0.15),
-                    borderRadius: BorderRadius.circular(DSRadii.md),
+                    color: PrismColors.statusError.withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(PrismRadii.md),
                   ),
-                  child: DSIcon(
+                  child: const PrismIcon(
                     Icons.queue_outlined,
-                    color: DSColors.statusError,
+                    color: PrismColors.statusError,
                   ),
                 ),
-                const SizedBox(width: DSSpacing.md),
+                const SizedBox(width: PrismSpacing.md),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      DSText.headingSmall('Review Queue Pressure'),
+                      const PrismText.headingSmall('Review Queue Pressure'),
                       const SizedBox(height: 2),
-                      DSText.bodySmall(
+                      PrismText.bodySmall(
                         summary.overviewExplanation,
-                        color: DSColors.textSecondary,
+                        color: PrismColors.textSecondary,
                       ),
                     ],
                   ),
@@ -179,57 +196,52 @@ class ReviewPressurePanel extends StatelessWidget {
               ],
             ),
           ),
-
-          const DSDivider.subtle(),
-
-          // Lane breakdown (if any pressure exists)
+          const PrismDivider.subtle(),
           if (summary.pressureByLane.isNotEmpty) ...[
             Padding(
               padding: const EdgeInsets.fromLTRB(
-                DSSpacing.lg,
-                DSSpacing.sm,
-                DSSpacing.lg,
+                PrismSpacing.lg,
+                PrismSpacing.sm,
+                PrismSpacing.lg,
                 0,
               ),
-              child: Row(
-                children: summary.pressureByLane.entries.map((entry) {
-                  return Padding(
-                    padding: const EdgeInsets.only(right: DSSpacing.md),
-                    child: _LaneChip(lane: entry.key, count: entry.value),
-                  );
-                }).toList(),
+              child: Wrap(
+                spacing: PrismSpacing.md,
+                runSpacing: PrismSpacing.xs,
+                children: summary.pressureByLane.entries
+                    .map(
+                      (entry) => _LaneChip(lane: entry.key, count: entry.value),
+                    )
+                    .toList(),
               ),
             ),
           ],
-
-          // Task indicators
           if (indicators.isEmpty)
             _buildHealthyState()
           else
             ...indicators.map((ind) => _PressureRow(indicator: ind)),
-
-          const SizedBox(height: DSSpacing.sm),
+          const SizedBox(height: PrismSpacing.sm),
         ],
       ),
     );
   }
 
   Widget _buildHealthyState() {
-    return Padding(
-      padding: const EdgeInsets.all(DSSpacing.lg),
+    return const Padding(
+      padding: EdgeInsets.all(PrismSpacing.lg),
       child: Row(
         children: [
           Icon(
             Icons.check_circle_outline,
             size: 16,
-            color: DSColors.statusSuccess,
+            color: PrismColors.statusSuccess,
           ),
-          const SizedBox(width: DSSpacing.sm),
+          SizedBox(width: PrismSpacing.sm),
           Expanded(
-            child: DSText.bodySmall(
+            child: PrismText.bodySmall(
               'No review pressure. All tasks have adequate proof '
               'for their lane position.',
-              color: DSColors.statusSuccess,
+              color: PrismColors.statusSuccess,
             ),
           ),
         ],
@@ -249,12 +261,12 @@ class _PressureBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: DSColors.statusError.withOpacity(0.15),
-        borderRadius: BorderRadius.circular(DSRadii.sm),
+        color: PrismColors.statusError.withValues(alpha: 0.15),
+        borderRadius: BorderRadius.circular(PrismRadii.sm),
       ),
-      child: DSText.labelSmall(
+      child: PrismText.labelSmall(
         '$total under pressure',
-        color: DSColors.statusError,
+        color: PrismColors.statusError,
       ),
     );
   }
@@ -271,16 +283,18 @@ class _LaneChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: DSColors.statusWarning.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(DSRadii.sm),
-        border: Border.all(color: DSColors.statusWarning.withOpacity(0.3)),
+        color: PrismColors.statusWarning.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(PrismRadii.sm),
+        border: Border.all(
+          color: PrismColors.statusWarning.withValues(alpha: 0.3),
+        ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          DSText.labelSmall(lane, color: DSColors.statusWarning),
-          const SizedBox(width: DSSpacing.xs),
-          DSText.numeric(count.toString(), color: DSColors.statusWarning),
+          PrismText.labelSmall(lane, color: PrismColors.statusWarning),
+          const SizedBox(width: PrismSpacing.xs),
+          PrismText.numeric(count.toString(), color: PrismColors.statusWarning),
         ],
       ),
     );
@@ -295,19 +309,19 @@ class _PressureRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = indicator.severity == DiagnosticSeverity.error
-        ? DSColors.statusError
-        : DSColors.statusWarning;
+        ? PrismColors.statusError
+        : PrismColors.statusWarning;
 
     return Padding(
       padding: const EdgeInsets.symmetric(
-        horizontal: DSSpacing.lg,
-        vertical: DSSpacing.xs,
+        horizontal: PrismSpacing.lg,
+        vertical: PrismSpacing.xs,
       ),
       child: Container(
-        padding: const EdgeInsets.all(DSSpacing.sm),
+        padding: const EdgeInsets.all(PrismSpacing.sm),
         decoration: BoxDecoration(
-          color: DSColors.obsidianBase,
-          borderRadius: BorderRadius.circular(DSRadii.sm),
+          color: PrismColors.obsidianBase,
+          borderRadius: BorderRadius.circular(PrismRadii.sm),
           border: Border(left: BorderSide(color: color, width: 3)),
         ),
         child: Column(
@@ -322,17 +336,20 @@ class _PressureRow extends StatelessWidget {
                   size: 16,
                   color: color,
                 ),
-                const SizedBox(width: DSSpacing.sm),
+                const SizedBox(width: PrismSpacing.sm),
                 Expanded(
-                  child: DSText.labelSmall(indicator.taskTitle, color: color),
+                  child: PrismText.labelSmall(
+                    indicator.taskTitle,
+                    color: color,
+                  ),
                 ),
-                DSChip(label: indicator.lane),
+                PrismChip(label: indicator.lane),
               ],
             ),
             const SizedBox(height: 4),
-            DSText.bodySmall(
+            PrismText.bodySmall(
               indicator.explanation,
-              color: DSColors.textSecondary,
+              color: PrismColors.textSecondary,
             ),
           ],
         ),

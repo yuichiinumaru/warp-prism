@@ -64,6 +64,9 @@ class _DSLogViewerState extends State<DSLogViewer> {
   bool _autoScroll = true;
   bool _userScrolledUp = false;
 
+  /// Suppresses pause-on-scroll while we programmatically jump/animate to bottom.
+  bool _programmaticScroll = false;
+
   @override
   void initState() {
     super.initState();
@@ -80,6 +83,7 @@ class _DSLogViewerState extends State<DSLogViewer> {
 
   void _onScroll() {
     if (!_scrollController.hasClients) return;
+    if (_programmaticScroll) return;
 
     final position = _scrollController.position;
     // If user scrolls up from the bottom, pause auto-scroll.
@@ -95,11 +99,16 @@ class _DSLogViewerState extends State<DSLogViewer> {
 
   void _scrollToBottom() {
     if (!_scrollController.hasClients) return;
-    _scrollController.animateTo(
-      _scrollController.position.maxScrollExtent,
-      duration: DSMotion.normal,
-      curve: DSMotion.enter,
-    );
+    _programmaticScroll = true;
+    _scrollController
+        .animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: DSMotion.normal,
+          curve: DSMotion.enter,
+        )
+        .whenComplete(() {
+          _programmaticScroll = false;
+        });
   }
 
   void _resumeAutoScroll() {
@@ -213,34 +222,48 @@ class _DSLogViewerState extends State<DSLogViewer> {
                   Semantics(
                     label: 'Resume auto-scroll to latest',
                     button: true,
-                    child: GestureDetector(
-                      onTap: _resumeAutoScroll,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 2,
-                        ),
-                        decoration: BoxDecoration(
-                          color: DSColors.accentCyan.withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(DSRadii.chip),
-                          border: Border.all(
-                            color: DSColors.accentCyan.withOpacity(0.3),
+                    enabled: true,
+                    child: Material(
+                      type: MaterialType.transparency,
+                      child: InkWell(
+                        onTap: _resumeAutoScroll,
+                        borderRadius: BorderRadius.circular(DSRadii.chip),
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(
+                            minWidth: kMinInteractiveDimension,
+                            minHeight: kMinInteractiveDimension,
                           ),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            DSIcon.small(
-                              DSIcons.expand,
-                              color: DSColors.accentCyan,
-                              semanticLabel: 'Scroll to bottom',
+                          child: Container(
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: DSSpacing.sm,
                             ),
-                            const SizedBox(width: 4),
-                            DSText.labelSmall(
-                              'Latest',
-                              color: DSColors.accentCyan,
+                            decoration: BoxDecoration(
+                              color:
+                                  DSColors.accentCyan.withValues(alpha: 0.15),
+                              borderRadius: BorderRadius.circular(DSRadii.chip),
+                              border: Border.all(
+                                color:
+                                    DSColors.accentCyan.withValues(alpha: 0.3),
+                              ),
                             ),
-                          ],
+                            child: const Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                ExcludeSemantics(
+                                  child: DSIcon.small(
+                                    DSIcons.expand,
+                                    color: DSColors.accentCyan,
+                                  ),
+                                ),
+                                SizedBox(width: 4),
+                                DSText.labelSmall(
+                                  'Latest',
+                                  color: DSColors.accentCyan,
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                     ),

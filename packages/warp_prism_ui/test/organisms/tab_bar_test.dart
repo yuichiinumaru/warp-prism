@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
 
-/// Task 1122: DSTabBar widget tests
+/// Task 1122: PrismTabBar widget tests
 ///
 /// Covers: tab select, close, badge rendering, scroll overflow, keyboard nav.
 void main() {
-  group('DSTab', () {
+  group('PrismTab', () {
     test('copyWith creates a copy with overrides', () {
-      final tab = DSTab(
+      final tab = PrismTab(
         id: 'a',
         label: 'Alpha',
         closable: true,
@@ -25,13 +25,13 @@ void main() {
     });
   });
 
-  group('DSTabController', () {
+  group('PrismTabController', () {
     test('initial state reflects provided tabs', () {
-      final controller = DSTabController(
+      final controller = PrismTabController(
         tabs: [
-          DSTab(id: 'a', label: 'A', content: (_) => const SizedBox()),
-          DSTab(id: 'b', label: 'B', content: (_) => const SizedBox()),
-          DSTab(id: 'c', label: 'C', content: (_) => const SizedBox()),
+          PrismTab(id: 'a', label: 'A', content: (_) => const SizedBox()),
+          PrismTab(id: 'b', label: 'B', content: (_) => const SizedBox()),
+          PrismTab(id: 'c', label: 'C', content: (_) => const SizedBox()),
         ],
       );
 
@@ -43,10 +43,10 @@ void main() {
 
     test('select changes active index and notifies', () {
       int notifyCount = 0;
-      final controller = DSTabController(
+      final controller = PrismTabController(
         tabs: [
-          DSTab(id: 'a', label: 'A', content: (_) => const SizedBox()),
-          DSTab(id: 'b', label: 'B', content: (_) => const SizedBox()),
+          PrismTab(id: 'a', label: 'A', content: (_) => const SizedBox()),
+          PrismTab(id: 'b', label: 'B', content: (_) => const SizedBox()),
         ],
       );
       controller.addListener(() => notifyCount++);
@@ -60,8 +60,8 @@ void main() {
 
     test('select is no-op for same index', () {
       int notifyCount = 0;
-      final controller = DSTabController(
-        tabs: [DSTab(id: 'a', label: 'A', content: (_) => const SizedBox())],
+      final controller = PrismTabController(
+        tabs: [PrismTab(id: 'a', label: 'A', content: (_) => const SizedBox())],
       );
       controller.addListener(() => notifyCount++);
 
@@ -72,8 +72,8 @@ void main() {
 
     test('select is no-op for out-of-range index', () {
       int notifyCount = 0;
-      final controller = DSTabController(
-        tabs: [DSTab(id: 'a', label: 'A', content: (_) => const SizedBox())],
+      final controller = PrismTabController(
+        tabs: [PrismTab(id: 'a', label: 'A', content: (_) => const SizedBox())],
       );
       controller.addListener(() => notifyCount++);
 
@@ -84,10 +84,10 @@ void main() {
     });
 
     test('selectById finds the correct tab', () {
-      final controller = DSTabController(
+      final controller = PrismTabController(
         tabs: [
-          DSTab(id: 'a', label: 'A', content: (_) => const SizedBox()),
-          DSTab(id: 'b', label: 'B', content: (_) => const SizedBox()),
+          PrismTab(id: 'a', label: 'A', content: (_) => const SizedBox()),
+          PrismTab(id: 'b', label: 'B', content: (_) => const SizedBox()),
         ],
       );
 
@@ -97,12 +97,12 @@ void main() {
     });
 
     test('add appends tab and selects it by default', () {
-      final controller = DSTabController(
-        tabs: [DSTab(id: 'a', label: 'A', content: (_) => const SizedBox())],
+      final controller = PrismTabController(
+        tabs: [PrismTab(id: 'a', label: 'A', content: (_) => const SizedBox())],
       );
 
       controller.add(
-        DSTab(id: 'b', label: 'B', content: (_) => const SizedBox()),
+        PrismTab(id: 'b', label: 'B', content: (_) => const SizedBox()),
       );
 
       expect(controller.length, 2);
@@ -111,12 +111,12 @@ void main() {
     });
 
     test('add with selectNew=false does not change active index', () {
-      final controller = DSTabController(
-        tabs: [DSTab(id: 'a', label: 'A', content: (_) => const SizedBox())],
+      final controller = PrismTabController(
+        tabs: [PrismTab(id: 'a', label: 'A', content: (_) => const SizedBox())],
       );
 
       controller.add(
-        DSTab(id: 'b', label: 'B', content: (_) => const SizedBox()),
+        PrismTab(id: 'b', label: 'B', content: (_) => const SizedBox()),
         selectNew: false,
       );
 
@@ -125,11 +125,11 @@ void main() {
     });
 
     test('close removes tab and adjusts active index', () {
-      final controller = DSTabController(
+      final controller = PrismTabController(
         tabs: [
-          DSTab(id: 'a', label: 'A', content: (_) => const SizedBox()),
-          DSTab(id: 'b', label: 'B', content: (_) => const SizedBox()),
-          DSTab(id: 'c', label: 'C', content: (_) => const SizedBox()),
+          PrismTab(id: 'a', label: 'A', content: (_) => const SizedBox()),
+          PrismTab(id: 'b', label: 'B', content: (_) => const SizedBox()),
+          PrismTab(id: 'c', label: 'C', content: (_) => const SizedBox()),
         ],
         activeIndex: 1,
       );
@@ -141,11 +141,11 @@ void main() {
     });
 
     test('close adjusts active index when closing before active', () {
-      final controller = DSTabController(
+      final controller = PrismTabController(
         tabs: [
-          DSTab(id: 'a', label: 'A', content: (_) => const SizedBox()),
-          DSTab(id: 'b', label: 'B', content: (_) => const SizedBox()),
-          DSTab(id: 'c', label: 'C', content: (_) => const SizedBox()),
+          PrismTab(id: 'a', label: 'A', content: (_) => const SizedBox()),
+          PrismTab(id: 'b', label: 'B', content: (_) => const SizedBox()),
+          PrismTab(id: 'c', label: 'C', content: (_) => const SizedBox()),
         ],
         activeIndex: 2,
       );
@@ -157,8 +157,8 @@ void main() {
     });
 
     test('close last tab results in empty controller', () {
-      final controller = DSTabController(
-        tabs: [DSTab(id: 'a', label: 'A', content: (_) => const SizedBox())],
+      final controller = PrismTabController(
+        tabs: [PrismTab(id: 'a', label: 'A', content: (_) => const SizedBox())],
       );
 
       controller.close(0);
@@ -169,10 +169,10 @@ void main() {
     });
 
     test('closeById finds and closes the correct tab', () {
-      final controller = DSTabController(
+      final controller = PrismTabController(
         tabs: [
-          DSTab(id: 'a', label: 'A', content: (_) => const SizedBox()),
-          DSTab(id: 'b', label: 'B', content: (_) => const SizedBox()),
+          PrismTab(id: 'a', label: 'A', content: (_) => const SizedBox()),
+          PrismTab(id: 'b', label: 'B', content: (_) => const SizedBox()),
         ],
       );
 
@@ -183,13 +183,13 @@ void main() {
     });
 
     test('setTabs replaces all tabs and resets active index', () {
-      final controller = DSTabController(
-        tabs: [DSTab(id: 'a', label: 'A', content: (_) => const SizedBox())],
+      final controller = PrismTabController(
+        tabs: [PrismTab(id: 'a', label: 'A', content: (_) => const SizedBox())],
       );
 
       controller.setTabs([
-        DSTab(id: 'x', label: 'X', content: (_) => const SizedBox()),
-        DSTab(id: 'y', label: 'Y', content: (_) => const SizedBox()),
+        PrismTab(id: 'x', label: 'X', content: (_) => const SizedBox()),
+        PrismTab(id: 'y', label: 'Y', content: (_) => const SizedBox()),
       ], activeIndex: 1);
 
       expect(controller.length, 2);
@@ -197,25 +197,25 @@ void main() {
     });
 
     test('replace swaps tab at index', () {
-      final controller = DSTabController(
+      final controller = PrismTabController(
         tabs: [
-          DSTab(id: 'a', label: 'A', content: (_) => const SizedBox()),
-          DSTab(id: 'b', label: 'B', content: (_) => const SizedBox()),
+          PrismTab(id: 'a', label: 'A', content: (_) => const SizedBox()),
+          PrismTab(id: 'b', label: 'B', content: (_) => const SizedBox()),
         ],
       );
 
       controller.replace(
         1,
-        DSTab(id: 'z', label: 'Z', content: (_) => const SizedBox()),
+        PrismTab(id: 'z', label: 'Z', content: (_) => const SizedBox()),
       );
 
       expect(controller.tabs[1].id, 'z');
     });
   });
 
-  group('DSTabBar', () {
+  group('PrismTabBar', () {
     Widget buildTestHarness(
-      DSTabController controller, {
+      PrismTabController controller, {
       ValueChanged<String>? onClose,
     }) {
       return MaterialApp(
@@ -225,8 +225,8 @@ void main() {
             height: 600,
             child: Column(
               children: [
-                DSTabBar(controller: controller, onClose: onClose),
-                Expanded(child: DSTabView(controller: controller)),
+                PrismTabBar(controller: controller, onClose: onClose),
+                Expanded(child: PrismTabView(controller: controller)),
               ],
             ),
           ),
@@ -235,10 +235,10 @@ void main() {
     }
 
     testWidgets('renders tab labels', (tester) async {
-      final controller = DSTabController(
+      final controller = PrismTabController(
         tabs: [
-          DSTab(id: 'a', label: 'Alpha', content: (_) => const SizedBox()),
-          DSTab(id: 'b', label: 'Beta', content: (_) => const SizedBox()),
+          PrismTab(id: 'a', label: 'Alpha', content: (_) => const SizedBox()),
+          PrismTab(id: 'b', label: 'Beta', content: (_) => const SizedBox()),
         ],
       );
       addTearDown(controller.dispose);
@@ -250,10 +250,10 @@ void main() {
     });
 
     testWidgets('selecting a tab updates active index', (tester) async {
-      final controller = DSTabController(
+      final controller = PrismTabController(
         tabs: [
-          DSTab(id: 'a', label: 'Alpha', content: (_) => const SizedBox()),
-          DSTab(id: 'b', label: 'Beta', content: (_) => const SizedBox()),
+          PrismTab(id: 'a', label: 'Alpha', content: (_) => const SizedBox()),
+          PrismTab(id: 'b', label: 'Beta', content: (_) => const SizedBox()),
         ],
       );
       addTearDown(controller.dispose);
@@ -267,9 +267,9 @@ void main() {
     });
 
     testWidgets('renders badge count', (tester) async {
-      final controller = DSTabController(
+      final controller = PrismTabController(
         tabs: [
-          DSTab(
+          PrismTab(
             id: 'a',
             label: 'Alpha',
             badgeCount: 5,
@@ -285,9 +285,9 @@ void main() {
     });
 
     testWidgets('renders close button for closable tabs', (tester) async {
-      final controller = DSTabController(
+      final controller = PrismTabController(
         tabs: [
-          DSTab(
+          PrismTab(
             id: 'a',
             label: 'Alpha',
             closable: true,
@@ -305,9 +305,9 @@ void main() {
     testWidgets('does not render close button for non-closable tabs', (
       tester,
     ) async {
-      final controller = DSTabController(
+      final controller = PrismTabController(
         tabs: [
-          DSTab(
+          PrismTab(
             id: 'a',
             label: 'Alpha',
             closable: false,
@@ -324,15 +324,15 @@ void main() {
 
     testWidgets('onClose callback receives correct tab id', (tester) async {
       String? closedId;
-      final controller = DSTabController(
+      final controller = PrismTabController(
         tabs: [
-          DSTab(
+          PrismTab(
             id: 'a',
             label: 'Alpha',
             closable: true,
             content: (_) => const SizedBox(),
           ),
-          DSTab(
+          PrismTab(
             id: 'b',
             label: 'Beta',
             closable: true,
@@ -354,9 +354,9 @@ void main() {
     });
 
     testWidgets('renders icon when provided', (tester) async {
-      final controller = DSTabController(
+      final controller = PrismTabController(
         tabs: [
-          DSTab(
+          PrismTab(
             id: 'a',
             label: 'Alpha',
             icon: Icons.star,
@@ -372,14 +372,14 @@ void main() {
     });
 
     testWidgets('tab view renders active tab content', (tester) async {
-      final controller = DSTabController(
+      final controller = PrismTabController(
         tabs: [
-          DSTab(
+          PrismTab(
             id: 'a',
             label: 'Alpha',
             content: (_) => const Text('Content A'),
           ),
-          DSTab(
+          PrismTab(
             id: 'b',
             label: 'Beta',
             content: (_) => const Text('Content B'),
@@ -404,12 +404,67 @@ void main() {
     testWidgets('empty controller renders tab bar without crashing', (
       tester,
     ) async {
-      final controller = DSTabController(tabs: []);
+      final controller = PrismTabController(tabs: []);
       addTearDown(controller.dispose);
 
       await tester.pumpWidget(buildTestHarness(controller));
 
-      expect(find.byType(DSTabBar), findsOneWidget);
+      expect(find.byType(PrismTabBar), findsOneWidget);
+    });
+
+    testWidgets('many tabs overflow enables horizontal scroll extent', (
+      tester,
+    ) async {
+      // Narrow viewport so long tab labels exceed available width.
+      final tabs = List.generate(
+        12,
+        (i) => PrismTab(
+          id: 't$i',
+          label: 'Very Long Tab Label $i',
+          content: (_) => const SizedBox(),
+        ),
+      );
+      final controller = PrismTabController(tabs: tabs);
+      addTearDown(controller.dispose);
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SizedBox(
+              width: 320,
+              height: 400,
+              child: Column(
+                children: [
+                  PrismTabBar(controller: controller),
+                  Expanded(child: PrismTabView(controller: controller)),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // ListView.builder horizontal scroll must overflow.
+      final scrollables = find.byType(Scrollable);
+      expect(scrollables, findsWidgets);
+
+      final scrollable = tester.widget<Scrollable>(scrollables.first);
+      final position = scrollable.controller?.position;
+      // Prefer controller position when present; fall back to primary scroll.
+      final maxExtent = position?.maxScrollExtent ??
+          tester
+              .state<ScrollableState>(scrollables.first)
+              .position
+              .maxScrollExtent;
+      expect(
+        maxExtent,
+        greaterThan(0),
+        reason: 'Many tabs in a narrow bar must overflow (maxScrollExtent>0)',
+      );
+
+      // Right scroll arrow appears when overflow is present (showScrollFades default).
+      expect(find.bySemanticsLabel('Scroll tab bar'), findsWidgets);
     });
   });
 }

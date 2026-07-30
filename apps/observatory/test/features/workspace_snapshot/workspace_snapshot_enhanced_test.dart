@@ -1,13 +1,17 @@
 /// Tests for the enhanced workspace snapshot (Task 0020).
 ///
 /// Tests search filtering, filter chip toggle, graph projection,
-/// detail inspector open/close, deep-link resolution, and derived
-/// metric computation.
+/// detail inspector open/close, deep-link resolution, derived
+/// metric computation, real search debounce coalescing, and
+/// provider-level selection / projection contracts.
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:warp_prism_observatory/data/models/workspace_graph.dart';
 import 'package:warp_prism_observatory/data/models/workspace_snapshot.dart';
 import 'package:warp_prism_observatory/data/models/task_contracts.dart';
+import 'package:warp_prism_observatory/data/services/workspace_graph.dart';
 import 'package:warp_prism_observatory/data/services/workspace_graph_builder.dart';
+import 'package:warp_prism_observatory/features/workspace_snapshot/workspace_snapshot_provider.dart';
 
 void main() {
   group('WorkspaceSnapshot search', () {
@@ -194,6 +198,183 @@ void main() {
       expect(changedBy.first.targetId, equals('task:0020'));
     });
   });
+
+  group('projectGraph modes', () {
+    late WorkspaceGraphResult graph;
+
+    setUp(() {
+      final snapshot = _buildTestSnapshot();
+      const builder = WorkspaceGraphBuilder();
+      graph = builder.build(snapshot.allAssets.toList());
+    });
+
+    test('containment mode keeps contains edges only', () {
+      final projection = projectGraph(graph, GraphMode.containment, '');
+      for (final edge in projection.edges) {
+        expect(edge.edgeType, equals(EdgeKind.contains.name));
+      }
+    });
+
+    test('operational mode keeps uses/references/dependsOn edges', () {
+      final projection = projectGraph(graph, GraphMode.operational, '');
+      final allowed = {
+        EdgeKind.uses.name,
+        EdgeKind.references.name,
+        EdgeKind.dependsOn.name,
+      };
+      expect(projection.edges, isNotEmpty);
+      for (final edge in projection.edges) {
+        expect(allowed.contains(edge.edgeType), isTrue);
+      }
+      expect(
+        projection.nodes.any((n) => n.id == 'agent:architect'),
+        isTrue,
+      );
+    });
+
+    test('query filters projected nodes by name', () {
+      final projection = projectGraph(graph, GraphMode.operational, 'architect');
+      expect(projection.nodes, isNotEmpty);
+      expect(
+        projection.nodes.every(
+          (n) =>
+              n.label.toLowerCase().contains('architect') ||
+              n.id.contains('architect'),
+        ),
+        isTrue,
+      );
+    });
+  });
+
+  group('debouncedSearchQueryProvider', () {
+    test('coalesces rapid updates to last value after quiet period', () async {
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+
+      // Initialize notifier + listen subscription.
+      expect(container.read(debouncedSearchQueryProvider), isEmpty);
+      expect(container.read(searchQueryProvider), isEmpty);
+
+      container.read(searchQueryProvider.notifier).state = 'a';
+      container.read(searchQueryProvider.notifier).state = 'ab';
+      container.read(searchQueryProvider.notifier).state = 'abc';
+
+      // Debounced value must not advance immediately.
+      expect(container.read(debouncedSearchQueryProvider), isEmpty);
+      expect(container.read(searchQueryProvider), equals('abc'));
+
+      await Future<void>.delayed(
+        kSearchDebounceDuration + const Duration(milliseconds: 50),
+      );
+
+      expect(container.read(debouncedSearchQueryProvider), equals('abc'));
+    });
+
+    test('emits intermediate value only after full debounce window', () async {
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+
+      expect(container.read(debouncedSearchQueryProvider), isEmpty);
+
+      container.read(searchQueryProvider.notifier).state = 'hello';
+      expect(container.read(debouncedSearchQueryProvider), isEmpty);
+
+      await Future<void>.delayed(
+        kSearchDebounceDuration + const Duration(milliseconds: 50),
+      );
+      expect(container.read(debouncedSearchQueryProvider), equals('hello'));
+
+      container.read(searchQueryProvider.notifier).state = 'world';
+      // Stale debounced value until next quiet period elapses.
+      expect(container.read(debouncedSearchQueryProvider), equals('hello'));
+
+      await Future<void>.delayed(
+        kSearchDebounceDuration + const Duration(milliseconds: 50),
+      );
+      expect(container.read(debouncedSearchQueryProvider), equals('world'));
+    });
+  });
+
+  group('selection + filteredAssets providers', () {
+    ProviderContainer makeContainer() {
+      final container = ProviderContainer(
+        overrides: [
+          workspaceSnapshotProvider.overrideWith(
+            () => _FixedEnhancedSnapshotNotifier(),
+          ),
+        ],
+      );
+      addTearDown(container.dispose);
+      return container;
+    }
+
+    test('select and clear selection open/close inspector id', () async {
+      final container = makeContainer();
+      await container.read(workspaceSnapshotProvider.future);
+
+      expect(container.read(selectedAssetIdProvider), isNull);
+      expect(container.read(selectedAssetProvider), isNull);
+
+      container.read(selectedAssetIdProvider.notifier).state = 'agent:architect';
+      expect(container.read(selectedAssetIdProvider), equals('agent:architect'));
+      expect(container.read(selectedAssetProvider)?.name, equals('Architect'));
+
+      container.read(selectedAssetIdProvider.notifier).state = null;
+      expect(container.read(selectedAssetIdProvider), isNull);
+      expect(container.read(selectedAssetProvider), isNull);
+    });
+
+    test('search + kind filter combine on filteredAssetsProvider', () async {
+      final container = makeContainer();
+      await container.read(workspaceSnapshotProvider.future);
+
+      // Seed debounced query directly via quiet-period wait after set.
+      container.read(searchQueryProvider.notifier).state = 'review';
+      await Future<void>.delayed(
+        kSearchDebounceDuration + const Duration(milliseconds: 50),
+      );
+
+      container.read(kindFilterProvider.notifier).state = {AssetKind.skill};
+
+      final results = container.read(filteredAssetsProvider);
+      expect(results, isNotEmpty);
+      expect(results.every((a) => a.kind == AssetKind.skill), isTrue);
+      expect(
+        results.any((a) => a.name.toLowerCase().contains('review')),
+        isTrue,
+      );
+    });
+
+    test('graphModeProvider switches projection via provider', () async {
+      final container = makeContainer();
+      await container.read(workspaceSnapshotProvider.future);
+
+      container.read(graphModeProvider.notifier).state = GraphMode.containment;
+      final containment = container.read(graphProjectionProvider);
+
+      container.read(graphModeProvider.notifier).state = GraphMode.operational;
+      final operational = container.read(graphProjectionProvider);
+
+      // Modes may share nodes but edge type sets differ when edges exist.
+      final containmentTypes = containment.edges.map((e) => e.edgeType).toSet();
+      final operationalTypes = operational.edges.map((e) => e.edgeType).toSet();
+      if (containment.edges.isNotEmpty) {
+        expect(containmentTypes, equals({EdgeKind.contains.name}));
+      }
+      if (operational.edges.isNotEmpty) {
+        expect(
+          operationalTypes.intersection({EdgeKind.contains.name}),
+          isEmpty,
+        );
+      }
+    });
+  });
+}
+
+/// Async notifier that returns the shared enhanced fixture snapshot.
+class _FixedEnhancedSnapshotNotifier extends WorkspaceSnapshotNotifier {
+  @override
+  Future<WorkspaceSnapshot> build() async => _buildTestSnapshot();
 }
 
 /// Build a test snapshot with representative assets.

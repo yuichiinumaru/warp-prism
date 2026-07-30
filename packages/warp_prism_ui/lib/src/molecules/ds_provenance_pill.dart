@@ -81,9 +81,9 @@ class DSProvenancePill extends StatelessWidget {
         height: _height,
         padding: EdgeInsets.symmetric(horizontal: showLabel ? 8 : 6),
         decoration: BoxDecoration(
-          color: _color.withOpacity(0.15),
+          color: _color.withValues(alpha: 0.15),
           borderRadius: BorderRadius.circular(DSRadii.full),
-          border: Border.all(color: _color.withOpacity(0.3), width: 1),
+          border: Border.all(color: _color.withValues(alpha: 0.3), width: 1),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,

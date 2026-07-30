@@ -9,12 +9,18 @@ import 'package:warp_prism_ui/src/tokens/tokens.dart';
 /// 1. WCAG AA contrast ratios on primary text/background pairs
 /// 2. Text color token values
 /// 3. Semantic color token existence and distinctness
+///
+/// Focus / keyboard semantics regression lives alongside this file in
+/// `test/accessibility/design_system_accessibility_test.dart` (shell tab
+/// order, chip/filter/sidebar/topbar focus). Both suites form the Task 1010
+/// exit gate.
 
 /// Calculate relative luminance per WCAG 2.x
 double _relativeLuminance(Color c) {
-  double r = c.red / 255.0;
-  double g = c.green / 255.0;
-  double b = c.blue / 255.0;
+  // Flutter 3.27+ Color.r/g/b are 0..1 channel components (not deprecated .red).
+  double r = c.r;
+  double g = c.g;
+  double b = c.b;
   r = r <= 0.03928 ? r / 12.92 : math.pow((r + 0.055) / 1.055, 2.4).toDouble();
   g = g <= 0.03928 ? g / 12.92 : math.pow((g + 0.055) / 1.055, 2.4).toDouble();
   b = b <= 0.03928 ? b / 12.92 : math.pow((b + 0.055) / 1.055, 2.4).toDouble();
@@ -237,10 +243,14 @@ void main() {
 
   group('Focus Indicator Colors', () {
     test('accentCyan is bright enough for focus ring visibility', () {
+      // Channel components are 0..1; scale to 0..255 sum for brightness gate.
+      final channelSum =
+          (DSColors.accentCyan.r +
+              DSColors.accentCyan.g +
+              DSColors.accentCyan.b) *
+          255.0;
       expect(
-        DSColors.accentCyan.red +
-            DSColors.accentCyan.green +
-            DSColors.accentCyan.blue,
+        channelSum,
         greaterThan(200),
         reason: 'accentCyan must be bright enough for focus indicators',
       );

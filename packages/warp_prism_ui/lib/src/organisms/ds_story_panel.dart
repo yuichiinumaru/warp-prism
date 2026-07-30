@@ -41,7 +41,7 @@ class DSStoryPanel extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: color.withOpacity(0.15),
+                    color: color.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(DSRadii.md),
                   ),
                   child: DSIcon(icon!, color: color),
@@ -72,7 +72,7 @@ class DSStoryPanel extends StatelessWidget {
 
           // Insights
           if (insights.isEmpty)
-            DSStateSurface.empty(
+            const DSStateSurface.empty(
               icon: Icons.insights_outlined,
               title: 'No insights available',
               subtitle:
@@ -105,6 +105,15 @@ class _InsightRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final narrative = insight is DSStoryNarrativeInsight
+        ? insight as DSStoryNarrativeInsight
+        : null;
+    final indicatorColor =
+        insight.color ??
+        (narrative != null
+            ? _riskColor(narrative.riskLevel)
+            : DSColors.accentCyan);
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -114,7 +123,7 @@ class _InsightRow extends StatelessWidget {
           height: 8,
           margin: const EdgeInsets.only(top: 6),
           decoration: BoxDecoration(
-            color: insight.color ?? DSColors.accentCyan,
+            color: indicatorColor,
             shape: BoxShape.circle,
           ),
         ),
@@ -125,10 +134,33 @@ class _InsightRow extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              DSText.bodyMedium(insight.text),
+              Row(
+                children: [
+                  Expanded(child: DSText.bodyMedium(insight.text)),
+                  if (narrative != null &&
+                      narrative.riskLevel != InsightRiskLevel.none) ...[
+                    const SizedBox(width: DSSpacing.sm),
+                    _RiskBadge(level: narrative.riskLevel),
+                  ],
+                ],
+              ),
               if (insight.detail != null) ...[
                 const SizedBox(height: 2),
                 DSText.bodySmall(insight.detail!, color: DSColors.textTertiary),
+              ],
+              if (narrative?.evidence != null) ...[
+                const SizedBox(height: 4),
+                DSText.bodySmall(
+                  'Evidence: ${narrative!.evidence}',
+                  color: DSColors.textSecondary,
+                ),
+              ],
+              if (narrative?.connection != null) ...[
+                const SizedBox(height: 2),
+                DSText.bodySmall(
+                  'Connection: ${narrative!.connection}',
+                  color: DSColors.textSecondary,
+                ),
               ],
             ],
           ),
@@ -140,11 +172,59 @@ class _InsightRow extends StatelessWidget {
           DSText(
             insight.value!,
             variant: DSTextVariant.numericMedium,
-            color: insight.color ?? DSColors.accentCyan,
+            color: indicatorColor,
           ),
         ],
       ],
     );
+  }
+}
+
+class _RiskBadge extends StatelessWidget {
+  final InsightRiskLevel level;
+
+  const _RiskBadge({required this.level});
+
+  @override
+  Widget build(BuildContext context) {
+    final color = _riskColor(level);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.15),
+        borderRadius: BorderRadius.circular(DSRadii.sm),
+      ),
+      child: DSText.labelSmall(_riskLabel(level), color: color),
+    );
+  }
+}
+
+Color _riskColor(InsightRiskLevel level) {
+  switch (level) {
+    case InsightRiskLevel.none:
+      return DSColors.accentCyan;
+    case InsightRiskLevel.low:
+      return DSColors.statusInfo;
+    case InsightRiskLevel.medium:
+      return DSColors.statusWarning;
+    case InsightRiskLevel.high:
+    case InsightRiskLevel.critical:
+      return DSColors.statusError;
+  }
+}
+
+String _riskLabel(InsightRiskLevel level) {
+  switch (level) {
+    case InsightRiskLevel.none:
+      return 'none';
+    case InsightRiskLevel.low:
+      return 'low';
+    case InsightRiskLevel.medium:
+      return 'medium';
+    case InsightRiskLevel.high:
+      return 'high';
+    case InsightRiskLevel.critical:
+      return 'critical';
   }
 }
 
@@ -242,7 +322,7 @@ class DSStoryCardQuick extends StatelessWidget {
             : SystemMouseCursors.basic,
         child: DSGlassPanelSimple(
           padding: const EdgeInsets.all(DSSpacing.md),
-          borderColor: accentColor.withOpacity(0.2),
+          borderColor: accentColor.withValues(alpha: 0.2),
           child: Row(
             children: [
               if (icon != null) ...[
@@ -270,7 +350,7 @@ class DSStoryCardQuick extends StatelessWidget {
                     vertical: 2,
                   ),
                   decoration: BoxDecoration(
-                    color: accentColor.withOpacity(0.15),
+                    color: accentColor.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(DSRadii.sm),
                   ),
                   child: DSText.labelSmall(trend!, color: accentColor),

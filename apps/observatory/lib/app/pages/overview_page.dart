@@ -1,111 +1,121 @@
-/// Overview dashboard — wired to the feature module.
+/// Overview dashboard — wired to the feature module and workspace providers.
 ///
 /// This page demonstrates the shell-level state contract:
 /// it shows loading → data → empty/error transitions using
 /// [ShellStateHandler] for consistent fallback rendering.
 ///
-/// The page simulates a load cycle (loading state → data) to prove
-/// that the shell distinguishes loading from empty from error.
+/// Metrics are derived from [workspaceSnapshotAsyncProvider] and
+/// [workspaceDiagnosticsAsyncProvider] via [OverviewProvider] — never
+/// hardcoded in the widget tree.
 library;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../data/models/data_models.dart';
+import '../../data/providers/workspace_providers.dart';
+import '../../data/repositories/workspace_load_state.dart';
 import '../../features/overview/overview.dart';
 import '../../features/shell/shell_state_handler.dart';
 
 /// Overview dashboard with shell-level state handling.
 ///
-/// Demonstrates three distinct states:
+/// Demonstrates four distinct states:
 /// 1. **Loading**: shown during initial data fetch
 /// 2. **Data**: rendered by [OverviewPage] when metrics are available
-/// 3. **Empty**: shown when workspace has no assets
+/// 3. **Empty**: shown when workspace has no assets (still renders zero metrics)
 /// 4. **Error**: shown when a load/parse failure occurs
-class OverviewPageShell extends StatefulWidget {
-  /// Pre-set load state for testing. When null, simulates a load cycle.
-  final _ShellDemoState? forcedState;
+class OverviewPageShell extends ConsumerWidget {
+  /// Optional pre-computed metrics for widget tests.
+  ///
+  /// When non-null, the shell skips provider watches and renders
+  /// [OverviewPage] directly. Production code leaves this null.
+  final OverviewMetrics? forcedMetrics;
 
-  const OverviewPageShell({super.key, this.forcedState});
+  /// Optional forced error message for widget tests.
+  final String? forcedError;
 
-  @override
-  State<OverviewPageShell> createState() => _OverviewPageShellState();
-}
+  /// When true, renders the loading surface regardless of provider state.
+  final bool forceLoading;
 
-enum _ShellDemoState { loading, data, empty, error }
+  const OverviewPageShell({
+    super.key,
+    this.forcedMetrics,
+    this.forcedError,
+    this.forceLoading = false,
+  });
 
-class _OverviewPageShellState extends State<OverviewPageShell> {
   static const _provider = OverviewProvider();
 
-  _ShellDemoState _state = _ShellDemoState.loading;
-  OverviewMetrics? _metrics;
-  String? _errorMessage;
-
   @override
-  void initState() {
-    super.initState();
-    if (widget.forcedState != null) {
-      _state = widget.forcedState!;
-      if (_state == _ShellDemoState.data) {
-        _metrics = _provider.compute(assets: const []);
-      }
-    } else {
-      _simulateLoad();
+  Widget build(BuildContext context, WidgetRef ref) {
+    if (forceLoading) {
+      return ShellStateHandler.buildLoading(
+        title: 'Loading workspace...',
+        subtitle: 'Parsing repository data and computing metrics',
+      );
     }
-  }
 
-  /// Simulates an async load cycle to demonstrate state transitions.
-  Future<void> _simulateLoad() async {
-    setState(() => _state = _ShellDemoState.loading);
-
-    // Simulate network/parse delay
-    await Future<void>.delayed(const Duration(milliseconds: 300));
-
-    if (!mounted) return;
-
-    // Compute metrics from empty data (workspace loader not yet wired).
-    // This produces the "empty workspace" story from OverviewProvider.
-    final metrics = _provider.compute(assets: const []);
-
-    setState(() {
-      _metrics = metrics;
-      _state = metrics.totalAssets == 0
-          ? _ShellDemoState.empty
-          : _ShellDemoState.data;
-    });
-  }
-
-  void _retry() {
-    _simulateLoad();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    switch (_state) {
-      case _ShellDemoState.loading:
-        return ShellStateHandler.buildLoading(
-          title: 'Loading workspace...',
-          subtitle: 'Parsing repository data and computing metrics',
-        );
-
-      case _ShellDemoState.empty:
-        // Even when empty, we render OverviewPage with zero metrics
-        // so the user sees the full dashboard structure with zeros.
-        // The story panel communicates "no data" narratively.
-        if (_metrics != null) {
-          return OverviewPage(metrics: _metrics!);
-        }
-        return ShellStateHandler.buildEmpty(
-          surfaceName: 'Overview',
-          subtitle: 'Load mock workspace data to see derived metrics.',
-        );
-
-      case _ShellDemoState.data:
-        return OverviewPage(metrics: _metrics!);
-
-      case _ShellDemoState.error:
-        return ShellStateHandler.buildError(
-          title: 'Failed to load workspace',
-          errorMessage: _errorMessage ?? 'An unexpected error occurred.',
-          onRetry: _retry,
-        );
+    if (forcedError != null) {
+      return ShellStateHandler.buildError(
+        title: 'Failed to load workspace',
+        errorMessage: forcedError!,
+      );
     }
+
+    if (forcedMetrics != null) {
+      return OverviewPage(metrics: forcedMetrics!);
+    }
+
+    final loadStateAsync = ref.watch(workspaceSnapshotAsyncProvider);
+    final diagnosticsAsync = ref.watch(workspaceDiagnosticsAsyncProvider);
+
+    return loadStateAsync.when(
+      loading: () => ShellStateHandler.buildLoading(
+        title: 'Loading workspace...',
+        subtitle: 'Parsing repository data and computing metrics',
+      ),
+      error: (error, _) => ShellStateHandler.buildError(
+        title: 'Failed to load workspace',
+        errorMessage: error.toString(),
+        onRetry: () => ref.invalidate(workspaceSnapshotAsyncProvider),
+      ),
+      data: (loadState) => _buildFromLoadState(
+        loadState,
+        diagnostics: diagnosticsAsync.asData?.value.diagnostics ?? const [],
+        onRetry: () => ref.invalidate(workspaceSnapshotAsyncProvider),
+      ),
+    );
+  }
+
+  Widget _buildFromLoadState(
+    WorkspaceLoadState loadState, {
+    required List<GovernanceDiagnostic> diagnostics,
+    required VoidCallback onRetry,
+  }) {
+    if (loadState.status == WorkspaceLoadStatus.error) {
+      return ShellStateHandler.buildError(
+        title: 'Failed to load workspace',
+        errorMessage: loadState.errorMessage ?? 'An unexpected error occurred.',
+        onRetry: onRetry,
+      );
+    }
+
+    final assets = loadState.snapshot?.allAssets.toList() ?? const [];
+
+    // Unified empty chrome via ShellStateHandler (Task 0413 path-to-100).
+    if (assets.isEmpty) {
+      return ShellStateHandler.buildEmpty(
+        surfaceName: 'Overview',
+        icon: Icons.dashboard_outlined,
+        subtitle:
+            'The workspace is loaded but contains no assets. '
+            'Totals and operational risk will appear once the corpus is populated.',
+        actionLabel: 'Retry load',
+        onAction: onRetry,
+      );
+    }
+
+    final metrics = _provider.compute(assets: assets, diagnostics: diagnostics);
+    return OverviewPage(metrics: metrics);
   }
 }

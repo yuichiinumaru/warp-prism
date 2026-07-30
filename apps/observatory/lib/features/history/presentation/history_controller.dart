@@ -1,33 +1,35 @@
 /// State management for the History workspace timeline.
 ///
 /// Holds filter state (project, type, task, skill/workflow, impact_tags)
-/// and selected entry, driving the [HistoryPage] without embedding
+/// and selected entry, driving the History page without embedding
 /// mock data in the widget tree.
+///
+/// Consumes [HistoryEntry] from the Task 0711 History read model.
 library;
 
 import 'package:flutter/foundation.dart';
-import 'package:warp_prism_observatory/data/models/changelog_contracts.dart';
+import 'package:warp_prism_observatory/data/repositories/history_repository.dart';
+import 'package:warp_prism_observatory/features/history/presentation/history_view_mode.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
-import 'history_view_mode.dart';
 
 /// A project-story group: one project's changelog entries with narrative.
 @immutable
 class ProjectStoryGroup {
   final String project;
-  final List<ChangelogMetadata> entries;
+  final List<HistoryEntry> entries;
 
   const ProjectStoryGroup({required this.project, required this.entries});
 
   /// Narrative: count of entries, types involved, date range.
   String get summary {
     final types = entries.map((e) => e.type.name).toSet();
-    final sorted = entries.toList()..sort((a, b) => a.date.compareTo(b.date));
-    final first = sorted.first.date;
-    final last = sorted.last.date;
-    final range = first == last
-        ? '${first.year}-${first.month.toString().padLeft(2, '0')}-${first.day.toString().padLeft(2, '0')}'
-        : '${first.month.toString().padLeft(2, '0')}/${first.day.toString().padLeft(2, '0')}'
-              ' – ${last.month.toString().padLeft(2, '0')}/${last.day.toString().padLeft(2, '0')}';
+    final dated = entries.where((e) => e.date != null).toList()
+      ..sort((a, b) => a.date!.compareTo(b.date!));
+    final range = dated.isEmpty
+        ? 'no date'
+        : dated.first.date == dated.last.date
+        ? _formatDate(dated.first.date!)
+        : '${_formatShort(dated.first.date!)} – ${_formatShort(dated.last.date!)}';
     return '${entries.length} change${entries.length == 1 ? '' : 's'} '
         '(${types.join(', ')}) · $range';
   }
@@ -35,13 +37,19 @@ class ProjectStoryGroup {
   /// Tasks involved in this project group.
   List<String> get taskIds =>
       entries.map((e) => e.task).where((t) => t.isNotEmpty).toList();
+
+  static String _formatDate(DateTime d) =>
+      '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
+
+  static String _formatShort(DateTime d) =>
+      '${d.month.toString().padLeft(2, '0')}/${d.day.toString().padLeft(2, '0')}';
 }
 
 /// An impact-path node: links a changelog entry to its downstream task
 /// and optionally to skills/workflows it touched.
 @immutable
 class ImpactPathNode {
-  final ChangelogMetadata entry;
+  final HistoryEntry entry;
   final String? resolvedTaskId;
   final List<String> resolvedSkills;
   final List<String> resolvedWorkflows;
@@ -62,8 +70,8 @@ enum HistoryFilterCategory { project, type, task, skillWorkflow, impactTag }
 /// Immutable state snapshot for the History workspace.
 @immutable
 class HistoryState {
-  /// All parsed changelog entries from the read model.
-  final List<ChangelogMetadata> allEntries;
+  /// All parsed history entries from the Task 0711 read model.
+  final List<HistoryEntry> allEntries;
 
   /// Currently selected filter values, keyed by category.
   final Map<HistoryFilterCategory, Set<String>> activeFilters;
@@ -77,7 +85,7 @@ class HistoryState {
   /// Whether the read model is still loading.
   final bool isLoading;
 
-  /// Error message if parsing failed.
+  /// Error message if loading/parsing failed.
   final String? error;
 
   const HistoryState({
@@ -89,9 +97,24 @@ class HistoryState {
     this.error,
   });
 
+  /// Build state from a [HistoryTimeline] read model (Task 0711).
+  factory HistoryState.fromTimeline(
+    HistoryTimeline timeline, {
+    HistoryViewMode viewMode = HistoryViewMode.timeline,
+    String? selectedEntryId,
+    Map<HistoryFilterCategory, Set<String>> activeFilters = const {},
+  }) {
+    return HistoryState(
+      allEntries: timeline.entries,
+      viewMode: viewMode,
+      selectedEntryId: selectedEntryId,
+      activeFilters: activeFilters,
+    );
+  }
+
   /// Entries after applying all active filters.
-  List<ChangelogMetadata> get filteredEntries {
-    var entries = List<ChangelogMetadata>.from(allEntries);
+  List<HistoryEntry> get filteredEntries {
+    var entries = List<HistoryEntry>.from(allEntries);
 
     for (final entry in activeFilters.entries) {
       if (entry.value.isEmpty) continue;
@@ -108,17 +131,28 @@ class HistoryState {
           entries = entries.where((e) => entry.value.contains(e.task)).toList();
         case HistoryFilterCategory.skillWorkflow:
           entries = entries
-              .where((e) => e.skills.any((s) => entry.value.contains(s)))
+              .where(
+                (e) =>
+                    e.resolvedSkills.any((s) => entry.value.contains(s)) ||
+                    e.resolvedWorkflows.any((w) => entry.value.contains(w)),
+              )
               .toList();
         case HistoryFilterCategory.impactTag:
           entries = entries
-              .where((e) => e.impact.any((t) => entry.value.contains(t)))
+              .where((e) => e.impactTags.any((t) => entry.value.contains(t)))
               .toList();
       }
     }
 
-    // Sort chronologically (newest first)
-    entries.sort((a, b) => b.date.compareTo(a.date));
+    // Sort chronologically (newest first; null dates last).
+    entries.sort((a, b) {
+      if (a.date == null && b.date == null) return a.id.compareTo(b.id);
+      if (a.date == null) return 1;
+      if (b.date == null) return -1;
+      final byDate = b.date!.compareTo(a.date!);
+      if (byDate != 0) return byDate;
+      return a.id.compareTo(b.id);
+    });
     return entries;
   }
 
@@ -126,40 +160,52 @@ class HistoryState {
   Set<String> availableFilters(HistoryFilterCategory category) {
     switch (category) {
       case HistoryFilterCategory.project:
-        return allEntries.map((e) => e.project).toSet();
+        return allEntries
+            .map((e) => e.project)
+            .where((p) => p.isNotEmpty)
+            .toSet();
       case HistoryFilterCategory.type:
         return allEntries.map((e) => e.type.name).toSet();
       case HistoryFilterCategory.task:
-        return allEntries.map((e) => e.task).toSet();
+        return allEntries.map((e) => e.task).where((t) => t.isNotEmpty).toSet();
       case HistoryFilterCategory.skillWorkflow:
-        return allEntries.expand((e) => e.skills).toSet();
+        return {
+          ...allEntries.expand((e) => e.resolvedSkills),
+          ...allEntries.expand((e) => e.resolvedWorkflows),
+        };
       case HistoryFilterCategory.impactTag:
-        return allEntries.expand((e) => e.impact).toSet();
+        return allEntries.expand((e) => e.impactTags).toSet();
     }
   }
 
-  /// Convert to [DSTimelineEntry]s for the timeline organism.
-  List<DSTimelineEntry> toTimelineEntries() {
+  /// Convert to [PrismTimelineEntry]s for the timeline organism.
+  List<PrismTimelineEntry> toTimelineEntries() {
     return filteredEntries.map((e) {
-      final dateStr =
-          '${e.date.year}-${e.date.month.toString().padLeft(2, '0')}-${e.date.day.toString().padLeft(2, '0')}';
-      return DSTimelineEntry(
+      final dateStr = e.date == null
+          ? 'unknown'
+          : '${e.date!.year}-${e.date!.month.toString().padLeft(2, '0')}-${e.date!.day.toString().padLeft(2, '0')}';
+      final taskLabel = e.task.isEmpty ? 'unlinked' : e.task;
+      final title = e.title.isNotEmpty
+          ? e.title
+          : '$taskLabel — ${e.type.name}';
+      return PrismTimelineEntry(
         id: e.id,
         date: dateStr,
-        title: '${e.task} — ${e.type.name}',
+        title: title,
         type: e.type.name,
-        project: e.project,
-        taskId: e.task,
-        impacts: e.impact.isEmpty ? null : e.impact,
+        project: e.project.isEmpty ? null : e.project,
+        taskId: e.task.isEmpty ? null : e.task,
+        impacts: e.impactTags.isEmpty ? null : e.impactTags,
       );
     }).toList();
   }
 
   /// Group filtered entries by project for Project Story mode.
   List<ProjectStoryGroup> toProjectStoryGroups() {
-    final map = <String, List<ChangelogMetadata>>{};
+    final map = <String, List<HistoryEntry>>{};
     for (final entry in filteredEntries) {
-      map.putIfAbsent(entry.project, () => []).add(entry);
+      final key = entry.project.isEmpty ? '(no project)' : entry.project;
+      map.putIfAbsent(key, () => []).add(entry);
     }
     return map.entries
         .map((e) => ProjectStoryGroup(project: e.key, entries: e.value))
@@ -169,24 +215,36 @@ class HistoryState {
 
   /// Build impact-path nodes from filtered entries for Impact Story mode.
   ///
-  /// Each entry gets a node. If the entry has task + skills, the path is
-  /// complete; otherwise we expose the gaps explicitly.
+  /// Complete path = task hop + (skill hop OR workflow hop). Missing hops
+  /// stay explicit — never fabricated.
   List<ImpactPathNode> toImpactPathNodes() {
     return filteredEntries.map((entry) {
       final hasTask = entry.task.isNotEmpty;
-      final hasSkills = entry.skills.isNotEmpty;
+      final skills = entry.resolvedSkills;
+      final workflows = entry.resolvedWorkflows;
+      final hasSkillsOrWorkflows = skills.isNotEmpty || workflows.isNotEmpty;
       return ImpactPathNode(
         entry: entry,
         resolvedTaskId: hasTask ? entry.task : null,
-        resolvedSkills: entry.skills,
-        resolvedWorkflows: const [],
-        hasCompletePath: hasTask && hasSkills,
+        resolvedSkills: skills,
+        resolvedWorkflows: workflows,
+        hasCompletePath: hasTask && hasSkillsOrWorkflows,
       );
     }).toList();
   }
 
+  /// Lookup selected entry from the full corpus (not just filtered).
+  HistoryEntry? get selectedEntry {
+    final id = selectedEntryId;
+    if (id == null) return null;
+    for (final e in allEntries) {
+      if (e.id == id) return e;
+    }
+    return null;
+  }
+
   HistoryState copyWith({
-    List<ChangelogMetadata>? allEntries,
+    List<HistoryEntry>? allEntries,
     Map<HistoryFilterCategory, Set<String>>? activeFilters,
     String? selectedEntryId,
     bool clearSelection = false,

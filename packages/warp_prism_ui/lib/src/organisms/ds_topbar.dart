@@ -32,8 +32,8 @@ class DSTopbar extends StatelessWidget {
       label: 'Top navigation bar',
       explicitChildNodes: true,
       child: Container(
-        height: DSSpacing.topbarHeight,
-        decoration: BoxDecoration(
+        constraints: const BoxConstraints(minHeight: DSSpacing.topbarHeight),
+        decoration: const BoxDecoration(
           color: DSColors.obsidianBase,
           border: Border(
             bottom: BorderSide(color: DSColors.borderSubtle, width: 1),
@@ -106,8 +106,8 @@ class _Breadcrumbs extends StatelessWidget {
         children: [
           for (int i = 0; i < items.length; i++) ...[
             if (i > 0) ...[
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: DSSpacing.xs),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: DSSpacing.xs),
                 child: DSIcon.small(
                   Icons.chevron_right,
                   color: DSColors.textTertiary,
@@ -164,7 +164,7 @@ class _DSTopbarActionState extends State<DSTopbarAction> {
   @override
   Widget build(BuildContext context) {
     final bgColor = widget.active
-        ? DSColors.accentCyan.withOpacity(0.15)
+        ? DSColors.accentCyan.withValues(alpha: 0.15)
         : (_isFocused
               ? DSColors.obsidianActive
               : (_isHovered ? DSColors.obsidianHover : DSColors.transparent));
@@ -196,34 +196,39 @@ class _DSTopbarActionState extends State<DSTopbarAction> {
           cursor: SystemMouseCursors.click,
           child: GestureDetector(
             onTap: widget.onTap,
-            child: AnimatedContainer(
-              duration: DSMotion.fast,
-              width: DSSpacing.iconButtonSize,
-              height: DSSpacing.iconButtonSize,
-              decoration: BoxDecoration(
-                color: bgColor,
-                borderRadius: BorderRadius.circular(DSRadii.md),
-                border: _isFocused
-                    ? Border.all(
-                        color: DSColors.accentCyan.withOpacity(0.5),
-                        width: 2,
-                      )
-                    : null,
-              ),
-              child: Stack(
-                children: [
-                  Center(child: DSIcon(widget.icon, color: iconColor)),
-                  if (widget.badge != null && widget.badge! > 0)
-                    Positioned(
-                      top: 4,
-                      right: 4,
-                      child: DSBadge.count(
-                        widget.badge!,
-                        color: DSColors.accentCyan,
-                        size: DSBadgeSize.small,
+            behavior: HitTestBehavior.opaque,
+            child: Container(
+              alignment: Alignment.center,
+              constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+              child: AnimatedContainer(
+                duration: DSMotion.fast,
+                width: DSSpacing.iconButtonSize,
+                height: DSSpacing.iconButtonSize,
+                decoration: BoxDecoration(
+                  color: bgColor,
+                  borderRadius: BorderRadius.circular(DSRadii.md),
+                  border: _isFocused
+                      ? Border.all(
+                          color: DSColors.accentCyan.withValues(alpha: 0.5),
+                          width: 2,
+                        )
+                      : null,
+                ),
+                child: Stack(
+                  children: [
+                    Center(child: DSIcon(widget.icon, color: iconColor)),
+                    if (widget.badge != null && widget.badge! > 0)
+                      Positioned(
+                        top: 4,
+                        right: 4,
+                        child: DSBadge.count(
+                          widget.badge!,
+                          color: DSColors.accentCyan,
+                          size: DSBadgeSize.small,
+                        ),
                       ),
-                    ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

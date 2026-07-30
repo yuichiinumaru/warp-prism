@@ -46,21 +46,37 @@ class DSToast extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final severityColor = entry.severity.color;
-    final severityIcon = entry.severity.icon;
+    final risk = entry.riskTier;
+    final severityColor = risk?.color ?? entry.severity.color;
+    final severityIcon = risk?.icon ?? entry.severity.icon;
+    final severityLabel = risk?.label ?? entry.severity.label;
+
+    // Live-region label encodes severity/risk + title + optional message so
+    // decorative children can stay excluded without dropping message text.
+    final regionSuffix = entry.riskRegion == null
+        ? ''
+        : ' · ${entry.riskRegion}';
+    final liveRegionLabel = entry.message == null
+        ? '$severityLabel$regionSuffix: ${entry.title}'
+        : '$severityLabel$regionSuffix: ${entry.title}. ${entry.message}';
 
     return Semantics(
       container: true,
       explicitChildNodes: true,
       liveRegion: true,
-      label: '${entry.severity.label}: ${entry.title}',
+      label: liveRegionLabel,
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 400),
-        child: DSGlassPanel(
-          variant: DSGlassPanelVariant.elevated,
+        // Glass budget: multi-instance overlays (up to DSToastManager.maxVisible)
+        // must stay on the simple path. Near-opaque fill already reads as glass;
+        // BackdropFilter would stack GPU cost for little visual gain.
+        child: DSGlassPanelSimple(
           radius: DSRadii.md,
           backgroundColor: DSColors.obsidianElevated.withValues(alpha: 0.95),
-          borderColor: DSColors.borderDefault,
+          borderColor: risk != null
+              ? severityColor.withValues(alpha: 0.55)
+              : DSColors.borderDefault,
+          shadows: DSShadows.elevation2,
           padding: EdgeInsets.zero,
           child: Row(
             children: [
@@ -97,7 +113,7 @@ class DSToast extends StatelessWidget {
                     severityIcon,
                     color: severityColor,
                     size: 20,
-                    semanticLabel: entry.severity.label,
+                    semanticLabel: severityLabel,
                   ),
                 ),
               ),
@@ -114,6 +130,38 @@ class DSToast extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                        if (risk != null) ...[
+                          Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: DSSpacing.xs,
+                                  vertical: 2,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: severityColor.withValues(alpha: 0.18),
+                                  borderRadius: BorderRadius.circular(
+                                    DSRadii.sm,
+                                  ),
+                                  border: Border.all(
+                                    color: severityColor.withValues(
+                                      alpha: 0.45,
+                                    ),
+                                  ),
+                                ),
+                                child: Text(
+                                  entry.riskRegion == null
+                                      ? risk.label.toUpperCase()
+                                      : '${risk.label.toUpperCase()} · ${entry.riskRegion}',
+                                  style: DSTypography.labelSmall.copyWith(
+                                    color: severityColor,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: DSSpacing.xxs),
+                        ],
                         Text(
                           entry.title,
                           style: DSTypography.labelLarge.copyWith(
@@ -148,6 +196,11 @@ class DSToast extends StatelessWidget {
                       onPressed: onAction,
                       style: TextButton.styleFrom(
                         foregroundColor: severityColor,
+                        // Enforce WCAG 48x48 minimum interactive target.
+                        minimumSize: const Size(
+                          kMinInteractiveDimension,
+                          kMinInteractiveDimension,
+                        ),
                         padding: const EdgeInsets.symmetric(
                           horizontal: DSSpacing.sm,
                           vertical: DSSpacing.xs,
@@ -155,6 +208,7 @@ class DSToast extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(DSRadii.sm),
                         ),
+                        tapTargetSize: MaterialTapTargetSize.padded,
                       ),
                       child: ExcludeSemantics(
                         child: Text(
@@ -239,6 +293,88 @@ enum DSToastSeverity {
   final String label;
 }
 
+/// Risk tier for geo / ops risk toast variants (Task 1522 / O-28).
+///
+/// Extends the **existing** toast system — not a second toast stack.
+/// Maps to operational/risk colors already present on [DSColors] while still
+/// projecting a base [DSToastSeverity] so [DSToastManager] stays unchanged.
+enum DSToastRiskTier {
+  /// Low residual risk / informational geo notice.
+  low,
+
+  /// Elevated awareness — not blocking.
+  moderate,
+
+  /// High risk requiring operator attention.
+  high,
+
+  /// Critical risk — immediate escalation.
+  critical;
+
+  /// Accent color from the operational/risk palette.
+  ///
+  /// Four-step ladder with **distinct** hex values (not token aliases of each
+  /// other): info blue → warning amber → rule orange → error red. High does
+  /// **not** reuse [DSColors.statusExposed] because that alias equals
+  /// [DSColors.statusError] and would collapse high vs critical chrome.
+  Color get color {
+    switch (this) {
+      case DSToastRiskTier.low:
+        return DSColors.statusInfo;
+      case DSToastRiskTier.moderate:
+        return DSColors.statusWarning;
+      case DSToastRiskTier.high:
+        return DSColors
+            .assetRule; // orange — elevated ops risk, not critical red
+      case DSToastRiskTier.critical:
+        return DSColors.statusError;
+    }
+  }
+
+  /// Icon for this risk tier.
+  IconData get icon {
+    switch (this) {
+      case DSToastRiskTier.low:
+        return DSIcons.info;
+      case DSToastRiskTier.moderate:
+        return DSIcons.warning;
+      case DSToastRiskTier.high:
+        // Distinct from moderate warning amber — report/priority chrome.
+        return Icons.report_outlined;
+      case DSToastRiskTier.critical:
+        return DSIcons.error;
+    }
+  }
+
+  /// Human-readable risk label for accessibility and badge chrome.
+  String get label {
+    switch (this) {
+      case DSToastRiskTier.low:
+        return 'Low risk';
+      case DSToastRiskTier.moderate:
+        return 'Moderate risk';
+      case DSToastRiskTier.high:
+        return 'High risk';
+      case DSToastRiskTier.critical:
+        return 'Critical risk';
+    }
+  }
+
+  /// Base toast severity for manager/live-region fallbacks.
+  DSToastSeverity get asToastSeverity {
+    switch (this) {
+      case DSToastRiskTier.low:
+        return DSToastSeverity.info;
+      case DSToastRiskTier.moderate:
+        return DSToastSeverity.warning;
+      case DSToastRiskTier.high:
+        return DSToastSeverity.error;
+      case DSToastRiskTier.critical:
+        return DSToastSeverity.error;
+    }
+  }
+}
+
 /// Immutable data class representing a single toast notification entry.
 ///
 /// Used by [DSToast] for rendering and by [DSToastManager] for lifecycle
@@ -246,6 +382,9 @@ enum DSToastSeverity {
 ///
 /// The [id] field must be unique within a manager's active entry list.
 /// Use [createdAt] for ordering and auto-dismiss calculations.
+///
+/// Risk-aware toasts use [DSToastEntry.risk] (or set [riskTier]) so geo/ops
+/// risk chrome rides the **same** [DSToastManager] stack (Task 1522 / O-28).
 class DSToastEntry {
   /// Unique identifier for this toast.
   final String id;
@@ -262,6 +401,17 @@ class DSToastEntry {
   /// Optional action button label (e.g., "Undo", "View").
   final String? actionLabel;
 
+  /// Optional entry-owned action callback.
+  ///
+  /// When set, [DSToastManager] invokes this on action press instead of
+  /// only dismissing. Pair with [dismissOnAction] to keep the toast open.
+  final VoidCallback? onAction;
+
+  /// Whether the manager should dismiss this toast after [onAction].
+  ///
+  /// Defaults to `true`. Set to `false` for persistent action toasts.
+  final bool dismissOnAction;
+
   /// How long this toast should remain visible before auto-dismiss.
   ///
   /// Defaults to 4 seconds. Set to [Duration.zero] to disable auto-dismiss.
@@ -272,15 +422,60 @@ class DSToastEntry {
   /// Used for auto-dismiss timer calculation and stacking order.
   final DateTime createdAt;
 
+  /// Optional risk tier — when set, [DSToast] renders risk chrome using
+  /// operational/risk colors while still flowing through [DSToastManager].
+  final DSToastRiskTier? riskTier;
+
+  /// Optional geo/region label shown with the risk badge (e.g. `"Sector-7"`).
+  final String? riskRegion;
+
   DSToastEntry({
     required this.id,
     required this.severity,
     required this.title,
     this.message,
     this.actionLabel,
+    this.onAction,
+    this.dismissOnAction = true,
     this.duration = const Duration(seconds: 4),
     DateTime? createdAt,
+    this.riskTier,
+    this.riskRegion,
   }) : createdAt = createdAt ?? DateTime.now();
+
+  /// Risk-aware toast factory — single manager, risk-styled content.
+  ///
+  /// Maps [riskTier] onto base [DSToastSeverity] so existing manager timers,
+  /// stacking, and dismiss paths remain unchanged.
+  factory DSToastEntry.risk({
+    required String id,
+    required DSToastRiskTier riskTier,
+    required String title,
+    String? message,
+    String? riskRegion,
+    String? actionLabel,
+    VoidCallback? onAction,
+    bool dismissOnAction = true,
+    Duration duration = const Duration(seconds: 6),
+    DateTime? createdAt,
+  }) {
+    return DSToastEntry(
+      id: id,
+      severity: riskTier.asToastSeverity,
+      title: title,
+      message: message,
+      riskTier: riskTier,
+      riskRegion: riskRegion,
+      actionLabel: actionLabel,
+      onAction: onAction,
+      dismissOnAction: dismissOnAction,
+      duration: duration,
+      createdAt: createdAt,
+    );
+  }
+
+  /// Whether this entry is a risk-styled variant.
+  bool get isRiskVariant => riskTier != null;
 
   /// Creates a copy with optional overrides.
   DSToastEntry copyWith({
@@ -291,8 +486,15 @@ class DSToastEntry {
     bool clearMessage = false,
     String? actionLabel,
     bool clearActionLabel = false,
+    VoidCallback? onAction,
+    bool clearOnAction = false,
+    bool? dismissOnAction,
     Duration? duration,
     DateTime? createdAt,
+    DSToastRiskTier? riskTier,
+    bool clearRiskTier = false,
+    String? riskRegion,
+    bool clearRiskRegion = false,
   }) {
     return DSToastEntry(
       id: id ?? this.id,
@@ -300,8 +502,12 @@ class DSToastEntry {
       title: title ?? this.title,
       message: clearMessage ? null : (message ?? this.message),
       actionLabel: clearActionLabel ? null : (actionLabel ?? this.actionLabel),
+      onAction: clearOnAction ? null : (onAction ?? this.onAction),
+      dismissOnAction: dismissOnAction ?? this.dismissOnAction,
       duration: duration ?? this.duration,
       createdAt: createdAt ?? this.createdAt,
+      riskTier: clearRiskTier ? null : (riskTier ?? this.riskTier),
+      riskRegion: clearRiskRegion ? null : (riskRegion ?? this.riskRegion),
     );
   }
 }

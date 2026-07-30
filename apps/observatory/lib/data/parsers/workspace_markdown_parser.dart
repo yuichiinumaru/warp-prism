@@ -17,6 +17,7 @@ library;
 
 import 'package:flutter/foundation.dart';
 import 'frontmatter_parser.dart';
+import 'workspace_task_projection_parser.dart';
 import '../models/data_models.dart';
 
 /// Typed error for parser failures.
@@ -266,7 +267,8 @@ class WorkspaceMarkdownParser {
       description:
           fm['description']?.toString() ?? _extractFirstParagraph(body),
       canonicality: Canonicality.parentCanonical,
-      frontmatter: {...fm, '_taskMetadata': taskMeta},
+      // `_taskBody` keeps full markdown body for Operate deep projection.
+      frontmatter: {...fm, '_taskMetadata': taskMeta, '_taskBody': body},
       tags: _parseStringList(fm['tags']),
       triggers: [],
       edges: _buildTaskEdges(id, fm),
@@ -281,14 +283,21 @@ class WorkspaceMarkdownParser {
   ) {
     final clType = ChangelogTypeParsing.fromString(fm['type']?.toString());
 
+    // Prefer `impact`, fall back to `impact_tags` for History facet coverage.
+    final impact = _parseStringList(fm['impact']);
+    final impactTags = impact.isNotEmpty
+        ? impact
+        : _parseStringList(fm['impact_tags']);
+
     final clMeta = ChangelogMetadata(
       id: fm['id']?.toString() ?? _nameFromPath(path),
       date: _parseDate(fm['date']),
       project: fm['project']?.toString() ?? 'unknown',
       task: fm['task']?.toString() ?? '',
       type: clType,
-      impact: _parseStringList(fm['impact']),
+      impact: impactTags,
       skills: _parseStringList(fm['skills']),
+      workflows: _parseStringList(fm['workflows']),
       why: _extractSection(body, 'Why'),
       changed: _extractSection(body, 'Changed'),
       evidence: _extractSection(body, 'Evidence'),
@@ -343,7 +352,7 @@ class WorkspaceMarkdownParser {
       edges.add(
         WorkspaceEdge(
           sourceId: agentId,
-          targetId: 'skill:$skill',
+          targetId: normalizeAssetId('skill', skill),
           kind: EdgeKind.uses,
         ),
       );
@@ -352,7 +361,7 @@ class WorkspaceMarkdownParser {
       edges.add(
         WorkspaceEdge(
           sourceId: agentId,
-          targetId: 'workflow:$wf',
+          targetId: normalizeAssetId('workflow', wf),
           kind: EdgeKind.uses,
         ),
       );
@@ -369,7 +378,7 @@ class WorkspaceMarkdownParser {
       edges.add(
         WorkspaceEdge(
           sourceId: skillId,
-          targetId: 'subskill:$sub',
+          targetId: normalizeAssetId('subskill', sub),
           kind: EdgeKind.contains,
         ),
       );
@@ -378,7 +387,7 @@ class WorkspaceMarkdownParser {
       edges.add(
         WorkspaceEdge(
           sourceId: skillId,
-          targetId: 'workflow:$wf',
+          targetId: normalizeAssetId('workflow', wf),
           kind: EdgeKind.references,
         ),
       );
@@ -387,7 +396,7 @@ class WorkspaceMarkdownParser {
       edges.add(
         WorkspaceEdge(
           sourceId: skillId,
-          targetId: 'reference:$ref',
+          targetId: normalizeAssetId('reference', ref),
           kind: EdgeKind.references,
         ),
       );
@@ -404,7 +413,7 @@ class WorkspaceMarkdownParser {
       edges.add(
         WorkspaceEdge(
           sourceId: wfId,
-          targetId: 'skill:$skill',
+          targetId: normalizeAssetId('skill', skill),
           kind: EdgeKind.dependsOn,
         ),
       );
@@ -418,7 +427,7 @@ class WorkspaceMarkdownParser {
       edges.add(
         WorkspaceEdge(
           sourceId: taskId,
-          targetId: 'skill:$skill',
+          targetId: normalizeAssetId('skill', skill),
           kind: EdgeKind.references,
         ),
       );
@@ -427,7 +436,7 @@ class WorkspaceMarkdownParser {
       edges.add(
         WorkspaceEdge(
           sourceId: taskId,
-          targetId: 'workflow:$wf',
+          targetId: normalizeAssetId('workflow', wf),
           kind: EdgeKind.references,
         ),
       );
@@ -436,7 +445,7 @@ class WorkspaceMarkdownParser {
       edges.add(
         WorkspaceEdge(
           sourceId: taskId,
-          targetId: 'task:$dep',
+          targetId: normalizeAssetId('task', dep),
           kind: EdgeKind.dependsOn,
         ),
       );
@@ -454,8 +463,27 @@ class WorkspaceMarkdownParser {
       edges.add(
         WorkspaceEdge(
           sourceId: clId,
-          targetId: 'task:$task',
+          targetId: normalizeAssetId('task', task),
           kind: EdgeKind.changedBy,
+        ),
+      );
+    }
+    // Multi-hop History paths: changelog -> skill / workflow references.
+    for (final skill in _parseStringList(fm['skills'])) {
+      edges.add(
+        WorkspaceEdge(
+          sourceId: clId,
+          targetId: normalizeAssetId('skill', skill),
+          kind: EdgeKind.references,
+        ),
+      );
+    }
+    for (final workflow in _parseStringList(fm['workflows'])) {
+      edges.add(
+        WorkspaceEdge(
+          sourceId: clId,
+          targetId: normalizeAssetId('workflow', workflow),
+          kind: EdgeKind.references,
         ),
       );
     }
@@ -485,15 +513,9 @@ class WorkspaceMarkdownParser {
     }
   }
 
+  /// Path-segment wins over frontmatter status (aligned with Task 0610 parser).
   static TaskLane _inferTaskLane(String path, String? status) {
-    if (status != null) return TaskLaneParsing.fromStatus(status);
-    // Infer from path
-    if (path.contains('00-planning')) return TaskLane.planning;
-    if (path.contains('01-open')) return TaskLane.open;
-    if (path.contains('02-doing')) return TaskLane.doing;
-    if (path.contains('03-review')) return TaskLane.review;
-    if (path.contains('04-completed')) return TaskLane.completed;
-    return TaskLane.open;
+    return WorkspaceTaskProjectionParser.inferLaneFromPath(path, status);
   }
 
   static List<String> _parseStringList(dynamic value) {

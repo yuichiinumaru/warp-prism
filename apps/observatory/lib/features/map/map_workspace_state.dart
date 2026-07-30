@@ -79,6 +79,12 @@ class MapWorkspaceState {
   /// Active graph mode for the Graph subview.
   final MapGraphMode activeGraphMode;
 
+  /// Graph edges from [WorkspaceGraphBuilder] (inferred + frontmatter).
+  ///
+  /// When null, [resolvedGraphEdges] falls back to expanding
+  /// [WorkspaceAsset.edges] on [catalogAssets] (fixture-friendly).
+  final List<WorkspaceEdge>? graphEdges;
+
   /// Open-ended extension point for follow-up tasks.
   ///
   /// Catalog data, graph layout state, and inspector content can be
@@ -94,8 +100,15 @@ class MapWorkspaceState {
     this.error,
     this.catalogAssets = const [],
     this.activeGraphMode = MapGraphMode.containment,
+    this.graphEdges,
     this.additionalState = const {},
   });
+
+  /// Edges used by Map graph projection and detail descriptors.
+  ///
+  /// Prefers builder-inferred edges when provided by the shell.
+  List<WorkspaceEdge> get resolvedGraphEdges =>
+      graphEdges ?? catalogAssets.expand((a) => a.edges).toList();
 
   /// Create a copy with optional overrides.
   MapWorkspaceState copyWith({
@@ -109,6 +122,8 @@ class MapWorkspaceState {
     bool clearError = false,
     List<WorkspaceAsset>? catalogAssets,
     MapGraphMode? activeGraphMode,
+    List<WorkspaceEdge>? graphEdges,
+    bool clearGraphEdges = false,
     Map<String, dynamic>? additionalState,
   }) {
     return MapWorkspaceState(
@@ -122,6 +137,7 @@ class MapWorkspaceState {
       error: clearError ? null : (error ?? this.error),
       catalogAssets: catalogAssets ?? this.catalogAssets,
       activeGraphMode: activeGraphMode ?? this.activeGraphMode,
+      graphEdges: clearGraphEdges ? null : (graphEdges ?? this.graphEdges),
       additionalState: additionalState ?? this.additionalState,
     );
   }
@@ -222,24 +238,35 @@ class MapWorkspaceState {
           runtimeType == other.runtimeType &&
           activeSubview == other.activeSubview &&
           query == other.query &&
+          setEquals(activeFilters, other.activeFilters) &&
           selectedAssetId == other.selectedAssetId &&
           isLoading == other.isLoading &&
           error == other.error &&
-          catalogAssets.length == other.catalogAssets.length;
+          listEquals(catalogAssets, other.catalogAssets) &&
+          activeGraphMode == other.activeGraphMode &&
+          listEquals(graphEdges, other.graphEdges) &&
+          mapEquals(additionalState, other.additionalState);
 
   @override
   int get hashCode => Object.hash(
     activeSubview,
     query,
+    Object.hashAllUnordered(activeFilters),
     selectedAssetId,
     isLoading,
     error,
-    catalogAssets.length,
+    Object.hashAll(catalogAssets),
+    activeGraphMode,
+    graphEdges == null ? null : Object.hashAll(graphEdges!),
+    Object.hashAll(
+      additionalState.entries.map((e) => Object.hash(e.key, e.value)),
+    ),
   );
 
   @override
   String toString() =>
       'MapWorkspaceState(subview:$activeSubview query:"$query" '
+      'filters:${activeFilters.length} mode:$activeGraphMode '
       'selected:$selectedAssetId loading:$isLoading error:$error '
       'assets:${catalogAssets.length})';
 }

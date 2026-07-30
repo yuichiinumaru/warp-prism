@@ -5,12 +5,14 @@
 /// - Task detail renders forensic sections (contract, deps, validation, evidence, lifecycle)
 /// - Related tasks/changelog/skills/workflows shown when present
 /// - Loading, empty, and partial-data states don't break the inspector
+/// - Mapper-produced descriptors render the same skill/task panels (contract drift guard)
 library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:warp_prism_observatory/data/models/workspace_graph.dart';
 import 'package:warp_prism_observatory/data/models/task_contracts.dart';
+import 'package:warp_prism_observatory/features/asset_detail/application/asset_detail_mapper.dart';
 import 'package:warp_prism_observatory/features/asset_detail/domain/asset_detail_descriptor.dart';
 import 'package:warp_prism_observatory/features/asset_detail/presentation/skill_detail_view.dart';
 import 'package:warp_prism_observatory/features/asset_detail/presentation/task_detail_view.dart';
@@ -75,14 +77,12 @@ AssetDetailDescriptor _testSkillDescriptor({
         ],
       ),
     ],
-    kindSections: [
+    kindSections: const [
       DetailSection(
         title: 'Role in the Harness',
         key: 'role',
         kindSpecific: true,
-        properties: [
-          const DetailProperty(label: 'Type', value: 'Execution skill'),
-        ],
+        properties: [DetailProperty(label: 'Type', value: 'Execution skill')],
       ),
       DetailSection(
         title: 'Sub-structure',
@@ -90,7 +90,7 @@ AssetDetailDescriptor _testSkillDescriptor({
         kindSpecific: true,
         count: 2,
         properties: [
-          const DetailProperty(
+          DetailProperty(
             label: 'Sub-skills',
             value: 'readme-writer, api-doc-writer',
           ),
@@ -100,15 +100,29 @@ AssetDetailDescriptor _testSkillDescriptor({
         title: 'Incoming Links',
         key: 'incoming',
         kindSpecific: true,
-        count: incoming.length,
-        links: incoming,
+        count: 2,
+        links: [
+          DetailLink(
+            targetId: 'agent:builder',
+            label: 'builder',
+            kind: 'agent',
+          ),
+          DetailLink(
+            targetId: 'workflow:doc-gen',
+            label: 'doc-gen',
+            kind: 'workflow',
+          ),
+        ],
       ),
       DetailSection(
         title: 'Operational Usage',
         key: 'usage',
         kindSpecific: true,
         properties: [
-          DetailProperty(label: 'Triggers', value: a.triggers.join(', ')),
+          DetailProperty(
+            label: 'Triggers',
+            value: 'wiki, documentation, knowledge',
+          ),
         ],
       ),
       DetailSection(
@@ -116,7 +130,7 @@ AssetDetailDescriptor _testSkillDescriptor({
         key: 'governance',
         kindSpecific: true,
         properties: [
-          DetailProperty(label: 'Provenance', value: a.canonicality.name),
+          DetailProperty(label: 'Provenance', value: 'parentCanonical'),
         ],
       ),
     ],
@@ -153,21 +167,21 @@ AssetDetailDescriptor _testTaskDescriptor({WorkspaceAsset? asset}) {
           DetailProperty(label: 'Task', value: a.name),
           DetailProperty(label: 'ID', value: a.id),
           DetailProperty(label: 'Path', value: a.path),
-          DetailProperty(label: 'Priority', value: 'P1'),
-          DetailProperty(label: 'Owner', value: 'builder-agent'),
+          const DetailProperty(label: 'Priority', value: 'P1'),
+          const DetailProperty(label: 'Owner', value: 'builder-agent'),
         ],
       ),
     ],
-    kindSections: [
+    kindSections: const [
       DetailSection(
         title: 'Contract',
         key: 'contract',
         kindSpecific: true,
         properties: [
-          const DetailProperty(label: 'Lane', value: '02-doing'),
-          const DetailProperty(label: 'Proof State', value: 'partial'),
-          const DetailProperty(label: 'Created', value: '2026-06-07'),
-          const DetailProperty(label: 'Updated', value: '2026-06-07'),
+          DetailProperty(label: 'Lane', value: '02-doing'),
+          DetailProperty(label: 'Proof State', value: 'partial'),
+          DetailProperty(label: 'Created', value: '2026-06-07'),
+          DetailProperty(label: 'Updated', value: '2026-06-07'),
         ],
       ),
       DetailSection(
@@ -175,9 +189,7 @@ AssetDetailDescriptor _testTaskDescriptor({WorkspaceAsset? asset}) {
         key: 'dependencies',
         kindSpecific: true,
         count: 1,
-        links: [
-          const DetailLink(targetId: 'task:0902', label: '0902', kind: 'task'),
-        ],
+        links: [DetailLink(targetId: 'task:0902', label: '0902', kind: 'task')],
       ),
       DetailSection(
         title: 'Validation Commands',
@@ -194,7 +206,7 @@ AssetDetailDescriptor _testTaskDescriptor({WorkspaceAsset? asset}) {
         key: 'evidence',
         kindSpecific: true,
         properties: [
-          const DetailProperty(label: 'Evidence', value: 'Not yet provided'),
+          DetailProperty(label: 'Evidence', value: 'Not yet provided'),
         ],
       ),
       DetailSection(
@@ -203,12 +215,12 @@ AssetDetailDescriptor _testTaskDescriptor({WorkspaceAsset? asset}) {
         kindSpecific: true,
         count: 2,
         links: [
-          const DetailLink(
+          DetailLink(
             targetId: 'skill:agent-wiki',
             label: 'agent-wiki',
             kind: 'skill',
           ),
-          const DetailLink(
+          DetailLink(
             targetId: 'workflow:build-orchestrator',
             label: 'build-orchestrator',
             kind: 'workflow',
@@ -220,8 +232,8 @@ AssetDetailDescriptor _testTaskDescriptor({WorkspaceAsset? asset}) {
         key: 'lifecycle',
         kindSpecific: true,
         properties: [
-          const DetailProperty(label: 'Created', value: '2026-06-07'),
-          const DetailProperty(label: 'Updated', value: '2026-06-07'),
+          DetailProperty(label: 'Created', value: '2026-06-07'),
+          DetailProperty(label: 'Updated', value: '2026-06-07'),
         ],
       ),
     ],
@@ -242,6 +254,89 @@ AssetDetailDescriptor _testTaskDescriptor({WorkspaceAsset? asset}) {
       skills: const ['agent-wiki'],
       workflows: const ['build-orchestrator'],
     ),
+  );
+}
+
+/// Skill asset + edges fed through [buildAssetDetailDescriptor].
+AssetDetailDescriptor _mapperSkillDescriptor() {
+  final asset = _testSkillAsset(
+    frontmatter: const {
+      'type': 'Execution skill',
+      'sub_skills': ['readme-writer', 'api-doc-writer'],
+    },
+  );
+  return buildAssetDetailDescriptor(
+    asset: asset,
+    incoming: const [
+      WorkspaceEdge(
+        sourceId: 'agent:builder',
+        targetId: 'skill:agent-wiki',
+        kind: EdgeKind.uses,
+      ),
+      WorkspaceEdge(
+        sourceId: 'workflow:doc-gen',
+        targetId: 'skill:agent-wiki',
+        kind: EdgeKind.dependsOn,
+      ),
+    ],
+    outgoing: const [
+      WorkspaceEdge(
+        sourceId: 'skill:agent-wiki',
+        targetId: 'subskill:readme-writer',
+        kind: EdgeKind.contains,
+      ),
+    ],
+    assetNames: const {
+      'agent:builder': 'builder',
+      'workflow:doc-gen': 'doc-gen',
+      'subskill:readme-writer': 'readme-writer',
+      'skill:agent-wiki': 'agent-wiki',
+    },
+  );
+}
+
+/// Task asset + TaskMetadata fed through [buildAssetDetailDescriptor].
+AssetDetailDescriptor _mapperTaskDescriptor() {
+  final meta = TaskMetadata(
+    id: '0903',
+    title: 'Skill and Task Detail Variants',
+    lane: TaskLane.doing,
+    priority: 'P1',
+    owner: 'builder-agent',
+    created: DateTime(2026, 6, 7),
+    updated: DateTime(2026, 6, 7),
+    proofState: ProofState.partial,
+    dependsOn: const ['0902'],
+    skills: const ['agent-wiki'],
+    workflows: const ['build-orchestrator'],
+    verificationCommands: 'flutter analyze',
+    completionEvidence: 'widget tests pass',
+  );
+  final asset = _testTaskAsset(
+    frontmatter: {
+      '_taskMetadata': meta,
+      'verification_commands': [
+        'flutter test test/features/asset_detail/skill_task_detail_widgets_test.dart',
+        'flutter analyze',
+      ],
+      'lane': '02-doing',
+      'priority': 'P1',
+    },
+  );
+  return buildAssetDetailDescriptor(
+    asset: asset,
+    incoming: const [],
+    outgoing: const [
+      WorkspaceEdge(
+        sourceId: 'task:0903',
+        targetId: 'task:0902',
+        kind: EdgeKind.dependsOn,
+      ),
+    ],
+    assetNames: const {
+      'task:0903': 'Skill and Task Detail Variants',
+      'task:0902': '0902',
+    },
   );
 }
 
@@ -457,6 +552,78 @@ void main() {
       // Task-specific panels should be visible
       expect(find.text('Contract'), findsOneWidget);
       expect(find.text('Validation Commands'), findsOneWidget);
+    });
+  });
+
+  group('mapper → AssetDetailView', () {
+    testWidgets('mapper skill descriptor renders skill panels', (tester) async {
+      tester.view.physicalSize = const Size(800, 2000);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      final descriptor = _mapperSkillDescriptor();
+      await tester.pumpWidget(
+        _wrapInApp(AssetDetailView(descriptor: descriptor)),
+      );
+
+      expect(find.text('Identity'), findsOneWidget);
+      expect(find.text('Role in the Harness'), findsOneWidget);
+      expect(find.text('Sub-structure'), findsOneWidget);
+      expect(find.text('Operational Usage'), findsOneWidget);
+      expect(find.text('Governance'), findsOneWidget);
+      expect(find.textContaining('builder'), findsWidgets);
+      expect(find.textContaining('wiki'), findsWidgets);
+      expect(find.text('Execution skill'), findsOneWidget);
+      expect(find.text('readme-writer, api-doc-writer'), findsOneWidget);
+    });
+
+    testWidgets('mapper task descriptor renders forensic panels', (
+      tester,
+    ) async {
+      tester.view.physicalSize = const Size(800, 2400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      final descriptor = _mapperTaskDescriptor();
+      await tester.pumpWidget(
+        _wrapInApp(AssetDetailView(descriptor: descriptor)),
+      );
+
+      expect(find.textContaining('task:0903'), findsWidgets);
+      expect(find.text('Contract'), findsOneWidget);
+      expect(find.text('02-doing'), findsOneWidget);
+      expect(find.text('Dependencies'), findsOneWidget);
+      expect(find.text('Validation Commands'), findsOneWidget);
+      expect(find.textContaining('flutter test'), findsOneWidget);
+      expect(find.text('Evidence'), findsWidgets);
+      expect(find.text('widget tests pass'), findsOneWidget);
+      expect(find.text('Related Skills & Workflows'), findsOneWidget);
+      expect(find.text('agent-wiki'), findsOneWidget);
+      expect(find.text('Lifecycle'), findsOneWidget);
+    });
+
+    testWidgets('mapper skill partial data does not crash inspector', (
+      tester,
+    ) async {
+      final asset = _testSkillAsset(triggers: const [], frontmatter: const {});
+      final descriptor = buildAssetDetailDescriptor(
+        asset: asset,
+        incoming: const [],
+        outgoing: const [],
+        assetNames: const {'skill:agent-wiki': 'agent-wiki'},
+      );
+      await tester.pumpWidget(
+        _wrapInApp(AssetDetailView(descriptor: descriptor)),
+      );
+
+      expect(find.text('Identity'), findsOneWidget);
+      expect(find.text('Role in the Harness'), findsOneWidget);
+      expect(
+        find.text('Flat skill (no sub-structure declared)'),
+        findsOneWidget,
+      );
     });
   });
 }

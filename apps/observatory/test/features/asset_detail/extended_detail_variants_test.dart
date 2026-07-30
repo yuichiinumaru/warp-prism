@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:warp_prism_observatory/data/models/workspace_graph.dart';
 import 'package:warp_prism_observatory/data/models/changelog_contracts.dart';
+import 'package:warp_prism_observatory/features/asset_detail/application/asset_detail_mapper.dart';
 import 'package:warp_prism_observatory/features/asset_detail/domain/asset_detail_descriptor.dart';
 import 'package:warp_prism_observatory/features/asset_detail/presentation/agent_detail_view.dart';
 import 'package:warp_prism_observatory/features/asset_detail/presentation/workflow_detail_view.dart';
@@ -55,8 +56,8 @@ AssetDetailDescriptor _testAgentDescriptor({WorkspaceAsset? asset}) {
         ],
       ),
     ],
-    kindSections: [
-      const DetailSection(
+    kindSections: const [
+      DetailSection(
         title: 'Operational Metadata',
         key: 'operational',
         kindSpecific: true,
@@ -66,7 +67,7 @@ AssetDetailDescriptor _testAgentDescriptor({WorkspaceAsset? asset}) {
           DetailProperty(label: 'Status', value: 'active'),
         ],
       ),
-      const DetailSection(
+      DetailSection(
         title: 'Tools',
         key: 'tools',
         kindSpecific: true,
@@ -78,7 +79,7 @@ AssetDetailDescriptor _testAgentDescriptor({WorkspaceAsset? asset}) {
           ),
         ],
       ),
-      const DetailSection(
+      DetailSection(
         title: 'Skill Affinity',
         key: 'skill_affinity',
         kindSpecific: true,
@@ -96,7 +97,7 @@ AssetDetailDescriptor _testAgentDescriptor({WorkspaceAsset? asset}) {
           ),
         ],
       ),
-      const DetailSection(
+      DetailSection(
         title: 'Workflow Affinity',
         key: 'workflow_affinity',
         kindSpecific: true,
@@ -109,7 +110,7 @@ AssetDetailDescriptor _testAgentDescriptor({WorkspaceAsset? asset}) {
           ),
         ],
       ),
-      const DetailSection(
+      DetailSection(
         title: 'Usage Context',
         key: 'usage',
         kindSpecific: true,
@@ -164,14 +165,14 @@ AssetDetailDescriptor _testWorkflowDescriptor({WorkspaceAsset? asset}) {
         ],
       ),
     ],
-    kindSections: [
-      const DetailSection(
+    kindSections: const [
+      DetailSection(
         title: 'Trigger',
         key: 'trigger',
         kindSpecific: true,
         properties: [DetailProperty(label: 'Trigger Type', value: 'manual')],
       ),
-      const DetailSection(
+      DetailSection(
         title: 'Stages',
         key: 'stages',
         kindSpecific: true,
@@ -182,7 +183,7 @@ AssetDetailDescriptor _testWorkflowDescriptor({WorkspaceAsset? asset}) {
           DetailProperty(label: 'Stage 3', value: 'Test'),
         ],
       ),
-      const DetailSection(
+      DetailSection(
         title: 'Branches & Error Handling',
         key: 'branches',
         kindSpecific: true,
@@ -193,7 +194,7 @@ AssetDetailDescriptor _testWorkflowDescriptor({WorkspaceAsset? asset}) {
           ),
         ],
       ),
-      const DetailSection(
+      DetailSection(
         title: 'Related Assets',
         key: 'related',
         kindSpecific: true,
@@ -206,7 +207,7 @@ AssetDetailDescriptor _testWorkflowDescriptor({WorkspaceAsset? asset}) {
           ),
         ],
       ),
-      const DetailSection(
+      DetailSection(
         title: 'Performance',
         key: 'performance',
         kindSpecific: true,
@@ -259,8 +260,8 @@ AssetDetailDescriptor _testChangelogDescriptor({WorkspaceAsset? asset}) {
         ],
       ),
     ],
-    kindSections: [
-      const DetailSection(
+    kindSections: const [
+      DetailSection(
         title: 'Ledger Source',
         key: 'ledger',
         kindSpecific: true,
@@ -271,14 +272,14 @@ AssetDetailDescriptor _testChangelogDescriptor({WorkspaceAsset? asset}) {
           DetailProperty(label: 'Type', value: 'feature'),
         ],
       ),
-      const DetailSection(
+      DetailSection(
         title: 'Related Task',
         key: 'related_task',
         kindSpecific: true,
         links: [DetailLink(targetId: 'task:0902', label: '0902', kind: 'task')],
         properties: [DetailProperty(label: 'Task', value: '0902')],
       ),
-      const DetailSection(
+      DetailSection(
         title: 'Affected Assets',
         key: 'affected',
         kindSpecific: true,
@@ -295,7 +296,7 @@ AssetDetailDescriptor _testChangelogDescriptor({WorkspaceAsset? asset}) {
           DetailProperty(label: 'Impact', value: 'parser, graph-model'),
         ],
       ),
-      const DetailSection(
+      DetailSection(
         title: 'Impact Story',
         key: 'story',
         kindSpecific: true,
@@ -318,7 +319,7 @@ AssetDetailDescriptor _testChangelogDescriptor({WorkspaceAsset? asset}) {
     ],
     incomingLinks: const [],
     outgoingLinks: const [
-      const DetailLink(targetId: 'task:0902', label: '0902', kind: 'task'),
+      DetailLink(targetId: 'task:0902', label: '0902', kind: 'task'),
     ],
     changelogMetadata: ChangelogMetadata(
       id: '2026-06-07-0902-universal-descriptor',
@@ -536,7 +537,7 @@ void main() {
         _wrapInApp(GenericAssetDetailView(descriptor: descriptor)),
       );
 
-      expect(find.text('Partial support'), findsOneWidget);
+      expect(find.textContaining('partial detail support'), findsWidgets);
       expect(find.text('Identity'), findsOneWidget);
       expect(find.text('readme-writer'), findsWidgets);
     });
@@ -553,7 +554,7 @@ void main() {
         _wrapInApp(GenericAssetDetailView(descriptor: descriptor)),
       );
 
-      expect(find.text('Partial support'), findsOneWidget);
+      expect(find.textContaining('partial detail support'), findsWidgets);
     });
 
     testWidgets('renders partial support banner for reference', (tester) async {
@@ -568,7 +569,7 @@ void main() {
         _wrapInApp(GenericAssetDetailView(descriptor: descriptor)),
       );
 
-      expect(find.text('Partial support'), findsOneWidget);
+      expect(find.textContaining('partial detail support'), findsWidgets);
     });
 
     testWidgets('renders partial support banner for rule', (tester) async {
@@ -583,7 +584,7 @@ void main() {
         _wrapInApp(GenericAssetDetailView(descriptor: descriptor)),
       );
 
-      expect(find.text('Partial support'), findsOneWidget);
+      expect(find.textContaining('partial detail support'), findsWidgets);
     });
 
     testWidgets('shows identity and metadata in fallback view', (tester) async {
@@ -642,7 +643,7 @@ void main() {
         _wrapInApp(AssetDetailView(descriptor: descriptor)),
       );
 
-      expect(find.text('Partial support'), findsOneWidget);
+      expect(find.textContaining('partial detail support'), findsWidgets);
     });
 
     testWidgets('dispatches script to GenericAssetDetailView', (tester) async {
@@ -657,7 +658,7 @@ void main() {
         _wrapInApp(AssetDetailView(descriptor: descriptor)),
       );
 
-      expect(find.text('Partial support'), findsOneWidget);
+      expect(find.textContaining('partial detail support'), findsWidgets);
     });
 
     testWidgets('dispatches reference to GenericAssetDetailView', (
@@ -674,7 +675,7 @@ void main() {
         _wrapInApp(AssetDetailView(descriptor: descriptor)),
       );
 
-      expect(find.text('Partial support'), findsOneWidget);
+      expect(find.textContaining('partial detail support'), findsWidgets);
     });
 
     testWidgets('dispatches rule to GenericAssetDetailView', (tester) async {
@@ -689,7 +690,7 @@ void main() {
         _wrapInApp(AssetDetailView(descriptor: descriptor)),
       );
 
-      expect(find.text('Partial support'), findsOneWidget);
+      expect(find.textContaining('partial detail support'), findsWidgets);
     });
   });
 
@@ -765,6 +766,174 @@ void main() {
       );
 
       expect(find.text('Identity'), findsOneWidget);
+    });
+  });
+
+  // Path-to-100 residual: mapper → view proof for agent/workflow/changelog
+  // and one secondary kind (subskill), matching 0903 skill/task coverage.
+  group('mapper → AssetDetailView', () {
+    testWidgets('mapper agent descriptor renders agent panels', (tester) async {
+      tester.view.physicalSize = const Size(800, 2000);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      final descriptor = buildAssetDetailDescriptor(
+        asset: _testAgentAsset(
+          frontmatter: const {
+            'model': 'claude-3.5-sonnet',
+            'provider': 'anthropic',
+            'status': 'active',
+            'tools': ['read_file', 'search_files', 'terminal'],
+            'skills': ['skill:harness-management', 'skill:agent-wiki'],
+            'workflows': ['workflow:build-orchestrator'],
+            'role': 'Orchestrator',
+          },
+        ),
+        incoming: const [],
+        outgoing: const [
+          WorkspaceEdge(
+            sourceId: 'agent:architect-orchestrator',
+            targetId: 'skill:harness-management',
+            kind: EdgeKind.uses,
+          ),
+        ],
+        assetNames: const {
+          'agent:architect-orchestrator': 'architect-orchestrator',
+          'skill:harness-management': 'harness-management',
+          'skill:agent-wiki': 'agent-wiki',
+          'workflow:build-orchestrator': 'build-orchestrator',
+        },
+      );
+
+      await tester.pumpWidget(
+        _wrapInApp(AssetDetailView(descriptor: descriptor)),
+      );
+
+      expect(find.text('Identity'), findsOneWidget);
+      expect(find.text('Operational Metadata'), findsOneWidget);
+      expect(find.text('claude-3.5-sonnet'), findsOneWidget);
+      expect(find.text('Tools'), findsWidgets);
+      expect(find.text('Skill Affinity'), findsOneWidget);
+      expect(find.text('Workflow Affinity'), findsOneWidget);
+      expect(find.text('Usage Context'), findsOneWidget);
+    });
+
+    testWidgets('mapper workflow descriptor renders workflow panels', (
+      tester,
+    ) async {
+      tester.view.physicalSize = const Size(800, 2000);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      final descriptor = buildAssetDetailDescriptor(
+        asset: _testWorkflowAsset(
+          frontmatter: const {
+            'trigger_type': 'manual',
+            'stages': ['Lint & Format', 'Analyze', 'Test'],
+            'retry_policy': 'exponential backoff, max 3',
+            'skills': ['skill:agent-wiki'],
+            'agents': ['agent:builder-agent'],
+            'avg_duration': '5m',
+            'success_rate': '95%',
+          },
+        ),
+        incoming: const [
+          WorkspaceEdge(
+            sourceId: 'agent:builder-orchestrator',
+            targetId: 'workflow:build-orchestrator',
+            kind: EdgeKind.uses,
+          ),
+        ],
+        outgoing: const [],
+        assetNames: const {
+          'workflow:build-orchestrator': 'build-orchestrator',
+          'agent:builder-orchestrator': 'builder-orchestrator',
+          'agent:builder-agent': 'builder-agent',
+          'skill:agent-wiki': 'agent-wiki',
+        },
+      );
+
+      await tester.pumpWidget(
+        _wrapInApp(AssetDetailView(descriptor: descriptor)),
+      );
+
+      expect(find.text('Trigger'), findsOneWidget);
+      expect(find.text('manual'), findsOneWidget);
+      expect(find.text('Stages'), findsWidgets);
+      expect(find.text('Branches & Error Handling'), findsOneWidget);
+      expect(find.text('Related Assets'), findsOneWidget);
+      expect(find.text('Performance'), findsOneWidget);
+    });
+
+    testWidgets('mapper changelog descriptor renders ledger and story', (
+      tester,
+    ) async {
+      tester.view.physicalSize = const Size(800, 2000);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      final meta = ChangelogMetadata(
+        id: '2026-06-07-0902-universal-descriptor',
+        date: DateTime(2026, 6, 7),
+        project: 'warp-prism',
+        task: '0902',
+        type: ChangelogType.feature,
+        impact: const ['parser', 'graph-model'],
+        skills: const ['agent-wiki'],
+        why: 'The universal descriptor enables kind-specific detail views.',
+        changed: 'Added AssetDetailDescriptor, mapper, and detail views.',
+        evidence: 'Tests pass, dart format clean.',
+      );
+      final descriptor = buildAssetDetailDescriptor(
+        asset: _testChangelogAsset(frontmatter: {'_changelogMetadata': meta}),
+        incoming: const [],
+        outgoing: const [
+          WorkspaceEdge(
+            sourceId: 'changelog:2026-06-07-0902-universal-descriptor',
+            targetId: 'task:0902',
+            kind: EdgeKind.dependsOn,
+          ),
+        ],
+        assetNames: const {
+          'changelog:2026-06-07-0902-universal-descriptor':
+              '2026-06-07-0902-universal-descriptor',
+          'task:0902': '0902',
+        },
+      );
+
+      await tester.pumpWidget(
+        _wrapInApp(AssetDetailView(descriptor: descriptor)),
+      );
+
+      expect(find.text('Ledger Source'), findsOneWidget);
+      expect(find.text('Related Task'), findsOneWidget);
+      expect(find.text('Affected Assets'), findsOneWidget);
+      expect(find.text('Impact Story'), findsOneWidget);
+      expect(find.text('Why'), findsOneWidget);
+      expect(find.text('Changed'), findsOneWidget);
+      expect(find.text('Evidence'), findsOneWidget);
+    });
+
+    testWidgets('mapper secondary subskill falls back to generic view', (
+      tester,
+    ) async {
+      final descriptor = buildAssetDetailDescriptor(
+        asset: _testGenericAsset(kind: AssetKind.subskill),
+        incoming: const [],
+        outgoing: const [],
+        assetNames: const {'subskill:readme-writer': 'readme-writer'},
+      );
+
+      await tester.pumpWidget(
+        _wrapInApp(AssetDetailView(descriptor: descriptor)),
+      );
+
+      expect(find.textContaining('partial detail support'), findsWidgets);
+      expect(find.text('Identity'), findsOneWidget);
+      expect(find.text('readme-writer'), findsWidgets);
     });
   });
 }

@@ -177,6 +177,11 @@ class _DSGraphCanvasState extends State<DSGraphCanvas> {
     return graph.GraphCanvas(
       model: model,
       enablePhysics: widget.enablePhysics,
+      // Forward nodeSpacing into the force-directed layout config so the
+      // public DSGraphCanvas API actually affects spacing (was dead wiring).
+      layoutEngine: graph.ForceDirectedLayout(
+        config: graph.ForceDirectedConfig(nodeSpacing: widget.nodeSpacing),
+      ),
       onNodeTap: widget.onNodeTap != null
           ? (modelNode) {
               final legacy = _findLegacyNode(modelNode.id.value);

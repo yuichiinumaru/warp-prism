@@ -129,6 +129,35 @@ class MapWorkspaceProvider {
     );
   }
 
+  /// Merge parent-injected data into the current interactive state.
+  ///
+  /// Used when [MapWorkspacePage] receives a new [MapWorkspaceState] from
+  /// the shell. Catalog, loading, error, and graph edges update from
+  /// [incoming]; query, filters, selection, active subview, graph mode,
+  /// and additionalState are preserved so a catalog refresh cannot wipe
+  /// mid-session UI interaction.
+  ///
+  /// When [incoming.graphEdges] is null (graph still loading), existing
+  /// edges are retained rather than cleared.
+  void syncState(MapWorkspaceState incoming) {
+    _emit(
+      MapWorkspaceState(
+        // Preserve interactive UI state.
+        activeSubview: _state.activeSubview,
+        query: _state.query,
+        activeFilters: _state.activeFilters,
+        selectedAssetId: _state.selectedAssetId,
+        activeGraphMode: _state.activeGraphMode,
+        additionalState: _state.additionalState,
+        // Take data fields from parent injection.
+        catalogAssets: incoming.catalogAssets,
+        isLoading: incoming.isLoading,
+        error: incoming.error,
+        graphEdges: incoming.graphEdges ?? _state.graphEdges,
+      ),
+    );
+  }
+
   void _emit(MapWorkspaceState next) {
     _state = next;
     _controller.add(next);

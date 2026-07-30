@@ -1,6 +1,6 @@
 ---
 name: development-methodologies
-description: Contains RF8 methodology: Goal → Domain → Feature → Representation → Specs → Behaviour → Test → Eval. Used for structured decomposition.
+description: "Contains RF8 methodology: Goal → Domain → Feature → Representation → Specs → Behaviour → Test → Eval. Used for structured decomposition."
 triggers:
   - rf8 decomposition
   - goal analysis

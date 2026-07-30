@@ -1,0 +1,36 @@
+{
+  "connectionStatus": "connected",
+  "selectedServerUuid": "mcp-filesystem-01",
+  "selectedServerName": "filesystem",
+  "tools": [
+    {
+      "uuid": "tool-list-dir",
+      "name": "list_directory",
+      "description": "List files and folders under a path",
+      "enabled": true,
+      "mcp_server_uuid": "mcp-filesystem-01"
+    },
+    {
+      "uuid": "tool-read-file",
+      "name": "read_file",
+      "description": "Read text content from a file",
+      "enabled": true,
+      "mcp_server_uuid": "mcp-filesystem-01"
+    },
+    {
+      "uuid": "tool-write-file",
+      "name": "write_file",
+      "description": "Write text content to a file (mutation deferred in pilot)",
+      "enabled": false,
+      "mcp_server_uuid": "mcp-filesystem-01"
+    },
+    {
+      "uuid": "tool-search",
+      "name": "search_files",
+      "description": "Search file names by glob pattern",
+      "enabled": true,
+      "mcp_server_uuid": "mcp-filesystem-01"
+    }
+  ],
+  "notes": "Fixture-backed inspector — no live STDIO execution in Warp Prism pilot"
+}

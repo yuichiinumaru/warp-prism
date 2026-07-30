@@ -252,29 +252,34 @@ class _DSCommandPaletteState extends State<DSCommandPalette> {
     final grouped = _groupedCommands;
     final flat = _flatFiltered;
 
-    return Focus(
-      autofocus: true,
-      onKeyEvent: _handleKeyEvent,
-      child: GestureDetector(
-        // Tap backdrop closes.
-        onTap: widget.onClose,
-        child: Container(
-          color: DSColors.black.withValues(alpha: 0.4),
-          child: Center(
-            child: GestureDetector(
-              // Prevent taps inside the panel from closing.
-              onTap: () {},
-              child: _Panel(
-                controller: _controller,
-                focusNode: _focusNode,
-                placeholder: widget.placeholder,
-                onQueryChanged: _onQueryChanged,
-                grouped: grouped,
-                flat: flat,
-                selectedIndex: _selectedIndex,
-                activeCategory: _activeCategory,
-                onCategoryTap: _onCategoryTap,
-                onCommandTap: _executeCommand,
+    // Material is required for TextField/InkWell even when shown via a raw
+    // PageRoute without a Scaffold (showDSCommandPalette).
+    return Material(
+      type: MaterialType.transparency,
+      child: Focus(
+        autofocus: true,
+        onKeyEvent: _handleKeyEvent,
+        child: GestureDetector(
+          // Tap backdrop closes.
+          onTap: widget.onClose,
+          child: Container(
+            color: DSColors.black.withValues(alpha: 0.4),
+            child: Center(
+              child: GestureDetector(
+                // Prevent taps inside the panel from closing.
+                onTap: () {},
+                child: _Panel(
+                  controller: _controller,
+                  focusNode: _focusNode,
+                  placeholder: widget.placeholder,
+                  onQueryChanged: _onQueryChanged,
+                  grouped: grouped,
+                  flat: flat,
+                  selectedIndex: _selectedIndex,
+                  activeCategory: _activeCategory,
+                  onCategoryTap: _onCategoryTap,
+                  onCommandTap: _executeCommand,
+                ),
               ),
             ),
           ),
@@ -330,27 +335,31 @@ class _Panel extends StatelessWidget {
               ),
               boxShadow: DSShadows.elevation4,
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _SearchField(
-                  controller: controller,
-                  focusNode: focusNode,
-                  placeholder: placeholder,
-                  onChanged: onQueryChanged,
-                ),
-                _CategoryChips(active: activeCategory, onTap: onCategoryTap),
-                const Divider(height: 1, color: DSColors.borderSubtle),
-                Expanded(
-                  child: _ResultsList(
-                    grouped: grouped,
-                    flat: flat,
-                    selectedIndex: selectedIndex,
-                    onCommandTap: onCommandTap,
+            // Use max height so Expanded list gets a real flex budget;
+            // mainAxisSize.min + Expanded overflowed after a11y chip growth.
+            child: SizedBox(
+              height: 480,
+              child: Column(
+                children: [
+                  _SearchField(
+                    controller: controller,
+                    focusNode: focusNode,
+                    placeholder: placeholder,
+                    onChanged: onQueryChanged,
                   ),
-                ),
-                _FooterHint(hasResults: flat.isNotEmpty),
-              ],
+                  _CategoryChips(active: activeCategory, onTap: onCategoryTap),
+                  const Divider(height: 1, color: DSColors.borderSubtle),
+                  Expanded(
+                    child: _ResultsList(
+                      grouped: grouped,
+                      flat: flat,
+                      selectedIndex: selectedIndex,
+                      onCommandTap: onCommandTap,
+                    ),
+                  ),
+                  _FooterHint(resultCount: flat.length),
+                ],
+              ),
             ),
           ),
         ),
@@ -387,7 +396,7 @@ class _SearchField extends StatelessWidget {
       ),
       child: Row(
         children: [
-          DSIcon(Icons.search, color: DSColors.accentCyan, size: 20),
+          const DSIcon(Icons.search, color: DSColors.accentCyan, size: 20),
           const SizedBox(width: DSSpacing.sm),
           Expanded(
             child: TextField(
@@ -416,7 +425,7 @@ class _SearchField extends StatelessWidget {
               borderRadius: BorderRadius.circular(DSRadii.xs),
               border: Border.all(color: DSColors.borderSubtle),
             ),
-            child: DSText.labelSmall('ESC', color: DSColors.textTertiary),
+            child: const DSText.labelSmall('ESC', color: DSColors.textTertiary),
           ),
         ],
       ),
@@ -498,25 +507,45 @@ class _CatChip extends StatelessWidget {
         : DSColors.borderSubtle;
     final fg = isActive ? DSColors.accentCyan : DSColors.textTertiary;
 
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: DSSpacing.sm,
-          vertical: DSSpacing.xs,
-        ),
-        decoration: BoxDecoration(
-          color: bg,
+    return Semantics(
+      button: true,
+      selected: isActive,
+      label: '$label category filter',
+      child: Material(
+        color: DSColors.transparent,
+        child: InkWell(
+          onTap: onTap,
           borderRadius: BorderRadius.circular(DSRadii.chip),
-          border: Border.all(color: border),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, size: 14, color: fg),
-            const SizedBox(width: DSSpacing.xs),
-            DSText.labelSmall(label, color: fg),
-          ],
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              minWidth: kMinInteractiveDimension,
+              minHeight: kMinInteractiveDimension,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: DSSpacing.sm),
+              child: Center(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: DSSpacing.sm,
+                    vertical: DSSpacing.xs,
+                  ),
+                  decoration: BoxDecoration(
+                    color: bg,
+                    borderRadius: BorderRadius.circular(DSRadii.chip),
+                    border: Border.all(color: border),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(icon, size: 14, color: fg),
+                      const SizedBox(width: DSSpacing.xs),
+                      DSText.labelSmall(label, color: fg),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
         ),
       ),
     );
@@ -543,14 +572,14 @@ class _ResultsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (flat.isEmpty) {
-      return Center(
+      return const Center(
         child: Padding(
-          padding: const EdgeInsets.all(DSSpacing.xxl),
+          padding: EdgeInsets.all(DSSpacing.xxl),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               DSIcon(Icons.search_off, color: DSColors.textTertiary, size: 32),
-              const SizedBox(height: DSSpacing.sm),
+              SizedBox(height: DSSpacing.sm),
               DSText.bodyMedium(
                 'No matching commands',
                 color: DSColors.textTertiary,
@@ -561,10 +590,12 @@ class _ResultsList extends StatelessWidget {
       );
     }
 
-    return ListView.builder(
+    // Non-lazy children: command palettes are small (<50 items) and tests /
+    // keyboard nav expect all category headers to be mounted in the tree.
+    final items = _buildItems();
+    return ListView(
       padding: const EdgeInsets.symmetric(vertical: DSSpacing.xs),
-      itemCount: _buildItems().length,
-      itemBuilder: (context, index) => _buildItems()[index],
+      children: items,
     );
   }
 
@@ -651,65 +682,84 @@ class _CommandItem extends StatelessWidget {
         : DSColors.transparent;
     final iconColor = isSelected ? DSColors.accentCyan : DSColors.textSecondary;
 
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        margin: const EdgeInsets.symmetric(
-          horizontal: DSSpacing.sm,
-          vertical: 1,
-        ),
-        padding: const EdgeInsets.symmetric(
-          horizontal: DSSpacing.md,
-          vertical: DSSpacing.sm,
-        ),
-        decoration: BoxDecoration(
-          color: bg,
+    return Semantics(
+      button: true,
+      selected: isSelected,
+      label: command.description == null
+          ? command.label
+          : '${command.label}. ${command.description}',
+      child: Material(
+        color: DSColors.transparent,
+        child: InkWell(
+          onTap: onTap,
           borderRadius: BorderRadius.circular(DSRadii.sm),
-          border: Border.all(color: borderColor),
-        ),
-        child: Row(
-          children: [
-            // Icon
-            DSIcon(command.icon, color: iconColor, size: 18),
-            const SizedBox(width: DSSpacing.md),
-            // Label + description
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              minHeight: kMinInteractiveDimension,
+            ),
+            child: Container(
+              margin: const EdgeInsets.symmetric(
+                horizontal: DSSpacing.sm,
+                vertical: 1,
+              ),
+              padding: const EdgeInsets.symmetric(
+                horizontal: DSSpacing.md,
+                vertical: DSSpacing.sm,
+              ),
+              decoration: BoxDecoration(
+                color: bg,
+                borderRadius: BorderRadius.circular(DSRadii.sm),
+                border: Border.all(color: borderColor),
+              ),
+              child: Row(
                 children: [
-                  DSText.labelLarge(
-                    command.label,
-                    color: isSelected
-                        ? DSColors.textPrimary
-                        : DSColors.textSecondary,
+                  // Icon
+                  DSIcon(command.icon, color: iconColor, size: 18),
+                  const SizedBox(width: DSSpacing.md),
+                  // Label + description
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        DSText.labelLarge(
+                          command.label,
+                          color: isSelected
+                              ? DSColors.textPrimary
+                              : DSColors.textSecondary,
+                        ),
+                        if (command.description != null) ...[
+                          const SizedBox(height: 1),
+                          DSText.bodySmall(
+                            command.description!,
+                            color: DSColors.textTertiary,
+                            maxLines: 1,
+                          ),
+                        ],
+                      ],
+                    ),
                   ),
-                  if (command.description != null) ...[
-                    const SizedBox(height: 1),
-                    DSText.bodySmall(
-                      command.description!,
-                      color: DSColors.textTertiary,
-                      maxLines: 1,
+                  // Shortcut hint
+                  if (command.shortcut != null) ...[
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 6,
+                        vertical: 2,
+                      ),
+                      decoration: BoxDecoration(
+                        color: DSColors.obsidianHover,
+                        borderRadius: BorderRadius.circular(DSRadii.xs),
+                        border: Border.all(color: DSColors.borderSubtle),
+                      ),
+                      child: DSText.labelSmall(
+                        command.shortcut!,
+                        color: DSColors.textTertiary,
+                      ),
                     ),
                   ],
                 ],
               ),
             ),
-            // Shortcut hint
-            if (command.shortcut != null) ...[
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                decoration: BoxDecoration(
-                  color: DSColors.obsidianHover,
-                  borderRadius: BorderRadius.circular(DSRadii.xs),
-                  border: Border.all(color: DSColors.borderSubtle),
-                ),
-                child: DSText.labelSmall(
-                  command.shortcut!,
-                  color: DSColors.textTertiary,
-                ),
-              ),
-            ],
-          ],
+          ),
         ),
       ),
     );
@@ -721,9 +771,14 @@ class _CommandItem extends StatelessWidget {
 // =============================================================================
 
 class _FooterHint extends StatelessWidget {
-  final bool hasResults;
+  final int resultCount;
 
-  const _FooterHint({required this.hasResults});
+  const _FooterHint({required this.resultCount});
+
+  String get _countText {
+    if (resultCount <= 0) return '';
+    return resultCount == 1 ? '1 result' : '$resultCount results';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -737,31 +792,27 @@ class _FooterHint extends StatelessWidget {
       ),
       child: Row(
         children: [
-          _KeyHint(icon: Icons.arrow_upward, label: ''),
+          const _KeyHint(icon: Icons.arrow_upward, label: ''),
           const SizedBox(width: 2),
-          _KeyHint(icon: Icons.arrow_downward, label: ''),
+          const _KeyHint(icon: Icons.arrow_downward, label: ''),
           const SizedBox(width: DSSpacing.xs),
-          DSText.labelSmall('navigate', color: DSColors.textDisabled),
+          const DSText.labelSmall('navigate', color: DSColors.textDisabled),
           const SizedBox(width: DSSpacing.md),
-          _KeyHint(label: '↵'),
+          const _KeyHint(label: '↵'),
           const SizedBox(width: DSSpacing.xs),
-          DSText.labelSmall('select', color: DSColors.textDisabled),
+          const DSText.labelSmall('select', color: DSColors.textDisabled),
           const SizedBox(width: DSSpacing.md),
-          _KeyHint(label: 'esc'),
+          const _KeyHint(label: 'esc'),
           const SizedBox(width: DSSpacing.xs),
-          DSText.labelSmall('close', color: DSColors.textDisabled),
-          if (hasResults) ...[
+          const DSText.labelSmall('close', color: DSColors.textDisabled),
+          if (resultCount > 0) ...[
             const Spacer(),
-            DSText.labelSmall('${_countText}', color: DSColors.textDisabled),
+            DSText.labelSmall(_countText, color: DSColors.textDisabled),
           ],
         ],
       ),
     );
   }
-
-  // Subclass can't access parent state, so we accept hasResults and derive count externally.
-  // This is a simple hint bar — we skip the count in the base widget.
-  String get _countText => '';
 }
 
 class _KeyHint extends StatelessWidget {
@@ -889,6 +940,13 @@ class DSCommandPaletteShortcut extends StatefulWidget {
 
 class _DSCommandPaletteShortcutState extends State<DSCommandPaletteShortcut> {
   bool _isOpen = false;
+  final FocusNode _focusNode = FocusNode(debugLabel: 'DSCommandPaletteShortcut');
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
 
   void _openPalette() {
     if (_isOpen) return;
@@ -899,7 +957,13 @@ class _DSCommandPaletteShortcutState extends State<DSCommandPaletteShortcut> {
       onExecute: widget.onExecute,
       placeholder: widget.placeholder,
     ).then((_) {
-      _isOpen = false;
+      // Guard against dispose during modal lifecycle (F2).
+      if (!mounted) return;
+      setState(() {
+        _isOpen = false;
+      });
+      // Reclaim key capture after the modal route pops focus away.
+      _focusNode.requestFocus();
     });
   }
 
@@ -919,6 +983,11 @@ class _DSCommandPaletteShortcutState extends State<DSCommandPaletteShortcut> {
 
   @override
   Widget build(BuildContext context) {
-    return Focus(autofocus: true, onKeyEvent: _handleKey, child: widget.child);
+    return Focus(
+      focusNode: _focusNode,
+      autofocus: true,
+      onKeyEvent: _handleKey,
+      child: widget.child,
+    );
   }
 }

@@ -1,0 +1,16 @@
+# graphify ignore — warp-prism ADS
+# Keep the graph focused on Dart source code, not build/cache artifacts
+.git
+.dart_tool
+build
+.archive
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache
+pubspec.lock
+*.iml
+.idea
+.grok
+.melos_warp_prism.iml
+graphify-out
+tmp

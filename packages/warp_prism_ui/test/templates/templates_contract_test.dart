@@ -1,6 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:warp_prism_ui/warp_prism_ui.dart';
+// import 'package:warp_prism_ui/warp_prism_ui.dart'; // No public barrel, testing internal contract
+import 'package:warp_prism_ui/src/molecules/molecules.dart';
+import 'package:warp_prism_ui/src/organisms/organisms.dart';
+import 'package:warp_prism_ui/src/templates/templates.dart';
 
 /// Task 0016: DS Organisms and Templates Alignment
 ///

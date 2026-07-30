@@ -18,8 +18,12 @@ melos:
 
   scripts:
     analyze:
-      description: Run flutter analyze across all packages and apps.
-      run: dart run melos exec --dir-exists=lib -- flutter analyze
+      description: >-
+        Run flutter analyze across all packages and apps.
+        Infos are non-fatal (package gate = zero errors/warnings per
+        docs/governance/test-gate-matrix.md); prefer_const/deprecation infos
+        remain tracked residual, not migration blockers.
+      run: dart run melos exec --dir-exists=lib -- flutter analyze --no-fatal-infos
 
     format:
       description: Check Dart formatting across all packages and apps.
