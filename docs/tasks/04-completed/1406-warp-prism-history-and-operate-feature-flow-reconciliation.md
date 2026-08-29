@@ -1,6 +1,5 @@
 # Task 1406: History and Operate Feature Flow Reconciliation
 
-> **Status**: `[x]` Ready For Review
 > **Review State**: Ready For Review — code quality S=100 (2026-07-09); scoped
 >   history+operate 119/119 green; format patched by reviewer
 > **Priority**: 🟡 P1

@@ -1,6 +1,5 @@
 # Task 1307: Accessibility and Semantics Reconciliation
 
-> **Status**: `[x]` Ready For Review
 > **Review State**: Ready For Review — independent re-review 95/100 (held in review path-to-100)
 > **Priority**: 🟡 P1
 > **Type**: `remediation`

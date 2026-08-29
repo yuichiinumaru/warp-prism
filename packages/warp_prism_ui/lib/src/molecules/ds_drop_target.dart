@@ -95,7 +95,7 @@ class _DSDropTargetState extends State<DSDropTarget> {
       },
       builder: (context, candidateData, rejectedData) {
         final highlightColor = _isHovering
-            ? DSColors.accentCyan.withValues(alpha: 0.3)
+            ? DSColors.focusRing
             : DSColors.borderSubtle.withValues(alpha: 0.5);
         final borderWidth = _isHovering ? 2.0 : 1.0;
 
@@ -129,11 +129,11 @@ class _DSDropTargetState extends State<DSDropTarget> {
                   child: Container(
                     height: 2,
                     decoration: BoxDecoration(
-                      color: DSColors.accentCyan,
+                      color: DSColors.accentBlue,
                       borderRadius: BorderRadius.circular(1),
                       boxShadow: [
                         BoxShadow(
-                          color: DSColors.accentCyan.withValues(alpha: 0.5),
+                          color: DSColors.focusRing,
                           blurRadius: 4,
                         ),
                       ],

@@ -175,9 +175,9 @@ class _MasterDetailTemplateState extends State<MasterDetailTemplate> {
                 bottom: 0,
                 width: DSSpacing.detailOverlayWidth,
                 child: Container(
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     color: DSColors.obsidianElevated,
-                    border: Border(
+                    border: const Border(
                       left: BorderSide(color: DSColors.borderSubtle),
                     ),
                     boxShadow: DSShadows.elevation3,

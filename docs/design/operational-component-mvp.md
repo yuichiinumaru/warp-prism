@@ -3,7 +3,7 @@
 > **Status**: Active design document
 > **Author**: Task 1106 — Warp Prism Operational Component MVP
 > **Date**: 2026-06-08
-> **Last refreshed**: 2026-07-18 (path-to-100: Pilot A framing + deferred inventory currency)
+> **Last refreshed**: 2026-08-24 (path-to-100: gallery DSTaskCard + DSMetricTile health variants, narrow/long/scaled edge evidence synchronized into catalog/test matrix)
 > **Depends on**: Task 1102 (inventory), Task 1104 (monorepo), Task 1105 (catalog policy)
 > **Blocks**: Task 1110 (CyberCore pilot), Task 1111 (expansion gate)
 
@@ -171,6 +171,18 @@ Each promoted component gets catalog cases in `DSGallerySections`:
 - `DSMetricTile` with each health state (healthy, degraded, error, disabled)
 - `DSMetricTileCompact` with health states
 - `DSStateSurface` with new constructors (disabled, stale, degraded, excluded)
+- `DSTaskCard` cases for default/complete, selected/partial, missing proof,
+  and a narrow viewport with a long title
+- Long-label metric example to make truncation behavior inspectable in the
+  gallery, alongside the health variants
+
+### 5.3 Edge-condition evidence
+
+The operational gallery/test contract includes component-specific evidence for:
+
+- long text on `DSMetricTile` and `DSTaskCard`;
+- narrow viewports at 180px (`DSMetricTile`) and 200px (`DSTaskCard`);
+- high text scaling at `TextScaler.linear(2.0)` for both components.
 
 ---
 
@@ -179,9 +191,9 @@ Each promoted component gets catalog cases in `DSGallerySections`:
 | Component | Test Type | Cases |
 |-----------|----------|-------|
 | `DSStatusDot` | Widget | All 15 constructors render, each has correct color, animated variants exist |
-| `DSMetricTile` | Widget | Default render, each health state, compact variant with health |
+| `DSMetricTile` | Widget | Default render, each health state, compact variant with health; long text, 180px viewport, and 2.0x text scale |
 | `DSStateSurface` | Widget | All 7 constructors render, correct icon/color per state |
-| `DSTaskCard` | Widget | Existing tests + verify no regressions |
+| `DSTaskCard` | Widget | Default/selected/proof-state behavior; long title at 200px viewport and 2.0x text scale |
 | All promoted | Barrel | `Prism*` aliases resolve to correct types |
 
 ---
@@ -208,7 +220,7 @@ Each promoted component gets catalog cases in `DSGallerySections`:
 - [x] **Read existing code**: All relevant files read before modification.
 - [x] **Catalog case exists**: Operational states section added to gallery.
 - [x] **State matrix documented**: §3 above.
-- [x] **Widget test passes**: `operational_components_test.dart` + related suites — **183/183 pass** (2026-07-18 path-to-100 re-verify).
+- [x] **Widget test passes**: `operational_components_test.dart` + `design_system_gallery_test.dart` + related suites — **213/213 pass** (2026-08-23 path-to-100 re-verify; includes DSTaskCard, DSMetricTile health variants, long-text, narrow viewport, 2.0x high text scale).
 - [x] **Semantics test passes**: DSStatusDot tooltip Semantics; operational badge/status coverage in `ds_operational_state_test.dart`.
 - [ ] **Golden test baseline**: Deferred — separate golden files exist for status_dot/metric_tile; not required to close 1106 MVP scope.
 - [x] **Prism* public alias created**: `prism_aliases.dart` created and exported.

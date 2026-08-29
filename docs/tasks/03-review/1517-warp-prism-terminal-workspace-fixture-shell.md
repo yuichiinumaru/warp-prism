@@ -1,6 +1,5 @@
 # Task 1517: PrismTerminalWorkspace Fixture Shell
 
-> **Status**: `[x]` In Review — formal ACCEPTED_100 (2026-07-18 path-to-100)
 > **Review State**: `In 03-review`
 > **Priority**: 🟡 P1
 > **Type**: `feature`
@@ -216,6 +215,41 @@ verification: >
 - **Helper**: `DSTerminalWorkspace` / controller
 - **Regression test**: close-pane resource count + chrome 48dp tests
 
+## Independent Review Ledger — 2026-08-23 — reviewers
+
+- **Score:** 96/100
+- **Verdict:** `ACCEPTED_WITH_NOTE`
+- **Full report:** `docs/reports/review/independent-2026-08-23-task-1517.md`
+- **Lane outcome:** remains `docs/tasks/03-review/`
+- **Live proof:** organism analyzer clean; focused suite 11/11; boundary 7/7; lifecycle guards and 48dp chrome verified in source.
+- **Note (non-blocking):** terminal test imports the internal `src/` path and mirrors Prism typedefs locally instead of proving the public barrel contract directly.
+
+## Independent Live Review Ledger — Third Batch — 2026-08-23
+
+- **Score:** 94/100
+- **Verdict:** `ACCEPTED_WITH_NOTE`
+- **Full report:** `docs/reports/review/independent-2026-08-23-third-batch-task-1517.md`
+- **Lane outcome:** remains `docs/tasks/03-review/`
+- **Fresh proof:** native-assets launch blocker repaired non-destructively; Chrome focused suite 11/11; boundary 7/7; gallery 22/22; scoped analyzer clean.
+- **Open notes:** focused test still bypasses public barrel with local typedef mirrors; non-mutating formatter reports `ds_terminal_workspace.dart` changed. Package analyzer exit 0 with 218 info-level findings, not claimed clean/no-output.
+
+## Self-Close Re-review — 2026-08-24 — builders
+
+- **Score:** 100/100
+- **Verdict:** `ACCEPT`
+- **Full report:** `docs/reports/review/20260824-task-1517-prism-terminal-workspace-review.md`
+- **Lane outcome:** remains `docs/tasks/02-doing/1517-warp-prism-terminal-workspace-fixture-shell.md` (no lane move)
+- **Fresh proof:** format clean, public barrel `warp_prism_ui.dart` imports directly tested, local typedef mirrors removed, 11/11 tests PASS, boundary 7/7 PASS.
+
+## Independent Bundled Review — 2026-08-24 — reviewers
+
+- **Score:** **100/100**
+- **Verdict:** `ACCEPTED_100`
+- **Full report:** `docs/reports/review/20260824-builders-tasks-1706-1707-1517-independent-review.md`
+- **Lane outcome:** `docs/tasks/03-review/1517-warp-prism-terminal-workspace-fixture-shell.md` — moved and verified collision-safely.
+- **Fresh proof:** focused 11/11, scoped analyzer clean, gallery 22/22, non-mutating formatter clean, boundary 7/7; public-barrel imports and lifecycle source guards re-read.
+- **Open score-relevant findings:** none. Future unmount/post-frame regression coverage is informational only.
+
 ## Review Ledger
 
 > [!IMPORTANT]
@@ -264,3 +298,10 @@ verification: >
 - `debugOwnedPaneResourceCount` drops on pane close
 - Clear/close chrome 48×48
 - Focus change does not force-scroll; history growth does
+
+
+## Review/Fix Ledger — 2026-08-24 Wave 4 (BUILDER_CONTEXT; parent `builders`)
+
+- **Engineer session/task ID**: `ses_fcdddc95affeg7uzxV6evqck15`
+- **Execution outcome**: drain-drift reconciliation + fresh gates + self-close score-only PASS
+- **Next routing**: independent BUILDER_CONTEXT re-review dispatched by parent

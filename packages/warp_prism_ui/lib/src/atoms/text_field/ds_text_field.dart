@@ -15,7 +15,9 @@ class DSTextField extends StatefulWidget {
   final String? helperText;
   final String? errorText;
   final IconData? prefixIcon;
+  final Widget? prefix;
   final IconData? suffixIcon;
+  final Widget? suffix;
   final VoidCallback? onSuffixTap;
   final String? suffixSemanticsLabel;
   final bool obscureText;
@@ -43,7 +45,9 @@ class DSTextField extends StatefulWidget {
     this.helperText,
     this.errorText,
     this.prefixIcon,
+    this.prefix,
     this.suffixIcon,
+    this.suffix,
     this.onSuffixTap,
     this.suffixSemanticsLabel,
     this.obscureText = false,
@@ -124,7 +128,8 @@ class _DSTextFieldState extends State<DSTextField> {
   @override
   Widget build(BuildContext context) {
     final hasError = widget.errorText != null && widget.errorText!.isNotEmpty;
-    final isMultiline = !widget.obscureText &&
+    final isMultiline =
+        !widget.obscureText &&
         (widget.maxLines == null || widget.maxLines! > 1);
 
     final Color borderColor;
@@ -133,7 +138,7 @@ class _DSTextFieldState extends State<DSTextField> {
       borderColor = DSColors.statusError;
       borderWidth = 1.0;
     } else if (_isFocused) {
-      borderColor = DSColors.accentCyan;
+      borderColor = DSColors.accentBlue;
       borderWidth = 2.0;
     } else {
       borderColor = DSColors.borderSubtle;
@@ -144,7 +149,7 @@ class _DSTextFieldState extends State<DSTextField> {
     if (hasError) {
       labelColor = DSColors.statusError;
     } else if (_isFocused) {
-      labelColor = DSColors.accentCyan;
+      labelColor = DSColors.accentBlue;
     } else {
       labelColor = DSColors.textSecondary;
     }
@@ -153,7 +158,7 @@ class _DSTextFieldState extends State<DSTextField> {
     if (hasError) {
       iconColor = DSColors.statusError;
     } else if (_isFocused) {
-      iconColor = DSColors.accentCyan;
+      iconColor = DSColors.accentBlue;
     } else {
       iconColor = DSColors.textTertiary;
     }
@@ -171,20 +176,14 @@ class _DSTextFieldState extends State<DSTextField> {
       ];
     } else if (_isFocused) {
       glowShadows = [
-        BoxShadow(
-          color: DSColors.accentCyan.withValues(alpha: 0.3),
-          blurRadius: 8,
-          spreadRadius: 0,
-        ),
+        BoxShadow(color: DSColors.focusRing, blurRadius: 8, spreadRadius: 0),
       ];
     } else {
       glowShadows = null;
     }
 
     Widget inputContainer = Container(
-      constraints: BoxConstraints(
-        minHeight: isMultiline ? 80 : 48,
-      ),
+      constraints: BoxConstraints(minHeight: isMultiline ? 80 : 48),
       decoration: BoxDecoration(
         color: DSColors.obsidianElevated,
         borderRadius: BorderRadius.circular(DSRadii.input),
@@ -196,10 +195,14 @@ class _DSTextFieldState extends State<DSTextField> {
         vertical: isMultiline ? DSSpacing.lg : DSSpacing.xs,
       ),
       child: Row(
-        crossAxisAlignment:
-            isMultiline ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+        crossAxisAlignment: isMultiline
+            ? CrossAxisAlignment.start
+            : CrossAxisAlignment.center,
         children: [
-          if (widget.prefixIcon != null) ...[
+          if (widget.prefix != null) ...[
+            widget.prefix!,
+            const SizedBox(width: DSSpacing.sm),
+          ] else if (widget.prefixIcon != null) ...[
             Padding(
               padding: EdgeInsets.only(top: isMultiline ? 2.0 : 0.0),
               child: DSIcon.small(
@@ -214,7 +217,8 @@ class _DSTextFieldState extends State<DSTextField> {
             child: Semantics(
               textField: true,
               enabled: widget.enabled,
-              label: widget.semanticsLabel ??
+              label:
+                  widget.semanticsLabel ??
                   widget.label ??
                   widget.hint ??
                   'Text field',
@@ -231,7 +235,7 @@ class _DSTextFieldState extends State<DSTextField> {
                 maxLines: widget.obscureText ? 1 : widget.maxLines,
                 minLines: widget.minLines,
                 maxLength: widget.maxLength,
-                cursorColor: DSColors.accentCyan,
+                cursorColor: DSColors.accentBlue,
                 style: DSTypography.bodyMedium.copyWith(
                   color: widget.enabled
                       ? DSColors.textPrimary
@@ -254,7 +258,10 @@ class _DSTextFieldState extends State<DSTextField> {
               ),
             ),
           ),
-          if (widget.suffixIcon != null) ...[
+          if (widget.suffix != null) ...[
+            const SizedBox(width: DSSpacing.sm),
+            widget.suffix!,
+          ] else if (widget.suffixIcon != null) ...[
             const SizedBox(width: DSSpacing.sm),
             Padding(
               padding: EdgeInsets.only(top: isMultiline ? 2.0 : 0.0),
@@ -278,10 +285,7 @@ class _DSTextFieldState extends State<DSTextField> {
     );
 
     if (!widget.enabled) {
-      inputContainer = Opacity(
-        opacity: 0.5,
-        child: inputContainer,
-      );
+      inputContainer = Opacity(opacity: 0.5, child: inputContainer);
     }
 
     return Column(
@@ -289,30 +293,19 @@ class _DSTextFieldState extends State<DSTextField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (widget.label != null) ...[
-          DSText.labelSmall(
-            widget.label!,
-            color: labelColor,
-          ),
+          DSText.labelSmall(widget.label!, color: labelColor),
           const SizedBox(height: DSSpacing.xs),
         ],
         inputContainer,
         if (hasError) ...[
           const SizedBox(height: DSSpacing.xs),
-          DSText.bodySmall(
-            widget.errorText!,
-            color: DSColors.statusError,
-          ),
+          DSText.bodySmall(widget.errorText!, color: DSColors.statusError),
         ] else if (widget.helperText != null &&
             widget.helperText!.isNotEmpty) ...[
           const SizedBox(height: DSSpacing.xs),
-          DSText.bodySmall(
-            widget.helperText!,
-            color: DSColors.textTertiary,
-          ),
+          DSText.bodySmall(widget.helperText!, color: DSColors.textTertiary),
         ],
-        if (widget.maxLength != null &&
-            widget.showCounter &&
-            !hasError) ...[
+        if (widget.maxLength != null && widget.showCounter && !hasError) ...[
           const SizedBox(height: DSSpacing.xs),
           DSText.bodySmall(
             '${_effectiveController.text.length} / ${widget.maxLength}',
@@ -350,9 +343,7 @@ class _InteractiveSuffixIcon extends StatelessWidget {
           child: InkWell(
             onTap: onTap,
             borderRadius: BorderRadius.circular(DSRadii.sm),
-            child: Center(
-              child: DSIcon.small(icon, color: color),
-            ),
+            child: Center(child: DSIcon.small(icon, color: color)),
           ),
         ),
       ),

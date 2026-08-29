@@ -1,6 +1,5 @@
 # Task 1201: Test Failure Baseline Inventory
 
-> **Status**: `[x]` Promoted
 > **Review State**: `Promoted` — inventory-only governance deliverable accepted and promoted as a dated 2026-06-11 baseline; consumer/app gate remained red at capture time because `apps/observatory/` had 12 classified pre-existing/unrelated failures that this task inventories rather than fixes.
 > **Priority**: 🔴 P0
 > **Type**: `governance`

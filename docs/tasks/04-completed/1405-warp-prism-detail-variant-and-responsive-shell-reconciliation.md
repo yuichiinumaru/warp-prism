@@ -1,6 +1,5 @@
 # Task 1405: Detail Variant and Responsive Shell Reconciliation
 
-> **Status**: `[x]` Ready For Review
 > **Review State**: Held in Review — S=96/100 (2026-07-09 independent re-review); path-to-100
 > **Priority**: 🟡 P1
 > **Type**: `remediation`

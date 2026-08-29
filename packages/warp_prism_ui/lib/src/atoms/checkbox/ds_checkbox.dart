@@ -7,7 +7,7 @@ import '../ds_text.dart';
 
 /// ASW Observatory Atom - Checkbox
 ///
-/// An obsidian dark glass checkbox widget with cyan checked fill (`DSColors.accentCyan`),
+/// An obsidian dark glass checkbox widget with blue checked fill (`DSColors.accentBlue`),
 /// checkmark icon, tristate/indeterminate support, label placement, disabled state,
 /// and 48x48 min touch target.
 class DSCheckbox extends StatelessWidget {
@@ -83,9 +83,9 @@ class DSCheckbox extends StatelessWidget {
 
     Widget boxContent;
     if (value == true) {
-      // Checked state: 20x20 outer box, DSGlowBorder cyan glow, filled cyan background, obsidian checkmark icon
+      // Checked state: 20x20 outer box, DSGlowBorder blue glow, filled blue background, obsidian checkmark icon
       boxContent = DSGlowBorder(
-        color: DSColors.accentCyan,
+        color: DSColors.accentBlue,
         radius: DSRadii.button,
         width: 1,
         glowBlur: 6,
@@ -93,34 +93,30 @@ class DSCheckbox extends StatelessWidget {
           width: 18,
           height: 18,
           decoration: BoxDecoration(
-            color: DSColors.accentCyan,
+            color: DSColors.accentBlue,
             borderRadius: BorderRadius.circular(DSRadii.button - 1),
           ),
-          child: const Center(
-            child: DSIcon(
-              Icons.check,
-              size: 14,
-              color: DSColors.obsidianDeep,
-            ),
+          child: Center(
+            child: DSIcon(Icons.check, size: 14, color: DSColors.obsidianDeep),
           ),
         ),
       );
     } else if (value == null) {
-      // Indeterminate state: 20x20 box, subtle glass bg, cyan border, centered horizontal 10x2 bar
+      // Indeterminate state: 20x20 box, subtle glass bg, blue border, centered horizontal 10x2 bar
       boxContent = Container(
         width: 20,
         height: 20,
         decoration: BoxDecoration(
           color: DSColors.glassOverlay.withValues(alpha: 0.6),
           borderRadius: BorderRadius.circular(DSRadii.button),
-          border: Border.all(color: DSColors.accentCyan, width: 1),
+          border: Border.all(color: DSColors.accentBlue, width: 1),
         ),
         child: Center(
           child: Container(
             width: 10,
             height: 2,
             decoration: BoxDecoration(
-              color: DSColors.accentCyan,
+              color: DSColors.accentBlue,
               borderRadius: BorderRadius.circular(DSRadii.xs),
             ),
           ),

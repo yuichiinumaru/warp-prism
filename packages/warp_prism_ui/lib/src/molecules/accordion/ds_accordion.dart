@@ -76,15 +76,8 @@ class DSAccordionItem {
   }
 
   @override
-  int get hashCode => Object.hash(
-        id,
-        title,
-        subtitle,
-        icon,
-        content,
-        defaultOpen,
-        disabled,
-      );
+  int get hashCode =>
+      Object.hash(id, title, subtitle, icon, content, defaultOpen, disabled);
 }
 
 /// Alias for [DSAccordionItem] for API compatibility.
@@ -231,10 +224,7 @@ class _DSAccordionState extends State<DSAccordion> {
     if (widget.items.isEmpty) {
       const emptyWidget = Padding(
         padding: EdgeInsets.all(DSSpacing.md),
-        child: DSStateSurface.empty(
-          title: 'No sections',
-          compact: true,
-        ),
+        child: DSStateSurface.empty(title: 'No sections', compact: true),
       );
       return widget.wrapInGlass
           ? const DSGlassPanel.elevated(child: emptyWidget)
@@ -269,10 +259,7 @@ class _DSAccordionState extends State<DSAccordion> {
     );
 
     final wrapped = widget.wrapInGlass
-        ? DSGlassPanel.elevated(
-            padding: EdgeInsets.zero,
-            child: body,
-          )
+        ? DSGlassPanel.elevated(padding: EdgeInsets.zero, child: body)
         : body;
 
     return Semantics(
@@ -305,8 +292,8 @@ class _DSAccordionSectionWidget extends StatelessWidget {
     final labelColor = item.disabled
         ? DSColors.textDisabled
         : expanded
-            ? DSColors.textPrimary
-            : DSColors.textSecondary;
+        ? DSColors.textPrimary
+        : DSColors.textSecondary;
 
     final header = KeyedSubtree(
       key: DSAccordion.headerKey(index),
@@ -334,11 +321,7 @@ class _DSAccordionSectionWidget extends StatelessWidget {
               child: Row(
                 children: [
                   if (item.icon != null) ...[
-                    DSIcon(
-                      item.icon!,
-                      size: 18,
-                      color: labelColor,
-                    ),
+                    DSIcon(item.icon!, size: 18, color: labelColor),
                     const SizedBox(width: DSSpacing.sm),
                   ],
                   Expanded(
@@ -346,10 +329,7 @@ class _DSAccordionSectionWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        DSText.labelLarge(
-                          item.title,
-                          color: labelColor,
-                        ),
+                        DSText.labelLarge(item.title, color: labelColor),
                         if (item.subtitle != null)
                           DSText.labelSmall(
                             item.subtitle!,
@@ -367,7 +347,9 @@ class _DSAccordionSectionWidget extends StatelessWidget {
                       Icons.keyboard_arrow_down,
                       size: 20,
                       color: interactive
-                          ? (expanded ? DSColors.accentCyan : DSColors.textSecondary)
+                          ? (expanded
+                                ? DSColors.accentBlue
+                                : DSColors.textSecondary)
                           : DSColors.textDisabled,
                     ),
                   ),
@@ -379,13 +361,11 @@ class _DSAccordionSectionWidget extends StatelessWidget {
       ),
     );
 
-    final contentWidget = item.content ??
+    final contentWidget =
+        item.content ??
         const Padding(
           padding: EdgeInsets.all(DSSpacing.sm),
-          child: DSStateSurface.empty(
-            title: 'No content',
-            compact: true,
-          ),
+          child: DSStateSurface.empty(title: 'No content', compact: true),
         );
 
     final body = ClipRect(
@@ -408,10 +388,7 @@ class _DSAccordionSectionWidget extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        header,
-        body,
-      ],
+      children: [header, body],
     );
   }
 }

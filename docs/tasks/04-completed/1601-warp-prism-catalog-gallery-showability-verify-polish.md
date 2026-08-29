@@ -1,6 +1,5 @@
 # Task 1601: Catalog / Gallery Showability Verify + Polish
 
-> **Status**: `[/]` Held In Review — path-to-100 re-review S=96 (2026-07-11)
 > **Review State**: `Held In Review` (path-to-100 accepted; lane `03-review/`)
 > **Priority**: 🔴 P0
 > **Type**: `verification`

@@ -44,13 +44,15 @@ before using raw values in the component.
 
 ### 2.2 Existing Token Inventory
 
+> **Supersession Note (Task 1800 / Task 1801)**: Default palette sections superseded by the Black Obsidian Visual Contract (`docs/design/black-obsidian-visual-contract.md`). Structural backgrounds are pure black obsidian (`#030506` family), primary action accent is `accentBlue` (`#2F81FF`), and cyan (`#00D4FF`) is retained as a data-category accent.
+
 Evidence from Task 0014 lineage and **live** `packages/warp_prism_ui/lib/src/tokens/`
 inspection (line counts refreshed 2026-07-09; treat counts as inventory hints, not
 API contracts):
 
 | Token Class | Public Alias | File | Lines | Role |
 |-------------|--------------|------|-------|------|
-| `DSColors` | `PrismColors` | `tokens/ds_colors.dart` | 254 | Obsidian backgrounds, energy accents (cyan/violet/gold), status, governance, text, border, lane, asset-kind colors, **and 15 operational-state semantic aliases**. Lookup methods: `forAssetKind()`, `forLane()`, `forCanonicity()`. |
+| `DSColors` | `PrismColors` | `tokens/ds_colors.dart` | 254 | Black Obsidian backgrounds (#030506 family), primary action blue ladder (#2F81FF/#1D64D8/#114299), retained data accents (cyan/violet/gold), status, governance, text, border (#121D22), lane, asset-kind colors, **and 15 operational-state semantic aliases**. Lookup methods: `forAssetKind()`, `forLane()`, `forCanonicity()`. |
 | `DSTypography` | `PrismTypography` | `tokens/ds_typography.dart` | 186 | 18-style type scale: display/heading/body/label/code/numeric × large/medium/small. JetBrainsMono (mono) + Inter (sans). |
 | `DSSpacing` | `PrismSpacing` | `tokens/ds_spacing.dart` | 72 | Base scale (xxs→massive: 2/4/8/12/16/20/24/32/48/64px) + semantic spacing (insets, gaps, layout dimensions). |
 | `DSRadii` | `PrismRadii` | `tokens/ds_radii.dart` | 47 | Base radii (none→full: 0/2/4/6/8/12/16/9999) + semantic radii (card/button/chip/input/panel/modal). |
@@ -63,6 +65,8 @@ API contracts):
 Also present: `tokens/tokens.dart` (barrel-style re-exports within the tokens folder — implementation detail, not a public `PrismTokens` facade).
 
 ### 2.3 Operational State Color Tokens
+
+> **Supersession Note (Task 1800 / Task 1801)**: Primary action accent for interactive controls is `accentBlue` (`#2F81FF`). `statusPromoted` remains `accentCyan` (`#00D4FF`) as a retained data-category accent until Task 1806.
 
 The 15 operational states are defined in `docs/design/operational-state-vocabulary.md`
 and implemented live as **semantic aliases on `DSColors` / `PrismColors`** plus
@@ -426,6 +430,8 @@ golden tests). Choose one convention and apply consistently.
 
 ### 6.3 Golden Test Conventions
 
+> **Interim Golden-Freeze Policy (Task 1800 / Task 1801)**: No golden regeneration during palette migration. Visual golden test failures resulting from token palette migration are recognized as expected intermediate drift until Task 1805 human visual acceptance gate.
+
 1. **Test file naming**: `<component_snake>_golden_test.dart`.
 2. **Golden file naming**: `goldens/<layer>/<component>_<variant>_<state>.png`.
 3. **Test body**: `await tester.pumpWidget(MaterialApp(home: Scaffold(body: PrismXxx(...)))); await expectLater(find.byType(PrismXxx), matchesGoldenFile(...));`
@@ -504,7 +510,7 @@ For each interactive component, the semantics test MUST verify:
 | Body text (≤24px, non-bold) | 4.5:1 | WCAG AA | `contrast_test.dart` |
 | Large text (≥24px or ≥18.67px bold) | 3:1 | WCAG AA | `contrast_test.dart` |
 | UI components (borders, icons) | 3:1 | WCAG AA | Manual or future automated |
-| Focus indicator | Visible on obsidian background | Project convention | Focus ring: 2px `accentCyan` at 50% opacity |
+| Focus indicator | Visible on obsidian background | Project convention | Focus ring: 2px `accentBlue` (#2F81FF) at 50% opacity (superseded per Task 1800 / Task 1801) |
 
 ---
 

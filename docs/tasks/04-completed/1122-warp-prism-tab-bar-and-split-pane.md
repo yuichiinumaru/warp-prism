@@ -1,6 +1,5 @@
 # Task 1122: Warp Prism Tab Bar And Split Pane
 
-> **Status**: `[x]` Complete (awaiting review)
 > **Review State**: Held in `03-review` — score 91 (independent re-review 2026-07-09)
 > **Priority**: 🔵 P2
 > **Type**: `feature` | `design-system`

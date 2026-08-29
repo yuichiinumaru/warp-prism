@@ -499,10 +499,10 @@ class _ProviderHealthCellTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final stateColor = cell.operationalState.color;
     final borderColor = selected
-        ? DSColors.accentCyan.withValues(alpha: 0.7)
+        ? DSColors.focusRing
         : stateColor.withValues(alpha: 0.35);
     final bg = selected
-        ? DSColors.accentCyan.withValues(alpha: 0.08)
+        ? DSColors.accentBlue.withValues(alpha: 0.08)
         : DSColors.obsidianElevated;
 
     final panel = Container(

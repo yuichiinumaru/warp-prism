@@ -14,25 +14,8 @@ class WarpPrismApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'ASW Observatory',
       debugShowCheckedModeBanner: false,
-      theme: _buildDarkTheme(),
+      theme: PrismTheme.dark(),
       routerConfig: appRouter,
-    );
-  }
-
-  ThemeData _buildDarkTheme() {
-    return ThemeData(
-      brightness: Brightness.dark,
-      useMaterial3: true,
-      scaffoldBackgroundColor: PrismColors.obsidianDeep,
-      colorScheme: const ColorScheme.dark(
-        primary: PrismColors.accentCyan,
-        secondary: PrismColors.accentViolet,
-        surface: PrismColors.obsidianBase,
-        onPrimary: PrismColors.white,
-        onSecondary: PrismColors.white,
-        onSurface: PrismColors.textPrimary,
-      ),
-      fontFamily: PrismTypography.fontFamilyMono,
     );
   }
 }

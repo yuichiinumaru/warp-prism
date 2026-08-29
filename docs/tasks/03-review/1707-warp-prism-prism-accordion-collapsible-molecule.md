@@ -1,6 +1,5 @@
 # Task 1707 (warp-prism-prism-accordion-collapsible-molecule)
 
-**Status**: Ready for Review (100/100 — re-reviewed after fix-loop)
 **Priority**: P0
 **Epic**: EPIC-17
 **Created**: 2026-07-24
@@ -100,6 +99,27 @@ Task reviewed by `reviewers` lane (Implacable Flutter Reviewer, model omniroute/
 - **Fix-loop applied**: Added 9 behavioral tests to `test/molecules/accordion/ds_accordion_test.dart` only (no production code changed). Append-only, preserved existing 8 tests. Verified by re-run.
 - **Re-review score**: 100/100 — Perfect. Axiom 5 phantom restored to grounding (`AnimatedRotation.turns` 0.0→0.5→0.0 asserted); all 5 previously-untested public surfaces now behaviorally proven; controlled-mode parent-ownership invariant tested.
 - **Lane moved**: `02-doing` → `03-review`.
+
+### Independent Review Ledger
+
+| Date | Reviewer | Score | Verdict | Report |
+| --- | --- | --- | --- | --- |
+| 2026-08-23 | reviewers | **Not scored** | **BLOCKED / STOPPED** — Task 1704 mandatory non-mutating format probe red before independent scoring | `docs/reports/review/1707-prism-accordion-collapsible-independent-review-2026-08-23.md` |
+| 2026-08-23 | reviewers | **87** | **REJECT** — reconciliation found task-owned format drift, incomplete gallery variants, and missing direct header-size proof; route to `02-doing` | `docs/reports/review/1707-prism-accordion-collapsible-reconciliation-review-2026-08-23.md` |
+| 2026-08-24 | builders | **100** | **ACCEPT** — self-close reconciliation complete: format clean, header size ≥48dp asserted and proven | `docs/reports/review/20260824-task-1707-prism-accordion-review.md` |
+| 2026-08-24 | independent reviewers | **100** | **ACCEPTED_100** — former gallery multi-expand residual resolved with live two-open demo and assertions; focused 18/18, analyzer clean, formatter clean, gallery 22/22, boundary 7/7 | `docs/reports/review/20260824-builders-tasks-1706-1707-1517-independent-review.md` |
+
+### Reconciliation findings / required remediation
+
+- **Resolved:** task-owned source/test formatter probe is clean; no changed files reported.
+- **Resolved:** rendered header target is independently asserted at ≥48dp.
+- **Resolved:** gallery multi-expand demo now opens two sections by default and the gallery test asserts both body texts.
+- Destination move completed collision-safely to `docs/tasks/03-review/`.
+
+### Independent review evidence gap
+
+Closed by the bundled independent review: focused suite 18/18, scoped analyzer clean, non-mutating formatter clean, gallery 22/22 with the live two-open variant, and boundary 7/7.
+
 - **Residual risks** (informational, non-blocking):
   - Full-package `dart analyze` reports 139 pre-existing `prefer_const_*` infos concentrated in `lib/src/gallery/design_system_gallery_sections.dart` — predates Task 1707, untouched by this work. Out of scope. Tracked as repo-wide debt.
   - No golden-image tests are required by this task; animation correctness is proven via `AnimatedRotation.turns` / `AnimatedSize` widget-property readback, which is deterministic and CI-safe (no font/golden rendering dependency). Documentation note only.
@@ -116,3 +136,10 @@ Task reviewed by `reviewers` lane (Implacable Flutter Reviewer, model omniroute/
 **Blocks frontend tasks**: 0043 (Operations endpoint needs accordions for fusion stack), 0044 (Settings forms need accordions for grouped settings).
 
 **Anti-Hallucination Guardrail**: Do NOT use Flutter's `ExpansionTile` / `ExpansionPanel`. Compose with `DSInteractiveSurface` + `AnimatedRotation` + `AnimatedSize` for ADS-consistent styling and animation.
+
+
+## Review/Fix Ledger — 2026-08-24 Wave 4 (BUILDER_CONTEXT; parent `builders`)
+
+- **Engineer session/task ID**: `ses_fcdddc95affeg7uzxV6evqck15`
+- **Execution outcome**: drain-drift reconciliation + fresh gates + self-close score-only PASS
+- **Next routing**: independent BUILDER_CONTEXT re-review dispatched by parent

@@ -1,6 +1,5 @@
 # Task 0001: Warp Prism Mock Workspace Contract Baseline
 
-> **Status**: `[x]` Completed — independent drain review 2026-07-17 S=100/100
 > **Review State**: `APPROVED_COMPLETED` — S=100/100 (2026-07-17); see `docs/reports/review-wave-2026-07-17/task-0001-drain-review.md`
 > **Priority**: 🔴 P0
 > **Type**: `governance`

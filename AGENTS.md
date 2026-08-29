@@ -67,7 +67,10 @@ ranges. Executable task identity is `Task NNNN` inside Warp Prism only.
 Executable tasks must follow `docs/tasks/000-template.md`, be at least 50 lines,
 include checkbox subtasks, include a `Where` table, and include validation
 commands. The first subtask must require reading existing code/docs before any
-mutation.
+mutation. The containing task lane is the sole source of lifecycle/readiness
+status (`00-planning/` through `04-completed/`); do not add a task-level
+`Status` header. Keep `Review State` and Review Trail evidence when applicable,
+but never treat them as a substitute for the lane.
 
 ## 4. Protected Files
 

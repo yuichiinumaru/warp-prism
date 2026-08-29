@@ -1,6 +1,5 @@
 # Task 1519: EPIC-15 Gallery + Catalog Registration
 
-> **Status**: `[x]` Complete (awaiting review handoff)
 > **Review State**: `Ready for review`
 > **Priority**: 🟡 P1
 > **Type**: `feature`

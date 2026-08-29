@@ -34,9 +34,7 @@ void main() {
     testWidgets('renders all section headers in initial state', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: DSAccordion(items: sampleItems),
-          ),
+          home: Scaffold(body: DSAccordion(items: sampleItems)),
         ),
       );
 
@@ -65,9 +63,7 @@ void main() {
 
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: DSAccordion(items: itemsWithDefaultOpen),
-          ),
+          home: Scaffold(body: DSAccordion(items: itemsWithDefaultOpen)),
         ),
       );
 
@@ -108,10 +104,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: DSAccordion(
-              items: sampleItems,
-              multiExpand: false,
-            ),
+            body: DSAccordion(items: sampleItems, multiExpand: false),
           ),
         ),
       );
@@ -133,10 +126,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: DSAccordion(
-              items: sampleItems,
-              multiExpand: true,
-            ),
+            body: DSAccordion(items: sampleItems, multiExpand: true),
           ),
         ),
       );
@@ -186,9 +176,7 @@ void main() {
 
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: DSAccordion(items: itemsWithNullContent),
-          ),
+          home: Scaffold(body: DSAccordion(items: itemsWithNullContent)),
         ),
       );
 
@@ -196,7 +184,9 @@ void main() {
       expect(find.byType(DSStateSurface), findsOneWidget);
     });
 
-    testWidgets('PrismAccordion and PrismAccordionItem aliases work', (tester) async {
+    testWidgets('PrismAccordion and PrismAccordionItem aliases work', (
+      tester,
+    ) async {
       final items = [
         const PrismAccordionItem(
           title: 'Alias Section',
@@ -207,14 +197,36 @@ void main() {
 
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: PrismAccordion(items: items),
-          ),
+          home: Scaffold(body: PrismAccordion(items: items)),
         ),
       );
 
       expect(find.text('Alias Section'), findsOneWidget);
       expect(find.text('Alias Content'), findsOneWidget);
+    });
+
+    testWidgets('rendered header interactive target size is at least 48dp', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(body: DSAccordion(items: sampleItems)),
+        ),
+      );
+
+      final headerFinder = find.ancestor(
+        of: find.text('Section 1'),
+        matching: find.byType(PrismInteractiveSurface),
+      );
+      expect(headerFinder, findsOneWidget);
+
+      final size = tester.getSize(headerFinder);
+      expect(
+        size.height,
+        greaterThanOrEqualTo(48.0),
+        reason:
+            'Section header interactive target height must be at least 48dp.',
+      );
     });
   });
 
@@ -227,46 +239,59 @@ void main() {
   // ---------------------------------------------------------------------------
 
   group('DSAccordion animation & optional surface coverage', () {
-    testWidgets('chevron rotates 180 degrees (0.0 turns -> 0.5 turns) on expand',
-        (tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: DSAccordion(items: sampleItems),
+    testWidgets(
+      'chevron rotates 180 degrees (0.0 turns -> 0.5 turns) on expand',
+      (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(body: DSAccordion(items: sampleItems)),
           ),
-        ),
-      );
+        );
 
-      // Collapsed: chevron rotation is 0.0 turns.
-      final rotationCollapsed =
-          tester.widget<AnimatedRotation>(find.byType(AnimatedRotation).first);
-      expect(rotationCollapsed.turns, 0.0,
-          reason: 'Collapsed chevron must be at 0.0 turns (pointing down).');
+        // Collapsed: chevron rotation is 0.0 turns.
+        final rotationCollapsed = tester.widget<AnimatedRotation>(
+          find.byType(AnimatedRotation).first,
+        );
+        expect(
+          rotationCollapsed.turns,
+          0.0,
+          reason: 'Collapsed chevron must be at 0.0 turns (pointing down).',
+        );
 
-      // Expand Section 1. Pump a single frame (not settle) so we observe the
-      // target turns value even mid-animation — the AnimatedRotation `turns`
-      // property reflects the destination immediately.
-      await tester.tap(find.text('Section 1'));
-      await tester.pump();
+        // Expand Section 1. Pump a single frame (not settle) so we observe the
+        // target turns value even mid-animation — the AnimatedRotation `turns`
+        // property reflects the destination immediately.
+        await tester.tap(find.text('Section 1'));
+        await tester.pump();
 
-      final rotationExpanded =
-          tester.widget<AnimatedRotation>(find.byType(AnimatedRotation).first);
-      expect(rotationExpanded.turns, 0.5,
+        final rotationExpanded = tester.widget<AnimatedRotation>(
+          find.byType(AnimatedRotation).first,
+        );
+        expect(
+          rotationExpanded.turns,
+          0.5,
           reason:
-              'Expanded chevron must animate to 0.5 turns (180 degrees rotation).');
+              'Expanded chevron must animate to 0.5 turns (180 degrees rotation).',
+        );
 
-      // Collapse again and confirm turns returns to 0.0.
-      await tester.tap(find.text('Section 1'));
-      await tester.pump();
+        // Collapse again and confirm turns returns to 0.0.
+        await tester.tap(find.text('Section 1'));
+        await tester.pump();
 
-      final rotationRecollapsed =
-          tester.widget<AnimatedRotation>(find.byType(AnimatedRotation).first);
-      expect(rotationRecollapsed.turns, 0.0,
-          reason: 'Recollapsed chevron must return to 0.0 turns.');
-    });
+        final rotationRecollapsed = tester.widget<AnimatedRotation>(
+          find.byType(AnimatedRotation).first,
+        );
+        expect(
+          rotationRecollapsed.turns,
+          0.0,
+          reason: 'Recollapsed chevron must return to 0.0 turns.',
+        );
+      },
+    );
 
-    testWidgets('onExpandedIndicesChanged fires with the correct Set<int>',
-        (tester) async {
+    testWidgets('onExpandedIndicesChanged fires with the correct Set<int>', (
+      tester,
+    ) async {
       final List<Set<int>> emitted = [];
 
       await tester.pumpWidget(
@@ -303,134 +328,145 @@ void main() {
     });
 
     testWidgets(
-        'controlled mode (expandedIndices) reflects parent state and does not '
-        'mutate internally on tap', (tester) async {
-      // In controlled mode, the widget must display whatever the parent
-      // passes via `expandedIndices` and must NOT flip its own state on tap.
-      // The tap should still fire callbacks, but the visible expansion is
-      // owned by the parent (here we keep it pinned to {1}).
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: DSAccordion(
-              items: sampleItems,
-              expandedIndices: const {1},
+      'controlled mode (expandedIndices) reflects parent state and does not '
+      'mutate internally on tap',
+      (tester) async {
+        // In controlled mode, the widget must display whatever the parent
+        // passes via `expandedIndices` and must NOT flip its own state on tap.
+        // The tap should still fire callbacks, but the visible expansion is
+        // owned by the parent (here we keep it pinned to {1}).
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: DSAccordion(items: sampleItems, expandedIndices: const {1}),
             ),
           ),
-        ),
-      );
+        );
 
-      // Only Section 2 is expanded per the controlled set.
-      expect(find.text('Content 1'), findsNothing);
-      expect(find.text('Content 2'), findsOneWidget);
-      expect(find.text('Content 3'), findsNothing);
+        // Only Section 2 is expanded per the controlled set.
+        expect(find.text('Content 1'), findsNothing);
+        expect(find.text('Content 2'), findsOneWidget);
+        expect(find.text('Content 3'), findsNothing);
 
-      // Tap Section 1 — in controlled mode the widget must NOT internally
-      // expand Section 1, because the parent still owns {1}.
-      await tester.tap(find.text('Section 1'));
-      await tester.pumpAndSettle();
+        // Tap Section 1 — in controlled mode the widget must NOT internally
+        // expand Section 1, because the parent still owns {1}.
+        await tester.tap(find.text('Section 1'));
+        await tester.pumpAndSettle();
 
-      expect(find.text('Content 1'), findsNothing,
+        expect(
+          find.text('Content 1'),
+          findsNothing,
           reason:
-              'Controlled mode must not mutate internal state on tap; parent owns expansion.');
-      expect(find.text('Content 2'), findsOneWidget,
-          reason: 'Parent-controlled {1} must remain the visible expansion.');
-    });
+              'Controlled mode must not mutate internal state on tap; parent owns expansion.',
+        );
+        expect(
+          find.text('Content 2'),
+          findsOneWidget,
+          reason: 'Parent-controlled {1} must remain the visible expansion.',
+        );
+      },
+    );
 
-    testWidgets('showDividers: false suppresses DSDivider between sections',
-        (tester) async {
+    testWidgets('showDividers: false suppresses DSDivider between sections', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: DSAccordion(
-              items: sampleItems,
-              showDividers: false,
-            ),
+            body: DSAccordion(items: sampleItems, showDividers: false),
           ),
         ),
       );
 
-      expect(find.byType(DSDivider), findsNothing,
-          reason: 'With showDividers: false, no DSDivider should be inserted.');
-    });
-
-    testWidgets('showDividers: true (default) inserts dividers between sections',
-        (tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: DSAccordion(items: sampleItems),
-          ),
-        ),
+      expect(
+        find.byType(DSDivider),
+        findsNothing,
+        reason: 'With showDividers: false, no DSDivider should be inserted.',
       );
-
-      // Three sections -> two inter-section dividers (i in 1..2).
-      expect(find.byType(DSDivider), findsNWidgets(2));
     });
 
     testWidgets(
-        'wrapInGlass: false omits the DSGlassPanel wrapper', (tester) async {
+      'showDividers: true (default) inserts dividers between sections',
+      (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(body: DSAccordion(items: sampleItems)),
+          ),
+        );
+
+        // Three sections -> two inter-section dividers (i in 1..2).
+        expect(find.byType(DSDivider), findsNWidgets(2));
+      },
+    );
+
+    testWidgets('wrapInGlass: false omits the DSGlassPanel wrapper', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: DSAccordion(
-              items: sampleItems,
-              wrapInGlass: false,
-            ),
+            body: DSAccordion(items: sampleItems, wrapInGlass: false),
           ),
         ),
       );
 
-      expect(find.byType(DSGlassPanel), findsNothing,
-          reason: 'With wrapInGlass: false, no DSGlassPanel should wrap the body.');
+      expect(
+        find.byType(DSGlassPanel),
+        findsNothing,
+        reason:
+            'With wrapInGlass: false, no DSGlassPanel should wrap the body.',
+      );
     });
 
-    testWidgets('wrapInGlass: true (default) wraps body in DSGlassPanel',
-        (tester) async {
+    testWidgets('wrapInGlass: true (default) wraps body in DSGlassPanel', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: DSAccordion(items: sampleItems),
-          ),
+          home: Scaffold(body: DSAccordion(items: sampleItems)),
         ),
       );
 
       expect(find.byType(DSGlassPanel), findsOneWidget);
     });
 
-    testWidgets('empty items list renders the "No sections" fallback',
-        (tester) async {
+    testWidgets('empty items list renders the "No sections" fallback', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: DSAccordion(items: []),
-          ),
+          home: Scaffold(body: DSAccordion(items: [])),
         ),
       );
 
       // The empty-list branch in build() renders DSStateSurface.empty with
       // title 'No sections', wrapped in DSGlassPanel by default.
-      expect(find.text('No sections'), findsOneWidget,
-          reason: 'Empty items list must render the "No sections" fallback.');
+      expect(
+        find.text('No sections'),
+        findsOneWidget,
+        reason: 'Empty items list must render the "No sections" fallback.',
+      );
       expect(find.byType(DSStateSurface), findsOneWidget);
       expect(find.byType(DSGlassPanel), findsOneWidget);
     });
 
     testWidgets(
-        'empty items list with wrapInGlass: false omits DSGlassPanel for the fallback',
-        (tester) async {
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: DSAccordion(items: [], wrapInGlass: false),
+      'empty items list with wrapInGlass: false omits DSGlassPanel for the fallback',
+      (tester) async {
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(body: DSAccordion(items: [], wrapInGlass: false)),
           ),
-        ),
-      );
+        );
 
-      expect(find.text('No sections'), findsOneWidget);
-      expect(find.byType(DSGlassPanel), findsNothing,
+        expect(find.text('No sections'), findsOneWidget);
+        expect(
+          find.byType(DSGlassPanel),
+          findsNothing,
           reason:
-              'wrapInGlass: false must also apply to the empty-items fallback.');
-    });
+              'wrapInGlass: false must also apply to the empty-items fallback.',
+        );
+      },
+    );
   });
 }

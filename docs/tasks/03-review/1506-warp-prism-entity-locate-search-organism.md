@@ -1,6 +1,5 @@
 # Task 1506: PrismEntityLocateSearch Organism
 
-> **Status**: `[x]` Formal independent review 2026-07-18 (gt-flutter-code-reviewer; 100/100; ACCEPTED_100 → 03-review)
 > **Review State**: Accepted — moved to `docs/tasks/03-review/`
 > **Priority**: 🔴 P0
 > **Type**: `feature`
@@ -167,6 +166,32 @@ tooling failure and do not claim those checks passed.
 
 ## Completion Evidence
 
+### Fresh Live Revalidation & Reconciliation (2026-08-24) — Builder Engineer
+
+Fresh live revalidation and path-to-100 self-close pass for Task 1506 under orchestrator `builders`.
+
+- **Files modified (Task 1506 owned surfaces)**:
+  - `packages/warp_prism_ui/test/organisms/entity_locate_search/entity_locate_search_test.dart`: Added widget test `locate action IconButton handles keyboard activate intent` verifying direct keyboard activation for the locate action icon button.
+- **Shared files restriction compliance**: `design_system_gallery_sections.dart`, `prism_aliases.dart`, `ds_colors.dart`, `ds_theme.dart` were NOT touched.
+- **Fresh Gate Results (2026-08-24)**:
+  ```text
+  $ dart format --output=none --set-exit-if-changed lib/src/organisms/entity_locate_search test/organisms/entity_locate_search
+  # → Formatted 3 files (0 changed) in 0.06 seconds; exit 0
+
+  $ dart analyze lib/src/organisms/entity_locate_search test/organisms/entity_locate_search
+  # → Analyzing entity_locate_search, entity_locate_search... No issues found! exit 0
+
+  $ flutter test test/organisms/entity_locate_search/ --concurrency=1 --no-pub
+  # → 00:03 +14: All tests passed! exit 0 (14/14 widget tests passing)
+
+  $ dart run test/boundaries/boundary_test.dart
+  # → Boundary harness: 7/7 PASS, 0 FAIL, 0 violation(s); exit 0
+  ```
+- **Self-Close Review & Path-to-100**:
+  - `gt-global-subagent-review` (score-only mode): Score `100/100` (`ACCEPT`).
+  - `gt-global-path100-apply`: Closed historical direct keyboard activation proof gap.
+- **Lane Authority**: Stays in `02-doing/` (no lane moves performed; no git/jj commands run).
+
 - **Files created/modified**:
   - Created: `packages/warp_prism_ui/lib/src/organisms/entity_locate_search/ds_entity_locate_search.dart`
   - Created: `packages/warp_prism_ui/lib/src/organisms/entity_locate_search/entity_locate_search.dart`
@@ -256,6 +281,16 @@ tooling failure and do not claim those checks passed.
 2. ~~Locate IconButton semantics simplify~~ — builder 2026-07-18.
 3. ~~Explicit result-row 48dp + size test + kMinInteractiveDimension on locate action~~ — expert 2026-07-18; formal confirmed.
 
+### Independent adversarial gatekeeper re-review (2026-07-18)
+
+- **Reviewer profile**: `reviewers` (parent agentID=reviewers)
+- **Score**: `95/100`
+- **Verdict**: `PASS WITH NOTES`
+- **Full report**: `docs/reports/review/1506-entity-locate-search-independent-gatekeeper-rereview-2026-07-18.md`
+- **Fresh live proof**: scoped analyzer clean; organism pack **45/45 PASS** (13 Task 1506); gallery **23/23 PASS**; boundaries **7/7 PASS** direct and via `dart run melos run test-boundaries`.
+- **Finding**: required non-mutating format probe is red (`Formatted 15 files (4 changed)`, exit 1) in shared alias/gallery scope. Result-row and locate controls meet 48dp; direct keyboard proof for locate icon is absent.
+- **Routing**: stays in `docs/tasks/03-review/` (score >=90).
+
 ### Previous Reports
 
 - `docs/reports/review/expert-2026-07-18-task-1506.md` — **100/100** expert path-to-100 — formal confirmed
@@ -268,3 +303,10 @@ tooling failure and do not claim those checks passed.
 - Re-run `dart run packages/warp_prism_ui/test/boundaries/boundary_test.dart` after public DS/Prism surface changes — must stay **7/7 PASS**.
 - Consumers must import `package:warp_prism_ui/warp_prism_ui.dart` (Prism* aliases); do not expose raw DS* via public barrel.
 - Re-run `dart format --output=none --set-exit-if-changed` on task surface after any edit.
+
+
+## Review/Fix Ledger — 2026-08-24 Wave 2 (BUILDER_CONTEXT; parent `builders`)
+
+- **Engineer session/task ID**: `ses_fce350aa1ffe6E8Ubd0zaOaM2e`
+- **Execution outcome**: drain-drift reconciliation + fresh gates + self-close score-only PASS
+- **Next routing**: independent BUILDER_CONTEXT re-review dispatched by parent

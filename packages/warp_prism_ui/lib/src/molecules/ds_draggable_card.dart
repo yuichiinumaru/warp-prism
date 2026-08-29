@@ -73,7 +73,7 @@ class DSDragMoveLaneIntent extends Intent {
 /// - Long-press initiates drag (avoids conflict with tap).
 /// - During drag, the original card renders as a ghost at 0.2 opacity.
 /// - The feedback card (under the pointer) renders at 0.8 opacity
-///   with a cyan glow border matching the glass-panel aesthetic.
+///   with a blue/focus glow border matching the glass-panel aesthetic.
 /// - Tap and keyboard activation remain intact on the non-dragged card.
 /// - When keyboard callbacks are provided, Alt+Arrow keys reorder/move
 ///   via the focus ancestor chain (works when the task card is focused).
@@ -172,7 +172,7 @@ class DSDraggableCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(DSRadii.card),
                 boxShadow: [
                   BoxShadow(
-                    color: DSColors.accentCyan.withValues(alpha: 0.4),
+                    color: DSColors.focusRing,
                     blurRadius: 12,
                     spreadRadius: 2,
                   ),

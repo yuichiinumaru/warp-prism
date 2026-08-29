@@ -847,7 +847,7 @@ class _LocateResultRowState extends State<_LocateResultRow> {
   @override
   Widget build(BuildContext context) {
     final result = widget.result;
-    final accent = result.corpusColor ?? DSColors.accentCyan;
+    final accent = result.corpusColor ?? DSColors.accentBlue;
     final bg = (_hovered || _focused)
         ? DSColors.obsidianHover
         : DSColors.transparent;

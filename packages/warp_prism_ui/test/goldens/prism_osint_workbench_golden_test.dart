@@ -13,7 +13,7 @@ import 'package:warp_prism_ui/warp_prism_ui.dart';
 
 Widget _inApp(Widget child) {
   return MaterialApp(
-    theme: ThemeData.dark(),
+    theme: PrismTheme.dark(),
     home: Scaffold(backgroundColor: PrismColors.obsidianBase, body: child),
   );
 }

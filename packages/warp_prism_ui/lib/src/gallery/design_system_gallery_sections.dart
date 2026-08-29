@@ -45,10 +45,15 @@ abstract class DSGallerySections {
   }
 
   static Widget _buildColorSwatches() {
-    const swatches = <_SwatchDef>[
+    final swatches = <_SwatchDef>[
       _SwatchDef('obsidianDeep', DSColors.obsidianDeep),
       _SwatchDef('obsidianBase', DSColors.obsidianBase),
       _SwatchDef('obsidianElevated', DSColors.obsidianElevated),
+      _SwatchDef('obsidianHover', DSColors.obsidianHover),
+      _SwatchDef('accentBlue', DSColors.accentBlue),
+      _SwatchDef('accentBlueMuted', DSColors.accentBlueMuted),
+      _SwatchDef('accentBlueDim', DSColors.accentBlueDim),
+      _SwatchDef('focusRing', DSColors.focusRing),
       _SwatchDef('accentCyan', DSColors.accentCyan),
       _SwatchDef('accentViolet', DSColors.accentViolet),
       _SwatchDef('accentGold', DSColors.accentGold),
@@ -56,9 +61,11 @@ abstract class DSGallerySections {
       _SwatchDef('statusWarning', DSColors.statusWarning),
       _SwatchDef('statusError', DSColors.statusError),
       _SwatchDef('statusInfo', DSColors.statusInfo),
+      _SwatchDef('statusPromoted', DSColors.statusPromoted),
       _SwatchDef('textPrimary', DSColors.textPrimary),
       _SwatchDef('textSecondary', DSColors.textSecondary),
       _SwatchDef('textTertiary', DSColors.textTertiary),
+      _SwatchDef('borderDefault', DSColors.borderDefault),
       _SwatchDef('borderSubtle', DSColors.borderSubtle),
     ];
 
@@ -281,7 +288,10 @@ abstract class DSGallerySections {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Text variants
-          const DSText.labelLarge('Text Variants', color: DSColors.textSecondary),
+          const DSText.labelLarge(
+            'Text Variants',
+            color: DSColors.textSecondary,
+          ),
           const SizedBox(height: DSSpacing.sm),
           const DSText.headingMedium('Heading Medium'),
           const DSText.bodyMedium('Body medium text'),
@@ -301,16 +311,8 @@ abstract class DSGallerySections {
             spacing: DSSpacing.lg,
             runSpacing: DSSpacing.sm,
             children: [
-              DSCheckbox(
-                value: false,
-                onChanged: (_) {},
-                label: 'Unchecked',
-              ),
-              DSCheckbox(
-                value: true,
-                onChanged: (_) {},
-                label: 'Checked',
-              ),
+              DSCheckbox(value: false, onChanged: (_) {}, label: 'Unchecked'),
+              DSCheckbox(value: true, onChanged: (_) {}, label: 'Checked'),
               DSCheckbox(
                 value: null,
                 tristate: true,
@@ -443,7 +445,10 @@ abstract class DSGallerySections {
           SizedBox(height: DSSpacing.lg),
 
           // Select / Dropdown
-          DSText.labelLarge('Select / Dropdown (DSSelect)', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'Select / Dropdown (DSSelect)',
+            color: DSColors.textSecondary,
+          ),
           SizedBox(height: DSSpacing.sm),
           Wrap(
             spacing: DSSpacing.md,
@@ -455,10 +460,26 @@ abstract class DSGallerySections {
                   label: 'Environment',
                   value: 'prod',
                   options: const [
-                    DSSelectItem(value: 'dev', label: 'Development', icon: Icons.developer_mode),
-                    DSSelectItem(value: 'staging', label: 'Staging', icon: Icons.cloud_queue),
-                    DSSelectItem(value: 'prod', label: 'Production', icon: Icons.cloud_done),
-                    DSSelectItem(value: 'deprecated', label: 'Legacy Cluster', disabled: true),
+                    DSSelectItem(
+                      value: 'dev',
+                      label: 'Development',
+                      icon: Icons.developer_mode,
+                    ),
+                    DSSelectItem(
+                      value: 'staging',
+                      label: 'Staging',
+                      icon: Icons.cloud_queue,
+                    ),
+                    DSSelectItem(
+                      value: 'prod',
+                      label: 'Production',
+                      icon: Icons.cloud_done,
+                    ),
+                    DSSelectItem(
+                      value: 'deprecated',
+                      label: 'Legacy Cluster',
+                      disabled: true,
+                    ),
                   ],
                 ),
               ),
@@ -481,9 +502,7 @@ abstract class DSGallerySections {
                   label: 'Error State',
                   value: null,
                   errorText: 'Selection is required',
-                  options: const [
-                    DSSelectItem(value: '1', label: 'Option 1'),
-                  ],
+                  options: const [DSSelectItem(value: '1', label: 'Option 1')],
                 ),
               ),
               SizedBox(
@@ -501,6 +520,15 @@ abstract class DSGallerySections {
           ),
           SizedBox(height: DSSpacing.lg),
 
+          // Color Field (DSColorField / PrismColorField)
+          DSText.labelLarge(
+            'Color Field (DSColorField / PrismColorField)',
+            color: DSColors.textSecondary,
+          ),
+          SizedBox(height: DSSpacing.sm),
+          const _ColorFieldDemo(),
+          SizedBox(height: DSSpacing.lg),
+
           // Filter chips
           DSText.labelLarge('Filter Chip Group', color: DSColors.textSecondary),
           SizedBox(height: DSSpacing.sm),
@@ -515,7 +543,10 @@ abstract class DSGallerySections {
           SizedBox(height: DSSpacing.lg),
 
           // Accordion / Collapsible
-          DSText.labelLarge('Accordion (Single & Multi-Expand)', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'Accordion (Single & Multi-Expand)',
+            color: DSColors.textSecondary,
+          ),
           SizedBox(height: DSSpacing.sm),
           SizedBox(
             width: 560,
@@ -526,13 +557,17 @@ abstract class DSGallerySections {
                   subtitle: 'Basic configuration flags',
                   icon: Icons.tune,
                   defaultOpen: true,
-                  content: DSText.bodyMedium('General configuration panel content.'),
+                  content: DSText.bodyMedium(
+                    'General configuration panel content.',
+                  ),
                 ),
                 DSAccordionItem(
                   title: 'Section 2: Security & Permissions',
                   subtitle: 'Access control and secret policies',
                   icon: Icons.shield,
-                  content: DSText.bodyMedium('Security credentials and permissions settings.'),
+                  content: DSText.bodyMedium(
+                    'Security credentials and permissions settings.',
+                  ),
                 ),
                 DSAccordionItem(
                   title: 'Section 3: Disabled Capabilities',
@@ -552,8 +587,39 @@ abstract class DSGallerySections {
           ),
           SizedBox(height: DSSpacing.lg),
 
+          DSText.labelLarge(
+            'Accordion Multi-Expand (two sections open)',
+            color: DSColors.textSecondary,
+          ),
+          SizedBox(height: DSSpacing.sm),
+          SizedBox(
+            width: 560,
+            child: DSAccordion(
+              multiExpand: true,
+              initiallyExpandedIndices: const {0, 1},
+              items: [
+                DSAccordionItem(
+                  title: 'Multi Section A',
+                  content: DSText.bodyMedium(
+                    'Multi Section A content visible.',
+                  ),
+                ),
+                DSAccordionItem(
+                  title: 'Multi Section B',
+                  content: DSText.bodyMedium(
+                    'Multi Section B content visible.',
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: DSSpacing.lg),
+
           // Modal Dialog (DSDialog / PrismDialog)
-          DSText.labelLarge('Modal Dialog (DSDialog / PrismDialog)', color: DSColors.textSecondary),
+          DSText.labelLarge(
+            'Modal Dialog (DSDialog / PrismDialog)',
+            color: DSColors.textSecondary,
+          ),
           SizedBox(height: DSSpacing.sm),
           Builder(
             builder: (context) {
@@ -604,17 +670,27 @@ abstract class DSGallerySections {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              const DSText.labelMedium('Workspace Name', color: DSColors.textSecondary),
+                              const DSText.labelMedium(
+                                'Workspace Name',
+                                color: DSColors.textSecondary,
+                              ),
                               const SizedBox(height: DSSpacing.xs),
                               DSTextField(
-                                controller: TextEditingController(text: 'warp-prism'),
+                                controller: TextEditingController(
+                                  text: 'warp-prism',
+                                ),
                                 hint: 'Enter workspace name',
                               ),
                               const SizedBox(height: DSSpacing.md),
-                              const DSText.labelMedium('Description', color: DSColors.textSecondary),
+                              const DSText.labelMedium(
+                                'Description',
+                                color: DSColors.textSecondary,
+                              ),
                               const SizedBox(height: DSSpacing.xs),
                               DSTextField(
-                                controller: TextEditingController(text: 'ASW Observatory prototype'),
+                                controller: TextEditingController(
+                                  text: 'ASW Observatory prototype',
+                                ),
                                 maxLines: 3,
                               ),
                             ],
@@ -682,14 +758,20 @@ abstract class DSGallerySections {
                                   'They are intended for long-form detail, multi-section forms, or bulk review flows.',
                                 ),
                                 const SizedBox(height: DSSpacing.lg),
-                                const DSText.labelMedium('Section A — Summary', color: DSColors.textSecondary),
+                                const DSText.labelMedium(
+                                  'Section A — Summary',
+                                  color: DSColors.textSecondary,
+                                ),
                                 const SizedBox(height: DSSpacing.xs),
                                 const DSText.bodySmall(
                                   'Fixture summary content. Replace with live detail widgets in production.',
                                   color: DSColors.textSecondary,
                                 ),
                                 const SizedBox(height: DSSpacing.md),
-                                const DSText.labelMedium('Section B — Provenance', color: DSColors.textSecondary),
+                                const DSText.labelMedium(
+                                  'Section B — Provenance',
+                                  color: DSColors.textSecondary,
+                                ),
                                 const SizedBox(height: DSSpacing.xs),
                                 const DSText.bodySmall(
                                   'Provenance pill rows and timeline markers compose here when wired.',
@@ -718,18 +800,136 @@ abstract class DSGallerySections {
           SizedBox(height: DSSpacing.lg),
 
           // Metric tile
-          DSText.labelLarge('Metric Tile', color: DSColors.textSecondary),
-          SizedBox(height: DSSpacing.sm),
-          SizedBox(
-            width: 200,
-            child: DSMetricTile(
-              label: 'Total Assets',
-              value: '47',
-              icon: Icons.hub_outlined,
-              color: DSColors.accentCyan,
-            ),
+          const DSText.labelLarge('Metric Tile', color: DSColors.textSecondary),
+          const SizedBox(height: DSSpacing.sm),
+          const Wrap(
+            spacing: DSSpacing.md,
+            runSpacing: DSSpacing.md,
+            children: [
+              SizedBox(
+                width: 200,
+                child: DSMetricTile(
+                  label: 'Total Assets',
+                  value: '47',
+                  icon: Icons.hub_outlined,
+                  color: DSColors.accentCyan,
+                ),
+              ),
+              SizedBox(
+                width: 200,
+                child: DSMetricTile(
+                  label: 'Healthy Service',
+                  value: '99.9%',
+                  icon: Icons.check_circle_outline,
+                  health: DSMetricTileHealth.healthy,
+                ),
+              ),
+              SizedBox(
+                width: 200,
+                child: DSMetricTile(
+                  label: 'Degraded Nodes',
+                  value: '3',
+                  icon: Icons.warning_amber_outlined,
+                  health: DSMetricTileHealth.degraded,
+                ),
+              ),
+              SizedBox(
+                width: 200,
+                child: DSMetricTile(
+                  label: 'Failed Builds',
+                  value: '1',
+                  icon: Icons.error_outline,
+                  health: DSMetricTileHealth.error,
+                ),
+              ),
+              SizedBox(
+                width: 200,
+                child: DSMetricTile(
+                  label: 'Disabled Vault',
+                  value: '0',
+                  icon: Icons.block,
+                  health: DSMetricTileHealth.disabled,
+                ),
+              ),
+              SizedBox(
+                width: 200,
+                child: DSMetricTile(
+                  label: 'Long Label Metric Name Trailing',
+                  value: '1,234,567',
+                  icon: Icons.analytics_outlined,
+                  color: DSColors.accentGold,
+                ),
+              ),
+            ],
           ),
-          SizedBox(height: DSSpacing.lg),
+          const SizedBox(height: DSSpacing.lg),
+
+          // Task Card
+          const DSText.labelLarge(
+            'Task Cards (Operational & Proof States)',
+            color: DSColors.textSecondary,
+          ),
+          const SizedBox(height: DSSpacing.sm),
+          Wrap(
+            spacing: DSSpacing.md,
+            runSpacing: DSSpacing.md,
+            children: [
+              const SizedBox(
+                width: 280,
+                child: DSTaskCard(
+                  id: 1106,
+                  title: 'Operational Component MVP',
+                  lane: 'doing',
+                  priority: 'P1',
+                  owner: 'builders',
+                  proofState: 'complete',
+                  reviewScore: 100,
+                  dependencyCount: 3,
+                  linkedSkills: ['flutter', 'code-quality'],
+                ),
+              ),
+              const SizedBox(
+                width: 280,
+                child: DSTaskCard(
+                  id: 1401,
+                  title: 'Observatory Failure Baseline Inventory',
+                  lane: 'doing',
+                  priority: 'P0',
+                  owner: 'builders',
+                  proofState: 'partial',
+                  reviewScore: 84,
+                  dependencyCount: 2,
+                  selected: true,
+                ),
+              ),
+              const SizedBox(
+                width: 280,
+                child: DSTaskCard(
+                  id: 1302,
+                  title: 'Public Barrel Audit & Lock Verification',
+                  lane: 'doing',
+                  priority: 'P1',
+                  owner: 'builders',
+                  proofState: 'missing',
+                  reviewScore: 72,
+                ),
+              ),
+              const SizedBox(
+                width: 220,
+                child: DSTaskCard(
+                  id: 9999,
+                  title:
+                      'Narrow Column Viewport Long Task Title Wrapped Overflow Handling',
+                  lane: 'open',
+                  priority: 'P2',
+                  owner: 'architects',
+                  proofState: 'complete',
+                  dependencyCount: 5,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: DSSpacing.lg),
 
           // Provenance pill
           DSText.labelLarge('Provenance Pill', color: DSColors.textSecondary),
@@ -1537,9 +1737,9 @@ abstract class DSGallerySections {
                 SizedBox(height: DSSpacing.xs),
                 DSText.bodySmall(
                   '• Drag origin: card renders at 20% opacity (ghost placeholder)\n'
-                  '• Drag feedback: card under pointer at 80% opacity + cyan glow\n'
-                  '• Drop zone: border animates to accentCyan at 30% opacity when hovered\n'
-                  '• Insertion indicator: 2px cyan line at the computed drop index\n'
+                  '• Drag feedback: card under pointer at 80% opacity + blue glow\n'
+                  '• Drop zone: border animates to accentBlue at 30% opacity when hovered\n'
+                  '• Insertion indicator: 2px blue line at the computed drop index\n'
                   '• Long-press delay: 200ms (DSMotion.normal) to avoid tap conflict',
                   color: DSColors.textTertiary,
                 ),
@@ -1571,8 +1771,8 @@ abstract class DSGallerySections {
           ),
           const SizedBox(height: DSSpacing.sm),
           const DSText.bodySmall(
-            'All interactive DS components use a 2px accentCyan border at 50% opacity '
-            'when focused via keyboard.  This is the project-wide focus indicator.',
+            'Task 1801-owned interactive surfaces use a 2px accentBlue border at 50% '
+            'opacity when focused via keyboard.  This is the migrated focus indicator.',
             color: DSColors.textTertiary,
           ),
           const SizedBox(height: DSSpacing.md),
@@ -1693,19 +1893,19 @@ abstract class DSGallerySections {
           const SizedBox(height: DSSpacing.md),
 
           // Contrast documentation
-          const DSGlassPanelSimple(
+          DSGlassPanelSimple(
             padding: EdgeInsets.all(DSSpacing.md),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                DSText.labelLarge('Contrast Rules', color: DSColors.accentCyan),
+                DSText.labelLarge('Contrast Rules', color: DSColors.accentBlue),
                 SizedBox(height: DSSpacing.xs),
                 DSText.bodySmall(
                   '• textPrimary on obsidianDeep: WCAG AAA (>= 7:1)\n'
                   '• textSecondary on obsidianDeep: WCAG AA  (>= 4.5:1)\n'
                   '• textTertiary on obsidianDeep: WCAG AA  (>= 4.5:1)\n'
                   '• Status colors on obsidianDeep: WCAG AA large (>= 3:1)\n'
-                  '• Focus ring: accentCyan at 50% opacity, 2px border\n'
+                  '• Focus ring: accentBlue at 50% opacity (#802F81FF), 2px border\n'
                   '• Keyboard: Tab traverses, Enter/Space activates',
                   color: DSColors.textTertiary,
                 ),
@@ -3743,6 +3943,33 @@ abstract class DSGallerySections {
       ),
     );
   }
+
+  /// Theme Editor section (Task 1807).
+  static Widget buildThemeEditorSection() {
+    return _SectionCard(
+      title: 'Theme Editor',
+      subtitle:
+          'PrismThemeEditor organism · Live token overrides, hex field validation, preset palette chips, and bake-back code snippet exporter.',
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const DSText.bodyMedium(
+            'The Theme Editor lets product owners iterate visual contrast and color role defaults live '
+            'across all gallery sections before baking values back into DSColors and the Black Obsidian contract.',
+            color: DSColors.textSecondary,
+          ),
+          const SizedBox(height: DSSpacing.md),
+          Center(
+            child: SizedBox(
+              width: 380,
+              height: 600,
+              child: const PrismThemeEditor(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 // =============================================================================
@@ -4549,19 +4776,19 @@ class _CommandPalettePreview extends StatelessWidget {
           const SizedBox(height: DSSpacing.sm),
 
           // Sample command items
-          const _PreviewCommandItem(
+          _PreviewCommandItem(
             icon: DSIcons.map,
             label: 'Map Workspace',
             description: 'Navigate to the asset map',
             isSelected: true,
           ),
-          const _PreviewCommandItem(
+          _PreviewCommandItem(
             icon: DSIcons.operate,
             label: 'Operate — Task Board',
             description: 'Navigate to the task board',
             isSelected: false,
           ),
-          const _PreviewCommandItem(
+          _PreviewCommandItem(
             icon: DSIcons.governance,
             label: 'Governance View',
             description: 'Navigate to governance diagnostics',
@@ -4570,7 +4797,7 @@ class _CommandPalettePreview extends StatelessWidget {
           const SizedBox(height: DSSpacing.sm),
 
           // Keyboard hints
-          const Row(
+          Row(
             children: [
               DSText.labelSmall('↑↓', color: DSColors.textDisabled),
               SizedBox(width: DSSpacing.xs),
@@ -4591,6 +4818,65 @@ class _CommandPalettePreview extends StatelessWidget {
   }
 }
 
+class _ColorFieldDemo extends StatefulWidget {
+  const _ColorFieldDemo();
+
+  @override
+  State<_ColorFieldDemo> createState() => _ColorFieldDemoState();
+}
+
+class _ColorFieldDemoState extends State<_ColorFieldDemo> {
+  Color? _currentColor = DSColors.accentBlue;
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: DSSpacing.md,
+      runSpacing: DSSpacing.md,
+      children: [
+        SizedBox(
+          width: 320,
+          child: DSColorField(
+            label: 'Interactive Color Field',
+            value: _currentColor,
+            helperText: 'Select a swatch or type #RGB / #RRGGBB / #AARRGGBB',
+            onChanged: (color) {
+              setState(() {
+                _currentColor = color;
+              });
+            },
+          ),
+        ),
+        SizedBox(
+          width: 320,
+          child: DSColorField(
+            label: 'Eyedropper & Swatches',
+            value: DSColors.accentCyan,
+            onEyedropperTap: () {},
+            helperText: 'Tapping eyedropper triggers onEyedropperTap callback',
+          ),
+        ),
+        SizedBox(
+          width: 320,
+          child: DSColorField(
+            label: 'Error State',
+            value: null,
+            errorText: 'Required color missing',
+          ),
+        ),
+        SizedBox(
+          width: 320,
+          child: DSColorField(
+            label: 'Disabled Color Field',
+            value: DSColors.accentViolet,
+            enabled: false,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class _PreviewChip extends StatelessWidget {
   final String label;
   final bool isActive;
@@ -4600,12 +4886,10 @@ class _PreviewChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bg = isActive
-        ? DSColors.accentCyan.withValues(alpha: 0.15)
+        ? DSColors.accentBlue.withValues(alpha: 0.15)
         : DSColors.transparent;
-    final border = isActive
-        ? DSColors.accentCyan.withValues(alpha: 0.4)
-        : DSColors.borderSubtle;
-    final fg = isActive ? DSColors.accentCyan : DSColors.textTertiary;
+    final border = isActive ? DSColors.focusRing : DSColors.borderSubtle;
+    final fg = isActive ? DSColors.accentBlue : DSColors.textTertiary;
 
     return Container(
       padding: const EdgeInsets.symmetric(
@@ -4638,12 +4922,10 @@ class _PreviewCommandItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bg = isSelected
-        ? DSColors.accentCyan.withValues(alpha: 0.08)
+        ? DSColors.accentBlue.withValues(alpha: 0.08)
         : DSColors.transparent;
-    final borderColor = isSelected
-        ? DSColors.accentCyan.withValues(alpha: 0.2)
-        : DSColors.transparent;
-    final iconColor = isSelected ? DSColors.accentCyan : DSColors.textSecondary;
+    final borderColor = isSelected ? DSColors.focusRing : DSColors.transparent;
+    final iconColor = isSelected ? DSColors.accentBlue : DSColors.textSecondary;
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 1),
@@ -4689,13 +4971,13 @@ class _MapHudWorkspaceDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     return DSMapHudWorkspace(
       stage: DecoratedBox(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
               DSColors.obsidianBase,
-              Color(0xFF0C1220),
+              DSColors.obsidianHover,
               DSColors.obsidianElevated,
             ],
           ),
@@ -5178,7 +5460,7 @@ class _SelectChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: selected
-          ? DSColors.accentCyan.withValues(alpha: 0.2)
+          ? DSColors.accentBlue.withValues(alpha: 0.2)
           : DSColors.obsidianElevated,
       borderRadius: BorderRadius.circular(DSRadii.sm),
       child: InkWell(
@@ -5197,7 +5479,7 @@ class _SelectChip extends StatelessWidget {
             child: Center(
               child: DSText.labelSmall(
                 label,
-                color: selected ? DSColors.accentCyan : DSColors.textSecondary,
+                color: selected ? DSColors.accentBlue : DSColors.textSecondary,
               ),
             ),
           ),
@@ -5824,7 +6106,7 @@ class _FloatingAnalyticsHudDemo extends StatelessWidget {
           Positioned.fill(
             child: DecoratedBox(
               decoration: BoxDecoration(
-                gradient: const LinearGradient(
+                gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
@@ -6390,7 +6672,7 @@ class _AgentShellPanelDemoState extends State<_AgentShellPanelDemo> {
                 onPressed: _appendDummyLine,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: DSColors.obsidianBase,
-                  foregroundColor: DSColors.accentCyan,
+                  foregroundColor: DSColors.accentBlue,
                   side: const BorderSide(color: DSColors.borderSubtle),
                 ),
               ),
@@ -6439,7 +6721,7 @@ class _KeyboardCheatsheetDemoState extends State<_KeyboardCheatsheetDemo> {
                 label: const DSText.labelSmall('Show cheatsheet'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: DSColors.obsidianElevated,
-                  foregroundColor: DSColors.accentCyan,
+                  foregroundColor: DSColors.accentBlue,
                   side: const BorderSide(color: DSColors.borderSubtle),
                 ),
               ),
@@ -6496,7 +6778,7 @@ class _MediaDetailOverlayDemoState extends State<_MediaDetailOverlayDemo> {
                     label: const DSText.labelSmall('Open media overlay'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: DSColors.obsidianElevated,
-                      foregroundColor: DSColors.accentCyan,
+                      foregroundColor: DSColors.accentBlue,
                       side: const BorderSide(color: DSColors.borderSubtle),
                     ),
                   ),
@@ -6556,7 +6838,10 @@ class _BreadcrumbsDemoState extends State<_BreadcrumbsDemo> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        DSText.labelSmall('Short Path (with icons):', color: DSColors.textTertiary),
+        DSText.labelSmall(
+          'Short Path (with icons):',
+          color: DSColors.textTertiary,
+        ),
         const SizedBox(height: DSSpacing.xs),
         DSBreadcrumbs(
           items: shortPath,
@@ -6625,16 +6910,8 @@ class _SwitchDemoState extends State<_SwitchDemo> {
           onChanged: (v) => setState(() => _switch4 = v),
           label: 'On with label',
         ),
-        const DSSwitch(
-          value: false,
-          enabled: false,
-          label: 'Disabled Off',
-        ),
-        const DSSwitch(
-          value: true,
-          enabled: false,
-          label: 'Disabled On',
-        ),
+        const DSSwitch(value: false, enabled: false, label: 'Disabled Off'),
+        const DSSwitch(value: true, enabled: false, label: 'Disabled On'),
       ],
     );
   }
@@ -6725,33 +7002,21 @@ class _ButtonDemo extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Variants x Enabled
-        const DSText.labelSmall('Variants (Enabled)', color: DSColors.textSecondary),
+        const DSText.labelSmall(
+          'Variants (Enabled)',
+          color: DSColors.textSecondary,
+        ),
         const SizedBox(height: DSSpacing.xs),
         Wrap(
           spacing: DSSpacing.sm,
           runSpacing: DSSpacing.sm,
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
-            DSButton.primary(
-              label: 'Primary',
-              onPressed: () {},
-            ),
-            DSButton.secondary(
-              label: 'Secondary',
-              onPressed: () {},
-            ),
-            DSButton.outline(
-              label: 'Outline',
-              onPressed: () {},
-            ),
-            DSButton.ghost(
-              label: 'Ghost',
-              onPressed: () {},
-            ),
-            DSButton.danger(
-              label: 'Danger',
-              onPressed: () {},
-            ),
+            DSButton.primary(label: 'Primary', onPressed: () {}),
+            DSButton.secondary(label: 'Secondary', onPressed: () {}),
+            DSButton.outline(label: 'Outline', onPressed: () {}),
+            DSButton.ghost(label: 'Ghost', onPressed: () {}),
+            DSButton.danger(label: 'Danger', onPressed: () {}),
           ],
         ),
         const SizedBox(height: DSSpacing.md),
@@ -6785,7 +7050,10 @@ class _ButtonDemo extends StatelessWidget {
         const SizedBox(height: DSSpacing.md),
 
         // Sizes
-        const DSText.labelSmall('Sizes (Small, Medium, Large)', color: DSColors.textSecondary),
+        const DSText.labelSmall(
+          'Sizes (Small, Medium, Large)',
+          color: DSColors.textSecondary,
+        ),
         const SizedBox(height: DSSpacing.xs),
         Wrap(
           spacing: DSSpacing.sm,
@@ -6815,33 +7083,21 @@ class _ButtonDemo extends StatelessWidget {
         const SizedBox(height: DSSpacing.md),
 
         // Disabled State
-        const DSText.labelSmall('Disabled State', color: DSColors.textSecondary),
+        const DSText.labelSmall(
+          'Disabled State',
+          color: DSColors.textSecondary,
+        ),
         const SizedBox(height: DSSpacing.xs),
         const Wrap(
           spacing: DSSpacing.sm,
           runSpacing: DSSpacing.sm,
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
-            DSButton.primary(
-              label: 'Primary',
-              enabled: false,
-            ),
-            DSButton.secondary(
-              label: 'Secondary',
-              enabled: false,
-            ),
-            DSButton.outline(
-              label: 'Outline',
-              enabled: false,
-            ),
-            DSButton.ghost(
-              label: 'Ghost',
-              enabled: false,
-            ),
-            DSButton.danger(
-              label: 'Danger',
-              enabled: false,
-            ),
+            DSButton.primary(label: 'Primary', enabled: false),
+            DSButton.secondary(label: 'Secondary', enabled: false),
+            DSButton.outline(label: 'Outline', enabled: false),
+            DSButton.ghost(label: 'Ghost', enabled: false),
+            DSButton.danger(label: 'Danger', enabled: false),
           ],
         ),
         const SizedBox(height: DSSpacing.md),
@@ -6854,26 +7110,11 @@ class _ButtonDemo extends StatelessWidget {
           runSpacing: DSSpacing.sm,
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
-            DSButton.primary(
-              label: 'Primary',
-              isLoading: true,
-            ),
-            DSButton.secondary(
-              label: 'Secondary',
-              isLoading: true,
-            ),
-            DSButton.outline(
-              label: 'Outline',
-              isLoading: true,
-            ),
-            DSButton.ghost(
-              label: 'Ghost',
-              isLoading: true,
-            ),
-            DSButton.danger(
-              label: 'Danger',
-              isLoading: true,
-            ),
+            DSButton.primary(label: 'Primary', isLoading: true),
+            DSButton.secondary(label: 'Secondary', isLoading: true),
+            DSButton.outline(label: 'Outline', isLoading: true),
+            DSButton.ghost(label: 'Ghost', isLoading: true),
+            DSButton.danger(label: 'Danger', isLoading: true),
           ],
         ),
       ],

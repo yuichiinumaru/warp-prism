@@ -311,7 +311,7 @@ class _DSLinkRowState extends State<DSLinkRow> {
                 borderRadius: BorderRadius.circular(DSRadii.sm),
                 border: _isFocused
                     ? Border.all(
-                        color: DSColors.accentCyan.withValues(alpha: 0.5),
+                        color: DSColors.focusRing,
                         width: 2,
                       )
                     : null,

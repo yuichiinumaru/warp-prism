@@ -5,6 +5,12 @@ import '../tokens/tokens.dart';
 ///
 /// Small status indicators with count or icon.
 ///
+/// Contract:
+/// - Default [color] is a passive data-category color (`DSColors.accentCyan`).
+/// - Interactive/active-state callers MUST pass an explicit blue-family color
+///   (`DSColors.accentBlue` or `DSColors.focusRing`); passive metadata callers
+///   may use this default.
+///
 /// Supports semantic named constructors (success, warning, error, info),
 /// an operational state factory for all 15 [DSOperationalState] values,
 /// and size/variant customization.

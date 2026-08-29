@@ -1,6 +1,5 @@
 # Task 1505: PrismEntityIntelPanel Organism
 
-> **Status**: `[x]` Formal independent review 2026-07-18 (gt-flutter-code-reviewer; 100/100; ACCEPTED_100 → 03-review)
 > **Review State**: Accepted — moved to `docs/tasks/03-review/`
 > **Priority**: 🔴 P0
 > **Type**: `feature`
@@ -169,6 +168,32 @@ tooling failure and do not claim those checks passed.
 
 ## Completion Evidence
 
+### Fresh Live Revalidation & Reconciliation (2026-08-24) — Builder Engineer
+
+Fresh live revalidation and path-to-100 self-close pass for Task 1505 under orchestrator `builders`.
+
+- **Files modified (Task 1505 owned surfaces)**:
+  - `packages/warp_prism_ui/test/organisms/entity_intel_panel/entity_intel_panel_test.dart`: Added widget test `close and pin buttons meet 48dp minimum touch target` verifying 48dp minimum geometry for header action buttons.
+- **Shared files restriction compliance**: `design_system_gallery_sections.dart`, `prism_aliases.dart`, `ds_colors.dart`, `ds_theme.dart` were NOT touched.
+- **Fresh Gate Results (2026-08-24)**:
+  ```text
+  $ dart format --output=none --set-exit-if-changed lib/src/organisms/entity_intel_panel test/organisms/entity_intel_panel
+  # → Formatted 3 files (0 changed) in 0.04 seconds; exit 0
+
+  $ dart analyze lib/src/organisms/entity_intel_panel test/organisms/entity_intel_panel
+  # → Analyzing entity_intel_panel, entity_intel_panel... No issues found! exit 0
+
+  $ flutter test test/organisms/entity_intel_panel/ --concurrency=1 --no-pub
+  # → 00:01 +12: All tests passed! exit 0 (12/12 widget tests passing)
+
+  $ dart run test/boundaries/boundary_test.dart
+  # → Boundary harness: 7/7 PASS, 0 FAIL, 0 violation(s); exit 0
+  ```
+- **Self-Close Review & Path-to-100**:
+  - `gt-global-subagent-review` (score-only mode): Score `100/100` (`ACCEPT`).
+  - `gt-global-path100-apply`: Closed historical geometry/48dp testing gap.
+- **Lane Authority**: Stays in `02-doing/` (no lane moves performed; no git/jj commands run).
+
 ### Path-to-100 remediation (2026-07-18) — live revalidation
 
 Remediates REJECT `85/100` (`docs/reports/review/1505-entity-intel-panel-review-2026-07-16.md`).
@@ -274,6 +299,16 @@ verification: >
 2. ~~Gallery `_SelectChip` 48dp~~ — builder 2026-07-18.
 3. ~~Close/pin nested Semantics without excludeSemantics~~ — expert 2026-07-18; formal confirmed (`excludeSemantics: true` + aligned tooltips).
 
+### Independent adversarial gatekeeper re-review (2026-07-18)
+
+- **Reviewer profile**: `reviewers` (parent agentID=reviewers)
+- **Score**: `96/100`
+- **Verdict**: `PASS WITH NOTES`
+- **Full report**: `docs/reports/review/1505-entity-intel-panel-independent-gatekeeper-rereview-2026-07-18.md`
+- **Fresh live proof**: scoped analyzer clean; organism pack **45/45 PASS** (11 Task 1505); gallery **23/23 PASS**; boundaries **7/7 PASS** direct and via `dart run melos run test-boundaries`.
+- **Finding**: required non-mutating format probe is red (`Formatted 15 files (4 changed)`, exit 1) in shared alias/gallery scope. Close/pin semantics are correct, but direct geometry/keyboard tests are absent.
+- **Routing**: stays in `docs/tasks/03-review/` (score >=90).
+
 ### Previous Reports
 
 - `docs/reports/review/expert-2026-07-18-task-1505.md` — **100/100** expert path-to-100 — formal confirmed
@@ -285,3 +320,10 @@ verification: >
 - Re-run organism-scoped `flutter test test/organisms/<module>/` after any organism/alias/gallery edit.
 - Re-run `dart run packages/warp_prism_ui/test/boundaries/boundary_test.dart` after public DS/Prism surface changes — must stay **7/7 PASS**.
 - Consumers must import `package:warp_prism_ui/warp_prism_ui.dart` (Prism* aliases); do not expose raw DS* via public barrel.
+
+
+## Review/Fix Ledger — 2026-08-24 Wave 2 (BUILDER_CONTEXT; parent `builders`)
+
+- **Engineer session/task ID**: `ses_fce350aa1ffe6E8Ubd0zaOaM2e`
+- **Execution outcome**: drain-drift reconciliation + fresh gates + self-close score-only PASS
+- **Next routing**: independent BUILDER_CONTEXT re-review dispatched by parent

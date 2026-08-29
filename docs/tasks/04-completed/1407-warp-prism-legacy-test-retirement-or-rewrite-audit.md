@@ -1,6 +1,5 @@
 # Task 1407: Legacy Test Retirement or Rewrite Audit
 
-> **Status**: `[x]` Done — independent review **100/100** (2026-07-09)
 > **Review State**: In Review (`03-review/`) — APPROVED_TO_REVIEW by gt-code-quality-reviewer; full suite re-proof **+736 PASS**
 > **Priority**: 🟡 P1
 > **Type**: `governance`

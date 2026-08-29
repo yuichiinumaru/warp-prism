@@ -942,12 +942,12 @@ class _ConsoleHeader extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(DSSpacing.sm),
               decoration: BoxDecoration(
-                color: DSColors.accentCyan.withValues(alpha: 0.12),
+                color: DSColors.accentBlue.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(DSRadii.md),
               ),
-              child: const DSIcon.small(
+              child: DSIcon.small(
                 Icons.terminal_outlined,
-                color: DSColors.accentCyan,
+                color: DSColors.accentBlue,
               ),
             ),
             const SizedBox(width: DSSpacing.md),
@@ -986,15 +986,15 @@ class _ConsoleHeader extends StatelessWidget {
                           horizontal: DSSpacing.sm,
                         ),
                         decoration: BoxDecoration(
-                          color: DSColors.accentCyan.withValues(alpha: 0.15),
+                          color: DSColors.accentBlue.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(DSRadii.chip),
                           border: Border.all(
-                            color: DSColors.accentCyan.withValues(alpha: 0.3),
+                            color: DSColors.focusRing,
                           ),
                         ),
-                        child: const DSText.labelSmall(
+                        child: DSText.labelSmall(
                           'Latest',
-                          color: DSColors.accentCyan,
+                          color: DSColors.accentBlue,
                         ),
                       ),
                     ),
@@ -1188,7 +1188,7 @@ class _RunGroupHeader extends StatelessWidget {
               : DSColors.obsidianElevated.withValues(alpha: 0.95),
           border: Border(
             left: BorderSide(
-              color: selected ? DSColors.accentCyan : group.status.color,
+              color: selected ? DSColors.accentBlue : group.status.color,
               width: 2,
             ),
             bottom: const BorderSide(color: DSColors.borderSubtle),

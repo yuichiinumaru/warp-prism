@@ -1,6 +1,5 @@
 # Task 1100: Warp Prism Operational Atomic Design System Epic
 
-> **Status**: `[ ]` Planning
 > **Priority**: 🔴 P0
 > **Type**: `planning` | `design-system` | `flutter` | `architecture`
 > **Origin**: User request to create Warp Prism as new Ganthritor child project for Flutter atomic design system with Storybook/Widgetbook-style catalog

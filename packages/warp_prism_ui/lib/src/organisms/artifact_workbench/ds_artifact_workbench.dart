@@ -431,12 +431,12 @@ class _WorkbenchHeader extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(DSSpacing.sm),
               decoration: BoxDecoration(
-                color: DSColors.accentCyan.withValues(alpha: 0.12),
+                color: DSColors.accentBlue.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(DSRadii.md),
               ),
-              child: const DSIcon.small(
+              child: DSIcon.small(
                 Icons.folder_special_outlined,
-                color: DSColors.accentCyan,
+                color: DSColors.accentBlue,
               ),
             ),
             const SizedBox(width: DSSpacing.md),
@@ -542,7 +542,7 @@ class _ArtifactListRow extends StatelessWidget {
           '${artifact.title}, ${artifact.typeLabel}${timeLabel != null ? ', $timeLabel' : ''}',
       child: Material(
         color: selected
-            ? DSColors.accentCyan.withValues(alpha: 0.10)
+            ? DSColors.accentBlue.withValues(alpha: 0.10)
             : Colors.transparent,
         child: InkWell(
           key: DSArtifactWorkbench.rowKey(artifact.id),

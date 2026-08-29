@@ -1,6 +1,5 @@
 # Task 0006: Warp Prism Mock Corpus Validation And Legacy Archive
 
-> **Status**: `[x]` Completed — independent path100 re-review 2026-07-18 S=100/100
 > **Review State**: `ACCEPTED_100` — S=100/100 (2026-07-18); see `docs/reports/review-wave-2026-07-18/task-0006-path100-rereview.md`
 > **Priority**: 🔴 P0
 > **Type**: `verification`

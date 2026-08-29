@@ -22,11 +22,7 @@ void main() {
       label: 'Production',
       icon: Icons.cloud_done,
     ),
-    const DSSelectItem(
-      value: 'legacy',
-      label: 'Legacy',
-      disabled: true,
-    ),
+    const DSSelectItem(value: 'legacy', label: 'Legacy', disabled: true),
   ];
 
   group('DSSelect / PrismSelect Widget Tests', () {
@@ -49,10 +45,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: DSSelect<String>(
-              value: 'staging',
-              options: sampleOptions,
-            ),
+            body: DSSelect<String>(value: 'staging', options: sampleOptions),
           ),
         ),
       );
@@ -78,11 +71,7 @@ void main() {
     testWidgets('tapping trigger opens popup overlay', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: DSSelect<String>(
-              options: sampleOptions,
-            ),
-          ),
+          home: Scaffold(body: DSSelect<String>(options: sampleOptions)),
         ),
       );
 
@@ -97,30 +86,32 @@ void main() {
       expect(find.text('Legacy'), findsOneWidget);
     });
 
-    testWidgets('tapping option fires onChanged with correct value and closes popup',
-        (tester) async {
-      String? selectedValue;
+    testWidgets(
+      'tapping option fires onChanged with correct value and closes popup',
+      (tester) async {
+        String? selectedValue;
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: DSSelect<String>(
-              options: sampleOptions,
-              onChanged: (val) => selectedValue = val,
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: DSSelect<String>(
+                options: sampleOptions,
+                onChanged: (val) => selectedValue = val,
+              ),
             ),
           ),
-        ),
-      );
+        );
 
-      await tester.tap(find.byType(DSSelect<String>));
-      await tester.pumpAndSettle();
+        await tester.tap(find.byType(DSSelect<String>));
+        await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Production'));
-      await tester.pumpAndSettle();
+        await tester.tap(find.text('Production'));
+        await tester.pumpAndSettle();
 
-      expect(selectedValue, 'prod');
-      expect(find.text('Development'), findsNothing);
-    });
+        expect(selectedValue, 'prod');
+        expect(find.text('Development'), findsNothing);
+      },
+    );
 
     testWidgets('disabled options ignore taps', (tester) async {
       String? selectedValue;
@@ -151,10 +142,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: DSSelect<String>(
-              enabled: false,
-              options: sampleOptions,
-            ),
+            body: DSSelect<String>(enabled: false, options: sampleOptions),
           ),
         ),
       );
@@ -165,7 +153,9 @@ void main() {
       expect(find.text('Development'), findsNothing);
     });
 
-    testWidgets('error state renders error text and red indicator', (tester) async {
+    testWidgets('error state renders error text and red indicator', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -180,7 +170,9 @@ void main() {
       expect(find.text('Selection is required'), findsOneWidget);
     });
 
-    testWidgets('clear button clears value when clearable: true', (tester) async {
+    testWidgets('clear button clears value when clearable: true', (
+      tester,
+    ) async {
       String? selectedValue = 'prod';
 
       await tester.pumpWidget(
@@ -212,14 +204,13 @@ void main() {
       expect(find.text('Select an option...'), findsOneWidget);
     });
 
-    testWidgets('searchable mode filters options as user types', (tester) async {
+    testWidgets('searchable mode filters options as user types', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: DSSelect<String>(
-              searchable: true,
-              options: sampleOptions,
-            ),
+            body: DSSelect<String>(searchable: true, options: sampleOptions),
           ),
         ),
       );
@@ -237,14 +228,13 @@ void main() {
       expect(find.text('Staging'), findsNothing);
     });
 
-    testWidgets('shows empty state when no options match search query', (tester) async {
+    testWidgets('shows empty state when no options match search query', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: DSSelect<String>(
-              searchable: true,
-              options: sampleOptions,
-            ),
+            body: DSSelect<String>(searchable: true, options: sampleOptions),
           ),
         ),
       );
@@ -262,11 +252,7 @@ void main() {
     testWidgets('keyboard navigation: Escape closes popup', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: DSSelect<String>(
-              options: sampleOptions,
-            ),
-          ),
+          home: Scaffold(body: DSSelect<String>(options: sampleOptions)),
         ),
       );
 
@@ -281,39 +267,42 @@ void main() {
       expect(find.text('Development'), findsNothing);
     });
 
-    testWidgets('keyboard navigation: ArrowDown / ArrowUp moves highlight and Enter selects',
-        (tester) async {
-      String? selectedValue;
+    testWidgets(
+      'keyboard navigation: ArrowDown / ArrowUp moves highlight and Enter selects',
+      (tester) async {
+        String? selectedValue;
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: DSSelect<String>(
-              options: sampleOptions,
-              onChanged: (val) => selectedValue = val,
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: DSSelect<String>(
+                options: sampleOptions,
+                onChanged: (val) => selectedValue = val,
+              ),
             ),
           ),
-        ),
-      );
+        );
 
-      await tester.tap(find.byType(DSSelect<String>));
-      await tester.pumpAndSettle();
+        await tester.tap(find.byType(DSSelect<String>));
+        await tester.pumpAndSettle();
 
-      // Initially highlighted index is 0 ('Development')
-      // Move down to 'Staging'
-      await tester.sendKeyEvent(LogicalKeyboardKey.arrowDown);
-      await tester.pumpAndSettle();
+        // Initially highlighted index is 0 ('Development')
+        // Move down to 'Staging'
+        await tester.sendKeyEvent(LogicalKeyboardKey.arrowDown);
+        await tester.pumpAndSettle();
 
-      // Press Enter to select
-      await tester.sendKeyEvent(LogicalKeyboardKey.enter);
-      await tester.pumpAndSettle();
+        // Press Enter to select
+        await tester.sendKeyEvent(LogicalKeyboardKey.enter);
+        await tester.pumpAndSettle();
 
-      expect(selectedValue, 'staging');
-      expect(find.text('Development'), findsNothing);
-    });
+        expect(selectedValue, 'staging');
+        expect(find.text('Development'), findsNothing);
+      },
+    );
 
-    testWidgets('keyboard navigation: ArrowUp wraps to last option',
-        (tester) async {
+    testWidgets('keyboard navigation: ArrowUp wraps to last option', (
+      tester,
+    ) async {
       String? selectedValue;
 
       await tester.pumpWidget(
@@ -341,36 +330,40 @@ void main() {
       expect(selectedValue, 'prod');
     });
 
-    testWidgets('keyboard navigation: Space activates trigger and selects option',
-        (tester) async {
-      String? selectedValue;
+    testWidgets(
+      'keyboard navigation: Space activates trigger and selects option',
+      (tester) async {
+        String? selectedValue;
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: DSSelect<String>(
-              options: sampleOptions,
-              onChanged: (val) => selectedValue = val,
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: DSSelect<String>(
+                options: sampleOptions,
+                onChanged: (val) => selectedValue = val,
+              ),
             ),
           ),
-        ),
-      );
+        );
 
-      // Focus the trigger and open with Space
-      await tester.tap(find.byType(DSSelect<String>));
-      await tester.pumpAndSettle();
+        // Focus the trigger and open with Space
+        await tester.tap(find.byType(DSSelect<String>));
+        await tester.pumpAndSettle();
 
-      // Popup open; ArrowDown once then Space to select highlighted row
-      await tester.sendKeyEvent(LogicalKeyboardKey.arrowDown);
-      await tester.pumpAndSettle();
+        // Popup open; ArrowDown once then Space to select highlighted row
+        await tester.sendKeyEvent(LogicalKeyboardKey.arrowDown);
+        await tester.pumpAndSettle();
 
-      await tester.sendKeyEvent(LogicalKeyboardKey.space);
-      await tester.pumpAndSettle();
+        await tester.sendKeyEvent(LogicalKeyboardKey.space);
+        await tester.pumpAndSettle();
 
-      expect(selectedValue, 'staging');
-    });
+        expect(selectedValue, 'staging');
+      },
+    );
 
-    testWidgets('renders helperText below trigger when provided', (tester) async {
+    testWidgets('renders helperText below trigger when provided', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -382,51 +375,54 @@ void main() {
         ),
       );
 
-      expect(find.text('Pick an environment for deployment'),
-          findsOneWidget);
+      expect(find.text('Pick an environment for deployment'), findsOneWidget);
     });
 
-    testWidgets('onClear callback fires instead of onChanged(null) when provided',
-        (tester) async {
-      String? clearCalled;
-      String? selectedValue = 'prod';
+    testWidgets(
+      'onClear callback fires instead of onChanged(null) when provided',
+      (tester) async {
+        String? clearCalled;
+        String? selectedValue = 'prod';
 
-      await tester.pumpWidget(
-        StatefulBuilder(
-          builder: (context, setState) {
-            return MaterialApp(
-              home: Scaffold(
-                body: DSSelect<String>(
-                  value: selectedValue,
-                  clearable: true,
-                  options: sampleOptions,
-                  onClear: () {
-                    setState(() {
-                      clearCalled = 'clear';
-                      selectedValue = null;
-                    });
-                  },
-                  onChanged: (val) {
-                    setState(() => selectedValue = val);
-                  },
+        await tester.pumpWidget(
+          StatefulBuilder(
+            builder: (context, setState) {
+              return MaterialApp(
+                home: Scaffold(
+                  body: DSSelect<String>(
+                    value: selectedValue,
+                    clearable: true,
+                    options: sampleOptions,
+                    onClear: () {
+                      setState(() {
+                        clearCalled = 'clear';
+                        selectedValue = null;
+                      });
+                    },
+                    onChanged: (val) {
+                      setState(() => selectedValue = val);
+                    },
+                  ),
                 ),
-              ),
-            );
-          },
-        ),
-      );
+              );
+            },
+          ),
+        );
 
-      expect(find.byIcon(Icons.close), findsOneWidget);
+        expect(find.byIcon(Icons.close), findsOneWidget);
 
-      await tester.tap(find.byIcon(Icons.close));
-      await tester.pumpAndSettle();
+        await tester.tap(find.byIcon(Icons.close));
+        await tester.pumpAndSettle();
 
-      expect(clearCalled, 'clear');
-      expect(selectedValue, null);
-      expect(find.text('Select an option...'), findsOneWidget);
-    });
+        expect(clearCalled, 'clear');
+        expect(selectedValue, null);
+        expect(find.text('Select an option...'), findsOneWidget);
+      },
+    );
 
-    testWidgets('PrismSelect and PrismSelectItem public aliases work', (tester) async {
+    testWidgets('PrismSelect and PrismSelectItem public aliases work', (
+      tester,
+    ) async {
       String? val = 'a';
 
       await tester.pumpWidget(
@@ -446,5 +442,38 @@ void main() {
 
       expect(find.text('Option A'), findsOneWidget);
     });
+
+    testWidgets(
+      'enforces 48dp minimum touch target height on trigger and clear action',
+      (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: DSSelect<String>(
+                value: 'dev',
+                clearable: true,
+                options: sampleOptions,
+              ),
+            ),
+          ),
+        );
+
+        final AnimatedContainer container = tester.widget(
+          find
+              .descendant(
+                of: find.byType(DSSelect<String>),
+                matching: find.byType(AnimatedContainer),
+              )
+              .first,
+        );
+        expect(container.constraints?.minHeight, equals(48.0));
+
+        final clearButtonBox = tester.getSize(
+          find.bySemanticsLabel('Clear selection').first,
+        );
+        expect(clearButtonBox.width, greaterThanOrEqualTo(48.0));
+        expect(clearButtonBox.height, greaterThanOrEqualTo(48.0));
+      },
+    );
   });
 }

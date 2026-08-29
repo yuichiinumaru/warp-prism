@@ -2,16 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:warp_prism_ui/src/organisms/terminal_workspace/ds_terminal_workspace.dart';
-
-// Local mirrors of public Prism* typedefs (src/prism_aliases.dart). Avoids
-// importing package:warp_prism_ui/warp_prism_ui.dart which currently pulls
-// unrelated in-progress organism compile breaks under concurrent builders.
-// Alias source contract is asserted by the pure file test below.
-typedef PrismTerminalWorkspace = DSTerminalWorkspace;
-typedef PrismTerminalPane = DSTerminalPane;
-typedef PrismTerminalLayoutMode = DSTerminalLayoutMode;
-typedef PrismTerminalWorkspaceController = DSTerminalWorkspaceController;
+import 'package:warp_prism_ui/warp_prism_ui.dart';
 
 void main() {
   Widget harness({
@@ -26,29 +17,29 @@ void main() {
     );
   }
 
-  group('PrismTerminalWorkspace / DSTerminalWorkspace', () {
+  group('PrismTerminalWorkspace / PrismTerminalWorkspace', () {
     testWidgets('renders multiple panes in horizontal/vertical split layout', (
       tester,
     ) async {
-      final controller = DSTerminalWorkspaceController(
+      final controller = PrismTerminalWorkspaceController(
         panes: [
-          const DSTerminalPane(
+          const PrismTerminalPane(
             id: 't-1',
             title: 'Main Terminal',
             history: ['line 1-1'],
           ),
-          const DSTerminalPane(
+          const PrismTerminalPane(
             id: 't-2',
             title: 'Agent Logs',
             history: ['line 2-1'],
           ),
         ],
-        layoutMode: DSTerminalLayoutMode.splitHorizontal,
+        layoutMode: PrismTerminalLayoutMode.splitHorizontal,
       );
 
       await tester.pumpWidget(
         harness(
-          child: DSTerminalWorkspace(
+          child: PrismTerminalWorkspace(
             controller: controller,
             title: 'Test Console',
           ),
@@ -62,7 +53,7 @@ void main() {
       expect(find.text('line 2-1'), findsOneWidget);
 
       // Change to vertical split
-      controller.setLayoutMode(DSTerminalLayoutMode.splitVertical);
+      controller.setLayoutMode(PrismTerminalLayoutMode.splitVertical);
       await tester.pumpAndSettle();
 
       expect(find.text('line 1-1'), findsOneWidget);
@@ -70,24 +61,24 @@ void main() {
     });
 
     testWidgets('supports switching focus on tap', (tester) async {
-      final controller = DSTerminalWorkspaceController(
+      final controller = PrismTerminalWorkspaceController(
         panes: [
-          const DSTerminalPane(
+          const PrismTerminalPane(
             id: 't-1',
             title: 'Main Terminal',
             history: ['line 1-1'],
           ),
-          const DSTerminalPane(
+          const PrismTerminalPane(
             id: 't-2',
             title: 'Agent Logs',
             history: ['line 2-1'],
           ),
         ],
-        layoutMode: DSTerminalLayoutMode.splitHorizontal,
+        layoutMode: PrismTerminalLayoutMode.splitHorizontal,
       );
 
       await tester.pumpWidget(
-        harness(child: DSTerminalWorkspace(controller: controller)),
+        harness(child: PrismTerminalWorkspace(controller: controller)),
       );
 
       // Initially, t-1 has focus (since it's the first pane)
@@ -104,11 +95,11 @@ void main() {
       tester,
     ) async {
       bool addPaneCalled = false;
-      final controller = DSTerminalWorkspaceController(panes: []);
+      final controller = PrismTerminalWorkspaceController(panes: []);
 
       await tester.pumpWidget(
         harness(
-          child: DSTerminalWorkspace(
+          child: PrismTerminalWorkspace(
             controller: controller,
             onAddPane: () => addPaneCalled = true,
           ),
@@ -130,24 +121,24 @@ void main() {
     });
 
     testWidgets('renders and handles tab layout correctly', (tester) async {
-      final controller = DSTerminalWorkspaceController(
+      final controller = PrismTerminalWorkspaceController(
         panes: [
-          const DSTerminalPane(
+          const PrismTerminalPane(
             id: 't-1',
             title: 'Main Terminal',
             history: ['line 1-1'],
           ),
-          const DSTerminalPane(
+          const PrismTerminalPane(
             id: 't-2',
             title: 'Agent Logs',
             history: ['line 2-1'],
           ),
         ],
-        layoutMode: DSTerminalLayoutMode.tabs,
+        layoutMode: PrismTerminalLayoutMode.tabs,
       );
 
       await tester.pumpWidget(
-        harness(child: DSTerminalWorkspace(controller: controller)),
+        harness(child: PrismTerminalWorkspace(controller: controller)),
       );
 
       // In tab layout, both tab headers should exist
@@ -169,16 +160,20 @@ void main() {
       String? submittedPaneId;
       String? submittedCommand;
 
-      final controller = DSTerminalWorkspaceController(
+      final controller = PrismTerminalWorkspaceController(
         panes: [
-          const DSTerminalPane(id: 't-1', title: 'Main Terminal', history: []),
+          const PrismTerminalPane(
+            id: 't-1',
+            title: 'Main Terminal',
+            history: [],
+          ),
         ],
-        layoutMode: DSTerminalLayoutMode.tabs,
+        layoutMode: PrismTerminalLayoutMode.tabs,
       );
 
       await tester.pumpWidget(
         harness(
-          child: DSTerminalWorkspace(
+          child: PrismTerminalWorkspace(
             controller: controller,
             onCommandSubmitted: (paneId, command) {
               submittedPaneId = paneId;
@@ -201,19 +196,19 @@ void main() {
     });
 
     testWidgets('clears output and closes pane via buttons', (tester) async {
-      final controller = DSTerminalWorkspaceController(
+      final controller = PrismTerminalWorkspaceController(
         panes: [
-          const DSTerminalPane(
+          const PrismTerminalPane(
             id: 't-1',
             title: 'Main Terminal',
             history: ['output line'],
           ),
         ],
-        layoutMode: DSTerminalLayoutMode.splitHorizontal,
+        layoutMode: PrismTerminalLayoutMode.splitHorizontal,
       );
 
       await tester.pumpWidget(
-        harness(child: DSTerminalWorkspace(controller: controller)),
+        harness(child: PrismTerminalWorkspace(controller: controller)),
       );
 
       expect(find.text('output line'), findsOneWidget);
@@ -240,25 +235,25 @@ void main() {
       'closing a pane disposes per-pane controllers (no resource leak)',
       (tester) async {
         final workspaceKey = GlobalKey();
-        final controller = DSTerminalWorkspaceController(
+        final controller = PrismTerminalWorkspaceController(
           panes: [
-            const DSTerminalPane(
+            const PrismTerminalPane(
               id: 'pane-a',
               title: 'Pane A',
               history: ['alpha'],
             ),
-            const DSTerminalPane(
+            const PrismTerminalPane(
               id: 'pane-b',
               title: 'Pane B',
               history: ['beta'],
             ),
           ],
-          layoutMode: DSTerminalLayoutMode.splitHorizontal,
+          layoutMode: PrismTerminalLayoutMode.splitHorizontal,
         );
 
         await tester.pumpWidget(
           harness(
-            child: DSTerminalWorkspace(
+            child: PrismTerminalWorkspace(
               key: workspaceKey,
               controller: controller,
             ),
@@ -279,7 +274,7 @@ void main() {
 
         // Re-open same id allocates clean resources (no dispose-after-use crash).
         controller.addPane(
-          const DSTerminalPane(
+          const PrismTerminalPane(
             id: 'pane-a',
             title: 'Pane A',
             history: ['alpha-2'],
@@ -302,19 +297,19 @@ void main() {
     testWidgets('pane chrome clear/close meet 48dp min touch targets', (
       tester,
     ) async {
-      final controller = DSTerminalWorkspaceController(
+      final controller = PrismTerminalWorkspaceController(
         panes: [
-          const DSTerminalPane(
+          const PrismTerminalPane(
             id: 't-1',
             title: 'Main Terminal',
             history: ['line'],
           ),
         ],
-        layoutMode: DSTerminalLayoutMode.splitHorizontal,
+        layoutMode: PrismTerminalLayoutMode.splitHorizontal,
       );
 
       await tester.pumpWidget(
-        harness(child: DSTerminalWorkspace(controller: controller)),
+        harness(child: PrismTerminalWorkspace(controller: controller)),
       );
       await tester.pumpAndSettle();
 
@@ -352,19 +347,19 @@ void main() {
     testWidgets('history growth auto-scrolls; focus change does not thrash', (
       tester,
     ) async {
-      final controller = DSTerminalWorkspaceController(
+      final controller = PrismTerminalWorkspaceController(
         panes: [
-          DSTerminalPane(
+          PrismTerminalPane(
             id: 't-1',
             title: 'Main Terminal',
             history: List<String>.generate(40, (i) => 'seed-line-$i'),
           ),
         ],
-        layoutMode: DSTerminalLayoutMode.splitHorizontal,
+        layoutMode: PrismTerminalLayoutMode.splitHorizontal,
       );
 
       await tester.pumpWidget(
-        harness(child: DSTerminalWorkspace(controller: controller)),
+        harness(child: PrismTerminalWorkspace(controller: controller)),
       );
       await tester.pumpAndSettle();
 
@@ -410,16 +405,16 @@ void main() {
       final widget = PrismTerminalWorkspace(controller: controller);
 
       expect(widget, isA<PrismTerminalWorkspace>());
-      expect(widget, isA<DSTerminalWorkspace>());
+      expect(widget, isA<PrismTerminalWorkspace>());
       await tester.pumpWidget(harness(child: widget));
       expect(find.text('Alias Check'), findsOneWidget);
     });
 
     test('prism_aliases.dart declares PrismTerminal* typedefs', () {
-      // Resolve package lib path from this test file location.
-      final aliases = File(
-        '${Directory.current.path}/lib/src/prism_aliases.dart',
-      );
+      final aliasesPath = File('lib/src/prism_aliases.dart').existsSync()
+          ? 'lib/src/prism_aliases.dart'
+          : 'packages/warp_prism_ui/lib/src/prism_aliases.dart';
+      final aliases = File(aliasesPath);
       expect(aliases.existsSync(), isTrue);
       final src = aliases.readAsStringSync();
       expect(

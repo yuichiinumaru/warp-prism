@@ -1,6 +1,5 @@
 # Task 1101: Warp Prism Charter And Naming Convergence
 
-> **Status**: `[x]` Promoted
 > **Review State**: Promoted
 > **Priority**: 🔴 P0
 > **Type**: `governance`

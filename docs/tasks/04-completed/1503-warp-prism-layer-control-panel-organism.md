@@ -1,6 +1,5 @@
 # Task 1503: PrismLayerControlPanel Organism
 
-> **Status**: `[x]` Ready For Review
 > **Review State**: `Ready For Review`
 > **Priority**: 🔴 P0
 > **Type**: `feature`

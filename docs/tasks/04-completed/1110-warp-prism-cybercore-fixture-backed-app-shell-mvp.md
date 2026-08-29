@@ -1,6 +1,5 @@
 # Task 1110: Warp Prism CyberCore Fixture Backed App Shell MVP
 
-> **Status**: `[x]` Complete — pilot A/B/C shell promoted after independent re-review
 > **Review State**: **Held in review** — residual F2–F4 closed (2026-07-10); ready for re-score; remain `03-review/`
 > **Priority**: 🟡 P1
 > **Type**: `feature`

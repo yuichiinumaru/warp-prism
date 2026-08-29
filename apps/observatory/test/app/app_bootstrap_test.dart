@@ -22,23 +22,7 @@ void main() {
       tester,
     ) async {
       await tester.pumpWidget(
-        MaterialApp(
-          theme: ThemeData(
-            brightness: Brightness.dark,
-            useMaterial3: true,
-            scaffoldBackgroundColor: PrismColors.obsidianDeep,
-            colorScheme: const ColorScheme.dark(
-              primary: PrismColors.accentCyan,
-              secondary: PrismColors.accentViolet,
-              surface: PrismColors.obsidianBase,
-              onPrimary: PrismColors.white,
-              onSecondary: PrismColors.white,
-              onSurface: PrismColors.textPrimary,
-            ),
-            fontFamily: PrismTypography.fontFamilyMono,
-          ),
-          home: const SizedBox.shrink(),
-        ),
+        MaterialApp(theme: PrismTheme.dark(), home: const SizedBox.shrink()),
       );
 
       final materialApp = tester.widget<MaterialApp>(find.byType(MaterialApp));
@@ -46,8 +30,8 @@ void main() {
 
       expect(theme, isNotNull);
       expect(theme!.brightness, Brightness.dark);
+      expect(theme.textTheme.bodyMedium?.fontFamily, equals('Rajdhani'));
       expect(theme.scaffoldBackgroundColor, PrismColors.obsidianDeep);
-      expect(theme.scaffoldBackgroundColor, const Color(0xFF050508));
     });
 
     testWidgets('Design System Gallery proof surface still renders', (
@@ -68,10 +52,7 @@ void main() {
       // Product home remains /overview once WarpPrismApp boot is re-enabled.
       await tester.pumpWidget(
         MaterialApp.router(
-          theme: ThemeData(
-            brightness: Brightness.dark,
-            scaffoldBackgroundColor: PrismColors.obsidianDeep,
-          ),
+          theme: PrismTheme.dark(),
           routerDelegate: _StaticRouterDelegate(
             child: const Scaffold(body: DesignSystemGalleryPage()),
           ),

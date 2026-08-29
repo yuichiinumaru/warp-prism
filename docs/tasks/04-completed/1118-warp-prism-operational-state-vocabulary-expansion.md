@@ -1,6 +1,5 @@
 # Task 1118: Warp Prism Operational State Vocabulary Expansion
 
-> **Status**: `[x]` Promoted
 > **Review State**: `Promoted` — independent review scored 100/100; parent final verification passed
 > **Priority**: 🔴 P0 (architectural gate — blocks all operational components)
 > **Type**: `design-system` | `architecture`

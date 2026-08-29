@@ -1,6 +1,5 @@
 # Task 0613: Warp-Prism Operate Review and Blocker Storytelling
 
-> **Status**: `[x]` Promoted
 > **Review State**: Promoted — independent review approved; focused analyzer/tests pass
 > **Priority**: 🟡 P1
 > **Type**: `feature`

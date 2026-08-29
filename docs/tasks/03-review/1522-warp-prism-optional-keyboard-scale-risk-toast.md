@@ -1,7 +1,6 @@
 # Task 1522: Optional Keyboard Cheatsheet + Scale Bar + Risk Toast Variant
 
-> **Status**: `[x]` Formal review ACCEPTED_100 — lane `03-review`
-> **Review State**: `ACCEPTED_100`
+> **Review State**: `ACCEPTED_100` — independent BUILDER_CONTEXT reconciliation passed; awaiting review-owner acceptance
 > **Priority**: 🟢 P2
 > **Type**: `feature`
 > **Origin**: EPIC-15 (`docs/tasks/00-planning/EPIC-15-warp-prism-ads-organism-expansion-from-reference-harvest.md`) + harvest reports `docs/reports/ads-organism-harvest-unified-2026-07-10.md`, `docs/reports/ads-organism-harvest-shadowbroker-2026-07-10.md`, `docs/reports/ads-organism-harvest-osiris-2026-07-10.md`
@@ -237,4 +236,31 @@ verification: >
 
 ### Previous Reports
 
-- `docs/reports/review/expert-2026-07-18-task-1522.md` — expert path-to-100 100/100 (before 90)
+- `docs/reports/review/expert-2026-07-18-task-1522.md` — expert path-to-100 100/100 (historical)
+- `docs/reports/review/1522-keyboard-scale-risk-toast-adversarial-review-2026-08-23.md` — current independent adversarial review, 88/100
+
+## Review Ledger Update — 2026-08-23
+
+- **Score**: `88/100`
+- **Verdict**: `HELD_IN_REVIEW_RESUBMIT`
+- **Classification**: EVIDENCE_GAP — mandatory fresh format/test proof unavailable after required runtime stop on Task 1617
+- **Live/source prove**: source inspection confirms single toast manager, molecule classification, modal semantics, token safety; historical focused pack proof was 23/23 + boundary 7/7 but was not re-claimed as fresh
+- **Lane outcome**: route to `02-doing/`
+- **Report**: `docs/reports/review/1522-keyboard-scale-risk-toast-adversarial-review-2026-08-23.md`
+- **Path to 100**: dedicated analyzer/tests, dedicated non-mutating format, boundary 7/7, preserve single manager / molecule / scoped modal semantics guards.
+
+
+## Independent Session Ledger — 2026-08-24
+
+- **Reviewer profile:** independent `BUILDER_CONTEXT` reconciler
+- **Score:** `100/100`
+- **Verdict:** `ACCEPTED_100` / `PASS`
+- **Full report:** `docs/reports/review/20260824-mixed-1807-1522-1616-independent-review.md`
+- **Fresh evidence:** focused keyboard/scale/risk suite `23/23`; dedicated format check clean; single `DSToastManager`, molecule classification, and modal route semantics remain directly guarded; boundary `7/7`.
+- **Lane outcome:** parent-authorized move from `02-doing` to `03-review` completed; current path is `docs/tasks/03-review/1522-warp-prism-optional-keyboard-scale-risk-toast.md`.
+
+## Review/Fix Ledger — 2026-08-24 Wave 4 (BUILDER_CONTEXT; parent `builders`)
+
+- **Engineer session/task ID**: `ses_fcde09181ffeGKqYbxb1MEOLp4`
+- **Execution outcome**: drain-drift reconciliation + fresh gates + self-close score-only PASS
+- **Next routing**: independent BUILDER_CONTEXT re-review dispatched by parent

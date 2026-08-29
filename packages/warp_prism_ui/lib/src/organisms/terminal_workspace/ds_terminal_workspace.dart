@@ -211,17 +211,13 @@ class _DSTerminalWorkspaceState extends State<DSTerminalWorkspace> {
     return Container(
       height: DSSpacing.topbarHeight,
       padding: const EdgeInsets.symmetric(horizontal: DSSpacing.md),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: DSColors.obsidianBase,
-        border: Border(bottom: BorderSide(color: DSColors.borderSubtle)),
+        border: const Border(bottom: BorderSide(color: DSColors.borderSubtle)),
       ),
       child: Row(
         children: [
-          const Icon(
-            Icons.terminal_outlined,
-            size: 20,
-            color: DSColors.accentCyan,
-          ),
+          Icon(Icons.terminal_outlined, size: 20, color: DSColors.accentBlue),
           const SizedBox(width: DSSpacing.sm),
           DSText.headingSmall(widget.title, color: DSColors.textPrimary),
           const Spacer(),
@@ -250,7 +246,7 @@ class _DSTerminalWorkspaceState extends State<DSTerminalWorkspace> {
             child: IconButton(
               icon: const Icon(Icons.tab_outlined, size: 20),
               color: mode == DSTerminalLayoutMode.tabs
-                  ? DSColors.accentCyan
+                  ? DSColors.accentBlue
                   : DSColors.textTertiary,
               onPressed: () =>
                   widget.controller.setLayoutMode(DSTerminalLayoutMode.tabs),
@@ -267,7 +263,7 @@ class _DSTerminalWorkspaceState extends State<DSTerminalWorkspace> {
             child: IconButton(
               icon: const Icon(Icons.splitscreen_outlined, size: 20),
               color: mode == DSTerminalLayoutMode.splitHorizontal
-                  ? DSColors.accentCyan
+                  ? DSColors.accentBlue
                   : DSColors.textTertiary,
               onPressed: () => widget.controller.setLayoutMode(
                 DSTerminalLayoutMode.splitHorizontal,
@@ -289,7 +285,7 @@ class _DSTerminalWorkspaceState extends State<DSTerminalWorkspace> {
                 child: Icon(Icons.splitscreen_outlined, size: 20),
               ),
               color: mode == DSTerminalLayoutMode.splitVertical
-                  ? DSColors.accentCyan
+                  ? DSColors.accentBlue
                   : DSColors.textTertiary,
               onPressed: () => widget.controller.setLayoutMode(
                 DSTerminalLayoutMode.splitVertical,
@@ -367,9 +363,7 @@ class _DSTerminalWorkspaceState extends State<DSTerminalWorkspace> {
           decoration: BoxDecoration(
             color: DSColors.obsidianBase,
             border: Border.all(
-              color: isFocused
-                  ? DSColors.accentCyan.withValues(alpha: 0.4)
-                  : DSColors.borderSubtle,
+              color: isFocused ? DSColors.focusRing : DSColors.borderSubtle,
               width: 1,
             ),
           ),
@@ -395,7 +389,7 @@ class _DSTerminalWorkspaceState extends State<DSTerminalWorkspace> {
       children: [
         ColoredBox(
           color: isFocused
-              ? DSColors.accentCyan.withValues(alpha: 0.05)
+              ? DSColors.accentBlue.withValues(alpha: 0.05)
               : DSColors.obsidianElevated,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: DSSpacing.sm),
@@ -407,7 +401,7 @@ class _DSTerminalWorkspaceState extends State<DSTerminalWorkspace> {
                     pane.icon ?? Icons.terminal_outlined,
                     size: 14,
                     color: isFocused
-                        ? DSColors.accentCyan
+                        ? DSColors.accentBlue
                         : DSColors.textTertiary,
                   ),
                   const SizedBox(width: DSSpacing.xs),
@@ -415,7 +409,7 @@ class _DSTerminalWorkspaceState extends State<DSTerminalWorkspace> {
                     child: DSText.labelSmall(
                       pane.title,
                       color: isFocused
-                          ? DSColors.accentCyan
+                          ? DSColors.accentBlue
                           : DSColors.textSecondary,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -577,16 +571,16 @@ class _DSTerminalWorkspaceState extends State<DSTerminalWorkspace> {
         horizontal: DSSpacing.sm,
         vertical: DSSpacing.xs,
       ),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: DSColors.obsidianDeep,
-        border: Border(top: BorderSide(color: DSColors.borderSubtle)),
+        border: const Border(top: BorderSide(color: DSColors.borderSubtle)),
       ),
       child: Row(
         children: [
-          const DSText(
+          DSText(
             '> ',
             variant: DSTextVariant.codeMedium,
-            color: DSColors.accentCyan,
+            color: DSColors.accentBlue,
           ),
           Expanded(
             child: Semantics(

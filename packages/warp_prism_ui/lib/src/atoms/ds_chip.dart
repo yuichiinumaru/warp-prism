@@ -244,7 +244,7 @@ class _DSChipState extends State<DSChip> {
                   borderRadius: BorderRadius.circular(DSRadii.chip),
                   border: Border.all(
                     color: _isFocused
-                        ? DSColors.accentCyan.withValues(alpha: 0.5)
+                        ? DSColors.focusRing
                         : borderColor,
                     width: _isFocused ? 2 : 1,
                   ),
@@ -252,30 +252,35 @@ class _DSChipState extends State<DSChip> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    ExcludeSemantics(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          if (widget.leadingIcon != null) ...[
-                            Icon(
-                              widget.leadingIcon,
-                              size: _iconSize,
-                              color: iconColor,
-                            ),
-                            SizedBox(
-                              width: widget.size == DSChipSize.small ? 4 : 6,
+                    Flexible(
+                      child: ExcludeSemantics(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (widget.leadingIcon != null) ...[
+                              Icon(
+                                widget.leadingIcon,
+                                size: _iconSize,
+                                color: iconColor,
+                              ),
+                              SizedBox(
+                                width: widget.size == DSChipSize.small ? 4 : 6,
+                              ),
+                            ],
+                            Flexible(
+                              child: Text(
+                                widget.label,
+                                style: TextStyle(
+                                  fontSize: _fontSize,
+                                  fontWeight: FontWeight.w500,
+                                  color: textColor,
+                                  height: 1,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                           ],
-                          Text(
-                            widget.label,
-                            style: TextStyle(
-                              fontSize: _fontSize,
-                              fontWeight: FontWeight.w500,
-                              color: textColor,
-                              height: 1,
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                     ),
                     if (widget.trailingIcon != null &&

@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 650" width="900" height="650" style="background-color: #030506; font-family: monospace, sans-serif;">
+  <!-- Header -->
+  <rect width="900" height="650" fill="#030506"/>
+  <text x="30" y="45" fill="#2F81FF" font-size="22" font-weight="bold">Warp Prism — Task 1801 Black Obsidian Swatch Artifact</text>
+  <text x="30" y="70" fill="#8888A0" font-size="14">Before (Obsidian Glass) vs. After (Black Obsidian Contract + Blue Accent Ladder)</text>
+  <line x1="30" y1="85" x2="870" y2="85" stroke="#121D22" stroke-width="2"/>
+
+  <!-- Column Headers -->
+  <text x="30" y="115" fill="#F0F0F5" font-size="14" font-weight="bold">Token Role</text>
+  <text x="250" y="115" fill="#F0F0F5" font-size="14" font-weight="bold">Before Hex</text>
+  <text x="400" y="115" fill="#F0F0F5" font-size="14" font-weight="bold">Before Swatch</text>
+  <text x="550" y="115" fill="#F0F0F5" font-size="14" font-weight="bold">After Hex</text>
+  <text x="700" y="115" fill="#F0F0F5" font-size="14" font-weight="bold">After Swatch</text>
+  <line x1="30" y1="125" x2="870" y2="125" stroke="#121D22" stroke-width="1"/>
+
+  <!-- Rows -->
+  <!-- Row 1: Deep Background -->
+  <g transform="translate(0, 135)">
+    <text x="30" y="22" fill="#F0F0F5" font-size="13">obsidianDeep</text>
+    <text x="250" y="22" fill="#8888A0" font-size="13">#050508</text>
+    <rect x="400" y="5" width="100" height="26" fill="#050508" stroke="#2A2A38" stroke-width="1" rx="4"/>
+    <text x="550" y="22" fill="#2F81FF" font-size="13" font-weight="bold">#030506</text>
+    <rect x="700" y="5" width="100" height="26" fill="#030506" stroke="#121D22" stroke-width="1" rx="4"/>
+  </g>
+
+  <!-- Row 2: Base Surface -->
+  <g transform="translate(0, 170)">
+    <text x="30" y="22" fill="#F0F0F5" font-size="13">obsidianBase</text>
+    <text x="250" y="22" fill="#8888A0" font-size="13">#0A0A0F</text>
+    <rect x="400" y="5" width="100" height="26" fill="#0A0A0F" stroke="#2A2A38" stroke-width="1" rx="4"/>
+    <text x="550" y="22" fill="#2F81FF" font-size="13" font-weight="bold">#080C0E</text>
+    <rect x="700" y="5" width="100" height="26" fill="#080C0E" stroke="#121D22" stroke-width="1" rx="4"/>
+  </g>
+
+  <!-- Row 3: Elevated Surface -->
+  <g transform="translate(0, 205)">
+    <text x="30" y="22" fill="#F0F0F5" font-size="13">obsidianElevated</text>
+    <text x="250" y="22" fill="#8888A0" font-size="13">#0F1015</text>
+    <rect x="400" y="5" width="100" height="26" fill="#0F1015" stroke="#2A2A38" stroke-width="1" rx="4"/>
+    <text x="550" y="22" fill="#2F81FF" font-size="13" font-weight="bold">#0C1114</text>
+    <rect x="700" y="5" width="100" height="26" fill="#0C1114" stroke="#121D22" stroke-width="1" rx="4"/>
+  </g>
+
+  <!-- Row 4: Hover Lift -->
+  <g transform="translate(0, 240)">
+    <text x="30" y="22" fill="#F0F0F5" font-size="13">obsidianHover</text>
+    <text x="250" y="22" fill="#8888A0" font-size="13">#14141C</text>
+    <rect x="400" y="5" width="100" height="26" fill="#14141C" stroke="#2A2A38" stroke-width="1" rx="4"/>
+    <text x="550" y="22" fill="#2F81FF" font-size="13" font-weight="bold">#12181C</text>
+    <rect x="700" y="5" width="100" height="26" fill="#12181C" stroke="#121D22" stroke-width="1" rx="4"/>
+  </g>
+
+  <!-- Row 5: Default Border -->
+  <g transform="translate(0, 275)">
+    <text x="30" y="22" fill="#F0F0F5" font-size="13">borderDefault</text>
+    <text x="250" y="22" fill="#8888A0" font-size="13">#2A2A38</text>
+    <rect x="400" y="5" width="100" height="26" fill="#2A2A38" stroke="#3A3A4A" stroke-width="1" rx="4"/>
+    <text x="550" y="22" fill="#2F81FF" font-size="13" font-weight="bold">#121D22</text>
+    <rect x="700" y="5" width="100" height="26" fill="#121D22" stroke="#2F81FF" stroke-width="1" rx="4"/>
+  </g>
+
+  <!-- Section Divider: Accents -->
+  <line x1="30" y1="315" x2="870" y2="315" stroke="#121D22" stroke-width="1"/>
+
+  <!-- Row 6: Primary Accent -->
+  <g transform="translate(0, 325)">
+    <text x="30" y="22" fill="#F0F0F5" font-size="13">accentPrimary (Action)</text>
+    <text x="250" y="22" fill="#8888A0" font-size="13">#00D4FF (Cyan)</text>
+    <rect x="400" y="5" width="100" height="26" fill="#00D4FF" rx="4"/>
+    <text x="550" y="22" fill="#2F81FF" font-size="13" font-weight="bold">#2F81FF (Blue)</text>
+    <rect x="700" y="5" width="100" height="26" fill="#2F81FF" rx="4"/>
+  </g>
+
+  <!-- Row 7: Primary Accent Muted -->
+  <g transform="translate(0, 360)">
+    <text x="30" y="22" fill="#F0F0F5" font-size="13">accentMuted</text>
+    <text x="250" y="22" fill="#8888A0" font-size="13">#0099B8</text>
+    <rect x="400" y="5" width="100" height="26" fill="#0099B8" rx="4"/>
+    <text x="550" y="22" fill="#2F81FF" font-size="13" font-weight="bold">#1D64D8</text>
+    <rect x="700" y="5" width="100" height="26" fill="#1D64D8" rx="4"/>
+  </g>
+
+  <!-- Row 8: Primary Accent Dim -->
+  <g transform="translate(0, 395)">
+    <text x="30" y="22" fill="#F0F0F5" font-size="13">accentDim</text>
+    <text x="250" y="22" fill="#8888A0" font-size="13">#006680</text>
+    <rect x="400" y="5" width="100" height="26" fill="#006680" rx="4"/>
+    <text x="550" y="22" fill="#2F81FF" font-size="13" font-weight="bold">#114299</text>
+    <rect x="700" y="5" width="100" height="26" fill="#114299" rx="4"/>
+  </g>
+
+  <!-- Row 9: Focus Ring -->
+  <g transform="translate(0, 430)">
+    <text x="30" y="22" fill="#F0F0F5" font-size="13">focusRing (50% alpha)</text>
+    <text x="250" y="22" fill="#8888A0" font-size="13">#00D4FF @ 50%</text>
+    <rect x="400" y="5" width="100" height="26" fill="#030506" stroke="rgba(0, 212, 255, 0.5)" stroke-width="3" rx="4"/>
+    <text x="550" y="22" fill="#2F81FF" font-size="13" font-weight="bold">#2F81FF @ 50%</text>
+    <rect x="700" y="5" width="100" height="26" fill="#030506" stroke="rgba(47, 129, 255, 0.5)" stroke-width="3" rx="4"/>
+  </g>
+
+  <!-- Section Divider: Retained & Semantic -->
+  <line x1="30" y1="470" x2="870" y2="470" stroke="#121D22" stroke-width="1"/>
+
+  <!-- Row 10: Retained Cyan & Statuses -->
+  <g transform="translate(0, 480)">
+    <text x="30" y="22" fill="#F0F0F5" font-size="13">accentCyan (Data Accent)</text>
+    <text x="250" y="22" fill="#8888A0" font-size="13">#00D4FF</text>
+    <rect x="400" y="5" width="100" height="26" fill="#00D4FF" rx="4"/>
+    <text x="550" y="22" fill="#8888A0" font-size="13">#00D4FF (Retained)</text>
+    <rect x="700" y="5" width="100" height="26" fill="#00D4FF" rx="4"/>
+  </g>
+
+  <g transform="translate(0, 515)">
+    <text x="30" y="22" fill="#F0F0F5" font-size="13">statusInfo (Semantic Blue)</text>
+    <text x="250" y="22" fill="#8888A0" font-size="13">#3B82F6</text>
+    <rect x="400" y="5" width="100" height="26" fill="#3B82F6" rx="4"/>
+    <text x="550" y="22" fill="#8888A0" font-size="13">#3B82F6 (Protected)</text>
+    <rect x="700" y="5" width="100" height="26" fill="#3B82F6" rx="4"/>
+  </g>
+
+  <g transform="translate(0, 550)">
+    <text x="30" y="22" fill="#F0F0F5" font-size="13">statusSuccess/Warning/Error</text>
+    <text x="250" y="22" fill="#8888A0" font-size="13">Green/Amber/Red</text>
+    <rect x="400" y="5" width="30" height="26" fill="#10B981" rx="2"/>
+    <rect x="435" y="5" width="30" height="26" fill="#F59E0B" rx="2"/>
+    <rect x="470" y="5" width="30" height="26" fill="#EF4444" rx="2"/>
+    <text x="550" y="22" fill="#8888A0" font-size="13">Protected Semantics</text>
+    <rect x="700" y="5" width="30" height="26" fill="#10B981" rx="2"/>
+    <rect x="735" y="5" width="30" height="26" fill="#F59E0B" rx="2"/>
+    <rect x="770" y="5" width="30" height="26" fill="#EF4444" rx="2"/>
+  </g>
+
+  <!-- Footer -->
+  <text x="30" y="615" fill="#8888A0" font-size="11">Generated for Task 1801 — Black Obsidian Token Migration and Semantic Palette Mapping</text>
+</svg>

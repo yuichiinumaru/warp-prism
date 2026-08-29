@@ -17,7 +17,7 @@ import '../../tokens/tokens.dart';
 ///
 /// Fixture-friendly risk/activity hint — not a live threat score.
 enum DSTimeDensitySeverity {
-  /// Neutral activity (default cyan-tinted bars).
+  /// Neutral activity (default cyan-tinted data bars).
   none,
 
   /// Elevated activity (gold/warning).
@@ -555,7 +555,7 @@ class _DSTimeMachineScrubberState extends State<DSTimeMachineScrubber> {
                     child: IgnorePointer(
                       child: KeyedSubtree(
                         key: DSTimeMachineScrubber.playheadHandleKey,
-                        child: Container(width: 2, color: DSColors.accentCyan),
+                        child: Container(width: 2, color: DSColors.accentBlue),
                       ),
                     ),
                   ),
@@ -567,15 +567,10 @@ class _DSTimeMachineScrubberState extends State<DSTimeMachineScrubber> {
                         width: 12,
                         height: 12,
                         decoration: BoxDecoration(
-                          color: DSColors.accentCyan,
+                          color: DSColors.accentBlue,
                           shape: BoxShape.circle,
                           boxShadow: [
-                            BoxShadow(
-                              color: DSColors.accentCyan.withValues(
-                                alpha: 0.45,
-                              ),
-                              blurRadius: 6,
-                            ),
+                            BoxShadow(color: DSColors.focusRing, blurRadius: 6),
                           ],
                         ),
                       ),
@@ -659,7 +654,7 @@ class _DSTimeMachineScrubberState extends State<DSTimeMachineScrubber> {
                 key: DSTimeMachineScrubber.clockKey,
                 child: DSText.labelSmall(
                   _formatClock(playhead),
-                  color: DSColors.accentCyan,
+                  color: DSColors.accentBlue,
                 ),
               ),
             ),

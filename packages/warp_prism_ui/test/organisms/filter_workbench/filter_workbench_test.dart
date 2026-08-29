@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
 
@@ -394,6 +395,78 @@ void main() {
       expectMinTouchTarget(
         find.byKey(PrismFilterWorkbench.advancedModalDoneKey),
       );
+    });
+
+    testWidgets('boolean criterion handles keyboard activate intent', (
+      tester,
+    ) async {
+      Map<String, Object?> draft = {};
+      await tester.pumpWidget(
+        harness(
+          values: draft,
+          onChanged: (next) => draft = Map<String, Object?>.from(next),
+        ),
+      );
+
+      final descFinder = find.descendant(
+        of: find.byType(FocusableActionDetector),
+        matching: find.text('Disabled'),
+      );
+      expect(descFinder, findsOneWidget);
+
+      final element = tester.element(descFinder);
+      Actions.maybeInvoke(element, const ActivateIntent());
+      await tester.pumpAndSettle();
+
+      expect(PrismFilterWorkbench.readBool(draft, 'pinned'), isTrue);
+    });
+
+    testWidgets('advanced expandable handles keyboard activate intent', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        harness(
+          enableAdvancedModal: false,
+          showAdvancedSection: true,
+          initiallyAdvancedExpanded: false,
+        ),
+      );
+
+      expect(find.text('1 hour'), findsNothing);
+
+      final descFinder = find.descendant(
+        of: find.byKey(PrismFilterWorkbench.advancedSectionKey),
+        matching: find.text('Advanced'),
+      );
+      expect(descFinder, findsOneWidget);
+
+      final element = tester.element(descFinder);
+      Actions.maybeInvoke(element, const ActivateIntent());
+      await tester.pumpAndSettle();
+
+      expect(find.text('1 hour'), findsOneWidget);
+    });
+
+    testWidgets('_WorkbenchButton handles Enter key press', (tester) async {
+      var applied = false;
+      await tester.pumpWidget(harness(onApply: (_) => applied = true));
+
+      final applyBtnFinder = find.byKey(PrismFilterWorkbench.applyButtonKey);
+      expect(applyBtnFinder, findsOneWidget);
+
+      final focusFinder = find.descendant(
+        of: applyBtnFinder,
+        matching: find.byType(Focus),
+      );
+      expect(focusFinder, findsOneWidget);
+      final focusNode = tester.widget<Focus>(focusFinder).focusNode;
+      focusNode?.requestFocus();
+      await tester.pump();
+
+      await tester.sendKeyEvent(LogicalKeyboardKey.enter);
+      await tester.pumpAndSettle();
+
+      expect(applied, isTrue);
     });
   });
 }

@@ -10,13 +10,13 @@ import 'map_stage_contracts.dart';
 /// Deterministic fixture catalog for gallery + tests (no MapLibre, no network).
 abstract final class DSMapCanvasStageFixtures {
   /// Default basemap + agents + alerts layer registry.
-  static List<DSMapStageLayerEntry> defaultLayers() => const [
+  static List<DSMapStageLayerEntry> defaultLayers() => [
     DSMapStageLayerEntry(
       id: 'basemap',
       label: 'Basemap grid',
       visible: true,
       zIndex: 0,
-      color: DSColors.accentCyanDim,
+      color: DSColors.accentBlueDim,
       icon: Icons.grid_on_outlined,
       subtitle: 'Fixture grid (not tiles)',
     ),
@@ -25,11 +25,11 @@ abstract final class DSMapCanvasStageFixtures {
       label: 'Agents',
       visible: true,
       zIndex: 10,
-      color: DSColors.accentCyan,
+      color: DSColors.accentBlue,
       icon: Icons.smart_toy_outlined,
       subtitle: '3 fixture agents',
     ),
-    DSMapStageLayerEntry(
+    const DSMapStageLayerEntry(
       id: 'alerts',
       label: 'Alerts',
       visible: true,

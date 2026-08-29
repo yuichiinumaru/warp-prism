@@ -128,7 +128,8 @@ class _DSSelectState<T> extends State<DSSelect<T>> {
   }
 
   void _initFocusNode() {
-    _effectiveFocusNode = widget.focusNode ?? (_internalFocusNode = FocusNode());
+    _effectiveFocusNode =
+        widget.focusNode ?? (_internalFocusNode = FocusNode());
     _effectiveFocusNode.addListener(_handleFocusChange);
   }
 
@@ -237,7 +238,8 @@ class _DSSelectState<T> extends State<DSSelect<T>> {
                     if (filteredOptions.isEmpty) return;
                     int next = highlightedIndex;
                     for (int step = 0; step < filteredOptions.length; step++) {
-                      next = (next + delta + filteredOptions.length) %
+                      next =
+                          (next + delta + filteredOptions.length) %
                           filteredOptions.length;
                       if (!filteredOptions[next].disabled) {
                         setPopupState(() {
@@ -321,9 +323,12 @@ class _DSSelectState<T> extends State<DSSelect<T>> {
                                               )
                                               .toList();
                                           final firstValid = filteredOptions
-                                              .indexWhere((opt) => !opt.disabled);
-                                          highlightedIndex =
-                                              firstValid >= 0 ? firstValid : 0;
+                                              .indexWhere(
+                                                (opt) => !opt.disabled,
+                                              );
+                                          highlightedIndex = firstValid >= 0
+                                              ? firstValid
+                                              : 0;
                                         });
                                       },
                                     ),
@@ -361,8 +366,9 @@ class _DSSelectState<T> extends State<DSSelect<T>> {
                                           onTap: option.disabled
                                               ? null
                                               : () {
-                                                  widget.onChanged
-                                                      ?.call(option.value);
+                                                  widget.onChanged?.call(
+                                                    option.value,
+                                                  );
                                                   _closePopup();
                                                 },
                                         );
@@ -432,7 +438,7 @@ class _DSSelectState<T> extends State<DSSelect<T>> {
       borderColor = DSColors.statusError;
       borderWidth = 1.0;
     } else if (_isOpen || _isFocused) {
-      borderColor = DSColors.accentCyan;
+      borderColor = DSColors.accentBlue;
       borderWidth = 2.0;
     } else {
       borderColor = DSColors.borderSubtle;
@@ -443,7 +449,7 @@ class _DSSelectState<T> extends State<DSSelect<T>> {
     if (hasError) {
       labelColor = DSColors.statusError;
     } else if (_isOpen || _isFocused) {
-      labelColor = DSColors.accentCyan;
+      labelColor = DSColors.accentBlue;
     } else {
       labelColor = DSColors.textSecondary;
     }
@@ -452,7 +458,7 @@ class _DSSelectState<T> extends State<DSSelect<T>> {
     if (hasError) {
       iconColor = DSColors.statusError;
     } else if (_isOpen || _isFocused) {
-      iconColor = DSColors.accentCyan;
+      iconColor = DSColors.accentBlue;
     } else {
       iconColor = DSColors.textTertiary;
     }
@@ -468,11 +474,7 @@ class _DSSelectState<T> extends State<DSSelect<T>> {
       ];
     } else if (_isOpen || _isFocused) {
       glowShadows = [
-        BoxShadow(
-          color: DSColors.accentCyan.withValues(alpha: 0.3),
-          blurRadius: 8,
-          spreadRadius: 0,
-        ),
+        BoxShadow(color: DSColors.focusRing, blurRadius: 8, spreadRadius: 0),
       ];
     } else {
       glowShadows = null;
@@ -521,10 +523,7 @@ class _DSSelectState<T> extends State<DSSelect<T>> {
               child: Row(
                 children: [
                   if (effectivePrefixIcon != null) ...[
-                    DSIcon.small(
-                      effectivePrefixIcon,
-                      color: iconColor,
-                    ),
+                    DSIcon.small(effectivePrefixIcon, color: iconColor),
                     const SizedBox(width: DSSpacing.sm),
                   ],
                   Expanded(
@@ -536,8 +535,8 @@ class _DSSelectState<T> extends State<DSSelect<T>> {
                         color: !widget.enabled
                             ? DSColors.textDisabled
                             : (selected != null
-                                ? DSColors.textPrimary
-                                : DSColors.textTertiary),
+                                  ? DSColors.textPrimary
+                                  : DSColors.textTertiary),
                       ),
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -586,10 +585,7 @@ class _DSSelectState<T> extends State<DSSelect<T>> {
     );
 
     if (!widget.enabled) {
-      triggerContainer = Opacity(
-        opacity: 0.5,
-        child: triggerContainer,
-      );
+      triggerContainer = Opacity(opacity: 0.5, child: triggerContainer);
     }
 
     final semanticText = selected?.label ?? widget.placeholder ?? 'Select';
@@ -604,26 +600,17 @@ class _DSSelectState<T> extends State<DSSelect<T>> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (widget.label != null) ...[
-            DSText.labelSmall(
-              widget.label!,
-              color: labelColor,
-            ),
+            DSText.labelSmall(widget.label!, color: labelColor),
             const SizedBox(height: DSSpacing.xs),
           ],
           triggerContainer,
           if (hasError) ...[
             const SizedBox(height: DSSpacing.xs),
-            DSText.bodySmall(
-              widget.errorText!,
-              color: DSColors.statusError,
-            ),
+            DSText.bodySmall(widget.errorText!, color: DSColors.statusError),
           ] else if (widget.helperText != null &&
               widget.helperText!.isNotEmpty) ...[
             const SizedBox(height: DSSpacing.xs),
-            DSText.bodySmall(
-              widget.helperText!,
-              color: DSColors.textTertiary,
-            ),
+            DSText.bodySmall(widget.helperText!, color: DSColors.textTertiary),
           ],
         ],
       ),
@@ -648,7 +635,7 @@ class _SelectOptionRow<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     final Color bgColor;
     if (isSelected) {
-      bgColor = DSColors.accentCyan.withValues(alpha: 0.15);
+      bgColor = DSColors.accentBlue.withValues(alpha: 0.15);
     } else if (isHighlighted) {
       bgColor = DSColors.obsidianHover;
     } else {
@@ -659,12 +646,12 @@ class _SelectOptionRow<T> extends StatelessWidget {
     if (option.disabled) {
       textColor = DSColors.textDisabled;
     } else if (isSelected) {
-      textColor = DSColors.accentCyan;
+      textColor = DSColors.accentBlue;
     } else {
       textColor = DSColors.textPrimary;
     }
 
-    final Color iconColor = isSelected ? DSColors.accentCyan : textColor;
+    final Color iconColor = isSelected ? DSColors.accentBlue : textColor;
 
     return DSInteractiveSurface(
       semanticLabel: option.label,
@@ -681,10 +668,7 @@ class _SelectOptionRow<T> extends StatelessWidget {
           child: Row(
             children: [
               if (option.icon != null) ...[
-                DSIcon.small(
-                  option.icon!,
-                  color: iconColor,
-                ),
+                DSIcon.small(option.icon!, color: iconColor),
                 const SizedBox(width: DSSpacing.sm),
               ],
               Expanded(
@@ -710,9 +694,9 @@ class _SelectOptionRow<T> extends StatelessWidget {
               ),
               if (isSelected) ...[
                 const SizedBox(width: DSSpacing.sm),
-                const DSIcon.small(
+                DSIcon.small(
                   Icons.check,
-                  color: DSColors.accentCyan,
+                  color: DSColors.accentBlue,
                   semanticLabel: 'Selected',
                 ),
               ],

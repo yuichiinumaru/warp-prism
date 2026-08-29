@@ -195,7 +195,7 @@ abstract class ShellStateHandler {
                     label: const Text('Go to Overview'),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: PrismColors.textSecondary,
-                      side: const BorderSide(color: PrismColors.borderDefault),
+                      side: BorderSide(color: PrismColors.borderDefault),
                     ),
                   ),
               ],

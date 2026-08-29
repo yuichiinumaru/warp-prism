@@ -36,9 +36,9 @@ class MapInspectorPanel extends StatelessWidget {
 
     // No-selection state: explicit MapSurfaceState, not a silent blank.
     if (asset == null) {
-      return const ColoredBox(
+      return ColoredBox(
         color: PrismColors.obsidianBase,
-        child: MapStatePanel(state: MapSurfaceState.noSelection),
+        child: const MapStatePanel(state: MapSurfaceState.noSelection),
       );
     }
 

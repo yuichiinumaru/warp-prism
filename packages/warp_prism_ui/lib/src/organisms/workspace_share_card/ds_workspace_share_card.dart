@@ -140,9 +140,9 @@ class _DSWorkspaceShareCardState extends State<DSWorkspaceShareCard> {
               // Header
               Row(
                 children: [
-                  const DSIcon(
+                  DSIcon(
                     Icons.share_outlined,
-                    color: DSColors.accentCyan,
+                    color: DSColors.accentBlue,
                   ),
                   const SizedBox(width: DSSpacing.sm),
                   Expanded(
@@ -230,7 +230,7 @@ class _DSWorkspaceShareCardState extends State<DSWorkspaceShareCard> {
                           side: BorderSide(
                             color: _copied
                                 ? DSColors.statusSuccess
-                                : DSColors.accentCyan.withValues(alpha: 0.5),
+                                : DSColors.focusRing,
                           ),
                         ),
                       ),

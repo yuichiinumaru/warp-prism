@@ -366,16 +366,16 @@ typedef DSOsintFixtureResolver =
 /// history + map-handoff **contracts** only.
 abstract final class DSOsintFixtures {
   /// Default ≥2 tool tabs for demos (DNS + IP geo).
-  static List<DSOsintTool> defaultTools() => const [
+  static List<DSOsintTool> defaultTools() => [
     DSOsintTool(
       id: 'dns',
       label: 'DNS',
       icon: Icons.dns_outlined,
       description: 'Fixture DNS lookup',
       queryPlaceholder: 'Domain or hostname…',
-      color: DSColors.accentCyan,
+      color: DSColors.accentBlue,
     ),
-    DSOsintTool(
+    const DSOsintTool(
       id: 'ip',
       label: 'IP',
       icon: Icons.lan_outlined,
@@ -383,7 +383,7 @@ abstract final class DSOsintFixtures {
       queryPlaceholder: 'IPv4 or hostname…',
       color: DSColors.accentViolet,
     ),
-    DSOsintTool(
+    const DSOsintTool(
       id: 'whois',
       label: 'WHOIS',
       icon: Icons.badge_outlined,
@@ -394,18 +394,19 @@ abstract final class DSOsintFixtures {
   ];
 
   /// Minimal two-tool registry for unit tests.
-  static List<DSOsintTool> minimalTools() => const [
+  static List<DSOsintTool> minimalTools() => [
     DSOsintTool(
       id: 'dns',
       label: 'DNS',
       icon: Icons.dns_outlined,
       queryPlaceholder: 'Domain…',
-      color: DSColors.accentCyan,
+      color: DSColors.accentBlue,
     ),
-    DSOsintTool(
+    const DSOsintTool(
       id: 'ip',
       label: 'IP',
       icon: Icons.lan_outlined,
+      description: null,
       queryPlaceholder: 'IP address…',
       color: DSColors.accentViolet,
     ),
@@ -925,10 +926,7 @@ class _DSOsintWorkbenchState extends State<DSOsintWorkbench> {
   Widget _buildHeader() {
     return Row(
       children: [
-        const DSIcon.small(
-          Icons.travel_explore_outlined,
-          color: DSColors.accentCyan,
-        ),
+        DSIcon.small(Icons.travel_explore_outlined, color: DSColors.accentBlue),
         const SizedBox(width: DSSpacing.sm),
         Expanded(
           child: Column(
@@ -1004,7 +1002,7 @@ class _DSOsintWorkbenchState extends State<DSOsintWorkbench> {
               constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
               child: Material(
                 color: canSubmit
-                    ? DSColors.accentCyan.withValues(alpha: 0.18)
+                    ? DSColors.accentBlue.withValues(alpha: 0.18)
                     : DSColors.obsidianElevated,
                 borderRadius: BorderRadius.circular(DSRadii.button),
                 child: InkWell(
@@ -1022,14 +1020,14 @@ class _DSOsintWorkbenchState extends State<DSOsintWorkbench> {
                           Icons.play_arrow_rounded,
                           size: 20,
                           color: canSubmit
-                              ? DSColors.accentCyan
+                              ? DSColors.accentBlue
                               : DSColors.textTertiary,
                         ),
                         const SizedBox(width: DSSpacing.xs),
                         DSText.labelMedium(
                           widget.submitLabel,
                           color: canSubmit
-                              ? DSColors.accentCyan
+                              ? DSColors.accentBlue
                               : DSColors.textTertiary,
                         ),
                       ],
@@ -1151,7 +1149,7 @@ class _DSOsintWorkbenchState extends State<DSOsintWorkbench> {
             key: DSOsintWorkbench.resultCardKey(result.id),
             child: _ResultCard(
               result: result,
-              accent: _activeTool.color ?? DSColors.accentCyan,
+              accent: _activeTool.color ?? DSColors.accentBlue,
               mapHandoffLabel: widget.mapHandoffLabel,
               showMapHandoff: widget.onMapHandoff != null && result.hasGeo,
               onMapHandoff: () => _handoff(result),
@@ -1180,7 +1178,7 @@ class _ToolTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final accent = tool.color ?? DSColors.accentCyan;
+    final accent = tool.color ?? DSColors.accentBlue;
     final bg = selected
         ? accent.withValues(alpha: 0.16)
         : DSColors.obsidianElevated;
@@ -1281,7 +1279,7 @@ class _HistoryRowState extends State<_HistoryRow> {
                   children: [
                     DSText.labelSmall(
                       entry.toolLabel.toUpperCase(),
-                      color: DSColors.accentCyan,
+                      color: DSColors.accentBlue,
                     ),
                     DSText.bodySmall(
                       entry.query,

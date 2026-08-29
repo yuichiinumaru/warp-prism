@@ -1,6 +1,5 @@
 # Task 1000: Warp-Prism Polish Baseline Audit
 
-> **Status**: `[x]` Done — docs/governance baseline complete; evidence refreshed 2026-07-09; independent re-review ACCEPTED_100
 > **Review State**: Independent re-review 100/100 — held in `03-review`
 > **Priority**: 🔴 P0
 > **Type**: `verification`

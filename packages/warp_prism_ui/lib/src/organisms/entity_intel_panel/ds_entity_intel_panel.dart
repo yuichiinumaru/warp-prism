@@ -686,7 +686,7 @@ class _PinButton extends StatelessWidget {
       child: IconButton(
         icon: DSIcon(
           pinned ? Icons.push_pin : Icons.push_pin_outlined,
-          color: pinned ? DSColors.accentCyan : DSColors.textSecondary,
+          color: pinned ? DSColors.accentBlue : DSColors.textSecondary,
         ),
         onPressed: onPinChanged == null ? null : () => onPinChanged!(!pinned),
         tooltip: label,

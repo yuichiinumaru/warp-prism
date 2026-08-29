@@ -13,7 +13,7 @@ import 'package:warp_prism_ui/warp_prism_ui.dart';
 
 Widget _inApp(Widget child) {
   return MaterialApp(
-    theme: ThemeData.dark(),
+    theme: PrismTheme.dark(),
     home: Scaffold(backgroundColor: PrismColors.obsidianBase, body: child),
   );
 }
@@ -42,9 +42,9 @@ void main() {
             width: 1200,
             height: 800,
             child: PrismMapHudWorkspace(
-              stage: const ColoredBox(
+              stage: ColoredBox(
                 color: PrismColors.obsidianElevated,
-                child: Center(
+                child: const Center(
                   child: PrismText.bodyMedium(
                     'Fixture stage — no MapLibre',
                     color: PrismColors.textTertiary,

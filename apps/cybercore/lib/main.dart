@@ -15,18 +15,11 @@ class WarpPrismCyberCoreApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // CyberCore opt-in OmniRoute teal skin (Task 1616). Observatory keeps
-    // PrismColors.accentCyan (#00D4FF) as the global static default.
+    // CyberCore opt-in OmniRoute teal skin (Task 1616) applied over
+    // canonical PrismTheme.dark() factory. Observatory keeps
+    // PrismColors.accentBlue (#2F81FF) as the global static default.
     final theme = const PrismCyberCoreTealSkin.omniRoute().applyToTheme(
-      ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: PrismColors.obsidianDeep,
-        colorScheme: const ColorScheme.dark(
-          // primary remapped by applyToTheme → core teal #00FFCC
-          primary: PrismColors.accentCyan,
-          secondary: PrismColors.accentViolet,
-          surface: PrismColors.obsidianBase,
-        ),
-      ),
+      PrismTheme.dark(),
     );
     return MaterialApp.router(
       title: 'Warp Prism — CyberCore',

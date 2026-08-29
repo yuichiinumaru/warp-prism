@@ -1,6 +1,5 @@
 # Task 1404: View-model and Mapper Contract Reconciliation
 
-> **Status**: `[x]` Done — Ready for Review
 > **Review State**: Held in Review — S=92/100 (2026-07-09 independent re-review); path-to-100
 > **Priority**: 🟡 P1
 > **Type**: `remediation`

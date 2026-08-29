@@ -73,7 +73,7 @@ class DSStatusTickerItem {
     return parts.join(', ');
   }
 
-  /// Accent color derived from [state], or cyan default when unset.
+  /// Accent color derived from [state], or the retained cyan data accent when unset.
   Color get accentColor => state?.color ?? DSColors.accentCyan;
 
   DSStatusTickerItem copyWith({
@@ -658,9 +658,9 @@ class _LiveBadge extends StatelessWidget {
         vertical: DSSpacing.xxs,
       ),
       decoration: BoxDecoration(
-        color: DSColors.accentCyan.withValues(alpha: 0.12),
+        color: DSColors.accentBlue.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(DSRadii.xs),
-        border: Border.all(color: DSColors.accentCyan.withValues(alpha: 0.35)),
+        border: Border.all(color: DSColors.focusRing),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -668,13 +668,13 @@ class _LiveBadge extends StatelessWidget {
           Container(
             width: 6,
             height: 6,
-            decoration: const BoxDecoration(
-              color: DSColors.accentCyan,
+            decoration: BoxDecoration(
+              color: DSColors.accentBlue,
               shape: BoxShape.circle,
             ),
           ),
           const SizedBox(width: DSSpacing.xs),
-          DSText.labelSmall(label, color: DSColors.accentCyan),
+          DSText.labelSmall(label, color: DSColors.accentBlue),
         ],
       ),
     );

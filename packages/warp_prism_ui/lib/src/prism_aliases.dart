@@ -51,6 +51,7 @@ import 'molecules/ds_scale_measure_bar.dart';
 import 'molecules/accordion/ds_accordion.dart';
 import 'molecules/dialog/ds_dialog.dart';
 import 'molecules/select/ds_select.dart';
+import 'molecules/color_field/ds_color_field.dart';
 import 'organisms/code_block/ds_code_block.dart';
 import 'organisms/command_palette/ds_command_palette.dart';
 import 'organisms/data_table/ds_data_table.dart';
@@ -119,6 +120,8 @@ import 'organisms/breadcrumbs/ds_breadcrumbs.dart';
 import 'tokens/ds_breakpoints.dart';
 import 'tokens/ds_colors.dart';
 import 'tokens/ds_cybercore_teal_skin.dart';
+import 'tokens/ds_taldarim_red_skin.dart';
+import 'tokens/ds_talon_purple_skin.dart';
 import 'tokens/ds_motion.dart';
 import 'tokens/ds_operational_state.dart';
 import 'tokens/ds_radii.dart';
@@ -126,8 +129,12 @@ import 'tokens/ds_semantics.dart';
 import 'tokens/ds_shadows.dart';
 import 'tokens/ds_spacing.dart';
 import 'tokens/ds_typography.dart';
+import 'theme/ds_theme.dart';
 import 'gallery/design_system_gallery_registry.dart';
 import 'gallery/design_system_gallery_sections.dart';
+
+export 'tokens/prism_token_registry.dart';
+export 'organisms/theme_editor/prism_theme_editor.dart';
 
 // Re-export the top-level [showPrismDialog] helper so consumer apps can call
 // it through the public `package:warp_prism_ui/warp_prism_ui.dart` barrel.
@@ -151,208 +158,34 @@ typedef PrismOperationalSeverity = DSOperationalSeverity;
 /// Public alias for [DSOperationalCategory].
 typedef PrismOperationalCategory = DSOperationalCategory;
 
-/// Note: [DSOperationalStateUI] is an extension on [DSOperationalState].
-/// Consumer apps access it via `PrismOperationalState.running.color` etc.
-
-/// Public Prism-named extension providing UI metadata for [PrismOperationalState].
-///
-/// Consumers import `package:warp_prism_ui/warp_prism_ui.dart` and use:
-/// ```dart
-/// PrismOperationalState.running.color
-/// PrismOperationalState.running.label
-/// PrismOperationalState.running.icon
-/// ```
-extension PrismOperationalStateUI on DSOperationalState {
-  /// Canonical color for this operational state.
-  Color get color {
-    switch (this) {
-      case DSOperationalState.pending:
-        return DSColors.statusPending;
-      case DSOperationalState.running:
-        return DSColors.statusRunning;
-      case DSOperationalState.approved:
-        return DSColors.statusApproved;
-      case DSOperationalState.rejected:
-        return DSColors.statusRejected;
-      case DSOperationalState.promoted:
-        return DSColors.statusPromoted;
-      case DSOperationalState.archived:
-        return DSColors.statusArchived;
-      case DSOperationalState.healthy:
-        return DSColors.statusHealthy;
-      case DSOperationalState.degraded:
-        return DSColors.statusDegraded;
-      case DSOperationalState.error:
-        return DSColors.statusOpError;
-      case DSOperationalState.disabled:
-        return DSColors.statusDisabled;
-      case DSOperationalState.unverified:
-        return DSColors.statusUnverified;
-      case DSOperationalState.exposed:
-        return DSColors.statusExposed;
-      case DSOperationalState.redacted:
-        return DSColors.statusRedacted;
-      case DSOperationalState.stale:
-        return DSColors.statusStale;
-      case DSOperationalState.excluded:
-        return DSColors.statusExcluded;
-    }
-  }
-
-  /// Canonical Material icon for this operational state.
-  IconData get icon {
-    switch (this) {
-      case DSOperationalState.pending:
-        return DSIcons.pending;
-      case DSOperationalState.running:
-        return DSIcons.doing;
-      case DSOperationalState.approved:
-        return DSIcons.success;
-      case DSOperationalState.rejected:
-        return DSIcons.error;
-      case DSOperationalState.promoted:
-        return DSIcons.canonical;
-      case DSOperationalState.archived:
-        return DSIcons.archive;
-      case DSOperationalState.healthy:
-        return DSIcons.success;
-      case DSOperationalState.degraded:
-        return DSIcons.warning;
-      case DSOperationalState.error:
-        return DSIcons.error;
-      case DSOperationalState.disabled:
-        return DSIcons.blocked;
-      case DSOperationalState.unverified:
-        return DSIcons.pending;
-      case DSOperationalState.exposed:
-        return DSIcons.warning;
-      case DSOperationalState.redacted:
-        return DSIcons.local;
-      case DSOperationalState.stale:
-        return DSIcons.warning;
-      case DSOperationalState.excluded:
-        return DSIcons.blocked;
-    }
-  }
-
-  /// Human-readable label for screen display and accessibility.
-  String get label {
-    switch (this) {
-      case DSOperationalState.pending:
-        return 'Pending';
-      case DSOperationalState.running:
-        return 'Running';
-      case DSOperationalState.approved:
-        return 'Approved';
-      case DSOperationalState.rejected:
-        return 'Rejected';
-      case DSOperationalState.promoted:
-        return 'Promoted';
-      case DSOperationalState.archived:
-        return 'Archived';
-      case DSOperationalState.healthy:
-        return 'Healthy';
-      case DSOperationalState.degraded:
-        return 'Degraded';
-      case DSOperationalState.error:
-        return 'Error';
-      case DSOperationalState.disabled:
-        return 'Disabled';
-      case DSOperationalState.unverified:
-        return 'Unverified';
-      case DSOperationalState.exposed:
-        return 'Exposed';
-      case DSOperationalState.redacted:
-        return 'Redacted';
-      case DSOperationalState.stale:
-        return 'Stale';
-      case DSOperationalState.excluded:
-        return 'Excluded';
-    }
-  }
-
-  /// Screen reader label for accessibility (mirrors [DSOperationalStateUI]).
-  String get semanticLabel {
-    switch (this) {
-      case DSOperationalState.pending:
-        return 'Pending: awaiting start';
-      case DSOperationalState.running:
-        return 'Running: in progress';
-      case DSOperationalState.approved:
-        return 'Approved: passed review';
-      case DSOperationalState.rejected:
-        return 'Rejected: failed review';
-      case DSOperationalState.promoted:
-        return 'Promoted: advanced';
-      case DSOperationalState.archived:
-        return 'Archived: read-only';
-      case DSOperationalState.healthy:
-        return 'Healthy: operating normally';
-      case DSOperationalState.degraded:
-        return 'Degraded: reduced quality';
-      case DSOperationalState.error:
-        return 'Error: failure detected';
-      case DSOperationalState.disabled:
-        return 'Disabled: intentionally off';
-      case DSOperationalState.unverified:
-        return 'Unverified: no proof yet';
-      case DSOperationalState.exposed:
-        return 'Exposed: visible but unreviewed';
-      case DSOperationalState.redacted:
-        return 'Redacted: sensitive hidden';
-      case DSOperationalState.stale:
-        return 'Stale: needs refresh';
-      case DSOperationalState.excluded:
-        return 'Excluded: outside scope';
-    }
-  }
-
-  /// Whether user can initiate actions in this state.
-  bool get allowsActions {
-    switch (this) {
-      case DSOperationalState.archived:
-      case DSOperationalState.excluded:
-        return false;
-      default:
-        return true;
-    }
-  }
-
-  /// Whether this is a final state with no automatic transitions.
-  bool get isTerminal {
-    switch (this) {
-      case DSOperationalState.archived:
-      case DSOperationalState.excluded:
-        return true;
-      default:
-        return false;
-    }
-  }
-
-  /// Whether UI should display a warning indicator.
-  bool get showsWarning {
-    switch (this) {
-      case DSOperationalState.rejected:
-      case DSOperationalState.degraded:
-      case DSOperationalState.error:
-      case DSOperationalState.exposed:
-      case DSOperationalState.stale:
-        return true;
-      default:
-        return false;
-    }
-  }
+/// Extension alias for [DSOperationalStateUI].
+/// Consumer apps access UI metadata via `PrismOperationalState.running.color` etc.
+extension PrismOperationalStateUI on PrismOperationalState {
+  Color get color => DSOperationalStateUI(this).color;
+  IconData get icon => DSOperationalStateUI(this).icon;
+  String get label => DSOperationalStateUI(this).label;
+  String get semanticLabel => DSOperationalStateUI(this).semanticLabel;
+  bool get allowsActions => DSOperationalStateUI(this).allowsActions;
+  bool get isTerminal => DSOperationalStateUI(this).isTerminal;
+  bool get showsWarning => DSOperationalStateUI(this).showsWarning;
+  PrismOperationalSeverity get severity => DSOperationalStateUI(this).severity;
+  PrismOperationalCategory get category => DSOperationalStateUI(this).category;
 }
 
 /// Public alias for [DSColors].
 ///
-/// Design token palette: obsidian backgrounds, energy accents,
-/// semantic status, governance, text, border, lane, and asset-kind colors.
+/// Design token palette: obsidian backgrounds, action blue accents,
+/// data accents (cyan/violet/gold), semantic status, governance, text, border, lane, and asset-kind colors.
 ///
-/// **Observatory default** primary energy remains [PrismColors.accentCyan]
-/// (`#00D4FF`). Do not treat CyberCore teal as a global rebrand — use
-/// [PrismCyberCoreTealSkin] when a product app opts into OmniRoute mono-teal.
+/// **Observatory default** primary action accent is [PrismColors.accentBlue]
+/// (`#2F81FF`, Task 1800 Black Obsidian contract). Cyan (`#00D4FF`) remains a retained data accent.
+/// Do not treat CyberCore teal as a global rebrand — use [PrismCyberCoreTealSkin] when a product app opts into OmniRoute mono-teal.
 typedef PrismColors = DSColors;
+
+/// Public alias for [DSTheme].
+///
+/// Provides static access to canonical [PrismTheme.dark()] for Black Obsidian theme composition.
+typedef PrismTheme = DSTheme;
 
 /// Public alias for [DSCyberCoreTealSkin].
 ///
@@ -369,6 +202,22 @@ typedef PrismColors = DSColors;
 /// // Later: PrismCyberCoreTealSkin.of(context).accent
 /// ```
 typedef PrismCyberCoreTealSkin = DSCyberCoreTealSkin;
+
+/// Public alias for [DSTaldarimRedSkin].
+///
+/// **Opt-in** Taldarim Red ThemeExtension skin (Protoss lore: Tal'darim `#E51A4C` crimson energy).
+/// Observatory default primary action accent is Khalai Blue (`#2F81FF`).
+/// Counterpart brand labels: **Khalai Blue** (`accentBlue`), **Nerazim Green/Teal** (cyan/green data), **Purifier Gold** (`accentGold`).
+/// Install via [PrismTaldarimRedSkin.applyToTheme] or [PrismTheme.taldarimRed()].
+typedef PrismTaldarimRedSkin = DSTaldarimRedSkin;
+
+/// Public alias for [DSTalonPurpleSkin].
+///
+/// **Opt-in** Talon Purple ThemeExtension skin (Protoss lore: Talon faction `#9911E5` violet/crimson-purple energy).
+/// Observatory default primary action accent is Khalai Blue (`#2F81FF`).
+/// Counterpart brand labels: **Khalai Blue** (`accentBlue`), **Nerazim Green/Teal** (cyan/green data), **Purifier Gold** (`accentGold`).
+/// Install via [PrismTalonPurpleSkin.applyToTheme] or [PrismTheme.talonPurple()].
+typedef PrismTalonPurpleSkin = DSTalonPurpleSkin;
 
 /// Public alias for [DSSpacing].
 ///
@@ -511,6 +360,12 @@ typedef PrismSelectItem<T> = DSSelectItem<T>;
 
 /// Public alias for [DSSelectOption].
 typedef PrismSelectOption<T> = DSSelectOption<T>;
+
+/// Public alias for [DSColorField].
+///
+/// Validated hex color field with preset swatches, clear/error states,
+/// and eyedropper API hook.
+typedef PrismColorField = DSColorField;
 
 // =============================================================================
 // ORGANISMS
@@ -1307,6 +1162,9 @@ typedef PrismTextField = DSTextField;
 
 /// Public alias for [DSSwitch].
 typedef PrismSwitch = DSSwitch;
+
+/// Public alias for [DSSwitch] using toggle terminology.
+typedef PrismToggle = DSSwitch;
 
 /// Public alias for [DSChip].
 typedef PrismChip = DSChip;

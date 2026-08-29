@@ -23,3 +23,4 @@ export 'ds_scale_measure_bar.dart';
 export 'accordion/accordion.dart';
 export 'dialog/dialog.dart';
 export 'select/select.dart';
+export 'color_field/color_field.dart';

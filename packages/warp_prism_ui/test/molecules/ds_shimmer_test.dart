@@ -99,7 +99,7 @@ void main() {
 
     testWidgets('accepts custom colors', (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
+        MaterialApp(
           home: Scaffold(
             body: DSShimmer(
               width: 100,

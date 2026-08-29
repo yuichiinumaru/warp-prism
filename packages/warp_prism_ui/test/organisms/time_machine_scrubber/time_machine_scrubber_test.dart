@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
 
@@ -296,6 +297,59 @@ void main() {
           find.byKey(PrismTimeMachineScrubber.panelRegionKey),
         );
         expect(panelSemantics.label, contains('Time machine scrubber'));
+      } finally {
+        handle.dispose();
+      }
+    });
+
+    testWidgets('slider semantics handle increase and decrease actions', (
+      tester,
+    ) async {
+      final playheads = <DateTime>[];
+      final handle = tester.ensureSemantics();
+      try {
+        await tester.pumpWidget(
+          harness(
+            initialPlayhead: domainStart.add(const Duration(hours: 6)),
+            playbackStep: const Duration(hours: 1),
+            onPlayheadChanged: playheads.add,
+          ),
+        );
+        await tester.pump();
+        playheads.clear();
+
+        final semanticsFinder = find.byKey(
+          PrismTimeMachineScrubber.histogramKey,
+        );
+        expect(semanticsFinder, findsOneWidget);
+
+        final node = tester.getSemantics(semanticsFinder);
+        expect(
+          node.getSemanticsData().hasAction(SemanticsAction.increase),
+          isTrue,
+        );
+        node.owner!.performAction(node.id, SemanticsAction.increase);
+        await tester.pump();
+
+        expect(playheads, isNotEmpty);
+        expect(
+          playheads.last,
+          equals(domainStart.add(const Duration(hours: 7))),
+        );
+
+        playheads.clear();
+        expect(
+          node.getSemanticsData().hasAction(SemanticsAction.decrease),
+          isTrue,
+        );
+        node.owner!.performAction(node.id, SemanticsAction.decrease);
+        await tester.pump();
+
+        expect(playheads, isNotEmpty);
+        expect(
+          playheads.last,
+          equals(domainStart.add(const Duration(hours: 6))),
+        );
       } finally {
         handle.dispose();
       }

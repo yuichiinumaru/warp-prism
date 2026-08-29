@@ -1,6 +1,5 @@
 # Task 0018: Warp Prism DS Accessibility and Focus Baseline
 
-> **Status**: `[x]` Completed — independent path100 re-review 2026-07-18 S=100/100
 > **Review State**: `ACCEPTED_100` — S=100/100 (2026-07-18); see `docs/reports/review-wave-2026-07-18/task-0018-path100-rereview.md`
 > **Lane**: `04-completed`
 > **Priority**: 🟡 P1

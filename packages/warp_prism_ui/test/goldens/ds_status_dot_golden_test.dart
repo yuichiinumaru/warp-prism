@@ -12,12 +12,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:warp_prism_ui/src/atoms/atoms.dart';
 import 'package:warp_prism_ui/src/tokens/tokens.dart';
+import 'package:warp_prism_ui/warp_prism_ui.dart';
 
 /// Wraps a widget in a MaterialApp with obsidian background for consistent
 /// golden rendering.
 Widget _inApp(Widget child) {
   return MaterialApp(
-    theme: ThemeData.dark(),
+    theme: PrismTheme.dark(),
     home: Scaffold(
       backgroundColor: DSColors.obsidianBase,
       body: Center(child: child),

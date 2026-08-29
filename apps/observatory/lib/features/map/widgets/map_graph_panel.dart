@@ -88,9 +88,9 @@ class _ModeSelector extends StatelessWidget {
           horizontal: PrismSpacing.md,
           vertical: PrismSpacing.sm,
         ),
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: PrismColors.obsidianElevated,
-          border: Border(
+          border: const Border(
             bottom: BorderSide(color: PrismColors.borderSubtle, width: 1),
           ),
         ),

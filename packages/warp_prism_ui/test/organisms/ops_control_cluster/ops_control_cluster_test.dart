@@ -41,7 +41,7 @@ void main() {
         findsOneWidget,
       );
 
-      const launchers = PrismOpsControlClusterFixtures.defaultLaunchers;
+      final launchers = PrismOpsControlClusterFixtures.defaultLaunchers;
       expect(launchers.length, greaterThanOrEqualTo(3));
       for (final launcher in launchers) {
         expect(

@@ -90,13 +90,20 @@ dart pub get
 #    (do not require a global `melos` binary)
 dart run melos bootstrap
 
-# 3. Run the Observatory app
-cd apps/observatory && flutter run
+# 3. Run the Observatory app (from its own directory)
+cd apps/observatory && flutter run -d linux
 
 # 4. Run the ADS catalog / gallery (Storybook-class proof surface)
 #    Thin shell over DesignSystemGalleryPage in warp_prism_ui.
-cd apps/catalog && flutter run
+#    Includes the Theme Editor (PrismThemeEditor) for visual convergence.
+cd apps/catalog && flutter run -d linux
 ```
+
+> **Common pitfall:** `flutter run` must be executed **inside** an app directory
+> (`apps/catalog/`, `apps/observatory/`, `apps/cybercore/`), not from the monorepo
+> root `warp-prism/`. Running from the root yields `Target file "lib/main.dart" not found`
+> because the root has no `lib/main.dart` — each app owns its own entry point.
+> From the root you can alternatively run `flutter run -d linux -t apps/catalog/lib/main.dart`.
 
 **ADS visibility**: There is **no Widgetbook** in MVP (deferred by design policy).
 The custom catalog app (`apps/catalog`) and Observatory route `/design-system`

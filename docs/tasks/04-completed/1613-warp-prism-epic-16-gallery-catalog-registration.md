@@ -1,6 +1,5 @@
 # Task 1613: EPIC-16 Gallery + Catalog Registration
 
-> **Status**: `[x]` Completed (independent drain 2026-07-17)
 > **Review State**: `Internal builder review PASS (100/100) — awaiting independent 03-review`
 > **Priority**: 🟡 P1
 > **Type**: `feature`

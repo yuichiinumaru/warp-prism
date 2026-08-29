@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
+import 'prism_token_registry.dart';
 
 /// ASW Observatory Design Tokens - Colors
 ///
-/// Visual direction: ultradark obsidian glass with subtle hacker/protoss accents
-/// - Near-black obsidian backgrounds
-/// - Glass-like dark panels
-/// - Cyan/violet/gold energy accents
-/// - Thin luminous borders
+/// Visual direction: Black Obsidian theme with controlled blue action accents
+/// - Pure black obsidian structural backgrounds (#030506 family)
+/// - Low-luminance dark panels and borders
+/// - Additive blue accent ladder for action/focus/links (#2F81FF family)
+/// - Cyan/violet/gold retained data category accents
 abstract class DSColors {
   // === OBSIDIAN BACKGROUNDS ===
   /// The deepest background - true obsidian black
-  static const Color obsidianDeep = Color(0xFF050508);
+  static Color get obsidianDeep => PrismTokenRegistry.instance.obsidianDeep;
 
   /// Primary background surface
-  static const Color obsidianBase = Color(0xFF0A0A0F);
+  static Color get obsidianBase => PrismTokenRegistry.instance.obsidianBase;
 
   /// Elevated surface (cards, panels)
-  static const Color obsidianElevated = Color(0xFF0F1015);
+  static Color get obsidianElevated =>
+      PrismTokenRegistry.instance.obsidianElevated;
 
   /// Hover/interactive surface
-  static const Color obsidianHover = Color(0xFF14141C);
+  static Color get obsidianHover => PrismTokenRegistry.instance.obsidianHover;
 
   /// Active/selected surface
   static const Color obsidianActive = Color(0xFF1A1A24);
@@ -27,8 +29,18 @@ abstract class DSColors {
   /// Glass panel overlay (use with opacity)
   static const Color glassOverlay = Color(0xFF1E1E28);
 
-  // === ENERGY ACCENTS ===
-  /// Primary accent - cyan energy (hacker influence)
+  // === PRIMARY ACTION ACCENTS ===
+  /// Primary action accent - blue energy (Black Obsidian contract)
+  static Color get accentBlue => PrismTokenRegistry.instance.accentBlue;
+  static Color get accentBlueMuted =>
+      PrismTokenRegistry.instance.accentBlueMuted;
+  static Color get accentBlueDim => PrismTokenRegistry.instance.accentBlueDim;
+
+  /// High-contrast focus ring outline (2px outline at 50% opacity)
+  static Color get focusRing => PrismTokenRegistry.instance.focusRing;
+
+  // === DATA ACCENTS ===
+  /// Data accent - cyan energy (retained data-category accent until Task 1806)
   static const Color accentCyan = Color(0xFF00D4FF);
   static const Color accentCyanMuted = Color(0xFF0099B8);
   static const Color accentCyanDim = Color(0xFF006680);
@@ -105,8 +117,8 @@ abstract class DSColors {
   /// Subtle border - barely visible
   static const Color borderSubtle = Color(0xFF1E1E28);
 
-  /// Default border
-  static const Color borderDefault = Color(0xFF2A2A38);
+  /// Default border - low-luminance neutral/blue-gray (Black Obsidian contract)
+  static Color get borderDefault => PrismTokenRegistry.instance.borderDefault;
 
   /// Strong border - emphasis
   static const Color borderStrong = Color(0xFF3A3A4A);

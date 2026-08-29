@@ -1,6 +1,5 @@
 # Task 1516: PrismViewPresets + PrismWorkspaceShareCard
 
-> **Status**: `[x]` Open
 > **Review State**: `Open`
 > **Priority**: 🟡 P1
 > **Type**: `feature`

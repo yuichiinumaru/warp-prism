@@ -116,18 +116,18 @@ class DSWatchlistItem {
 /// Shared fixture catalog for gallery / tests (Task 1509).
 abstract final class DSWatchlistFixtures {
   /// Default pinned set used by gallery demos.
-  static const List<DSWatchlistItem> defaultItems = <DSWatchlistItem>[
+  static List<DSWatchlistItem> get defaultItems => <DSWatchlistItem>[
     DSWatchlistItem(
       id: 'agent-orion',
       label: 'Orion Scout',
       subtitle: 'agent · map sector A',
       entityType: 'agent',
       icon: Icons.smart_toy_outlined,
-      color: DSColors.accentCyan,
+      color: DSColors.accentBlue,
       latitude: 37.7749,
       longitude: -122.4194,
     ),
-    DSWatchlistItem(
+    const DSWatchlistItem(
       id: 'task-1509',
       label: 'Stage chrome pack',
       subtitle: 'task · Ready For Review',
@@ -135,7 +135,7 @@ abstract final class DSWatchlistFixtures {
       icon: Icons.task_outlined,
       color: DSColors.accentViolet,
     ),
-    DSWatchlistItem(
+    const DSWatchlistItem(
       id: 'place-obs',
       label: 'Observatory Node',
       subtitle: 'place · HQ anchor',
@@ -145,7 +145,7 @@ abstract final class DSWatchlistFixtures {
       latitude: 51.5074,
       longitude: -0.1278,
     ),
-    DSWatchlistItem(
+    const DSWatchlistItem(
       id: 'skill-recon',
       label: 'Recon Sweep',
       subtitle: 'skill · OSINT family',
@@ -266,7 +266,7 @@ class DSWatchlistDock extends StatefulWidget {
   static Color defaultColorForType(String entityType) {
     switch (entityType.toLowerCase()) {
       case 'agent':
-        return DSColors.accentCyan;
+        return DSColors.accentBlue;
       case 'skill':
         return DSColors.statusInfo;
       case 'task':
@@ -399,11 +399,7 @@ class _DSWatchlistDockState extends State<DSWatchlistDock> {
   Widget _buildHeader({required int count, required bool expanded}) {
     return Row(
       children: [
-        const DSIcon(
-          Icons.bookmarks_outlined,
-          size: 16,
-          color: DSColors.accentCyan,
-        ),
+        DSIcon(Icons.bookmarks_outlined, size: 16, color: DSColors.accentBlue),
         const SizedBox(width: DSSpacing.xs),
         Expanded(
           child: DSText.labelLarge(widget.title, color: DSColors.textPrimary),
@@ -411,7 +407,7 @@ class _DSWatchlistDockState extends State<DSWatchlistDock> {
         DSBadge.count(
           count,
           size: DSBadgeSize.small,
-          color: DSColors.accentCyan,
+          color: DSColors.accentBlue,
         ),
         const SizedBox(width: DSSpacing.xs),
         Semantics(

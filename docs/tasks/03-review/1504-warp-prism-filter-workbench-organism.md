@@ -1,6 +1,5 @@
 # Task 1504: PrismFilterWorkbench Organism
 
-> **Status**: `[x]` Formal independent review 2026-07-18 (gt-flutter-code-reviewer; 100/100; ACCEPTED_100 → 03-review)
 > **Review State**: Accepted — moved to `docs/tasks/03-review/`
 > **Priority**: 🟡 P1
 > **Type**: `feature`
@@ -164,6 +163,33 @@ tooling failure and do not claim those checks passed.
 
 ## Completion Evidence
 
+### Fresh Live Revalidation & Reconciliation (2026-08-24) — Builder Engineer
+
+Fresh live revalidation and path-to-100 self-close pass for Task 1504 under orchestrator `builders`.
+
+- **Files modified (Task 1504 owned surfaces)**:
+  - `packages/warp_prism_ui/lib/src/organisms/filter_workbench/ds_filter_workbench.dart`: Formatted via `dart format`.
+  - `packages/warp_prism_ui/test/organisms/filter_workbench/filter_workbench_test.dart`: Added widget tests for `ActivateIntent` keyboard activation (`_BooleanCriterionRow`, `_AdvancedExpandable`) and Enter key event handling (`_WorkbenchButton`).
+- **Shared files restriction compliance**: `design_system_gallery_sections.dart`, `prism_aliases.dart`, `ds_colors.dart`, `ds_theme.dart` were NOT touched.
+- **Fresh Gate Results (2026-08-24)**:
+  ```text
+  $ dart format --output=none --set-exit-if-changed lib/src/organisms/filter_workbench test/organisms/filter_workbench
+  # → Formatted 3 files (0 changed) in 0.08 seconds; exit 0
+
+  $ dart analyze lib/src/organisms/filter_workbench test/organisms/filter_workbench
+  # → Analyzing filter_workbench, filter_workbench... No issues found! exit 0
+
+  $ flutter test test/organisms/filter_workbench/ --concurrency=1 --no-pub
+  # → 00:04 +14: All tests passed! exit 0 (14/14 widget tests passing)
+
+  $ dart run test/boundaries/boundary_test.dart
+  # → Boundary harness: 7/7 PASS, 0 FAIL, 0 violation(s); exit 0
+  ```
+- **Self-Close Review & Path-to-100**:
+  - `gt-global-subagent-review` (score-only mode): Score `100/100` (`ACCEPT`).
+  - `gt-global-path100-apply`: Closed historical formatting and keyboard widget-testing gaps.
+- **Lane Authority**: Stays in `02-doing/` (no lane moves performed; no git/jj commands run).
+
 ### Path-to-100 remediation (2026-07-18) — live revalidation
 
 Remediates REJECT `82/100` (`docs/reports/review/1504-filter-workbench-review-2026-07-16.md`).
@@ -272,6 +298,16 @@ verification: >
 2. ~~48dp custom hit regions + size tests~~ — builder 2026-07-18.
 3. ~~Desktop keyboard ActivateIntent on boolean / advanced expander / modal IconHit~~ — expert 2026-07-18; formal confirmed.
 
+### Independent adversarial gatekeeper re-review (2026-07-18)
+
+- **Reviewer profile**: `reviewers` (parent agentID=reviewers)
+- **Score**: `95/100`
+- **Verdict**: `PASS WITH NOTES`
+- **Full report**: `docs/reports/review/1504-filter-workbench-independent-gatekeeper-rereview-2026-07-18.md`
+- **Fresh live proof**: scoped analyzer clean; organism pack **45/45 PASS** (11 Task 1504); gallery **23/23 PASS**; boundaries **7/7 PASS** direct and via `dart run melos run test-boundaries`.
+- **Finding**: required non-mutating format probe is red (`Formatted 15 files (4 changed)`, exit 1), contradicting historical 0-changed evidence. Keyboard paths exist but are not directly widget-tested.
+- **Routing**: stays in `docs/tasks/03-review/` (score >=90).
+
 ### Previous Reports
 
 - `docs/reports/review/expert-2026-07-18-task-1504.md` — **100/100** expert path-to-100 — formal confirmed
@@ -284,3 +320,10 @@ verification: >
 - Re-run `dart run packages/warp_prism_ui/test/boundaries/boundary_test.dart --repo-root .` after public DS/Prism surface changes — must stay **7/7 PASS**.
 - Re-run `dart format --output=none --set-exit-if-changed` on task surface after any edit.
 - Consumers must import `package:warp_prism_ui/warp_prism_ui.dart` (Prism* aliases); do not expose raw DS* via public barrel.
+
+
+## Review/Fix Ledger — 2026-08-24 Wave 2 (BUILDER_CONTEXT; parent `builders`)
+
+- **Engineer session/task ID**: `ses_fce350aa1ffe6E8Ubd0zaOaM2e`
+- **Execution outcome**: drain-drift reconciliation + fresh gates + self-close score-only PASS
+- **Next routing**: independent BUILDER_CONTEXT re-review dispatched by parent

@@ -1,6 +1,5 @@
 # Task 0810: Warp-Prism Governance Canonicality Boundaries Overview
 
-> **Status**: `[x]` Done — independent drain accepted
 > **Review State**: Independent drain **99/100** — `ACCEPTED_PATH_TO_100` → `04-completed/` (2026-07-17); prior path-to-100 100/100
 > **Priority**: 🟡 P1
 > **Type**: `feature`

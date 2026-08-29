@@ -15,7 +15,8 @@ class GraphPainterConfig {
   final Color edgeColor;
 
   /// Edge color for highlighted edges (connected to hovered/selected node).
-  final Color edgeHighlightColor;
+  final Color? _edgeHighlightColor;
+  Color get edgeHighlightColor => _edgeHighlightColor ?? DSColors.accentBlue;
 
   /// Normal edge stroke width.
   final double edgeStrokeWidth;
@@ -31,12 +32,12 @@ class GraphPainterConfig {
 
   const GraphPainterConfig({
     this.edgeColor = DSColors.borderSubtle,
-    this.edgeHighlightColor = DSColors.accentCyan,
+    Color? edgeHighlightColor,
     this.edgeStrokeWidth = 1.0,
     this.edgeHighlightStrokeWidth = 2.0,
     this.arrowSize = 8.0,
     this.curveOffset = 20.0,
-  });
+  }) : _edgeHighlightColor = edgeHighlightColor;
 }
 
 /// Custom painter for graph edges and arrows.

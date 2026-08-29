@@ -1,6 +1,5 @@
 # Task 1501: PrismMapHudWorkspace Organism
 
-> **Status**: `[x]` Review Approved — independent review S=94 (held in 03-review; never 04-completed by this wave)
 > **Review State**: `Review Approved`
 > **Priority**: 🔴 P0
 > **Type**: `feature`

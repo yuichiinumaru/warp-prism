@@ -586,7 +586,7 @@ class _RequestListRow extends StatelessWidget {
               : Colors.transparent,
           border: Border(
             left: BorderSide(
-              color: selected ? DSColors.accentCyan : Colors.transparent,
+              color: selected ? DSColors.accentBlue : Colors.transparent,
               width: 2,
             ),
             bottom: const BorderSide(color: DSColors.borderSubtle, width: 1),
@@ -599,7 +599,7 @@ class _RequestListRow extends StatelessWidget {
               children: [
                 DSBadge(
                   label: request.method,
-                  color: DSColors.accentCyan,
+                  color: DSColors.accentBlue,
                   size: DSBadgeSize.small,
                 ),
                 const SizedBox(width: DSSpacing.sm),
@@ -801,16 +801,16 @@ class _TabChip extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: selected
-              ? DSColors.accentCyan.withValues(alpha: 0.15)
+              ? DSColors.accentBlue.withValues(alpha: 0.15)
               : DSColors.obsidianHover,
           borderRadius: BorderRadius.circular(DSRadii.md),
           border: Border.all(
-            color: selected ? DSColors.accentCyan : DSColors.borderSubtle,
+            color: selected ? DSColors.accentBlue : DSColors.borderSubtle,
           ),
         ),
         child: DSText.labelSmall(
           _label,
-          color: selected ? DSColors.accentCyan : DSColors.textSecondary,
+          color: selected ? DSColors.accentBlue : DSColors.textSecondary,
         ),
       ),
     );

@@ -1,6 +1,5 @@
 # Task 1420: CyberCore Evidence Snapshot For Task 1102
 
-> **Status**: `[x]` Promoted
 > **Review State**: Promoted — independent review scored 100/100; blocked evidence packet accepted as a blocker record, and Task 1102 remains blocked pending approved CyberCore source/screenshot import or governance amendment.
 > **Priority**: 🔴 P0
 > **Type**: `governance` | `verification`

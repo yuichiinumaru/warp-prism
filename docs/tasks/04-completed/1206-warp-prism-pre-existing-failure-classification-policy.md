@@ -1,6 +1,5 @@
 # Task 1206: Pre-existing Failure Classification Policy
 
-> **Status**: `[x]` Promoted
 > **Review State**: `Promoted` — final reviewer-orchestrator verification 2026-06-26; all policy files, references, and baseline paths verified against live filesystem; promoted to 04-completed
 > **Priority**: 🟡 P1
 > **Type**: `governance`

@@ -7,20 +7,10 @@ import '../ds_icon.dart';
 import '../ds_text.dart';
 
 /// Button visual variants.
-enum DSButtonVariant {
-  primary,
-  secondary,
-  outline,
-  ghost,
-  danger,
-}
+enum DSButtonVariant { primary, secondary, outline, ghost, danger }
 
 /// Button size presets.
-enum DSButtonSize {
-  sm,
-  md,
-  lg,
-}
+enum DSButtonSize { sm, md, lg }
 
 /// ASW Observatory Atom - Prism / DS Button
 ///
@@ -129,7 +119,7 @@ class DSButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final activeAccent =
-        DSCyberCoreTealSkin.maybeOf(context)?.accent ?? DSColors.accentCyan;
+        DSCyberCoreTealSkin.maybeOf(context)?.accent ?? DSColors.accentBlue;
 
     final Color foregroundColor;
     switch (variant) {
@@ -192,27 +182,15 @@ class DSButton extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           if (icon != null) ...[
-            DSIcon(
-              icon!,
-              color: foregroundColor,
-              size: iconSize,
-            ),
+            DSIcon(icon!, color: foregroundColor, size: iconSize),
             if (label.isNotEmpty) const SizedBox(width: DSSpacing.xs),
           ],
           if (label.isNotEmpty)
-            DSText(
-              label,
-              variant: textVariant,
-              color: foregroundColor,
-            ),
+            DSText(label, variant: textVariant, color: foregroundColor),
           if (trailingIcon != null) ...[
             if (label.isNotEmpty || icon != null)
               const SizedBox(width: DSSpacing.xs),
-            DSIcon(
-              trailingIcon!,
-              color: foregroundColor,
-              size: iconSize,
-            ),
+            DSIcon(trailingIcon!, color: foregroundColor, size: iconSize),
           ],
         ],
       );
@@ -272,21 +250,14 @@ class DSButton extends StatelessWidget {
     }
 
     if (!enabled) {
-      surface = Opacity(
-        opacity: 0.5,
-        child: surface,
-      );
+      surface = Opacity(opacity: 0.5, child: surface);
     }
 
     return DSInteractiveSurface(
       semanticLabel: semanticLabel ?? label,
       onTap: _isInteractive ? onPressed : null,
       focusNode: focusNode,
-      child: Center(
-        widthFactor: 1.0,
-        heightFactor: 1.0,
-        child: surface,
-      ),
+      child: Center(widthFactor: 1.0, heightFactor: 1.0, child: surface),
     );
   }
 }

@@ -53,7 +53,7 @@ class DSConnectorPanel extends StatefulWidget {
   /// Optional badge label rendered next to the title (e.g. "Live", "Stale").
   final String? badgeLabel;
 
-  /// Optional badge color; defaults to [DSColors.accentCyan].
+  /// Optional badge color; defaults to [DSColors.accentBlue].
   final Color? badgeColor;
 
   /// Optional leading widget (icon) before the title.
@@ -210,7 +210,7 @@ class _DSConnectorPanelState extends State<DSConnectorPanel> {
   }
 
   Widget _buildHeader({required bool minimized}) {
-    final badgeColor = widget.badgeColor ?? DSColors.accentCyan;
+    final badgeColor = widget.badgeColor ?? DSColors.accentBlue;
     final refreshEnabled = widget.onRefresh != null;
 
     return KeyedSubtree(

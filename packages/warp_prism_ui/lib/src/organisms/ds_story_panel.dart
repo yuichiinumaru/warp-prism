@@ -26,7 +26,7 @@ class DSStoryPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = accentColor ?? DSColors.accentCyan;
+    final color = accentColor ?? DSColors.accentBlue;
 
     return DSGlassPanel.elevated(
       padding: const EdgeInsets.all(DSSpacing.lg),

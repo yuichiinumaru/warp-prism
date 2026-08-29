@@ -29,7 +29,7 @@ class DSDivider extends StatelessWidget {
   }) : color = DSColors.borderSubtle,
        thickness = 1;
 
-  const DSDivider.strong({
+  DSDivider.strong({
     super.key,
     this.indent,
     this.endIndent,

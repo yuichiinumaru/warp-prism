@@ -1,6 +1,5 @@
 # Task 0612: Warp-Prism Operate Task Detail Inspector
 
-> **Status**: `[x]` Promoted
 > **Review State**: Promoted — independent review approved; targeted analyzer/tests pass
 > **Priority**: 🟡 P1
 > **Type**: `feature`

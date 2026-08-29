@@ -13,16 +13,53 @@ import 'package:warp_prism_ui/src/atoms/atoms.dart';
 void main() {
   group('DS Token Contract', () {
     group('DSColors', () {
-      test('obsidian background tokens exist and are non-null', () {
-        expect(DSColors.obsidianDeep, isA<Color>());
-        expect(DSColors.obsidianBase, isA<Color>());
-        expect(DSColors.obsidianElevated, isA<Color>());
-        expect(DSColors.obsidianHover, isA<Color>());
-        expect(DSColors.obsidianActive, isA<Color>());
-        expect(DSColors.glassOverlay, isA<Color>());
-      });
+      test(
+        'obsidian background tokens match Black Obsidian contract hexes',
+        () {
+          expect(DSColors.obsidianDeep, equals(const Color(0xFF030506)));
+          expect(DSColors.obsidianBase, equals(const Color(0xFF080C0E)));
+          expect(DSColors.obsidianElevated, equals(const Color(0xFF0C1114)));
+          expect(DSColors.obsidianHover, equals(const Color(0xFF12181C)));
+          expect(DSColors.obsidianActive, isA<Color>());
+          expect(DSColors.glassOverlay, isA<Color>());
+          expect(DSColors.borderDefault, equals(const Color(0xFF121D22)));
+        },
+      );
+
+      test(
+        'additive blue accent ladder tokens exist and match Task 1800 hexes',
+        () {
+          expect(DSColors.accentBlue, equals(const Color(0xFF2F81FF)));
+          expect(DSColors.accentBlueMuted, equals(const Color(0xFF1D64D8)));
+          expect(DSColors.accentBlueDim, equals(const Color(0xFF114299)));
+          expect(DSColors.focusRing, equals(const Color(0x802F81FF)));
+        },
+      );
+
+      test(
+        'collision guard: blue accent candidates are distinct from #3B82F6',
+        () {
+          const protectedBlue = Color(0xFF3B82F6);
+          // Collision guard: accentBlue != statusInfo, governanceLocal, laneOpen
+          expect(DSColors.accentBlue, isNot(equals(protectedBlue)));
+          expect(DSColors.accentBlueMuted, isNot(equals(protectedBlue)));
+          expect(DSColors.accentBlueDim, isNot(equals(protectedBlue)));
+
+          expect(DSColors.statusInfo, equals(protectedBlue));
+          expect(DSColors.governanceLocal, equals(protectedBlue));
+          expect(DSColors.laneOpen, equals(protectedBlue));
+
+          expect(DSColors.accentBlue, isNot(equals(DSColors.statusInfo)));
+          expect(DSColors.accentBlue, isNot(equals(DSColors.governanceLocal)));
+          expect(DSColors.accentBlue, isNot(equals(DSColors.laneOpen)));
+        },
+      );
 
       test('energy accent tokens exist in primary/muted/dim triplets', () {
+        // Blue
+        expect(DSColors.accentBlue, isA<Color>());
+        expect(DSColors.accentBlueMuted, isA<Color>());
+        expect(DSColors.accentBlueDim, isA<Color>());
         // Cyan
         expect(DSColors.accentCyan, isA<Color>());
         expect(DSColors.accentCyanMuted, isA<Color>());
@@ -37,21 +74,21 @@ void main() {
         expect(DSColors.accentGoldDim, isA<Color>());
       });
 
-      test('semantic status tokens exist in primary/muted/dim triplets', () {
+      test('semantic status tokens are protected and match contract hexes', () {
         // Success
-        expect(DSColors.statusSuccess, isA<Color>());
+        expect(DSColors.statusSuccess, equals(const Color(0xFF10B981)));
         expect(DSColors.statusSuccessMuted, isA<Color>());
         expect(DSColors.statusSuccessDim, isA<Color>());
         // Warning
-        expect(DSColors.statusWarning, isA<Color>());
+        expect(DSColors.statusWarning, equals(const Color(0xFFF59E0B)));
         expect(DSColors.statusWarningMuted, isA<Color>());
         expect(DSColors.statusWarningDim, isA<Color>());
         // Error
-        expect(DSColors.statusError, isA<Color>());
+        expect(DSColors.statusError, equals(const Color(0xFFEF4444)));
         expect(DSColors.statusErrorMuted, isA<Color>());
         expect(DSColors.statusErrorDim, isA<Color>());
         // Info
-        expect(DSColors.statusInfo, isA<Color>());
+        expect(DSColors.statusInfo, equals(const Color(0xFF3B82F6)));
         expect(DSColors.statusInfoMuted, isA<Color>());
         expect(DSColors.statusInfoDim, isA<Color>());
       });
@@ -153,7 +190,18 @@ void main() {
     group('DSTypography', () {
       test('font family constants are defined', () {
         expect(DSTypography.fontFamilyMono, equals('JetBrainsMono'));
-        expect(DSTypography.fontFamilySans, equals('Inter'));
+        expect(DSTypography.fontFamilySans, equals('Rajdhani'));
+      });
+
+      test('fallback chain constants are defined', () {
+        expect(
+          DSTypography.fontFamilySansFallback,
+          containsAll(['Roboto', 'Helvetica Neue', 'Arial', 'sans-serif']),
+        );
+        expect(
+          DSTypography.fontFamilyMonoFallback,
+          containsAll(['Courier New', 'monospace']),
+        );
       });
 
       test('all 18 text styles are defined', () {
@@ -183,22 +231,61 @@ void main() {
         expect(DSTypography.numericSmall, isA<TextStyle>());
       });
 
-      test('display styles use sans-serif family', () {
-        expect(DSTypography.displayLarge.fontFamily, equals('Inter'));
-        expect(DSTypography.displayMedium.fontFamily, equals('Inter'));
-        expect(DSTypography.displaySmall.fontFamily, equals('Inter'));
+      test(
+        'display, heading, body, and label styles use UI sans family (Rajdhani) and fallback chain',
+        () {
+          final uiStyles = [
+            DSTypography.displayLarge,
+            DSTypography.displayMedium,
+            DSTypography.displaySmall,
+            DSTypography.headingLarge,
+            DSTypography.headingMedium,
+            DSTypography.headingSmall,
+            DSTypography.bodyLarge,
+            DSTypography.bodyMedium,
+            DSTypography.bodySmall,
+            DSTypography.labelLarge,
+            DSTypography.labelMedium,
+            DSTypography.labelSmall,
+          ];
+          for (final style in uiStyles) {
+            expect(style.fontFamily, equals('Rajdhani'));
+            expect(
+              style.fontFamilyFallback,
+              equals(DSTypography.fontFamilySansFallback),
+            );
+          }
+        },
+      );
+
+      test('code styles use mono family and fallback chain', () {
+        final codeStyles = [
+          DSTypography.codeLarge,
+          DSTypography.codeMedium,
+          DSTypography.codeSmall,
+        ];
+        for (final style in codeStyles) {
+          expect(style.fontFamily, equals('JetBrainsMono'));
+          expect(
+            style.fontFamilyFallback,
+            equals(DSTypography.fontFamilyMonoFallback),
+          );
+        }
       });
 
-      test('code styles use mono family', () {
-        expect(DSTypography.codeLarge.fontFamily, equals('JetBrainsMono'));
-        expect(DSTypography.codeMedium.fontFamily, equals('JetBrainsMono'));
-        expect(DSTypography.codeSmall.fontFamily, equals('JetBrainsMono'));
-      });
-
-      test('numeric styles use mono family', () {
-        expect(DSTypography.numericLarge.fontFamily, equals('JetBrainsMono'));
-        expect(DSTypography.numericMedium.fontFamily, equals('JetBrainsMono'));
-        expect(DSTypography.numericSmall.fontFamily, equals('JetBrainsMono'));
+      test('numeric styles use mono family for tabular metrics role', () {
+        final numericStyles = [
+          DSTypography.numericLarge,
+          DSTypography.numericMedium,
+          DSTypography.numericSmall,
+        ];
+        for (final style in numericStyles) {
+          expect(style.fontFamily, equals('JetBrainsMono'));
+          expect(
+            style.fontFamilyFallback,
+            equals(DSTypography.fontFamilyMonoFallback),
+          );
+        }
       });
 
       test('font weight constants are defined', () {
@@ -297,12 +384,25 @@ void main() {
       });
 
       test('glow effects return non-empty lists', () {
+        expect(DSShadows.glowBlue(), isNotEmpty);
         expect(DSShadows.glowCyan(), isNotEmpty);
         expect(DSShadows.glowViolet(), isNotEmpty);
         expect(DSShadows.glowGold(), isNotEmpty);
         expect(DSShadows.glowSuccess(), isNotEmpty);
         expect(DSShadows.glowError(), isNotEmpty);
         expect(DSShadows.glowWarning(), isNotEmpty);
+      });
+
+      test('glow effects auto-shift when derived accent colors update', () {
+        final blueGlow = DSShadows.glowBlue();
+        expect(blueGlow.first.color.r, closeTo(DSColors.accentBlue.r, 0.001));
+        expect(blueGlow.first.color.g, closeTo(DSColors.accentBlue.g, 0.001));
+        expect(blueGlow.first.color.b, closeTo(DSColors.accentBlue.b, 0.001));
+
+        final cyanGlow = DSShadows.glowCyan();
+        expect(cyanGlow.first.color.r, closeTo(DSColors.accentCyan.r, 0.001));
+        expect(cyanGlow.first.color.g, closeTo(DSColors.accentCyan.g, 0.001));
+        expect(cyanGlow.first.color.b, closeTo(DSColors.accentCyan.b, 0.001));
       });
 
       test('glow effects accept intensity parameter', () {

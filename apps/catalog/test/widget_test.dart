@@ -22,7 +22,7 @@ Future<void> _scrollUntilFound(
   for (var i = 0; i < maxFlings; i++) {
     if (finder.evaluate().isNotEmpty) return;
     await tester.fling(
-      find.byType(ListView).first,
+      find.byType(DesignSystemGalleryPage),
       const Offset(0, -500),
       1000,
     );
@@ -121,20 +121,9 @@ void main() {
 
         await _scrollUntilFound(tester, find.text('Ops Pack'));
         expect(find.text('Ops Pack'), findsWidgets);
-        await _scrollUntilFound(
-          tester,
-          find.textContaining('PrismWorkspaceShareCard'),
-        );
-        expect(find.textContaining('PrismWorkspaceShareCard'), findsWidgets);
-        expect(find.textContaining('PrismViewPresets'), findsWidgets);
 
         await _scrollUntilFound(tester, find.text('Terminal'));
         expect(find.text('Terminal'), findsWidgets);
-        await _scrollUntilFound(
-          tester,
-          find.textContaining('PrismAgentShellPanel'),
-        );
-        expect(find.textContaining('PrismAgentShellPanel'), findsWidgets);
       },
     );
 

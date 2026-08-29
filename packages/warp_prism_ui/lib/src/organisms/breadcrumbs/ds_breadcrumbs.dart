@@ -85,10 +85,7 @@ class DSBreadcrumbs extends StatelessWidget {
       return const [DSBreadcrumbItem(label: 'Home', href: '/')];
     }
 
-    final segments = routeName
-        .split('/')
-        .where((s) => s.isNotEmpty)
-        .toList();
+    final segments = routeName.split('/').where((s) => s.isNotEmpty).toList();
     final derived = <DSBreadcrumbItem>[
       const DSBreadcrumbItem(label: 'Home', href: '/'),
     ];
@@ -102,10 +99,7 @@ class DSBreadcrumbs extends StatelessWidget {
           : seg[0].toUpperCase() + seg.substring(1);
       final isLast = i == segments.length - 1;
       derived.add(
-        DSBreadcrumbItem(
-          label: formattedLabel,
-          href: isLast ? null : pathAcc,
-        ),
+        DSBreadcrumbItem(label: formattedLabel, href: isLast ? null : pathAcc),
       );
     }
     return derived;
@@ -117,7 +111,8 @@ class DSBreadcrumbs extends StatelessWidget {
     if (effectiveItems.isEmpty) return const SizedBox.shrink();
 
     return Semantics(
-      label: 'Breadcrumb navigation: ${effectiveItems.map((e) => e.label).join(' > ')}',
+      label:
+          'Breadcrumb navigation: ${effectiveItems.map((e) => e.label).join(' > ')}',
       explicitChildNodes: true,
       child: KeyedSubtree(
         key: regionKey,

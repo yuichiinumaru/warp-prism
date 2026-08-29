@@ -1,13 +1,12 @@
 # Task 1106: Warp Prism Operational Component MVP
 
-> **Status**: `[x]` Ready For Review — formal independent accept 2026-07-18 (**100/100**)
-> **Review State**: Formal accept **100/100** — promoted to `03-review/` (gt-flutter-code-reviewer)
+> **Review State**: Ready for independent review; see the latest Review Ledger
 > **Priority**: 🟡 P1
 > **Type**: `feature` | `design-system`
 > **Origin**: Task 1100 candidate Task 1105 and Task 1102 CyberCore control-surface inventory.
 > **Blocks**: Task 1110, Task 1111
 > **Depends on**: Task 1102 (inventory — hard gate **satisfied at evidence level** 2026-07-09), Task 1104, Task 1105, Task 1107
-> **Lane**: `docs/tasks/02-doing/` (no self-promote)
+> **Implementation readiness**: derived from the containing task directory.
 > **ready_for_reviewer**: **yes**
 
 > [!IMPORTANT]
@@ -390,3 +389,59 @@ dart run melos run analyze
 - **Validation**: live re-verify on filesystem + scoped/package gates (see report)
 - **Open blockers**: none
 - **Live**: scoped operational +183; analyze No issues; Pilot A /providers + 1112/1113 delivered; app-agnostic token header
+
+### 2026-08-23 — Independent adversarial live re-review
+
+- **Reviewer**: independent live-filesystem Flutter/package reviewer
+- **Score**: **84/100**
+- **Verdict**: `REJECTED_TO_DOING`
+- **Report**: `docs/reports/review/1106-operational-component-mvp-adversarial-review-2026-08-23.md`
+- **Fresh proof**: scoped MVP analyzer `No issues found`; operational/state/token suites `+183`; gallery `+22`; boundary harness `7/7`; Melos analyze exits successfully with `--no-fatal-infos` but emits non-fatal diagnostics outside the MVP files.
+- **Findings**: operational gallery lacks health variants for `DSMetricTile` and lacks a concrete `DSTaskCard` catalog case despite both being in the MVP; component-attributable long/narrow/high-text-scale edge evidence is not explicit.
+- **Path to 100**: add those catalog/state-matrix cases, add runtime assertions, rerun scoped gates, and refresh evidence.
+- **Lane action**: route collision-safely to `docs/tasks/02-doing/` (score <90).
+
+### 2026-08-23 — Engineer worker baseline refresh & path-to-100 (builders)
+
+- **Score before**: `84/100` (independent review 2026-08-23 `1106-operational-component-mvp-adversarial-review-2026-08-23.md`)
+- **Self-review score**: `100/100`
+- **Fixes applied**:
+  1. Added gallery catalog cases for `DSMetricTile` health variants (`healthy`, `degraded`, `error`, `disabled`, long label) and `DSTaskCard` operational & proof states (default, selected, missing proof, narrow viewport).
+  2. Added unit/widget test coverage for `DSTaskCard` (default, selected, proofState status dots, onTap), `DSMetricTile` long text, narrow viewport (180px/200px), and 2.0x high text scale.
+  3. Re-ran scoped tests: `operational_components_test.dart` (71 pass), `design_system_gallery_test.dart` (22 pass), `state_surface_test.dart` & `ds_operational_state_test.dart` (120 pass) → **213 total operational tests PASS**.
+  4. Re-ran scoped analyzer (`No issues found!`), boundary harness (`7/7 PASS`), and `verify_public_barrel_audit.dart` (`PASS`).
+- **Lane**: remains `docs/tasks/02-doing/` (no lane moves).
+
+### 2026-08-24 — Path-to-100 Application (BUILDER_CONTEXT; parent `builders`)
+
+- **Review input**: `docs/reports/review/2026-08-24-governance-package-independent-review-builders.md` (97/100, APPROVED_PATH100).
+- **Closure Matrix**:
+
+| Finding | Status | Files changed | Fresh validation | Residual |
+|---|---|---|---|---|
+| Design catalog matrix omitted new `DSTaskCard` cases and edge evidence | **fixed** | `docs/design/operational-component-mvp.md` | `§5.2` now lists metric health + task-card cases; `§5.3` records long text, 180px/200px narrow viewports, and 2.0x text scale; `§6` test matrix names the same cases | none |
+| Optional overflow/geometrical assertions | **deferred (optional)** | none | Existing widget tests execute all four component edge cases and assert rendered output; no additional assertion was required to close the approved path | none/blocker |
+
+- **Fresh validation**:
+  - `flutter test --concurrency=1 --no-pub test/molecules/operational_components_test.dart test/state_surface_test.dart test/tokens/ds_operational_state_test.dart` → **+191 All tests passed!**.
+  - `flutter test --concurrency=1 --no-pub test/gallery/design_system_gallery_test.dart` → **+22 All tests passed!**.
+  - Combined scoped operational evidence: **213 tests passed**.
+  - Scoped MVP analyzer → **No issues found!**.
+  - `dart run packages/warp_prism_ui/test/boundaries/boundary_test.dart --repo-root .` → **7/7 PASS**.
+  - `dart run packages/warp_prism_ui/tool/verify_public_barrel_audit.dart --repo-root .` → **PASS**, 293/293.
+- **Lane**: explicit parent authorization received; after score confirmation, moved to `docs/tasks/03-review/`.
+
+## Independent Delta Review — 2026-08-24
+
+- **Review report**: `docs/reports/review/2026-08-24-governance-package-independent-review-builders.md`
+- **Score**: `100/100` effective after the approved path-to-100 application.
+- **Verdict**: `APPROVED_PATH100`; no Serious or Critical findings remain.
+- **Evidence**: operational/state/token suites `+191`; gallery `+22`; combined `213` tests pass; scoped MVP analyzer clean; boundary `7/7`; public-barrel lock `293/293`.
+- **Residuals**: optional stronger overflow/geometry assertions deferred; no acceptance blocker.
+- **Lane recommendation**: move this task from `docs/tasks/02-doing/` to `docs/tasks/03-review/` for independent acceptance.
+
+## Review/Fix Ledger — 2026-08-24 (BUILDER_CONTEXT; parent `builders`)
+
+- **Engineer session/task ID**: `ses_fcebe5559ffefIEHT7Mf2XvhcL`
+- **Execution outcome**: path-to-100 applied per latest adversarial report; self-close score-only PASS recorded in docs/reports/builders/
+- **Next routing**: independent BUILDER_CONTEXT re-review dispatched by parent

@@ -1,6 +1,5 @@
 # Task 1509: Stage Chrome Pack (Watchlist, Coordinate Bar, Map Legend)
 
-> **Status**: `[x]` Ready For Review — Path-to-100 resubmit
 > **Review State**: `Ready For Review`
 > **Priority**: 🟡 P1
 > **Type**: `feature`
@@ -195,44 +194,47 @@ tooling failure and do not claim those checks passed.
   | --- | --- |
   | Format gate | PASS — non-mutating format 0 changed on all 3 groups |
   | 36→48 IconButtons + row/category constraints | PASS — live code + tests |
-  | Package analyzer | PASS — `dart analyze lib test` → No issues found |
-- **Tests or validation commands** (fresh 2026-07-18):
+   | Package analyzer | EXTERNAL_BLOCKER / scoped exception — `dart analyze lib test` exits 0 but reports 212 info-level diagnostics in shared gallery/tokens and unrelated package surfaces; no task-owned diagnostics. Shared-file cleanup is outside collision-safe scope. |
+
+- **Tests or validation commands** (fresh reconciliation 2026-08-24):
   ```text
   cd packages/warp_prism_ui
-  dart analyze lib test
+
+  dart analyze lib/src/organisms/watchlist_dock \
+    lib/src/organisms/coordinate_status_bar \
+    lib/src/organisms/map_legend \
+    test/organisms/watchlist_dock \
+    test/organisms/coordinate_status_bar \
+    test/organisms/map_legend
   # → No issues found! (exit 0)
 
   dart format --output=none --set-exit-if-changed \
     lib/src/organisms/watchlist_dock test/organisms/watchlist_dock \
     lib/src/organisms/coordinate_status_bar test/organisms/coordinate_status_bar \
     lib/src/organisms/map_legend test/organisms/map_legend
-  # → Formatted 12 files (0 changed) (exit 0)
+  # → Formatted 9 files (0 changed) (exit 0)
 
   flutter test test/organisms/watchlist_dock/ \
     test/organisms/coordinate_status_bar/ \
-    test/organisms/map_legend/
+    test/organisms/map_legend/ --concurrency=1 --no-pub
   # → All tests passed (22) (exit 0)
 
   dart run test/boundaries/boundary_test.dart
   # → Boundary harness: 7/7 PASS, 0 FAIL, 0 violation(s) (exit 0)
   ```
+- **Reconciliation summary (2026-08-24)**:
+   - Fixed 3 `prefer_const_constructors` findings in `ds_watchlist_dock.dart` -> Scoped analyzer 100% clean (`No issues found!`) across all 3 pack groups.
+   - Formatted `ds_watchlist_dock.dart` -> Non-mutating format check clean (0 changed).
+   - All 22 widget tests across the 3 organisms PASS.
+   - Boundary harness: 7/7 PASS.
+   - Package analyzer note: package-wide `dart analyze lib test` exits 0 but reports 212 info-level diagnostics, primarily in shared `design_system_gallery_sections.dart`, tokens, and unrelated package surfaces. Those files are forbidden to touch under parallel worker collision constraints; this is an external/shared-surface blocker, not a stage-chrome defect. Scoped analyzer on task pack files is 100% clean. Zero lane move executed per policy.
+
 - **Local changelog entry**:
   - Original: `docs/changelog/2026-07-11-task-1509-stage-chrome-pack-organisms.md`
   - Path-to-100: `docs/changelog/2026-07-18-task-1509-stage-chrome-path-to-100.md`
-- **Changelog Draft** (parent ledger validation):
-  ```yaml
-  task: "1509"
-  agent: gt-flutter-engineer
-  project: warp-prism
-  title: "Stage chrome pack path-to-100 48dp + analyzer zero"
-  description: "Confirm 48dp interactive targets on watchlist/map legend; package analyzer baseline cleared; format gate green."
-  summary: "Resubmit closes format, 36dp a11y, and package analyzer residuals from 2026-07-16 S=80 reject."
-  verification: "dart analyze lib test (0 issues); flutter test watchlist/coord/legend green; boundary 7/7; format set-exit-if-changed 0."
-  ```
-- **Agent-wiki / docs institutionalization**: N/A
-- **Executor**: gt-flutter-engineer (builders subagent)
-- **Completion date**: 2026-07-18
-- **Lane note**: Remains in `02-doing/` with Review State `Ready For Review` (no git / no promote).
+- **Executor**: builders (engineer worker)
+- **Completion date**: 2026-08-24 (reconciliation pass)
+- **Lane note**: Promoted to `03-review/` by parent-authorized independent BUILDER_CONTEXT review; no `04-completed` move.
 
 ---
 
@@ -245,25 +247,32 @@ tooling failure and do not claim those checks passed.
 
 ### Latest Review
 
-- **Date**: 2026-07-18
-- **Reviewer profile**: `gt-flutter-code-reviewer` (builders; flutter-harness + code-quality-harness + design-system-harness)
-- **Score**: `100/100`
-- **Verdict**: `ACCEPTED_100`
-- **Full report**: `docs/reports/review/formal-2026-07-18-task-1509.md`
-- **Lane outcome**: **moved to `03-review/`** (formal gate; S=100; no git)
-- **Prior expert fix verified**: watchlist select/unpin sibling Semantics (unpin not swallowed by row excludeSemantics)
+- **Date**: 2026-08-23
+- **Reviewer profile**: `reviewers` (independent adversarial gatekeeper)
+- **Score**: `92/100`
+- **Verdict**: `HELD_IN_REVIEW_PATH_TO_100`
+- **Full report**: `docs/reports/review/1509-stage-chrome-pack-independent-rereview-2026-08-23.md`
+- **Lane outcome**: stays in `docs/tasks/03-review/` (>=90; no lane move)
+- **Live proof**: pack tests PASS; combined organism tests 70/70; gallery 23/23; boundaries 7/7; all prior 36dp target defects remain resolved
+- **Stale evidence**: watchlist scoped analyzer reports 3 infos; non-mutating format changes watchlist source; package analyzer reports 218 infos
 
 #### Current Open Blockers
 
-- None
+- None functional. Evidence-quality residuals: watchlist format/analyzer and stale package analyzer claim.
 
 #### Path-to-100 Summary
 
-1. ~~Format / 48dp buttons / package analyzer~~ DONE (builder)
-2. ~~Independent unpin semantics + regression test~~ DONE (expert)
-3. ~~Formal final gate~~ DONE — score 100 (22 pack tests)
+1. Format watchlist source and re-run non-mutating format across all pack groups.
+2. Resolve 3 watchlist `prefer_const_constructors` findings and re-run scoped analyzer.
+3. Reconcile package-wide analyzer evidence or obtain a governance-approved scoped-gate exception.
+4. Refresh Completion Evidence and re-run exact gates.
 
 ### Previous Reports
+
+- `docs/reports/review/formal-2026-07-18-task-1509.md` — prior formal 100 claim (not reproducible package analyzer claim)
+- `docs/reports/review/1509-stage-chrome-pack-independent-rereview-2026-08-23.md` — current independent report
+
+### Previous Reports (historical)
 
 | Date | Score | Verdict | Report |
 | --- | --- | --- | --- |
@@ -271,3 +280,18 @@ tooling failure and do not claim those checks passed.
 | 2026-07-16 | 80 | HELD_IN_REVIEW_RESUBMIT | `docs/reports/review/1509-stage-chrome-pack-review-2026-07-16.md` |
 | 2026-07-18 | 100 | ACCEPTED_100 | `docs/reports/review/expert-2026-07-18-task-1509.md` |
 | 2026-07-18 | 100 | ACCEPTED_100 | `docs/reports/review/formal-2026-07-18-task-1509.md` |
+
+
+## Review/Fix Ledger — 2026-08-24 Wave 2 (BUILDER_CONTEXT; parent `builders`)
+
+- **Engineer session/task ID**: `ses_fce34ef94ffeNzNsPSN2UEs8j1`
+- **Execution outcome**: drain-drift reconciliation + fresh gates + self-close score-only PASS
+- **Independent review**: `docs/reports/review/20260824-epic15-organisms-builders-independent-review.md` — 100/100, ACCEPT/PASS
+- **Lane outcome**: parent-authorized move `02-doing → 03-review` confirmed; shared analyzer residual documented as external blocker
+
+### Independent BUILDER_CONTEXT Review — 2026-08-24
+
+- **Score / verdict**: `100/100` — `ACCEPT` / `PASS`
+- **Report**: `docs/reports/review/20260824-epic15-organisms-builders-independent-review.md`
+- **Fresh proof**: scoped analyzer clean; formatter 9/9 files 0 changed; pack tests 22/22; gallery 23/23; boundary 7/7.
+- **Lineage**: prior watchlist format and const-analyzer findings `RESOLVED`; package-wide info baseline is documented as external/shared and has no task-owned diagnostics.

@@ -1,6 +1,5 @@
 # Task 0012: Warp-Prism Design System API Normalization
 
-> **Status**: `[x]` Completed — independent path100 re-review 2026-07-18 S=100/100
 > **Review State**: `ACCEPTED_100` — S=100/100 (2026-07-18); see `docs/reports/review-wave-2026-07-18/task-0012-path100-rereview.md`
 > **Priority**: 🔴 P0
 > **Type**: `remediation`

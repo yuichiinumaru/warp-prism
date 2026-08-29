@@ -5,13 +5,35 @@ import 'package:warp_prism_ui/warp_prism_ui.dart';
 
 /// Task 1616: CyberCore teal ThemeExtension skin — non-rebrand + public API.
 ///
+/// Amends Task 1616 regression guards per EPIC-18 / Task 1800 / Task 1801:
+/// Observatory default primary action accent is PrismColors.accentBlue (#2F81FF);
+/// PrismColors.accentCyan (#00D4FF) is retained as a data-category accent.
+///
 /// Imports the **public barrel** so Prism aliases are proven end-to-end
 /// (consumers never import DS* names).
 void main() {
-  group('Observatory defaults (non-rebrand)', () {
-    test('PrismColors.accentCyan remains sky cyan #00D4FF', () {
-      expect(PrismColors.accentCyan, equals(const Color(0xFF00D4FF)));
+  group('Observatory defaults (Black Obsidian + Blue Accent Contract)', () {
+    test('PrismColors default scaffold background is black obsidian #030506', () {
+      // Provenance: Amends Task 1616 regression guards per EPIC-18 / Task 1800 / Task 1801
+      expect(PrismColors.obsidianDeep, equals(const Color(0xFF030506)));
+      expect(PrismColors.obsidianBase, equals(const Color(0xFF080C0E)));
+      expect(PrismColors.obsidianElevated, equals(const Color(0xFF0C1114)));
+      expect(PrismColors.obsidianHover, equals(const Color(0xFF12181C)));
     });
+
+    test('PrismColors.accentBlue is action blue #2F81FF', () {
+      // Provenance: Amends Task 1616 regression guards per EPIC-18 / Task 1800 / Task 1801
+      expect(PrismColors.accentBlue, equals(const Color(0xFF2F81FF)));
+      expect(PrismColors.accentBlueMuted, equals(const Color(0xFF1D64D8)));
+      expect(PrismColors.accentBlueDim, equals(const Color(0xFF114299)));
+    });
+
+    test(
+      'PrismColors.accentCyan remains sky cyan #00D4FF (retained data accent)',
+      () {
+        expect(PrismColors.accentCyan, equals(const Color(0xFF00D4FF)));
+      },
+    );
 
     test('accentCyan is not OmniRoute core teal #00FFCC', () {
       expect(PrismColors.accentCyan, isNot(equals(const Color(0xFF00FFCC))));
@@ -21,7 +43,7 @@ void main() {
       );
     });
 
-    test('borderGlow default still tracks Observatory cyan', () {
+    test('borderGlow default still tracks Observatory cyan data accent', () {
       expect(PrismColors.borderGlow, equals(const Color(0xFF00D4FF)));
     });
 

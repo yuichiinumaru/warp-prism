@@ -1,12 +1,12 @@
 # Task 1401: Observatory Failure Baseline Inventory
 
-> **Status**: `[x]` Ready For Review — formal independent accept 2026-07-18 (**100/100**)
-> **Review State**: Formal accept **100/100** — promoted to `03-review/` (gt-flutter-code-reviewer)
+> **Review State**: Ready for independent review; see the latest Review Ledger
 > **Priority**: 🔴 P0
 > **Type**: `governance`
 > **Origin**: EPIC-14, stabilization wave, Observatory failures in `apps/observatory/`.
 > **Blocks**: 1402, 1403, 1404, 1405, 1406, 1407
 > **Depends on**: 1201 (failure taxonomy definitions), 1202 (promotion state model)
+> **Implementation readiness**: derived from the containing task directory.
 
 > [!IMPORTANT]
 > Task identity is lane-neutral. Use `Task 1401` plus optional slug for
@@ -293,6 +293,15 @@ per-suite flutter test --reporter=json over 37 suites
 
 ---
 
+## Independent Review Ledger — 2026-08-23 — reviewers
+
+- **Score:** 84/100
+- **Verdict:** `REJECTED_TO_DOING`
+- **Full report:** `docs/reports/review/independent-2026-08-23-task-1401.md`
+- **Lane outcome:** return to `docs/tasks/02-doing/`
+- **Blocking finding:** current Observatory run has one failed bootstrap smoke test (`pumpAndSettle timed out` at `apps/observatory/test/widget_test.dart:12`), contradicting the report's 0-failure / all-green claim.
+- **Additional currency:** live analyzer reports 124 INFO, not 126.
+
 ## Review Ledger
 
 > [!IMPORTANT]
@@ -417,3 +426,47 @@ per-suite flutter test --reporter=json over 37 suites
 - **Validation**: live re-verify on filesystem + scoped/package gates (see report)
 - **Open blockers**: none
 - **Path-to-100 this review**: re-stamped full suite +808→**+810**; residual 0; suites 44/44; analyzer 126 INFO
+
+### 2026-08-23 — Engineer worker baseline refresh (builders)
+
+- **Score before**: `84/100` (independent review 2026-08-23 `independent-2026-08-23-task-1401.md`)
+- **Self-review score**: `100/100` (inventory honesty)
+- **Fixes applied**:
+  1. Updated `docs/reports/observatory-failure-baseline.md` to current measured reality: suite universe = **45** suites (including `widget_test.dart`).
+  2. Documented current F02 residual: `widget_test.dart` pumpAndSettle timeout at line 12.
+  3. Reconciled pass counter (+810 across 44 green feature suites) with process exit (1 suite non-success).
+  4. Updated analyzer count to **124 INFO** (0 errors / 0 warnings).
+  5. Updated files-read list and count rules.
+- **Lane**: remains `docs/tasks/02-doing/` (no lane moves).
+
+### 2026-08-24 — Path-to-100 Application (BUILDER_CONTEXT; parent `builders`)
+
+- **Review input**: `docs/reports/review/2026-08-24-governance-package-independent-review-builders.md` (94/100, APPROVED_PATH100).
+- **Closure Matrix**:
+
+| Finding | Status | Files changed | Fresh validation | Residual |
+|---|---|---|---|---|
+| F1 list omitted `features/map/map_graph_projection_test.dart` | **fixed** | `docs/reports/observatory-failure-baseline.md` | `tmp/1401-suite-list.txt` now contains **44** scoped app/data/features paths; filesystem count is **45** including `widget_test.dart`; scoped run **+810 PASS** | none |
+| F2 cited log paths absent | **fixed** | `docs/reports/observatory-failure-baseline.md`; workspace-local `tmp/1401-{full-suite,scoped,widget,analyze}.out` + `tmp/1401-suite-list.txt` | logs refreshed 2026-08-24; analyzer output records **127 INFO** in this run; isolated widget smoke records expected timeout | none for path persistence; current analyzer magnitude differs from 124 and is noted as a fresh run |
+
+- **Fresh validation**:
+  - `flutter test apps/observatory/test/app/ apps/observatory/test/data/ apps/observatory/test/features/ --concurrency=4 --no-pub` → **+810 All tests passed!** (exit 0).
+  - `flutter test apps/observatory/test/widget_test.dart --no-pub` → expected residual `pumpAndSettle timed out` at `widget_test.dart:12` (exit 1).
+  - `flutter analyze apps/observatory --no-pub` → **127 INFO**, 0 errors/warnings, exit 0 (fresh local analyzer log; prior 124 remains the 2026-08-23 baseline and is not overwritten).
+  - `tmp/1401-suite-list.txt` → 44 scoped paths + the separate `widget_test.dart` = 45 filesystem suites; `map_graph_projection_test.dart` present.
+- **Lane**: explicit parent authorization received; after score confirmation, moved to `docs/tasks/03-review/`.
+
+## Independent Delta Review — 2026-08-24
+
+- **Review report**: `docs/reports/review/2026-08-24-governance-package-independent-review-builders.md`
+- **Score**: `100/100` effective after the approved path-to-100 application.
+- **Verdict**: `APPROVED_PATH100`; the inventory is current and its F02 bootstrap timeout remains explicitly documented.
+- **Evidence**: 45 suite files reconciled (44 scoped green + `widget_test.dart` residual); scoped run `+810`; isolated smoke timeout reproduced; workspace-local logs retained; analyzer current run `127 INFO`, 0 errors/warnings.
+- **Residuals**: F02 is an intentional current inventory residual owned by follow-up Task 1402, not a documentation defect.
+- **Lane recommendation**: move this task from `docs/tasks/02-doing/` to `docs/tasks/03-review/` for independent acceptance.
+
+## Review/Fix Ledger — 2026-08-24 (BUILDER_CONTEXT; parent `builders`)
+
+- **Engineer session/task ID**: `ses_fcebe5559ffefIEHT7Mf2XvhcL`
+- **Execution outcome**: path-to-100 applied per latest adversarial report; self-close score-only PASS recorded in docs/reports/builders/
+- **Next routing**: independent BUILDER_CONTEXT re-review dispatched by parent

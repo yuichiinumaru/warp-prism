@@ -1,6 +1,5 @@
 # Task 1202: Promotion State Model Definition
 
-> **Status**: `[x]` Promoted
 > **Review State**: `Promoted` — final reviewer-orchestrator verification 2026-06-26; all evidence paths verified against live filesystem; promoted to 04-completed
 > **Priority**: 🔴 P0
 > **Type**: `governance`

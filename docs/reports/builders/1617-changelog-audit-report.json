@@ -1,0 +1,22 @@
+{
+  "total_files": 292,
+  "invalid_frontmatter_non_entry_files": [
+    "000-template.md",
+    "README.md",
+    "index.md"
+  ],
+  "entries_with_task_1617_count": 1,
+  "entries_with_task_1617_files": [
+    "20260721-154708-1617-profiles-and-changelog-promote-builders.md"
+  ],
+  "unique_tasks_count": 193,
+  "duplicate_timestamps_count": 31,
+  "residual_allowlist": [
+    {
+      "filename": "20260721-154708-1617-profiles-and-changelog-promote-builders.md",
+      "task": "1617",
+      "description": "Legitimate changelog entry for Task 1617 migration closeout."
+    }
+  ],
+  "audit_verdict": "RECONCILED_AND_CLEAN"
+}

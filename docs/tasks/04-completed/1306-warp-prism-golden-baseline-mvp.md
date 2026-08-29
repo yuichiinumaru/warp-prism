@@ -1,6 +1,5 @@
 # Task 1306: Golden Baseline MVP
 
-> **Status**: `[x]` Ready For Review
 > **Review State**: Ready For Review — independent re-review 93/100 PASS WITH NOTES (2026-07-09); left in `03-review/`
 > **Priority**: 🟡 P1
 > **Type**: `testing`

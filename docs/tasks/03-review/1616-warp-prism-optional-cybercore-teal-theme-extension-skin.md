@@ -1,7 +1,6 @@
 # Task 1616: Optional CyberCore Teal ThemeExtension Skin
 
-> **Status**: `[x]` Formal review ACCEPTED_100 — lane `03-review`
-> **Review State**: `ACCEPTED_100`
+> **Review State**: `ACCEPTED_100` — independent BUILDER_CONTEXT reconciliation passed; legitimate `SUPERSEDED_BY_REAL_IMPLEMENTATION`; awaiting review-owner acceptance
 > **Priority**: ⚪ P3
 > **Type**: `ux-polish`
 > **Origin**: EPIC-16 (`docs/tasks/00-planning/EPIC-16-warp-prism-ads-cybercore-ops-and-agent-transcript-organisms.md`) + harvest reports `docs/reports/ads-harvest-session-synthesis-2026-07-10.md`, `docs/reports/ads-harvest-omniroute-visual-reference-2026-07-10.md`, `docs/reports/ads-harvest-references-catalog-triage-2026-07-10.md`, `docs/reports/ads-harvest-atomic-ds-references-2026-07-10.md`
@@ -244,4 +243,32 @@ verification: >
 
 ### Previous Reports
 
-- `docs/reports/review/expert-2026-07-18-task-1616.md` — expert path-to-100 100/100 (before 93)
+- `docs/reports/review/expert-2026-07-18-task-1616.md` — expert path-to-100 100/100 (historical)
+- `docs/reports/review/1616-cybercore-teal-skin-adversarial-review-2026-08-23.md` — current independent adversarial review, 93/100
+
+## Review Ledger Update — 2026-08-23
+
+- **Score**: `93/100`
+- **Verdict**: `HELD_IN_REVIEW_PATH_TO_100`
+- **Classification**: NEW format-gate evidence correction; EVIDENCE_GAP for CyberCore package analyzer
+- **Live prove**: token analyzer PASS; token tests `58/58` PASS; boundary `7/7` PASS; black-obsidian and default cyan/blue guards PASS; non-mutating format FAIL (3 files)
+- **Lane outcome**: stay in `03-review/`
+- **Report**: `docs/reports/review/1616-cybercore-teal-skin-adversarial-review-2026-08-23.md`
+- **Path to 100**: format 3 files, run CyberCore app analyzer/tests, re-run token/boundary gates; preserve teal ThemeExtension-only and fail-closed `of()`.
+
+
+## Independent Session Ledger — 2026-08-24
+
+- **Reviewer profile:** independent `BUILDER_CONTEXT` reconciler
+- **Score:** `100/100`
+- **Verdict:** `ACCEPTED_100` / `PASS`; closure classification `SUPERSEDED_BY_REAL_IMPLEMENTATION`
+- **Full report:** `docs/reports/review/20260824-mixed-1807-1522-1616-independent-review.md`
+- **Fresh evidence:** teal skin tests `15/15`; CyberCore analyzer clean; CyberCore app suite `17/17`; dedicated format check clean; boundary `7/7`; `apps/cybercore/lib/main.dart` applies `PrismCyberCoreTealSkin.omniRoute()` to the canonical theme without changing Observatory defaults.
+- **Superseded judgment:** legitimate terminal superseded closeout: the requested optional capability exists as a reusable ThemeExtension with docs, public API, guard tests, and a real non-test consumer. This is not a cancellation or unsupported claim.
+- **Lane outcome:** parent-authorized move from `02-doing` to `03-review` completed; current path is `docs/tasks/03-review/1616-warp-prism-optional-cybercore-teal-theme-extension-skin.md`.
+
+## Review/Fix Ledger — 2026-08-24 Wave 4 (BUILDER_CONTEXT; parent `builders`)
+
+- **Engineer session/task ID**: `ses_fcde09181ffeGKqYbxb1MEOLp4`
+- **Execution outcome**: drain-drift reconciliation + fresh gates + self-close score-only PASS
+- **Next routing**: independent BUILDER_CONTEXT re-review dispatched by parent

@@ -1,6 +1,5 @@
 # Task 1403: Parser and Task Projection Reconciliation
 
-> **Status**: `[x]` Ready For Review — independent extreme-rigor re-review 2026-07-10 S=100
 > **Review State**: `Ready For Review` — independent S=100 ACCEPTED_100 (2026-07-10); remains `03-review/`
 > **Priority**: 🔴 P0
 > **Type**: `remediation`

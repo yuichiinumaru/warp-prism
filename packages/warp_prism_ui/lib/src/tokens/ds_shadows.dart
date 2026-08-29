@@ -3,7 +3,10 @@ import 'ds_colors.dart';
 
 /// ASW Observatory Design Tokens - Shadows
 ///
-/// Subtle shadows and glows for depth in ultradark theme
+/// Subtle shadows and glows for depth in ultradark theme.
+/// Glow effects dynamically reference [DSColors] tokens (`DSColors.accentBlue`,
+/// `DSColors.accentCyan`, etc.), ensuring auto-shift behavior whenever underlying
+/// accent token definitions or ThemeExtensions are updated.
 abstract class DSShadows {
   // === ELEVATION SHADOWS ===
   /// Subtle elevation - barely lifted
@@ -30,7 +33,21 @@ abstract class DSShadows {
   ];
 
   // === GLOW EFFECTS ===
-  /// Cyan glow - primary accent
+  /// Blue glow - primary action accent (Black Obsidian contract)
+  static List<BoxShadow> glowBlue({double intensity = 1.0}) => [
+    BoxShadow(
+      color: DSColors.accentBlue.withValues(alpha: 0.3 * intensity),
+      blurRadius: 12,
+      spreadRadius: -2,
+    ),
+    BoxShadow(
+      color: DSColors.accentBlue.withValues(alpha: 0.1 * intensity),
+      blurRadius: 24,
+      spreadRadius: -4,
+    ),
+  ];
+
+  /// Cyan glow - data accent
   static List<BoxShadow> glowCyan({double intensity = 1.0}) => [
     BoxShadow(
       color: DSColors.accentCyan.withValues(alpha: 0.3 * intensity),

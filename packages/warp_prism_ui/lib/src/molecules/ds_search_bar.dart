@@ -70,7 +70,7 @@ class _DSSearchBarState extends State<DSSearchBar> {
   @override
   Widget build(BuildContext context) {
     final borderColor = _isFocused
-        ? DSColors.accentCyan.withValues(alpha: 0.5)
+        ? DSColors.focusRing
         : DSColors.borderSubtle;
 
     return Container(
@@ -85,7 +85,7 @@ class _DSSearchBarState extends State<DSSearchBar> {
           const SizedBox(width: 12),
           DSIcon.small(
             DSIcons.search,
-            color: _isFocused ? DSColors.accentCyan : DSColors.textTertiary,
+            color: _isFocused ? DSColors.accentBlue : DSColors.textTertiary,
           ),
           const SizedBox(width: 8),
           Expanded(
@@ -144,7 +144,7 @@ class _DSSearchBarState extends State<DSSearchBar> {
                     right: 4,
                     child: DSBadge.count(
                       widget.activeFilterCount!,
-                      color: DSColors.accentCyan,
+                      color: DSColors.accentBlue,
                       size: DSBadgeSize.small,
                     ),
                   ),

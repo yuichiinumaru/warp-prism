@@ -21,7 +21,7 @@ import 'ds_tab_controller.dart';
 /// Contract:
 /// - A [DSTabController] must be provided via the [controller] parameter.
 /// - Tab headers are rendered from [controller.tabs].
-/// - Active tab highlight uses [DSColors.accentCyan] with glass tint.
+/// - Active tab highlight uses [DSColors.accentBlue] with glass tint.
 class DSTabBar extends StatefulWidget {
   /// The tab controller managing tab state.
   final DSTabController controller;
@@ -295,12 +295,12 @@ class _TabHeaderState extends State<_TabHeader> {
     // Hover: subtle elevated background
     // Inactive: transparent
     final bgColor = isActive
-        ? DSColors.accentCyan.withValues(alpha: 0.08)
+        ? DSColors.accentBlue.withValues(alpha: 0.08)
         : (_isHovered ? DSColors.obsidianHover : DSColors.transparent);
-    final textColor = isActive ? DSColors.accentCyan : DSColors.textSecondary;
-    final iconColor = isActive ? DSColors.accentCyan : DSColors.textTertiary;
+    final textColor = isActive ? DSColors.accentBlue : DSColors.textSecondary;
+    final iconColor = isActive ? DSColors.accentBlue : DSColors.textTertiary;
     final borderColor = isActive
-        ? DSColors.accentCyan.withValues(alpha: 0.5)
+        ? DSColors.focusRing
         : DSColors.transparent;
 
     Widget tabWidget = Semantics(
@@ -371,7 +371,7 @@ class _TabHeaderState extends State<_TabHeader> {
                     DSBadge.count(
                       widget.tab.badgeCount!,
                       color: isActive
-                          ? DSColors.accentCyan
+                          ? DSColors.accentBlue
                           : DSColors.accentViolet,
                       size: DSBadgeSize.small,
                     ),
@@ -396,7 +396,7 @@ class _TabHeaderState extends State<_TabHeader> {
                       height: 0,
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: DSColors.accentCyan.withValues(alpha: 0.5),
+                          color: DSColors.focusRing,
                           width: 2,
                         ),
                       ),
@@ -415,7 +415,7 @@ class _TabHeaderState extends State<_TabHeader> {
         decoration: BoxDecoration(
           border: Border(
             bottom: BorderSide(
-              color: DSColors.accentCyan.withValues(alpha: 0.5),
+              color: DSColors.focusRing,
               width: 2,
             ),
           ),
@@ -452,7 +452,7 @@ class _CloseButton extends StatelessWidget {
         : DSColors.transparent;
     final iconColor = isHovered
         ? DSColors.statusError
-        : (isActive ? DSColors.accentCyan : DSColors.textTertiary);
+        : (isActive ? DSColors.accentBlue : DSColors.textTertiary);
 
     return Semantics(
       label: 'Close tab',

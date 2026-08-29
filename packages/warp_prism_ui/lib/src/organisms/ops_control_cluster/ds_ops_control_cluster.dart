@@ -119,15 +119,15 @@ class DSOpsLauncher {
 /// Status + navigate affordances only — no write/admin mutation.
 abstract final class DSOpsControlClusterFixtures {
   /// Default top-right ops launcher set used by gallery demos.
-  static const List<DSOpsLauncher> defaultLaunchers = <DSOpsLauncher>[
+  static List<DSOpsLauncher> get defaultLaunchers => <DSOpsLauncher>[
     DSOpsLauncher(
       id: 'console',
       icon: Icons.terminal_outlined,
       label: 'Console',
       tooltip: 'Open fixture console',
-      accentColor: DSColors.accentCyan,
+      accentColor: DSColors.accentBlue,
     ),
-    DSOpsLauncher(
+    const DSOpsLauncher(
       id: 'providers',
       icon: Icons.cloud_outlined,
       label: 'Providers',
@@ -135,7 +135,7 @@ abstract final class DSOpsControlClusterFixtures {
       badgeLabel: '3',
       accentColor: DSColors.accentViolet,
     ),
-    DSOpsLauncher(
+    const DSOpsLauncher(
       id: 'alerts',
       icon: Icons.notifications_outlined,
       label: 'Alerts',
@@ -143,13 +143,13 @@ abstract final class DSOpsControlClusterFixtures {
       badgeCount: 2,
       accentColor: DSColors.statusWarning,
     ),
-    DSOpsLauncher(
+    const DSOpsLauncher(
       id: 'settings',
       icon: Icons.settings_outlined,
       label: 'Settings',
       tooltip: 'Workspace settings (read-only)',
     ),
-    DSOpsLauncher(
+    const DSOpsLauncher(
       id: 'deploy',
       icon: Icons.rocket_launch_outlined,
       label: 'Deploy',
@@ -352,7 +352,7 @@ class _OpsLauncherButtonState extends State<_OpsLauncherButton> {
         ? DSColors.obsidianHover
         : Colors.transparent;
 
-    final accent = launcher.accentColor ?? DSColors.accentCyan;
+    final accent = launcher.accentColor ?? DSColors.accentBlue;
     final iconColor = !enabled
         ? DSColors.textDisabled
         : selected
@@ -366,7 +366,7 @@ class _OpsLauncherButtonState extends State<_OpsLauncherButton> {
         : selected
         ? accent.withValues(alpha: 0.55)
         : _focused
-        ? accent.withValues(alpha: 0.4)
+        ? DSColors.focusRing
         : Colors.transparent;
 
     final label = DSOpsControlCluster.launcherSemanticLabel(

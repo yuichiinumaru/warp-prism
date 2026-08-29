@@ -65,3 +65,4 @@ export 'agent_shell_panel/agent_shell_panel.dart';
 export 'keyboard_cheatsheet/keyboard_cheatsheet.dart';
 export 'media_detail_overlay/media_detail_overlay.dart';
 export 'breadcrumbs/breadcrumbs.dart';
+export 'theme_editor/prism_theme_editor.dart';

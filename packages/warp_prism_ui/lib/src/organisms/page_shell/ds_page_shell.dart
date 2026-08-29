@@ -46,7 +46,7 @@ class DSPageShell extends StatelessWidget {
 
   /// Accent color for the default icon well border wash when [leading]
   /// is provided by the caller as a raw icon via [DSPageShell.icon].
-  /// Defaults to [DSColors.accentCyan].
+  /// Defaults to [DSColors.accentBlue].
   final Color? accentColor;
 
   /// Padding applied around the body [child]. Defaults to page inset.
@@ -85,7 +85,7 @@ class DSPageShell extends StatelessWidget {
     EdgeInsetsGeometry? contentPadding,
     bool fluid = true,
   }) {
-    final tone = accentColor ?? DSColors.accentCyan;
+    final tone = accentColor ?? DSColors.accentBlue;
     return DSPageShell(
       key: key,
       title: title,
@@ -185,7 +185,7 @@ class _PageHeader extends StatelessWidget {
           horizontal: DSSpacing.lg,
           vertical: DSSpacing.md,
         ),
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: DSColors.obsidianBase,
         ),
         child: Row(

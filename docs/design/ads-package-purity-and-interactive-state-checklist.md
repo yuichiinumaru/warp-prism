@@ -53,8 +53,8 @@ Every interactive component (atoms, molecules, and organisms) must support and v
 | State Name | Visual Treatment (Obsidian Glass Theme) | Pointer / Cursor | Behavior |
 |------------|------------------------------------------|------------------|----------|
 | Enabled | Obsidian background base + accented border colors | Click (SystemMouseCursors.click) | Interactive. Ready for click or touch input. |
-| Focus | Focus ring (2px accentCyan at 50% opacity) | Click (SystemMouseCursors.click) | Receives tab/keyboard focus. Enter/Space calls primary callback. |
-| Hover | Glow accent activation (cyan, violet, gold) | Click (SystemMouseCursors.click) | Ambient highlight. |
+| Focus | Focus ring (2px accentBlue at 50% opacity) | Click (SystemMouseCursors.click) | Receives tab/keyboard focus. Enter/Space calls primary callback. |
+| Hover | Glow accent activation (blue, cyan, violet, gold) | Click (SystemMouseCursors.click) | Ambient highlight. |
 | Pressed | Slight opacity scaling or dark overlays | Click (SystemMouseCursors.click) | Temporary interaction feedback. |
 | Disabled | Decayed opacity (0.5), gray borders, muted text | Basic (SystemMouseCursors.basic) | Non-interactive. Ignores focus and hit-tests. |
 | Loading / Busy | Replaces action indicators with progress spinners | Basic (SystemMouseCursors.basic) | temporarily disables input, ignores pointer hit-tests. |
@@ -88,7 +88,7 @@ To protect the integrity of the design system:
 * Do NOT port external widgets: Do not import or copy external components like login forms, e-commerce templates, bottom sheets, or navigation scaffolds from references like judatop, ahmedm, or villa.
 * Do NOT implement theme persistence within the package.
 * Do NOT use Widgetbook or similar external dependencies in warp_prism_ui.
-* Do NOT change the visual brand to green/teal: Keep the default Obsidian-glass branding (accents: cyan, violet, gold) as defined in DSColors.
+* Do NOT change the visual brand to green/teal: Keep the default Black Obsidian branding (primary action accent: blue #2F81FF; data accents: cyan, violet, gold) as defined in DSColors per Task 1800/1801.
 
 ---
 

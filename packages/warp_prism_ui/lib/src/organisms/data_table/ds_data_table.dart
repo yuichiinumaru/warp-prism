@@ -503,7 +503,7 @@ class _DSTableHeader extends StatelessWidget {
         horizontal: DSSpacing.md,
         vertical: DSSpacing.sm,
       ),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: DSColors.obsidianElevated,
         border: Border(
           bottom: BorderSide(color: DSColors.borderDefault, width: 1),
@@ -519,8 +519,8 @@ class _DSTableHeader extends StatelessWidget {
               child: Checkbox(
                 value: allSelected,
                 onChanged: onSelectAll,
-                activeColor: DSColors.accentCyan,
-                side: const BorderSide(color: DSColors.borderDefault),
+                activeColor: DSColors.accentBlue,
+                side: BorderSide(color: DSColors.borderDefault),
                 materialTapTargetSize: MaterialTapTargetSize.padded,
               ),
             ),
@@ -600,7 +600,7 @@ class _ColumnHeaderCell extends StatelessWidget {
         child: InkWell(
           onTap: () => onSort?.call(column.id),
           borderRadius: BorderRadius.circular(DSRadii.sm),
-          focusColor: DSColors.accentCyan.withValues(alpha: 0.12),
+          focusColor: DSColors.focusRing,
           child: ConstrainedBox(
             constraints: const BoxConstraints(
               minWidth: kMinInteractiveDimension,
@@ -619,14 +619,14 @@ class _ColumnHeaderCell extends StatelessWidget {
                       Icons.arrow_drop_up,
                       size: 14,
                       color: isAscending
-                          ? DSColors.accentCyan
+                          ? DSColors.accentBlue
                           : DSColors.textDisabled,
                     ),
                     Icon(
                       Icons.arrow_drop_down,
                       size: 14,
                       color: isDescending
-                          ? DSColors.accentCyan
+                          ? DSColors.accentBlue
                           : DSColors.textDisabled,
                     ),
                   ],
@@ -704,7 +704,7 @@ class _DSTableRow extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: row.selected
-            ? DSColors.accentCyan.withValues(alpha: 0.05)
+            ? DSColors.accentBlue.withValues(alpha: 0.05)
             : isHovered
             ? DSColors.obsidianHover
             : DSColors.transparent,
@@ -722,8 +722,8 @@ class _DSTableRow extends StatelessWidget {
               child: Checkbox(
                 value: row.selected,
                 onChanged: onSelect,
-                activeColor: DSColors.accentCyan,
-                side: const BorderSide(color: DSColors.borderDefault),
+                activeColor: DSColors.accentBlue,
+                side: BorderSide(color: DSColors.borderDefault),
                 materialTapTargetSize: MaterialTapTargetSize.padded,
               ),
             ),
@@ -845,7 +845,7 @@ class _TableSkeleton extends StatelessWidget {
             horizontal: DSSpacing.md,
             vertical: DSSpacing.sm,
           ),
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             color: DSColors.obsidianElevated,
             border: Border(
               bottom: BorderSide(color: DSColors.borderDefault, width: 1),
@@ -923,7 +923,7 @@ class _TableSkeleton extends StatelessWidget {
 /// | State | Visual Treatment | Color Source | Behavior |
 /// |-------|-----------------|--------------|----------|
 /// | empty | DSStateSurface.empty centered | textTertiary | No action |
-/// | loading | Skeleton rows | accentCyan | Pulse indicator |
+/// | loading | Neutral skeleton rows | obsidianHover | Pulse/placeholder indicator |
 /// | error | DSStateSurface.error centered | statusError | Retry button |
 /// | data | Virtualized row list | - | Sort/filter/select |
 class DSDataTable extends StatefulWidget {

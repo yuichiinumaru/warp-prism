@@ -210,7 +210,7 @@ mismatch_or_missing=[]
 
 Renumbered waves present uniquely: `0410`–`0413`, `0510`–`0514`, `0610`–`0613`.
 
-### `Task 0001`–`Task 0006` reference sample (2026-07-09)
+### `Task 0001`–`Task 0006` reference sample (2026-07-09, historical)
 
 78 refs under `docs/tasks/`. Top hosts: EPIC-02 corpus tasks themselves, Task 1202 policy examples, Task 0710 History dependency on Task 0005, and Task 1070 explanatory text. Classification: **EPIC-02-local or explanatory** — no residual EPIC-04/05/06 collision references observed in the live sample.
 
@@ -305,15 +305,16 @@ hygiene (outside Task 1070 renumbering). Executable review lane count = **0**.
 Renumbered waves present uniquely: `0410`–`0413`, `0510`–`0514`, `0610`–`0613`
 (0510/0511 currently `02-doing/`; rest `04-completed/`).
 
-### `Task 0001`–`Task 0006` reference sample (2026-07-18, expert re-stamp)
+### `Task 0001`–`Task 0006` reference sample (2026-08-23, independent recheck — current)
 
-**80** refs under `docs/tasks/` (`rg -c 'Task 000[1-6]'` summed). Sample hosts:
+**113** refs under `docs/tasks/` (`Task 0001`–`Task 0006` literal count, fresh 2026-08-23 after review-ledger refresh). Sample hosts:
 EPIC-02 corpus task files, Task 1070 explanatory prose, Task 0710 / 1206
 lineage. Classification: **EPIC-02-local or explanatory** — no live
 EPIC-04/05/06 collision prose requiring edit under Task 1070 ownership.
 
 > Expert re-stamp 2026-07-18 (gt-flutter-expert): open=0, dual=0, 149/149 unique,
 > 0001–0006 unique under `04-completed/`, EPIC hygiene 15 non-exec in `03-review/`.
+> Independent recheck 2026-08-23: executable population 167/167 unique; reference count 113.
 
 ### Flutter source
 

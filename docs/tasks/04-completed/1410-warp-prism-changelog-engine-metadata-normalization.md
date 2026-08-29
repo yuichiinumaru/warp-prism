@@ -1,6 +1,5 @@
 # Task 1410: Warp Prism Changelog Engine Metadata Normalization
 
-> **Status**: `[x]` Ready For Review
 > **Review State**: Ready For Review
 > **Priority**: 🔴 P0
 > **Type**: `governance`

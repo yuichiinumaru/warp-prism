@@ -239,7 +239,7 @@ class _DSMapHudWorkspaceState extends State<DSMapHudWorkspace> {
         ? DSColors.obsidianActive
         : DSColors.glassOverlay.withValues(alpha: 0.7);
     final iconColor = _toggleFocused || _toggleHovered
-        ? DSColors.accentCyan
+        ? DSColors.accentBlue
         : DSColors.textSecondary;
 
     return Semantics(
@@ -277,7 +277,7 @@ class _DSMapHudWorkspaceState extends State<DSMapHudWorkspace> {
                 borderRadius: BorderRadius.circular(DSRadii.md),
                 border: Border.all(
                   color: _toggleFocused
-                      ? DSColors.accentCyan.withValues(alpha: 0.6)
+                      ? DSColors.focusRing
                       : DSColors.borderSubtle,
                 ),
               ),

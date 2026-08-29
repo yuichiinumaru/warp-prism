@@ -278,9 +278,9 @@ class _DSAgentShellPanelState extends State<DSAgentShellPanel> {
     return Container(
       height: DSSpacing.topbarHeight,
       padding: const EdgeInsets.symmetric(horizontal: DSSpacing.md),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: DSColors.obsidianBase,
-        border: Border(bottom: BorderSide(color: DSColors.borderSubtle)),
+        border: const Border(bottom: BorderSide(color: DSColors.borderSubtle)),
       ),
       child: Row(
         children: [

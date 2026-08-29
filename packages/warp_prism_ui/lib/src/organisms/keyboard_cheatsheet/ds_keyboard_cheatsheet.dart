@@ -357,9 +357,9 @@ class DSKeyboardCheatsheet extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const DSIcon(
+          DSIcon(
             Icons.keyboard_alt_outlined,
-            color: DSColors.accentCyan,
+            color: DSColors.accentBlue,
             size: 20,
           ),
           const SizedBox(width: DSSpacing.sm),

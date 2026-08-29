@@ -1,6 +1,5 @@
 # Task 1113: Warp Prism Command Palette
 
-> **Status**: `[x]` Ready For Review — independent path-to-100 re-review 2026-07-10 S=98 (reviewers second pass)
 > **Review State**: `HELD_IN_REVIEW_PATH_TO_100` — independent S=98 (2026-07-10 reviewers); remains `03-review/`
 > **ready_for_reviewer**: **yes**
 > **Lane**: `docs/tasks/03-review/`

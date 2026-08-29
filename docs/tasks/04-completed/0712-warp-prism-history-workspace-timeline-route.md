@@ -1,6 +1,5 @@
 # Task 0712: Warp Prism History Workspace Timeline Route
 
-> **Status**: `[x]` Done — independent drain accepted (path-to-100 residual)
 > **Review State**: Independent drain **91/100** — `ACCEPTED_PATH_TO_100` → `04-completed/` (2026-07-17)
 > **Priority**: 🟡 P1
 > **Type**: `feature`

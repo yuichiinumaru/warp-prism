@@ -41,9 +41,9 @@ class MapStageStatusStrip extends StatelessWidget {
       child: Container(
         constraints: const BoxConstraints(minHeight: kMapStageMinTouchTarget),
         padding: const EdgeInsets.symmetric(horizontal: DSSpacing.md),
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: DSColors.obsidianElevated,
-          border: Border(
+          border: const Border(
             bottom: BorderSide(color: DSColors.borderSubtle, width: 1),
           ),
         ),
@@ -52,7 +52,7 @@ class MapStageStatusStrip extends StatelessWidget {
             DSIcon(
               Icons.layers_outlined,
               size: 16,
-              color: DSColors.accentCyan.withValues(alpha: 0.8),
+              color: DSColors.accentBlue.withValues(alpha: 0.8),
             ),
             const SizedBox(width: DSSpacing.xs),
             DSText.labelSmall(
@@ -64,7 +64,7 @@ class MapStageStatusStrip extends StatelessWidget {
               child: DSText.labelSmall(
                 selectionLabel,
                 color: selected != null
-                    ? DSColors.accentCyan
+                    ? DSColors.accentBlue
                     : DSColors.textTertiary,
               ),
             ),

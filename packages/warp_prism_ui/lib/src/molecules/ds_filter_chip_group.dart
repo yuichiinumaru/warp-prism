@@ -79,7 +79,7 @@ class _FilterChipState extends State<_FilterChip> {
 
   @override
   Widget build(BuildContext context) {
-    final color = widget.option.color ?? DSColors.accentCyan;
+    final color = widget.option.color ?? DSColors.accentBlue;
     final bgColor = widget.isSelected
         ? color.withValues(alpha: 0.2)
         : DSColors.obsidianElevated;
@@ -131,7 +131,7 @@ class _FilterChipState extends State<_FilterChip> {
                     borderRadius: BorderRadius.circular(DSRadii.chip),
                     border: Border.all(
                       color: _isFocused
-                          ? DSColors.accentCyan.withValues(alpha: 0.5)
+                          ? DSColors.focusRing
                           : borderColor,
                       width: _isFocused ? 2 : 1,
                     ),

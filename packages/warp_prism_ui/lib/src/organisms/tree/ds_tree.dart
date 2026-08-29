@@ -34,7 +34,7 @@ import 'ds_tree_node.dart';
 /// ## Visual contract
 ///
 /// - Indent by depth using [indentPerLevel] (default [DSSpacing.lg]).
-/// - Selected row uses cyan wash + left accent rail (`accentCyan` alpha) —
+/// - Selected row uses the blue action wash + left accent rail (`accentBlue` alpha) —
 ///   not OmniRoute teal hardcode.
 /// - Glass-friendly: transparent over parent panels; no heavy fills.
 class DSTree extends StatefulWidget {
@@ -308,7 +308,7 @@ class _TreeRowState extends State<_TreeRow> {
   @override
   Widget build(BuildContext context) {
     final node = widget.node;
-    const accent = DSColors.accentCyan;
+    final accent = DSColors.accentBlue;
     final bgColor = widget.selected
         ? accent.withValues(alpha: 0.12)
         : (_focused

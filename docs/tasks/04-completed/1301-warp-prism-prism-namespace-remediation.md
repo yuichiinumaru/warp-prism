@@ -1,6 +1,5 @@
 # Task 1301: Prism Namespace Remediation
 
-> **Status**: `[x]` Builder Done
 > **Review State**: Held in Review — independent re-review 97/100 (2026-07-09); namespace gates green; not auto-completed
 > **Priority**: 🔴 P0
 > **Type**: `remediation`

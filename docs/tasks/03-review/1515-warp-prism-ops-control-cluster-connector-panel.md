@@ -1,6 +1,5 @@
 # Task 1515: PrismOpsControlCluster + PrismConnectorPanel
 
-> **Status**: `[x]` In Review — formal ACCEPTED_100 (2026-07-18)
 > **Review State**: `In 03-review`
 > **Priority**: 🟡 P1
 > **Type**: `feature`
@@ -189,6 +188,15 @@ tooling failure and do not claim those checks passed.
   - `dart analyze` owned surfaces → No issues found
   - Boundary harness → **7/7 PASS**
   - Lane: left in `02-doing` per builder compact (no promote)
+- **Reconciliation & Fresh Validation**: 2026-08-24 by builder-engineer
+  - `ds_ops_control_cluster.dart` reconciled: added `const` constructors to `DSOpsLauncher` items to make scoped analyze 100% clean
+  - `dart analyze lib/src/organisms/ops_control_cluster/ lib/src/organisms/connector_panel/ test/organisms/ops_control_cluster/ test/organisms/connector_panel/` → **0 issues found** (exit 0)
+  - `dart format --output=none --set-exit-if-changed lib/src/organisms/ops_control_cluster lib/src/organisms/connector_panel test/organisms/ops_control_cluster test/organisms/connector_panel` → **Formatted 0 changed** (exit 0)
+  - `flutter test test/organisms/ops_control_cluster/ test/organisms/connector_panel/ --concurrency=1` → **All tests passed (21/21)!** (10 ops + 11 connector) (exit 0)
+  - `dart run test/boundaries/boundary_test.dart` → **7/7 PASS** (exit 0)
+  - Golden freeze respected: 0 goldens updated
+  - Protected files collision constraint: 0 collision files edited
+- **Lane note**: Reconciled — current lane is `03-review/`; no `04-completed/` promotion was performed
 
 ### Changelog Draft
 
@@ -215,12 +223,20 @@ verification: >
 ### Latest Review
 
 - **Date**: 2026-07-18
-- **Reviewer profile**: `gt-flutter-code-reviewer` (formal parallel under builders)
-- **Score**: `100/100`
-- **Verdict**: `ACCEPTED_100`
-- **Full report**: `docs/reports/review/formal-2026-07-18-task-1515.md`
-- **Lane outcome**: moved to `03-review/`
+- **Reviewer profile**: `reviewers` (skeptical final gate)
+- **Score**: `96/100`
+- **Verdict**: `HELD_IN_REVIEW_PATH_TO_100`
+- **Full report**: `docs/reports/review/1515-ops-control-cluster-connector-panel-final-gate-2026-07-18.md`
+- **Lane outcome**: remains in `03-review/`
 - **Task reference**: Task 1515 (`1515-warp-prism-ops-control-cluster-connector-panel`)
+
+#### Current Open Blockers
+
+- ~~`EVIDENCE_GAP-GALLERY`: the complete gallery test invocation timed out at 120s with Flutter tester SIGTERM/cleanup errors. Isolated footer, EPIC-15 host-scroll, and EPIC-15 Ops builder tests pass.~~ Closed by fresh full gallery run: `flutter test test/gallery/design_system_gallery_test.dart --concurrency=1` → 22/22 passed (2026-08-24).
+
+#### Path-to-100 Summary
+
+- Resolve/document the full-gallery runtime budget without weakening targeted gallery proofs.
 
 ### Previous Reports
 
@@ -229,6 +245,7 @@ verification: >
 | 2026-07-16 | 89 | REJECT | `docs/reports/review/1515-ops-control-cluster-connector-panel-review-2026-07-16.md` |
 | 2026-07-18 | 100 | ACCEPTED_100 (expert) | `docs/reports/review/expert-2026-07-18-task-1515.md` |
 | 2026-07-18 | 100 | ACCEPTED_100 (formal) | `docs/reports/review/formal-2026-07-18-task-1515.md` |
+| 2026-07-18 | 96 | HELD_IN_REVIEW_PATH_TO_100 (skeptical final gate) | `docs/reports/review/1515-ops-control-cluster-connector-panel-final-gate-2026-07-18.md` |
 
 #### Prior Open Blockers (closed)
 
@@ -240,3 +257,11 @@ verification: >
 
 - Dense launcher size ≥ 48
 - Connector refresh/minimize size ≥ 48
+
+
+## Review/Fix Ledger — 2026-08-24 Wave 3 (BUILDER_CONTEXT; parent `builders`)
+
+- **Engineer session/task ID**: `ses_fce106a5dffea64mIZ6YyKASV9`
+- **Execution outcome**: drain-drift reconciliation + fresh gates + independent BUILDER_CONTEXT re-review PASS
+- **Independent review**: 100/100 `ACCEPTED_100`; fresh gallery 22/22; boundary 7/7; scoped tests 21/21
+- **Next routing**: remains in `03-review/` pending independent acceptance/closeout owner

@@ -1,6 +1,5 @@
 # Task 1123: Warp Prism Virtual Scroll Optimization
 
-> **Status**: `[x]` Ready For Review — independent path-to-100 re-review 2026-07-10 S=100 ACCEPTED (held in 03-review; never 04-completed)
 > **Review State**: `Ready For Review` — independent S=100 (2026-07-10); promoted to `03-review/`
 > **Priority**: 🔵 P2
 > **Type**: `feature` | `performance`

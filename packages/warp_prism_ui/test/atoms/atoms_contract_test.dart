@@ -343,7 +343,7 @@ void main() {
 
     testWidgets('strong variant renders', (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
+        MaterialApp(
           home: SizedBox(height: 10, child: DSDivider.strong()),
         ),
       );

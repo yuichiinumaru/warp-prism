@@ -240,7 +240,7 @@ class _DSMapCanvasStageState extends State<DSMapCanvasStage> {
     String? selectedId,
   ) {
     final layer = _controller.layerById(feature.layerId);
-    final accent = layer?.color ?? DSColors.accentCyan;
+    final accent = layer?.color ?? DSColors.accentBlue;
     final selected = feature.id == selectedId;
     return MapStageFeatureMarker(
       feature: feature,

@@ -19,6 +19,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  integration_test:
+    sdk: flutter
   flutter_lints: ^4.0.0
 
 flutter:
@@ -28,6 +30,17 @@ flutter:
     - assets/cybercore_fixtures/
 
   fonts:
+    - family: Rajdhani
+      fonts:
+        - asset: assets/fonts/Rajdhani-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Rajdhani-Regular.ttf
+        - asset: assets/fonts/Rajdhani-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Rajdhani-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Rajdhani-Bold.ttf
+          weight: 700
     - family: JetBrainsMono
       fonts:
         - asset: assets/fonts/JetBrainsMono-Regular.ttf

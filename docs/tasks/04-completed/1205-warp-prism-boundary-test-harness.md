@@ -1,6 +1,5 @@
 # Task 1205: Boundary Test Harness
 
-> **Status**: `[x]` Builder Done — path-to-100 2026-07-18 (boundary 7/7 + drag intent aliases + persistence/IO check)
 > **Review State**: Ready For Review / held for review — independent re-review **96/100** (drag-intent fix); lane `03-review/`
 > **Priority**: 🔴 P0
 > **Type**: `testing`

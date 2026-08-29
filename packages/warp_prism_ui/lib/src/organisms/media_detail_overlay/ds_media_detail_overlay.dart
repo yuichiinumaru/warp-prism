@@ -27,7 +27,8 @@ class DSMediaDetailItem {
   final String? caption;
 
   /// Solid placeholder fill (fixture-safe visual).
-  final Color placeholderColor;
+  final Color? _placeholderColor;
+  Color get placeholderColor => _placeholderColor ?? DSColors.obsidianElevated;
 
   /// Optional center icon for the placeholder frame.
   final IconData? placeholderIcon;
@@ -39,10 +40,10 @@ class DSMediaDetailItem {
     required this.id,
     required this.title,
     this.caption,
-    this.placeholderColor = DSColors.obsidianElevated,
+    Color? placeholderColor,
     this.placeholderIcon = Icons.image_outlined,
     this.kind,
-  });
+  }) : _placeholderColor = placeholderColor;
 
   DSMediaDetailItem copyWith({
     String? id,
@@ -91,12 +92,12 @@ class DSMediaDetailItem {
 /// Fixture catalog for gallery + tests (Task 1523 / O-27).
 abstract final class DSMediaDetailFixtures {
   /// Multi-item media set for next/prev demos.
-  static List<DSMediaDetailItem> defaultItems() => const [
+  static List<DSMediaDetailItem> defaultItems() => [
     DSMediaDetailItem(
       id: 'media-region-1',
       title: 'Region overview · Alpha sector',
       caption: 'Fixture still · SAR prep frame 01',
-      placeholderColor: Color(0xFF1A2A32),
+      placeholderColor: DSColors.obsidianActive,
       placeholderIcon: Icons.map_outlined,
       kind: 'imagery',
     ),
@@ -104,7 +105,7 @@ abstract final class DSMediaDetailFixtures {
       id: 'media-region-2',
       title: 'Perimeter cam · North gate',
       caption: 'Placeholder CCTV frame · not a live stream',
-      placeholderColor: Color(0xFF1E2430),
+      placeholderColor: DSColors.glassOverlay,
       placeholderIcon: Icons.videocam_outlined,
       kind: 'cctv-frame',
     ),
@@ -112,19 +113,19 @@ abstract final class DSMediaDetailFixtures {
       id: 'media-region-3',
       title: 'Evidence still · Container bay',
       caption: 'Static review plate · read-only mock',
-      placeholderColor: Color(0xFF242018),
+      placeholderColor: DSColors.obsidianHover,
       placeholderIcon: Icons.photo_outlined,
       kind: 'evidence',
     ),
   ];
 
   /// Single-item fixture.
-  static List<DSMediaDetailItem> singleItem() => const [
+  static List<DSMediaDetailItem> singleItem() => [
     DSMediaDetailItem(
       id: 'media-single',
       title: 'Solo fixture still',
       caption: 'No next/prev when only one item',
-      placeholderColor: Color(0xFF1A2430),
+      placeholderColor: DSColors.obsidianActive,
       kind: 'imagery',
     ),
   ];
@@ -348,9 +349,9 @@ class _DSMediaDetailOverlayState extends State<DSMediaDetailOverlay> {
       ),
       child: Row(
         children: [
-          const DSIcon(
+          DSIcon(
             Icons.photo_library_outlined,
-            color: DSColors.accentCyan,
+            color: DSColors.accentBlue,
             size: 20,
           ),
           const SizedBox(width: DSSpacing.sm),

@@ -1,6 +1,5 @@
 # Task 1610: PrismWorkflowCanvasStage Contract
 
-> **Status**: `[x]` Completed (independent drain 2026-07-17)
 > **Review State**: `Review`
 > **Priority**: 🟡 P1
 > **Type**: `feature`

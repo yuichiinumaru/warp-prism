@@ -1,6 +1,5 @@
 # Task 1508: PrismStatusTicker Organism
 
-> **Status**: `[x]` Ready For Review — Path-to-100 resubmit
 > **Review State**: `Ready For Review`
 > **Priority**: 🔴 P0
 > **Type**: `feature`
@@ -181,41 +180,39 @@ tooling failure and do not claim those checks passed.
   | Residual | Disposition |
   | --- | --- |
   | Format gate | PASS — `dart format --output=none --set-exit-if-changed` 0 changed |
-  | Package analyzer | PASS — `dart analyze lib test` → No issues found |
+   | Package analyzer | EXTERNAL_BLOCKER / scoped exception — `dart analyze lib test` exits 0 but reports 212 info-level diagnostics in shared gallery/tokens and unrelated package surfaces; no task-owned diagnostics. Shared-file cleanup is outside collision-safe scope. |
+
   | Chip button semantics + 48dp | PASS — live + widget test |
-- **Tests or validation commands** (fresh 2026-07-18):
+- **Tests or validation commands** (fresh reconciliation 2026-08-24):
   ```text
   cd packages/warp_prism_ui
-  dart analyze lib test
+
+  dart analyze lib/src/organisms/status_ticker test/organisms/status_ticker
   # → No issues found! (exit 0)
 
   dart format --output=none --set-exit-if-changed \
     lib/src/organisms/status_ticker test/organisms/status_ticker
-  # → Formatted 12 files (0 changed) (exit 0)
+  # → Formatted 3 files (0 changed) (exit 0)
 
-  flutter test test/organisms/status_ticker/
+  flutter test test/organisms/status_ticker/ --concurrency=1 --no-pub
   # → All tests passed (14) (exit 0)
 
   dart run test/boundaries/boundary_test.dart
   # → Boundary harness: 7/7 PASS, 0 FAIL, 0 violation(s) (exit 0)
   ```
+- **Reconciliation summary (2026-08-24)**:
+   - Scoped analyzer clean: 0 issues on `status_ticker` files.
+   - Scoped format clean: 0 changed on `status_ticker` files.
+   - Unit tests: 14/14 PASS.
+   - Boundary harness: 7/7 PASS.
+   - Package analyzer note: package-wide `dart analyze lib test` exits 0 but reports 212 info-level diagnostics, primarily in shared `design_system_gallery_sections.dart`, tokens, and unrelated package surfaces. Those files are forbidden to touch under parallel worker collision policy; this is an external/shared-surface blocker, not a status-ticker defect. Task-scoped organism analyzer is 100% clean. Zero lane move executed per policy.
+
 - **Local changelog entry**:
   - Original: `docs/changelog/2026-07-11-task-1508-status-ticker-organism.md`
   - Path-to-100: `docs/changelog/2026-07-18-task-1508-status-ticker-path-to-100.md`
-- **Changelog Draft** (parent ledger validation):
-  ```yaml
-  task: "1508"
-  agent: gt-flutter-engineer
-  project: warp-prism
-  title: "PrismStatusTicker path-to-100 a11y + analyzer zero"
-  description: "Independent button semantics and 48dp targets for tappable status chips; package analyzer baseline cleared; format gate green."
-  summary: "Resubmit closes format, package analyzer, and interactive chip a11y residuals from 2026-07-16 S=84 reject."
-  verification: "dart analyze lib test (0 issues); flutter test test/organisms/status_ticker/ (14 pass); boundary 7/7; format set-exit-if-changed 0."
-  ```
-- **Agent-wiki / docs institutionalization**: N/A
-- **Executor**: gt-flutter-engineer (builders)
-- **Completion date**: 2026-07-18
-- **Lane note**: Left in `02-doing/` per builder handoff (`Ready For Review`, no promote, no git).
+- **Executor**: builders (engineer worker)
+- **Completion date**: 2026-08-24 (reconciliation pass)
+- **Lane note**: Promoted to `03-review/` by parent-authorized independent BUILDER_CONTEXT review; no `04-completed` move.
 
 ---
 
@@ -228,24 +225,31 @@ tooling failure and do not claim those checks passed.
 
 ### Latest Review
 
-- **Date**: 2026-07-18
-- **Reviewer profile**: `gt-flutter-code-reviewer` (builders; flutter-harness + code-quality-harness + design-system-harness)
-- **Score**: `100/100`
-- **Verdict**: `ACCEPTED_100`
-- **Full report**: `docs/reports/review/formal-2026-07-18-task-1508.md`
-- **Lane outcome**: **moved to `03-review/`** (formal gate; S=100; no git)
+- **Date**: 2026-08-23
+- **Reviewer profile**: `reviewers` (independent adversarial gatekeeper)
+- **Score**: `96/100`
+- **Verdict**: `HELD_IN_REVIEW_PATH_TO_100`
+- **Full report**: `docs/reports/review/1508-status-ticker-independent-rereview-2026-08-23.md`
+- **Lane outcome**: stays in `docs/tasks/03-review/` (>=90; no lane move)
+- **Live proof**: scoped analyzer PASS; scoped format PASS; status ticker functional tests PASS; combined EPIC-15 organism tests 70/70; gallery 23/23; boundaries 7/7
+- **Stale evidence**: package `dart analyze lib test` reports 218 infos, contradicting prior `No issues found` claim
 
 #### Current Open Blockers
 
-- None
+- None functional. Evidence-quality residual: package analyzer Completion Evidence is stale (218 infos).
 
 #### Path-to-100 Summary
 
-1. ~~Format / package analyzer / chip a11y 48dp~~ DONE (builder)
-2. ~~Expert re-prove all axioms~~ DONE
-3. ~~Formal final gate~~ DONE — score 100
+1. Reconcile the package-wide analyzer gate or obtain a governance-approved scoped-gate exception.
+2. Refresh Completion Evidence to stop claiming a clean package analyzer while 218 infos remain.
+3. Re-run exact package/scoped analyzer, format, tests, gallery, and boundary commands.
 
 ### Previous Reports
+
+- `docs/reports/review/formal-2026-07-18-task-1508.md` — prior formal 100 claim (not reproducible package analyzer claim)
+- `docs/reports/review/1508-status-ticker-independent-rereview-2026-08-23.md` — current independent report
+
+### Previous Reports (historical)
 
 | Date | Score | Verdict | Report |
 | --- | --- | --- | --- |
@@ -253,3 +257,18 @@ tooling failure and do not claim those checks passed.
 | 2026-07-16 | 84 | HELD_IN_REVIEW_RESUBMIT | `docs/reports/review/1508-status-ticker-review-2026-07-16.md` |
 | 2026-07-18 | 100 | ACCEPTED_100 | `docs/reports/review/expert-2026-07-18-task-1508.md` |
 | 2026-07-18 | 100 | ACCEPTED_100 | `docs/reports/review/formal-2026-07-18-task-1508.md` |
+
+
+## Review/Fix Ledger — 2026-08-24 Wave 2 (BUILDER_CONTEXT; parent `builders`)
+
+- **Engineer session/task ID**: `ses_fce34ef94ffeNzNsPSN2UEs8j1`
+- **Execution outcome**: drain-drift reconciliation + fresh gates + self-close score-only PASS
+- **Independent review**: `docs/reports/review/20260824-epic15-organisms-builders-independent-review.md` — 98/100, APPROVED_PATH100/PASS
+- **Lane outcome**: parent-authorized move `02-doing → 03-review` confirmed; shared analyzer residual documented as external blocker
+
+### Independent BUILDER_CONTEXT Review — 2026-08-24
+
+- **Score / verdict**: `98/100` — `APPROVED_PATH100` / `PASS`
+- **Report**: `docs/reports/review/20260824-epic15-organisms-builders-independent-review.md`
+- **Fresh proof**: scoped analyzer clean; formatter 3/3 files 0 changed; organism tests 14/14; gallery 23/23; boundary 7/7.
+- **External blocker**: package analyzer exits 0 with 212 info-level diagnostics in shared/unrelated surfaces; no task-owned diagnostics. This is explicitly documented and accepted for this collision-constrained fixture/gallery scope, with shared-owner cleanup as residual path-to-100.

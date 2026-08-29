@@ -1,6 +1,5 @@
 # Task 0010: Warp-Prism Foundation Audit Analyzer Baseline
 
-> **Status**: `[x]` Completed — independent drain review 2026-07-17 S=100/100
 > **Review State**: `APPROVED_COMPLETED` — S=100/100 (2026-07-17); see `docs/reports/review-wave-2026-07-17/task-0010-drain-review.md`
 > **Priority**: 🔴 P0
 > **Type**: `verification`

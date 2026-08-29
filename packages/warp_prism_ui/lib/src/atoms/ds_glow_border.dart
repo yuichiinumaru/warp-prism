@@ -3,7 +3,13 @@ import '../tokens/tokens.dart';
 
 /// ASW Observatory Atom - Glow Border
 ///
-/// Luminous border effect for emphasis
+/// Luminous border effect for emphasis.
+///
+/// Contract:
+/// - Default color and `.cyan` variant are passive data-category glows (`DSColors.accentCyan`).
+/// - Interactive/focus/hover callers MUST pass an explicit blue-family color
+///   (`DSColors.accentBlue` or `DSColors.focusRing`); passive data callers may
+///   use the cyan default or named constructor.
 class DSGlowBorder extends StatelessWidget {
   final Widget child;
   final Color color;

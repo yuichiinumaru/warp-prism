@@ -5,7 +5,7 @@ import '../ds_text.dart';
 
 /// ASW Observatory Atom - Switch / Toggle
 ///
-/// Obsidian dark glass track, cyan active fill, smooth thumb transition,
+/// Obsidian dark glass track, blue active fill (`DSColors.accentBlue`), smooth thumb transition,
 /// optional label, disabled state, and 48×48 minimum touch target.
 class DSSwitch extends StatelessWidget {
   final bool value;
@@ -29,7 +29,7 @@ class DSSwitch extends StatelessWidget {
   Widget build(BuildContext context) {
     final isInteractive = enabled && onChanged != null;
     final activeAccent =
-        DSCyberCoreTealSkin.maybeOf(context)?.accent ?? DSColors.accentCyan;
+        DSCyberCoreTealSkin.maybeOf(context)?.accent ?? DSColors.accentBlue;
 
     final trackColor = value ? activeAccent : DSColors.obsidianBase;
     final borderColor = value
@@ -55,10 +55,7 @@ class DSSwitch extends StatelessWidget {
         child: Container(
           width: 18,
           height: 18,
-          decoration: BoxDecoration(
-            color: thumbColor,
-            shape: BoxShape.circle,
-          ),
+          decoration: BoxDecoration(color: thumbColor, shape: BoxShape.circle),
         ),
       ),
     );
@@ -73,9 +70,7 @@ class DSSwitch extends StatelessWidget {
           const SizedBox(width: DSSpacing.sm),
           DSText.labelMedium(
             label!,
-            color: isInteractive
-                ? DSColors.textPrimary
-                : DSColors.textDisabled,
+            color: isInteractive ? DSColors.textPrimary : DSColors.textDisabled,
           ),
         ],
       );
@@ -84,10 +79,7 @@ class DSSwitch extends StatelessWidget {
     }
 
     if (!isInteractive) {
-      content = Opacity(
-        opacity: 0.5,
-        child: content,
-      );
+      content = Opacity(opacity: 0.5, child: content);
     }
 
     return DSInteractiveSurface(
@@ -96,11 +88,7 @@ class DSSwitch extends StatelessWidget {
       selected: value,
       onTap: isInteractive ? () => onChanged!(!value) : null,
       focusNode: focusNode,
-      child: Center(
-        widthFactor: 1.0,
-        heightFactor: 1.0,
-        child: content,
-      ),
+      child: Center(widthFactor: 1.0, heightFactor: 1.0, child: content),
     );
   }
 }

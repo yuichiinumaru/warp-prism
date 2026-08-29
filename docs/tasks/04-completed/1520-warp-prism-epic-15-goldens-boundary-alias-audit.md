@@ -1,6 +1,5 @@
 # Task 1520: EPIC-15 Goldens + Boundary Alias Audit
 
-> **Status**: `[x]` Complete — independent internal review **PASS 100/100**
 > **Review State**: `Review` (moved to `03-review` after score-100 gate)
 > **Priority**: 🟡 P1
 > **Type**: `testing`

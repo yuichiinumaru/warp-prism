@@ -249,5 +249,30 @@ void main() {
       expect(PrismEntityIntelPanel.panelKey, isNotNull);
       expect(PrismEntityIntelPanel.closeSemanticLabel, isNotEmpty);
     });
+
+    testWidgets('close and pin buttons meet 48dp minimum touch target', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        harness(
+          selection: PrismEntityIntelFixtures.agent,
+          onClose: () {},
+          onPinChanged: (_) {},
+          showPin: true,
+        ),
+      );
+
+      final closeSize = tester.getSize(
+        find.byKey(PrismEntityIntelPanel.closeButtonKey),
+      );
+      expect(closeSize.height, greaterThanOrEqualTo(kMinInteractiveDimension));
+      expect(closeSize.width, greaterThanOrEqualTo(kMinInteractiveDimension));
+
+      final pinSize = tester.getSize(
+        find.byKey(PrismEntityIntelPanel.pinButtonKey),
+      );
+      expect(pinSize.height, greaterThanOrEqualTo(kMinInteractiveDimension));
+      expect(pinSize.width, greaterThanOrEqualTo(kMinInteractiveDimension));
+    });
   });
 }

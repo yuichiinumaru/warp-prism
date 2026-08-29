@@ -143,14 +143,14 @@ class _PresetTile extends StatelessWidget {
         variant: isActive
             ? DSGlassPanelVariant.elevated
             : DSGlassPanelVariant.subtle,
-        borderColor: isActive ? DSColors.accentCyan : DSColors.borderSubtle,
+        borderColor: isActive ? DSColors.accentBlue : DSColors.borderSubtle,
         borderWidth: isActive ? 1.5 : 1.0,
         child: InkWell(
           onTap: onTap,
           borderRadius: BorderRadius.circular(DSRadii.card),
-          hoverColor: DSColors.accentCyan.withValues(alpha: 0.05),
-          focusColor: DSColors.accentCyan.withValues(alpha: 0.1),
-          highlightColor: DSColors.accentCyan.withValues(alpha: 0.1),
+          hoverColor: DSColors.accentBlue.withValues(alpha: 0.05),
+          focusColor: DSColors.focusRing,
+          highlightColor: DSColors.accentBlue.withValues(alpha: 0.1),
           child: Padding(
             padding: const EdgeInsets.all(DSSpacing.md),
             child: Column(
@@ -162,7 +162,7 @@ class _PresetTile extends StatelessWidget {
                     DSIcon.small(
                       Icons.bookmarks_outlined,
                       color: isActive
-                          ? DSColors.accentCyan
+                          ? DSColors.accentBlue
                           : DSColors.textSecondary,
                     ),
                     const SizedBox(width: DSSpacing.xs),
@@ -170,7 +170,7 @@ class _PresetTile extends StatelessWidget {
                       child: DSText.bodyMedium(
                         preset.name,
                         color: isActive
-                            ? DSColors.accentCyan
+                            ? DSColors.accentBlue
                             : DSColors.textPrimary,
                         overflow: TextOverflow.ellipsis,
                       ),

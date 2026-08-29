@@ -242,18 +242,19 @@ void main() {
   });
 
   group('Focus Indicator Colors', () {
-    test('accentCyan is bright enough for focus ring visibility', () {
+    test('accentBlue / focusRing is bright enough for focus ring visibility', () {
       // Channel components are 0..1; scale to 0..255 sum for brightness gate.
       final channelSum =
-          (DSColors.accentCyan.r +
-              DSColors.accentCyan.g +
-              DSColors.accentCyan.b) *
+          (DSColors.accentBlue.r +
+              DSColors.accentBlue.g +
+              DSColors.accentBlue.b) *
           255.0;
       expect(
         channelSum,
         greaterThan(200),
-        reason: 'accentCyan must be bright enough for focus indicators',
+        reason: 'accentBlue must be bright enough for focus indicators',
       );
+      expect(DSColors.focusRing, equals(const Color(0x802F81FF)));
     });
 
     test('obsidianActive is distinguishable from obsidianHover', () {

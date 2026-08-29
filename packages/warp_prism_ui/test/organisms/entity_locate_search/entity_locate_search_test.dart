@@ -385,5 +385,28 @@ void main() {
       expect(result, isA<PrismLocateResult>());
       expect(result, isNot(isA<PrismCommand>()));
     });
+
+    testWidgets('locate action IconButton handles keyboard activate intent', (
+      tester,
+    ) async {
+      PrismLocateResult? located;
+      await tester.pumpWidget(
+        harness(onLocate: (r) => located = r, initialQuery: 'recon'),
+      );
+      await tester.pumpAndSettle();
+
+      final locateKey = PrismEntityLocateSearch.locateActionKey(
+        'agents',
+        'agent-recon-01',
+      );
+      expect(find.byKey(locateKey), findsOneWidget);
+
+      final element = tester.element(find.byKey(locateKey));
+      Actions.maybeInvoke(element, const ActivateIntent());
+      await tester.pumpAndSettle();
+
+      expect(located, isNotNull);
+      expect(located!.entityId, 'agent-recon-01');
+    });
   });
 }

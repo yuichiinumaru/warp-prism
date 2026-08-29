@@ -240,26 +240,26 @@ class _DSLogViewerState extends State<DSLogViewer> {
                             ),
                             decoration: BoxDecoration(
                               color:
-                                  DSColors.accentCyan.withValues(alpha: 0.15),
+                                  DSColors.accentBlue.withValues(alpha: 0.15),
                               borderRadius: BorderRadius.circular(DSRadii.chip),
                               border: Border.all(
                                 color:
-                                    DSColors.accentCyan.withValues(alpha: 0.3),
+                                    DSColors.focusRing,
                               ),
                             ),
-                            child: const Row(
+                            child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 ExcludeSemantics(
                                   child: DSIcon.small(
                                     DSIcons.expand,
-                                    color: DSColors.accentCyan,
+                                    color: DSColors.accentBlue,
                                   ),
                                 ),
-                                SizedBox(width: 4),
+                                const SizedBox(width: 4),
                                 DSText.labelSmall(
                                   'Latest',
-                                  color: DSColors.accentCyan,
+                                  color: DSColors.accentBlue,
                                 ),
                               ],
                             ),

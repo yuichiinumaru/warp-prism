@@ -9,6 +9,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import '../atoms/atoms.dart';
+import '../organisms/organisms.dart';
 import '../tokens/tokens.dart';
 import 'design_system_gallery_registry.dart';
 
@@ -30,6 +31,7 @@ class DesignSystemGalleryPage extends StatefulWidget {
 
 class _DesignSystemGalleryPageState extends State<DesignSystemGalleryPage> {
   final ScrollController _scrollController = ScrollController();
+  bool _showThemeEditor = false;
 
   /// One [GlobalKey] per registry section for [Scrollable.ensureVisible] jumps.
   late final List<GlobalKey> _sectionKeys = List<GlobalKey>.generate(
@@ -85,30 +87,43 @@ class _DesignSystemGalleryPageState extends State<DesignSystemGalleryPage> {
     // TextField-based demos (e.g. search bar) without "No Material widget".
     return Material(
       color: DSColors.obsidianDeep,
-      child: ListView(
-        controller: _scrollController,
-        padding: const EdgeInsets.all(DSSpacing.xl),
+      child: Stack(
         children: [
-          // Page header
-          _buildHeader(),
-          const SizedBox(height: DSSpacing.lg),
+          ListView(
+            controller: _scrollController,
+            padding: const EdgeInsets.all(DSSpacing.xl),
+            children: [
+              // Page header
+              _buildHeader(),
+              const SizedBox(height: DSSpacing.lg),
 
-          // Registry-driven section index (TOC)
-          _buildSectionIndex(),
-          const SizedBox(height: DSSpacing.xxl),
+              // Registry-driven section index (TOC)
+              _buildSectionIndex(),
+              const SizedBox(height: DSSpacing.xxl),
 
-          // All sections from registry
-          for (var i = 0; i < dsGallerySections.length; i++) ...[
-            KeyedSubtree(
-              key: _sectionKeys[i],
-              child: dsGallerySections[i].builder(),
+              // All sections from registry
+              for (var i = 0; i < dsGallerySections.length; i++) ...[
+                KeyedSubtree(
+                  key: _sectionKeys[i],
+                  child: dsGallerySections[i].builder(),
+                ),
+                const SizedBox(height: DSSpacing.xxl),
+              ],
+
+              // Footer
+              const SizedBox(height: DSSpacing.huge),
+              _buildFooter(),
+            ],
+          ),
+          if (_showThemeEditor)
+            Positioned(
+              top: DSSpacing.md,
+              right: DSSpacing.md,
+              bottom: DSSpacing.md,
+              child: PrismThemeEditor(
+                onClose: () => setState(() => _showThemeEditor = false),
+              ),
             ),
-            const SizedBox(height: DSSpacing.xxl),
-          ],
-
-          // Footer
-          const SizedBox(height: DSSpacing.huge),
-          _buildFooter(),
         ],
       ),
     );
@@ -117,7 +132,7 @@ class _DesignSystemGalleryPageState extends State<DesignSystemGalleryPage> {
   Widget _buildHeader() {
     return DSGlassPanelSimple(
       padding: const EdgeInsets.all(DSSpacing.xxl),
-      borderColor: DSColors.accentCyan.withValues(alpha: 0.3),
+      borderColor: DSColors.accentBlue.withValues(alpha: 0.3),
       child: Row(
         children: [
           // Logo
@@ -125,10 +140,10 @@ class _DesignSystemGalleryPageState extends State<DesignSystemGalleryPage> {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
+              gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [DSColors.accentCyan, DSColors.accentViolet],
+                colors: [DSColors.accentBlue, DSColors.accentViolet],
               ),
               borderRadius: BorderRadius.circular(DSRadii.md),
             ),
@@ -153,6 +168,23 @@ class _DesignSystemGalleryPageState extends State<DesignSystemGalleryPage> {
               ],
             ),
           ),
+
+          // Theme editor toggle button
+          DSButton(
+            key: const ValueKey('toggle-theme-editor-button'),
+            label: _showThemeEditor ? 'Hide Panel' : 'Theme Editor',
+            icon: Icons.palette_outlined,
+            variant: _showThemeEditor
+                ? DSButtonVariant.primary
+                : DSButtonVariant.outline,
+            size: DSButtonSize.sm,
+            onPressed: () {
+              setState(() {
+                _showThemeEditor = !_showThemeEditor;
+              });
+            },
+          ),
+          const SizedBox(width: DSSpacing.md),
 
           // Status badge
           Container(

@@ -3,15 +3,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
 
 void main() {
-  Widget harness({
-    required Widget child,
-    RouteSettings? settings,
-  }) {
+  Widget harness({required Widget child, RouteSettings? settings}) {
     return MaterialApp(
       initialRoute: settings?.name ?? '/',
-      routes: {
-        settings?.name ?? '/': (context) => Scaffold(body: child),
-      },
+      routes: {settings?.name ?? '/': (context) => Scaffold(body: child)},
     );
   }
 
@@ -23,7 +18,9 @@ void main() {
         PrismBreadcrumbItem(label: 'WarpPrism'),
       ];
 
-      await tester.pumpWidget(harness(child: const PrismBreadcrumbs(items: items)));
+      await tester.pumpWidget(
+        harness(child: const PrismBreadcrumbs(items: items)),
+      );
 
       expect(find.byType(PrismBreadcrumbs), findsOneWidget);
       expect(find.text('Home'), findsOneWidget);
@@ -105,7 +102,9 @@ void main() {
       expect(globalTapped, null);
     });
 
-    testWidgets('truncates long path when maxItems is specified', (tester) async {
+    testWidgets('truncates long path when maxItems is specified', (
+      tester,
+    ) async {
       const items = [
         PrismBreadcrumbItem(label: 'Level 1'),
         PrismBreadcrumbItem(label: 'Level 2'),
@@ -115,12 +114,7 @@ void main() {
       ];
 
       await tester.pumpWidget(
-        harness(
-          child: const PrismBreadcrumbs(
-            items: items,
-            maxItems: 3,
-          ),
-        ),
+        harness(child: const PrismBreadcrumbs(items: items, maxItems: 3)),
       );
 
       expect(find.text('Level 1'), findsOneWidget);
@@ -172,7 +166,9 @@ void main() {
         PrismBreadcrumbItem(label: 'Settings'),
       ];
 
-      await tester.pumpWidget(harness(child: const PrismBreadcrumbs(items: items)));
+      await tester.pumpWidget(
+        harness(child: const PrismBreadcrumbs(items: items)),
+      );
 
       expect(find.byIcon(Icons.home), findsOneWidget);
     });
@@ -191,10 +187,68 @@ void main() {
       expect(find.text('Users'), findsOneWidget);
     });
 
+    testWidgets(
+      'autoDerive falls back to single Home item when route is root or null',
+      (tester) async {
+        await tester.pumpWidget(
+          harness(
+            settings: const RouteSettings(name: '/'),
+            child: const PrismBreadcrumbs(autoDerive: true),
+          ),
+        );
+
+        expect(find.text('Home'), findsOneWidget);
+        expect(find.byIcon(Icons.chevron_right), findsNothing);
+      },
+    );
+
+    testWidgets(
+      'semantic tree verifies active item non-button vs interactive link surface',
+      (tester) async {
+        const items = [
+          PrismBreadcrumbItem(label: 'Home', href: '/'),
+          PrismBreadcrumbItem(label: 'Current'),
+        ];
+
+        await tester.pumpWidget(
+          harness(child: const PrismBreadcrumbs(items: items)),
+        );
+
+        final linkSurface = find.byWidgetPredicate(
+          (widget) =>
+              widget is PrismInteractiveSurface &&
+              widget.semanticLabel == 'Navigate to Home',
+        );
+        expect(linkSurface, findsOneWidget);
+
+        final activeItemText = find.text('Current');
+        expect(activeItemText, findsOneWidget);
+        expect(
+          find.ancestor(
+            of: activeItemText,
+            matching: find.byType(PrismInteractiveSurface),
+          ),
+          findsNothing,
+        );
+      },
+    );
+
     test('PrismBreadcrumbItem value equality and hashCode', () {
-      const a = PrismBreadcrumbItem(label: 'Test', href: '/test', icon: Icons.star);
-      const b = PrismBreadcrumbItem(label: 'Test', href: '/test', icon: Icons.star);
-      const c = PrismBreadcrumbItem(label: 'Test2', href: '/test', icon: Icons.star);
+      const a = PrismBreadcrumbItem(
+        label: 'Test',
+        href: '/test',
+        icon: Icons.star,
+      );
+      const b = PrismBreadcrumbItem(
+        label: 'Test',
+        href: '/test',
+        icon: Icons.star,
+      );
+      const c = PrismBreadcrumbItem(
+        label: 'Test2',
+        href: '/test',
+        icon: Icons.star,
+      );
 
       expect(a, equals(b));
       expect(a.hashCode, equals(b.hashCode));

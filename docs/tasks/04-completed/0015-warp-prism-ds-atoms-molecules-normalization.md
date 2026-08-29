@@ -1,6 +1,5 @@
 # Task 0015: Warp Prism DS Atoms and Molecules Normalization
 
-> **Status**: `[x]` Completed — independent path100 re-review 2026-07-18 S=100/100
 > **Review State**: `ACCEPTED_100` — S=100/100 (2026-07-18); see `docs/reports/review-wave-2026-07-18/task-0015-path100-rereview.md`
 > **Priority**: 🔴 P0
 > **Type**: `feature`

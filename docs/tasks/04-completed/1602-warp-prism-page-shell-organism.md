@@ -1,6 +1,5 @@
 # Task 1602: PrismPageShell Organism
 
-> **Status**: `[x]` Ready For Review
 > **Review State**: `Ready For Review`
 > **Priority**: 🟡 P1
 > **Type**: `feature`

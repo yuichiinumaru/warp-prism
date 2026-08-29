@@ -256,7 +256,7 @@ class DSStateSurface extends StatelessWidget {
       case DSStateType.empty:
         return DSColors.textTertiary;
       case DSStateType.loading:
-        return DSColors.accentCyan;
+        return DSColors.accentBlue;
       case DSStateType.error:
         return DSColors.statusError;
       case DSStateType.disabled:

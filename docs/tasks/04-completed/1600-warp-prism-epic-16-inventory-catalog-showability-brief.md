@@ -1,6 +1,5 @@
 # Task 1600: EPIC-16 Inventory + Catalog Showability Brief
 
-> **Status**: `[x]` Done (independent review held in `03-review/`)
 > **Review State**: `Held In Review (path-to-100 residual notes)`
 > **Priority**: 🔴 P0
 > **Type**: `governance`

@@ -810,10 +810,10 @@ class _Header extends StatelessWidget {
         ),
         child: Row(
           children: [
-            const Icon(
+            Icon(
               Icons.psychology_outlined,
               size: 18,
-              color: DSColors.accentCyan,
+              color: DSColors.accentBlue,
             ),
             const SizedBox(width: DSSpacing.sm),
             Expanded(
@@ -834,7 +834,7 @@ class _Header extends StatelessWidget {
                         label: busy ? 'THINKING' : 'FIXTURE',
                         color: busy
                             ? DSColors.accentViolet
-                            : DSColors.accentCyan,
+                            : DSColors.accentBlue,
                         size: DSBadgeSize.small,
                       ),
                     ],
@@ -1250,13 +1250,11 @@ class _ComposerBar extends StatelessWidget {
             DecoratedBox(
               decoration: BoxDecoration(
                 color: enabled
-                    ? DSColors.accentCyan.withValues(alpha: 0.15)
+                    ? DSColors.accentBlue.withValues(alpha: 0.15)
                     : DSColors.obsidianHover,
                 borderRadius: BorderRadius.circular(DSRadii.md),
                 border: Border.all(
-                  color: enabled
-                      ? DSColors.accentCyan.withValues(alpha: 0.45)
-                      : DSColors.borderSubtle,
+                  color: enabled ? DSColors.focusRing : DSColors.borderSubtle,
                 ),
               ),
               child: IconButton(
@@ -1266,24 +1264,24 @@ class _ComposerBar extends StatelessWidget {
                 constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
                 icon: busy
                     ? (MediaQuery.disableAnimationsOf(context)
-                          ? const Icon(
+                          ? Icon(
                               Icons.hourglass_top_rounded,
                               size: 18,
-                              color: DSColors.accentCyan,
+                              color: DSColors.accentBlue,
                             )
-                          : const SizedBox(
+                          : SizedBox(
                               width: 18,
                               height: 18,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
-                                color: DSColors.accentCyan,
+                                color: DSColors.accentBlue,
                               ),
                             ))
                     : Icon(
                         Icons.send_rounded,
                         size: 20,
                         color: enabled
-                            ? DSColors.accentCyan
+                            ? DSColors.accentBlue
                             : DSColors.textTertiary,
                       ),
               ),

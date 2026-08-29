@@ -1,6 +1,5 @@
 # Task 1204: Melos Test Script Normalization
 
-> **Status**: `[x]` Ready For Review
 > **Review State**: `Ready For Review` — Melos scripts verified live 2026-07-09 via repository-local `dart run melos`; no bare global `melos` dependency in any script body. Protected root `pubspec.yaml` not re-edited this pass (already task-authorized content present).
 > **Priority**: 🟡 P1
 > **Type**: `housekeeping`

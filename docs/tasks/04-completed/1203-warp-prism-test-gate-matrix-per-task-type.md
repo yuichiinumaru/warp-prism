@@ -1,6 +1,5 @@
 # Task 1203: Test Gate Matrix per Task Type
 
-> **Status**: `[x]` Promoted
 > **Review State**: Promoted — independent reviewer scored 95/100; parent routed to completed after preserving rejected-collision duplicates outside review lane.
 > **Priority**: 🔴 P0
 > **Type**: `governance`

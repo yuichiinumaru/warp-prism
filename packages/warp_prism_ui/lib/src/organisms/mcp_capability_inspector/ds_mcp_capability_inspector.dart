@@ -1130,7 +1130,7 @@ class _CapabilityListPane extends StatelessWidget {
               subtitle: t.description,
               trailing: t.enabled ? null : 'off',
               leadingColor: t.enabled
-                  ? DSColors.accentCyan
+                  ? DSColors.accentBlue
                   : DSColors.textDisabled,
               semanticLabel: t.semanticLabel,
             ),
@@ -1233,12 +1233,12 @@ class _ListRowChrome extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: selected
-            ? DSColors.accentCyan.withValues(alpha: 0.08)
+            ? DSColors.accentBlue.withValues(alpha: 0.08)
             : DSColors.obsidianElevated,
         borderRadius: BorderRadius.circular(DSRadii.sm),
         border: Border.all(
           color: selected
-              ? DSColors.accentCyan.withValues(alpha: 0.55)
+              ? DSColors.focusRing
               : DSColors.borderSubtle.withValues(alpha: 0.5),
           width: selected ? 1.5 : 1,
         ),

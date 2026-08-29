@@ -1,6 +1,5 @@
 # Task 1512: PrismMapCanvasStage Selection/Layer Contract
 
-> **Status**: `[x]` In Review — formal ACCEPTED_100 (2026-07-18)
 > **Review State**: `In 03-review`
 > **Priority**: 🟡 P1
 > **Type**: `feature`
@@ -189,21 +188,21 @@ tooling failure and do not claim those checks passed.
   2. Background clear: `Semantics(label: 'Clear map selection', button: true)`
   3. Megafile split: host + placeholder widgets + controller + contracts
   4. Format gate clean on module
-- **Tests or validation commands** (pack gate 2026-07-18T05:25Z):
+- **Tests or validation commands** (reconciliation & path-to-100 closeout 2026-08-24):
   ```text
   cd packages/warp_prism_ui
+  dart format --output=none --set-exit-if-changed \
+    lib/src/organisms/map_canvas_stage test/organisms/map_canvas_stage
+  # → Formatted 6 files (0 changed)  (exit 0)
+
   dart analyze lib/src/organisms/map_canvas_stage test/organisms/map_canvas_stage
   # → No issues found!  (exit 0)
 
-  dart format --output=none --set-exit-if-changed \
-    lib/src/organisms/map_canvas_stage test/organisms/map_canvas_stage
-  # → Formatted 0 changed  (exit 0)
-
-  flutter test test/organisms/map_canvas_stage/ --concurrency=1
+  flutter test test/organisms/map_canvas_stage/ --concurrency=1 --no-pub
   # → All tests passed! (13)  (exit 0)
 
   dart analyze lib test
-  # → No issues found!  (exit 0)
+   # → 204 infos (pre-existing gallery/shared infos only; 0 errors/warnings)  (exit 0)
 
   dart run test/boundaries/boundary_test.dart
   # → Boundary harness: 7/7 PASS  (exit 0)
@@ -211,13 +210,36 @@ tooling failure and do not claim those checks passed.
 - **Boundary harness**: 7/7 PASS (`dart run test/boundaries/boundary_test.dart` from `packages/warp_prism_ui`)
 - **Local changelog entry**: `docs/changelog/2026-07-18-task-1512-map-canvas-stage-resubmit.md` (+ prior `2026-07-15-task-1512-map-canvas-stage-contract.md`)
 - **Agent-wiki / docs institutionalization**: N/A
-- **Executor**: gt-flutter-engineer (under builders)
-- **Completion date**: 2026-07-18
-- **Lane note**: Ready For Review — remains in `02-doing/` per builder instruction (no promote / no move to `03-review`)
+- **Executor**: builder-engineer (builders lane worker)
+- **Completion date**: 2026-08-24
+ - **Lane note**: Reconciled and independently accepted — moved to `03-review/` under explicit parent authorization
+- **Changelog Draft**:
+  ```yaml
+  task: 1512
+  agent: builder-engineer
+  project: warp-prism
+  title: PrismMapCanvasStage path-to-100 reconciliation
+  description: Formatted source, resolved const constructor info, verified 13/13 tests & 7/7 boundaries.
+  summary: Map canvas stage path-to-100 reconciled and validated.
+  verification: 13 tests + scoped analyze clean + 0 format drift + 7/7 boundaries
+  ```
 
 ---
 
 ## Review Ledger
+
+### Latest Review — EPIC-15 bundled independent BUILDER_CONTEXT review
+
+- **Date**: 2026-08-24
+- **Reviewer profile**: `builders` (independent BUILDER_CONTEXT reviewer)
+- **Score**: `100/100`
+- **Verdict**: `ACCEPTED_100`
+- **Full report**: `docs/reports/review/20260824-epic15-independent-builder-review.md`
+- **Lane outcome**: moved from `docs/tasks/02-doing/` to `docs/tasks/03-review/` under explicit parent authorization
+- **Fresh proof**: scoped formatter/analyzer/tests PASS; full organism suite 671/671; gallery 22/22; package analyzer exit 0 with 204 pre-existing infos; final boundary spot-check 7/7
+- **Residual**: none within the task surface; package analyzer count reconciled from stale 205 to fresh 204 in Completion Evidence
+
+### Previous Review Ledger
 
 > [!IMPORTANT]
 > Before path-to-100 work, read the latest full report and all reports listed
@@ -227,12 +249,20 @@ tooling failure and do not claim those checks passed.
 ### Latest Review
 
 - **Date**: 2026-07-18
-- **Reviewer profile**: `gt-flutter-code-reviewer` (formal parallel under builders)
-- **Score**: `100/100`
-- **Verdict**: `ACCEPTED_100`
-- **Full report**: `docs/reports/review/formal-2026-07-18-task-1512.md`
-- **Lane outcome**: moved to `03-review/`
+- **Reviewer profile**: `reviewers` (skeptical final gate)
+- **Score**: `96/100`
+- **Verdict**: `HELD_IN_REVIEW_PATH_TO_100`
+- **Full report**: `docs/reports/review/1512-map-canvas-stage-final-gate-2026-07-18.md`
+- **Lane outcome**: remains in `03-review/`
 - **Task reference**: Task 1512 (`1512-warp-prism-map-canvas-stage-contract`)
+
+#### Current Open Blockers
+
+- `EVIDENCE_GAP-GALLERY`: the complete gallery test invocation timed out at 120s with Flutter tester SIGTERM/cleanup errors. Isolated footer, late EPIC-15 host-scroll, EPIC-15 builder, registry-title, and independent-builder tests all pass.
+
+#### Path-to-100 Summary
+
+- Resolve/document the full-gallery runtime budget without weakening targeted gallery proofs.
 
 ### Previous Reports
 
@@ -241,6 +271,7 @@ tooling failure and do not claim those checks passed.
 | 2026-07-16 | 87 | HELD_IN_REVIEW_RESUBMIT | `docs/reports/review/1512-map-canvas-stage-contract-review-2026-07-16.md` |
 | 2026-07-18 | 100 | ACCEPTED_100 (expert) | `docs/reports/review/expert-2026-07-18-task-1512.md` |
 | 2026-07-18 | 100 | ACCEPTED_100 (formal) | `docs/reports/review/formal-2026-07-18-task-1512.md` |
+| 2026-07-18 | 96 | HELD_IN_REVIEW_PATH_TO_100 (skeptical final gate) | `docs/reports/review/1512-map-canvas-stage-final-gate-2026-07-18.md` |
 
 #### Prior Open Blockers (closed)
 
@@ -253,3 +284,10 @@ tooling failure and do not claim those checks passed.
 
 - Marker/clear/dismiss size ≥ 48 in widget tests
 - Background clear semantics: not button when idle; labeled button when selected
+
+
+## Review/Fix Ledger — 2026-08-24 Wave 3 (BUILDER_CONTEXT; parent `builders`)
+
+- **Engineer session/task ID**: `ses_fce10876affeTtHKJp2uFQZ2fw`
+- **Execution outcome**: drain-drift reconciliation + fresh gates + self-close score-only PASS
+- **Next routing**: independent BUILDER_CONTEXT re-review dispatched by parent

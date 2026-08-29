@@ -110,7 +110,8 @@ class BoundaryHarness {
       run: _checkUiAppImports,
     ),
     BoundaryCheck(
-      name: 'warp_prism_ui does not import forbidden persistence or IO packages',
+      name:
+          'warp_prism_ui does not import forbidden persistence or IO packages',
       run: _checkUiForbiddenPackages,
     ),
     BoundaryCheck(
@@ -234,7 +235,9 @@ class BoundaryHarness {
 
     final aliasText = aliasesFile.readAsStringSync();
     final aliasedDsNames = <String>{};
-    final typedefPattern = RegExp(r'typedef\s+Prism\w+\s*=\s*(DS[A-Z]\w+)\s*;');
+    final typedefPattern = RegExp(
+      r'typedef\s+Prism\w+(?:<[^>]*>)?\s*=\s*(DS[A-Z]\w+)(?:<[^>]*>)?\s*;',
+    );
     for (final match in typedefPattern.allMatches(aliasText)) {
       aliasedDsNames.add(match.group(1)!);
     }
@@ -367,7 +370,42 @@ class BoundaryHarness {
       final exportSuffix = match.group(2) ?? '';
 
       if (exportPath.endsWith('prism_aliases.dart')) {
-        // Alias surface: typedef RHS names are not re-exported as public DS*.
+        final aliasesResolved = File(
+          '${repoRoot.path}/packages/warp_prism_ui/lib/$exportPath',
+        );
+        if (aliasesResolved.existsSync()) {
+          final aliasesContent = aliasesResolved.readAsStringSync();
+          final exportedDsMatches = RegExp(
+            r'''export\s+['"]([^'"]+)['"]([^;]*);''',
+            multiLine: true,
+          ).allMatches(aliasesContent);
+          for (final aliasExport in exportedDsMatches) {
+            final target = aliasExport.group(1)!;
+            final suffix = aliasExport.group(2) ?? '';
+            final showMatch = RegExp(r'\bshow\s+([^;]+)').firstMatch(suffix);
+            if (showMatch != null) {
+              final shown = showMatch.group(1)!;
+              final shownDsMatches = RegExp(
+                r'\b(DS[A-Z]\w+)\b',
+              ).allMatches(shown);
+              for (final m in shownDsMatches) {
+                violations.add(
+                  'packages/warp_prism_ui/lib/src/prism_aliases.dart: '
+                  'must not export DS implementation symbol ${m.group(1)}',
+                );
+              }
+            }
+            if (RegExp(r'(^|/)ds_[^/]+\.dart$').hasMatch(target)) {
+              final hideMatch = RegExp(r'\bhide\s+([^;]+)').firstMatch(suffix);
+              if (showMatch == null && hideMatch == null) {
+                violations.add(
+                  'packages/warp_prism_ui/lib/src/prism_aliases.dart: '
+                  'must not re-export DS implementation file $target without hiding DS* names',
+                );
+              }
+            }
+          }
+        }
         continue;
       }
 

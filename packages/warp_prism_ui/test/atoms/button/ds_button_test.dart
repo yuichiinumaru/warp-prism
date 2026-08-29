@@ -4,10 +4,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:warp_prism_ui/src/atoms/atoms.dart';
 import 'package:warp_prism_ui/src/molecules/molecules.dart';
 import 'package:warp_prism_ui/src/tokens/tokens.dart';
+import 'package:warp_prism_ui/warp_prism_ui.dart';
 
 Widget _wrap(Widget child) {
   return MaterialApp(
-    theme: ThemeData.dark(),
+    theme: PrismTheme.dark(),
     home: Scaffold(
       backgroundColor: DSColors.obsidianBase,
       body: Center(child: child),
@@ -18,30 +19,31 @@ Widget _wrap(Widget child) {
 void main() {
   group('DSButton unit & widget tests', () {
     testWidgets('Renders label and primary variant by default', (tester) async {
-      await tester.pumpWidget(_wrap(
-        DSButton(
-          label: 'Click Me',
-          onPressed: () {},
-        ),
-      ));
+      await tester.pumpWidget(
+        _wrap(DSButton(label: 'Click Me', onPressed: () {})),
+      );
 
       expect(find.text('Click Me'), findsOneWidget);
       expect(find.byType(DSGlassPanel), findsOneWidget);
       expect(find.byType(DSGlowBorder), findsOneWidget);
     });
 
-    testWidgets('Named constructors render corresponding variants', (tester) async {
-      await tester.pumpWidget(_wrap(
-        Column(
-          children: [
-            DSButton.primary(label: 'Primary', onPressed: () {}),
-            DSButton.secondary(label: 'Secondary', onPressed: () {}),
-            DSButton.outline(label: 'Outline', onPressed: () {}),
-            DSButton.ghost(label: 'Ghost', onPressed: () {}),
-            DSButton.danger(label: 'Danger', onPressed: () {}),
-          ],
+    testWidgets('Named constructors render corresponding variants', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        _wrap(
+          Column(
+            children: [
+              DSButton.primary(label: 'Primary', onPressed: () {}),
+              DSButton.secondary(label: 'Secondary', onPressed: () {}),
+              DSButton.outline(label: 'Outline', onPressed: () {}),
+              DSButton.ghost(label: 'Ghost', onPressed: () {}),
+              DSButton.danger(label: 'Danger', onPressed: () {}),
+            ],
+          ),
         ),
-      ));
+      );
 
       expect(find.text('Primary'), findsOneWidget);
       expect(find.text('Secondary'), findsOneWidget);
@@ -50,15 +52,19 @@ void main() {
       expect(find.text('Danger'), findsOneWidget);
     });
 
-    testWidgets('Renders leading and trailing icons when provided', (tester) async {
-      await tester.pumpWidget(_wrap(
-        DSButton(
-          label: 'Action',
-          icon: Icons.play_arrow,
-          trailingIcon: Icons.arrow_forward,
-          onPressed: () {},
+    testWidgets('Renders leading and trailing icons when provided', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        _wrap(
+          DSButton(
+            label: 'Action',
+            icon: Icons.play_arrow,
+            trailingIcon: Icons.arrow_forward,
+            onPressed: () {},
+          ),
         ),
-      ));
+      );
 
       expect(find.text('Action'), findsOneWidget);
       expect(find.byIcon(Icons.play_arrow), findsOneWidget);
@@ -68,14 +74,16 @@ void main() {
     testWidgets('Tap fires onPressed callback', (tester) async {
       bool pressed = false;
 
-      await tester.pumpWidget(_wrap(
-        DSButton(
-          label: 'Press',
-          onPressed: () {
-            pressed = true;
-          },
+      await tester.pumpWidget(
+        _wrap(
+          DSButton(
+            label: 'Press',
+            onPressed: () {
+              pressed = true;
+            },
+          ),
         ),
-      ));
+      );
 
       await tester.tap(find.byType(DSButton));
       await tester.pumpAndSettle();
@@ -83,18 +91,22 @@ void main() {
       expect(pressed, isTrue);
     });
 
-    testWidgets('Disabled state reduces opacity and does not fire onPressed', (tester) async {
+    testWidgets('Disabled state reduces opacity and does not fire onPressed', (
+      tester,
+    ) async {
       bool pressed = false;
 
-      await tester.pumpWidget(_wrap(
-        DSButton(
-          label: 'Disabled',
-          enabled: false,
-          onPressed: () {
-            pressed = true;
-          },
+      await tester.pumpWidget(
+        _wrap(
+          DSButton(
+            label: 'Disabled',
+            enabled: false,
+            onPressed: () {
+              pressed = true;
+            },
+          ),
         ),
-      ));
+      );
 
       expect(find.text('Disabled'), findsOneWidget);
 
@@ -112,72 +124,89 @@ void main() {
       expect(pressed, isFalse);
     });
 
-    testWidgets('Loading state shows CircularProgressIndicator, hides label, and blocks onPressed', (tester) async {
-      bool pressed = false;
+    testWidgets(
+      'Loading state shows CircularProgressIndicator, hides label, and blocks onPressed',
+      (tester) async {
+        bool pressed = false;
 
-      await tester.pumpWidget(_wrap(
-        DSButton(
-          label: 'Loading',
-          isLoading: true,
-          onPressed: () {
-            pressed = true;
-          },
-        ),
-      ));
-
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
-      expect(find.text('Loading'), findsNothing);
-
-      await tester.tap(find.byType(DSButton));
-      await tester.pump();
-
-      expect(pressed, isFalse);
-    });
-
-    testWidgets('Keyboard activation (Enter and Space) fires onPressed when focused', (tester) async {
-      int pressCount = 0;
-      final focusNode = FocusNode();
-
-      await tester.pumpWidget(_wrap(
-        DSButton(
-          label: 'Keyboard Focus',
-          focusNode: focusNode,
-          onPressed: () {
-            pressCount++;
-          },
-        ),
-      ));
-
-      focusNode.requestFocus();
-      await tester.pump();
-
-      await tester.sendKeyEvent(LogicalKeyboardKey.enter);
-      await tester.pumpAndSettle();
-      expect(pressCount, 1);
-
-      await tester.sendKeyEvent(LogicalKeyboardKey.space);
-      await tester.pumpAndSettle();
-      expect(pressCount, 2);
-
-      focusNode.dispose();
-    });
-
-    testWidgets('Tab-focus renders visible focus ring BoxDecoration', (tester) async {
-      final focusNode = FocusNode();
-
-      await tester.pumpWidget(_wrap(
-        Column(
-          children: [
-            // Dummy focus target so Tab moves focus to the button.
-            const Focus(autofocus: true, child: SizedBox(width: 10, height: 10)),
+        await tester.pumpWidget(
+          _wrap(
             DSButton(
-              label: 'Focus Ring',
-              focusNode: focusNode,
-              onPressed: () {},
+              label: 'Loading',
+              isLoading: true,
+              onPressed: () {
+                pressed = true;
+              },
             ),
-          ],
+          ),
+        );
+
+        expect(find.byType(CircularProgressIndicator), findsOneWidget);
+        expect(find.text('Loading'), findsNothing);
+
+        await tester.tap(find.byType(DSButton));
+        await tester.pump();
+
+        expect(pressed, isFalse);
+      },
+    );
+
+    testWidgets(
+      'Keyboard activation (Enter and Space) fires onPressed when focused',
+      (tester) async {
+        int pressCount = 0;
+        final focusNode = FocusNode();
+
+        await tester.pumpWidget(
+          _wrap(
+            DSButton(
+              label: 'Keyboard Focus',
+              focusNode: focusNode,
+              onPressed: () {
+                pressCount++;
+              },
+            ),
+          ),
+        );
+
+        focusNode.requestFocus();
+        await tester.pump();
+
+        await tester.sendKeyEvent(LogicalKeyboardKey.enter);
+        await tester.pumpAndSettle();
+        expect(pressCount, 1);
+
+        await tester.sendKeyEvent(LogicalKeyboardKey.space);
+        await tester.pumpAndSettle();
+        expect(pressCount, 2);
+
+        focusNode.dispose();
+      },
+    );
+
+    testWidgets('Tab-focus renders visible focus ring BoxDecoration', (
+      tester,
+    ) async {
+      final focusNode = FocusNode();
+
+      await tester.pumpWidget(
+        _wrap(
+          Column(
+            children: [
+              // Dummy focus target so Tab moves focus to the button.
+              const Focus(
+                autofocus: true,
+                child: SizedBox(width: 10, height: 10),
+              ),
+              DSButton(
+                label: 'Focus Ring',
+                focusNode: focusNode,
+                onPressed: () {},
+              ),
+            ],
+          ),
         ),
-      ));
+      );
       await tester.pumpAndSettle();
 
       // Tab switches FocusHighlightMode to traditional and moves focus.
@@ -186,13 +215,13 @@ void main() {
 
       expect(focusNode.hasFocus, isTrue);
 
-      // Verify the cyan focus-ring BoxDecoration renders.
+      // Verify the blue focus-ring BoxDecoration renders.
       final containers = <Widget>[
         ...tester.widgetList<Container>(find.byType(Container)),
         ...tester.widgetList<AnimatedContainer>(find.byType(AnimatedContainer)),
       ];
       bool foundFocusRing = false;
-      final expectedColor = DSColors.accentCyan.withValues(alpha: 0.5);
+      final expectedColor = DSColors.focusRing;
       for (final c in containers) {
         final dec = c is Container
             ? c.decoration
@@ -207,20 +236,22 @@ void main() {
           }
         }
       }
-      expect(foundFocusRing, isTrue,
-          reason: 'DSInteractiveSurface should render a cyan focus ring when keyboard-focused');
+      expect(
+        foundFocusRing,
+        isTrue,
+        reason:
+            'DSInteractiveSurface should render a blue focus ring when keyboard-focused',
+      );
 
       focusNode.dispose();
     });
 
     testWidgets('Enforces minimum 48x48px interactive target', (tester) async {
-      await tester.pumpWidget(_wrap(
-        DSButton(
-          label: 'Min Touch',
-          size: DSButtonSize.sm,
-          onPressed: () {},
+      await tester.pumpWidget(
+        _wrap(
+          DSButton(label: 'Min Touch', size: DSButtonSize.sm, onPressed: () {}),
         ),
-      ));
+      );
 
       final size = tester.getSize(find.byType(DSInteractiveSurface));
       expect(size.width, greaterThanOrEqualTo(48.0));
@@ -230,9 +261,9 @@ void main() {
 
   group('DSButton golden tests', () {
     testWidgets('Primary variant golden', (tester) async {
-      await tester.pumpWidget(_wrap(
-        DSButton.primary(label: 'Primary Button', onPressed: () {}),
-      ));
+      await tester.pumpWidget(
+        _wrap(DSButton.primary(label: 'Primary Button', onPressed: () {})),
+      );
       await expectLater(
         find.byType(DSButton),
         matchesGoldenFile('../../goldens/button_primary.png'),
@@ -240,9 +271,9 @@ void main() {
     });
 
     testWidgets('Secondary variant golden', (tester) async {
-      await tester.pumpWidget(_wrap(
-        DSButton.secondary(label: 'Secondary Button', onPressed: () {}),
-      ));
+      await tester.pumpWidget(
+        _wrap(DSButton.secondary(label: 'Secondary Button', onPressed: () {})),
+      );
       await expectLater(
         find.byType(DSButton),
         matchesGoldenFile('../../goldens/button_secondary.png'),
@@ -250,9 +281,9 @@ void main() {
     });
 
     testWidgets('Outline variant golden', (tester) async {
-      await tester.pumpWidget(_wrap(
-        DSButton.outline(label: 'Outline Button', onPressed: () {}),
-      ));
+      await tester.pumpWidget(
+        _wrap(DSButton.outline(label: 'Outline Button', onPressed: () {})),
+      );
       await expectLater(
         find.byType(DSButton),
         matchesGoldenFile('../../goldens/button_outline.png'),
@@ -260,9 +291,9 @@ void main() {
     });
 
     testWidgets('Ghost variant golden', (tester) async {
-      await tester.pumpWidget(_wrap(
-        DSButton.ghost(label: 'Ghost Button', onPressed: () {}),
-      ));
+      await tester.pumpWidget(
+        _wrap(DSButton.ghost(label: 'Ghost Button', onPressed: () {})),
+      );
       await expectLater(
         find.byType(DSButton),
         matchesGoldenFile('../../goldens/button_ghost.png'),
@@ -270,9 +301,9 @@ void main() {
     });
 
     testWidgets('Danger variant golden', (tester) async {
-      await tester.pumpWidget(_wrap(
-        DSButton.danger(label: 'Danger Button', onPressed: () {}),
-      ));
+      await tester.pumpWidget(
+        _wrap(DSButton.danger(label: 'Danger Button', onPressed: () {})),
+      );
       await expectLater(
         find.byType(DSButton),
         matchesGoldenFile('../../goldens/button_danger.png'),
@@ -280,9 +311,9 @@ void main() {
     });
 
     testWidgets('Disabled state golden', (tester) async {
-      await tester.pumpWidget(_wrap(
-        const DSButton.primary(label: 'Disabled Button', enabled: false),
-      ));
+      await tester.pumpWidget(
+        _wrap(const DSButton.primary(label: 'Disabled Button', enabled: false)),
+      );
       await expectLater(
         find.byType(DSButton),
         matchesGoldenFile('../../goldens/button_disabled.png'),
@@ -290,9 +321,9 @@ void main() {
     });
 
     testWidgets('Loading state golden', (tester) async {
-      await tester.pumpWidget(_wrap(
-        const DSButton.primary(label: 'Loading Button', isLoading: true),
-      ));
+      await tester.pumpWidget(
+        _wrap(const DSButton.primary(label: 'Loading Button', isLoading: true)),
+      );
       await expectLater(
         find.byType(DSButton),
         matchesGoldenFile('../../goldens/button_loading.png'),

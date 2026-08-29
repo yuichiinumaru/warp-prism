@@ -532,4 +532,183 @@ void main() {
       expect(DSColors.statusExcluded, DSColors.textDisabled);
     });
   });
+
+  // ===========================================================================
+  // DSTaskCard — Operational & Proof States
+  // ===========================================================================
+  group('DSTaskCard operational & proof states', () {
+    testWidgets('renders default DSTaskCard fields', (tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: DSTaskCard(
+              id: 1106,
+              title: 'Operational Component MVP',
+              lane: 'doing',
+              priority: 'P1',
+              owner: 'builders',
+              proofState: 'complete',
+              reviewScore: 100,
+              dependencyCount: 3,
+              linkedSkills: ['flutter', 'code-quality'],
+            ),
+          ),
+        ),
+      );
+      expect(find.text('#1106'), findsOneWidget);
+      expect(find.text('Operational Component MVP'), findsOneWidget);
+      expect(find.text('P1'), findsOneWidget);
+      expect(find.text('builders'), findsOneWidget);
+      expect(find.text('100'), findsOneWidget);
+      expect(find.text('3'), findsOneWidget);
+      expect(find.text('flutter'), findsOneWidget);
+      expect(find.text('code-quality'), findsOneWidget);
+    });
+
+    testWidgets('renders selected DSTaskCard state', (tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: DSTaskCard(
+              id: 1401,
+              title: 'Observatory Failure Baseline Inventory',
+              lane: 'doing',
+              selected: true,
+            ),
+          ),
+        ),
+      );
+      expect(find.text('#1401'), findsOneWidget);
+      expect(find.text('Observatory Failure Baseline Inventory'), findsOneWidget);
+    });
+
+    testWidgets('renders proofState status dot for complete, partial, missing', (tester) async {
+      for (final proof in ['complete', 'partial', 'missing']) {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: DSTaskCard(
+                id: 100,
+                title: 'Task Title',
+                lane: 'doing',
+                proofState: proof,
+              ),
+            ),
+          ),
+        );
+        expect(find.byType(DSStatusDot), findsOneWidget);
+      }
+    });
+
+    testWidgets('onTap callback fires when tapped', (tester) async {
+      var tapped = false;
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: DSTaskCard(
+              id: 200,
+              title: 'Tap Test Task',
+              lane: 'open',
+              onTap: () => tapped = true,
+            ),
+          ),
+        ),
+      );
+      await tester.tap(find.byType(DSTaskCard));
+      expect(tapped, isTrue);
+    });
+  });
+
+  // ===========================================================================
+  // Operational MVP Edge Conditions (Long Text, High Text Scale, Narrow Viewport)
+  // ===========================================================================
+  group('Operational MVP edge conditions', () {
+    testWidgets('DSMetricTile renders under 180px narrow viewport and long text', (tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: SizedBox(
+              width: 180,
+              child: DSMetricTile(
+                label: 'Very Long Metric Label That Should Truncate Safely',
+                value: '99,999,999',
+                health: DSMetricTileHealth.degraded,
+              ),
+            ),
+          ),
+        ),
+      );
+      expect(find.text('Degraded'), findsOneWidget);
+      expect(find.text('99,999,999'), findsOneWidget);
+    });
+
+    testWidgets('DSMetricTile renders under 2.0x high text scale', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          builder: (context, child) => MediaQuery(
+            data: MediaQuery.of(context).copyWith(
+              textScaler: const TextScaler.linear(2.0),
+            ),
+            child: child!,
+          ),
+          home: const Scaffold(
+            body: DSMetricTile(
+              label: 'Scaled Metric',
+              value: '100%',
+              health: DSMetricTileHealth.healthy,
+            ),
+          ),
+        ),
+      );
+      expect(find.text('Scaled Metric'), findsOneWidget);
+      expect(find.text('100%'), findsOneWidget);
+    });
+
+    testWidgets('DSTaskCard renders under 200px narrow viewport and long text', (tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: Scaffold(
+            body: SizedBox(
+              width: 200,
+              child: DSTaskCard(
+                id: 9999,
+                title: 'Extremely Long Task Title Designed to Test Multi-Line Wrapping and Text Overflow Behavior Across Narrow Columns',
+                lane: 'doing',
+                priority: 'P0',
+                owner: 'builders-long-agent-name',
+                proofState: 'complete',
+                reviewScore: 95,
+                dependencyCount: 12,
+              ),
+            ),
+          ),
+        ),
+      );
+      expect(find.text('#9999'), findsOneWidget);
+      expect(find.text('P0'), findsOneWidget);
+    });
+
+    testWidgets('DSTaskCard renders under 2.0x high text scale', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          builder: (context, child) => MediaQuery(
+            data: MediaQuery.of(context).copyWith(
+              textScaler: const TextScaler.linear(2.0),
+            ),
+            child: child!,
+          ),
+          home: const Scaffold(
+            body: DSTaskCard(
+              id: 8888,
+              title: 'High Text Scale Task Card',
+              lane: 'open',
+              priority: 'P1',
+              owner: 'builders',
+            ),
+          ),
+        ),
+      );
+      expect(find.text('High Text Scale Task Card'), findsOneWidget);
+    });
+  });
 }

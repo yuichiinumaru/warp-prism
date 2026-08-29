@@ -1,6 +1,5 @@
 # Task 1518: PrismAgentShellPanel Read-Only Transcript
 
-> **Status**: `[x]` review
 > **Review State**: `Independent re-review PASS 100/100 — moved to 03-review`
 > **Priority**: 🟡 P1
 > **Type**: `feature`

@@ -102,11 +102,11 @@ class DSTaskCard extends StatelessWidget {
 
               // Priority
               if (priority != null) ...[
-                _PriorityBadge(priority: priority!),
+                Flexible(child: _PriorityBadge(priority: priority!)),
                 const SizedBox(width: DSSpacing.xs),
               ],
 
-              const Spacer(),
+              const Flexible(child: SizedBox.shrink()),
 
               // Proof state indicator
               if (proofState != null)

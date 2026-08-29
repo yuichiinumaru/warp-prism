@@ -16,12 +16,24 @@ void main(List<String> args) {
   final aliasesFile = File(
     '${repoRoot.path}/packages/warp_prism_ui/lib/src/prism_aliases.dart',
   );
+  final tokenRegistryFile = File(
+    '${repoRoot.path}/packages/warp_prism_ui/lib/src/tokens/prism_token_registry.dart',
+  );
+  final themeEditorFile = File(
+    '${repoRoot.path}/packages/warp_prism_ui/lib/src/organisms/theme_editor/prism_theme_editor.dart',
+  );
   final auditFile = File('${repoRoot.path}/docs/design/public-barrel-audit.md');
   final barrelFile = File(
     '${repoRoot.path}/packages/warp_prism_ui/lib/warp_prism_ui.dart',
   );
 
-  for (final f in [aliasesFile, auditFile, barrelFile]) {
+  for (final f in [
+    aliasesFile,
+    tokenRegistryFile,
+    themeEditorFile,
+    auditFile,
+    barrelFile,
+  ]) {
     if (!f.existsSync()) {
       stderr.writeln('MISSING: ${f.path}');
       exit(2);
@@ -41,9 +53,10 @@ void main(List<String> args) {
     multiLine: true,
   ).allMatches(aliases).map((m) => m.group(1)!).toSet();
   final src = {...srcTypedef, ...srcExtension};
+  const requiredTask1807Symbols = {'PrismTokenRegistry', 'PrismThemeEditor'};
 
-  final auditPrism = RegExp(
-    r'\|\s+`(Prism\w+)`\s+\|',
+  final auditAliasPrism = RegExp(
+    r'\|\s+`(Prism\w+)`\s+\|\s+(typedef|extension)\s+\|',
   ).allMatches(audit).map((m) => m.group(1)!).toSet();
 
   const expectedNonPrism = {
@@ -56,8 +69,8 @@ void main(List<String> args) {
     r'\|\s+`(DesignSystemGalleryPage|dsGallerySections|dsGallerySectionIds|dsGallerySectionTitles)`\s+\|',
   ).allMatches(audit).map((m) => m.group(1)!).toSet();
 
-  final missing = src.difference(auditPrism).toList()..sort();
-  final extra = auditPrism.difference(src).toList()..sort();
+  final missing = src.difference(auditAliasPrism).toList()..sort();
+  final extra = auditAliasPrism.difference(src).toList()..sort();
   final missingNonPrism = expectedNonPrism.difference(auditNonPrism).toList()
     ..sort();
 
@@ -79,7 +92,7 @@ void main(List<String> args) {
     '  src Prism: ${src.length} '
     '(${srcTypedef.length} typedef + ${srcExtension.length} extension)',
   );
-  print('  audit Prism rows: ${auditPrism.length}');
+  print('  audit Prism rows: ${auditAliasPrism.length}');
   print('  audit non-Prism gallery: ${auditNonPrism.length}');
   print('  barrel exports: $exportCount');
 
@@ -104,11 +117,36 @@ void main(List<String> args) {
   if (!hideGallerySpec || !hideGallerySections) {
     fail('public barrel must hide DSGallerySectionSpec and DSGallerySections');
   }
-  if (src.length != auditPrism.length) {
-    fail('count mismatch src=${src.length} audit=${auditPrism.length}');
+  if (src.length != auditAliasPrism.length) {
+    fail('count mismatch src=${src.length} audit=${auditAliasPrism.length}');
+  }
+  for (final symbol in requiredTask1807Symbols) {
+    final source = symbol == 'PrismTokenRegistry'
+        ? tokenRegistryFile.readAsStringSync()
+        : themeEditorFile.readAsStringSync();
+    if (!source.contains('class $symbol')) {
+      fail('required Task 1807 symbol missing from source: $symbol');
+    }
+    if (!audit.contains('`$symbol`')) {
+      fail('required Task 1807 symbol missing from audit lock: $symbol');
+    }
+  }
+  if (!aliases.contains("export 'tokens/prism_token_registry.dart'")) {
+    fail('PrismTokenRegistry is not re-exported through prism_aliases.dart');
+  }
+  if (!aliases.contains(
+    "export 'organisms/theme_editor/prism_theme_editor.dart'",
+  )) {
+    fail('PrismThemeEditor is not re-exported through prism_aliases.dart');
+  }
+  if (!barrel.contains('prism_aliases.dart')) {
+    fail('public barrel does not export prism_aliases.dart');
   }
 
-  final totalPublic = auditPrism.length + auditNonPrism.length;
+  final totalPublic =
+      auditAliasPrism.length +
+      requiredTask1807Symbols.length +
+      auditNonPrism.length;
   print('  total public top-level (Prism + non-Prism gallery): $totalPublic');
 
   if (failed) {

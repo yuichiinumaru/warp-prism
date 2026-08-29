@@ -1,6 +1,5 @@
 # Task 1309: State Vocabulary Surface Reconciliation
 
-> **Status**: `[x]` Ready For Review
 > **Review State**: HELD_IN_REVIEW_PATH_TO_100 — independent re-review 92/100 (2026-07-09); remains in `03-review/`
 > **Priority**: 🟡 P1
 > **Type**: `remediation`

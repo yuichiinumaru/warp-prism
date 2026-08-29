@@ -74,13 +74,13 @@ void main() {
       await tester.pump();
 
       // 10 base layers + 9 EPIC-15 families (Task 1519 incl. optional-polish)
-      // + 4 EPIC-16 families (Task 1613)
+      // + 4 EPIC-16 families (Task 1613) + 1 Theme Editor (Task 1807)
       expect(
         dsGallerySectionTitles.length,
-        23,
+        24,
         reason:
-            'Registry must expose 23 gallery sections '
-            '(10 base + 9 EPIC-15 + 4 EPIC-16)',
+            'Registry must expose 24 gallery sections '
+            '(10 base + 9 EPIC-15 + 4 EPIC-16 + 1 Theme Editor)',
       );
 
       for (final title in dsGallerySectionTitles) {
@@ -101,8 +101,8 @@ void main() {
 
       _suppressGalleryDemoNoise();
 
-      // Keep count aligned with dsGallerySections (operational-states + EPIC-15/16 families).
-      expect(dsGallerySections.length, 23);
+      // Keep count aligned with dsGallerySections (operational-states + EPIC-15/16 families + Theme Editor).
+      expect(dsGallerySections.length, 24);
 
       for (final section in dsGallerySections) {
         await tester.pumpWidget(
@@ -128,7 +128,7 @@ void main() {
         ids.toSet().length,
         reason: 'Section IDs must be unique',
       );
-      expect(ids.length, 23);
+      expect(ids.length, 24);
     });
 
     testWidgets('EPIC-15 family section IDs are registered', (tester) async {
@@ -394,6 +394,12 @@ void main() {
       );
 
       await _findByScrolling(tester, 'Search Bar');
+      expect(
+        find.text('Accordion Multi-Expand (two sections open)'),
+        findsOneWidget,
+      );
+      expect(find.text('Multi Section A content visible.'), findsOneWidget);
+      expect(find.text('Multi Section B content visible.'), findsOneWidget);
       expect(find.text('Filter Chip Group'), findsOneWidget);
       expect(find.text('Metric Tile'), findsOneWidget);
       expect(find.text('Provenance Pill'), findsOneWidget);

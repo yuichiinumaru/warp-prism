@@ -17,7 +17,7 @@ All components must follow the existing Warp-Prism visual language:
 - Ultradark obsidian glass aesthetic (`DSColors.obsidian*` background, `DSGlassPanel` surfaces)
 - `DSGlowBorder`/`DSGlowDivider` for interactive focus emphasis
 - `DSInteractiveSurface` keyboard/focus contract (48×48 target, Enter/Space activation, focus ring)
-- `DSCyberCoreTealSkin` accent (`#00FFCC`) for active/checked states
+- `DSCyberCoreTealSkin` accent (`#00FFCC`) for active/checked states *(Amended by Task 1800: default active/checked states use `PrismColors.accentBlue` (`#2F81FF`); teal remains opt-in via `DSCyberCoreTealSkin` ThemeExtension per `docs/design/black-obsidian-visual-contract.md`)*
 - `DSTypography` + `DSSpacing` + `DSRadii` tokens for consistency
 - Dark-only (no light theme variant needed at this stage)
 

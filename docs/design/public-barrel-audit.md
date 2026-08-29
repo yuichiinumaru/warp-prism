@@ -1,6 +1,6 @@
 # Public Barrel Audit — `warp_prism_ui`
 
-> **Task**: 1302  
+> **Task**: 1302 (with Task 1807 tooling export lock)  
 > **Date**: 2026-07-18 (path-to-100 live re-audit session 2; closed +11 symbol drift after 263 freeze)  
 > **Original audit**: 2026-06-09  
 > **Executor**: gt-flutter-engineer (builders)  
@@ -34,10 +34,11 @@ exported.** Consumers receive Prism\* aliases plus intentional gallery entrypoin
 > structure is obsolete after Prism namespace remediation. This document matches
 > the live four-export barrel only.
 
-> **2026-07-18 re-audit (session 2)**: Live inventory is **274** Prism API
-> symbols (**273** typedef + **1** extension). Prior freezes
-> (127/129/131 and 263) are **superseded**. +11 symbols since 263 freeze:
-> keyboard cheatsheet, media detail overlay, scale measure bar, toast risk tier.
+> **2026-08-24 re-audit (Tasks 1302 / 1803 / 1807 / 1809)**: Live alias inventory is **296** Prism
+> symbols (**295** typedef + **1** extension), plus two public Task 1807 tooling classes
+> (`PrismTokenRegistry`, `PrismThemeEditor`). Prior freezes (127/129/131, 263, 274, 292, and
+> 294) are superseded. The live alias surface is the source of truth; the lock below is
+> regenerated and verified via `verify_public_barrel_audit.dart`.
 
 ---
 
@@ -45,7 +46,16 @@ exported.** Consumers receive Prism\* aliases plus intentional gallery entrypoin
 
 ### 2.1 Production / Experimental / Gallery — Prism API (`src/prism_aliases.dart`)
 
-**Count: 274 symbols** (273 `typedef` + 1 `extension`).
+**Count: 296 symbols** (295 `typedef` + 1 `extension`).
+
+#### Task 1807 tooling exports (2)
+
+These are intentional public tooling surfaces re-exported by `prism_aliases.dart`; they are classes rather than `Prism*` typedef/extension aliases and are therefore tracked by a separate lock from the alias set-equality check.
+
+| Public symbol | Kind | Source | Status |
+|---|---|---|---|
+| `PrismTokenRegistry` | class | `tokens/prism_token_registry.dart` | Tooling |
+| `PrismThemeEditor` | class | `organisms/theme_editor/prism_theme_editor.dart` | Tooling |
 
 Classification key:
 
@@ -53,7 +63,7 @@ Classification key:
 - **Experimental** — drag-drop surface still evolving; keep exported, do not treat as frozen
 - **Gallery** — Prism-named gallery surface (preferred over hidden DSGallery\*)
 
-#### TOKENS — Operational State (13)
+#### TOKENS — Operational State (16)
 
 | Public symbol | Kind | Target | Status |
 |---|---|---|---|
@@ -62,7 +72,10 @@ Classification key:
 | `PrismOperationalCategory` | typedef | `DSOperationalCategory` | Production |
 | `PrismOperationalStateUI` | extension | on `DSOperationalState` | Production |
 | `PrismColors` | typedef | `DSColors` | Production |
+| `PrismTheme` | typedef | `DSTheme` | Production |
 | `PrismCyberCoreTealSkin` | typedef | `DSCyberCoreTealSkin` | Production |
+| `PrismTaldarimRedSkin` | typedef | `DSTaldarimRedSkin` | Production |
+| `PrismTalonPurpleSkin` | typedef | `DSTalonPurpleSkin` | Production |
 | `PrismSpacing` | typedef | `DSSpacing` | Production |
 | `PrismTypography` | typedef | `DSTypography` | Production |
 | `PrismBreakpoints` | typedef | `DSBreakpoints` | Production |
@@ -71,13 +84,14 @@ Classification key:
 | `PrismMotion` | typedef | `DSMotion` | Production |
 | `PrismSemantics` | typedef | `DSSemantics` | Production |
 
-#### ATOMS (1)
+#### ATOMS (2)
 
 | Public symbol | Kind | Target | Status |
 |---|---|---|---|
 | `PrismStatusDot` | typedef | `DSStatusDot` | Production |
+| `PrismColorField` | typedef | `DSColorField` | Production |
 
-#### MOLECULES (18)
+#### MOLECULES (27)
 
 | Public symbol | Kind | Target | Status |
 |---|---|---|---|
@@ -102,6 +116,12 @@ Classification key:
 | `PrismAccordion` | typedef | `DSAccordion` | Production |
 | `PrismAccordionItem` | typedef | `DSAccordionItem` | Production |
 | `PrismAccordionSection` | typedef | `DSAccordionSection` | Production |
+| `PrismDialog` | typedef | `DSDialog` | Production |
+| `PrismDialogAction` | typedef | `DSDialogAction` | Production |
+| `PrismDialogSize` | typedef | `DSDialogSize` | Production |
+| `PrismSelect` | typedef | `DSSelect` | Production |
+| `PrismSelectItem` | typedef | `DSSelectItem` | Production |
+| `PrismSelectOption` | typedef | `DSSelectOption` | Production |
 
 #### ORGANISMS (135)
 
@@ -290,7 +310,7 @@ Classification key:
 | `PrismLogEntryWidget` | typedef | `DSLogEntryWidget` | Production |
 | `PrismLogFilterBar` | typedef | `DSLogFilterBar` | Production |
 
-#### ATOMS — Additional aliases (13)
+#### ATOMS — Additional aliases (20)
 
 | Public symbol | Kind | Target | Status |
 |---|---|---|---|
@@ -307,6 +327,7 @@ Classification key:
 | `PrismBadgeVariant` | typedef | `DSBadgeVariant` | Production |
 | `PrismIconSize` | typedef | `DSIconSize` | Production |
 | `PrismSwitch` | typedef | `DSSwitch` | Production |
+| `PrismToggle` | typedef | `DSSwitch` | Production |
 | `PrismTextVariant` | typedef | `DSTextVariant` | Production |
 | `PrismButton` | typedef | `DSButton` | Production |
 | `PrismButtonSize` | typedef | `DSButtonSize` | Production |
@@ -415,20 +436,22 @@ Exported via gallery files. `DSGallerySectionSpec` / `DSGallerySections` are **h
 
 | Bucket | Count |
 |---|---:|
-| Prism API (typedef + extension) | **274** |
-| — Production | 265 |
-| — Experimental (drag-drop) | 7 |
+| Prism API aliases (typedef + extension) | **294** |
+| — Production aliases | 285 |
+| — Experimental (drag-drop) aliases | 7 |
 | — Gallery Prism aliases | 2 |
+| Task 1807 tooling classes | **2** |
 | Non-Prism gallery entrypoints | **4** |
-| **Total public top-level symbols** | **278** |
+| **Total public top-level symbols** | **300** |
 | DS\* layer barrels re-exported | **0** |
 | Public DSGallery\* identifiers | **0** (hidden) |
 
 ### 3.1 Source↔audit set equality
 
 ```text
-src_set (typedef+extension Prism*) = 274
-audit_set (table rows `Prism*`)     = 274
+src_set (typedef+extension Prism*) = 294
+ audit_set (typedef/extension rows `Prism*`) = 294
+ tooling_set (Task 1807 public classes) = 2
 missing = 0
 extra   = 0
 ```
@@ -488,7 +511,7 @@ Task 1205 harness (`packages/warp_prism_ui/test/boundaries/boundary_test.dart`):
 
 ```text
 test -f docs/design/public-barrel-audit.md
-rg -c '^typedef Prism' packages/warp_prism_ui/lib/src/prism_aliases.dart  # 273
+rg -c '^typedef Prism' packages/warp_prism_ui/lib/src/prism_aliases.dart  # 291
 rg -c '^extension Prism' packages/warp_prism_ui/lib/src/prism_aliases.dart # 1
 dart analyze packages/warp_prism_ui/lib/warp_prism_ui.dart \
   packages/warp_prism_ui/lib/src/prism_aliases.dart

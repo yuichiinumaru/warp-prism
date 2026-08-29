@@ -358,14 +358,14 @@ class _ToolStripButtonState extends State<_ToolStripButton> {
         ? DSColors.obsidianHover
         : Colors.transparent;
     final iconColor = selected
-        ? DSColors.accentCyan
+        ? DSColors.accentBlue
         : highlight
         ? DSColors.textPrimary
         : DSColors.textSecondary;
     final borderColor = selected
-        ? DSColors.accentCyan.withValues(alpha: 0.55)
+        ? DSColors.accentBlue.withValues(alpha: 0.55)
         : _focused
-        ? DSColors.accentCyan.withValues(alpha: 0.4)
+        ? DSColors.focusRing
         : DSColors.borderSubtle.withValues(alpha: 0.0);
 
     final label = DSToolStripSlideout.toolSemanticLabel(
@@ -489,14 +489,14 @@ class _IconHitTargetState extends State<_IconHitTarget> {
                 borderRadius: BorderRadius.circular(DSRadii.sm),
                 border: Border.all(
                   color: _focused
-                      ? DSColors.accentCyan.withValues(alpha: 0.5)
+                      ? DSColors.focusRing
                       : Colors.transparent,
                 ),
               ),
               alignment: Alignment.center,
               child: DSIcon(
                 widget.icon,
-                color: highlight ? DSColors.accentCyan : DSColors.textSecondary,
+                color: highlight ? DSColors.accentBlue : DSColors.textSecondary,
                 size: 18,
               ),
             ),

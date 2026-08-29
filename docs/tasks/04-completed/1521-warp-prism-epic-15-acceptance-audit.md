@@ -1,6 +1,5 @@
 # Task 1521: EPIC-15 Acceptance Audit
 
-> **Status**: `[x]` Builder-review PASS (100) — promoted to `03-review`
 > **Review State**: `Builder-review PASS — awaiting independent reviewer`
 > **Priority**: 🔴 P0
 > **Type**: `verification`

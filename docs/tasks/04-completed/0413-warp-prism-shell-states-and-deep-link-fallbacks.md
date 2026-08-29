@@ -1,6 +1,5 @@
 # Task 0413: Warp Prism Shell States And Deep Link Fallbacks
 
-> **Status**: `[x]` Done — held in review (path-to-100)
 > **Review State**: Independent re-review **92/100** — `HELD_IN_REVIEW_PATH_TO_100` (2026-07-09)
 > **Priority**: 🟡 P1
 > **Type**: `feature`

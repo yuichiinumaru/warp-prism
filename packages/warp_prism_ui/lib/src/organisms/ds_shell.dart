@@ -202,15 +202,15 @@ class DSShellResponsive extends StatelessWidget {
                               bottom: 0,
                               width: DSSpacing.inspectorWidth,
                               child: Container(
-                                decoration: const BoxDecoration(
-                                  color: DSColors.obsidianElevated,
-                                  border: Border(
-                                    left: BorderSide(
-                                      color: DSColors.borderSubtle,
-                                    ),
-                                  ),
-                                  boxShadow: DSShadows.elevation3,
-                                ),
+                                 decoration: BoxDecoration(
+                                   color: DSColors.obsidianElevated,
+                                   border: const Border(
+                                     left: BorderSide(
+                                       color: DSColors.borderSubtle,
+                                     ),
+                                   ),
+                                   boxShadow: DSShadows.elevation3,
+                                 ),
                                 child: inspector!,
                               ),
                             ),

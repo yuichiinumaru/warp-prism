@@ -1,6 +1,5 @@
 # Task 1514: PrismFloatingAnalyticsHud Organism
 
-> **Status**: `[x]` In Review — formal ACCEPTED_100 (2026-07-18 path-to-100)
 > **Review State**: `In 03-review`
 > **Priority**: 🟡 P1
 > **Type**: `feature`
@@ -206,7 +205,14 @@ tooling failure and do not claim those checks passed.
 - **Agent-wiki / docs institutionalization**: N/A
 - **Executor**: gt-flutter-engineer (under builders)
 - **Completion date**: 2026-07-18
-- **Lane note**: Ready For Review — remains in `02-doing/` per builder instruction (no promote / no move to `03-review`)
+- **Reconciliation & Fresh Validation**: 2026-08-24 by builder-engineer
+  - `dart analyze lib/src/organisms/floating_analytics_hud test/organisms/floating_analytics_hud` → **0 issues found** (exit 0)
+  - `dart format --output=none --set-exit-if-changed lib/src/organisms/floating_analytics_hud test/organisms/floating_analytics_hud` → **Formatted 0 changed** (exit 0)
+  - `flutter test test/organisms/floating_analytics_hud/ --concurrency=1` → **All tests passed (13/13)!** (exit 0)
+  - `dart run test/boundaries/boundary_test.dart` → **7/7 PASS** (exit 0)
+  - Golden freeze respected: 0 goldens updated
+  - Protected files collision constraint: 0 collision files edited
+- **Lane note**: Reconciled — current lane is `03-review/`; no `04-completed/` promotion was performed
 
 ---
 
@@ -220,16 +226,20 @@ tooling failure and do not claim those checks passed.
 ### Latest Review
 
 - **Date**: 2026-07-18
-- **Reviewer profile**: `gt-flutter-code-reviewer` (formal path-to-100 under builders)
-- **Score**: `100/100`
-- **Verdict**: `ACCEPTED_100`
-- **Full report**: `docs/reports/review/formal-2026-07-18-task-1514.md`
-- **Lane outcome**: remains `03-review/`
+- **Reviewer profile**: `reviewers` (skeptical final gate)
+- **Score**: `96/100`
+- **Verdict**: `HELD_IN_REVIEW_PATH_TO_100`
+- **Full report**: `docs/reports/review/1514-floating-analytics-hud-final-gate-2026-07-18.md`
+- **Lane outcome**: remains in `03-review/`
 - **Task reference**: Task 1514 (`1514-warp-prism-floating-analytics-hud-organism`)
 
 #### Current Open Blockers
 
-- none
+- ~~`EVIDENCE_GAP-GALLERY`: the complete gallery test invocation timed out at 120s with Flutter tester SIGTERM/cleanup errors. Isolated footer, EPIC-15 host-scroll, and EPIC-15 Ops builder tests pass.~~ Closed by fresh full gallery run: `flutter test test/gallery/design_system_gallery_test.dart --concurrency=1` → 22/22 passed (2026-08-24).
+
+#### Path-to-100 Summary
+
+- Resolve/document the full-gallery runtime budget without weakening targeted gallery proofs.
 
 #### Prior Open Blockers (closed this path-to-100)
 
@@ -242,6 +252,7 @@ tooling failure and do not claim those checks passed.
 | 2026-07-16 | 82 | HELD_IN_REVIEW_RESUBMIT | `docs/reports/review/1514-floating-analytics-hud-review-2026-07-16.md` |
 | 2026-07-18 | 100 | ACCEPTED_100 (expert) | `docs/reports/review/expert-2026-07-18-task-1514.md` |
 | 2026-07-18 | 99→100 | ACCEPTED_100 (formal path-to-100) | `docs/reports/review/formal-2026-07-18-task-1514.md` |
+| 2026-07-18 | 96 | HELD_IN_REVIEW_PATH_TO_100 (skeptical final gate) | `docs/reports/review/1514-floating-analytics-hud-final-gate-2026-07-18.md` |
 
 #### Prior Open Blockers (closed)
 
@@ -256,3 +267,11 @@ tooling failure and do not claim those checks passed.
 - Header drag/minimize/close ≥ 48
 - Drag semantic label on handle + title
 - No mid-build `_hostSize` assignment
+
+
+## Review/Fix Ledger — 2026-08-24 Wave 3 (BUILDER_CONTEXT; parent `builders`)
+
+- **Engineer session/task ID**: `ses_fce106a5dffea64mIZ6YyKASV9`
+- **Execution outcome**: drain-drift reconciliation + fresh gates + independent BUILDER_CONTEXT re-review PASS
+- **Independent review**: 100/100 `ACCEPTED_100`; fresh gallery 22/22; boundary 7/7; scoped tests 13/13
+- **Next routing**: remains in `03-review/` pending independent acceptance/closeout owner

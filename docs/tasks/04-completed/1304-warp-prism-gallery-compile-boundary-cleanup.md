@@ -1,6 +1,5 @@
 # Task 1304: Gallery Compile Boundary Cleanup
 
-> **Status**: `[x]` Builder Done
 > **Review State**: Held In Review — residual F6/F7 closed (2026-07-10); ready for re-score; remain `03-review/`
 > **Priority**: 🔴 P0
 > **Type**: `remediation`

@@ -1,0 +1,1 @@
+../../../docs/tasks/AGENTS.md

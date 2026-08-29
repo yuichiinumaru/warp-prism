@@ -75,10 +75,10 @@ class FloatingAnalyticsHudHeader extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      const DSIcon(
+                      DSIcon(
                         Icons.analytics_outlined,
                         size: 16,
-                        color: DSColors.accentCyan,
+                        color: DSColors.accentBlue,
                       ),
                       const SizedBox(width: DSSpacing.xs),
                       Expanded(
@@ -97,7 +97,7 @@ class FloatingAnalyticsHudHeader extends StatelessWidget {
         DSBadge.count(
           sectionCount,
           size: DSBadgeSize.small,
-          color: DSColors.accentCyan,
+          color: DSColors.accentBlue,
         ),
         const SizedBox(width: DSSpacing.xs),
         Semantics(

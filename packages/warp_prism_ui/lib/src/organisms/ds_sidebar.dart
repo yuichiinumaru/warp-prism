@@ -34,9 +34,9 @@ class DSSidebar extends StatelessWidget {
         width: expanded
             ? DSSpacing.sidebarExpanded
             : DSSpacing.sidebarCollapsed,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: DSColors.obsidianBase,
-          border: Border(
+          border: const Border(
             right: BorderSide(color: DSColors.borderSubtle, width: 1),
           ),
         ),
@@ -116,10 +116,10 @@ class _DefaultHeader extends StatelessWidget {
               width: 32,
               height: 32,
               decoration: BoxDecoration(
-                gradient: const LinearGradient(
+                gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [DSColors.accentCyan, DSColors.accentViolet],
+                  colors: [DSColors.accentBlue, DSColors.accentViolet],
                 ),
                 borderRadius: BorderRadius.circular(DSRadii.sm),
               ),
@@ -183,7 +183,7 @@ class _SidebarItemWidgetState extends State<_SidebarItemWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final color = widget.item.color ?? DSColors.accentCyan;
+    final color = widget.item.color ?? DSColors.accentBlue;
     final bgColor = widget.isSelected
         ? color.withValues(alpha: 0.15)
         : (_isFocused
@@ -252,9 +252,7 @@ class _SidebarItemWidgetState extends State<_SidebarItemWidget> {
                         )
                       : (_isFocused
                             ? Border.all(
-                                color: DSColors.accentCyan.withValues(
-                                  alpha: 0.5,
-                                ),
+                                color: DSColors.focusRing,
                                 width: 2,
                               )
                             : null),

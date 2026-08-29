@@ -811,7 +811,7 @@ class _GroupHeaderState extends State<_GroupHeader> {
                 borderRadius: BorderRadius.circular(DSRadii.sm),
                 border: Border.all(
                   color: _focused
-                      ? DSColors.accentCyan.withValues(alpha: 0.45)
+                      ? DSColors.focusRing
                       : Colors.transparent,
                 ),
               ),
@@ -824,7 +824,7 @@ class _GroupHeaderState extends State<_GroupHeader> {
                       Icons.chevron_right,
                       size: 18,
                       color: highlight
-                          ? DSColors.accentCyan
+                          ? DSColors.accentBlue
                           : DSColors.textSecondary,
                     ),
                   ),
@@ -846,7 +846,7 @@ class _GroupHeaderState extends State<_GroupHeader> {
                   if (group.hasCounts)
                     DSBadge.count(
                       group.totalCount,
-                      color: DSColors.accentCyan,
+                      color: DSColors.accentBlue,
                       semanticLabel: '${group.label} count ${group.totalCount}',
                     ),
                 ],
@@ -916,7 +916,7 @@ class _LayerRow extends StatelessWidget {
             if (layer.count != null) ...[
               DSBadge.count(
                 layer.count!,
-                color: enabled ? DSColors.accentCyan : DSColors.textTertiary,
+                color: enabled ? DSColors.accentBlue : DSColors.textTertiary,
                 semanticLabel: '${layer.label} count ${layer.count}',
               ),
               const SizedBox(width: DSSpacing.xs),
@@ -984,7 +984,7 @@ class _FreshnessPill extends StatelessWidget {
   }
 }
 
-/// Compact themed switch with cyan active track (obsidian glass aesthetic).
+/// Compact themed switch with blue active track (obsidian glass aesthetic).
 class _CompactSwitch extends StatelessWidget {
   final bool value;
   final ValueChanged<bool>? onChanged;
@@ -1001,7 +1001,7 @@ class _CompactSwitch extends StatelessWidget {
           value: value,
           onChanged: onChanged,
           activeThumbColor: DSColors.obsidianDeep,
-          activeTrackColor: DSColors.accentCyan,
+          activeTrackColor: DSColors.accentBlue,
           inactiveThumbColor: DSColors.textSecondary,
           inactiveTrackColor: DSColors.obsidianActive,
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,

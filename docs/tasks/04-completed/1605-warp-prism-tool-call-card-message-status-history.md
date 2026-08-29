@@ -1,6 +1,5 @@
 # Task 1605: PrismToolCallCard + PrismMessageStatusHistory
 
-> **Status**: `[x]` Completed (independent drain 2026-07-17)
 > **Review State**: `Ready For Review`
 > **Priority**: 🟡 P1
 > **Type**: `feature`

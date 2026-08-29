@@ -163,7 +163,7 @@ abstract final class DSTimingWaterfallLayout {
   static Color defaultBarColor(int depth) {
     switch (depth % 3) {
       case 0:
-        return DSColors.accentCyan;
+        return DSColors.accentBlue;
       case 1:
         return DSColors.accentViolet;
       default:
@@ -289,15 +289,15 @@ class DSTimingWaterfall extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const DSIcon.small(
+          DSIcon.small(
             Icons.bar_chart_outlined,
-            color: DSColors.accentCyan,
+            color: DSColors.accentBlue,
           ),
           const SizedBox(width: DSSpacing.sm),
           Expanded(
             child: DSText.labelLarge(title, color: DSColors.textPrimary),
           ),
-          DSBadge(label: _totalDurationLabel(), color: DSColors.accentCyan),
+          DSBadge(label: _totalDurationLabel(), color: DSColors.accentBlue),
         ],
       ),
     );

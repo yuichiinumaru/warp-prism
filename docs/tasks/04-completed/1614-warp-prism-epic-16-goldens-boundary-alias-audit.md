@@ -1,6 +1,5 @@
 # Task 1614: EPIC-16 Goldens + Boundary Alias Audit
 
-> **Status**: `[x]` Completed (independent drain 2026-07-17)
 > **Review State**: `PASS — independent builder review 100/100 (2026-07-16)`
 > **Priority**: 🟡 P1
 > **Type**: `testing`

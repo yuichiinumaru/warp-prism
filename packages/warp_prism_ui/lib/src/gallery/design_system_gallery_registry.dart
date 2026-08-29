@@ -206,6 +206,13 @@ const dsGallerySections = <DSGallerySectionSpec>[
     subtitle: 'MasterDetailTemplate · CanvasTemplate · TimelineTemplate',
     builder: DSGallerySections.buildTemplatesSection,
   ),
+  DSGallerySectionSpec(
+    id: 'theme-editor',
+    title: 'Theme Editor',
+    subtitle:
+        'PrismThemeEditor organism · Token override registry & bake-back code exporter',
+    builder: DSGallerySections.buildThemeEditorSection,
+  ),
 ];
 
 /// Returns all registered section IDs.

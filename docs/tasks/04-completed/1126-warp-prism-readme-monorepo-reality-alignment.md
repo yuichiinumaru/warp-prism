@@ -1,6 +1,5 @@
 # Task 1126: README Monorepo Reality Alignment
 
-> **Status**: `[x]` Done — path-to-100 remediated 2026-07-09; ready for independent review
 > **Review State**: Path-to-100 complete after 2026-06-17 rejection (68/100)
 > **Priority**: 🟡 P1
 > **Type**: `housekeeping`

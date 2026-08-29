@@ -272,18 +272,18 @@ class _DSSplitPaneState extends State<DSSplitPane> {
                   height: isHorizontal ? double.infinity : divider,
                   decoration: BoxDecoration(
                     color: _isHovering || _isDragging
-                        ? DSColors.accentCyan.withValues(alpha: 0.3)
+                        ? DSColors.accentBlue.withValues(alpha: 0.3)
                         : (_isFocused
-                              ? DSColors.accentCyan.withValues(alpha: 0.2)
+                              ? DSColors.focusRing
                               : effectiveDividerColor),
                   ),
                   child: Center(
                     child: _buildDragHandle(
                       isHorizontal: isHorizontal,
                       color: (_isHovering || _isDragging)
-                          ? DSColors.accentCyan
+                          ? DSColors.accentBlue
                           : (_isFocused
-                                ? DSColors.accentCyan.withValues(alpha: 0.7)
+                                ? DSColors.focusRing
                                 : effectiveHandleColor),
                     ),
                   ),

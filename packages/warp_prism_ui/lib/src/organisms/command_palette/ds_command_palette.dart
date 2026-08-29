@@ -396,7 +396,7 @@ class _SearchField extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const DSIcon(Icons.search, color: DSColors.accentCyan, size: 20),
+          DSIcon(Icons.search, color: DSColors.accentBlue, size: 20),
           const SizedBox(width: DSSpacing.sm),
           Expanded(
             child: TextField(
@@ -500,12 +500,12 @@ class _CatChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bg = isActive
-        ? DSColors.accentCyan.withValues(alpha: 0.15)
+        ? DSColors.accentBlue.withValues(alpha: 0.15)
         : DSColors.transparent;
     final border = isActive
-        ? DSColors.accentCyan.withValues(alpha: 0.4)
+        ? DSColors.focusRing
         : DSColors.borderSubtle;
-    final fg = isActive ? DSColors.accentCyan : DSColors.textTertiary;
+    final fg = isActive ? DSColors.accentBlue : DSColors.textTertiary;
 
     return Semantics(
       button: true,
@@ -675,12 +675,12 @@ class _CommandItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bg = isSelected
-        ? DSColors.accentCyan.withValues(alpha: 0.08)
+        ? DSColors.accentBlue.withValues(alpha: 0.08)
         : DSColors.transparent;
     final borderColor = isSelected
-        ? DSColors.accentCyan.withValues(alpha: 0.2)
+        ? DSColors.focusRing
         : DSColors.transparent;
-    final iconColor = isSelected ? DSColors.accentCyan : DSColors.textSecondary;
+    final iconColor = isSelected ? DSColors.accentBlue : DSColors.textSecondary;
 
     return Semantics(
       button: true,

@@ -13,7 +13,7 @@ import 'ds_interactive_surface.dart';
 ///
 /// | Health | Accent Color | Use Case |
 /// |--------|-------------|----------|
-/// | healthy (default) | Caller color or accentCyan | Normal operation |
+/// | healthy (default) | Caller color or retained accentCyan | Passive normal-operation metric |
 /// | degraded | statusWarning | Partial impairment |
 /// | error | statusError | Operational failure |
 /// | disabled | textDisabled | Intentionally inactive |
@@ -99,7 +99,13 @@ class DSMetricTile extends StatelessWidget {
                     animated: health == DSMetricTileHealth.error,
                   ),
                   const SizedBox(width: 4),
-                  DSText.labelSmall(health!.label, color: accentColor),
+                  Flexible(
+                    child: DSText.labelSmall(
+                      health!.label,
+                      color: accentColor,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
                 ],
               ),
             ],
@@ -144,7 +150,7 @@ enum DSTrend { up, down, flat }
 ///
 /// Maps operational health to semantic accent colors.
 enum DSMetricTileHealth {
-  /// Normal operation — uses caller-specified accent or accentCyan.
+  /// Passive normal operation — uses caller-specified accent or accentCyan.
   healthy(DSColors.statusHealthy, 'Healthy'),
 
   /// Partial impairment — amber warning.

@@ -33,9 +33,9 @@ class DSTopbar extends StatelessWidget {
       explicitChildNodes: true,
       child: Container(
         constraints: const BoxConstraints(minHeight: DSSpacing.topbarHeight),
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: DSColors.obsidianBase,
-          border: Border(
+          border: const Border(
             bottom: BorderSide(color: DSColors.borderSubtle, width: 1),
           ),
         ),
@@ -164,12 +164,12 @@ class _DSTopbarActionState extends State<DSTopbarAction> {
   @override
   Widget build(BuildContext context) {
     final bgColor = widget.active
-        ? DSColors.accentCyan.withValues(alpha: 0.15)
+        ? DSColors.accentBlue.withValues(alpha: 0.15)
         : (_isFocused
               ? DSColors.obsidianActive
               : (_isHovered ? DSColors.obsidianHover : DSColors.transparent));
     final iconColor = widget.active
-        ? DSColors.accentCyan
+        ? DSColors.accentBlue
         : (_isHovered || _isFocused
               ? DSColors.textPrimary
               : DSColors.textSecondary);
@@ -209,7 +209,7 @@ class _DSTopbarActionState extends State<DSTopbarAction> {
                   borderRadius: BorderRadius.circular(DSRadii.md),
                   border: _isFocused
                       ? Border.all(
-                          color: DSColors.accentCyan.withValues(alpha: 0.5),
+                          color: DSColors.focusRing,
                           width: 2,
                         )
                       : null,
@@ -223,7 +223,7 @@ class _DSTopbarActionState extends State<DSTopbarAction> {
                         right: 4,
                         child: DSBadge.count(
                           widget.badge!,
-                          color: DSColors.accentCyan,
+                          color: DSColors.accentBlue,
                           size: DSBadgeSize.small,
                         ),
                       ),

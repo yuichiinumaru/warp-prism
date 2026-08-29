@@ -8,6 +8,7 @@ import '../ds_interactive_surface.dart';
 enum DSDialogSize {
   /// Small modal dialog (360px max width).
   sm,
+
   /// Medium modal dialog (520px max width).
   md,
 
@@ -42,12 +43,11 @@ class DSDialogAction {
   factory DSDialogAction.cancel({
     String label = 'Cancel',
     VoidCallback? onPressed,
-  }) =>
-      DSDialogAction(
-        label: label,
-        onPressed: onPressed,
-        variant: DSButtonVariant.secondary,
-      );
+  }) => DSDialogAction(
+    label: label,
+    onPressed: onPressed,
+    variant: DSButtonVariant.secondary,
+  );
 
   /// Factory for primary/confirm action.
   factory DSDialogAction.confirm({
@@ -55,14 +55,13 @@ class DSDialogAction {
     VoidCallback? onPressed,
     IconData? icon,
     bool isLoading = false,
-  }) =>
-      DSDialogAction(
-        label: label,
-        onPressed: onPressed,
-        variant: DSButtonVariant.primary,
-        icon: icon,
-        isLoading: isLoading,
-      );
+  }) => DSDialogAction(
+    label: label,
+    onPressed: onPressed,
+    variant: DSButtonVariant.primary,
+    icon: icon,
+    isLoading: isLoading,
+  );
 
   /// Factory for danger action.
   factory DSDialogAction.danger({
@@ -70,14 +69,13 @@ class DSDialogAction {
     VoidCallback? onPressed,
     IconData? icon,
     bool isLoading = false,
-  }) =>
-      DSDialogAction(
-        label: label,
-        onPressed: onPressed,
-        variant: DSButtonVariant.danger,
-        icon: icon,
-        isLoading: isLoading,
-      );
+  }) => DSDialogAction(
+    label: label,
+    onPressed: onPressed,
+    variant: DSButtonVariant.danger,
+    icon: icon,
+    isLoading: isLoading,
+  );
 }
 
 /// ASW Observatory Molecule - Modal Dialog
@@ -123,7 +121,8 @@ class DSDialog extends StatefulWidget {
     return showGeneralDialog<T>(
       context: context,
       barrierDismissible: barrierDismissible,
-      barrierColor: barrierColor ?? DSColors.obsidianDeep.withValues(alpha: 0.7),
+      barrierColor:
+          barrierColor ?? DSColors.obsidianDeep.withValues(alpha: 0.7),
       barrierLabel: barrierLabel,
       useRootNavigator: useRootNavigator,
       routeSettings: routeSettings,
@@ -139,7 +138,10 @@ class DSDialog extends StatefulWidget {
         return FadeTransition(
           opacity: curvedAnimation,
           child: ScaleTransition(
-            scale: Tween<double>(begin: 0.95, end: 1.0).animate(curvedAnimation),
+            scale: Tween<double>(
+              begin: 0.95,
+              end: 1.0,
+            ).animate(curvedAnimation),
             child: child,
           ),
         );
@@ -211,7 +213,10 @@ class _DSDialogState extends State<DSDialog> {
     if (widget.actions.isEmpty) return;
     // Find primary or first enabled action
     final primaryAction = widget.actions.firstWhere(
-      (a) => a.variant == DSButtonVariant.primary && a.enabled && a.onPressed != null,
+      (a) =>
+          a.variant == DSButtonVariant.primary &&
+          a.enabled &&
+          a.onPressed != null,
       orElse: () => widget.actions.firstWhere(
         (a) => a.enabled && a.onPressed != null,
         orElse: () => widget.actions.first,
@@ -234,7 +239,9 @@ class _DSDialogState extends State<DSDialog> {
     Widget header = const SizedBox.shrink();
     if (widget.customHeader != null) {
       header = widget.customHeader!(context);
-    } else if (widget.title != null || widget.subtitle != null || widget.icon != null) {
+    } else if (widget.title != null ||
+        widget.subtitle != null ||
+        widget.icon != null) {
       header = Container(
         padding: const EdgeInsets.symmetric(
           horizontal: DSSpacing.lg,
@@ -248,7 +255,7 @@ class _DSDialogState extends State<DSDialog> {
         child: Row(
           children: [
             if (widget.icon != null) ...[
-              DSIcon(widget.icon!, color: DSColors.accentCyan, size: 20),
+              DSIcon(widget.icon!, color: DSColors.accentBlue, size: 20),
               const SizedBox(width: DSSpacing.sm),
             ],
             Expanded(
@@ -341,7 +348,9 @@ class _DSDialogState extends State<DSDialog> {
             _handleEnterAction(context);
           },
         },
-        child: FocusTraversalGroup(
+        child: Focus(
+          focusNode: _focusNode,
+          autofocus: true,
           child: Center(
             child: Material(
               type: MaterialType.transparency,

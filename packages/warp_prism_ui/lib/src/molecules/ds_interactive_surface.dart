@@ -132,7 +132,7 @@ class _DSInteractiveSurfaceState extends State<DSInteractiveSurface> {
     if (!_isFocused) return base;
 
     final focusBorder = Border.all(
-      color: DSColors.accentCyan.withValues(alpha: 0.5),
+      color: DSColors.focusRing,
       width: 2,
     );
 

@@ -1,6 +1,5 @@
 # Task 1208: Existing Task Lane Reconciliation and Review Backlog Snapshot
 
-> **Status**: `[x]` Promoted
 > **Review State**: `Promoted` — final reviewer-orchestrator verification 2026-06-26; 95/95 tasks annotated, snapshot report verified against live headers; promoted to 04-completed
 > **Priority**: 🔴 P0
 > **Type**: `governance`

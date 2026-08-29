@@ -1,6 +1,5 @@
 # Task 1305: Catalog Contract Expansion
 
-> **Status**: `[x]` Builder Done / Ready for Review
 > **Review State**: Held In Review — residual F8–F11 closed (2026-07-10); ready for re-score; remain `03-review/`
 > **Priority**: 🟡 P1
 > **Type**: `feature`

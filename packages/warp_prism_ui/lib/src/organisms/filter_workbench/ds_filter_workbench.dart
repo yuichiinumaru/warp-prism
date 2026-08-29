@@ -850,9 +850,7 @@ class _TextCriterionFieldState extends State<_TextCriterionField> {
 
   @override
   Widget build(BuildContext context) {
-    final border = _focused
-        ? DSColors.accentCyan.withValues(alpha: 0.5)
-        : DSColors.borderSubtle;
+    final border = _focused ? DSColors.focusRing : DSColors.borderSubtle;
 
     return Semantics(
       textField: true,
@@ -872,7 +870,7 @@ class _TextCriterionFieldState extends State<_TextCriterionField> {
           focusNode: _focusNode,
           onChanged: widget.onChanged,
           style: DSTypography.bodyMedium.copyWith(color: DSColors.textPrimary),
-          cursorColor: DSColors.accentCyan,
+          cursorColor: DSColors.accentBlue,
           decoration: InputDecoration(
             isDense: true,
             border: InputBorder.none,
@@ -926,13 +924,11 @@ class _BooleanCriterionRow extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: DSSpacing.sm),
               decoration: BoxDecoration(
                 color: value
-                    ? DSColors.accentCyan.withValues(alpha: 0.12)
+                    ? DSColors.accentBlue.withValues(alpha: 0.12)
                     : DSColors.obsidianElevated,
                 borderRadius: BorderRadius.circular(DSRadii.md),
                 border: Border.all(
-                  color: value
-                      ? DSColors.accentCyan.withValues(alpha: 0.45)
-                      : DSColors.borderSubtle,
+                  color: value ? DSColors.focusRing : DSColors.borderSubtle,
                 ),
               ),
               child: Row(
@@ -942,14 +938,14 @@ class _BooleanCriterionRow extends StatelessWidget {
                         ? Icons.check_box_outlined
                         : Icons.check_box_outline_blank,
                     size: 20,
-                    color: value ? DSColors.accentCyan : DSColors.textTertiary,
+                    color: value ? DSColors.accentBlue : DSColors.textTertiary,
                   ),
                   const SizedBox(width: DSSpacing.sm),
                   Expanded(
                     child: DSText.labelMedium(
                       value ? 'Enabled' : 'Disabled',
                       color: value
-                          ? DSColors.accentCyan
+                          ? DSColors.accentBlue
                           : DSColors.textSecondary,
                     ),
                   ),
@@ -1233,15 +1229,13 @@ class _WorkbenchButtonState extends State<_WorkbenchButton> {
     final highlight = _hovered || _focused;
     final bg = emphasized
         ? (highlight
-              ? DSColors.accentCyan.withValues(alpha: 0.28)
-              : DSColors.accentCyan.withValues(alpha: 0.18))
+              ? DSColors.accentBlue.withValues(alpha: 0.28)
+              : DSColors.accentBlue.withValues(alpha: 0.18))
         : (highlight ? DSColors.obsidianHover : DSColors.obsidianElevated);
-    final border = emphasized
-        ? DSColors.accentCyan.withValues(alpha: _focused ? 0.8 : 0.5)
-        : (_focused
-              ? DSColors.accentCyan.withValues(alpha: 0.45)
-              : DSColors.borderSubtle);
-    final fg = emphasized ? DSColors.accentCyan : DSColors.textSecondary;
+    final border = _focused
+        ? DSColors.focusRing
+        : (emphasized ? DSColors.focusRing : DSColors.borderSubtle);
+    final fg = emphasized ? DSColors.accentBlue : DSColors.textSecondary;
 
     return Semantics(
       button: true,
@@ -1382,7 +1376,7 @@ class _IconHitState extends State<_IconHit> {
                   widget.icon,
                   size: 18,
                   color: highlight
-                      ? DSColors.accentCyan
+                      ? DSColors.accentBlue
                       : DSColors.textSecondary,
                 ),
               ),
