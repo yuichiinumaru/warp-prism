@@ -80,13 +80,13 @@ class _McpInspectorPageState extends State<McpInspectorPage> {
                   state.notes ??
                   'Pilot B — fixture connection; no live STDIO in Warp Prism',
               icon: Icons.bug_report_outlined,
-              accentColor: PrismColors.accentGold,
+              accentColor: PrismTheme.accentOf(context),
               insights: [
                 PrismStoryInsight(
                   text: 'Server: ${state.selectedServerName}',
                   detail: 'Connection: ${state.connectionStatus}',
                   value: state.connectionStatus,
-                  color: PrismColors.accentGold,
+                  color: PrismTheme.accentOf(context),
                 ),
                 PrismStoryInsight(
                   text: '${state.tools.length} tools',

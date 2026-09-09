@@ -1,3 +1,6 @@
+@Tags(['golden'])
+library;
+
 // Golden tests for PrismAgentTranscript — EPIC-16 agent transcript default.
 //
 // Task 1614. Fixed surface size + deterministic multi-role fixture only.

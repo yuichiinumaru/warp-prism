@@ -1,0 +1,17 @@
+[package]
+name = "warp_bridge_frb"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "staticlib", "rlib"]
+
+[dependencies]
+warp_bridge_core = { path = "../warp_bridge_core" }
+flutter_rust_bridge = "=2.13.0"
+tokio = { version = "1.53.1", features = ["rt", "sync", "time"] }
+
+[lints.rust]
+unexpected_cfgs = { level = "allow", check-cfg = ['cfg(frb_expand)'] }
+
+

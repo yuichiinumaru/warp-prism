@@ -12,6 +12,12 @@ dependencies:
     sdk: flutter
   warp_prism_ui:
     path: ../../packages/warp_prism_ui
+  warp_prism_runtime:
+    path: ../../packages/warp_prism_runtime
+  warp_prism_bindings:
+    path: ../../packages/warp_prism_bindings
+  warp_prism_adapter_frb:
+    path: ../../packages/warp_prism_adapter_frb
 
 dev_dependencies:
   flutter_test:
@@ -19,6 +25,10 @@ dev_dependencies:
   integration_test:
     sdk: flutter
   flutter_lints: ^4.0.0
+  warp_prism_host_exercise:
+    path: ../../packages/warp_prism_host_exercise
+  warp_prism_testkit:
+    path: ../../packages/warp_prism_testkit
 
 flutter:
   uses-material-design: true

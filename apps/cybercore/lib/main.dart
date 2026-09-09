@@ -15,9 +15,9 @@ class WarpPrismCyberCoreApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // CyberCore opt-in OmniRoute teal skin (Task 1616) applied over
-    // canonical PrismTheme.dark() factory. Observatory keeps
-    // PrismColors.accentBlue (#2F81FF) as the global static default.
+    // CyberCore opt-in OmniRoute teal skin (Task 1616) installed on
+    // ThemeData only via applyToTheme, preserving the tooling-only
+    // registry boundary.
     final theme = const PrismCyberCoreTealSkin.omniRoute().applyToTheme(
       PrismTheme.dark(),
     );

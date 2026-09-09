@@ -91,13 +91,13 @@ class _McpServersPageState extends State<McpServersPage> {
               subtitle:
                   'Pilot B — fixture-backed read-only mirror of /mcp-servers',
               icon: Icons.dns_outlined,
-              accentColor: PrismColors.accentViolet,
+              accentColor: PrismTheme.accentOf(context),
               insights: [
                 PrismStoryInsight(
                   text: '${servers.length} servers',
                   detail: '$active active, $errored with errors',
                   value: '${servers.length}',
-                  color: PrismColors.accentViolet,
+                  color: PrismTheme.accentOf(context),
                 ),
               ],
             ),

@@ -4,6 +4,7 @@ import '../tokens/ds_radii.dart';
 import '../tokens/ds_taldarim_red_skin.dart';
 import '../tokens/ds_talon_purple_skin.dart';
 import '../tokens/ds_typography.dart';
+import '../tokens/prism_token_registry.dart';
 
 /// Internal canonical ThemeData factory for Black Obsidian design contract.
 abstract final class DSTheme {
@@ -192,5 +193,74 @@ abstract final class DSTheme {
   }) {
     const skin = DSTalonPurpleSkin.talonPurple();
     return skin.applyToTheme(dark(extensions: extensions));
+  }
+
+  // === THEME-ROLE / ACCENT RECIPE RESOLUTION HELPERS ===
+
+  /// Resolves the active primary action accent color from [context].
+  ///
+  /// Priority:
+  /// 1. Opt-in [PrismAccentSkin] ThemeExtension registered on the theme.
+  /// 2. [ThemeData.colorScheme.primary] if configured.
+  /// 3. Fallback: [DSColors.accentBlue] (registry-backed static default).
+  static Color accentOf(BuildContext context) {
+    final theme = Theme.of(context);
+    for (final ext in theme.extensions.values) {
+      if (ext is PrismAccentSkin) {
+        return (ext as PrismAccentSkin).accent;
+      }
+    }
+    final primary = theme.colorScheme.primary;
+    if (primary != Colors.transparent && primary.toARGB32() != 0) {
+      return primary;
+    }
+    return DSColors.accentBlue;
+  }
+
+  /// Resolves the active muted action accent color from [context].
+  static Color accentMutedOf(BuildContext context) {
+    final theme = Theme.of(context);
+    for (final ext in theme.extensions.values) {
+      if (ext is PrismAccentSkin) {
+        return (ext as PrismAccentSkin).accentMuted;
+      }
+    }
+    final inversePrimary = theme.colorScheme.inversePrimary;
+    if (inversePrimary != Colors.transparent &&
+        inversePrimary.toARGB32() != 0) {
+      return inversePrimary;
+    }
+    return DSColors.accentBlueMuted;
+  }
+
+  /// Resolves the active dim action accent color from [context].
+  static Color accentDimOf(BuildContext context) {
+    final theme = Theme.of(context);
+    for (final ext in theme.extensions.values) {
+      if (ext is PrismAccentSkin) {
+        return (ext as PrismAccentSkin).accentDim;
+      }
+    }
+    final container = theme.colorScheme.primaryContainer;
+    if (container != Colors.transparent && container.toARGB32() != 0) {
+      return container;
+    }
+    return DSColors.accentBlueDim;
+  }
+
+  /// Resolves the active high-contrast keyboard focus indicator color (2px outline).
+  static Color focusRingOf(BuildContext context) {
+    return accentOf(context).withValues(alpha: 0.5);
+  }
+
+  /// Resolves the active border glow color from [context].
+  static Color borderGlowOf(BuildContext context) {
+    final theme = Theme.of(context);
+    for (final ext in theme.extensions.values) {
+      if (ext is PrismAccentSkin) {
+        return (ext as PrismAccentSkin).borderGlow;
+      }
+    }
+    return accentOf(context);
   }
 }

@@ -1,3 +1,6 @@
+@Tags(['golden'])
+library;
+
 // Golden tests for DSText — renders text atom with default bodyMedium variant.
 //
 // Run from packages/warp_prism_ui/:

@@ -1,3 +1,6 @@
+@Tags(['golden'])
+library;
+
 // Golden tests for DSMetricTile — renders metric tiles with health states,
 // trend indicators, and the compact variant.
 //

@@ -2,8 +2,21 @@
 
 > **Required**: Every executable Warp Prism task in `01-open/` or later lanes
 > must use this template or preserve all required sections. Minimum length: 50
-> lines. Planning artifacts in `00-planning/` do not use this executable task
-> identity.
+> lines.
+>
+> **Lane semantics (reconciled with AGENTS.md §3.1, 2026-09-01)**:
+> `00-planning/` may contain BOTH planning artifacts (EPIC/PLAN/CANDIDATE/etc.)
+> AND numbered/materialized Tasks intentionally HOLD/not-ready — a dependency,
+> external gate, or promotion condition is unmet. `01-open/` means
+> **executable NOW**: every hard dependency satisfied, no known blocker, scope
+> and non-goals explicit, architecture dispositioned, writeset identifiable,
+> validation commands known. A numbered Task keeps its identity when moving
+> between lanes; the lane is the only readiness source.
+>
+> **Milestone Alignment**: every numbered/materialized Task must carry a
+> `## Milestone Alignment` section (Target milestone / Capability-Gate advanced
+> / Strategic why / Consequence if absent — see the `docs/tasks/AGENTS.md`
+> shared baseline and `docs/milestones.md`).
 
 ---
 
@@ -23,6 +36,15 @@
 > Task identity is lane-neutral. Use `Task NNNN` plus optional slug for
 > dependencies, blockers, review ledgers, reports, and architecture references.
 > Lanes such as `02-doing` and `03-review` are mutable status, not identity.
+
+---
+
+## Milestone Alignment
+
+- **Target milestone**: [milestone ID in `docs/milestones.md`]
+- **Capability / Gate advanced**: [gate or capability this task advances]
+- **Strategic why**: [why this is necessary now for the milestone]
+- **Consequence if absent**: [what breaks or stays unverified without it]
 
 ---
 

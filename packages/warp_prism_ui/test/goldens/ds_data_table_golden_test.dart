@@ -1,3 +1,6 @@
+@Tags(['golden'])
+library;
+
 // Golden tests for DSDataTable — renders data table organism with deterministic
 // columns and rows.
 //

@@ -1,3 +1,6 @@
+@Tags(['golden'])
+library;
+
 // Golden tests for PrismEntityIntelPanel — EPIC-15 intel organism default.
 //
 // Task 1520. Fixed surface size + public fixture selection/registry only.

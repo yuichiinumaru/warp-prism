@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../molecules/ds_interactive_surface.dart';
+import '../../theme/ds_theme.dart';
 import '../../tokens/tokens.dart';
 import '../ds_glass_panel.dart';
 import '../ds_glow_border.dart';
@@ -118,8 +119,7 @@ class DSButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final activeAccent =
-        DSCyberCoreTealSkin.maybeOf(context)?.accent ?? DSColors.accentBlue;
+    final activeAccent = DSTheme.accentOf(context);
 
     final Color foregroundColor;
     switch (variant) {

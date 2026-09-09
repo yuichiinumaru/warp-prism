@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'ds_colors.dart';
 import 'ds_radii.dart';
+import 'prism_token_registry.dart';
 
 /// Optional Taldarim Red accent skin (Protoss lore: Tal'darim crimson energy).
 ///
@@ -19,7 +20,8 @@ import 'ds_radii.dart';
 /// want Taldarim Red identity must install it via [ThemeData.extensions] or call
 /// [applyToTheme] / [DSTheme.taldarimRed()].
 @immutable
-class DSTaldarimRedSkin extends ThemeExtension<DSTaldarimRedSkin> {
+class DSTaldarimRedSkin extends ThemeExtension<DSTaldarimRedSkin>
+    implements PrismAccentSkin {
   /// Primary Taldarim Red crimson energy (`#E51A4C`).
   static const Color coreRed = Color(0xFFE51A4C);
 
@@ -45,15 +47,19 @@ class DSTaldarimRedSkin extends ThemeExtension<DSTaldarimRedSkin> {
       borderGlow = coreRed;
 
   /// Primary energy accent (crimson).
+  @override
   final Color accent;
 
   /// Muted energy accent.
+  @override
   final Color accentMuted;
 
   /// Dim energy accent.
+  @override
   final Color accentDim;
 
   /// Luminous border / glow edge color for Taldarim chrome.
+  @override
   final Color borderGlow;
 
   /// Resolves the extension from [context], or `null` when not installed.

@@ -1,3 +1,6 @@
+@Tags(['golden'])
+library;
+
 // Golden tests for DSShell — renders shell organism with fixed viewport
 // and deterministic children.
 //

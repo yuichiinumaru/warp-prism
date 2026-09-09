@@ -1216,30 +1216,33 @@ class _ComposerBar extends StatelessWidget {
                     child: Semantics(
                       textField: true,
                       label: DSAiAnalystPanel.composerFieldSemanticLabel,
-                      child: TextField(
-                        key: DSAiAnalystPanel.composerFieldKey,
-                        controller: controller,
-                        focusNode: focusNode,
-                        enabled: enabled,
-                        minLines: 1,
-                        maxLines: 4,
-                        style: DSTypography.bodyMedium.copyWith(
-                          color: DSColors.textPrimary,
-                        ),
-                        decoration: InputDecoration(
-                          hintText: hint,
-                          hintStyle: DSTypography.bodyMedium.copyWith(
-                            color: DSColors.textTertiary,
+                      child: Material(
+                        type: MaterialType.transparency,
+                        child: TextField(
+                          key: DSAiAnalystPanel.composerFieldKey,
+                          controller: controller,
+                          focusNode: focusNode,
+                          enabled: enabled,
+                          minLines: 1,
+                          maxLines: 4,
+                          style: DSTypography.bodyMedium.copyWith(
+                            color: DSColors.textPrimary,
                           ),
-                          border: InputBorder.none,
-                          isDense: true,
-                          contentPadding: const EdgeInsets.symmetric(
-                            vertical: 12,
+                          decoration: InputDecoration(
+                            hintText: hint,
+                            hintStyle: DSTypography.bodyMedium.copyWith(
+                              color: DSColors.textTertiary,
+                            ),
+                            border: InputBorder.none,
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 12,
+                            ),
                           ),
+                          textInputAction: TextInputAction.send,
+                          onSubmitted: enabled ? (_) => onSend() : null,
+                          inputFormatters: const <TextInputFormatter>[],
                         ),
-                        textInputAction: TextInputAction.send,
-                        onSubmitted: enabled ? (_) => onSend() : null,
-                        inputFormatters: const <TextInputFormatter>[],
                       ),
                     ),
                   ),

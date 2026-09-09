@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_test/flutter_test.dart' hide group;
+// ignore: depend_on_referenced_packages
+import 'package:test_api/scaffolding.dart' show group;
 import 'package:warp_prism_ui/src/atoms/atoms.dart';
 import 'package:warp_prism_ui/src/molecules/molecules.dart';
+import 'package:warp_prism_ui/src/theme/ds_theme.dart';
 import 'package:warp_prism_ui/src/tokens/tokens.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
 
@@ -221,7 +224,7 @@ void main() {
         ...tester.widgetList<AnimatedContainer>(find.byType(AnimatedContainer)),
       ];
       bool foundFocusRing = false;
-      final expectedColor = DSColors.focusRing;
+      final expectedColor = DSTheme.focusRingOf(tester.element(find.byType(DSButton)));
       for (final c in containers) {
         final dec = c is Container
             ? c.decoration
@@ -259,7 +262,7 @@ void main() {
     });
   });
 
-  group('DSButton golden tests', () {
+  group('DSButton golden tests', tags: 'golden', () {
     testWidgets('Primary variant golden', (tester) async {
       await tester.pumpWidget(
         _wrap(DSButton.primary(label: 'Primary Button', onPressed: () {})),

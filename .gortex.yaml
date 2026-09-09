@@ -1,0 +1,41 @@
+# Gortex — track ONLY ./warp-prism (never monorepo root ganthritor/).
+# Flutter ADS (Dart) + Rust bridge. No references dumps, no build bulk.
+workspace: warp-prism
+index:
+  languages: [dart, rust]
+  workers: 4
+  exclude:
+    - "references/**"
+    - "**/references/**"
+    - "docs/**"
+    - "build/**"
+    - "**/build/**"
+    - ".dart_tool/**"
+    - "**/.dart_tool/**"
+    - "target/**"
+    - "**/target/**"
+    - "**/node_modules/**"
+    - "tmp/**"
+    - ".tmp*/**"
+    - ".agents/**"
+    - ".archive/**"
+    - ".changelog/**"
+    - ".memories/**"
+    - ".idea/**"
+    - ".vscode/**"
+    - ".claude/**"
+    - ".gemini/**"
+    - ".serena/**"
+    - ".grok/**"
+    - ".worktrees/**"
+    - "graphify-out/**"
+    - "**/graphify-out/**"
+    - "screenshots/**"
+    - "public/**"
+    - "**/.git/**"
+    - "**/*.log"
+    - "**/*.png"
+    - "**/*.jpg"
+    - "**/*.ico"
+    - "**/*.sqlite"
+    - "**/*.sqlite3"

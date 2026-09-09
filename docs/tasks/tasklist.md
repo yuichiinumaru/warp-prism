@@ -2,7 +2,7 @@
 
 > **Auto-generated**: do not edit manually. Use `project-development/sub-skills/tasklist-sync`.
 > **Source**: individual task files in the task lane directories under `docs/tasks`
-> **Last rebuilt**: 2026-08-24 08:35:01 UTC
+> **Last rebuilt**: 2026-09-08 18:09:26 UTC
 
 ---
 
@@ -10,64 +10,34 @@
 
 | Task | Title | Type | Blocks | Path |
 |------|-------|------|--------|------|
-| 1401 | Observatory Failure Baseline Inventory | `governance` | 1402, 1403, 1404, 1405, 1406, 1407 | `docs/tasks/03-review/1401-warp-prism-observatory-failure-baseline-inventory.md` |
-| 1505 | PrismEntityIntelPanel Organism | `feature` | Task 1519 | `docs/tasks/03-review/1505-warp-prism-entity-intel-panel-organism.md` |
-| 1506 | PrismEntityLocateSearch Organism | `feature` | Task 1519 | `docs/tasks/03-review/1506-warp-prism-entity-locate-search-organism.md` |
-| 1507 | PrismTimeMachineScrubber Organism | `feature` | Task 1519 | `docs/tasks/03-review/1507-warp-prism-time-machine-scrubber-organism.md` |
-| 1508 | PrismStatusTicker Organism | `feature` | Task 1519 | `docs/tasks/03-review/1508-warp-prism-status-ticker-organism.md` |
-| 1510 | PrismOsintWorkbench Organism | `feature` | Task 1519 | `docs/tasks/03-review/1510-warp-prism-osint-workbench-organism.md` |
-| 1617 | Warp Prism Profiles And Changelog Migration | `housekeeping` | Clean agent memory + changelog truth for `warp-prism` | `docs/tasks/03-review/1617-warp-prism-profiles-and-changelog-migration.md` |
-| 1700 | warp-prism-prism-button-atom | `misc` |  | `docs/tasks/03-review/1700-warp-prism-prism-button-atom.md` |
-| 1701 | warp-prism-prism-text-field-atom | `misc` |  | `docs/tasks/03-review/1701-warp-prism-prism-text-field-atom.md` |
-| 1702 | warp-prism-prism-select-dropdown-molecule | `misc` |  | `docs/tasks/03-review/1702-warp-prism-prism-select-dropdown-molecule.md` |
 | 1703 | warp-prism-prism-checkbox-atom | `misc` |  | `docs/tasks/03-review/1703-warp-prism-prism-checkbox-atom.md` |
-| 1704 | warp-prism-prism-switch-toggle-atom | `misc` |  | `docs/tasks/03-review/1704-warp-prism-prism-switch-toggle-atom.md` |
-| 1705 | warp-prism-prism-dialog-modal-molecule | `misc` |  | `docs/tasks/03-review/1705-warp-prism-prism-dialog-modal-molecule.md` |
-| 1706 | warp-prism-prism-breadcrumbs-organism | `misc` |  | `docs/tasks/03-review/1706-warp-prism-prism-breadcrumbs-organism.md` |
-| 1707 | warp-prism-prism-accordion-collapsible-molecule | `misc` |  | `docs/tasks/03-review/1707-warp-prism-prism-accordion-collapsible-molecule.md` |
-| 1801 | Black Obsidian Token Migration and Semantic Palette Mapping | `remediation` | Task 1803, Task 1804 (audit baseline), Task 1805, Task 1806 | `docs/tasks/03-review/1801-warp-prism-black-obsidian-token-migration.md` |
-| 1802 | Typography Roles and Font Asset Correctness | `remediation` | Task 1803, Task 1805 | `docs/tasks/03-review/1802-warp-prism-typography-font-assets.md` |
-| 1803 | Canonical ThemeData and App Host Wiring | `feature` | Task 1805, Task 1806 | `docs/tasks/03-review/1803-warp-prism-canonical-theme-app-wiring.md` |
 | 1805 | Screenshot Visual Acceptance Gate and Golden Policy | `governance` | Task 1806 and promotion of any future visual task | `docs/tasks/03-review/1805-warp-prism-screenshot-visual-acceptance-gate.md` |
 | 1807 | Token Override Layer and PrismThemeEditor Organism | `feature` | Task 1805 (final human approval loop uses this tool) | `docs/tasks/03-review/1807-warp-prism-token-override-theme-editor.md` |
-| 1808 | PrismColorField Molecule (Hex Input + Swatch Picker) | `feature` | N/A (Task 1807 consumes it opportunistically; editor v1 works without it) | `docs/tasks/03-review/1808-warp-prism-color-field-molecule.md` |
 
 ## Review (P1 High)
 
 | Task | Title | Type | Blocks | Path |
 |------|-------|------|--------|------|
-| 1106 | Warp Prism Operational Component MVP | `feature` | Task 1110, Task 1111 | `docs/tasks/03-review/1106-warp-prism-operational-component-mvp.md` |
-| 1302 | Public Barrel Audit | `governance` | 1305 (catalog expansion depends on clean barrel) | `docs/tasks/03-review/1302-warp-prism-public-barrel-audit.md` |
-| 1504 | PrismFilterWorkbench Organism | `feature` | Task 1519 | `docs/tasks/03-review/1504-warp-prism-filter-workbench-organism.md` |
-| 1509 | Stage Chrome Pack (Watchlist, Coordinate Bar, Map Legend) | `feature` | Task 1519 | `docs/tasks/03-review/1509-warp-prism-stage-chrome-pack-organisms.md` |
-| 1511 | PrismAiAnalystPanel Fixture-First Organism | `feature` | Task 1519 | `docs/tasks/03-review/1511-warp-prism-ai-analyst-panel-fixture-organism.md` |
-| 1512 | PrismMapCanvasStage Selection/Layer Contract | `feature` | Task 1513, Task 1519 | `docs/tasks/03-review/1512-warp-prism-map-canvas-stage-contract.md` |
-| 1513 | PrismEntityRelationCard Organism | `feature` | Task 1519 | `docs/tasks/03-review/1513-warp-prism-entity-relation-card-organism.md` |
-| 1514 | PrismFloatingAnalyticsHud Organism | `feature` | Task 1519 | `docs/tasks/03-review/1514-warp-prism-floating-analytics-hud-organism.md` |
-| 1515 | PrismOpsControlCluster + PrismConnectorPanel | `feature` | Task 1519 | `docs/tasks/03-review/1515-warp-prism-ops-control-cluster-connector-panel.md` |
-| 1517 | PrismTerminalWorkspace Fixture Shell | `feature` | Task 1518, Task 1519 | `docs/tasks/03-review/1517-warp-prism-terminal-workspace-fixture-shell.md` |
-| 1804 | Hardcoded Visual-Value and Structural-Color Audit | `verification` | Task 1805, Task 1806 | `docs/tasks/03-review/1804-warp-prism-hardcoded-visual-value-audit.md` |
 | 1806 | Component and Gallery Visual Reconciliation | `ux-polish` | N/A (closes EPIC-18; unblocks future visual feature work) | `docs/tasks/03-review/1806-warp-prism-component-gallery-visual-reconciliation.md` |
-
-## Review (P2 Medium)
-
-| Task | Title | Type | Blocks | Path |
-|------|-------|------|--------|------|
-| 1522 | Optional Keyboard Cheatsheet + Scale Bar + Risk Toast Variant | `feature` | N/A (optional Wave I; if completed, refresh Task 1519 matrix) | `docs/tasks/03-review/1522-warp-prism-optional-keyboard-scale-risk-toast.md` |
-
-## Review (P3 Low)
-
-| Task | Title | Type | Blocks | Path |
-|------|-------|------|--------|------|
-| 1616 | Optional CyberCore Teal ThemeExtension Skin | `ux-polish` | N/A | `docs/tasks/03-review/1616-warp-prism-optional-cybercore-teal-theme-extension-skin.md` |
-| 1809 | Warp Prism Taldarim Red and Talon Purple Accent Themes | `feature` | N/A | `docs/tasks/03-review/1809-warp-prism-taldarim-red-talon-purple-themes.md` |
 
 ## Planning (P0 Critical)
 
 | Task | Title | Type | Blocks | Path |
 |------|-------|------|--------|------|
 | 1100 | Warp Prism Operational Atomic Design System Epic | `planning` | Warp Prism scaffold, Cybernetics Core frontend redesign, shared operational UI grammar | `docs/tasks/00-planning/1100-warp-prism-operational-atomic-design-system-epic.md` |
+| 1816 | Post-1805 Visual/Baseline Freeze | `misc` | Post-v2 visual baseline updates, goldens regeneration v2 | `docs/tasks/00-planning/1816-warp-prism-post-1805-visual-baseline-freeze.md` |
+| 1829 | First Real Product Pilot — OmniRoute Provider Vertical | `misc` | Pilot Harvest → L2 Rewrite-Capable gate | `docs/tasks/00-planning/1829-warp-prism-first-real-product-pilot-hold.md` |
 | EPIC | 17 — Warp Prism ADS: Form Primitives Gap | `misc` |  | `docs/tasks/00-planning/EPIC-17-warp-prism-ads-form-primitives-gap.md` |
+| EPIC | 19 — Warp Prism v2 Foundation | `misc` | EPIC-20 and EPIC-21 (both in PARALLEL after 19-gate), EPIC-22, and any FRB/Rust experiments. | `docs/tasks/00-planning/EPIC-19-warp-prism-v2-foundation.md` |
+| EPIC | 20 — Warp Prism Interaction Design System (IDS) Kernel | `misc` |  | `docs/tasks/00-planning/EPIC-20-warp-prism-ids-kernel.md` |
+| EPIC | 21 — Warp Prism Runtime Contracts (MVP) | `misc` |  | `docs/tasks/00-planning/EPIC-21-warp-prism-runtime-contracts-mvp.md` |
+
+## Planning (P1 High)
+
+| Task | Title | Type | Blocks | Path |
+|------|-------|------|--------|------|
+| EPIC | 22 — Warp Prism Rust Golden Path (flutter_rust_bridge) + Integration Lab | `misc` |  | `docs/tasks/00-planning/EPIC-22-warp-prism-frb-golden-path-integration-lab.md` |
+| EPIC | 23 — Warp Prism Connected Catalog + Component Contract Registry | `misc` |  | `docs/tasks/00-planning/EPIC-23-warp-prism-connected-catalog-component-contract-registry.md` |
 
 ## Planning (P2 Medium)
 
@@ -92,8 +62,19 @@
 | EPIC | 15 — Warp Prism ADS Organism Expansion (Reference Harvest) | `misc` |  | `docs/tasks/00-planning/EPIC-15-warp-prism-ads-organism-expansion-from-reference-harvest.md` |
 | EPIC | 16 — Warp Prism ADS: CyberCore Ops + Agent Transcript Organisms | `misc` |  | `docs/tasks/00-planning/EPIC-16-warp-prism-ads-cybercore-ops-and-agent-transcript-organisms.md` |
 | EPIC | 18 — Warp Prism Black Obsidian Visual Direction Reset | `misc` | New visual component work, visual golden regeneration, and promotion of visual-polish tasks that depend on the current palette. | `docs/tasks/00-planning/EPIC-18-warp-prism-black-obsidian-visual-direction-reset.md` |
+| EPIC-OR-00 | / OR-01 / OR-02 — OmniRoute Cross-Lane Planning Anchors (Parent-Repo Scope) | `misc` |  | `docs/tasks/00-planning/EPIC-OR-warp-prism-omniroute-cross-lane-anchors.md` |
 | Parent | monorepo tasks citing `warp-prism` | `misc` |  | `docs/tasks/00-planning/parent-tasks.md` |
+| PLAN | — Task 1807 Const-Migration Containment (PrismTokenRegistry blast radius) | `misc` |  | `docs/tasks/00-planning/PLAN-task1807-const-migration-containment.md` |
 | ROADMAP | — Warp-Prism ASW Observatory | `misc` |  | `docs/tasks/00-planning/ROADMAP-warp-prism-asw-observatory.md` |
+| Ads-to-Ids | Story Packet v8 — Validated Decomposition (33 Stories) | `misc` |  | `docs/tasks/00-planning/STORIES-ads-to-ids-epics-19-25.md` |
+
+## Planning (P3 Low)
+
+| Task | Title | Type | Blocks | Path |
+|------|-------|------|--------|------|
+| EPIC | 24 — Warp Prism Scaffolding & Extensibility Policy | `misc` |  | `docs/tasks/00-planning/EPIC-24-warp-prism-scaffolding-extensibility-policy.md` |
+| EPIC | 25 — Warp Prism Rewrite Resolver Strategy (Research-Only / Deferred) | `misc` |  | `docs/tasks/00-planning/EPIC-25-warp-prism-rewrite-resolver-strategy.md` |
+| PLAN | — 03-Review Lane Drain (36 parked tasks) | `misc` |  | `docs/tasks/00-planning/PLAN-03-review-drain.md` |
 
 ## Completed (P0)
 
@@ -147,6 +128,7 @@
 | 1301 | Prism Namespace Remediation | `remediation` | 1303, 1304, 1305, 1205 (boundary tests validate this) | `docs/tasks/04-completed/1301-warp-prism-prism-namespace-remediation.md` |
 | 1303 | Component Contract Reconciliation | `remediation` | 1304, 1305, 1306 | `docs/tasks/04-completed/1303-warp-prism-component-contract-reconciliation.md` |
 | 1304 | Gallery Compile Boundary Cleanup | `remediation` | 1305, all package-level test gates | `docs/tasks/04-completed/1304-warp-prism-gallery-compile-boundary-cleanup.md` |
+| 1401 | Observatory Failure Baseline Inventory | `governance` | 1402, 1403, 1404, 1405, 1406, 1407 | `docs/tasks/04-completed/1401-warp-prism-observatory-failure-baseline-inventory.md` |
 | 1402 | Corpus and Frontmatter Contract Audit | `verification` | 1403 (parser reconciliation depends on knowing if corpus is correct) | `docs/tasks/04-completed/1402-warp-prism-corpus-and-frontmatter-contract-audit.md` |
 | 1403 | Parser and Task Projection Reconciliation | `remediation` | 1404, 1405 | `docs/tasks/04-completed/1403-warp-prism-parser-and-task-projection-reconciliation.md` |
 | 1410 | Warp Prism Changelog Engine Metadata Normalization | `governance` | Task 1101/1102/1104/1105/1106/1107/1126 changelog validation gates | `docs/tasks/04-completed/1410-warp-prism-changelog-engine-metadata-normalization.md` |
@@ -155,11 +137,45 @@
 | 1501 | PrismMapHudWorkspace Organism | `feature` | Task 1503, Task 1509, Task 1512, Task 1514, Task 1516 | `docs/tasks/04-completed/1501-warp-prism-map-hud-workspace-organism.md` |
 | 1502 | PrismToolStripSlideout Organism | `feature` | Task 1519 | `docs/tasks/04-completed/1502-warp-prism-tool-strip-slideout-organism.md` |
 | 1503 | PrismLayerControlPanel Organism | `feature` | Task 1519 | `docs/tasks/04-completed/1503-warp-prism-layer-control-panel-organism.md` |
+| 1505 | PrismEntityIntelPanel Organism | `feature` | Task 1519 | `docs/tasks/04-completed/1505-warp-prism-entity-intel-panel-organism.md` |
+| 1506 | PrismEntityLocateSearch Organism | `feature` | Task 1519 | `docs/tasks/04-completed/1506-warp-prism-entity-locate-search-organism.md` |
+| 1507 | PrismTimeMachineScrubber Organism | `feature` | Task 1519 | `docs/tasks/04-completed/1507-warp-prism-time-machine-scrubber-organism.md` |
+| 1508 | PrismStatusTicker Organism | `feature` | Task 1519 | `docs/tasks/04-completed/1508-warp-prism-status-ticker-organism.md` |
+| 1510 | PrismOsintWorkbench Organism | `feature` | Task 1519 | `docs/tasks/04-completed/1510-warp-prism-osint-workbench-organism.md` |
 | 1521 | EPIC-15 Acceptance Audit | `verification` | N/A | `docs/tasks/04-completed/1521-warp-prism-epic-15-acceptance-audit.md` |
 | 1600 | EPIC-16 Inventory + Catalog Showability Brief | `governance` | Task 1601–1616 (inventory lock for the full EPIC-16 open set) | `docs/tasks/04-completed/1600-warp-prism-epic-16-inventory-catalog-showability-brief.md` |
 | 1601 | Catalog / Gallery Showability Verify + Polish | `verification` | N/A (soft enabler for organism gallery demos) | `docs/tasks/04-completed/1601-warp-prism-catalog-gallery-showability-verify-polish.md` |
 | 1615 | EPIC-16 Acceptance Audit | `verification` | N/A | `docs/tasks/04-completed/1615-warp-prism-epic-16-acceptance-audit.md` |
+| 1617 | Warp Prism Profiles And Changelog Migration | `housekeeping` | Clean agent memory + changelog truth for `warp-prism` | `docs/tasks/04-completed/1617-warp-prism-profiles-and-changelog-migration.md` |
+| 1700 | warp-prism-prism-button-atom | `misc` |  | `docs/tasks/04-completed/1700-warp-prism-prism-button-atom.md` |
+| 1701 | warp-prism-prism-text-field-atom | `misc` |  | `docs/tasks/04-completed/1701-warp-prism-prism-text-field-atom.md` |
+| 1702 | warp-prism-prism-select-dropdown-molecule | `misc` |  | `docs/tasks/04-completed/1702-warp-prism-prism-select-dropdown-molecule.md` |
+| 1704 | warp-prism-prism-switch-toggle-atom | `misc` |  | `docs/tasks/04-completed/1704-warp-prism-prism-switch-toggle-atom.md` |
+| 1705 | warp-prism-prism-dialog-modal-molecule | `misc` |  | `docs/tasks/04-completed/1705-warp-prism-prism-dialog-modal-molecule.md` |
+| 1706 | warp-prism-prism-breadcrumbs-organism | `misc` |  | `docs/tasks/04-completed/1706-warp-prism-prism-breadcrumbs-organism.md` |
+| 1707 | warp-prism-prism-accordion-collapsible-molecule | `misc` |  | `docs/tasks/04-completed/1707-warp-prism-prism-accordion-collapsible-molecule.md` |
 | 1800 | Black Obsidian Visual Contract and Approval Packet | `governance` | Task 1801, Task 1802, Task 1803, Task 1804, Task 1805, Task 1806 and all new visual component work | `docs/tasks/04-completed/1800-warp-prism-black-obsidian-visual-contract.md` |
+| 1801 | Black Obsidian Token Migration and Semantic Palette Mapping | `remediation` | Task 1803, Task 1804 (audit baseline), Task 1805, Task 1806 | `docs/tasks/04-completed/1801-warp-prism-black-obsidian-token-migration.md` |
+| 1802 | Typography Roles and Font Asset Correctness | `remediation` | Task 1803, Task 1805 | `docs/tasks/04-completed/1802-warp-prism-typography-font-assets.md` |
+| 1803 | Canonical ThemeData and App Host Wiring | `feature` | Task 1805, Task 1806 | `docs/tasks/04-completed/1803-warp-prism-canonical-theme-app-wiring.md` |
+| 1808 | PrismColorField Molecule (Hex Input + Swatch Picker) | `feature` | N/A (Task 1807 consumes it opportunistically; editor v1 works without it) | `docs/tasks/04-completed/1808-warp-prism-color-field-molecule.md` |
+| 1810 | Charter v2 + ADR + AGENTS Alignment | `misc` | None (parallel root; 1811–1814 proceed independently) | `docs/tasks/04-completed/1810-warp-prism-charter-v2-adr.md` |
+| 1811 | Layer Boundaries + Dependency Law + Boundary Harness v2 | `misc` | Task 1818 (runtime consumer audit reads the layer matrix), Task 1822 (FRB spike reads the layer matrix) | `docs/tasks/04-completed/1811-warp-prism-layer-boundaries-harness.md` |
+| 1812 | Package Topology + Workspace Coordination | `misc` | Task 1818 (consumer audit resolves package ownership from the topology doc), Task 1822 (FRB spike reads the 2-crate topology and Cargo-placement ADR) | `docs/tasks/04-completed/1812-warp-prism-package-topology.md` |
+| 1813 | State-Based Declutter + Root Hygiene | `misc` | Boundary harness full-green state (check 9 ships here); Task 1825 check-9 audit row | `docs/tasks/04-completed/1813-warp-prism-state-based-declutter.md` |
+| 1814 | Interaction Inventory (Evidence-Driven) | `misc` | Task 1815 | `docs/tasks/04-completed/1814-warp-prism-interaction-inventory.md` |
+| 1815 | IDS Candidate Kernel (Selection/Inspection/Query) | `misc` | Task 1817, Task 1820 | `docs/tasks/04-completed/1815-warp-prism-ids-candidate-kernel.md` |
+| 1818 | Runtime Consumer and Source Audit | `misc` | Task 1819 | `docs/tasks/04-completed/1818-warp-prism-runtime-consumer-source-audit.md` |
+| 1819 | Experimental Runtime Contracts + Fakes/Testkit | `misc` | Task 1820, Task 1823 | `docs/tasks/04-completed/1819-warp-prism-experimental-runtime-contracts-testkit.md` |
+| 1820 | Bindings Proof (IDS ∥ Runtime Convergence) | `misc` | Task 1821, Task 1824 | `docs/tasks/04-completed/1820-warp-prism-bindings-proof-ids-runtime-convergence.md` |
+| 1822 | FRB Candidate Compatibility and Build Spike (Kill-Gate) | `misc` | Task 1823 | `docs/tasks/04-completed/1822-warp-prism-frb-candidate-spike-kill-gate.md` |
+| 1823 | Minimal Rust Bridge Substrate (2 Crates) | `misc` | Task 1824 | `docs/tasks/04-completed/1823-warp-prism-minimal-rust-bridge-substrate.md` |
+| 1824 | FRB Integration Lab Parity (Single Hypothesis) | `misc` | Task 1825 | `docs/tasks/04-completed/1824-warp-prism-frb-integration-lab-parity.md` |
+| 1825 | Integration Readiness / L1 Exit Gate + Harvest Checklist | `misc` | First Real Product Pilot (OmniRoute vertical slice) | `docs/tasks/04-completed/1825-warp-prism-integration-readiness-l1-exit-gate.md` |
+| 1831 | Host Composition Contract — Material Ancestry for Shared Components | `remediation` | Task 1805 (fresh trustworthy visual packet requires technically correct hosts) | `docs/tasks/04-completed/1831-warp-prism-host-composition-material-contract.md` |
+| 1832 | Responsive Layout Contract — Fixed-Height Overflow in Shared Organisms | `remediation` | Task 1805 (fresh trustworthy visual packet requires technically correct hosts) | `docs/tasks/04-completed/1832-warp-prism-responsive-layout-contract-overflow.md` |
+| 1833 | Theme-Role and Accent Propagation — Interactive Recipe Consistency | `remediation` | Task 1805 (criteria 3/5/9/11 cannot be judged until propagation is consistent) | `docs/tasks/04-completed/1833-warp-prism-theme-role-accent-propagation.md` |
+| 1838 | Real-Host Composition Revalidation Evidence — 1805 Criteria 3/5/9/11 | `verification` | Task 1805 criteria 3/5/11 re-judgment (owner human gate follows this evidence) | `docs/tasks/04-completed/1838-warp-prism-real-host-revalidation-evidence.md` |
 
 ## Completed (P1)
 
@@ -194,6 +210,7 @@
 | 1050 | Warp-Prism Storytelling and Demo Narrative Pass | `feature` | Task 1060 | `docs/tasks/04-completed/1050-warp-prism-storytelling-demo-narrative-pass.md` |
 | 1070 | Warp-Prism Task Namespace Integrity Verification | `governance` | promotion of new Warp Prism task waves that introduce additional task-number namespaces | `docs/tasks/04-completed/1070-warp-prism-task-namespace-integrity-verification.md` |
 | 1103 | Warp Prism Flutter Tooling And Scaffold | `feature` | ~~Task 1104, Task 1105, Task 1106~~ → see Task 1107 | `docs/tasks/04-completed/1103-warp-prism-flutter-tooling-and-scaffold.md` |
+| 1106 | Warp Prism Operational Component MVP | `feature` | Task 1110, Task 1111 | `docs/tasks/04-completed/1106-warp-prism-operational-component-mvp.md` |
 | 1110 | Warp Prism CyberCore Fixture Backed App Shell MVP | `feature` | Task 1111 | `docs/tasks/04-completed/1110-warp-prism-cybercore-fixture-backed-app-shell-mvp.md` |
 | 1115 | Warp Prism Loading Skeleton And Error Boundary | `feature` | CyberCore screens, Task 1123 (virtual scroll integration) | `docs/tasks/04-completed/1115-warp-prism-loading-skeleton-error-boundary.md` |
 | 1116 | Warp Prism Notification Toast System | `feature` | CyberCore mutation screens (future), any screen requiring user feedback | `docs/tasks/04-completed/1116-warp-prism-notification-toast-system.md` |
@@ -204,6 +221,7 @@
 | 1204 | Melos Test Script Normalization | `housekeeping` | 1205, 1207 | `docs/tasks/04-completed/1204-warp-prism-melos-test-script-normalization.md` |
 | 1206 | Pre-existing Failure Classification Policy | `governance` | All future task promotion decisions involving pre-existing failures. | `docs/tasks/04-completed/1206-warp-prism-pre-existing-failure-classification-policy.md` |
 | 1207 | Review Packet Generator | `governance` | Future review waves | `docs/tasks/04-completed/1207-warp-prism-review-packet-generator.md` |
+| 1302 | Public Barrel Audit | `governance` | 1305 (catalog expansion depends on clean barrel) | `docs/tasks/04-completed/1302-warp-prism-public-barrel-audit.md` |
 | 1305 | Catalog Contract Expansion | `feature` | Golden baseline (1306) | `docs/tasks/04-completed/1305-warp-prism-catalog-contract-expansion.md` |
 | 1306 | Golden Baseline MVP | `testing` | Future ADS component promotion | `docs/tasks/04-completed/1306-warp-prism-golden-baseline-mvp.md` |
 | 1307 | Accessibility and Semantics Reconciliation | `remediation` | Future ADS component promotion | `docs/tasks/04-completed/1307-warp-prism-accessibility-and-semantics-reconciliation.md` |
@@ -214,7 +232,15 @@
 | 1406 | History and Operate Feature Flow Reconciliation | `remediation` | 1407 | `docs/tasks/04-completed/1406-warp-prism-history-and-operate-feature-flow-reconciliation.md` |
 | 1407 | Legacy Test Retirement or Rewrite Audit | `governance` | Final Observatory gate green status | `docs/tasks/04-completed/1407-warp-prism-legacy-test-retirement-or-rewrite-audit.md` |
 | 1408 | Observatory Package Imports Cleanup | `housekeeping` | None (quality improvement, not gate blocker) | `docs/tasks/04-completed/1408-warp-prism-observatory-package-imports-cleanup.md` |
+| 1504 | PrismFilterWorkbench Organism | `feature` | Task 1519 | `docs/tasks/04-completed/1504-warp-prism-filter-workbench-organism.md` |
+| 1509 | Stage Chrome Pack (Watchlist, Coordinate Bar, Map Legend) | `feature` | Task 1519 | `docs/tasks/04-completed/1509-warp-prism-stage-chrome-pack-organisms.md` |
+| 1511 | PrismAiAnalystPanel Fixture-First Organism | `feature` | Task 1519 | `docs/tasks/04-completed/1511-warp-prism-ai-analyst-panel-fixture-organism.md` |
+| 1512 | PrismMapCanvasStage Selection/Layer Contract | `feature` | Task 1513, Task 1519 | `docs/tasks/04-completed/1512-warp-prism-map-canvas-stage-contract.md` |
+| 1513 | PrismEntityRelationCard Organism | `feature` | Task 1519 | `docs/tasks/04-completed/1513-warp-prism-entity-relation-card-organism.md` |
+| 1514 | PrismFloatingAnalyticsHud Organism | `feature` | Task 1519 | `docs/tasks/04-completed/1514-warp-prism-floating-analytics-hud-organism.md` |
+| 1515 | PrismOpsControlCluster + PrismConnectorPanel | `feature` | Task 1519 | `docs/tasks/04-completed/1515-warp-prism-ops-control-cluster-connector-panel.md` |
 | 1516 | PrismViewPresets + PrismWorkspaceShareCard | `feature` | Task 1519 | `docs/tasks/04-completed/1516-warp-prism-view-presets-workspace-share-card.md` |
+| 1517 | PrismTerminalWorkspace Fixture Shell | `feature` | Task 1518, Task 1519 | `docs/tasks/04-completed/1517-warp-prism-terminal-workspace-fixture-shell.md` |
 | 1518 | PrismAgentShellPanel Read-Only Transcript | `feature` | Task 1519 | `docs/tasks/04-completed/1518-warp-prism-agent-shell-panel-read-only-transcript.md` |
 | 1519 | EPIC-15 Gallery + Catalog Registration | `feature` | Task 1520 | `docs/tasks/04-completed/1519-warp-prism-epic-15-gallery-catalog-registration.md` |
 | 1520 | EPIC-15 Goldens + Boundary Alias Audit | `testing` | Task 1521 | `docs/tasks/04-completed/1520-warp-prism-epic-15-goldens-boundary-alias-audit.md` |
@@ -231,6 +257,17 @@
 | 1612 | ADS Package Purity + Interactive State Matrix Hygiene | `governance` | N/A | `docs/tasks/04-completed/1612-warp-prism-package-purity-interactive-state-matrix-hygiene.md` |
 | 1613 | EPIC-16 Gallery + Catalog Registration | `feature` | Task 1614 | `docs/tasks/04-completed/1613-warp-prism-epic-16-gallery-catalog-registration.md` |
 | 1614 | EPIC-16 Goldens + Boundary Alias Audit | `testing` | Task 1615 | `docs/tasks/04-completed/1614-warp-prism-epic-16-goldens-boundary-alias-audit.md` |
+| 1804 | Hardcoded Visual-Value and Structural-Color Audit | `verification` | Task 1805, Task 1806 | `docs/tasks/04-completed/1804-warp-prism-hardcoded-visual-value-audit.md` |
+| 1817 | IDS Proof and Promotion Review | `misc` | Task 1825 | `docs/tasks/04-completed/1817-warp-prism-ids-proof-promotion-review.md` |
+| 1821 | Runtime Promotion-Gate Evidence Pack | `misc` | Task 1825 | `docs/tasks/04-completed/1821-warp-prism-runtime-promotion-gate-evidence.md` |
+| 1826 | HealthSourceBinding (Contracts → UI Closure) | `misc` | 1830 check 16/17 closure sanity (binding completeness) | `docs/tasks/04-completed/1826-warp-prism-health-source-binding.md` |
+| 1827 | Contract Testkit Suite Gap Closure | `misc` | none (independent hardening branch) | `docs/tasks/04-completed/1827-warp-prism-testkit-suite-gap-closure.md` |
+| 1828 | Minimal Connected Catalog Proof (CONNECTED Mode) | `misc` | Pilot feasibility evidence (first real adapter consumption surface) | `docs/tasks/04-completed/1828-warp-prism-minimal-connected-catalog-proof.md` |
+| 1830 | Boundary Checks 16 + 17 Activation | `misc` | none (closes the boundary enforcement surface) | `docs/tasks/04-completed/1830-warp-prism-boundary-checks-16-17-activation.md` |
+| 1834 | Visual Capture Proof Honesty — MissingPluginException Must Not Be PASS | `remediation` | Task 1805 (visual packet must rest on honest capture proof) | `docs/tasks/04-completed/1834-warp-prism-capture-proof-honesty.md` |
+| 1835 | Package-Wide Material Ancestry Meta-Test | `testing` | N/A | `docs/tasks/04-completed/1835-warp-prism-material-ancestry-meta-test.md` |
+| 1836 | Layout-Band Completion — Scrubber/Table Falsified Bands + Trap Hygiene | `remediation` | Task 1805 criterion 10 (density) re-judgment on those bands | `docs/tasks/04-completed/1836-warp-prism-layout-band-completion.md` |
+| 1837 | Golden Suite Tagging — Make `--exclude-tags=golden` Effective | `testing` | N/A (unblocks the documented full-suite validation command for every future task) | `docs/tasks/04-completed/1837-warp-prism-golden-suite-tagging.md` |
 
 ## Completed (P2)
 
@@ -240,17 +277,25 @@
 | 1121 | Warp Prism Code Block And Markdown Renderer | `feature` | CyberCore content display | `docs/tasks/04-completed/1121-warp-prism-code-block-and-markdown-renderer.md` |
 | 1122 | Warp Prism Tab Bar And Split Pane | `feature` | CyberCore multi-view workspaces | `docs/tasks/04-completed/1122-warp-prism-tab-bar-and-split-pane.md` |
 | 1123 | Warp Prism Virtual Scroll Optimization | `feature` | MCP server registry scale (1400+ rows) | `docs/tasks/04-completed/1123-warp-prism-virtual-scroll-optimization.md` |
+| 1522 | Optional Keyboard Cheatsheet + Scale Bar + Risk Toast Variant | `feature` | N/A (optional Wave I; if completed, refresh Task 1519 matrix) | `docs/tasks/04-completed/1522-warp-prism-optional-keyboard-scale-risk-toast.md` |
 | 1523 | Optional Media Detail Overlay | `feature` | N/A (optional Wave I; if completed, refresh Task 1519 matrix) | `docs/tasks/04-completed/1523-warp-prism-optional-media-detail-overlay.md` |
+
+## Completed (P3)
+
+| Task | Title | Type | Blocks | Path |
+|------|-------|------|--------|------|
+| 1616 | Optional CyberCore Teal ThemeExtension Skin | `ux-polish` | N/A | `docs/tasks/04-completed/1616-warp-prism-optional-cybercore-teal-theme-extension-skin.md` |
+| 1809 | Warp Prism Taldarim Red and Talon Purple Accent Themes | `feature` | N/A | `docs/tasks/04-completed/1809-warp-prism-taldarim-red-talon-purple-themes.md` |
 
 ---
 
 ## Summary
 
-- **Total tasks**: 191
+- **Total tasks**: 231
 - **Open**: 0
 - **Doing**: 0
-- **Review**: 36
-- **Planning**: 23
-- **Completed**: 132
+- **Review**: 4
+- **Planning**: 36
+- **Completed**: 191
 
 **Generated by**: project-development/tasklist-sync

@@ -1,7 +1,7 @@
 # Public Barrel Audit — `warp_prism_ui`
 
 > **Task**: 1302 (with Task 1807 tooling export lock)  
-> **Date**: 2026-07-18 (path-to-100 live re-audit session 2; closed +11 symbol drift after 263 freeze)  
+> **Date**: 2026-09-02 (current live re-audit; 296 Prism symbols, 302 public symbols)  
 > **Original audit**: 2026-06-09  
 > **Executor**: gt-flutter-engineer (builders)  
 > **Source of truth**: `packages/warp_prism_ui/lib/warp_prism_ui.dart`  
@@ -436,24 +436,24 @@ Exported via gallery files. `DSGallerySectionSpec` / `DSGallerySections` are **h
 
 | Bucket | Count |
 |---|---:|
-| Prism API aliases (typedef + extension) | **294** |
-| — Production aliases | 285 |
+| Prism API aliases (typedef + extension) | **296** |
+| — Production aliases | 287 |
 | — Experimental (drag-drop) aliases | 7 |
 | — Gallery Prism aliases | 2 |
 | Task 1807 tooling classes | **2** |
 | Non-Prism gallery entrypoints | **4** |
-| **Total public top-level symbols** | **300** |
+| **Total public top-level symbols** | **302** |
 | DS\* layer barrels re-exported | **0** |
 | Public DSGallery\* identifiers | **0** (hidden) |
 
 ### 3.1 Source↔audit set equality
 
 ```text
-src_set (typedef+extension Prism*) = 294
- audit_set (typedef/extension rows `Prism*`) = 294
- tooling_set (Task 1807 public classes) = 2
-missing = 0
-extra   = 0
+  src_set (typedef+extension Prism*) = 296
+  audit_set (typedef/extension rows `Prism*`) = 296
+  tooling_set (Task 1807 public classes) = 2
+  missing = 0
+  extra   = 0
 ```
 
 Regenerate proof:
@@ -507,17 +507,23 @@ Task 1205 harness (`packages/warp_prism_ui/test/boundaries/boundary_test.dart`):
 
 ---
 
-## 7. Validation Snapshot (2026-07-18 session 2)
+## 7. Validation Snapshot (2026-09-02 current re-audit)
 
 ```text
 test -f docs/design/public-barrel-audit.md
-rg -c '^typedef Prism' packages/warp_prism_ui/lib/src/prism_aliases.dart  # 291
+rg -c '^typedef Prism' packages/warp_prism_ui/lib/src/prism_aliases.dart  # 295
 rg -c '^extension Prism' packages/warp_prism_ui/lib/src/prism_aliases.dart # 1
+dart run packages/warp_prism_ui/tool/verify_public_barrel_audit.dart --repo-root .
+# src Prism: 296 (295 typedef + 1 extension); audit Prism rows: 296
+# audit non-Prism gallery: 4; barrel exports: 4; total public top-level: 302
+# Public barrel audit lock: PASS
 dart analyze packages/warp_prism_ui/lib/warp_prism_ui.dart \
   packages/warp_prism_ui/lib/src/prism_aliases.dart
 # No issues found!
 dart run packages/warp_prism_ui/test/boundaries/boundary_test.dart --repo-root .
-# Checks: 7/7 PASS, 0 FAIL, 0 violation(s)
+# Checks: 15/15 PASS, 0 FAIL, 0 violation(s)
+flutter test packages/warp_prism_ui/test/boundaries/public_barrel_no_ds_export_test.dart --no-pub
+# 3 tests passed
 ```
 
 ---

@@ -1,3 +1,6 @@
+@Tags(['golden'])
+library;
+
 // Golden tests for DSGlassPanel and DSGlassPanelSimple — renders glass
 // panel variants (subtle, elevated, modal) and the performance simple
 // variant.

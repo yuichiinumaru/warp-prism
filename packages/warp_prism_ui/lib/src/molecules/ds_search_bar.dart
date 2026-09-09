@@ -73,86 +73,89 @@ class _DSSearchBarState extends State<DSSearchBar> {
         ? DSColors.focusRing
         : DSColors.borderSubtle;
 
-    return Container(
-      constraints: const BoxConstraints(minHeight: 48),
-      decoration: BoxDecoration(
-        color: DSColors.obsidianElevated,
-        borderRadius: BorderRadius.circular(DSRadii.input),
-        border: Border.all(color: borderColor, width: 1),
-      ),
-      child: Row(
-        children: [
-          const SizedBox(width: 12),
-          DSIcon.small(
-            DSIcons.search,
-            color: _isFocused ? DSColors.accentBlue : DSColors.textTertiary,
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Semantics(
-              textField: true,
-              label: widget.placeholder ?? 'Search query',
-              child: TextField(
-                controller: _controller,
-                focusNode: _focusNode,
-                autofocus: widget.autofocus,
-                style: DSTypography.bodyMedium.copyWith(
-                  color: DSColors.textPrimary,
-                ),
-                decoration: InputDecoration(
-                  hintText: widget.placeholder,
-                  hintStyle: DSTypography.bodyMedium.copyWith(
-                    color: DSColors.textTertiary,
+    return Material(
+      type: MaterialType.transparency,
+      child: Container(
+        constraints: const BoxConstraints(minHeight: 48),
+        decoration: BoxDecoration(
+          color: DSColors.obsidianElevated,
+          borderRadius: BorderRadius.circular(DSRadii.input),
+          border: Border.all(color: borderColor, width: 1),
+        ),
+        child: Row(
+          children: [
+            const SizedBox(width: 12),
+            DSIcon.small(
+              DSIcons.search,
+              color: _isFocused ? DSColors.accentBlue : DSColors.textTertiary,
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Semantics(
+                textField: true,
+                label: widget.placeholder ?? 'Search query',
+                child: TextField(
+                  controller: _controller,
+                  focusNode: _focusNode,
+                  autofocus: widget.autofocus,
+                  style: DSTypography.bodyMedium.copyWith(
+                    color: DSColors.textPrimary,
                   ),
-                  border: InputBorder.none,
-                  isDense: true,
-                  contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                  decoration: InputDecoration(
+                    hintText: widget.placeholder,
+                    hintStyle: DSTypography.bodyMedium.copyWith(
+                      color: DSColors.textTertiary,
+                    ),
+                    border: InputBorder.none,
+                    isDense: true,
+                    contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                  ),
+                  onChanged: widget.onChanged,
                 ),
-                onChanged: widget.onChanged,
               ),
             ),
-          ),
-          if (_controller.text.isNotEmpty) ...[
-            _IconButton(
-              icon: DSIcons.close,
-              semanticLabel: 'Clear search query',
-              onTap: () {
-                _controller.clear();
-                widget.onClear?.call();
-                widget.onChanged?.call('');
-              },
-            ),
-          ],
-          if (widget.showFilter) ...[
-            Container(
-              width: 1,
-              height: 20,
-              color: DSColors.borderSubtle,
-              margin: const EdgeInsets.symmetric(horizontal: 4),
-            ),
-            Stack(
-              children: [
-                _IconButton(
-                  icon: DSIcons.filter,
-                  semanticLabel: 'Open search filters',
-                  onTap: widget.onFilterTap,
-                ),
-                if (widget.activeFilterCount != null &&
-                    widget.activeFilterCount! > 0)
-                  Positioned(
-                    top: 4,
-                    right: 4,
-                    child: DSBadge.count(
-                      widget.activeFilterCount!,
-                      color: DSColors.accentBlue,
-                      size: DSBadgeSize.small,
-                    ),
+            if (_controller.text.isNotEmpty) ...[
+              _IconButton(
+                icon: DSIcons.close,
+                semanticLabel: 'Clear search query',
+                onTap: () {
+                  _controller.clear();
+                  widget.onClear?.call();
+                  widget.onChanged?.call('');
+                },
+              ),
+            ],
+            if (widget.showFilter) ...[
+              Container(
+                width: 1,
+                height: 20,
+                color: DSColors.borderSubtle,
+                margin: const EdgeInsets.symmetric(horizontal: 4),
+              ),
+              Stack(
+                children: [
+                  _IconButton(
+                    icon: DSIcons.filter,
+                    semanticLabel: 'Open search filters',
+                    onTap: widget.onFilterTap,
                   ),
-              ],
-            ),
+                  if (widget.activeFilterCount != null &&
+                      widget.activeFilterCount! > 0)
+                    Positioned(
+                      top: 4,
+                      right: 4,
+                      child: DSBadge.count(
+                        widget.activeFilterCount!,
+                        color: DSColors.accentBlue,
+                        size: DSBadgeSize.small,
+                      ),
+                    ),
+                ],
+              ),
+            ],
+            const SizedBox(width: 4),
           ],
-          const SizedBox(width: 4),
-        ],
+        ),
       ),
     );
   }

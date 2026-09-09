@@ -420,32 +420,6 @@ class _DSTimeMachineScrubberState extends State<DSTimeMachineScrubber> {
   Widget build(BuildContext context) {
     final domain = _domain;
     final playhead = _effectivePlayhead;
-    final content = Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (widget.title != null) ...[
-          DSText.labelLarge(widget.title!, color: DSColors.textPrimary),
-          const SizedBox(height: DSSpacing.sm),
-        ],
-        if (_isEmpty && widget.minTime == null && widget.maxTime == null)
-          _buildEmpty()
-        else ...[
-          _buildHistogram(domain, playhead),
-          if (widget.showTransport || widget.showClock) ...[
-            const SizedBox(height: DSSpacing.sm),
-            _buildTransportRow(domain, playhead),
-          ],
-        ],
-      ],
-    );
-
-    final body = widget.wrapInGlass
-        ? DSGlassPanel.elevated(
-            padding: const EdgeInsets.all(DSSpacing.md),
-            child: content,
-          )
-        : Padding(padding: const EdgeInsets.all(DSSpacing.md), child: content);
 
     return Semantics(
       container: true,
@@ -453,51 +427,239 @@ class _DSTimeMachineScrubberState extends State<DSTimeMachineScrubber> {
       label: widget.semanticLabel,
       child: KeyedSubtree(
         key: DSTimeMachineScrubber.panelRegionKey,
-        child: body,
-      ),
-    );
-  }
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final hasBoundedHeight = constraints.hasBoundedHeight;
+            final textScaler = MediaQuery.textScalerOf(context);
+            final textScale = textScaler.scale(1.0);
+            final compactThreshold =
+                160.0 * (textScale > 1.0 ? textScale : 1.0);
+            // Compact layout activates when bounded height is constrained (< 160 or scaled)
+            final isCompact =
+                hasBoundedHeight && constraints.maxHeight < compactThreshold;
 
-  Widget _buildEmpty() {
-    return KeyedSubtree(
-      key: DSTimeMachineScrubber.emptyPlaceholderKey,
-      child: ConstrainedBox(
-        constraints: BoxConstraints(minHeight: widget.histogramHeight),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: DSSpacing.sm),
-          child: Row(
-            children: [
-              const DSIcon(
-                Icons.timeline_outlined,
-                color: DSColors.textTertiary,
-                size: 20,
-              ),
-              const SizedBox(width: DSSpacing.sm),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    DSText.labelMedium(
-                      widget.emptyLabel,
-                      color: DSColors.textSecondary,
-                    ),
-                    const DSText.labelSmall(
-                      'Empty fixture · pair with PrismTimeline for events',
-                      color: DSColors.textTertiary,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            final panelPadding = isCompact
+                ? const EdgeInsets.all(DSSpacing.sm)
+                : const EdgeInsets.all(DSSpacing.md);
+
+            final spacing = isCompact ? DSSpacing.xs : DSSpacing.sm;
+
+            // Compute minimum chrome height dynamically based on title, transport, padding, and text scaling
+            final panelVerticalPadding = panelPadding.vertical;
+            final titleHeight = widget.title != null
+                ? (textScaler.scale(20.0) + spacing)
+                : 0.0;
+            final transportHeight = (widget.showTransport || widget.showClock)
+                ? (math.max(48.0, textScaler.scale(16.0)) + spacing)
+                : 0.0;
+
+            final isActuallyEmpty = _isEmpty &&
+                widget.minTime == null &&
+                widget.maxTime == null;
+
+            final minContentFloor = isActuallyEmpty
+                ? (isCompact ? 16.0 : widget.histogramHeight)
+                : (isCompact ? 16.0 : 32.0);
+
+            final minRequiredHeight = panelVerticalPadding +
+                titleHeight +
+                transportHeight +
+                minContentFloor;
+
+            final useFlex =
+                hasBoundedHeight && constraints.maxHeight >= minRequiredHeight;
+            final needsScrollFallback =
+                hasBoundedHeight && constraints.maxHeight < minRequiredHeight;
+
+            final histogramWidget = isActuallyEmpty
+                ? _buildEmpty(isCompact: isCompact)
+                : _buildHistogram(
+                    domain,
+                    playhead,
+                    fixedHeight: useFlex ? null : widget.histogramHeight,
+                  );
+
+            final contentChildren = <Widget>[
+              if (widget.title != null) ...[
+                DSText.labelLarge(widget.title!, color: DSColors.textPrimary),
+                SizedBox(height: spacing),
+              ],
+              if (useFlex)
+                Flexible(fit: FlexFit.loose, child: histogramWidget)
+              else
+                histogramWidget,
+              if (widget.showTransport || widget.showClock) ...[
+                SizedBox(height: spacing),
+                _buildTransportRow(domain, playhead, isCompact: isCompact),
+              ],
+            ];
+
+            Widget content = Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: contentChildren,
+            );
+
+            // Fallback for extreme constraints where intrinsic chrome exceeds bounds
+            if (needsScrollFallback) {
+              content = SingleChildScrollView(
+                physics: const ClampingScrollPhysics(),
+                child: content,
+              );
+            }
+
+            final alignedContent = Align(
+              alignment: Alignment.topCenter,
+              child: content,
+            );
+
+            return widget.wrapInGlass
+                ? DSGlassPanel.elevated(
+                    padding: panelPadding,
+                    child: alignedContent,
+                  )
+                : Padding(padding: panelPadding, child: alignedContent);
+          },
         ),
       ),
     );
   }
 
-  Widget _buildHistogram(DateTimeRange domain, DateTime playhead) {
+  Widget _buildEmpty({bool isCompact = false}) {
+    return KeyedSubtree(
+      key: DSTimeMachineScrubber.emptyPlaceholderKey,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final textScaler = MediaQuery.textScalerOf(context);
+          final compactMax = math.max(20.0, textScaler.scale(20.0));
+          return ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: isCompact ? 16 : widget.histogramHeight,
+              maxHeight: isCompact ? compactMax : widget.histogramHeight,
+            ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: isCompact ? 0 : DSSpacing.sm,
+              ),
+              child: Row(
+                children: [
+                  DSIcon(
+                    Icons.timeline_outlined,
+                    color: DSColors.textTertiary,
+                    size: isCompact ? 16 : 20,
+                  ),
+                  SizedBox(width: isCompact ? DSSpacing.xs : DSSpacing.sm),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          DSText.labelMedium(
+                            widget.emptyLabel,
+                            color: DSColors.textSecondary,
+                          ),
+                          if (!isCompact)
+                            const DSText.labelSmall(
+                              'Empty fixture · pair with PrismTimeline for events',
+                              color: DSColors.textTertiary,
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildHistogram(
+    DateTimeRange domain,
+    DateTime playhead, {
+    double? fixedHeight,
+  }) {
     final fraction = _playheadFraction(domain, playhead);
+    final histogramWidget = LayoutBuilder(
+      builder: (context, constraints) {
+        final width = constraints.maxWidth;
+        return GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTapDown: (d) {
+            if (_playing) _setPlaying(false);
+            _scrubAtLocalX(d.localPosition.dx, width);
+          },
+          onHorizontalDragStart: (_) {
+            if (_playing) _setPlaying(false);
+          },
+          onHorizontalDragUpdate: (d) {
+            _scrubAtLocalX(d.localPosition.dx, width);
+          },
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Positioned.fill(
+                child: CustomPaint(
+                  painter: _DensityHistogramPainter(
+                    buckets: widget.buckets,
+                    domain: domain,
+                  ),
+                ),
+              ),
+              // Playhead line + handle
+              Positioned(
+                left: (width * fraction) - 1,
+                top: 0,
+                bottom: 0,
+                child: IgnorePointer(
+                  child: KeyedSubtree(
+                    key: DSTimeMachineScrubber.playheadHandleKey,
+                    child: Container(width: 2, color: DSColors.accentBlue),
+                  ),
+                ),
+              ),
+              Positioned(
+                left: (width * fraction) - 6,
+                top: -2,
+                child: IgnorePointer(
+                  child: Container(
+                    width: 12,
+                    height: 12,
+                    decoration: BoxDecoration(
+                      color: DSColors.accentBlue,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(color: DSColors.focusRing, blurRadius: 6),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+
+    final sized = fixedHeight != null
+        ? SizedBox(
+            key: DSTimeMachineScrubber.histogramKey,
+            height: fixedHeight,
+            child: histogramWidget,
+          )
+        : ConstrainedBox(
+            key: DSTimeMachineScrubber.histogramKey,
+            constraints: BoxConstraints(
+              minHeight: 16,
+              maxHeight: widget.histogramHeight,
+            ),
+            child: histogramWidget,
+          );
+
     return Semantics(
       label:
           'Density histogram. Playhead at ${_formatClock(playhead)}. '
@@ -518,74 +680,15 @@ class _DSTimeMachineScrubberState extends State<DSTimeMachineScrubber> {
       ),
       onIncrease: () => _skip(widget.playbackStep),
       onDecrease: () => _skip(-widget.playbackStep),
-      child: SizedBox(
-        key: DSTimeMachineScrubber.histogramKey,
-        height: widget.histogramHeight,
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final width = constraints.maxWidth;
-            return GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTapDown: (d) {
-                if (_playing) _setPlaying(false);
-                _scrubAtLocalX(d.localPosition.dx, width);
-              },
-              onHorizontalDragStart: (_) {
-                if (_playing) _setPlaying(false);
-              },
-              onHorizontalDragUpdate: (d) {
-                _scrubAtLocalX(d.localPosition.dx, width);
-              },
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Positioned.fill(
-                    child: CustomPaint(
-                      painter: _DensityHistogramPainter(
-                        buckets: widget.buckets,
-                        domain: domain,
-                      ),
-                    ),
-                  ),
-                  // Playhead line + handle
-                  Positioned(
-                    left: (width * fraction) - 1,
-                    top: 0,
-                    bottom: 0,
-                    child: IgnorePointer(
-                      child: KeyedSubtree(
-                        key: DSTimeMachineScrubber.playheadHandleKey,
-                        child: Container(width: 2, color: DSColors.accentBlue),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: (width * fraction) - 6,
-                    top: -2,
-                    child: IgnorePointer(
-                      child: Container(
-                        width: 12,
-                        height: 12,
-                        decoration: BoxDecoration(
-                          color: DSColors.accentBlue,
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(color: DSColors.focusRing, blurRadius: 6),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
-      ),
+      child: sized,
     );
   }
 
-  Widget _buildTransportRow(DateTimeRange domain, DateTime playhead) {
+  Widget _buildTransportRow(
+    DateTimeRange domain,
+    DateTime playhead, {
+    bool isCompact = false,
+  }) {
     final atStart = !playhead.isAfter(domain.start);
     final atEnd = !playhead.isBefore(domain.end);
 
@@ -598,6 +701,7 @@ class _DSTimeMachineScrubberState extends State<DSTimeMachineScrubber> {
             tooltip: 'Skip back',
             semanticLabel: 'Skip back',
             enabled: !atStart,
+            isCompact: isCompact,
             onPressed: () {
               if (_playing) _setPlaying(false);
               _skip(-widget.playbackStep);
@@ -609,6 +713,7 @@ class _DSTimeMachineScrubberState extends State<DSTimeMachineScrubber> {
             tooltip: _playing ? 'Pause' : 'Play',
             semanticLabel: _playing ? 'Pause playback' : 'Play',
             enabled: true,
+            isCompact: isCompact,
             onPressed: () {
               if (_playing) {
                 _setPlaying(false);
@@ -627,6 +732,7 @@ class _DSTimeMachineScrubberState extends State<DSTimeMachineScrubber> {
             tooltip: 'Skip forward',
             semanticLabel: 'Skip forward',
             enabled: !atEnd,
+            isCompact: isCompact,
             onPressed: () {
               if (_playing) _setPlaying(false);
               _skip(widget.playbackStep);
@@ -639,12 +745,13 @@ class _DSTimeMachineScrubberState extends State<DSTimeMachineScrubber> {
             semanticLabel: 'Jump to live',
             enabled: !atEnd,
             accent: true,
+            isCompact: isCompact,
             onPressed: () {
               if (_playing) _setPlaying(false);
               _jumpLive();
             },
           ),
-          const SizedBox(width: DSSpacing.sm),
+          SizedBox(width: isCompact ? DSSpacing.xs : DSSpacing.sm),
         ],
         if (widget.showClock)
           Expanded(
@@ -694,6 +801,7 @@ class _TransportButton extends StatelessWidget {
   final bool enabled;
   final bool accent;
   final VoidCallback onPressed;
+  final bool isCompact;
 
   const _TransportButton({
     super.key,
@@ -703,6 +811,7 @@ class _TransportButton extends StatelessWidget {
     required this.enabled,
     required this.onPressed,
     this.accent = false,
+    this.isCompact = false,
   });
 
   @override
@@ -713,6 +822,9 @@ class _TransportButton extends StatelessWidget {
         ? DSColors.statusError
         : DSColors.textPrimary;
 
+    final targetDim = isCompact ? 32.0 : kMinInteractiveDimension;
+    final iconSize = isCompact ? 18.0 : 22.0;
+
     return Semantics(
       button: true,
       enabled: enabled,
@@ -720,9 +832,9 @@ class _TransportButton extends StatelessWidget {
       child: Tooltip(
         message: tooltip,
         child: ConstrainedBox(
-          constraints: const BoxConstraints(
-            minWidth: kMinInteractiveDimension,
-            minHeight: kMinInteractiveDimension,
+          constraints: BoxConstraints(
+            minWidth: targetDim,
+            minHeight: targetDim,
           ),
           child: IconButton(
             onPressed: enabled
@@ -731,12 +843,12 @@ class _TransportButton extends StatelessWidget {
                     onPressed();
                   }
                 : null,
-            icon: DSIcon(icon, color: color, size: 22),
-            splashRadius: kMinInteractiveDimension / 2,
+            icon: DSIcon(icon, color: color, size: iconSize),
+            splashRadius: targetDim / 2,
             padding: EdgeInsets.zero,
-            constraints: const BoxConstraints(
-              minWidth: kMinInteractiveDimension,
-              minHeight: kMinInteractiveDimension,
+            constraints: BoxConstraints(
+              minWidth: targetDim,
+              minHeight: targetDim,
             ),
           ),
         ),

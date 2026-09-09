@@ -1,3 +1,6 @@
+@Tags(['golden'])
+library;
+
 // Golden tests for DSStatusDot — renders all 15 operational states.
 //
 // Each state is rendered at default 8px size on the obsidian background.

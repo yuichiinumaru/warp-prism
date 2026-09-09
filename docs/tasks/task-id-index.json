@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-24T08:35:01Z",
+  "generated_at": "2026-09-08T18:09:27Z",
   "schema": "task-id-index/v1",
   "tasks": {
     "0001": {
@@ -256,7 +256,7 @@
     },
     "1106": {
       "title": "Warp Prism Operational Component MVP",
-      "path": "docs/tasks/03-review/1106-warp-prism-operational-component-mvp.md"
+      "path": "docs/tasks/04-completed/1106-warp-prism-operational-component-mvp.md"
     },
     "1107": {
       "title": "Warp Prism Melos Monorepo Migration",
@@ -368,7 +368,7 @@
     },
     "1302": {
       "title": "Public Barrel Audit",
-      "path": "docs/tasks/03-review/1302-warp-prism-public-barrel-audit.md"
+      "path": "docs/tasks/04-completed/1302-warp-prism-public-barrel-audit.md"
     },
     "1303": {
       "title": "Component Contract Reconciliation",
@@ -400,7 +400,7 @@
     },
     "1401": {
       "title": "Observatory Failure Baseline Inventory",
-      "path": "docs/tasks/03-review/1401-warp-prism-observatory-failure-baseline-inventory.md"
+      "path": "docs/tasks/04-completed/1401-warp-prism-observatory-failure-baseline-inventory.md"
     },
     "1402": {
       "title": "Corpus and Frontmatter Contract Audit",
@@ -456,51 +456,51 @@
     },
     "1504": {
       "title": "PrismFilterWorkbench Organism",
-      "path": "docs/tasks/03-review/1504-warp-prism-filter-workbench-organism.md"
+      "path": "docs/tasks/04-completed/1504-warp-prism-filter-workbench-organism.md"
     },
     "1505": {
       "title": "PrismEntityIntelPanel Organism",
-      "path": "docs/tasks/03-review/1505-warp-prism-entity-intel-panel-organism.md"
+      "path": "docs/tasks/04-completed/1505-warp-prism-entity-intel-panel-organism.md"
     },
     "1506": {
       "title": "PrismEntityLocateSearch Organism",
-      "path": "docs/tasks/03-review/1506-warp-prism-entity-locate-search-organism.md"
+      "path": "docs/tasks/04-completed/1506-warp-prism-entity-locate-search-organism.md"
     },
     "1507": {
       "title": "PrismTimeMachineScrubber Organism",
-      "path": "docs/tasks/03-review/1507-warp-prism-time-machine-scrubber-organism.md"
+      "path": "docs/tasks/04-completed/1507-warp-prism-time-machine-scrubber-organism.md"
     },
     "1508": {
       "title": "PrismStatusTicker Organism",
-      "path": "docs/tasks/03-review/1508-warp-prism-status-ticker-organism.md"
+      "path": "docs/tasks/04-completed/1508-warp-prism-status-ticker-organism.md"
     },
     "1509": {
       "title": "Stage Chrome Pack (Watchlist, Coordinate Bar, Map Legend)",
-      "path": "docs/tasks/03-review/1509-warp-prism-stage-chrome-pack-organisms.md"
+      "path": "docs/tasks/04-completed/1509-warp-prism-stage-chrome-pack-organisms.md"
     },
     "1510": {
       "title": "PrismOsintWorkbench Organism",
-      "path": "docs/tasks/03-review/1510-warp-prism-osint-workbench-organism.md"
+      "path": "docs/tasks/04-completed/1510-warp-prism-osint-workbench-organism.md"
     },
     "1511": {
       "title": "PrismAiAnalystPanel Fixture-First Organism",
-      "path": "docs/tasks/03-review/1511-warp-prism-ai-analyst-panel-fixture-organism.md"
+      "path": "docs/tasks/04-completed/1511-warp-prism-ai-analyst-panel-fixture-organism.md"
     },
     "1512": {
       "title": "PrismMapCanvasStage Selection/Layer Contract",
-      "path": "docs/tasks/03-review/1512-warp-prism-map-canvas-stage-contract.md"
+      "path": "docs/tasks/04-completed/1512-warp-prism-map-canvas-stage-contract.md"
     },
     "1513": {
       "title": "PrismEntityRelationCard Organism",
-      "path": "docs/tasks/03-review/1513-warp-prism-entity-relation-card-organism.md"
+      "path": "docs/tasks/04-completed/1513-warp-prism-entity-relation-card-organism.md"
     },
     "1514": {
       "title": "PrismFloatingAnalyticsHud Organism",
-      "path": "docs/tasks/03-review/1514-warp-prism-floating-analytics-hud-organism.md"
+      "path": "docs/tasks/04-completed/1514-warp-prism-floating-analytics-hud-organism.md"
     },
     "1515": {
       "title": "PrismOpsControlCluster + PrismConnectorPanel",
-      "path": "docs/tasks/03-review/1515-warp-prism-ops-control-cluster-connector-panel.md"
+      "path": "docs/tasks/04-completed/1515-warp-prism-ops-control-cluster-connector-panel.md"
     },
     "1516": {
       "title": "PrismViewPresets + PrismWorkspaceShareCard",
@@ -508,7 +508,7 @@
     },
     "1517": {
       "title": "PrismTerminalWorkspace Fixture Shell",
-      "path": "docs/tasks/03-review/1517-warp-prism-terminal-workspace-fixture-shell.md"
+      "path": "docs/tasks/04-completed/1517-warp-prism-terminal-workspace-fixture-shell.md"
     },
     "1518": {
       "title": "PrismAgentShellPanel Read-Only Transcript",
@@ -528,7 +528,7 @@
     },
     "1522": {
       "title": "Optional Keyboard Cheatsheet + Scale Bar + Risk Toast Variant",
-      "path": "docs/tasks/03-review/1522-warp-prism-optional-keyboard-scale-risk-toast.md"
+      "path": "docs/tasks/04-completed/1522-warp-prism-optional-keyboard-scale-risk-toast.md"
     },
     "1523": {
       "title": "Optional Media Detail Overlay",
@@ -600,23 +600,23 @@
     },
     "1616": {
       "title": "Optional CyberCore Teal ThemeExtension Skin",
-      "path": "docs/tasks/03-review/1616-warp-prism-optional-cybercore-teal-theme-extension-skin.md"
+      "path": "docs/tasks/04-completed/1616-warp-prism-optional-cybercore-teal-theme-extension-skin.md"
     },
     "1617": {
       "title": "Warp Prism Profiles And Changelog Migration",
-      "path": "docs/tasks/03-review/1617-warp-prism-profiles-and-changelog-migration.md"
+      "path": "docs/tasks/04-completed/1617-warp-prism-profiles-and-changelog-migration.md"
     },
     "1700": {
       "title": "warp-prism-prism-button-atom",
-      "path": "docs/tasks/03-review/1700-warp-prism-prism-button-atom.md"
+      "path": "docs/tasks/04-completed/1700-warp-prism-prism-button-atom.md"
     },
     "1701": {
       "title": "warp-prism-prism-text-field-atom",
-      "path": "docs/tasks/03-review/1701-warp-prism-prism-text-field-atom.md"
+      "path": "docs/tasks/04-completed/1701-warp-prism-prism-text-field-atom.md"
     },
     "1702": {
       "title": "warp-prism-prism-select-dropdown-molecule",
-      "path": "docs/tasks/03-review/1702-warp-prism-prism-select-dropdown-molecule.md"
+      "path": "docs/tasks/04-completed/1702-warp-prism-prism-select-dropdown-molecule.md"
     },
     "1703": {
       "title": "warp-prism-prism-checkbox-atom",
@@ -624,19 +624,19 @@
     },
     "1704": {
       "title": "warp-prism-prism-switch-toggle-atom",
-      "path": "docs/tasks/03-review/1704-warp-prism-prism-switch-toggle-atom.md"
+      "path": "docs/tasks/04-completed/1704-warp-prism-prism-switch-toggle-atom.md"
     },
     "1705": {
       "title": "warp-prism-prism-dialog-modal-molecule",
-      "path": "docs/tasks/03-review/1705-warp-prism-prism-dialog-modal-molecule.md"
+      "path": "docs/tasks/04-completed/1705-warp-prism-prism-dialog-modal-molecule.md"
     },
     "1706": {
       "title": "warp-prism-prism-breadcrumbs-organism",
-      "path": "docs/tasks/03-review/1706-warp-prism-prism-breadcrumbs-organism.md"
+      "path": "docs/tasks/04-completed/1706-warp-prism-prism-breadcrumbs-organism.md"
     },
     "1707": {
       "title": "warp-prism-prism-accordion-collapsible-molecule",
-      "path": "docs/tasks/03-review/1707-warp-prism-prism-accordion-collapsible-molecule.md"
+      "path": "docs/tasks/04-completed/1707-warp-prism-prism-accordion-collapsible-molecule.md"
     },
     "1800": {
       "title": "Black Obsidian Visual Contract and Approval Packet",
@@ -644,19 +644,19 @@
     },
     "1801": {
       "title": "Black Obsidian Token Migration and Semantic Palette Mapping",
-      "path": "docs/tasks/03-review/1801-warp-prism-black-obsidian-token-migration.md"
+      "path": "docs/tasks/04-completed/1801-warp-prism-black-obsidian-token-migration.md"
     },
     "1802": {
       "title": "Typography Roles and Font Asset Correctness",
-      "path": "docs/tasks/03-review/1802-warp-prism-typography-font-assets.md"
+      "path": "docs/tasks/04-completed/1802-warp-prism-typography-font-assets.md"
     },
     "1803": {
       "title": "Canonical ThemeData and App Host Wiring",
-      "path": "docs/tasks/03-review/1803-warp-prism-canonical-theme-app-wiring.md"
+      "path": "docs/tasks/04-completed/1803-warp-prism-canonical-theme-app-wiring.md"
     },
     "1804": {
       "title": "Hardcoded Visual-Value and Structural-Color Audit",
-      "path": "docs/tasks/03-review/1804-warp-prism-hardcoded-visual-value-audit.md"
+      "path": "docs/tasks/04-completed/1804-warp-prism-hardcoded-visual-value-audit.md"
     },
     "1805": {
       "title": "Screenshot Visual Acceptance Gate and Golden Policy",
@@ -672,11 +672,127 @@
     },
     "1808": {
       "title": "PrismColorField Molecule (Hex Input + Swatch Picker)",
-      "path": "docs/tasks/03-review/1808-warp-prism-color-field-molecule.md"
+      "path": "docs/tasks/04-completed/1808-warp-prism-color-field-molecule.md"
     },
     "1809": {
       "title": "Warp Prism Taldarim Red and Talon Purple Accent Themes",
-      "path": "docs/tasks/03-review/1809-warp-prism-taldarim-red-talon-purple-themes.md"
+      "path": "docs/tasks/04-completed/1809-warp-prism-taldarim-red-talon-purple-themes.md"
+    },
+    "1810": {
+      "title": "Charter v2 + ADR + AGENTS Alignment",
+      "path": "docs/tasks/04-completed/1810-warp-prism-charter-v2-adr.md"
+    },
+    "1811": {
+      "title": "Layer Boundaries + Dependency Law + Boundary Harness v2",
+      "path": "docs/tasks/04-completed/1811-warp-prism-layer-boundaries-harness.md"
+    },
+    "1812": {
+      "title": "Package Topology + Workspace Coordination",
+      "path": "docs/tasks/04-completed/1812-warp-prism-package-topology.md"
+    },
+    "1813": {
+      "title": "State-Based Declutter + Root Hygiene",
+      "path": "docs/tasks/04-completed/1813-warp-prism-state-based-declutter.md"
+    },
+    "1814": {
+      "title": "Interaction Inventory (Evidence-Driven)",
+      "path": "docs/tasks/04-completed/1814-warp-prism-interaction-inventory.md"
+    },
+    "1815": {
+      "title": "IDS Candidate Kernel (Selection/Inspection/Query)",
+      "path": "docs/tasks/04-completed/1815-warp-prism-ids-candidate-kernel.md"
+    },
+    "1816": {
+      "title": "Post-1805 Visual/Baseline Freeze",
+      "path": "docs/tasks/00-planning/1816-warp-prism-post-1805-visual-baseline-freeze.md"
+    },
+    "1817": {
+      "title": "IDS Proof and Promotion Review",
+      "path": "docs/tasks/04-completed/1817-warp-prism-ids-proof-promotion-review.md"
+    },
+    "1818": {
+      "title": "Runtime Consumer and Source Audit",
+      "path": "docs/tasks/04-completed/1818-warp-prism-runtime-consumer-source-audit.md"
+    },
+    "1819": {
+      "title": "Experimental Runtime Contracts + Fakes/Testkit",
+      "path": "docs/tasks/04-completed/1819-warp-prism-experimental-runtime-contracts-testkit.md"
+    },
+    "1820": {
+      "title": "Bindings Proof (IDS ∥ Runtime Convergence)",
+      "path": "docs/tasks/04-completed/1820-warp-prism-bindings-proof-ids-runtime-convergence.md"
+    },
+    "1821": {
+      "title": "Runtime Promotion-Gate Evidence Pack",
+      "path": "docs/tasks/04-completed/1821-warp-prism-runtime-promotion-gate-evidence.md"
+    },
+    "1822": {
+      "title": "FRB Candidate Compatibility and Build Spike (Kill-Gate)",
+      "path": "docs/tasks/04-completed/1822-warp-prism-frb-candidate-spike-kill-gate.md"
+    },
+    "1823": {
+      "title": "Minimal Rust Bridge Substrate (2 Crates)",
+      "path": "docs/tasks/04-completed/1823-warp-prism-minimal-rust-bridge-substrate.md"
+    },
+    "1824": {
+      "title": "FRB Integration Lab Parity (Single Hypothesis)",
+      "path": "docs/tasks/04-completed/1824-warp-prism-frb-integration-lab-parity.md"
+    },
+    "1825": {
+      "title": "Integration Readiness / L1 Exit Gate + Harvest Checklist",
+      "path": "docs/tasks/04-completed/1825-warp-prism-integration-readiness-l1-exit-gate.md"
+    },
+    "1826": {
+      "title": "HealthSourceBinding (Contracts → UI Closure)",
+      "path": "docs/tasks/04-completed/1826-warp-prism-health-source-binding.md"
+    },
+    "1827": {
+      "title": "Contract Testkit Suite Gap Closure",
+      "path": "docs/tasks/04-completed/1827-warp-prism-testkit-suite-gap-closure.md"
+    },
+    "1828": {
+      "title": "Minimal Connected Catalog Proof (CONNECTED Mode)",
+      "path": "docs/tasks/04-completed/1828-warp-prism-minimal-connected-catalog-proof.md"
+    },
+    "1829": {
+      "title": "First Real Product Pilot — OmniRoute Provider Vertical",
+      "path": "docs/tasks/00-planning/1829-warp-prism-first-real-product-pilot-hold.md"
+    },
+    "1830": {
+      "title": "Boundary Checks 16 + 17 Activation",
+      "path": "docs/tasks/04-completed/1830-warp-prism-boundary-checks-16-17-activation.md"
+    },
+    "1831": {
+      "title": "Host Composition Contract — Material Ancestry for Shared Components",
+      "path": "docs/tasks/04-completed/1831-warp-prism-host-composition-material-contract.md"
+    },
+    "1832": {
+      "title": "Responsive Layout Contract — Fixed-Height Overflow in Shared Organisms",
+      "path": "docs/tasks/04-completed/1832-warp-prism-responsive-layout-contract-overflow.md"
+    },
+    "1833": {
+      "title": "Theme-Role and Accent Propagation — Interactive Recipe Consistency",
+      "path": "docs/tasks/04-completed/1833-warp-prism-theme-role-accent-propagation.md"
+    },
+    "1834": {
+      "title": "Visual Capture Proof Honesty — MissingPluginException Must Not Be PASS",
+      "path": "docs/tasks/04-completed/1834-warp-prism-capture-proof-honesty.md"
+    },
+    "1835": {
+      "title": "Package-Wide Material Ancestry Meta-Test",
+      "path": "docs/tasks/04-completed/1835-warp-prism-material-ancestry-meta-test.md"
+    },
+    "1836": {
+      "title": "Layout-Band Completion — Scrubber/Table Falsified Bands + Trap Hygiene",
+      "path": "docs/tasks/04-completed/1836-warp-prism-layout-band-completion.md"
+    },
+    "1837": {
+      "title": "Golden Suite Tagging — Make `--exclude-tags=golden` Effective",
+      "path": "docs/tasks/04-completed/1837-warp-prism-golden-suite-tagging.md"
+    },
+    "1838": {
+      "title": "Real-Host Composition Revalidation Evidence — 1805 Criteria 3/5/9/11",
+      "path": "docs/tasks/04-completed/1838-warp-prism-real-host-revalidation-evidence.md"
     },
     "CANDIDATE-2026-07-18-builder-wave-retrospect-and-skill-upgrades": {
       "title": "# CANDIDATE — Builder Wave Retrospect & Skill Upgrades (2026-07-18)",
@@ -758,9 +874,53 @@
       "title": "# EPIC 18 — Warp Prism Black Obsidian Visual Direction Reset",
       "path": "docs/tasks/00-planning/EPIC-18-warp-prism-black-obsidian-visual-direction-reset.md"
     },
+    "EPIC-19-warp-prism-v2-foundation": {
+      "title": "# EPIC 19 — Warp Prism v2 Foundation",
+      "path": "docs/tasks/00-planning/EPIC-19-warp-prism-v2-foundation.md"
+    },
+    "EPIC-20-warp-prism-ids-kernel": {
+      "title": "# EPIC 20 — Warp Prism Interaction Design System (IDS) Kernel",
+      "path": "docs/tasks/00-planning/EPIC-20-warp-prism-ids-kernel.md"
+    },
+    "EPIC-21-warp-prism-runtime-contracts-mvp": {
+      "title": "# EPIC 21 — Warp Prism Runtime Contracts (MVP)",
+      "path": "docs/tasks/00-planning/EPIC-21-warp-prism-runtime-contracts-mvp.md"
+    },
+    "EPIC-22-warp-prism-frb-golden-path-integration-lab": {
+      "title": "# EPIC 22 — Warp Prism Rust Golden Path (flutter_rust_bridge) + Integration Lab",
+      "path": "docs/tasks/00-planning/EPIC-22-warp-prism-frb-golden-path-integration-lab.md"
+    },
+    "EPIC-23-warp-prism-connected-catalog-component-contract-registry": {
+      "title": "# EPIC 23 — Warp Prism Connected Catalog + Component Contract Registry",
+      "path": "docs/tasks/00-planning/EPIC-23-warp-prism-connected-catalog-component-contract-registry.md"
+    },
+    "EPIC-24-warp-prism-scaffolding-extensibility-policy": {
+      "title": "# EPIC 24 — Warp Prism Scaffolding & Extensibility Policy",
+      "path": "docs/tasks/00-planning/EPIC-24-warp-prism-scaffolding-extensibility-policy.md"
+    },
+    "EPIC-25-warp-prism-rewrite-resolver-strategy": {
+      "title": "# EPIC 25 — Warp Prism Rewrite Resolver Strategy (Research-Only / Deferred)",
+      "path": "docs/tasks/00-planning/EPIC-25-warp-prism-rewrite-resolver-strategy.md"
+    },
+    "EPIC-OR-warp-prism-omniroute-cross-lane-anchors": {
+      "title": "# EPIC-OR-00 / OR-01 / OR-02 — OmniRoute Cross-Lane Planning Anchors (Parent-Repo Scope)",
+      "path": "docs/tasks/00-planning/EPIC-OR-warp-prism-omniroute-cross-lane-anchors.md"
+    },
+    "PLAN-03-review-drain": {
+      "title": "# PLAN — 03-Review Lane Drain (36 parked tasks)",
+      "path": "docs/tasks/00-planning/PLAN-03-review-drain.md"
+    },
+    "PLAN-task1807-const-migration-containment": {
+      "title": "# PLAN — Task 1807 Const-Migration Containment (PrismTokenRegistry blast radius)",
+      "path": "docs/tasks/00-planning/PLAN-task1807-const-migration-containment.md"
+    },
     "ROADMAP-warp-prism-asw-observatory": {
       "title": "# ROADMAP — Warp-Prism ASW Observatory",
       "path": "docs/tasks/00-planning/ROADMAP-warp-prism-asw-observatory.md"
+    },
+    "STORIES-ads-to-ids-epics-19-25": {
+      "title": "# Ads-to-Ids Story Packet v8 — Validated Decomposition (33 Stories)",
+      "path": "docs/tasks/00-planning/STORIES-ads-to-ids-epics-19-25.md"
     },
     "parent-tasks": {
       "title": "# Parent monorepo tasks citing `warp-prism`",

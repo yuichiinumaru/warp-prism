@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../tokens/tokens.dart';
 import '../atoms/atoms.dart';
+import '../theme/ds_theme.dart';
+import '../tokens/tokens.dart';
 
 /// ASW Observatory Organism - Sidebar
 ///
@@ -183,7 +184,7 @@ class _SidebarItemWidgetState extends State<_SidebarItemWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final color = widget.item.color ?? DSColors.accentBlue;
+    final color = widget.item.color ?? DSTheme.accentOf(context);
     final bgColor = widget.isSelected
         ? color.withValues(alpha: 0.15)
         : (_isFocused
@@ -252,7 +253,7 @@ class _SidebarItemWidgetState extends State<_SidebarItemWidget> {
                         )
                       : (_isFocused
                             ? Border.all(
-                                color: DSColors.focusRing,
+                                color: DSTheme.focusRingOf(context),
                                 width: 2,
                               )
                             : null),

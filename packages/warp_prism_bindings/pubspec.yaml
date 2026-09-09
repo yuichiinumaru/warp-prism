@@ -1,0 +1,27 @@
+name: warp_prism_bindings
+description: Thin projection layer connecting UI presentation, interaction semantics, and runtime contracts for Warp Prism.
+publish_to: 'none'
+version: 0.1.0
+resolution: workspace
+
+environment:
+  sdk: ^3.12.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  meta: ^1.15.0
+  warp_prism_interaction:
+    path: ../warp_prism_interaction
+  warp_prism_runtime:
+    path: ../warp_prism_runtime
+  warp_prism_ui:
+    path: ../warp_prism_ui
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  test: ^1.25.0
+  warp_prism_testkit:
+    path: ../warp_prism_testkit

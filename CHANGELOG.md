@@ -2,9 +2,577 @@
 
 > **Note**: Auto-generated from individual entries in `.changelog/`.
 > **Do NOT edit manually** - use the changelog skill/subcommands.
-> **Last rebuilt**: 2026-08-24 00:51:13 UTC
-> **Scope**: Showing the latest 100 of 289 entries.
+> **Last rebuilt**: 2026-09-08 18:09:23 UTC
+> **Scope**: Showing the latest 100 of 323 entries.
 > **Full history**: See [`CHANGELOG-FULL.md`](./CHANGELOG-FULL.md).
+
+---
+
+# Task 1838: Real-Host Composition Revalidation Evidence — 1805 Criteria 3/5/9/11 Technical Layer (promoted)
+
+## Summary
+
+All three hosts green across the viewport matrix with errors:[] in every trace; the three historical invalidations (Observatory search-bar Material crash, CyberCore data-table overflow, chrome teal divergence) each addressed by specific runs; harness gained compact500x900 viewport + durable revalidation suites in apps/*/test/host_exercise/; zero product code modified.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] Independent review: docs/reports/reviewers/1838-real-host-revalidation-evidence-review-loop.md (93/100 APPROVED_PATH100, zero REGRESSION findings; suites re-run by reviewer with exact exits +9/+8/+8/+10)
+
+---
+
+# Task 1837: Golden Suite Tagging — --exclude-tags=golden Effective (promoted)
+
+## Summary
+
+flutter test test/ --no-pub --exclude-tags=golden now exits 0 (+1692 all passed) — the documented full-suite validation command is finally usable on this branch; goldens still run without exclusion (60 dir tests: 59 expected frozen-drift failures + 1 drift-invariant pass; 14 embedded); Task 1800/1805 golden freeze intact (0 baselines touched); boundary harness 15/15.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] Independent review: docs/reports/reviewers/1837-golden-suite-tagging-review-loop.md (95/100 APPROVED_PATH100, zero REGRESSION findings; primary gate re-run +1692 exit 0)
+
+---
+
+# Task 1836: Layout-Band Completion — Scrubber/Table Falsified Bands + Trap Hygiene (promoted)
+
+## Summary
+
+Scrubber/table layout-contract bands independently re-executed green (18/18, 7/7, 2/2, 707/707 organisms, both host widget suites, both debug builds, capture suites); expected data-table golden drift recorded under Task 1800 freeze without refresh; F3/F7/F8 carried as accepted non-blocking residuals.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] Independent review: docs/reports/review/1836-layout-band-completion-independent-review-2026-09-06.md (90/100 PASS, zero regressions)
+
+---
+
+# Task 1835: Package-Wide Material Ancestry Meta-Test — Remediation Round 1 (PrismSelect + oracle)
+
+## Summary
+
+Meta-test guards the full 118/118 public widget surface with a falsification-tight oracle; 123 tests green; classification counts corrected; task promoted to completed after 95/100 independent acceptance.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] Independent re-review: docs/reports/reviewers/1835-material-ancestry-meta-test-review-loop.md (Entry 2, 95/100 APPROVED_PATH100, zero REGRESSION findings)
+
+---
+
+# Task 1833: Theme-Role and Accent Propagation — Remediation Round 3 (F6 chrome migration)
+
+## Summary
+
+CyberCore shell chrome now resolves teal from the installed theme; regression guard added; boundary harness 15/15; cybercore +23 tests green; task promoted to completed after 93/100 independent acceptance.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] Independent re-review: docs/reports/reviewers/1833-theme-role-accent-propagation-review-loop.md (Entry 3, 93/100 APPROVED_PATH100, zero REGRESSION findings)
+
+---
+
+# Task 1835: Package-Wide Material Ancestry Meta-Test — Remediation Round 1 (PrismSelect + oracle)
+
+## Summary
+
+Meta-test now guards the full public widget surface (118/118) with a falsification-tight bare-phase oracle; test hygiene fixed (controller teardowns); classification counts corrected to 113 SELF_SUFFICIENT + 5 DECLARED_PREREQUISITE + 0 UNDOCUMENTED_PREREQUISITE.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] cd packages/warp_prism_ui && flutter analyze --no-fatal-infos --no-fatal-warnings -> Exit 0 (0 errors, 212 pre-existing info baseline)
+- [x] cd packages/warp_prism_ui && flutter test test/meta/material_ancestry_meta_test.dart --no-pub -> Exit 0 (+123: All tests passed)
+- [x] cd packages/warp_prism_ui && flutter test test/meta/material_ancestry_meta_test.dart --no-pub --plain-name PrismSelect -> Exit 0 (+1)
+- [x] cd packages/warp_prism_ui && flutter test <scoped 5-file suite> --no-pub -> Exit 0 (+171: All tests passed)
+
+---
+
+# Task 1833: Theme-Role and Accent Propagation — Remediation Round 3 (F6 chrome migration)
+
+## Summary
+
+CyberCore shell chrome (header gradient, compact bottom-nav selection, all 4 story-panel accents) now resolves teal from the installed theme via PrismTheme.accentOf/accentMutedOf instead of static Khalai Blue; regression guard added proving teal resolution with pristine registry; DSButton focus-ring oracle strengthened to theme-following; boundary Check 8 stays 15/15 with zero registry mutators in apps/cybercore/lib.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] cd apps/cybercore && flutter analyze --no-fatal-infos --no-fatal-warnings -> Exit 0 (No issues found)
+- [x] cd apps/cybercore && flutter test --no-pub -> Exit 0 (+23: All tests passed, incl. new chrome teal tests)
+- [x] cd apps/cybercore && flutter build linux --debug -> Exit 0
+- [x] dart run packages/warp_prism_ui/test/boundaries/boundary_test.dart --repo-root . -> Exit 0 (15/15 PASS)
+- [x] cd packages/warp_prism_ui && flutter test test/atoms/button/ds_button_test.dart test/theme/theme_role_accent_propagation_test.dart --no-pub -> Exit 0 (+25)
+
+---
+
+# Task 1834: 1834-capture-proof-honesty
+
+## Summary
+
+Visual capture harnesses fail-closed: unavailable capture now yields BLOCKED/FAIL naming the missing capability instead of silent PASS; artifact verification (PNG magic, IHDR dims); permanent honesty tests.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] Independent review PASS 96/100: all claims independently reproduced (3 analyzes + 3 harness runs exit 0, twice each); sabotage honesty tests proven non-tautological; carry-forwards recorded to Task 1805.
+
+---
+
+# Task 1832: 1832-responsive-layout-contract-overflow
+
+## Summary
+
+DSDataTable + DSTimeMachineScrubber layout contracts under real host constraints (h=50, h=119) with LayoutBuilder density adaptation and scroll fallbacks; 16 regression tests.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] Independent review PASS exit-scope 73/100: all 7 claimed gates re-executed exit 0; pre-fix mechanism mechanically reconstructed; falsified bands F1/F2/F4 materialized as follow-up Task 1836.
+
+---
+
+# Task 1831: 1831-host-composition-material-contract
+
+## Summary
+
+DSSearchBar self-sufficient Material ancestry (MaterialType.transparency); host-ancestry regression suite; zero No-Material crashes on Observatory routes.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] Independent review PASS 93/100: contract test 4/4, molecules 335/335, observatory tests 811/811, observatory linux build, double analyze — all exit 0, reviewer-re-executed.
+
+---
+
+# Task 1805: 1805-final-capture-determinism-review
+
+## Summary
+
+Observatory ticker isolation restored byte-identical repeated capture evidence; all six candidate PNGs were audited as valid 1280x800 8-bit RGBA artifacts.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] Catalog, Observatory, and CyberCore format/analyze/capture validations exited 0 with 4/4, 1/1, and 1/1 capture tests passing.
+- [x] All six candidate PNGs are non-empty 1280x800 8-bit RGBA; Observatory SHA-256 5a984635c3f6af877dfb144a9e1b62ad906ef00ab2825cd184293fa3d04e0500 repeated exactly.
+- [x] Independent reviewer ses_f9a461d7cffeOG5bVLNO6MPJqV returned remediation PASS 100/100 diagnostic; overall Task 1805 remains BLOCKED PENDING-USER.
+
+---
+
+# Task 1805: catalog-local-visual-capture-remediation
+
+## Summary
+
+Independent reviewer PASS 100/100 for the remediation. Four non-empty 1280x800 RGBA candidates now exist under docs/reports/captures/candidates/. Task 1805 remains in 03-review with overall BLOCKED/PENDING-USER: no golden refresh or visual approval is claimed.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] cd apps/catalog && flutter test integration_test/visual_acceptance_capture_test.dart (4/4); dart format and flutter analyze exit 0; stat/file confirms four 1280x800 RGBA PNGs
+
+---
+
+# Task 1302: review-lane-drain-w2-w3-complete
+
+## Summary
+
+Executed the canonical 03-review drain (PLAN-03) to completion: 36 parked tasks -> 4, every closure independent-review-verified. W3 stragglers 6/6 PASS (1106 operational MVP artifacts, 1302 barrel lock 296/296 redundant-satisfied by boundary 15/15, 1401 failure baseline + F02 remediated, 1522 keyboard/toast 23/23, 1616 teal skin sanctioned-opt-in verified, 1617 profiles/changelog migration artifacts + validation). W2 EPIC-17 form primitives 7/8 PASS (1700 94, 1701 94, 1702 96, 1704 96, 1705 96, 1706 100, 1707 100 — gallery 22/22, boundary 15/15, analyzer 0E/0W); 1703 BLOCKED-1805 (8/8 behavioral PASS; 4 frozen-golden diffs pending single authorized refresh). W3a EPIC-15/16 organisms 13/13 PASS reconciled from complete verification packet (188 focused + 680 full organism suite, fixture-first held, zero clone paths, Prism aliases verified; formalization follow-up lost to provider failure - evidence authoritative, disposition centrally reconciled per drain plan 4). W1 EPIC-18 visual chain 6/8 PASS (1801 96, 1802 96, 1803 95, 1804 95, 1808 96, 1809 94; fresh evidence: tokens+theme 172/172, theme editor+color field 33/33, observatory 811/811, catalog 14/14, cybercore 16/16, native font smoke 1/1, WCAG recomputed for 1809); 1806+1807 BLOCKED-1805 (technical PASS 92/94 - exits inherently post-sign-off). Remaining 4 in 03-review are all explicitly 1805-human-gated: 1703, 1805 itself, 1806, 1807.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] boundary 15/15 across all waves; per-wave test counts recorded in dispositions; 03-review lane: 36 -> 4 (4 = 1805-gated holds)
+
+---
+
+# Task 1830: boundary-checks-16-17-activation
+
+## Summary
+
+Activated the last two PHASED boundary checks, mechanizing the 1825 Part 7 conditional exception policy: check 16 (core packages contain no domain types — scans the 5 v2 semantic packages with word-boundary regex; sanctioned teal-skin stays ui-local per documented policy) + check 17 (FRB generated files not imported directly by widgets — scans apps+packages excluding adapter; import-only regex avoids false-positive on the legal adapter barrel). Boundary harness 13->15/15; layer-contracts-v2 5.1 rows 16/17 -> ENFORCED NOW. Dry-runs found 0 violations (no check weakening needed). Bundled review PASS 98/100.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] boundary 15/15 PASS 0 FAIL; dart analyze boundary_test clean; layer-contracts grep ENFORCED NOW rows updated
+
+---
+
+# Task 1828: minimal-connected-catalog-proof
+
+## Summary
+
+First real app consumption surface (MISSION 30 authorizes pre-pilot): ConnectedBridgeLabPage in apps/catalog — WarpBridge.init -> FrbGraphSource -> GraphSourceBinding -> PrismGraphCanvas live projection with interactive addNode native mutation + live watchUpdates refresh. Constructor injection seam (source/bridgeInit) for testability; deterministic fixture fallback (FIXTURE MODE FAKE badge, no crash) when native lib unavailable. CONNECTED badge distinct from STATIC/INTERACTIVE. Zero registry/resolver machinery. Catalog 14/14 tests; FRB grep 0 (barrel-only imports). Bundled review PASS 96/100.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] catalog analyze clean; flutter test 14/14; boundary 15/15; grep flutter_rust_bridge in apps/catalog/lib = 0
+
+---
+
+# Task 1827: testkit-suite-gap-closure-g1-g6
+
+## Summary
+
+Closed all 6 named contract-suite gaps from 1821: EventStream pause(resumeSignal) auto-resume + cancelOnError both modes (genuine contract params, not invented); AsyncCommand re-entrancy (contract permits concurrent, auto-cancel documented as binding-layer policy); CommandTimeoutError typed error -> failed lifecycle; HealthSource watch-error (emitWatchError helper, source stays usable); GraphSource watchUpdates error (snapshot intact). Testkit 53->65; adapter parity suite extended 87->95 without callback breakage. Bundled review PASS 94/100 (nuance: timeout lifecycle in fake-specific test, non-blocking).
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] testkit dart analyze clean + 65/65; adapter integration 95/95; boundary 15/15
+
+---
+
+# Task 1826: health-source-binding-contracts-ui-closure
+
+## Summary
+
+Created HealthSourceBinding + HealthSourceViewModel in warp_prism_bindings (mirroring established binding patterns; bindings MAY import ui per layer law): snapshot/watch projection with TTL freshness, worst-state rollup, watch-error resilience, disposal. HealthSourceMappers bridge HealthState/HealthCell to PrismProviderHealth presentation types. All 4 runtime contracts now have UI bindings — the 1821 named gap (HealthSource had no binding) closed. 43/43 tests. Bundled review PASS 98/100.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] flutter analyze clean; flutter test 43 pass; purge grep Timer.periodic|retry = 0; boundary 15/15
+
+---
+
+# Task 1825: 1805-gate-open-pending-human-signoff
+
+## Summary
+
+M01 L1 Integration-Capable gate PASSED (independent acceptance). 13-check audit complete: ADS/IDS/Runtime/FRB golden path all live, 13-check boundary harness, full test suites green, common-subset parity fully symmetric post-remediation. L2 NOT certified (requires first real product pilot + harvest). Next: pilot selection (OmniRoute vertical, requires parent repo governance opening lane).
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] boundary 13/13; testkit 53/53; adapter 100/100; integration 87/87; cargo 20/20 zero warnings; ui scoped 200/200; IDS proof 7/7; catalog 10/10
+
+---
+
+# Task 1825: integration-readiness-l1-exit-gate-harvest-checklist
+
+## Summary
+
+Formal 13-check Integration Readiness audit executed with fresh evidence (12 PASS + 1 build-budget note + 0 FAIL post-remediation): certified M01 Level 1 Integration-Capable (ADS + IDS + backend-agnostic runtime contracts + Rust golden path via replaceable FRB 2.13.0 adapter, lab-proven). Remediation closed the substrate gaps: native graph update/remove/reset + controllable health watch implemented, parity now fully symmetric (EventStream 19/19, HealthSource 7/7, GraphSource 6/6; AsyncCommand 6/6 modality matrix with documented closure-injection exception per M01 gate amendment). Boundary checks 13/14/15 activated (13/13 harness). MISSION §45 crosswalk (28 items) + fresh ADS evidence (catalog 10/10, ui scoped 200/200) + candidate-identity release boundary recorded. L2 Rewrite Readiness explicitly NOT certified — requires first real product pilot + harvest. Review: FAIL (5 dispositions) -> all 5 executed -> re-review dispatched.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] boundary 13/13; testkit 53/53; adapter 100/100 (integration 87/87); cargo build 0 warnings, cargo test 20; IDS proof 7/7; catalog 10/10; ui scoped 200/200
+
+---
+
+# Task 1824: frb-integration-lab-parity-common-subset
+
+## Summary
+
+Single-hypothesis FRB integration lab: same testkit contract suites wired to BOTH in-memory fakes and live native Rust FRB bridge (libwarp_bridge_frb.so via ExternalLibrary). Honest result: 100% parity on the COMMON SUBSET — EventStream 19/19 fully symmetric (all 4 backpressure strategies); HealthSource 5/7 + GraphSource 3/6 (watch/mutation assertions fake-only: substrate lacks mutation/control endpoints — disclosed with root causes in §6.1 COVERAGE LIMITATION); AsyncCommand via 6/6 modality-matrix substitute (suite needs Dart-closure injection, incompatible with fixed native handlers). In-flight cooperative FFI cancellation fully symmetric (CancellationToken → cancelCommand → CommandRegistry → Tokio abort). FFI smoke 5/5. Adapter alignment fixes (backpressure/complete/close idempotency) ruled legitimate contract alignment, not test-gaming. 82 integration tests + 95 total adapter tests pass; boundary 10/10. Review: FAIL 74/100 (overstated 100%-MATCH) → documentary remediation (common-subset verdict, coverage-limitation table, substrate gap-to-close list §6.2) → re-review PASS 96/100.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] flutter test integration = 82 pass; full package = 95 pass; boundary 10/10; rg daemon/rpc/hybrid = no matches; cargo build --release clean
+
+---
+
+# Task 1821: runtime-promotion-gate-evidence-pack
+
+## Summary
+
+Created docs/reports/1821-runtime-contracts-promotion-evidence.md: 7-item DoD audit for the 4 runtime contracts (all PASS with named gaps) + per-contract lifecycle classification: ALL 4 HOLD @ EXPERIMENTAL — zero app-level contract consumers (grep-verified across 124 dart files); PROVEN requires real consumer adoption per layer-contracts §3.2 (1817 precedent counts operational app domains, not in-stack scaffolding). AsyncCommand strongest post-adoption candidate; HealthSource weakest (no binding, no real surface). Cross-cutting findings routed to 1825: adapter_frb zero @experimental annotations (check-12 blocker — remediated by orchestrator before 1825); in-stack-domain §3.2 interpretation question. Independent review PASS 89/100 CONDITIONAL (all material claims re-derived; HOLD ruled the only correct reading; this changelog entry closes the review's one HIGH finding).
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] testkit 53/53; boundary 10/10; runtime purity 2/2; bindings 33/33; grep app consumers = 0; domain leakage = 0
+
+---
+
+# Task 1823: minimal-rust-bridge-substrate-2-crates
+
+## Summary
+
+Created rust/ nested 2-crate workspace (ADR RESOLVED): rust/warp_bridge_core (transport-agnostic command/events/health/graph models + logic, FRB-free, 11 unit tests) + rust/warp_bridge_frb (FRB 2.13.0 projection: smoke add/echo/count_stream + command execute/cancel, event create/stream, health snapshot/watch, graph snapshot/mutation/update-watch; 5 tests; 0 warnings via frb_expand cfg allow). Created packages/warp_prism_adapter_frb (Dart adapter implementing runtime contracts over generated bridge: FrbAsyncCommand with in-flight cooperative cancellation via CommandRegistry+cancel_command, FrbEventStream MutableEventStream, FrbHealthSource native watch stream, FrbGraphSource native update notifications via shared state+broadcast; 10 tests incl. FFI smoke + in-flight cancel + native health/graph watch). Review: FAIL (cargo warning; cancel preflight-only; health watch local; graph updates local) -> remediation (cfg allow; CommandRegistry; native watch_health; native watch_graph_updates) -> re-review PASS.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] cargo build 0 warnings; cargo test 16 pass; adapter analyze clean; adapter flutter test 10 pass; boundary 10/10; core FRB-free; root clean of Cargo.toml
+
+---
+
+# Task 1820: bindings-proof-ids-runtime-convergence
+
+## Summary
+
+Created packages/warp_prism_bindings/ (Flutter package, deps ui+interaction+runtime, dev testkit): EventStreamBinding (subscription lifecycle, buffering, pause/resume/clear, deterministic epoch-0 fallback, optional advisory followState hook — zero owned presentation policy), GraphSourceBinding (semantic→renderable projection with layout Offset owned strictly in binding layer via deterministic circle/grid strategies; structural source-scan assertions enforce runtime purity), AsyncCommandBinding (executeWithIntent bridges IDS InputIntent→runtime AsyncCommand; executeWithQueryIntent bridges QueryIntent; cooperative cancellation). 33 tests via warp_prism_testkit fakes. Review: FAIL (isolation test weak; shallow ==; nondeterministic fallback; out-of-scope claim) -> remediation (source-scan assertions; identity semantics; deterministic sentinel; claim removed) -> re-review PASS.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] flutter analyze clean; flutter test 33 pass; boundary 10/10; grep bindings in ui lib = 0; grep domain/FRB in bindings = 0
+
+---
+
+# Task 1819: runtime-contracts-fakes-testkit
+
+## Summary
+
+Created packages/warp_prism_runtime (pure Dart backend-agnostic contracts: EventStream with producer-side MutableEventStream sink emit/emitBatch/replaceAll/clear, backpressure-as-data, documented Growth Notification (delivery IS notification) + Stable Identity (payload-owned via RuntimeEvent) decisions; HealthSource snapshot/watch/freshness with zero polling; GraphSource semantic models with open typedef kinds and sealed updates incl EdgeUpdated; AsyncCommand lifecycle with cooperative CancellationToken and zero retry) + packages/warp_prism_testkit (4 in-memory fakes + implementation-agnostic contract compliance suites: backpressure behavioral x4 strategies, in-flight cancellation, onDone/isClosed/post-close termination across all 4 suites, EdgeUpdated, growth/identity assertions - 53 tests). Boundary check 12 (runtime Flutter purity) appended: 10/10 PASS. Requirement dispositions recorded in audit section 6.1 (onCellSelected composition-owned; identity/growth payload/delivery-owned). Review: FAIL (8 findings) -> remediation -> FAIL (F1 partial) -> decision-documented remediation -> closed.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] dart analyze both packages clean; runtime 2 purity tests; testkit 53 pass; purge grep 0; flutter/dart:ui grep 0; domain leakage 0; boundary 10/10; melos lists both packages
+
+---
+
+# Task 1817: ids-proof-real-consumer-integration-promotion
+
+## Summary
+
+IDS kernel proof and promotion review. Selection/Inspection/Query promoted EXPERIMENTAL -> PROVEN on real-consumer evidence: 7 real-widget proof tests pumping actual PrismWorkflowCanvasStage + PrismFilterWorkbench driven by kernel state via test-only dev_dependency seam (production binding layer = Task 1820). State machine hardened (transitionTo validates table target) + full transition-table adversarial coverage. Findings recorded honestly: multi-selection maps to primarySelection (widget has single-slot); FilterWorkbench reset requires cancel-before-reset per transition table. 104 kernel tests + 34 ui tests green; lib/ purity 0; boundary 9/9. Review: FAIL (isolation simulation) -> remediation (dev-dep + real widget proof) -> re-review PASS.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] flutter test ids_kernel_consumer_proof_test.dart = 7 pass on real organisms; dart test warp_prism_interaction = 104 pass; grep warp_prism_interaction in ui lib/ = 0; boundary 9/9
+
+---
+
+# Task 1822: frb-candidate-spike-kill-gate-pass
+
+## Summary
+
+FRB candidate spike on toolchain rustc 1.95.0/cargo 1.95.0/Flutter 3.44.1/Dart 3.12.1 (Linux x86_64): flutter_rust_bridge 2.13.0 + codegen 2.13.0 via cdylib dynamic loading. Codegen 1.34s; cold release build 8.57s; incremental 0.46s; Dart bridge suite 3/3 PASS (sync add, async echo, reactive stream). KILL-GATE: PASS. Cargo placement ADR RESOLVED -> rust/Cargo.toml (nested workspace) with comparative evidence (Variant A root 8.72s vs Variant B nested 8.64s parity; B wins isolation/cleanliness/codegen symmetry/CI cache). Review: FAIL (ADR lacked comparative evidence) -> remediated with A/B build matrix -> focal re-review PASS.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] both placement variants build Finished dev profile; report has measured comparative table; candidate (not adopted) framing retained; repo root clean of Cargo.toml
+
+---
+
+# Task 1818: runtime-consumer-source-audit
+
+## Summary
+
+Created docs/architecture/runtime-consumer-audit.md (141 lines, 25 file:line citations): evidence-backed consumer inventory for the 4 runtime contract candidates with UPDATED counts (EventStream: 1 live app consumer cybercore/live-logs; GraphSource: 1 live app consumer observatory, split already de-facto Offset-free; HealthSource: 0 confirmed, Timer.periodic=0 in apps; AsyncCommand: 2 real async apps, cybercore 6x duplicated boilerplate). Presentation-purge map (6 rows) + 4 MUST-ONLY rules; graph semantic-vs-layout split point; command-state census (Riverpod/ValueNotifier/local). Read-only audit, zero source mutations. Review PASS.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] grep Timer.periodic apps/*/lib/ = 0 physically confirmed; boundary harness 9/9 PASS; flutter analyze 0 errors/warnings (214 pre-existing info)
+
+---
+
+# Task 1815: ids-candidate-kernel-selection-inspection-query
+
+## Summary
+
+Created packages/warp_prism_interaction/ (pure Dart, workspace-registered): IDS candidate kernel admitting Selection+Inspection+Query per inventory evidence (Command-intent/Navigation/Viewport deferred). Immutable SelectionState (single/multi/toggle/anchor) + SelectionNotifier bus; Inspection lifecycle (proposed/active/dismissed); QueryController with cancellation + out-of-order token protection; InteractionState transition table with illegal-transition rejection; sealed InputIntent contract (pure data, zero flutter imports; purity test enforces). 46 tests green. Review: FAIL (typedef annotations) -> remediated -> focal re-review PASS (38/38 public declarations @experimental).
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] dart analyze = no issues; dart test = 46 pass; purity test: 0 package:flutter imports in lib/; boundary harness 9/9 PASS
+
+---
+
+# Task 1813: state-based-declutter-root-hygiene-check9
+
+## Summary
+
+Archive-first root sweep: 22 root scratch files moved with ZERO deletions (1 -> scripts/start-tmux.sh; 21 -> docs/archive/root-scratch/ with 22-row PROVENANCE.md: original path, purpose, task provenance, classification). State-Based Declutter Rule documented in docs/archive/README.md (lifecycle-state-based, never epic-number-based). Boundary harness check 9 appended atomically with the sweep (prefix patterns fix_/tmp_/patch_/append_/snippet_/test_/replace_ds./start-tmux. + py/sh/dart extension class; no count assertions). Serialized after 1811 per writeset ownership. Review PASS: byte-identity of all 22 moves verified, zero dangling references, 9/9 PASS.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] ls root *.py *.sh *.dart = 0; boundary harness 9/9 PASS 0 FAIL; dart analyze boundary_test.dart clean; 22/22 moves content-identical to HEAD
+
+---
+
+# Task 1814: interaction-inventory-evidence-driven
+
+## Summary
+
+Created docs/architecture/interaction-inventory.md: 35 evidence rows (31 components + 4 selection payloads) with file:line citations from ~40 source files. Verdicts: Selection/Inspection/Query RECURRENCE_PROVEN (Query = cybercore live-log filtering + observatory workspace search = 2 domains); Command-intent/Navigation-intent/Viewport-state DEFERRED to candidate ledger. 6 counter-examples mapped to correct homes. 4 source-reality corrections to task background recorded. Read-only audit: zero source files modified. Independent review PASS 2026-09-01 (incl. Query-inclusion decision endorsed).
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] boundary harness 8/8 PASS (no lib/ drift from read-only audit); 3 random file:line citations spot-checked by reviewer and matched
+
+---
+
+# Task 1812: package-topology-workspace-coordination
+
+## Summary
+
+Created docs/architecture/package-topology.md: 6-package v2 registry (ui/interaction/runtime/bindings/testkit/adapter_frb) with ownership, dependency direction law (ui purity, adapter isolation), Rust 2-crate topology (warp_bridge_core modules + warp_bridge_frb) with concept!=crate rule, Runtime!=Presentation model-ownership, workspace coordination reflecting physical Melos-in-pubspec reality, Cargo placement left as OPEN ADR for Task 1822. Independent review PASS 2026-09-01.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] grep package names=17, warp_bridge=5, concept rule=1, OPEN ADR=2; melos.yaml physically absent confirmed; consistency with layer-contracts-v2 confirmed by reviewer
+
+---
+
+# Task 1811: layer-contracts-v2-harness-check-8
+
+## Summary
+
+Created docs/architecture/layer-contracts-v2.md (10-row MUST/MAY/MUST-NOT matrix, Global MUSTs, Domain Leakage Rule, bypass-is-a-feature, checks 1-17 authoritative enforcement table) and appended boundary harness check 8 (PrismTokenRegistry mutators only by theme_editor; 2-path allowlist verified precise). Check 9 deliberately left for Task 1813 (serialized writeset ownership). Independent review PASS 2026-09-01: harness 8/8 PASS, 0 FAIL.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] dart run boundary_test.dart --repo-root ../.. = 8/8 PASS 0 FAIL; dart analyze boundary_test.dart = no issues; allowlist grep: setColor/resetRole callers only in theme_editor
+
+---
+
+# Task 1810: amend-charter-v2-adr-supersession
+
+## Summary
+
+Amended docs/design/charter.md to v2 mission (ADS+IDS+Runtime Contracts, Rust golden path via replaceable FRB adapter), verbatim framing tattoos, monorepo-level supersession of bootstrap runtime restriction with warp_prism_ui purity retained, preservation invariants, ADR-0001 (Context/Decision/Consequences). AGENTS.md verified-only (already current). Independent review PASS 2026-09-01.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] grep tattoos: 2/3/5 counts confirmed; AGENTS.md Last Updated 2026-09-01 verified unedited; charter 189 lines
+
+---
+
+# Task 1809: Warp Prism Taldarim Red and Talon Purple Accent Themes
+
+## Summary
+
+Added two new opt-in accent themes — **Taldarim Red** (`#E51A4C` crimson energy ladder) and **Talon Purple** (`#9911E5` violet/crimson-purple energy ladder) — as `ThemeExtension` skins (`DSTaldarimRedSkin`, `DSTalonPurpleSkin`) and static factories (`DSTheme.taldarimRed()`, `DSTheme.talonPurple()`, aliased publicly as `PrismTheme.taldarimRed()` and `PrismTheme.talonPurple()`).
+
+Both themes strictly honor Rule Zero: backgrounds stay in the `#030506` black obsidian family, static `DSColors` defaults remain unmodified (Khalai Blue default action accent `#2F81FF`), and existing Protoss brand labels (Khalai Blue, Nerazim Green/Teal, Purifier Gold) are documented alongside the new brand labels.
+
+## Changes
+
+- Created `packages/warp_prism_ui/lib/src/tokens/ds_taldarim_red_skin.dart` with `DSTaldarimRedSkin` ThemeExtension.
+- Created `packages/warp_prism_ui/lib/src/tokens/ds_talon_purple_skin.dart` with `DSTalonPurpleSkin` ThemeExtension.
+- Added `DSTheme.taldarimRed()` and `DSTheme.talonPurple()` static factories in `packages/warp_prism_ui/lib/src/theme/ds_theme.dart`.
+- Re-exported `DSTaldarimRedSkin` and `DSTalonPurpleSkin` in `packages/warp_prism_ui/lib/src/tokens/tokens.dart`.
+- Exported public aliases `PrismTaldarimRedSkin` and `PrismTalonPurpleSkin` in `packages/warp_prism_ui/lib/src/prism_aliases.dart`.
+- Updated `docs/design/public-barrel-audit.md` symbol inventory lock from 294 to 296 Prism symbols.
+- Added unit tests in `packages/warp_prism_ui/test/tokens/ds_taldarim_red_skin_test.dart` and `ds_talon_purple_skin_test.dart`.
+- Added factory & Rule Zero regression tests in `packages/warp_prism_ui/test/theme/prism_theme_test.dart`.
+- Updated `apps/catalog/lib/main.dart` with `CatalogThemeVariant` enum for live preview of all 4 accent themes (Khalai Blue, Taldarim Red, Talon Purple, CyberCore Teal).
+
+## Verification
+
+- `cd packages/warp_prism_ui && flutter analyze --no-fatal-infos` (PASS: 0 errors)
+- `cd packages/warp_prism_ui && flutter test test/theme test/tokens` (PASS: 172/172 tests green)
+- `cd packages/warp_prism_ui && flutter test test/boundaries` (PASS: 7/7 boundary harness green)
+- `cd apps/catalog && flutter analyze` (PASS: 0 issues)
+- `dart run tool/verify_public_barrel_audit.dart` (PASS: 296/296 symbols locked)
+- Golden freeze intact: existing goldens untouched, zero new PNG goldens created.
 
 ---
 
@@ -2154,1374 +2722,5 @@ flutter test test/boundaries/boundary_test.dart --no-pub
 - `flutter test test/organisms/execution_console/ --concurrency=1 --no-pub` → **12/12 passed**.
 - No `dart:io`, `Process`, `pty`, or shell-execution imports in module.
 **Author**: builders
-
----
-
-## [2026-07-15] - Fix a11y semantic labels on Floating Analytics HUD and Execution Console
-### Fixed
-- `DSFloatingAnalyticsHud`: wrap root `build` in `Semantics` so `find.byType(...).label` exposes `semanticLabel` ("Floating analytics HUD").
-- `DSExecutionConsole`: move root `Semantics` outside glass/colored wrappers so the widget-type semantics node carries `semanticLabel`.
-- `ds_execution_console_test.dart`: dispose `SemanticsHandle` synchronously before end-of-test verification (Flutter 3.44 checks handles before tearDowns).
-### Verification
-- `flutter test test/organisms/floating_analytics_hud/ test/organisms/execution_console/` → **23/23 passed**
-**Author**: builders
-
----
-
-## [2026-07-15] - Task 1612: ADS Package Purity and Interactive State Matrix Hygiene
-
-### Added
-
-- Created `docs/design/ads-package-purity-and-interactive-state-checklist.md` as the unified checklist and guide for package purity and interactive state matrix requirements.
-- Extended the `packages/warp_prism_ui/test/boundaries/boundary_test.dart` suite by adding a new boundary check: "warp_prism_ui does not import forbidden persistence or IO packages". The suite now runs 7/7 PASS checker rules.
-
-### Changed
-
-- Updated `packages/warp_prism_ui/test/boundaries/boundary_test.dart` to verify that `warp_prism_ui` does not import `dart:io`, `package:shared_preferences`, `package:hive`, `package:isar`, or `package:sqflite`.
-
-**Author**: builders
-
----
-
-## [2026-07-15] - Task 1610: PrismWorkflowCanvasStage Contract
-
-### Added
-
-- `DSWorkflowNode`, `DSWorkflowEdge`, `DSWorkflowNodeKind`, `DSWorkflowEdgeKind`, `DSWorkflowSelection` immutable DAG models with full dartdoc contract
-- `DSWorkflowCanvasStage` host widget with viewport, node chips, edge strip, selection bus, empty/loading states
-- `DSWorkflowCanvasLayout` deterministic left-to-right DAG layout (no MapLibre, no force-graph JS)
-- `DSGraphCanvas` adapters via `toGraphNode` / `toGraphEdge` for composition with existing graph module
-- Barrel export in `organisms/workflow_canvas_stage/workflow_canvas_stage.dart`
-- `Prism*` typedefs: `PrismWorkflowCanvasStage`, `PrismWorkflowNode`, `PrismWorkflowEdge`, `PrismWorkflowNodeKind`, `PrismWorkflowEdgeKind`, `PrismWorkflowSelection`, `PrismWorkflowCanvasLayout`
-- Public fixture functions: `prismWorkflowCanvasStageFixtureNodes/Edges`, `prismWorkflowCanvasStageMinimalNodes/Edges`
-- Gallery fixture: ingest → route → respond (+ tool side branch)
-- Widget tests: layout, node/edge contracts, selection bus, render, tap callbacks, empty/loading, controlled selection, map-stage type distinction
-- Distinct from EPIC-15 map canvas stage (separate module, type hierarchy, no geo/MapLibre)
-
-**Author**: builders
-
----
-
-# Task 1609: PrismTimingWaterfall + PrismTrafficInspector Pack
-
-## Summary
-
-Implemented **PrismTimingWaterfall** (`DSTimingWaterfall`) and
-**PrismTrafficInspector** (`DSTrafficInspector`) — fixture-first CyberCore ops
-organisms for request timing bars and request/response inspect MVP (EPIC-16
-C-09 + C-10 / Wave L pack). Pure Flutter layout only — no Recharts, MapLibre,
-or live MITM/proxy capture.
-
-Public `Prism*` aliases; organisms barrel export; minimal gallery cases;
-widget + unit tests.
-
-## Changes
-
-- Created `packages/warp_prism_ui/lib/src/organisms/timing_waterfall/`
-  - `DSTimingSpan`, `DSTimingWaterfallLayout`, `DSTimingWaterfall`
-  - Proportional bar geometry from startMs/durationMs (zero-duration markers)
-  - Fixtures: multi-phase DNS→download + compact minimal set
-- Created `packages/warp_prism_ui/lib/src/organisms/traffic_inspector/`
-  - `DSTrafficRequest`, `DSTrafficDetailTab`, `DSTrafficInspector`
-  - List + detail split (optional `DSSplitPane`); tabs Overview/Headers/Body/Timing
-  - Headers/body via `DSCodeBlock`; Timing tab embeds `DSTimingWaterfall`
-  - Fixtures: multi-request mock IDs + compact two-request set
-- Exported barrels from `organisms.dart` (append-only)
-- Aliased in `prism_aliases.dart` (append-only near CyberCore ops aliases)
-- Gallery (organisms section): both fixture demos
-- Widget tests under `test/organisms/timing_waterfall/` and
-  `test/organisms/traffic_inspector/`
-
-## Non-goals honored
-
-- No Recharts / chart engine ports
-- No live MITM / proxy / network capture deps in `warp_prism_ui`
-- No MapLibre / Widgetbook / Observatory teal rebrand
-- No product route rewrite (ADS-first)
-- MVP only — no full HAR editor, no live stream websocket
-
-## Verification
-
-```bash
-cd packages/warp_prism_ui
-dart analyze lib/src/organisms/timing_waterfall \
-  lib/src/organisms/traffic_inspector \
-  lib/src/prism_aliases.dart lib/src/organisms/organisms.dart \
-  lib/src/gallery/design_system_gallery_sections.dart \
-  test/organisms/timing_waterfall test/organisms/traffic_inspector
-
-flutter test test/organisms/timing_waterfall/
-flutter test test/organisms/traffic_inspector/
-grep -E 'recharts|maplibre|widgetbook' pubspec.yaml || true
-# (no matches expected)
-
-cd ../..
-dart run packages/warp_prism_ui/test/boundaries/boundary_test.dart --repo-root .
-# Boundary harness: 6/6 PASS (when tooling available)
-```
-
----
-
-# Task 1511: PrismAiAnalystPanel Fixture-First Organism
-
-## Summary
-
-Implemented **PrismAiAnalystPanel** (`DSAiAnalystPanel`) — fixture-first chat /
-intel turns panel with composer, scripted reply adapter, optional streaming
-simulation, empty/error states, and markdown assistant content. EPIC-15 O-15 /
-Wave E. No live model keys or network paths.
-
-Public `Prism*` aliases; organisms barrel export; gallery case with fixture-only
-policy banner; widget + controller tests.
-
-## Changes
-
-- Created `packages/warp_prism_ui/lib/src/organisms/ai_analyst_panel/`
-  - `DSAiAnalystTurn`, `DSAiAnalystRole`, `DSAiAnalystTurnStatus`
-  - `DSAiAnalystController` (send + scripted reply + optional stream sim)
-  - `DSAiAnalystPanel` glass panel (header, transcript, composer)
-  - Default fixture reply adapter (`dsAiAnalystDefaultFixtureReply`)
-  - Multi-turn + error fixtures
-- Exported barrel from `organisms.dart` (append-only)
-- Aliased in `prism_aliases.dart`:
-  - `PrismAiAnalystPanel`, `PrismAiAnalystTurn`, `PrismAiAnalystRole`,
-    `PrismAiAnalystTurnStatus`, `PrismAiAnalystController`,
-    `PrismAiAnalystReplyAdapter`
-  - `prismAiAnalystDefaultFixtureReply()`, `prismAiAnalystFixtureTurns()`,
-    `prismAiAnalystErrorFixtureTurn()`
-- Gallery (organisms section): interactive fixture demo + policy note
-- Widget tests under `test/organisms/ai_analyst_panel/`
-
-## Non-goals honored
-
-- No live Gemini / LLM clients / API keys / network
-- No Observatory product route rewrite (ADS-first)
-- Not a fork of `DSAgentTranscript` (composer + fixture reply lifecycle)
-- Not terminal agent shell (`PrismAgentShellPanel`)
-- Molecules kept in-organism (bubble/composer/streaming line)
-
-## Verification
-
-```bash
-cd packages/warp_prism_ui
-dart analyze lib/src/organisms/ai_analyst_panel \
-  lib/src/prism_aliases.dart lib/src/organisms/organisms.dart \
-  lib/src/gallery/design_system_gallery_sections.dart \
-  test/organisms/ai_analyst_panel
-# No issues found (exit 0)
-
-flutter test test/organisms/ai_analyst_panel/
-# 16/16 PASS
-
-cd ../..
-dart run packages/warp_prism_ui/test/boundaries/boundary_test.dart --repo-root .
-# Boundary harness: 6/6 PASS
-```
-
----
-
-# Task 1510: PrismOsintWorkbench Organism
-
-## Summary
-
-Implemented `DSOsintWorkbench` with public alias `PrismOsintWorkbench` —
-tabbed recon workbench with tool registry, query submit, session history,
-structured fixture results, and optional map handoff when a result carries
-geo coordinates. Fixture/in-memory adapters only; no live OSINT APIs, API
-keys, or MapLibre. Harvests **mode contract** from Osiris `OsintPanel` /
-ShadowBroker `ReconPanel` — not megafile structure. ADS-first gallery +
-tests; no product route coupling.
-
-## Changes
-
-- Created `packages/warp_prism_ui/lib/src/organisms/osint_workbench/`:
-  - `ds_osint_workbench.dart` — tool/result/history/handoff models,
-    `DSOsintFixtures` resolvers, workbench UI
-  - `osint_workbench.dart` — barrel export
-- Exported from `organisms.dart` (append-only)
-- Aliased `PrismOsintWorkbench`, `PrismOsintTool`, `PrismOsintResult`,
-  `PrismOsintResultField`, `PrismOsintHistoryEntry`, `PrismOsintMapHandoff`,
-  `PrismOsintFixtures`, `PrismOsintFixtureResolver` in `prism_aliases.dart`
-- Minimal gallery case under Organisms (DNS + IP + WHOIS fixtures; map handoff
-  status line documents no live keys)
-- Widget tests: tool tabs, submit, empty results, history re-run, map handoff,
-  loading, a11y
-
-## Verification
-
-```bash
-cd packages/warp_prism_ui
-dart analyze lib/src/organisms/osint_workbench test/organisms/osint_workbench
-# → No issues found!
-
-flutter test test/organisms/osint_workbench/
-# → All tests passed (12)
-
-dart run test/boundaries/boundary_test.dart
-# → Boundary harness: 6/6 PASS
-```
-
----
-
-# Task 1509: Stage Chrome Pack Organisms
-
-## Summary
-
-Implemented three stage-chrome organisms for EPIC-15 O-11 / O-12 / O-13:
-
-1. `PrismWatchlistDock` — pinned-entity dock (expand/collapse, select, unpin)
-2. `PrismCoordinateStatusBar` — read-only lat/lon + feed-health strip
-3. `PrismMapLegend` — categorized legend with optional visibility toggles
-
-Fixture-first ADS delivery: gallery demos + widget tests only. No MapLibre,
-no Observatory route rewrite, no live geocoder/feeds.
-
-## Changes
-
-- Created `packages/warp_prism_ui/lib/src/organisms/watchlist_dock/`
-  - `ds_watchlist_dock.dart` — `DSWatchlistDock`, `DSWatchlistItem`, fixtures
-  - `watchlist_dock.dart` — barrel
-- Created `packages/warp_prism_ui/lib/src/organisms/coordinate_status_bar/`
-  - `ds_coordinate_status_bar.dart` — `DSCoordinateStatusBar`, feed health models
-  - `coordinate_status_bar.dart` — barrel
-- Created `packages/warp_prism_ui/lib/src/organisms/map_legend/`
-  - `ds_map_legend.dart` — `DSMapLegend`, categories/items, fixtures
-  - `map_legend.dart` — barrel
-- Appended exports to `organisms.dart`
-- Appended `Prism*` aliases in `prism_aliases.dart` (models + fixtures)
-- Gallery: combined `_StageChromePackDemo` under Organisms section
-- Widget tests for all three organisms (≥1 interactive a11y proof each)
-
-## Verification
-
-```bash
-cd packages/warp_prism_ui
-dart analyze lib/src/organisms/watchlist_dock \
-  lib/src/organisms/coordinate_status_bar \
-  lib/src/organisms/map_legend \
-  lib/src/organisms/organisms.dart \
-  lib/src/prism_aliases.dart \
-  lib/src/gallery/design_system_gallery_sections.dart \
-  test/organisms/watchlist_dock \
-  test/organisms/coordinate_status_bar \
-  test/organisms/map_legend
-# → No issues found
-
-flutter test test/organisms/watchlist_dock/ \
-  test/organisms/coordinate_status_bar/ \
-  test/organisms/map_legend/
-# → All tests passed (20)
-
-dart run test/boundaries/boundary_test.dart
-# → Boundary harness: 6/6 PASS
-```
-
----
-
-# Task 1508: PrismStatusTicker Organism
-
-## Summary
-
-Implemented `DSStatusTicker` with public alias `PrismStatusTicker` — fixture
-status strip supporting rotate (one-at-a-time) and marquee modes, optional
-severity via `DSOperationalState` tokens, pause-on-hover, controller-driven
-advances for tests, and reduced-motion static multi-item strip so content is
-never infinite-animation-only. ADS-first: gallery + tests only; no Observatory
-route rewrite, no live feeds.
-
-## Changes
-
-- Created `packages/warp_prism_ui/lib/src/organisms/status_ticker/`:
-  - `ds_status_ticker.dart` — models (`DSStatusTickerItem`, `DSStatusTickerMode`),
-    controller, fixtures, rotate/marquee organism, glass strip chrome, a11y
-  - `status_ticker.dart` — barrel export
-- Exported from `organisms.dart` (append-only)
-- Aliased in `prism_aliases.dart`:
-  - `PrismStatusTicker`, `PrismStatusTickerItem`, `PrismStatusTickerMode`,
-    `PrismStatusTickerController`, `PrismStatusTickerFixtures`
-- Minimal gallery case under Organisms (rotate + marquee fixture feed)
-- Widget tests: multi/single/empty, severity, controller, timer, reduced motion,
-  marquee, pause-on-hover, tap, fixtures
-
-## Verification
-
-```bash
-cd packages/warp_prism_ui
-dart analyze lib/src/organisms/status_ticker lib/src/organisms/organisms.dart \
-  lib/src/prism_aliases.dart lib/src/gallery/design_system_gallery_sections.dart \
-  test/organisms/status_ticker
-# → No issues found
-
-flutter test test/organisms/status_ticker/
-# → All tests passed (13)
-
-dart run test/boundaries/boundary_test.dart
-# → Boundary harness: 6/6 PASS
-```
-
-Note: full `flutter test test/organisms/` has pre-existing failures in concurrent
-stage-chrome packs (`watchlist_dock`, `map_legend` a11y label finds) unrelated
-to Task 1508.
-
----
-
-# Changelog — Task 1601 path-to-100 (gallery/catalog overflow fix)
-
-> **Date**: 2026-07-11  
-> **Task**: 1601 — Catalog / Gallery Showability Verify + Polish  
-> **Trigger**: Independent review S=81 — gallery 15/17 + catalog 8/9 red (stale CE)
-
-## Summary
-
-Fixed Organisms gallery demo overflow that broke gallery smoke and catalog high-text-scale proofs after EPIC-15/16 densified organism fixtures.
-
-## Changes
-
-- **Gallery DSTree fixture** (`design_system_gallery_sections.dart`): wrap expanded provider-tree demo in `SingleChildScrollView` inside the fixed `height: 280` glass viewport so 7+ rows (minHeight 40) no longer RenderFlex-overflow.
-- **Gallery FilterWorkbench fixture**: raise demo host to `720×480` for 2.0 text-scale headroom.
-- **DSFilterWorkbench organism**: scroll header + criteria together; keep Apply/Clear footer pinned — prevents fixed chrome from exceeding host height at large text scales.
-
-## Validation (live 2026-07-11)
-
-| Command | Result |
-| --- | --- |
-| `cd packages/warp_prism_ui && flutter test test/gallery/` | **PASS** EXIT 0 — **17/17** |
-| `cd packages/warp_prism_ui && flutter test test/organisms/filter_workbench/` | **PASS** EXIT 0 — **10/10** |
-| `cd apps/catalog && flutter test` | **PASS** EXIT 0 — **9/9** |
-| `cd apps/catalog && dart analyze` | **PASS** — No issues found |
-| `dart analyze lib/src/gallery lib/src/organisms/filter_workbench test/gallery` | **PASS** — No issues found |
-
-## Non-goals
-
-- No Widgetbook, no teal rebrand, no registry section id changes, no git, no lane move to `03-review` by executor.
-
----
-
-# Task 1608: PrismMcpCapabilityInspector
-
-## Summary
-
-Implemented **PrismMcpCapabilityInspector** (`DSMcpCapabilityInspector`) —
-capability-gated inspector for MCP tools / resources / prompts (plus optional
-roots/ping stubs). Fixture-first CyberCore ops surface (EPIC-16 C-08 / Wave L).
-No live MCP JSON-RPC client, no ALLOW/BLOCK mutation panels.
-
-Public `Prism*` aliases; organisms barrel export; minimal gallery case;
-widget + unit tests.
-
-## Changes
-
-- Created `packages/warp_prism_ui/lib/src/organisms/mcp_capability_inspector/`
-  - Models: `DSMcpCapabilities`, `DSMcpCapabilityKind`, tool/resource/prompt
-    items, roots/ping stubs, selection payload
-  - `DSMcpCapabilityInspector`: gated `DSTabBar` sections + list + detail
-    (`DSSplitPane` / fixed list + `DSDetailInspector`)
-  - Capability flags hide non-advertised sections
-  - Selection (controlled / uncontrolled) with detail metadata
-  - Disabled mock “Invoke” chrome on tools (no side effects)
-  - Fixtures: standard tools/resources/prompts, tools+resources-only gating,
-    empty capabilities, minimal pack
-- Exported barrel from `organisms.dart` (append-only)
-- Aliased in `prism_aliases.dart`:
-  - `PrismMcpCapabilityInspector`, kinds/capabilities/items/selection
-  - Fixture helpers (`prismMcpCapabilityInspector*`)
-- Gallery (organisms section): fixture inspector demo
-- Widget tests under `test/organisms/mcp_capability_inspector/`
-
-## Non-goals honored
-
-- No live MCP protocol / network client in ADS package
-- No ALLOW/BLOCK mutation UIs
-- No API keys / secrets
-- No product route rewrite (ADS-first)
-- No Observatory teal rebrand
-
-## Verification
-
-```bash
-cd packages/warp_prism_ui
-dart analyze lib/src/organisms/mcp_capability_inspector \
-  lib/src/prism_aliases.dart lib/src/organisms/organisms.dart \
-  test/organisms/mcp_capability_inspector
-# No issues found
-
-flutter test test/organisms/mcp_capability_inspector/
-# 11/11 PASS
-
-cd ../..
-dart run packages/warp_prism_ui/test/boundaries/boundary_test.dart --repo-root .
-# Boundary harness: 6/6 PASS
-```
-
----
-
-# Task 1607: PrismProviderHealthMatrix
-
-## Summary
-
-Implemented **PrismProviderHealthMatrix** (`DSProviderHealthMatrix`) — provider
-→ account/model health grid for fixture-first CyberCore ops (EPIC-16 C-07 /
-Wave L). Distinct from flat `PrismStatusGrid` multi-service dashboards.
-
-Public `Prism*` aliases; organisms barrel export; minimal gallery case;
-widget + unit tests.
-
-## Changes
-
-- Created `packages/warp_prism_ui/lib/src/organisms/provider_health_matrix/`
-  - `DSProviderHealthCell`, `DSProviderHealthProvider`, `DSProviderHealthMatrix`
-  - Compact cells: status dot + operational state + optional latency/meta
-  - Row headers with aggregate rollup; column axis from cell dimensions
-  - Selection callback + controlled `selectedCellId` highlight
-  - Empty providers surface (optional)
-  - Fixtures: multi-provider OpenAI/Anthropic/Local Mock + minimal 2×2
-- Exported barrel from `organisms.dart` (append-only)
-- Aliased in `prism_aliases.dart`:
-  - `PrismProviderHealthMatrix`, `PrismProviderHealthCell`,
-    `PrismProviderHealthProvider`
-  - `prismProviderHealthMatrixFixtureProviders()`,
-    `prismProviderHealthMatrixMinimalFixture()`
-- Gallery (organisms section): fixture matrix demo
-- Widget tests under `test/organisms/provider_health_matrix/`
-
-## Non-goals honored
-
-- No live provider APIs / API keys / polling in ADS package
-- No Observatory teal rebrand
-- No Recharts / chart engine ports
-- No product route rewrite (ADS-first)
-- Not a fork of `DSStatusGrid` — matrix IA only
-
-## Verification
-
-```bash
-cd packages/warp_prism_ui
-dart analyze lib/src/organisms/provider_health_matrix \
-  lib/src/prism_aliases.dart lib/src/organisms/organisms.dart \
-  test/organisms/provider_health_matrix
-# No issues found
-
-flutter test test/organisms/provider_health_matrix/
-# 13/13 PASS
-
-cd ../..
-dart run packages/warp_prism_ui/test/boundaries/boundary_test.dart --repo-root .
-# Boundary harness: 6/6 PASS
-```
-
----
-
-# Task 1606: PrismArtifactWorkbench
-
-## Summary
-
-Implemented EPIC-16 Wave K **C-06** artifact workbench organism:
-
-- **PrismArtifactWorkbench** (`DSArtifactWorkbench`) — side-panel list +
-  multi-type preview for agent-generated artifacts.
-- MVP types: `code` → `DSCodeBlock`, `markdown` → `DSMarkdownRenderer`,
-  `text` → plain monospace, `unknown` → safe fallback (no mermaid/svg engines).
-- Controlled / uncontrolled selection; optional `DSSplitPane` host.
-- Fixture-first (≥3 artifacts); no network loading.
-
-## Changes
-
-- Created `packages/warp_prism_ui/lib/src/organisms/artifact_workbench/`
-  - `DSArtifactType`, `DSArtifact`, `DSArtifactWorkbench`
-  - Fixtures: `dsArtifactWorkbenchFixtures()`, `dsArtifactUnknownFixture()`
-- Exported barrel from `organisms.dart` (append-only)
-- Aliased in `prism_aliases.dart`:
-  - `PrismArtifactWorkbench`, `PrismArtifact`, `PrismArtifactType`
-  - `prismArtifactWorkbenchFixtures()`, `prismArtifactUnknownFixture()`
-- Gallery (organisms section): minimal list+preview demo
-- Widget tests: select, empty, type badges, unknown fallback, a11y, controlled
-- Shared-file hygiene: added missing `status_ticker` import in
-  `prism_aliases.dart` so parallel Task 1508 aliases resolve
-
-## Non-goals honored
-
-- No network artifact URLs
-- No mermaid/svg live engines
-- No DeepChat full product port
-- Distinct from EPIC-15 media overlay (1523) and log viewer
-- No teal Observatory rebrand; no product route rewrite (ADS-first)
-
-## Verification
-
-```bash
-cd packages/warp_prism_ui
-dart analyze lib/src/organisms/artifact_workbench \
-  lib/src/prism_aliases.dart lib/src/organisms/organisms.dart \
-  lib/src/gallery/design_system_gallery_sections.dart \
-  test/organisms/artifact_workbench
-# No issues found
-
-flutter test test/organisms/artifact_workbench/
-# 8/8 PASS
-
-cd ../..
-dart run packages/warp_prism_ui/test/boundaries/boundary_test.dart --repo-root .
-# Boundary harness: 6/6 PASS
-```
-
----
-
-# Task 1605: PrismToolCallCard + PrismMessageStatusHistory
-
-## Summary
-
-Implemented companion agent-transcript family organisms for EPIC-16 Wave K:
-
-1. **PrismToolCallCard** (`DSToolCallCard`) — expandable glass tool-invocation
-   card (name, args summary, args/result/error body, status badge).
-2. **PrismMessageStatusHistory** (`DSMessageStatusHistory`) — compact pipeline
-   status step strip (pending / running / success / error).
-
-Fixture-first; public `Prism*` aliases; organisms barrel export; standalone
-gallery cases plus optional composition inside `PrismAgentTranscript` custom
-blocks (soft dep Task 1604 landed).
-
-## Changes
-
-- Created `packages/warp_prism_ui/lib/src/organisms/tool_call_card/`
-  - `DSToolCallStatus`, `DSToolCallData`, `DSToolCallCard`
-  - Fixtures: success / error / running / catalog
-- Created `packages/warp_prism_ui/lib/src/organisms/message_status_history/`
-  - `DSMessageStatusStepState`, `DSMessageStatusStep`, `DSMessageStatusHistory`
-  - Horizontal + vertical layouts; empty steps safe
-  - Fixtures: success / running / error trails
-- Exported both barrels from `organisms.dart` (append-only)
-- Aliased in `prism_aliases.dart`:
-  - `PrismToolCallCard`, `PrismToolCallData`, `PrismToolCallStatus`
-  - `PrismMessageStatusHistory`, `PrismMessageStatusStep`,
-    `PrismMessageStatusStepState`
-- Gallery (organisms section): standalone tool cards, status trails, and
-  composed transcript demo embedding both via `DSAgentMessageBlock.custom`
-- Widget tests for both organisms (happy / empty / error / a11y / composition)
-
-## Non-goals honored
-
-- No live tool execution / MCP / network
-- No TraceDialog / subagent task trees
-- No `DSLogViewer` duplication as tool card
-- No teal Observatory rebrand
-- No product route rewrite (ADS-first)
-
-## Verification
-
-```bash
-cd packages/warp_prism_ui
-dart analyze lib/src/organisms/tool_call_card \
-  lib/src/organisms/message_status_history \
-  lib/src/prism_aliases.dart lib/src/organisms/organisms.dart \
-  lib/src/gallery/design_system_gallery_sections.dart \
-  test/organisms/tool_call_card test/organisms/message_status_history
-# No issues found (prefer_const infos fixed)
-
-flutter test test/organisms/tool_call_card/ \
-  test/organisms/message_status_history/
-# 22/22 PASS
-
-cd ../..
-dart run packages/warp_prism_ui/test/boundaries/boundary_test.dart --repo-root .
-# Boundary harness: 6/6 PASS
-```
-
----
-
-# Task 1507: PrismTimeMachineScrubber Organism
-
-## Summary
-
-Implemented `DSTimeMachineScrubber` with public alias `PrismTimeMachineScrubber` —
-density histogram, playhead scrubber, and timer-based play/pause transport over
-fixture time series. Distinct from `PrismTimeline` / `DSTimeline` event lists
-(list = narrative; scrubber = temporal control / as-of range). ADS-first:
-gallery + tests only; no Observatory route rewrite, no live feeds.
-
-## Changes
-
-- Created `packages/warp_prism_ui/lib/src/organisms/time_machine_scrubber/`:
-  - `ds_time_machine_scrubber.dart` — models (`DSTimeDensityBucket`,
-    `DSTimeDensitySeverity`), histogram painter, scrub gestures, transport
-    (skip / play-pause / live), as-of range callbacks, a11y labels
-  - `time_machine_scrubber.dart` — barrel export
-- Exported from `organisms.dart` (append-only)
-- Aliased in `prism_aliases.dart`:
-  - `PrismTimeMachineScrubber`, `PrismTimeDensityBucket`,
-    `PrismTimeDensitySeverity` (dartdoc notes pairing with `PrismTimeline`)
-- Minimal gallery case under Organisms with 24h fixture density
-- Widget tests: render, scrub, play/pause, empty, min/max bounds, controlled
-  playhead, a11y, domain helper, public model aliases
-
-## Verification
-
-```bash
-cd packages/warp_prism_ui
-dart analyze lib/src/organisms/time_machine_scrubber lib/src/organisms/organisms.dart \
-  lib/src/prism_aliases.dart lib/src/gallery/design_system_gallery_sections.dart \
-  test/organisms/time_machine_scrubber
-# → No issues found
-
-flutter test test/organisms/time_machine_scrubber/
-# → All tests passed (10)
-
-dart run test/boundaries/boundary_test.dart
-# → Boundary harness: 6/6 PASS
-```
-
----
-
-# Task 1506: PrismEntityLocateSearch Organism
-
-## Summary
-
-Implemented `DSEntityLocateSearch` with public alias `PrismEntityLocateSearch` —
-multi-corpus entity/place locate bar with result list and locate callback.
-Emits `PrismLocateResult` (entity id, entity type, optional lat/lng) — explicitly
-**not** a `PrismCommandPalette` / command-id clone. Fixture corpora only; no
-live geocoder or MapLibre. ADS-first gallery + tests; no product route coupling.
-
-## Changes
-
-- Created `packages/warp_prism_ui/lib/src/organisms/entity_locate_search/`:
-  - `ds_entity_locate_search.dart` — corpus/entry/result models, search UI,
-    corpus chips, empty/loading states, locate action
-  - `entity_locate_search.dart` — barrel export
-- Exported from `organisms.dart` (append-only; concurrent organism exports preserved)
-- Aliased `PrismEntityLocateSearch`, `PrismLocateCorpus`, `PrismLocateEntry`,
-  `PrismLocateResult` in `prism_aliases.dart`
-- Minimal gallery case under Organisms (agents + places fixture corpora)
-- Widget tests: multi-corpus match, query, select locate payload, clear, empty,
-  loading, searchDelay, corpus filter, a11y, false-gap vs `PrismCommand`
-
-## Verification
-
-```bash
-cd packages/warp_prism_ui
-dart analyze lib/src/organisms/entity_locate_search lib/src/organisms/organisms.dart \
-  lib/src/prism_aliases.dart lib/src/gallery/design_system_gallery_sections.dart \
-  test/organisms/entity_locate_search
-# → No issues found!
-
-flutter test test/organisms/entity_locate_search/
-# → All tests passed (12)
-
-dart run test/boundaries/boundary_test.dart
-# → Boundary harness: 6/6 PASS
-```
-
----
-
-# Task 1505: PrismEntityIntelPanel Organism
-
-## Summary
-
-Implemented `DSEntityIntelPanel` with public alias `PrismEntityIntelPanel` —
-pluggable dossier registry host that resolves a body builder by selection type.
-Composes the `DSDetailInspector` header pattern (optional full inspector wrap),
-fixture models for ≥2 dossier types, gallery case, and widget tests. Mode
-contract only — **not** a structural port of NewsFeed / OsintPanel megafiles.
-ADS-first; no product route coupling.
-
-## Changes
-
-- Created `packages/warp_prism_ui/lib/src/organisms/entity_intel_panel/`:
-  - `ds_entity_intel_panel.dart` — selection model, dossier registration,
-    panel host, empty/unknown states, pin/close a11y, fixtures
-  - `entity_intel_panel.dart` — barrel export
-- Created `packages/warp_prism_ui/test/organisms/entity_intel_panel/entity_intel_panel_test.dart`
-- Exported from `organisms.dart` (append-only; concurrent organism exports preserved)
-- Aliased `PrismEntityIntelPanel`, `PrismEntitySelection`, `PrismEntityIntelDossier`,
-  `PrismEntityIntelBodyBuilder`, `PrismEntityIntelFixtures` in `prism_aliases.dart`
-- Minimal gallery case under Organisms (≥2 types: agent + region, plus empty/unknown)
-
-## Verification
-
-```bash
-cd packages/warp_prism_ui
-dart analyze lib/src/organisms/entity_intel_panel lib/src/organisms/organisms.dart \
-  lib/src/prism_aliases.dart lib/src/gallery/design_system_gallery_sections.dart \
-  test/organisms/entity_intel_panel
-# → No issues found
-
-flutter test test/organisms/entity_intel_panel/
-# → All tests passed (11)
-
-dart run test/boundaries/boundary_test.dart
-# → Boundary harness: 6/6 PASS
-```
-
----
-
-# Task 1604: PrismAgentTranscript Organism
-
-## Summary
-
-Implemented **PrismAgentTranscript** (`DSAgentTranscript`) — scrollable multi-role
-agent conversation organism with typed message blocks (text, think, plan,
-custom slot), optional timestamps, optional markdown composition via
-`DSMarkdownRenderer`, and fixture-first demo data. Public aliases, organisms
-barrel export, minimal gallery case, and widget tests.
-
-## Changes
-
-- Created `packages/warp_prism_ui/lib/src/organisms/agent_transcript/ds_agent_message.dart`
-  - `DSAgentRole` (user / assistant / system)
-  - `DSAgentMessageBlock` (text / think / plan / custom)
-  - `DSAgentMessage` + `dsAgentTranscriptFixtureMessages()` fixture
-- Created `packages/warp_prism_ui/lib/src/organisms/agent_transcript/ds_agent_transcript.dart`
-  - Scrollable list, role badges/alignment, optional timestamps
-  - Markdown-on-by-default text blocks; think/plan stub chrome
-  - Extension points: custom blocks, trailingBuilder, footer (disabled composer)
-  - Documented false-gap vs EPIC-15 agent shell and `DSLogViewer`
-- Created barrel `agent_transcript.dart`
-- Exported from `organisms.dart` (append-only)
-- Aliased `PrismAgentTranscript`, `PrismAgentMessage`, `PrismAgentMessageBlock`,
-  `PrismAgentRole`, `PrismAgentMessageBlockType` in `prism_aliases.dart`
-- Minimal gallery case under organisms section (fixture multi-role session)
-- Widget tests: empty, single, multi-turn, timestamps, long scroll, custom slot,
-  footer, a11y labels, plain text mode, model helpers
-
-## Non-goals honored
-
-- No live LLM / API keys / network streaming in package
-- No EPIC-15 `PrismAgentShellPanel` terminal/session shell reimplementation
-- No tool-call card / status history (Task 1605) or artifact workbench (1606)
-- No teal Observatory rebrand; cyan/violet/gold accents from tokens only
-- No product route rewrite (ADS-first gallery + fixtures)
-
-## Verification
-
-```bash
-cd packages/warp_prism_ui
-dart analyze lib/src/organisms/agent_transcript lib/src/prism_aliases.dart \
-  lib/src/organisms/organisms.dart \
-  lib/src/gallery/design_system_gallery_sections.dart \
-  test/organisms/agent_transcript
-# No issues found
-
-flutter test test/organisms/agent_transcript/   # 13/13 PASS
-
-cd ../..
-dart run packages/warp_prism_ui/test/boundaries/boundary_test.dart --repo-root .
-# Boundary harness: 6/6 PASS
-```
-
----
-
-# Task 1603: PrismTree Organism
-
-## Summary
-
-Implemented **PrismTree** (`DSTree`) — hierarchical content tree with
-expand/collapse, single selection, optional operational status dots and trailing
-meta text, cyan selection rail/wash (Observatory tokens, not OmniRoute teal),
-and focusable expand controls. Public alias, organisms barrel export, minimal
-Providers→accounts→models gallery fixture, and widget tests.
-
-## Changes
-
-- Created `packages/warp_prism_ui/lib/src/organisms/tree/ds_tree_node.dart`
-  - Immutable node model: `id`, `label`, `children`, `status`, `meta`, `icon`,
-    `expandable` override; `copyWith` + equality
-- Created `packages/warp_prism_ui/lib/src/organisms/tree/ds_tree.dart`
-  - Controlled or uncontrolled expansion (`expandedIds` / `initiallyExpandedIds`)
-  - `onNodeSelected`, selection wash + left cyan rail
-  - Expand caret via IconButton (Enter/Space); Arrow Left/Right on focused rows
-  - Documented MVP keyboard limitation (no custom roving tabindex for Up/Down)
-- Created barrel `packages/warp_prism_ui/lib/src/organisms/tree/tree.dart`
-- Exported from `organisms.dart`
-- Aliased `typedef PrismTree = DSTree` and `PrismTreeNode = DSTreeNode` in
-  `prism_aliases.dart`
-- Minimal gallery case under organisms section (provider tree fixture)
-- Widget tests: expand/collapse, select, status/meta, empty, deep nesting (≥3),
-  controlled expansion, expand a11y, node model helpers
-
-## Non-goals honored
-
-- No `DSSidebar` reimplementation (tree is content control, not app chrome)
-- No third-party tree packages
-- No Observatory teal rebrand (`accentCyan` only)
-- No product route rewrite (ADS-first gallery + fixtures)
-- No drag-reorder / virtualization (MVP hierarchy only)
-
-## Verification
-
-```bash
-cd packages/warp_prism_ui
-dart analyze lib/src/organisms/tree lib/src/prism_aliases.dart \
-  lib/src/organisms/organisms.dart \
-  lib/src/gallery/design_system_gallery_sections.dart \
-  test/organisms/tree
-# No issues found
-
-flutter test test/organisms/tree/   # 13/13 PASS
-
-cd ../..
-dart run packages/warp_prism_ui/test/boundaries/boundary_test.dart --repo-root .
-# Boundary harness: 6/6 PASS
-```
-
----
-
-# Task 1504: PrismFilterWorkbench Organism
-
-## Summary
-
-Implemented `DSFilterWorkbench` with public alias `PrismFilterWorkbench` —
-sectioned multi-criterion filter panel beyond `DSFilterChipGroup` alone.
-Includes apply/clear footer, optional advanced expandable section and modal,
-fixture schema models, gallery case, and widget tests. ADS-first; no product
-route coupling.
-
-## Changes
-
-- Created `packages/warp_prism_ui/lib/src/organisms/filter_workbench/`:
-  - `ds_filter_workbench.dart` — sections/criteria models, workbench UI, advanced modal
-  - `filter_workbench.dart` — barrel export
-- Exported from `organisms.dart` (append-only; concurrent organism exports preserved)
-- Aliased `PrismFilterWorkbench`, `PrismFilterSection`, `PrismFilterCriterion`,
-  `PrismFilterCriterionKind` in `prism_aliases.dart`
-- Minimal gallery case under Organisms (catalog filter fixture)
-- Widget tests: sections, apply, clear, empty schema, advanced modal/section, a11y
-
-## Verification
-
-```bash
-cd packages/warp_prism_ui
-dart analyze lib/src/organisms/filter_workbench lib/src/organisms/organisms.dart \
-  lib/src/prism_aliases.dart lib/src/gallery/design_system_gallery_sections.dart \
-  test/organisms/filter_workbench
-# → No errors (prefer_const infos only if any remain)
-
-flutter test test/organisms/filter_workbench/
-# → All tests passed (10)
-
-dart run test/boundaries/boundary_test.dart
-# → Boundary harness: 6/6 PASS
-```
-
----
-
-# Task 1503: PrismLayerControlPanel Organism
-
-## Summary
-
-Implemented `DSLayerControlPanel` with public alias `PrismLayerControlPanel` —
-grouped layer toggles with counts, freshness indicators, master all-on/all-off
-toggle, and consent-gate callbacks. Fixture catalog only; ADS-first (gallery +
-tests); no MapLibre or live feeds.
-
-## Changes
-
-- Created `packages/warp_prism_ui/lib/src/organisms/layer_control_panel/`:
-  - `ds_layer_control_panel.dart` — models (`DSLayerItem`, `DSLayerGroup`,
-    `DSLayerFreshness`), panel UI, master toggle, consent hooks, a11y
-  - `layer_control_panel.dart` — barrel export
-- Exported from `organisms.dart` (append-only; preserved MapHud, ToolStrip,
-  PageShell, Tree, AgentTranscript)
-- Aliased in `prism_aliases.dart`:
-  - `PrismLayerControlPanel`, `PrismLayerGroup`, `PrismLayerItem`,
-    `PrismLayerFreshness`
-- Minimal gallery case under Organisms (fixture catalog with consent stub)
-- Widget tests: toggle, master, empty, disabled, consent, collapse, a11y
-
-## Verification
-
-```bash
-cd packages/warp_prism_ui
-dart analyze lib/src/organisms/layer_control_panel lib/src/organisms/organisms.dart \
-  lib/src/prism_aliases.dart lib/src/gallery/design_system_gallery_sections.dart \
-  test/organisms/layer_control_panel
-# → No issues found
-
-flutter test test/organisms/layer_control_panel/
-# → All tests passed (12)
-
-dart run test/boundaries/boundary_test.dart
-# → Boundary harness: 6/6 PASS
-```
-
----
-
-# Task 1601: Catalog / Gallery Showability Verify + Polish
-
-## Summary
-
-Verified ADS catalog/gallery smoke (analyze + tests), added a registry-driven
-**Section index** TOC on `DesignSystemGalleryPage` for jump discovery, and
-published a 60-second demo one-pager under `docs/demo/`. No Widgetbook; no
-registry ID changes; no rebrand.
-
-## Changes
-
-- `packages/warp_prism_ui/lib/src/gallery/design_system_gallery_page.dart` —
-  Stateful gallery with section keys + TOC chips (`gallery-toc-<id>`).
-- `packages/warp_prism_ui/test/gallery/design_system_gallery_test.dart` —
-  TOC presence + per-section TOC chip coverage; Tokens `findsWidgets`.
-- `docs/demo/catalog-showability-2026-07-10.md` — 60-second show script.
-- Task 1601 Completion Evidence filled (lane remains `02-doing/`).
-
-## Verification
-
-```bash
-cd apps/catalog && dart analyze
-# EXIT 0 — No issues found
-
-cd packages/warp_prism_ui && dart analyze lib/src/gallery test/gallery
-# EXIT 0 — No issues found
-
-cd packages/warp_prism_ui && flutter test test/gallery/
-# All tests passed
-
-cd apps/catalog && flutter test
-# All tests passed
-```
-
-README catalog run path unchanged and still accurate:
-
-```bash
-cd apps/catalog && flutter run
-```
-
-## Author
-
-gt-flutter-engineer
-
----
-
-# Task 1600: EPIC-16 Inventory + Catalog Showability Brief
-
-## Summary
-
-Published the builder-facing EPIC-16 organism inventory and catalog showability brief. Freezes C-01–C-13 → Tasks 1600–1616 → public `Prism*` names, waves V/J/K/L/M/N/X, skip list (no teal Observatory rebrand, no MapLibre/Recharts/Widgetbook, no EPIC-15 O-01–O-22 forks), false-gap notes, gallery section ID scheme, golden families, fixture-first CyberCore rules, and Task 1601 show path. Governance only — no widgets.
-
-## Changes
-
-| File | Action | Detail |
-|------|--------|--------|
-| `docs/reports/epic-16-organism-contract-brief-2026-07-10.md` | Created | Full inventory + contract brief |
-| `docs/tasks/02-doing/1600-warp-prism-epic-16-inventory-catalog-showability-brief.md` | Modified | Status/completion evidence; stay in `02-doing/` |
-| `docs/changelog/20260710-204831-1600-epic-16-inventory-catalog-showability-brief-gt-flutter-engineer.md` | Created | This entry |
-
-## Verification
-
-- [x] Brief exists at recommended path under `docs/reports/` with EPIC-16 in title
-- [x] Path existence checks for epic + harvest inputs + organisms + catalog (see task Completion Evidence)
-- [x] Open tasks 1601–1616 referenced; no numbering gaps 1600–1616
-- [x] Task remains in `docs/tasks/02-doing/` (no 03/04 move)
-
----
-
-# Task 1602: PrismPageShell Organism
-
-## Summary
-
-Implemented **PrismPageShell** (`DSPageShell`) — in-content page chrome for
-CyberCore/admin-style pages (leading icon well + title + subtitle + actions +
-optional toolbar + body). Distinct from app chrome `DSShell` / `DSTopbar` /
-`DSSidebar`. Public alias, organisms barrel export, minimal Providers gallery
-fixture, and widget tests.
-
-## Changes
-
-- Created `packages/warp_prism_ui/lib/src/organisms/page_shell/ds_page_shell.dart`
-  - API: `title`, `subtitle`, `leading`, `actions`, `toolbar`, `child`,
-    `accentColor`, `contentPadding`, `fluid`
-  - Convenience factory `DSPageShell.icon` for tone-colored icon well
-  - Header semantics + long-title ellipsis (`maxLines: 1`)
-- Created barrel `packages/warp_prism_ui/lib/src/organisms/page_shell/page_shell.dart`
-- Exported from `organisms.dart`
-- Aliased `typedef PrismPageShell = DSPageShell` in `prism_aliases.dart`
-- Minimal gallery case under organisms section (Providers fixture)
-- Widget tests: title, actions, toolbar optional, empty slots, ellipsis, a11y
-
-## Non-goals honored
-
-- No app-shell fork (`DSShell`/`DSTopbar`/`DSSidebar` unchanged)
-- No Observatory teal rebrand (cyan/violet/gold tokens only)
-- No product route rewrite (ADS-first gallery + fixtures)
-
-## Verification
-
-```bash
-cd packages/warp_prism_ui
-dart analyze lib test          # exit 0 (pre-existing infos only)
-flutter test test/organisms/page_shell/   # 9/9 PASS
-cd ../..
-dart run packages/warp_prism_ui/test/boundaries/boundary_test.dart --repo-root .
-# Boundary harness: 6/6 PASS
-```
-
----
-
-# Task 1502: PrismToolStripSlideout Organism
-
-## Summary
-
-Implemented `DSToolStripSlideout` with public alias `PrismToolStripSlideout` —
-vertical icon tool strip plus exclusive glass slideout body. Opening tool B
-closes tool A; re-tap or close collapses to strip-only. Fixture tools only;
-ADS-first (gallery + tests); no live recon backends.
-
-## Changes
-
-- Created `packages/warp_prism_ui/lib/src/organisms/tool_strip_slideout/`:
-  - `ds_tool_strip_slideout.dart` — item model, exclusive selection, strip + panel, a11y
-  - `tool_strip_slideout.dart` — barrel export
-- Exported from `organisms.dart`
-- Aliased `typedef PrismToolStripSlideout = DSToolStripSlideout` and
-  `typedef PrismToolStripItem = DSToolStripItem` in `prism_aliases.dart`
-- Minimal gallery case under Organisms (Recon / Alerts / Graph fixtures)
-- Widget tests: open, exclusive switch, collapse, close, empty tools, a11y labels
-
-## Verification
-
-```bash
-cd packages/warp_prism_ui
-dart analyze lib/src/organisms/tool_strip_slideout lib/src/organisms/organisms.dart \
-  lib/src/prism_aliases.dart lib/src/gallery/design_system_gallery_sections.dart \
-  test/organisms/tool_strip_slideout
-# → No issues found (only pre-existing prefer_const infos elsewhere in gallery)
-
-flutter test test/organisms/tool_strip_slideout/
-# → All tests passed (10)
-
-dart run test/boundaries/boundary_test.dart
-# → Boundary harness: 6/6 PASS
-```
-
----
-
-# Task 1501: PrismMapHudWorkspace Organism
-
-## Summary
-
-Implemented `DSMapHudWorkspace` with public alias `PrismMapHudWorkspace` —
-full-bleed stage slot plus optional left/right/bottom/top glass HUD regions and
-hide/restore chrome control. ADS-first (gallery + fixtures only); not a
-`DSShell` clone; no MapLibre.
-
-## Changes
-
-- Created `packages/warp_prism_ui/lib/src/organisms/map_hud_workspace/`:
-  - `ds_map_hud_workspace.dart` — stage stack, glass HUD wrappers, toggle a11y
-  - `map_hud_workspace.dart` — barrel export
-- Exported from `organisms.dart`
-- Aliased `typedef PrismMapHudWorkspace = DSMapHudWorkspace` in `prism_aliases.dart`
-- Minimal gallery case under Organisms section (mock gradient stage)
-- Widget tests: regions present, hide/restore, empty slots, a11y labels
-
-## Verification
-
-```bash
-cd packages/warp_prism_ui
-dart analyze lib/src/organisms/map_hud_workspace lib/src/organisms/organisms.dart \
-  lib/src/prism_aliases.dart lib/src/gallery/design_system_gallery_sections.dart \
-  test/organisms/map_hud_workspace
-# → No issues found
-
-flutter test test/organisms/map_hud_workspace/
-# → All tests passed (8)
-
-dart run test/boundaries/boundary_test.dart
-# → Boundary harness: 6/6 PASS
-```
-
----
-
-# 2026-07-10 — Hold residuals (builders, parent)
-
-While independent re-review validated 0013/1205/1302 boundary path-to-100,
-builders closed hold residuals on other tasks (subagent coordinator was offline).
-
-## Code
-- `prism_aliases.dart` drag intents (already shipped; boundary 6/6)
-- `ds_data_table.dart` row onTap Semantics+InkWell (1112 F10)
-- `ds_command_palette.dart` prefer_const cleanup (1113)
-- `generic_asset_detail_view.dart` PartialSupportBanner uses `message` (1405)
-- `history_story_modes_test.dart` selection-sync finder flakiness (1401 residual)
-- extended_detail tests expect `partial detail support` message
-
-## Validation
-- data_table + command_palette tests green
-- history_story_modes +31 PASS
-- extended_detail_variants +27 PASS
-- boundary harness 6/6 PASS
-
-## Author
-builders (parent builder-orchestrator)
-
----
-
-# 2026-07-10 — Boundary drag intent aliases (0013 / 1205 / 1302)
-
-## Summary
-Added missing public Prism aliases for keyboard DnD intents so the pure-Dart boundary harness returns **6/6 PASS**.
-
-## Changes
-- `packages/warp_prism_ui/lib/src/prism_aliases.dart`: `PrismDragReorderIntent`, `PrismDragMoveLaneIntent`
-- `docs/design/public-barrel-audit.md`: Prism API count **129** (128 typedef + 1 extension)
-- Tasks 0013, 1205, 1302: path-to-100 evidence with live harness stdout
-
-## Validation
-```text
-dart run packages/warp_prism_ui/test/boundaries/boundary_test.dart --repo-root .
-→ Boundary harness: 6/6 PASS
-```
-
-## Author
-builders (builder-orchestrator parent)
-
----
-
-# Task 1500: EPIC-15 Inventory + Organism Contract Brief
-
-## Summary
-
-Published the locked EPIC-15 organism inventory and public contract brief so Tasks
-1501–1523 can implement without re-litigating harvest scope. Governance only —
-no Flutter widgets.
-
-## Changes
-
-- Created `docs/reports/epic-15-organism-contract-brief-2026-07-10.md` with:
-  - Frozen skip list and already-covered organism list
-  - Full O-01–O-28 ↔ Task 15NN ↔ `Prism*` ↔ wave mapping
-  - Deferred O-23 (mesh) and not-tasked O-25 (display chrome)
-  - Soft deps for 1503/1509/1512/1514/1516 vs Task 1501
-  - Hard edges 1513→1512, 1518→1517, 1519→1520→1521
-  - Wave graph A→H + cross-cutting closeout
-  - Public contract checklist (barrel, alias, gallery IDs, tests, changelog)
-  - Gallery + golden expectations for Tasks 1519/1520
-- Verified open-lane tasks 1501–1523 exist (23 files); continuous numbering 1500–1523
-
-## Verification
-
-```bash
-test -f docs/tasks/00-planning/EPIC-15-warp-prism-ads-organism-expansion-from-reference-harvest.md
-test -f docs/reports/ads-organism-harvest-unified-2026-07-10.md
-test -f docs/reports/epic-15-organism-contract-brief-2026-07-10.md
-ls packages/warp_prism_ui/lib/src/organisms/
-ls docs/tasks/01-open/15*.md | wc -l   # 23
-```
-
-Path existence checks only (governance task; Flutter not required).
-
-## Author
-
-gt-flutter-engineer
-
----
-
-# Task 1114: Log Viewer Path-to-100
-
-**Agent**: builders (gt-flutter-engineer)
-**Task**: 1114
-**Type**: feature / design-system / evidence
-
-## Summary
-
-Closed independent re-review residuals (82/100): honor `showAbsoluteTime`, 48×48 expand + Latest a11y targets with button semantics, real auto-scroll pause/resume + append proofs, and optional 10K virtualization smoke. Lane left in `docs/tasks/02-doing/` for reviewer re-pick.
-
-## Changes
-
-- `packages/warp_prism_ui/lib/src/organisms/log_viewer/ds_log_entry_widget.dart` — absolute timestamp format; expand row Semantics(button) + `excludeSemantics` + `kMinInteractiveDimension` hit target.
-- `packages/warp_prism_ui/lib/src/organisms/log_viewer/ds_log_viewer.dart` — Latest resume control Semantics(button) + 48×48 min constraints; `withValues`; const Row polish.
-- `packages/warp_prism_ui/test/log_viewer_test.dart` — absolute time, auto-scroll pause/resume + append, a11y size, 10K smoke (**44** tests).
-
-## Live closeout (2026-07-10)
-
-```text
-cd packages/warp_prism_ui
-flutter test --concurrency=1 --no-pub test/log_viewer_test.dart
-# → +44 All tests passed!
-
-dart analyze lib/src/organisms/log_viewer/
-# → No issues found!
-```
-
-## Path-to-100 mapping
-
-| Residual (F#) | Resolution |
-| --- | --- |
-| F2 absolute time | `_formatTimestamp` returns `YYYY-MM-DD HH:mm:ss` when `showAbsoluteTime` |
-| F3 expand a11y | Semantics button + min 48×48; test asserts size + `isButton` |
-| F4 Latest a11y | Semantics button + ConstrainedBox 48×48; size test |
-| F5 10K soft | Smoke: 10K rows, viewport-bounded build markers &lt; 80 |
-| F6 auto-scroll vacuous | Scroll-up → Latest; tap resume; append auto-jumps to newest |
-| F7 withOpacity | Replaced with `withValues` |
-
----
-
-# Task 1113: Command Palette Path-to-100
-
-**Agent**: builders (gt-flutter-engineer)
-**Task**: 1113
-**Type**: feature | design-system | remediation
-
-## Summary
-
-Closed independent re-review residual (**83/100** Path-to-100 F2–F6):
-
-- **F2**: `DSCommandPaletteShortcut` Future.then guards `mounted` before clearing `_isOpen`; restores focus after modal pop.
-- **F3–F4**: Category chips + command items use `Semantics(button: true)` + `Material`/`InkWell` + `kMinInteractiveDimension`.
-- **F5**: Widget tests for Ctrl+K / Meta+K open, re-entry guard, reopen after Escape.
-- **F6**: Footer wires real result count (`N results` / `1 result`).
-- Bonus: root `Material` on palette so `showDSCommandPalette` works without Scaffold.
-
-Lane left in `docs/tasks/02-doing/` for reviewer re-pick. **ready_for_reviewer: yes**.
-
-## Changes
-
-- `packages/warp_prism_ui/lib/src/organisms/command_palette/ds_command_palette.dart`
-- `packages/warp_prism_ui/test/organisms/command_palette_test.dart`
-
-## Verification
-
-```text
-cd packages/warp_prism_ui
-dart analyze lib/src/organisms/command_palette/
-# → 0 errors, 0 warnings (info-only prefer_const_*)
-
-flutter test --concurrency=1 --no-pub test/organisms/command_palette_test.dart
-# → +44: All tests passed!
-```
-
----
-
-## [2026-07-10] - Task 0010 independent re-review S=100 (INFO currency closed)
-
-### Changed
-- Independent re-review (`gt-code-quality-reviewer`) after builders INFO currency fix.
-- Live scoped `dart analyze --format=machine` reconfirmed: observatory **53 INFO**, UI **31 INFO**, catalog **0**, cybercore **0**; all **0 ERROR / EXIT 0**.
-- Prior S=86 hold (claimed 69/75 INFO) closed against exact live inventory.
-- Task promoted `docs/tasks/02-doing/` → `docs/tasks/03-review/`.
-
-### Evidence
-- Report: `docs/reports/review-wave-2026-07-10/task-0010-foundation-audit-info-currency-rereview.md`
-- Canonical inventory: `docs/reports/0010-warp-prism-foundation-audit-analyzer-baseline.md`
-- Machine logs: `tmp/0010-live-baseline/`
-
-### Residual (honest, non-blocking)
-- Lint INFO debt remains open; full monorepo `flutter test` green not claimed (out of 0010 scope).
-
-**Author**: gt-code-quality-reviewer (reviewers)
-
----
-
-# Changelog: EPIC-11 path-to-100 independent re-review promote
-
-> **Date**: 2026-07-10  
-> **Tasks**: 1112, 1113, 1114, 1115, 1116, 1117, 1119, 1120, 1123  
-> **Type**: review | governance  
-> **Author**: gt-code-quality-reviewer  
-
-## Summary
-
-Independent path-to-100 re-review of nine EPIC-11 design-system tasks still in
-`02-doing`. Each task received one cheap scoped `flutter test` re-run (all green)
-plus source spot-check of prior reject blockers. All scored **100/100** and were
-promoted to `docs/tasks/03-review/` with Review Ledger entries.
-
-## Lane moves
-
-| Task | From | To | Score |
-| ---: | --- | --- | ---: |
-| 1112 | `02-doing/` | `03-review/` | 100 |
-| 1113 | `02-doing/` | `03-review/` | 100 |
-| 1114 | `02-doing/` | `03-review/` | 100 |
-| 1115 | `02-doing/` | `03-review/` | 100 |
-| 1116 | `02-doing/` | `03-review/` | 100 |
-| 1117 | `02-doing/` | `03-review/` | 100 |
-| 1119 | `02-doing/` | `03-review/` | 100 |
-| 1120 | `02-doing/` | `03-review/` | 100 |
-| 1123 | `02-doing/` | `03-review/` | 100 |
-
-## Evidence
-
-- Wave report: `docs/reports/review-wave-2026-07-10/epic11-path-to-100-rereview.md`
-- Continuity: `.agents/profiles/reviewers/continuity-20260710-171601-epic11-path-to-100-rereview.md`
-- Live logs: `tmp/path-to-100-epic11-rereview/`
-- No git operations
-
----
-
-## [2026-07-10] - Task 0010 live INFO currency re-inventory (post S=86)
-
-### Changed
-- Re-ran scoped `dart analyze --format=machine` on `apps/observatory/lib`, `packages/warp_prism_ui/lib`, `apps/catalog/lib`, `apps/cybercore/lib`.
-- Rewrote `docs/reports/0010-warp-prism-foundation-audit-analyzer-baseline.md` and task evidence tables to **exact live** counts.
-- Superseded prior 2026-07-09 INFO snapshot (obs 69 / UI 75) for currency; **0 ERROR** claim retained as still true.
-
-### Live counts (2026-07-10)
-| Package | lib `*.dart` | Machine analyze | Exit |
-|---|---:|---|---|
-| observatory | 109 | **53 INFO, 0 ERROR, 0 WARNING** | 0 |
-| warp_prism_ui | 86 | **31 INFO, 0 ERROR, 0 WARNING** | 0 |
-| catalog | 1 | 0 issues | 0 |
-| cybercore | 16 | 0 issues | 0 |
-
-### Residual (honest)
-- Lint INFO debt remains (prefer_const_*, UI `withOpacity` deprecation).
-- Full monorepo `flutter test` green **not claimed**.
-- DS\* residual ≈ 1 doc comment; Prism\* ≈ 1219.
-- Task remains in `docs/tasks/02-doing/` (no auto-promote).
-
-### Evidence
-- Machine logs: `tmp/0010-live-baseline/*.machine.txt`
-- Independent hold input: S=86/100 (`docs/reports/review-wave-2026-07-10/path-to-100-mass-rereview.md`)
-
-**Author**: builders (Task 0010 INFO currency fixer)
-
----
-
-# Task 1119: Health Dashboard Components Path-to-100
-
-**Agent**: builders (gt-flutter-engineer)
-**Task**: 1119
-**Type**: feature | design-system | remediation
-
-## Summary
-
-Closed independent re-review residual (**86/100**):
-
-| Finding | Resolution |
-| --- | --- |
-| F1 Gallery DSStatusGrid commented | Live interactive `_HealthStatusGridDemo` (12 mock services + toggleable filter chips); labeled DSStatusGrid / PrismStatusGrid |
-| F2 shrinkWrap + NeverScrollable always | Primary default `embedInScrollView: false` → scrollable lazy `GridView.builder` + `Expanded`; embed mode opt-in for gallery/nested parents |
-| F3 HealthCard keyboard | `DSInteractiveSurface` (Enter/Space + focus + button semantics when `onTap != null`) |
-| Path-to-100 INFO lints | Scoped analyze **No issues found** |
-
-Lane left in `docs/tasks/02-doing/` for reviewer re-pick.
-
-## Changes
-
-- `packages/warp_prism_ui/lib/src/organisms/ds_status_grid.dart` — already carries `embedInScrollView` primary/embed contract (verified live).
-- `packages/warp_prism_ui/lib/src/molecules/ds_health_card.dart` — already routes interactive path through `DSInteractiveSurface` (verified live).
-- `packages/warp_prism_ui/lib/src/gallery/design_system_gallery_sections.dart` — interactive filter demo + embed-mode caption; registry section `health-dashboard` remains wired.
-- `packages/warp_prism_ui/test/health_dashboard_test.dart` — keyboard Enter/Space + passive non-button; primary vs embed physics; lazy build count &lt; 60; cleared prior INFO imports/const lints.
-
-## Verification
-
-```text
-cd packages/warp_prism_ui
-flutter test --concurrency=1 --no-pub test/health_dashboard_test.dart
-# → +44 All tests passed!
-
-dart analyze \
-  lib/src/atoms/ds_sparkline.dart \
-  lib/src/molecules/ds_uptime_bar.dart \
-  lib/src/molecules/ds_health_card.dart \
-  lib/src/organisms/ds_status_grid.dart \
-  test/health_dashboard_test.dart
-# → No issues found!
-```
-
-## Explicit non-claims
-
-- Gallery intentionally uses `embedInScrollView: true` (outer gallery scroller owns scroll). Production 50+ health dashboards must keep default `false`.
-- Does not wire live CyberCore health feeds (mock/read-only observatory semantics preserved).
 
 ---

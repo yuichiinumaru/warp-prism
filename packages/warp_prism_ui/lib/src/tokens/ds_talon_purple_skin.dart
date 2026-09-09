@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'ds_colors.dart';
 import 'ds_radii.dart';
+import 'prism_token_registry.dart';
 
 /// Optional Talon Purple accent skin (Protoss lore: Talon faction violet/crimson-purple energy).
 ///
@@ -19,7 +20,8 @@ import 'ds_radii.dart';
 /// want Talon Purple identity must install it via [ThemeData.extensions] or call
 /// [applyToTheme] / [DSTheme.talonPurple()].
 @immutable
-class DSTalonPurpleSkin extends ThemeExtension<DSTalonPurpleSkin> {
+class DSTalonPurpleSkin extends ThemeExtension<DSTalonPurpleSkin>
+    implements PrismAccentSkin {
   /// Primary Talon Purple violet/crimson-purple energy (`#9911E5`).
   static const Color corePurple = Color(0xFF9911E5);
 
@@ -45,15 +47,19 @@ class DSTalonPurpleSkin extends ThemeExtension<DSTalonPurpleSkin> {
       borderGlow = corePurple;
 
   /// Primary energy accent (violet/crimson-purple).
+  @override
   final Color accent;
 
   /// Muted energy accent.
+  @override
   final Color accentMuted;
 
   /// Dim energy accent.
+  @override
   final Color accentDim;
 
   /// Luminous border / glow edge color for Talon chrome.
+  @override
   final Color borderGlow;
 
   /// Resolves the extension from [context], or `null` when not installed.

@@ -318,6 +318,8 @@ class DSTablePagination extends StatelessWidget {
   /// Callback when page size changes.
   final ValueChanged<int> onPageSizeChanged;
 
+  final bool isCompact;
+
   const DSTablePagination({
     super.key,
     required this.currentPage,
@@ -326,6 +328,7 @@ class DSTablePagination extends StatelessWidget {
     this.pageSizes = const [10, 25, 50, 100],
     required this.onPageChanged,
     required this.onPageSizeChanged,
+    this.isCompact = false,
   });
 
   int get totalPages => totalRows == 0 ? 1 : (totalRows / pageSize).ceil();
@@ -339,9 +342,9 @@ class DSTablePagination extends StatelessWidget {
     return Semantics(
       label: 'Table pagination, page ${currentPage + 1} of $totalPages',
       child: Container(
-        padding: const EdgeInsets.symmetric(
+        padding: EdgeInsets.symmetric(
           horizontal: DSSpacing.md,
-          vertical: DSSpacing.sm,
+          vertical: isCompact ? 2.0 : DSSpacing.sm,
         ),
         decoration: const BoxDecoration(
           border: Border(
@@ -483,6 +486,8 @@ class _DSTableHeader extends StatelessWidget {
   final bool allSelected;
   final ValueChanged<bool?>? onSelectAll;
   final void Function(String, bool)? onToggleColumn;
+  final bool isCompact;
+  final bool isUltraCompact;
 
   const _DSTableHeader({
     required this.columns,
@@ -492,16 +497,30 @@ class _DSTableHeader extends StatelessWidget {
     this.allSelected = false,
     this.onSelectAll,
     this.onToggleColumn,
+    this.isCompact = false,
+    this.isUltraCompact = false,
   });
 
   @override
   Widget build(BuildContext context) {
     final visibleColumns = columns.where((c) => c.visible).toList();
 
+    final verticalPadding = isUltraCompact
+        ? 1.0
+        : isCompact
+        ? 3.0
+        : DSSpacing.sm;
+
+    final targetDim = isUltraCompact
+        ? 28.0
+        : isCompact
+        ? 32.0
+        : kMinInteractiveDimension;
+
     return Container(
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         horizontal: DSSpacing.md,
-        vertical: DSSpacing.sm,
+        vertical: verticalPadding,
       ),
       decoration: BoxDecoration(
         color: DSColors.obsidianElevated,
@@ -511,17 +530,19 @@ class _DSTableHeader extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // Select-all checkbox — WCAG 48×48 min interactive target.
+          // Select-all checkbox
           if (selectable) ...[
             SizedBox(
-              width: kMinInteractiveDimension,
-              height: kMinInteractiveDimension,
+              width: targetDim,
+              height: targetDim,
               child: Checkbox(
                 value: allSelected,
                 onChanged: onSelectAll,
                 activeColor: DSColors.accentBlue,
                 side: BorderSide(color: DSColors.borderDefault),
-                materialTapTargetSize: MaterialTapTargetSize.padded,
+                materialTapTargetSize: isCompact || isUltraCompact
+                    ? MaterialTapTargetSize.shrinkWrap
+                    : MaterialTapTargetSize.padded,
               ),
             ),
           ],
@@ -532,12 +553,18 @@ class _DSTableHeader extends StatelessWidget {
               column: visibleColumns[i],
               sortState: sortState,
               onSort: onSort,
+              isCompact: isCompact,
+              isUltraCompact: isUltraCompact,
             ),
           ],
           // Column visibility menu
           if (onToggleColumn != null) ...[
             const Spacer(),
-            _ColumnVisibilityMenu(columns: columns, onToggle: onToggleColumn!),
+            _ColumnVisibilityMenu(
+              columns: columns,
+              onToggle: onToggleColumn!,
+              isCompact: isCompact || isUltraCompact,
+            ),
           ],
         ],
       ),
@@ -549,8 +576,16 @@ class _ColumnHeaderCell extends StatelessWidget {
   final DSDataColumn column;
   final DSSortState? sortState;
   final ValueChanged<String>? onSort;
+  final bool isCompact;
+  final bool isUltraCompact;
 
-  const _ColumnHeaderCell({required this.column, this.sortState, this.onSort});
+  const _ColumnHeaderCell({
+    required this.column,
+    this.sortState,
+    this.onSort,
+    this.isCompact = false,
+    this.isUltraCompact = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -560,6 +595,12 @@ class _ColumnHeaderCell extends StatelessWidget {
     final isDescending =
         isSorted && sortState?.direction == DSSortDirection.descending;
 
+    final targetDim = isUltraCompact
+        ? 28.0
+        : isCompact
+        ? 32.0
+        : kMinInteractiveDimension;
+
     Widget label = DSText.labelMedium(
       column.label,
       color: DSColors.textSecondary,
@@ -568,12 +609,24 @@ class _ColumnHeaderCell extends StatelessWidget {
     if (column.width != null) {
       return SizedBox(
         width: column.width,
-        child: _buildHeaderContent(label, isSorted, isAscending, isDescending),
+        child: _buildHeaderContent(
+          label,
+          isSorted,
+          isAscending,
+          isDescending,
+          targetDim,
+        ),
       );
     }
 
     return Expanded(
-      child: _buildHeaderContent(label, isSorted, isAscending, isDescending),
+      child: _buildHeaderContent(
+        label,
+        isSorted,
+        isAscending,
+        isDescending,
+        targetDim,
+      ),
     );
   }
 
@@ -582,9 +635,16 @@ class _ColumnHeaderCell extends StatelessWidget {
     bool isSorted,
     bool isAscending,
     bool isDescending,
+    double targetDim,
   ) {
     if (!column.sortable) {
-      return label;
+      return ConstrainedBox(
+        constraints: BoxConstraints(minHeight: targetDim),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: label,
+        ),
+      );
     }
 
     final sortHint = isAscending
@@ -602,9 +662,9 @@ class _ColumnHeaderCell extends StatelessWidget {
           borderRadius: BorderRadius.circular(DSRadii.sm),
           focusColor: DSColors.focusRing,
           child: ConstrainedBox(
-            constraints: const BoxConstraints(
-              minWidth: kMinInteractiveDimension,
-              minHeight: kMinInteractiveDimension,
+            constraints: BoxConstraints(
+              minWidth: targetDim,
+              minHeight: targetDim,
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -617,14 +677,14 @@ class _ColumnHeaderCell extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.arrow_drop_up,
-                      size: 14,
+                      size: isUltraCompact ? 10 : isCompact ? 12 : 14,
                       color: isAscending
                           ? DSColors.accentBlue
                           : DSColors.textDisabled,
                     ),
                     Icon(
                       Icons.arrow_drop_down,
-                      size: 14,
+                      size: isUltraCompact ? 10 : isCompact ? 12 : 14,
                       color: isDescending
                           ? DSColors.accentBlue
                           : DSColors.textDisabled,
@@ -643,15 +703,21 @@ class _ColumnHeaderCell extends StatelessWidget {
 class _ColumnVisibilityMenu extends StatelessWidget {
   final List<DSDataColumn> columns;
   final void Function(String id, bool visible) onToggle;
+  final bool isCompact;
 
-  const _ColumnVisibilityMenu({required this.columns, required this.onToggle});
+  const _ColumnVisibilityMenu({
+    required this.columns,
+    required this.onToggle,
+    this.isCompact = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<String>(
-      icon: const DSIcon.small(
+      icon: DSIcon(
         Icons.view_column_outlined,
         color: DSColors.textTertiary,
+        size: isCompact ? 16 : 18,
         semanticLabel: 'Column visibility',
       ),
       tooltip: 'Toggle columns',
@@ -1085,61 +1151,121 @@ class _DSDataTableState extends State<DSDataTable> {
       child: DSGlassPanelSimple(
         padding: EdgeInsets.zero,
         borderColor: DSColors.borderDefault,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Toolbar
-            if (widget.toolbar != null) ...[
-              Padding(
-                padding: const EdgeInsets.all(DSSpacing.md),
-                child: widget.toolbar!,
-              ),
-            ],
-            // Content
-            if (widget.loading)
-              _TableSkeleton(
-                columns: widget.columns,
-                selectable: widget.selectable,
-              )
-            else if (widget.errorMessage != null)
-              DSStateSurface.error(
-                title: 'Failed to load data',
-                subtitle: widget.errorMessage,
-                onAction: widget.onRetry,
-                compact: true,
-              )
-            else if (widget.rows.isEmpty)
-              const DSStateSurface.empty(
-                title: 'No data',
-                subtitle: 'No records match the current filters',
-                compact: true,
-              )
-            else ...[
-              // Header
-              _DSTableHeader(
-                columns: widget.columns,
-                sortState: widget.sortState,
-                onSort: widget.onSort,
-                selectable: widget.selectable,
-                allSelected: _allSelected,
-                onSelectAll: _toggleSelectAll,
-                onToggleColumn: widget.onToggleColumn,
-              ),
-              // Body — virtual scroll or paginated list
-              Flexible(child: _buildBody()),
-              // Pagination
-              if (widget.showPagination)
-                DSTablePagination(
-                  currentPage: widget.currentPage,
-                  totalRows: widget.rows.length,
-                  pageSize: widget.pageSize,
-                  pageSizes: widget.pageSizes,
-                  onPageChanged: widget.onPageChanged ?? (_) {},
-                  onPageSizeChanged: widget.onPageSizeChanged ?? (_) {},
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final hasBoundedHeight = constraints.hasBoundedHeight;
+            final maxH = constraints.maxHeight;
+            // Compact layout triggers when height is constrained (< 120)
+            final isCompact = hasBoundedHeight && maxH < 120;
+            final isUltraCompact = hasBoundedHeight && maxH <= 50;
+
+            final children = <Widget>[
+              // Toolbar
+              if (widget.toolbar != null) ...[
+                Padding(
+                  padding: EdgeInsets.all(
+                    isCompact ? DSSpacing.xs : DSSpacing.md,
+                  ),
+                  child: widget.toolbar!,
                 ),
-            ],
-          ],
+              ],
+              // Content
+              if (widget.loading)
+                hasBoundedHeight
+                    ? Flexible(
+                        child: SingleChildScrollView(
+                          physics: const ClampingScrollPhysics(),
+                          child: _TableSkeleton(
+                            columns: widget.columns,
+                            selectable: widget.selectable,
+                          ),
+                        ),
+                      )
+                    : _TableSkeleton(
+                        columns: widget.columns,
+                        selectable: widget.selectable,
+                      )
+              else if (widget.errorMessage != null)
+                hasBoundedHeight
+                    ? Flexible(
+                        child: SingleChildScrollView(
+                          physics: const ClampingScrollPhysics(),
+                          child: DSStateSurface.error(
+                            title: 'Failed to load data',
+                            subtitle: widget.errorMessage,
+                            onAction: widget.onRetry,
+                            compact: true,
+                          ),
+                        ),
+                      )
+                    : DSStateSurface.error(
+                        title: 'Failed to load data',
+                        subtitle: widget.errorMessage,
+                        onAction: widget.onRetry,
+                        compact: true,
+                      )
+              else if (widget.rows.isEmpty)
+                hasBoundedHeight
+                    ? const Flexible(
+                        child: SingleChildScrollView(
+                          physics: ClampingScrollPhysics(),
+                          child: DSStateSurface.empty(
+                            title: 'No data',
+                            subtitle: 'No records match the current filters',
+                            compact: true,
+                          ),
+                        ),
+                      )
+                    : const DSStateSurface.empty(
+                        title: 'No data',
+                        subtitle: 'No records match the current filters',
+                        compact: true,
+                      )
+              else ...[
+                // Header
+                _DSTableHeader(
+                  columns: widget.columns,
+                  sortState: widget.sortState,
+                  onSort: widget.onSort,
+                  selectable: widget.selectable,
+                  allSelected: _allSelected,
+                  onSelectAll: _toggleSelectAll,
+                  onToggleColumn: widget.onToggleColumn,
+                  isCompact: isCompact,
+                  isUltraCompact: isUltraCompact,
+                ),
+                // Body — virtual scroll or paginated list
+                if (!hasBoundedHeight || maxH >= 34)
+                  Flexible(child: _buildBody()),
+                // Pagination
+                if (widget.showPagination && (!hasBoundedHeight || maxH >= 100))
+                  DSTablePagination(
+                    currentPage: widget.currentPage,
+                    totalRows: widget.rows.length,
+                    pageSize: widget.pageSize,
+                    pageSizes: widget.pageSizes,
+                    onPageChanged: widget.onPageChanged ?? (_) {},
+                    onPageSizeChanged: widget.onPageSizeChanged ?? (_) {},
+                    isCompact: isCompact,
+                  ),
+              ],
+            ];
+
+            Widget content = Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: children,
+            );
+
+            if (hasBoundedHeight && maxH < 34) {
+              content = SingleChildScrollView(
+                physics: const ClampingScrollPhysics(),
+                child: content,
+              );
+            }
+
+            return content;
+          },
         ),
       ),
     );

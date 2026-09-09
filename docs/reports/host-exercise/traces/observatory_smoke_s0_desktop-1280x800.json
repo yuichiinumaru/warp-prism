@@ -1,0 +1,57 @@
+{
+  "seed": 0,
+  "host": "observatory",
+  "mode": "smoke",
+  "initial_route": "/overview",
+  "viewport": {
+    "name": "desktop-1280x800",
+    "width": 1280.0,
+    "height": 800.0,
+    "device_pixel_ratio": 1.0
+  },
+  "theme_recipe": "khalai-blue",
+  "action_budget": 5,
+  "actions": [
+    {
+      "index": 0,
+      "target": "sem:Map",
+      "action": "tap",
+      "route_before": "/overview",
+      "route_after": "/map",
+      "state_marker": "candidates=5"
+    },
+    {
+      "index": 1,
+      "target": "sem:Operate",
+      "action": "tap",
+      "route_before": "/map",
+      "route_after": "/operate",
+      "state_marker": "candidates=9"
+    },
+    {
+      "index": 2,
+      "target": "sem:History",
+      "action": "tap",
+      "route_before": "/operate",
+      "route_after": "/history",
+      "state_marker": "candidates=5"
+    },
+    {
+      "index": 3,
+      "target": "sem:Governance",
+      "action": "tap",
+      "route_before": "/history",
+      "route_after": "/governance",
+      "state_marker": "candidates=5"
+    },
+    {
+      "index": 4,
+      "target": "sem:Overview",
+      "action": "tap",
+      "route_before": "/governance",
+      "route_after": "/overview",
+      "state_marker": "candidates=5"
+    }
+  ],
+  "errors": []
+}

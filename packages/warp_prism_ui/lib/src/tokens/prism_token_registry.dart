@@ -1,5 +1,23 @@
 import 'package:flutter/material.dart';
 
+/// Contract interface for accent skin theme extensions.
+///
+/// Implemented by [DSCyberCoreTealSkin], [DSTaldarimRedSkin], and
+/// [DSTalonPurpleSkin] to provide a unified accent recipe ladder.
+abstract interface class PrismAccentSkin {
+  /// Primary energy accent color.
+  Color get accent;
+
+  /// Muted energy accent color for secondary action chrome.
+  Color get accentMuted;
+
+  /// Dim energy accent color for selection backgrounds and tints.
+  Color get accentDim;
+
+  /// Luminous border / glow edge color.
+  Color get borderGlow;
+}
+
 /// Managed token color roles governed by the Black Obsidian Theme Contract.
 ///
 /// See `docs/design/black-obsidian-visual-contract.md` §2.1.
@@ -135,6 +153,34 @@ class PrismTokenRegistry extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Applies a [PrismAccentSkin] recipe ladder to the registry.
+  ///
+  /// Updates [accentBlue], [accentBlueMuted], [accentBlueDim], and [focusRing]
+  /// to match the skin's energy and notifies listeners.
+  void applySkin(PrismAccentSkin skin) {
+    setAccentRecipe(
+      accent: skin.accent,
+      accentMuted: skin.accentMuted,
+      accentDim: skin.accentDim,
+      focusRing: skin.accent.withValues(alpha: 0.5),
+    );
+  }
+
+  /// Sets an explicit recipe-driven accent ladder on the registry.
+  void setAccentRecipe({
+    required Color accent,
+    required Color accentMuted,
+    required Color accentDim,
+    Color? focusRing,
+  }) {
+    _overrides[PrismColorRole.accentBlue] = accent;
+    _overrides[PrismColorRole.accentBlueMuted] = accentMuted;
+    _overrides[PrismColorRole.accentBlueDim] = accentDim;
+    _overrides[PrismColorRole.focusRing] =
+        focusRing ?? accent.withValues(alpha: 0.5);
+    notifyListeners();
+  }
+
   /// Resets a single role back to contract default.
   void resetRole(PrismColorRole role) {
     if (_overrides.containsKey(role)) {
@@ -188,7 +234,8 @@ class PrismTokenRegistry extends ChangeNotifier {
 
   /// Formats a [Color] into a hex string `#AARRGGBB` or `#RRGGBB`.
   static String colorToHex(Color color, {bool includeAlpha = true}) {
-    final argb = color.value.toRadixString(16).padLeft(8, '0').toUpperCase();
+    final argb =
+        color.toARGB32().toRadixString(16).padLeft(8, '0').toUpperCase();
     if (!includeAlpha || argb.startsWith('FF')) {
       return '#${argb.substring(2)}';
     }
@@ -231,7 +278,7 @@ class PrismTokenRegistry extends ChangeNotifier {
       final isOverridden = _overrides.containsKey(role);
       final status = isOverridden ? '[OVERRIDDEN]' : '[DEFAULT]';
       final valHex =
-          '0x${color.value.toRadixString(16).padLeft(8, '0').toUpperCase()}';
+          '0x${color.toARGB32().toRadixString(16).padLeft(8, '0').toUpperCase()}';
       buffer.writeln('// ${role.label} ($hex) $status');
       buffer.writeln('// static const Color ${role.key} = Color($valHex);');
     }

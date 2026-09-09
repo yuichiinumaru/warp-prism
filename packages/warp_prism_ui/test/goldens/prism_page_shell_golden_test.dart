@@ -1,3 +1,6 @@
+@Tags(['golden'])
+library;
+
 // Golden tests for PrismPageShell — EPIC-16 content chrome default state.
 //
 // Task 1614. Fixed surface size + deterministic fixture only.

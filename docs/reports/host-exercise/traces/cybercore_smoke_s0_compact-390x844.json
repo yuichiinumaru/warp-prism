@@ -1,0 +1,49 @@
+{
+  "seed": 0,
+  "host": "cybercore",
+  "mode": "smoke",
+  "initial_route": "/providers",
+  "viewport": {
+    "name": "compact-390x844",
+    "width": 390.0,
+    "height": 844.0,
+    "device_pixel_ratio": 2.0
+  },
+  "theme_recipe": "cybercore-teal",
+  "action_budget": 4,
+  "actions": [
+    {
+      "index": 0,
+      "target": "sem:MCP Servers",
+      "action": "tap",
+      "route_before": "/providers",
+      "route_after": "/mcp-servers",
+      "state_marker": "candidates=0"
+    },
+    {
+      "index": 1,
+      "target": "sem:MCP Inspector",
+      "action": "tap",
+      "route_before": "/mcp-servers",
+      "route_after": "/mcp-inspector",
+      "state_marker": "candidates=0"
+    },
+    {
+      "index": 2,
+      "target": "sem:Live Logs",
+      "action": "tap",
+      "route_before": "/mcp-inspector",
+      "route_after": "/live-logs",
+      "state_marker": "candidates=0"
+    },
+    {
+      "index": 3,
+      "target": "sem:Providers",
+      "action": "tap",
+      "route_before": "/live-logs",
+      "route_after": "/providers",
+      "state_marker": "candidates=0"
+    }
+  ],
+  "errors": []
+}

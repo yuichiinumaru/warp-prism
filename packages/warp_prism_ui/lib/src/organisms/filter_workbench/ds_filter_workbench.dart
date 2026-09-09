@@ -865,18 +865,21 @@ class _TextCriterionFieldState extends State<_TextCriterionField> {
         ),
         padding: const EdgeInsets.symmetric(horizontal: DSSpacing.md),
         alignment: Alignment.centerLeft,
-        child: TextField(
-          controller: _controller,
-          focusNode: _focusNode,
-          onChanged: widget.onChanged,
-          style: DSTypography.bodyMedium.copyWith(color: DSColors.textPrimary),
-          cursorColor: DSColors.accentBlue,
-          decoration: InputDecoration(
-            isDense: true,
-            border: InputBorder.none,
-            hintText: widget.placeholder,
-            hintStyle: DSTypography.bodyMedium.copyWith(
-              color: DSColors.textTertiary,
+        child: Material(
+          type: MaterialType.transparency,
+          child: TextField(
+            controller: _controller,
+            focusNode: _focusNode,
+            onChanged: widget.onChanged,
+            style: DSTypography.bodyMedium.copyWith(color: DSColors.textPrimary),
+            cursorColor: DSColors.accentBlue,
+            decoration: InputDecoration(
+              isDense: true,
+              border: InputBorder.none,
+              hintText: widget.placeholder,
+              hintStyle: DSTypography.bodyMedium.copyWith(
+                color: DSColors.textTertiary,
+              ),
             ),
           ),
         ),

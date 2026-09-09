@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "warp_bridge_core",
+    "warp_bridge_frb",
+]
+resolver = "2"

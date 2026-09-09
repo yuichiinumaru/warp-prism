@@ -1,0 +1,16 @@
+name: warp_prism_testkit
+description: In-memory test doubles and reusable contract compliance verification test suites for Warp Prism runtime contracts.
+publish_to: 'none'
+version: 0.1.0
+resolution: workspace
+
+environment:
+  sdk: ^3.12.0
+
+dependencies:
+  meta: ^1.15.0
+  test: ^1.25.0
+  warp_prism_runtime: ^0.1.0
+
+dev_dependencies:
+  lints: ^4.0.0

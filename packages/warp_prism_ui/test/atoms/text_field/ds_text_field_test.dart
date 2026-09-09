@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_test/flutter_test.dart' hide group;
+// ignore: depend_on_referenced_packages
+import 'package:test_api/scaffolding.dart' show group;
 import 'package:warp_prism_ui/src/atoms/atoms.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
 
@@ -325,7 +327,7 @@ void main() {
     );
   });
 
-  group('DSTextField golden tests', () {
+  group('DSTextField golden tests', tags: 'golden', () {
     testWidgets('renders default state golden', (tester) async {
       await tester.pumpWidget(
         _wrap(

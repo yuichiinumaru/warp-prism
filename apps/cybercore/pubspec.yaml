@@ -22,6 +22,8 @@ dev_dependencies:
   integration_test:
     sdk: flutter
   flutter_lints: ^4.0.0
+  warp_prism_host_exercise:
+    path: ../../packages/warp_prism_host_exercise
 
 flutter:
   uses-material-design: true

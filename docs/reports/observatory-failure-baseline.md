@@ -1,9 +1,10 @@
 # Observatory Failure Baseline Inventory
 
-> **Date**: 2026-08-24 (path-to-100 evidence refresh after independent review return)
-> **Source**: Scoped and full-package `flutter test apps/observatory --no-pub`
-> + JSON result extraction + `flutter analyze apps/observatory --no-pub`
-> + suite universe listing (`find … *_test.dart` = **45** suites)
+> **Date**: 2026-09-02 (current unit-test and analyzer evidence refresh)
+> **Source**: Unit-test corpus `flutter test apps/observatory/test --no-pub`
+> + scoped feature run + `flutter analyze apps/observatory --no-pub`
+> + separate optional integration-harness attempt
+> + suite universe listing (`apps/observatory/test/**/*_test.dart` = **45** suites)
 > **Classification**: Inventory only — no production or test code modified under Task 1401
 > **Task origin**: Task 1401, EPIC-14 stabilization wave
 > **Predecessor**: `docs/reports/warp-prism-failure-baseline-inventory.md` (Task 1201)
@@ -17,44 +18,48 @@
 
 ## 0. Honest status (read first)
 
-Live Observatory diagnostics measured on 2026-08-24 show **44 passing suites (+810 tests)** and **1 residual non-success suite** (`apps/observatory/test/widget_test.dart` times out at `pumpAndSettle`).
+Live Observatory diagnostics measured on 2026-09-02 show **45 passing unit-test suites (+811 tests)**, including `apps/observatory/test/widget_test.dart`.
 Prior residual F01 (`history_story_modes_test` selection-sync) remains **remediated**.
-Current residual F02 (`widget_test.dart` bootstrap smoke test timeout) is documented in §1.3.
+The optional visual-capture integration harness remains a separate infrastructure/runtime concern and is documented in §1.3; it is not part of the 45-file unit-test corpus.
 
 | Metric | 2026-06-09 (hist.) | Mid-wave 2026-07-09 (hist.) | 2026-07-18 (hist.) | **Live 2026-08-23** |
 |---|---|---|---|---|
-| Inventory method | Full suite + `[E]` | 37 suites JSON | 44 suites list | Scoped app/data/features + isolated smoke + suite list (**45**) |
-| Fully green suites | not recorded | claimed 25 | 44 | **44** |
-| Non-success suites | claimed 64 runtime | claimed 12 | 0 | **1** (`widget_test.dart`) |
-| Green test counter | claimed 589 | claimed 472 | +810 | **+810** (44 feature suites pass) |
-| Non-success tests | claimed 64 | claimed 12 | 0 | **1** (`widget_test.dart` timeout) |
-| Analyzer | not central | claimed 1042 err | 126 INFO | **127 INFO** (0 error / 0 warning), exit 0 |
-| Dominant failure class | view / mapper | DS\* compile | none (claimed) | **view / test runtime timeout** |
+| Inventory method | Full suite + `[E]` | 37 suites JSON | 44 suites list | Unit-test corpus + scoped rerun + analyzer + separate integration attempt (**45** unit suites) |
+| Fully green suites | not recorded | claimed 25 | 44 | **45** |
+| Non-success suites | claimed 64 runtime | claimed 12 | 0 | **0** in unit-test corpus; optional integration harness timed out during shutdown |
+| Green test counter | claimed 589 | claimed 472 | +810 | **+811** unit-test cases |
+| Non-success tests | claimed 64 | claimed 12 | 0 | **0** unit-test cases |
+| Analyzer | not central | claimed 1042 err | 126 INFO | **124 INFO** (0 error / 0 warning), exit 0 |
+| Dominant failure class | view / mapper | DS\* compile | none (claimed) | **optional integration-harness shutdown/runtime** |
 
 > [!IMPORTANT]
 > The 2026-07-18 claim of 0 non-success suites omitted `apps/observatory/test/widget_test.dart`.
-> Suite universe is **45** suites (including `widget_test.dart`).
-> Independent review on 2026-08-23 re-verified that `widget_test.dart` fails at line 12 with `pumpAndSettle timed out`.
-> Path-to-100 refresh on 2026-08-24 re-ran the scoped corpus and analyzer: the current
-> analyzer result is **127 INFO** (0 errors / 0 warnings; exit 0); the prior 124-INFO
-> result remains historical evidence for 2026-08-23.
+> The 2026-08-24 F02 timeout was subsequently rechecked on 2026-09-02: the isolated
+> bootstrap smoke test passes, so F02 is historical/remediated rather than current.
+> The unit-test suite universe is **45** suites and includes `widget_test.dart`.
+> The optional visual-capture integration test is a separate harness under
+> `apps/observatory/integration_test/`; its current attempt exceeded the bounded
+> shutdown window with a `stream_channel` close/add error. That is not included in
+> the unit-test baseline or green-test count.
+> Current analyzer evidence is **124 INFO** (0 errors / 0 warnings; exit 0).
 
 ---
 
-## 1. Live suite inventory (2026-08-24)
+## 1. Live suite inventory (2026-09-02)
 
 ### 1.1 Outcome summary
 
 | Outcome | Count |
 |---|---:|
-| Total `*_test.dart` suites | **45** |
-| Fully green suites | **44** |
-| Non-success suites | **1** (`widget_test.dart`) |
-| Passing tests across 44 green suites | **+810** |
-| Non-success test cases | **1** (`Observatory app bootstrap smoke test`) |
-| Package result | **1 suite non-success (bootstrap smoke timeout)** |
+| Total unit-test `*_test.dart` suites | **45** |
+| Fully green unit-test suites | **45** |
+| Non-success unit-test suites | **0** |
+| Passing unit-test cases | **+811** |
+| Non-success unit-test cases | **0** |
+| Unit-test package result | **All tests passed!** |
+| Optional integration-harness result | **Bounded attempt timed out during stream shutdown; excluded from unit baseline** |
 
-### 1.2 Suite universe (45 total / 44 green / 1 fail)
+### 1.2 Suite universe (45 total / 45 green / 0 fail)
 
 Paths relative to `apps/observatory/test/`:
 
@@ -103,50 +108,61 @@ features/overview/overview_shell_test.dart
 features/shell/shell_state_handler_test.dart
 features/workspace_snapshot/workspace_snapshot_enhanced_test.dart
 features/workspace_snapshot/workspace_snapshot_page_test.dart
-widget_test.dart                                      # RESIDUAL (1 fail: pumpAndSettle timeout)
+widget_test.dart                                      # PASS (bootstrap smoke test)
 ```
 
-### 1.3 Non-success suites (1 / 45)
+### 1.3 Non-success unit-test suites (0 / 45)
 
-| # | Suite | Kind | Status (2026-08-24) | Chain position | Taxonomy | Error signature |
+No unit-test suite currently has a non-success outcome. The formerly residual
+`widget_test.dart` bootstrap smoke test passed on 2026-09-02.
+
+### 1.4 Optional integration harness (separate from unit-test baseline)
+
+| # | Suite | Kind | Status (2026-09-02) | Chain position | Taxonomy | Error signature |
 |---|---|---|---|---|---|---|
-| F02 | `widget_test.dart` | runtime | **FAIL** (1 test error) | View / Test | Runtime Assertion / Timeout | `pumpAndSettle timed out at widget_test.dart:12` |
+| I01 | `integration_test/observatory_visual_capture_test.dart` | integration/runtime | **INCONCLUSIVE** (bounded attempt timed out) | Test harness / shutdown | Stream-channel shutdown | `Bad state: Cannot close sink while adding stream` |
 
-Signature details:
+The test reached the capture test and emitted passing progress through `+811`,
+then did not terminate within the 75-second bounded attempt. Flutter's shutdown
+reported `Cannot close sink while adding stream` / `Cannot add event while adding
+stream`. Because this is an optional integration harness rather than one of the
+45 files under `apps/observatory/test/`, it is reported separately and excluded
+from the unit-test pass/fail totals. It should not be called a unit-test failure
+or silently treated as package-green integration evidence.
 
-```text
-Observatory app bootstrap smoke test
-pumpAndSettle timed out at apps/observatory/test/widget_test.dart:12
-```
-
-### 1.4 Prior residual F01 — remediated (historical)
+### 1.5 Prior residual F01 — remediated (historical)
 
 | # | Suite | Kind | Prior status (2026-07-09) | Live 2026-08-24 | Chain position (historical) | Taxonomy (historical) |
 |---|---|---|---|---|---|---|
 | F01 | `features/history/history_story_modes_test.dart` | runtime | 30 pass / 2 error | **+31 All tests passed** | View / Test stale (was) | Widget assertion / selection sync (was) |
 
-### 1.5 Live command anchors
+### 1.6 Live command anchors
 
 ```text
 find apps/observatory/test -name '*_test.dart' | wc -l
 → 45
 
+flutter test apps/observatory/test --no-pub
+→ +811: All tests passed!
+
 flutter test apps/observatory/test/app/ apps/observatory/test/data/ apps/observatory/test/features/ --concurrency=4 --no-pub
 → +810: All tests passed!
 
 flutter test apps/observatory/test/widget_test.dart --no-pub
-→ Observatory app bootstrap smoke test [E]: pumpAndSettle timed out at widget_test.dart:12
+→ +1: All tests passed!
 
 flutter analyze apps/observatory --no-pub
-→ 127 issues found. (0 error / 0 warning / 127 info; exit 0)
+→ 124 issues found. (0 error / 0 warning / 124 info; exit 0)
+
+# Optional integration harness, bounded to 75 seconds:
+timeout 75s flutter test apps/observatory/integration_test/observatory_visual_capture_test.dart --no-pub
+→ timed out during shutdown after stream-channel close/add errors (exit 124)
 ```
 
-Saved logs (this pass): `tmp/1401-analyze.out`, `tmp/1401-full-suite.out`,
-`tmp/1401-scoped.out`, `tmp/1401-widget.out`, `tmp/1401-suite-list.txt`.
-These workspace-local logs were refreshed on 2026-08-24; the full-package log
-also records the documented F02 timeout (and a shutdown error from the optional
-visual-capture integration target), so the scoped run and isolated smoke log are
-the authoritative gates for this inventory.
+The unit-test corpus and analyzer were run on 2026-09-02. The optional
+integration-harness attempt is intentionally recorded separately because it is
+not under `apps/observatory/test/` and its shutdown behavior is not a unit-test
+failure. No generated capture artifact is used as acceptance evidence.
 
 ---
 
@@ -158,19 +174,22 @@ Command:
 flutter analyze apps/observatory --no-pub
 ```
 
-Live result (2026-08-24 path-to-100 re-run):
+Live result (2026-09-02 refresh):
 
 ```text
-127 issues found. (ran in 1.2s)
+124 issues found. (ran in 4.7s)
 ```
 
 | Severity | Count |
 |---|---:|
 | error | **0** |
 | warning | **0** |
-| info | **127** |
-| **total** | **127** |
+| info | **124** |
+| **total** | **124** |
 | process exit | **0** |
+
+The 2026-08-24 re-run recorded 127 INFO and the 2026-08-23 run recorded 124 INFO;
+both remain historical. The current count is 124 INFO from 2026-09-02.
 
 ### 2.1 What the infos are (class, not flood)
 
@@ -192,15 +211,20 @@ cluster is **historical only**.
 | Class | Live volume | Notes |
 |---|---|---|
 | Compile / load | **0 suites** | Mid-wave DS\* flood cleared |
-| Runtime widget assertion | **1 suite** | F02 `widget_test.dart` pumpAndSettle timeout |
+| Runtime widget assertion | **0 unit suites** | Prior F02 `widget_test.dart` timeout now passes; see §4.5 |
+| Integration harness shutdown | **1 suite (inconclusive)** | Optional visual-capture harness timed out on shutdown; §1.4 |
 | Corpus / parser | **0 failing suites** | Parser suites green |
 | Projection / mapper | **0 failing suites** | Not a live blocker |
-| Analyzer error residual | **0** | Info-only package analyze (127 INFO) |
+| Analyzer error residual | **0** | Info-only package analyze (124 INFO) |
 
 ### 3.1 Top-down vs bottom-up
 
 - **Top-down (corpus → parser)**: not a live failure mode (no failing suites).
-- **Bottom-up (view / test expectation)**: F02 (`widget_test.dart`) fails at bootstrap pumpAndSettle.
+- **Bottom-up (view / test expectation)**: no live unit-test failure; the previously
+  observed bootstrap pumpAndSettle timeout no longer reproduces.
+- **Test-harness/runtime**: the optional integration capture harness has a
+  shutdown-termination defect recorded in §1.4 (hypothesis: an unresolved stream
+  keeps the integration test's channel open after the assertion passes).
 
 ---
 
@@ -223,6 +247,23 @@ selection-sync defect that later cleared. Do not re-assert F01 as live.
 ### 4.4 2026-07-18 claim — 44 suites / 0 non-success / 126 INFO
 
 Superseded. Omitted `apps/observatory/test/widget_test.dart` (which fails with pumpAndSettle timeout).
+
+### 4.5 2026-08-24 claim — 44 green / 1 non-success / 127 INFO
+
+Superseded as current. The F02 `widget_test.dart` bootstrap smoke timeout did not
+reproduce on 2026-09-02: the isolated suite passes and the full unit-test corpus
+is green at +811. The 2026-08-24 evidence remains valid history for that date.
+
+### 4.6 Optional integration harness note (2026-09-02)
+
+The bounded attempt to run
+`apps/observatory/integration_test/observatory_visual_capture_test.dart` under
+`flutter test` timed out at 75 seconds during shutdown with
+`Bad state: Cannot close sink while adding stream` /
+`Cannot add event while adding stream` (exit 124). The test itself emitted passing
+progress before shutdown. This harness is excluded from the unit-test baseline
+and should not be represented as either unit-test failure or green integration
+evidence without further investigation.
 
 ---
 

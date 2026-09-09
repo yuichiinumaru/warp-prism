@@ -96,13 +96,13 @@ class _ProvidersPageState extends State<ProvidersPage> {
                     subtitle:
                         'Pilot A — fixture-backed read-only mirror of /providers',
                     icon: Icons.cloud_outlined,
-                    accentColor: PrismColors.accentCyan,
+                    accentColor: PrismTheme.accentOf(context),
                     insights: [
                       PrismStoryInsight(
                         text: '${providers.length} connections',
                         detail: '$active active, $errored with test errors',
                         value: '${providers.length}',
-                        color: PrismColors.accentCyan,
+                        color: PrismTheme.accentOf(context),
                       ),
                     ],
                   ),
@@ -114,7 +114,7 @@ class _ProvidersPageState extends State<ProvidersPage> {
                   icon: const Icon(Icons.add, size: 18),
                   label: const Text('New (read-only)'),
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: PrismColors.accentCyan,
+                    foregroundColor: PrismTheme.accentOf(context),
                     side: const BorderSide(color: PrismColors.borderSubtle),
                   ),
                 ),

@@ -1,0 +1,20 @@
+name: warp_prism_host_exercise
+description: Real-host UI exercise harness for Warp Prism (SMOKE/CRAWL/FUZZ over SAFE semantic actions with strict error oracle).
+publish_to: 'none'
+version: 0.1.0
+resolution: workspace
+
+environment:
+  sdk: ^3.12.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_test:
+    sdk: flutter
+  meta: ^1.15.0
+
+dev_dependencies:
+  integration_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0

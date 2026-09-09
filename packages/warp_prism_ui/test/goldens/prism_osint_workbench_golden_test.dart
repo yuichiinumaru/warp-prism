@@ -1,3 +1,6 @@
+@Tags(['golden'])
+library;
+
 // Golden tests for PrismOsintWorkbench — EPIC-15 CyberCore recon default.
 //
 // Task 1520. Fixed surface size + public fixture tools; idle default state

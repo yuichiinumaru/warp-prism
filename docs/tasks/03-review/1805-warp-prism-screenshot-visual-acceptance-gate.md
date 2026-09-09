@@ -54,7 +54,7 @@ screenshot linked.
       checklist below (`docs/reports/1805-visual-acceptance-gate-report.md`) — interim infrastructure report exists; final before/after review is `PENDING-USER`.
 - [x] Golden `_inApp` wrappers all consuming the canonical factory.
 - [ ] Goldens refreshed ONCE after approval; golden tests pass post-refresh — `PENDING-USER` (Golden freeze lifts at user sign-off).
-- [ ] Rejected visual output preserved (never overwritten silently) — `PENDING-USER`; no candidate PNG was produced in this headless run.
+- [ ] Rejected visual output preserved (never overwritten silently) — `PENDING-USER`; current candidate PNGs exist, but no rejected output has been supplied.
 - [x] Local changelog entry added via the changelog engine.
 - [x] Completion Evidence is filled before review handoff.
 
@@ -85,7 +85,7 @@ Subtasks:
       Task 1800 contract, Task 1803 factory exports.
 - [x] Implement deterministic capture harness per host.
 - [x] Migrate remaining golden wrappers to canonical theme.
-- [ ] Capture candidate screenshots; submit for user sign-off — `PENDING-USER`.
+- [ ] Capture candidate screenshots; submit for user sign-off — candidate artifacts captured 2026-09-03; submission/sign-off remains `PENDING-USER`.
 - [ ] On approval: single deliberate golden refresh; verify suite green — `PENDING-USER`.
 - [x] **Simplicity pass**: remove unnecessary complexity introduced by this task.
 - [x] **Regression verification**: run the validation commands listed below; outcomes and blockers recorded below.
@@ -167,10 +167,10 @@ failure and do not claim those checks passed.
   - `cd apps/catalog && flutter analyze integration_test/visual_acceptance_capture_test.dart` (PASS: no issues)
   - `cd apps/observatory && flutter analyze integration_test/observatory_visual_capture_test.dart` (PASS: no issues)
   - `cd apps/cybercore && flutter analyze integration_test/cybercore_visual_capture_test.dart` (PASS: no issues)
-  - `cd apps/catalog && flutter test integration_test/visual_acceptance_capture_test.dart --name 'captures typography specimen'` (PASS: 1/1; `takeScreenshot` `MissingPluginException`, no PNG produced)
+  - `cd apps/catalog && flutter test integration_test/visual_acceptance_capture_test.dart --name 'captures typography specimen'` (historical PASS: 1/1; `takeScreenshot` `MissingPluginException`; local candidate generation is now proven by the 4/4 remediation run)
   - `cd apps/catalog && flutter test integration_test/` (FAIL: app startup/log-reader failure)
-  - `cd apps/observatory && flutter test integration_test/observatory_visual_capture_test.dart` (BLOCKED: startup/log-reader timeout)
-  - `cd apps/cybercore && flutter test integration_test/cybercore_visual_capture_test.dart` (BLOCKED: startup/log-reader timeout)
+  - `cd apps/observatory && flutter test integration_test/observatory_visual_capture_test.dart` (PASS: 1/1; bounded pumps; deterministic repeated candidate hash after ticker isolation)
+  - `cd apps/cybercore && flutter test integration_test/cybercore_visual_capture_test.dart` (PASS: 1/1; bounded pumps; deterministic repeated candidate hash)
   - `dart run packages/warp_prism_ui/test/boundaries/boundary_test.dart --repo-root .` (PASS: 7/7)
   - `cd packages/warp_prism_ui && flutter test test/goldens/ --concurrency=1 --no-pub` (FAIL: 59 failures against frozen legacy baselines; expected while PENDING-USER)
 - **Local changelog entry**: `.changelog/20260823-140000-1805-warp-prism-screenshot-visual-acceptance-gate-builders.md`
@@ -227,3 +227,239 @@ failure and do not claim those checks passed.
 - **Live evidence**: Catalog typography `1/1` with recorded `MissingPluginException`; boundary harness `7/7`; three harness analyzers no issues; frozen golden suite `59` expected failures with no baseline regeneration; Observatory/CyberCore blocked by Flutter `Bad state: Cannot close sink while adding stream`; no candidate PNGs.
 - **Report**: `docs/reports/review/1805-screenshot-visual-acceptance-gate-independent-review-2026-08-23.md`
 - **Lane outcome**: promoted to `docs/tasks/03-review/` after path-to-100 recheck.
+
+### Remediation Dispatch — 2026-09-03
+
+- **Finding**: Catalog capture harness renders and asserts its specimens, but
+  `_safeTakeScreenshot` only calls `IntegrationTestWidgetsFlutterBinding.takeScreenshot`.
+  In both `flutter test integration_test/...` and `flutter test ... -d linux`, that
+  channel raises `MissingPluginException`, so no candidate PNG is produced.
+- **Disposition**: `03-review → 02-doing`; builder remediation is required inside
+  this task's declared `apps/catalog/integration_test/` scope. Existing infrastructure
+  evidence remains valid; human visual approval and golden refresh remain pending.
+- **Required remediation**: make the Catalog harness produce a real local rendered
+  PNG from a bounded `RepaintBoundary` (matching the already-read Observatory and
+  CyberCore capture approach), preserve graceful driver fallback, and prove output
+  existence with a deterministic validation command. Do not refresh committed goldens.
+
+### Remediation Evidence — 2026-09-03
+
+- **Builder**: `gt-builders-engineer-flutter`; worker session
+  `ses_f9a879d75ffeETthoQrx9qAm6v`.
+- **Changed**: `apps/catalog/integration_test/visual_acceptance_capture_test.dart`.
+  Each specimen now has a bounded `RepaintBoundary`; the harness rasterizes it
+  with `RenderRepaintBoundary.toImage(pixelRatio: 1.0)`, writes the candidate
+  PNG, and fails if the output is missing or empty. The driver `takeScreenshot`
+  call remains best-effort fallback only.
+- **Parent verification**:
+  - `cd apps/catalog && dart format --output=none --set-exit-if-changed integration_test/visual_acceptance_capture_test.dart` — exit 0.
+  - `cd apps/catalog && flutter analyze integration_test/visual_acceptance_capture_test.dart` — exit 0, no issues.
+  - `cd apps/catalog && flutter test integration_test/visual_acceptance_capture_test.dart` — exit 0, 4/4 passed.
+  - Candidate artifacts — all non-empty PNG RGBA 1280×800:
+    `catalog_typography_specimen.png` (32,724 bytes),
+    `catalog_token_swatches.png` (32,642 bytes),
+    `catalog_dense_organism.png` (16,239 bytes),
+    `catalog_form_primitive.png` (26,658 bytes).
+- **Preserved**: no committed golden baseline was refreshed or overwritten.
+  Driver fallback still logs `MissingPluginException` in the plain test runner;
+  this no longer prevents local candidate generation.
+- **Review handoff**: implementation remediation is ready for independent review;
+  human visual convergence, rejected-output disposition, and one authorized
+  golden refresh remain `PENDING-USER` and are not claimed here.
+
+### Independent Re-review — 2026-09-03 (Catalog Capture Remediation)
+
+- **Reviewer profile**: `gt-reviewers-reviewer-flutter` (independent reviewer lane)
+- **Session**: `ses_f9a7bdf1affe3GsGGoinaPeGk6`
+- **Remediation verdict**: `PASS`; **quality score**: `100/100` (diagnostic)
+- **Overall Task 1805 verdict**: `BLOCKED — EXTERNAL_BLOCKER / PENDING-USER`
+- **Report**: `docs/reports/review/1805-catalog-local-capture-remediation-independent-review-2026-09-03.md`
+- **Evidence**: direct source inspection; format/analyze/test exit 0; 4/4 capture
+  tests; four non-empty 1280×800 RGBA candidate PNGs.
+- **Findings**: no Critical, Serious, Debt, or required Improvement findings in
+  the remediation scope. The eleven visual criteria, approved target artifact,
+  rejected-output disposition, one authorized golden refresh, and post-refresh
+  suite remain human-gated. No committed goldens were changed.
+
+### Further Remediation Dispatch — 2026-09-03
+
+- **Diagnostic worker**: `gt-builders-engineer-flutter`; session
+  `ses_f9a73b3fdffeJtCylgnuWGvZjC`.
+- **Finding**: the Observatory and CyberCore capture tests still fail before
+  their local PNG path. Both application shells mount an indeterminate
+  `CircularProgressIndicator`; `tester.pumpAndSettle()` therefore never reaches
+  a settled frame and the runner eventually emits
+  `Bad state: Cannot close sink while adding stream.` The capture helpers also
+  await `tester.binding.endOfFrame`, which is an additional unbounded wait.
+- **Disposition**: `03-review → 02-doing`; this is a local defect in this task's
+  declared `apps/*/integration_test/` scope. The Catalog remediation remains
+  valid. Human visual convergence and golden refresh remain `PENDING-USER`.
+- **Required remediation**: replace unbounded `pumpAndSettle()` with bounded
+  pumps in both host capture tests and remove the unbounded `endOfFrame` wait,
+  preserving the existing bounded `RepaintBoundary` local PNG path and the
+  no-golden-refresh freeze. Verify candidate artifacts for Observatory and
+  CyberCore before returning to independent review.
+
+### Further Remediation Evidence — 2026-09-03
+
+- **Builder**: `gt-builders-engineer-flutter`; worker session
+  `ses_f9a60ce9effeMqozEM0yk7QDeE`.
+- **Changed**: `apps/observatory/integration_test/observatory_visual_capture_test.dart`
+  and `apps/cybercore/integration_test/cybercore_visual_capture_test.dart`.
+  Both now remove the unbounded `endOfFrame` wait and replace
+  `pumpAndSettle()` with `pump()` plus a bounded 500ms pump. Existing local
+  `RepaintBoundary` rasterization, non-empty assertions, viewport `1280x800`,
+  DPR `1.0`, and best-effort driver fallback are preserved.
+- **Parent verification**:
+  - Observatory format — exit 0; analyzer — exit 0; capture test — exit 0, 1/1.
+  - CyberCore format — exit 0; analyzer — exit 0; capture test — exit 0, 1/1.
+  - All six candidate files are valid non-empty 1280×800, 8-bit RGBA PNGs:
+    Catalog files remain present; `observatory_overview_dashboard.png` is
+    26,955 bytes and `cybercore_shell_teal_skin.png` is 57,854 bytes.
+- **Preserved**: no committed golden baseline was refreshed or overwritten.
+  Driver fallback still logs `MissingPluginException`, but local candidate
+  generation now succeeds for all three hosts.
+- **Review handoff**: implementation remediation is ready for independent
+  review. Human visual convergence, rejected-output disposition, one authorized
+  golden refresh, and post-refresh verification remain `PENDING-USER`.
+
+### Determinism Remediation Evidence — 2026-09-03
+
+- **Builder**: `gt-builders-engineer-flutter`; worker session
+  `ses_f9a4fad55ffetq7jWCrvqYs2TD`.
+- **Changed**: `apps/observatory/integration_test/observatory_visual_capture_test.dart`.
+  The capture subtree now uses `TickerMode(enabled: false)` so the loading
+  `CircularProgressIndicator` cannot advance between captures. Production app
+  code, loading semantics, goldens, and CyberCore were not changed.
+- **Parent verification**:
+  - Observatory format — exit 0; analyzer — exit 0.
+  - Two consecutive Observatory capture tests — both exit 0, 1/1 passed;
+    both produced 26,358-byte candidate PNG with SHA-256
+    `5a984635c3f6af877dfb144a9e1b62ad906ef00ab2825cd184293fa3d04e0500`.
+  - Prior CyberCore repeat evidence remains valid: both runs exit 0, 1/1
+    passed, 57,854 bytes, SHA-256
+    `b18d46c2229bb6078e5a330868a435517e5158a480dab37666a6fe836eb7481b`.
+- **Reconciliation**: the previous Observatory `CURRENT_REAL / NEW`
+  determinism finding is resolved by current repeated execution. All six
+  candidate artifacts remain non-empty 1280×800 RGBA PNGs.
+- **Preserved**: no committed golden baseline was refreshed or overwritten.
+  Driver fallback `MissingPluginException` remains non-blocking because local
+  capture executes first and is verified.
+- **Review handoff**: technical remediation is ready for independent review;
+  the eleven visual criteria, rejected-output disposition, one authorized golden
+  refresh, and post-refresh verification remain `PENDING-USER`.
+
+### Final Independent Technical Re-review — 2026-09-03
+
+- **Reviewer**: `gt-reviewers-reviewer-flutter`; session
+  `ses_f9a461d7cffeOG5bVLNO6MPJqV`.
+- **Remediation verdict**: `PASS`; diagnostic score `100/100`; evidence
+  confidence `high`.
+- **Overall Task 1805 verdict**: `BLOCKED` — no explicit user sign-off for the
+  eleven visual criteria has been recorded.
+- **Evidence**: all Catalog, Observatory, and CyberCore format/analyze/test
+  validations exited 0; capture tests passed `4/4`, `1/1`, and `1/1`; all six
+  candidate artifacts are valid non-empty 1280×800 8-bit RGBA PNGs.
+- **Determinism**: Observatory repeated at 26,358 bytes with SHA-256
+  `5a984635c3f6af877dfb144a9e1b62ad906ef00ab2825cd184293fa3d04e0500`;
+  CyberCore repeated at 57,854 bytes with SHA-256
+  `b18d46c2229bb6078e5a330868a435517e5158a480dab37666a6fe836eb7481b`.
+- **Findings**: none in the technical remediation scope. The reviewer confirms
+  the bounded pumps prove deterministic initial-state capture, not async data
+  readiness; the Linux driver `MissingPluginException` remains non-blocking.
+- **Full report**:
+  `docs/reports/review/1805-final-capture-determinism-independent-rereview-2026-09-03.md`.
+- **Lane action**: remains `docs/tasks/03-review/`; do not promote. Human visual
+  approval, rejected-output disposition, one golden refresh, and post-refresh
+  verification remain `PENDING-USER`.
+
+### Final Re-review Report Link
+
+- `docs/reports/review/1805-final-capture-determinism-independent-rereview-2026-09-03.md`
+
+### Partial Human Visual Sign-off — 2026-09-03 (recorded verbatim from product owner)
+
+- **Criteria 1 (obsidian black background)**: APPROVED — "fundo é preto obsidian em
+  tudo (saindo paleta do cinza mesmo só pra nao ficar preto puro 000000). fundo
+  colorido = ban".
+- **Criteria 2 (neutral near-black surfaces, restrained elevation)**: APPROVED.
+- **Criteria 6 (no persistent high-intensity blue ambient glow)**: APPROVED.
+- **Criteria 7 (UI typography readable and non-mono)**: APPROVED — user prefers
+  the current two-font discipline (UI sans + mono technical roles); no additional
+  font families unless a specific need is raised and decided with the owner.
+- **Criteria 8 (JetBrains Mono only in technical roles)**: APPROVED.
+- **Criteria 9 (contrast/focus states accessible)**: direction approved by owner;
+  regression re-proof required after theme-propagation fixes (delivered as
+  Task 1833 builder evidence; independent review pending).
+- **Criteria 3, 4, 5, 10, 11**: owner live-run verdicts 2026-09-03 —
+  - 4 APPROVED (semantic colors meaningful);
+  - 3 FAIL (accent limited to interaction/focus — implementation/propagation);
+  - 5 FAIL (no rainbow/decorative chrome — CyberCore proved the case);
+  - 10 REOPEN (host composition/density not good yet);
+  - 11 FAIL (same contract across hosts).
+
+  Remediation routed: Task 1833 (accent propagation → criteria 3/5/11),
+  Task 1831 (Material ancestry → criterion 10 host composition), Task 1832 +
+  Task 1836 (layout bands → criterion 10 density). Criteria 3/5/10/11 return to
+  the owner for re-inspection only after technical remediation + real-host
+  revalidation land.
+
+### Real-Host Evidence Invalidation — 2026-09-03/04 (controlled realignment)
+
+- The 2026-09-03 owner live run of all three hosts (`flutter run -d linux`)
+  produced authoritative contradictory runtime evidence:
+  - Observatory: repeated `No Material widget found` (`ds_search_bar.dart:95`);
+    massive `RenderFlex` overflow (98868px / 497772px) on affected routes.
+  - CyberCore: `RenderFlex overflowed by 15px` (`ds_data_table.dart:1088`,
+    h=50).
+  - Catalog: scrubber overflows 21/16/44px (`ds_time_machine_scrubber.dart:423`,
+    h=119); repeated `ListTile` ink-visibility warnings.
+  - Capture harness: PASS while `takeScreenshot` threw `MissingPluginException`
+    — the oracle could not fail.
+- Per AGENTS.md §3.6: the prior Task 1825/L1 acceptance and the 2026-09-03
+  technical re-review `PASS` remain historically valid for their snapshots;
+  active L1 real-host dimensions are `REVALIDATION_REQUIRED` until the
+  remediation wave (1831–1836) lands and hosts are re-exercised.
+- Remediation wave: 1831 (Material ancestry) PASS 93, 1832 (layout exit-scope)
+  PASS 73 + follow-up 1836, 1833 (accent propagation, review pending), 1834
+  (capture honesty) PASS 96, 1835 (ancestry meta-test) open.
+
+### Capture Re-baseline Preconditions — from Task 1834 review (2026-09-04)
+
+- **F1 (Moderate)**: the capture oracle is content-blind; during the 1834
+  review, `cybercore_shell_teal_skin.png` shifted 57,854→57,520 bytes while the
+  parallel 1833 session edited tokens/theme and all suites stayed green. Any
+  fresh 1805 visual packet MUST re-baseline candidates from a **quiesced tree**
+  (no concurrent source mutation) or stamp source-state beside captures.
+- **F4 (Moderate, operational)**: shared-bundle-path collision — a parallel
+  session's test executed inside a catalog run while the same binary was
+  building. Catalog validation waves MUST be serialized or build dirs isolated
+  while any parallel session is active.
+- Five of six artifacts remain bit-reproducible across 3 sessions/2 days
+  (SHA-256 identical to the 2026-09-03 record); cybercore is byte-stable within
+  a fixed source tree.
+
+### Golden Freeze Drift Ledger — accumulating until the single 1805 refresh
+
+- 59 golden failures expected from the 1801 token migration (Task 1800 §7
+  interim freeze).
+- Task 1832 adds expected drift: `data_table_default` golden fails (99.62%,
+  478,180px) — attribution between 1832 compact headers and 1833 skin wiring
+  resolved at the single authorized refresh; **no baseline touched**.
+- Task 1833 may add further drift from accent-propagation fixes; to be recorded
+  after its independent review.
+- All drift dispositions resolve in the ONE authorized refresh after owner
+  sign-off; rejected-output preservation under `docs/reports/captures/rejected/`
+  if any candidate is refused.
+
+### Review Reconciliation — 2026-09-03
+
+| Finding | Classification | Current evidence | Action |
+|---|---|---|---|
+| Observatory candidate metadata changed between two consecutive successful captures (`26,955` bytes / SHA-256 `1d6f...` then `26,602` bytes / SHA-256 `191960...`) | `CURRENT_REAL` / `NEW` determinism defect | Exact capture command passed both times, but the candidate bytes differed; the rendered loading spinner advances between bounded pumps | Reopen this task for a harness-only fix; freeze animation state for deterministic capture and prove two consecutive identical hashes. |
+
+- CyberCore produced identical bytes on two consecutive runs (`57,854` bytes,
+  SHA-256 `b18d...`); no CyberCore product change is implied by this finding.
+- This reconciliation supersedes the reviewer report's “non-blocking metadata
+  drift” classification: repeated current execution proves the underlying
+  output instability, so it must be fixed before claiming deterministic capture.

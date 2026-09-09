@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'ds_colors.dart';
+import 'ds_radii.dart';
+import 'prism_token_registry.dart';
 
 /// Optional CyberCore teal accent skin (OmniRoute DNA).
 ///
@@ -17,7 +19,8 @@ import 'ds_colors.dart';
 ///
 /// Not a full second design system — accent core + glow border only.
 @immutable
-class DSCyberCoreTealSkin extends ThemeExtension<DSCyberCoreTealSkin> {
+class DSCyberCoreTealSkin extends ThemeExtension<DSCyberCoreTealSkin>
+    implements PrismAccentSkin {
   /// OmniRoute / harvest core teal (`#00FFCC`).
   static const Color coreTeal = Color(0xFF00FFCC);
 
@@ -43,15 +46,19 @@ class DSCyberCoreTealSkin extends ThemeExtension<DSCyberCoreTealSkin> {
       borderGlow = coreTeal;
 
   /// Primary energy accent (teal).
+  @override
   final Color accent;
 
   /// Muted energy accent.
+  @override
   final Color accentMuted;
 
   /// Dim energy accent.
+  @override
   final Color accentDim;
 
   /// Luminous border / glow edge color for CyberCore chrome.
+  @override
   final Color borderGlow;
 
   /// Resolves the extension from [context], or `null` when not installed.
@@ -112,7 +119,17 @@ class DSCyberCoreTealSkin extends ThemeExtension<DSCyberCoreTealSkin> {
         primary: accent,
         primaryContainer: accentDim,
         onPrimary: DSColors.textInverse,
+        inversePrimary: accentMuted,
         tertiary: accentMuted,
+      ),
+      inputDecorationTheme: withExtension.inputDecorationTheme.copyWith(
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(DSRadii.md),
+          borderSide: BorderSide(color: accent, width: 1.5),
+        ),
+      ),
+      chipTheme: withExtension.chipTheme.copyWith(
+        selectedColor: accentDim,
       ),
     );
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../tokens/tokens.dart';
+import '../theme/ds_theme.dart';
 
 /// Shared interactive surface for molecule primitives.
 ///
@@ -132,7 +132,7 @@ class _DSInteractiveSurfaceState extends State<DSInteractiveSurface> {
     if (!_isFocused) return base;
 
     final focusBorder = Border.all(
-      color: DSColors.focusRing,
+      color: DSTheme.focusRingOf(context),
       width: 2,
     );
 

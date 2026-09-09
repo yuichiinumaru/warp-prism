@@ -1,3 +1,6 @@
+@Tags(['golden'])
+library;
+
 // Golden tests for DSBadge — renders badge variants, sizes, and
 // operational state badges.
 //

@@ -1,3 +1,6 @@
+@Tags(['golden'])
+library;
+
 // Golden tests for PrismMapHudWorkspace — EPIC-15 HUD workspace default.
 //
 // Task 1520. Fixed surface size + deterministic fixture chrome only.

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../molecules/ds_interactive_surface.dart';
+import '../../theme/ds_theme.dart';
 import '../../tokens/tokens.dart';
 import '../ds_text.dart';
 
@@ -28,8 +29,7 @@ class DSSwitch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isInteractive = enabled && onChanged != null;
-    final activeAccent =
-        DSCyberCoreTealSkin.maybeOf(context)?.accent ?? DSColors.accentBlue;
+    final activeAccent = DSTheme.accentOf(context);
 
     final trackColor = value ? activeAccent : DSColors.obsidianBase;
     final borderColor = value

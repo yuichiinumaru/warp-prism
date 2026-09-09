@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../theme/ds_theme.dart';
 import '../../tokens/tokens.dart';
 import '../ds_icon.dart';
 import '../ds_text.dart';
@@ -132,13 +133,16 @@ class _DSTextFieldState extends State<DSTextField> {
         !widget.obscureText &&
         (widget.maxLines == null || widget.maxLines! > 1);
 
+    final activeAccent = DSTheme.accentOf(context);
+    final focusRing = DSTheme.focusRingOf(context);
+
     final Color borderColor;
     final double borderWidth;
     if (hasError) {
       borderColor = DSColors.statusError;
       borderWidth = 1.0;
     } else if (_isFocused) {
-      borderColor = DSColors.accentBlue;
+      borderColor = activeAccent;
       borderWidth = 2.0;
     } else {
       borderColor = DSColors.borderSubtle;
@@ -149,7 +153,7 @@ class _DSTextFieldState extends State<DSTextField> {
     if (hasError) {
       labelColor = DSColors.statusError;
     } else if (_isFocused) {
-      labelColor = DSColors.accentBlue;
+      labelColor = activeAccent;
     } else {
       labelColor = DSColors.textSecondary;
     }
@@ -158,7 +162,7 @@ class _DSTextFieldState extends State<DSTextField> {
     if (hasError) {
       iconColor = DSColors.statusError;
     } else if (_isFocused) {
-      iconColor = DSColors.accentBlue;
+      iconColor = activeAccent;
     } else {
       iconColor = DSColors.textTertiary;
     }
@@ -176,7 +180,7 @@ class _DSTextFieldState extends State<DSTextField> {
       ];
     } else if (_isFocused) {
       glowShadows = [
-        BoxShadow(color: DSColors.focusRing, blurRadius: 8, spreadRadius: 0),
+        BoxShadow(color: focusRing, blurRadius: 8, spreadRadius: 0),
       ];
     } else {
       glowShadows = null;
@@ -235,7 +239,7 @@ class _DSTextFieldState extends State<DSTextField> {
                 maxLines: widget.obscureText ? 1 : widget.maxLines,
                 minLines: widget.minLines,
                 maxLength: widget.maxLength,
-                cursorColor: DSColors.accentBlue,
+                cursorColor: activeAccent,
                 style: DSTypography.bodyMedium.copyWith(
                   color: widget.enabled
                       ? DSColors.textPrimary

@@ -122,6 +122,40 @@ class BoundaryHarness {
       name: 'Public barrel hides DS* names from consumers',
       run: _checkPublicBarrelHidesDsNames,
     ),
+    BoundaryCheck(
+      name:
+          'PrismTokenRegistry mutators called only by theme_editor organism and authorized tooling',
+      run: _checkRegistryMutatorScope,
+    ),
+    BoundaryCheck(
+      name:
+          'Repository root contains no fix_/tmp_/patch_/append_/snippet_/test_ scratch files',
+      run: _checkRepoRootScratchFiles,
+    ),
+    BoundaryCheck(
+      name: 'warp_prism_runtime contains no Flutter imports',
+      run: _checkRuntimeNoFlutterImports,
+    ),
+    BoundaryCheck(
+      name: 'warp_prism_interaction is pure Dart',
+      run: _checkInteractionPureDart,
+    ),
+    BoundaryCheck(
+      name: 'warp_prism_ui does not import warp_prism_bindings',
+      run: _checkUiNoBindingsImports,
+    ),
+    BoundaryCheck(
+      name: 'warp_prism_adapter_frb is not imported by ui/interaction/runtime',
+      run: _checkNoAdapterFrbImports,
+    ),
+    BoundaryCheck(
+      name: 'Core packages contain no domain types',
+      run: _checkNoDomainTypesInCorePackages,
+    ),
+    BoundaryCheck(
+      name: 'FRB generated files are not imported directly by widgets',
+      run: _checkNoDirectFrbGeneratedImports,
+    ),
   ];
 
   BoundaryRunResult run() {
@@ -461,6 +495,232 @@ class BoundaryHarness {
           );
         }
       }
+    }
+
+    return violations;
+  }
+
+  List<String> _checkRegistryMutatorScope() {
+    final violations = <String>[];
+
+    final scanDirs = [
+      'packages/warp_prism_ui/lib',
+      'apps/cybercore/lib',
+      'apps/observatory/lib',
+      'apps/catalog/lib',
+    ];
+
+    final appMutatorPattern = RegExp(
+      r'\b(applySkin|setAccentRecipe|setColor|resetRole|reset)\b',
+    );
+    final uiMutatorPattern = RegExp(
+      r'\b(applySkin|setAccentRecipe|setColor|resetRole)\b|(?:\b_?registry\b|PrismTokenRegistry(?:\.instance)?)\.reset\b',
+    );
+
+    for (final dirPath in scanDirs) {
+      final dir = _childDir(dirPath);
+      if (!dir.existsSync()) continue;
+
+      final files =
+          dir
+              .listSync(recursive: true, followLinks: false)
+              .whereType<File>()
+              .where((file) => file.path.endsWith('.dart'))
+              .toList()
+            ..sort((a, b) => a.path.compareTo(b.path));
+
+      for (final file in files) {
+        final rel = _relativePath(file);
+
+        // Tooling / registry internal allowlist
+        if (rel ==
+                'packages/warp_prism_ui/lib/src/tokens/prism_token_registry.dart' ||
+            rel.startsWith(
+              'packages/warp_prism_ui/lib/src/organisms/theme_editor/',
+            ) ||
+            rel == 'apps/catalog/lib/main.dart') {
+          continue;
+        }
+
+        final isUi = rel.startsWith('packages/warp_prism_ui/lib/');
+        final pattern = isUi ? uiMutatorPattern : appMutatorPattern;
+
+        final lines = file.readAsLinesSync();
+        for (var i = 0; i < lines.length; i++) {
+          if (pattern.hasMatch(lines[i])) {
+            violations.add('$rel:${i + 1}:${lines[i].trim()}');
+          }
+        }
+      }
+    }
+
+    return violations;
+  }
+
+  List<String> _checkRepoRootScratchFiles() {
+    final violations = <String>[];
+    final rootEntries =
+        repoRoot.listSync(followLinks: false).whereType<File>().toList()
+          ..sort((a, b) => a.path.compareTo(b.path));
+
+    final scratchPrefixPattern = RegExp(
+      r'^(fix_|tmp_|patch_|append_|snippet_|test_|replace_ds\.|start-tmux\.)',
+    );
+    final scratchExtensionPattern = RegExp(r'\.(py|sh|dart)$');
+
+    for (final file in rootEntries) {
+      final fileName =
+          file.uri.pathSegments.isNotEmpty &&
+              file.uri.pathSegments.last.isNotEmpty
+          ? file.uri.pathSegments.last
+          : file.path.split(Platform.pathSeparator).last;
+
+      if (scratchPrefixPattern.hasMatch(fileName) ||
+          scratchExtensionPattern.hasMatch(fileName)) {
+        violations.add(
+          '${_relativePath(file)}: root scratch file must be moved to tool/, scripts/, or docs/archive/',
+        );
+      }
+    }
+
+    return violations;
+  }
+
+  List<String> _checkRuntimeNoFlutterImports() {
+    final runtimeLib = _childDir('packages/warp_prism_runtime/lib');
+    final missing = _missingDirectory(
+      runtimeLib,
+      'packages/warp_prism_runtime/lib',
+    );
+    if (missing != null) return missing;
+
+    return _scanDartFiles(
+      runtimeLib,
+      RegExp(r'''^\s*import\s+['"](dart:ui|package:flutter(?=/))'''),
+    );
+  }
+
+  List<String> _checkInteractionPureDart() {
+    final interactionLib = _childDir('packages/warp_prism_interaction/lib');
+    final missing = _missingDirectory(
+      interactionLib,
+      'packages/warp_prism_interaction/lib',
+    );
+    if (missing != null) return missing;
+
+    return _scanDartFiles(
+      interactionLib,
+      RegExp(r'''^\s*import\s+['"](dart:ui|package:flutter(?=/))'''),
+    );
+  }
+
+  List<String> _checkUiNoBindingsImports() {
+    final uiLib = _childDir('packages/warp_prism_ui/lib');
+    final missing = _missingDirectory(uiLib, 'packages/warp_prism_ui/lib');
+    if (missing != null) return missing;
+
+    return _scanDartFiles(
+      uiLib,
+      RegExp(r'''^\s*import\s+['"]package:warp_prism_bindings(?=/|['"])'''),
+    );
+  }
+
+  List<String> _checkNoAdapterFrbImports() {
+    final violations = <String>[];
+    for (final pkg in [
+      'packages/warp_prism_ui/lib',
+      'packages/warp_prism_interaction/lib',
+      'packages/warp_prism_runtime/lib',
+    ]) {
+      final dir = _childDir(pkg);
+      final missing = _missingDirectory(dir, pkg);
+      if (missing != null) {
+        violations.addAll(missing);
+        continue;
+      }
+      violations.addAll(
+        _scanDartFiles(
+          dir,
+          RegExp(
+            r'''^\s*import\s+['"]package:(warp_prism_adapter_frb|flutter_rust_bridge)(?=/|['"])''',
+          ),
+        ),
+      );
+    }
+    return violations;
+  }
+
+  List<String> _checkNoDomainTypesInCorePackages() {
+    final violations = <String>[];
+    for (final pkg in [
+      'packages/warp_prism_interaction/lib',
+      'packages/warp_prism_runtime/lib',
+      'packages/warp_prism_bindings/lib',
+      'packages/warp_prism_testkit/lib',
+      'packages/warp_prism_adapter_frb/lib',
+    ]) {
+      final dir = _childDir(pkg);
+      final missing = _missingDirectory(dir, pkg);
+      if (missing != null) {
+        violations.addAll(missing);
+        continue;
+      }
+      violations.addAll(
+        _scanDartFiles(
+          dir,
+          RegExp(r'\b(Ganthritor|Cersei|OmniRoute|CyberCore)\b'),
+        ),
+      );
+    }
+    return violations;
+  }
+
+  List<String> _checkNoDirectFrbGeneratedImports() {
+    final violations = <String>[];
+    final candidateDirs = <Directory>[];
+
+    final appsDir = _childDir('apps');
+    if (appsDir.existsSync()) {
+      final appDirs =
+          appsDir.listSync(followLinks: false).whereType<Directory>().toList()
+            ..sort((a, b) => a.path.compareTo(b.path));
+      for (final appDir in appDirs) {
+        final libDir = Directory('${appDir.path}/lib');
+        if (libDir.existsSync()) {
+          candidateDirs.add(libDir);
+        }
+      }
+    }
+
+    final packagesDir = _childDir('packages');
+    if (packagesDir.existsSync()) {
+      final pkgDirs =
+          packagesDir
+              .listSync(followLinks: false)
+              .whereType<Directory>()
+              .toList()
+            ..sort((a, b) => a.path.compareTo(b.path));
+      for (final pkgDir in pkgDirs) {
+        final dirName =
+            pkgDir.uri.pathSegments.isNotEmpty &&
+                pkgDir.uri.pathSegments.last.isNotEmpty
+            ? pkgDir.uri.pathSegments.last
+            : pkgDir.path.split(Platform.pathSeparator).last;
+        if (dirName == 'warp_prism_adapter_frb') continue;
+        final libDir = Directory('${pkgDir.path}/lib');
+        if (libDir.existsSync()) {
+          candidateDirs.add(libDir);
+        }
+      }
+    }
+
+    for (final dir in candidateDirs) {
+      violations.addAll(
+        _scanDartFiles(
+          dir,
+          RegExp(r'''^\s*import\s+['"].*(?:src/rust/|frb_generated)'''),
+        ),
+      );
     }
 
     return violations;

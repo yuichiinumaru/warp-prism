@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../molecules/ds_interactive_surface.dart';
+import '../../theme/ds_theme.dart';
 import '../../tokens/tokens.dart';
 import '../ds_glow_border.dart';
 import '../ds_icon.dart';
@@ -80,12 +81,14 @@ class DSCheckbox extends StatelessWidget {
     }
 
     final effectiveLabel = semanticLabel ?? label ?? 'Checkbox';
+    final activeAccent = DSTheme.accentOf(context);
+    final borderGlow = DSTheme.borderGlowOf(context);
 
     Widget boxContent;
     if (value == true) {
       // Checked state: 20x20 outer box, DSGlowBorder blue glow, filled blue background, obsidian checkmark icon
       boxContent = DSGlowBorder(
-        color: DSColors.accentBlue,
+        color: borderGlow,
         radius: DSRadii.button,
         width: 1,
         glowBlur: 6,
@@ -93,7 +96,7 @@ class DSCheckbox extends StatelessWidget {
           width: 18,
           height: 18,
           decoration: BoxDecoration(
-            color: DSColors.accentBlue,
+            color: activeAccent,
             borderRadius: BorderRadius.circular(DSRadii.button - 1),
           ),
           child: Center(
@@ -109,14 +112,14 @@ class DSCheckbox extends StatelessWidget {
         decoration: BoxDecoration(
           color: DSColors.glassOverlay.withValues(alpha: 0.6),
           borderRadius: BorderRadius.circular(DSRadii.button),
-          border: Border.all(color: DSColors.accentBlue, width: 1),
+          border: Border.all(color: activeAccent, width: 1),
         ),
         child: Center(
           child: Container(
             width: 10,
             height: 2,
             decoration: BoxDecoration(
-              color: DSColors.accentBlue,
+              color: activeAccent,
               borderRadius: BorderRadius.circular(DSRadii.xs),
             ),
           ),

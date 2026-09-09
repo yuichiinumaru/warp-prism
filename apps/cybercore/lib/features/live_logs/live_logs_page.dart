@@ -98,13 +98,13 @@ class _LiveLogsPageState extends State<LiveLogsPage> {
               subtitle:
                   'Pilot C — fixture-backed read-only mirror of /live-logs',
               icon: Icons.terminal_outlined,
-              accentColor: PrismColors.accentCyan,
+              accentColor: PrismTheme.accentOf(context),
               insights: [
                 PrismStoryInsight(
                   text: '${fixture.totalCount} entries',
                   detail: '$errors errors, $redacted redacted',
                   value: '${fixture.totalCount}',
-                  color: PrismColors.accentCyan,
+                  color: PrismTheme.accentOf(context),
                 ),
               ],
             ),

@@ -1,3 +1,6 @@
+@Tags(['golden'])
+library;
+
 // Golden tests for PrismProviderHealthMatrix — EPIC-16 CyberCore ops default.
 //
 // Task 1614. Fixed surface size + public minimal fixture only.

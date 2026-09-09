@@ -27,25 +27,21 @@ class CyberCoreShell extends StatelessWidget {
       id: 'providers',
       label: 'Providers',
       icon: Icons.cloud_outlined,
-      color: PrismColors.accentCyan,
     ),
     PrismSidebarItem(
       id: 'mcp-servers',
       label: 'MCP Servers',
       icon: Icons.dns_outlined,
-      color: PrismColors.accentViolet,
     ),
     PrismSidebarItem(
       id: 'mcp-inspector',
       label: 'MCP Inspector',
       icon: Icons.bug_report_outlined,
-      color: PrismColors.accentGold,
     ),
     PrismSidebarItem(
       id: 'live-logs',
       label: 'Live Logs',
       icon: Icons.terminal_outlined,
-      color: PrismColors.accentCyan,
     ),
   ];
 
@@ -152,10 +148,13 @@ class _CyberCoreHeader extends StatelessWidget {
               width: 32,
               height: 32,
               decoration: BoxDecoration(
-                gradient: const LinearGradient(
+                gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [PrismColors.accentViolet, PrismColors.accentCyan],
+                  colors: [
+                    PrismTheme.accentOf(context),
+                    PrismTheme.accentMutedOf(context),
+                  ],
                 ),
                 borderRadius: BorderRadius.circular(PrismRadii.sm),
               ),
@@ -229,7 +228,7 @@ class _CompactShell extends StatelessWidget {
         onTap: onBottomNavTap,
         type: BottomNavigationBarType.fixed,
         backgroundColor: PrismColors.obsidianBase,
-        selectedItemColor: PrismColors.accentCyan,
+        selectedItemColor: PrismTheme.accentOf(context),
         unselectedItemColor: PrismColors.textTertiary,
         selectedLabelStyle: PrismTypography.labelSmall,
         unselectedLabelStyle: PrismTypography.labelSmall,

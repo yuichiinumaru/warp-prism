@@ -592,32 +592,35 @@ class _DSTerminalWorkspaceState extends State<DSTerminalWorkspace> {
                     widget.controller.focusPane(pane.id);
                   }
                 },
-                child: TextField(
-                  controller: textController,
-                  focusNode: focusNode,
-                  style: DSTypography.codeMedium.copyWith(
-                    color: DSColors.textPrimary,
-                  ),
-                  decoration: const InputDecoration(
-                    hintText: 'Enter tactile command...',
-                    hintStyle: TextStyle(
-                      color: DSColors.textTertiary,
-                      fontSize: 13,
+                child: Material(
+                  type: MaterialType.transparency,
+                  child: TextField(
+                    controller: textController,
+                    focusNode: focusNode,
+                    style: DSTypography.codeMedium.copyWith(
+                      color: DSColors.textPrimary,
                     ),
-                    isDense: true,
-                    contentPadding: EdgeInsets.symmetric(vertical: 6.0),
-                    border: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
+                    decoration: const InputDecoration(
+                      hintText: 'Enter tactile command...',
+                      hintStyle: TextStyle(
+                        color: DSColors.textTertiary,
+                        fontSize: 13,
+                      ),
+                      isDense: true,
+                      contentPadding: EdgeInsets.symmetric(vertical: 6.0),
+                      border: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                    ),
+                    onSubmitted: (value) {
+                      final command = value.trim();
+                      if (command.isNotEmpty) {
+                        widget.onCommandSubmitted?.call(pane.id, command);
+                        textController.clear();
+                      }
+                      focusNode.requestFocus();
+                    },
                   ),
-                  onSubmitted: (value) {
-                    final command = value.trim();
-                    if (command.isNotEmpty) {
-                      widget.onCommandSubmitted?.call(pane.id, command);
-                      textController.clear();
-                    }
-                    focusNode.requestFocus();
-                  },
                 ),
               ),
             ),
