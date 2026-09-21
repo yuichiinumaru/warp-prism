@@ -641,9 +641,9 @@ updated the task template and applicable governance rules so lifecycle/readiness
 status is derived solely from the containing task lane directory.
 
 ## Changes
-- Removed 169 task-header `Status` lines under `docs/tasks/`.
+- Removed 169 task-header `Status` lines under `.project/tasks/`.
 - Preserved five historical inline `Status` notes in Review Ledger/body prose.
-- Updated `docs/tasks/000-template.md` with explicit lane-derived status guidance.
+- Updated `.project/tasks/000-template.md` with explicit lane-derived status guidance.
 - Updated local `AGENTS.md` and lane/task artifact rules.
 - Updated parent `AGENTS.md` with the cross-project convention.
 - Updated sibling templates in `pm_lens`, `cryptosentinel-v1`, `optillm-go`,
@@ -869,8 +869,8 @@ Created the authoritative Black Obsidian Visual Contract (`docs/design/black-obs
 ## Changes
 
 - Created `docs/design/black-obsidian-visual-contract.md` containing Rule Zero verbatim, product owner rationale, provisional palette table, typography role table, binary forbidden checklist, can/cannot composition examples, supersession map, and interim golden freeze policy.
-- Annotated `docs/tasks/00-planning/EPIC-17-warp-prism-ads-form-primitives-gap.md` with supersession pointer for active/checked states.
-- Annotated `docs/tasks/00-planning/EPIC-18-warp-prism-black-obsidian-visual-direction-reset.md` closing Task 1800 contract deliverable.
+- Annotated `.project/tasks/00-planning/EPIC-17-warp-prism-ads-form-primitives-gap.md` with supersession pointer for active/checked states.
+- Annotated `.project/tasks/00-planning/EPIC-18-warp-prism-black-obsidian-visual-direction-reset.md` closing Task 1800 contract deliverable.
 
 ## Verification
 
@@ -900,11 +900,11 @@ accent/surface colors visually and converged values are baked back into tokens.
 
 ## Files
 
-- Created: `docs/tasks/01-open/1807-warp-prism-token-override-theme-editor.md`
-- Created: `docs/tasks/01-open/1808-warp-prism-color-field-molecule.md`
-- Modified: `docs/tasks/00-planning/EPIC-18-warp-prism-black-obsidian-visual-direction-reset.md`
+- Created: `.project/tasks/01-open/1807-warp-prism-token-override-theme-editor.md`
+- Created: `.project/tasks/01-open/1808-warp-prism-color-field-molecule.md`
+- Modified: `.project/tasks/00-planning/EPIC-18-warp-prism-black-obsidian-visual-direction-reset.md`
   (task graph + convergence loop amendment)
-- Modified: `docs/tasks/01-open/1800-warp-prism-black-obsidian-visual-contract.md`
+- Modified: `.project/tasks/01-open/1800-warp-prism-black-obsidian-visual-contract.md`
   (provisional-hexes exit conditions)
 
 ---
@@ -916,7 +916,7 @@ accent/surface colors visually and converged values are baked back into tokens.
 Architect orchestrator validation wave (task-architect governance audit + Flutter
 expert technical audit + direct evidence verification) approved the black-obsidian
 visual direction and promoted seven expanded executable tasks from `00-planning/`
-seeds to `docs/tasks/01-open/`.
+seeds to `.project/tasks/01-open/`.
 
 ## Key decisions recorded (EPIC-18 § Architect Review Questions — CLOSED)
 
@@ -937,8 +937,8 @@ seeds to `docs/tasks/01-open/`.
 
 ## Files
 
-- Created: `docs/tasks/01-open/180{0..6}-warp-prism-*.md` (7 files, template-compliant)
-- Modified: `docs/tasks/00-planning/EPIC-18-warp-prism-black-obsidian-visual-direction-reset.md`
+- Created: `.project/tasks/01-open/180{0..6}-warp-prism-*.md` (7 files, template-compliant)
+- Modified: `.project/tasks/00-planning/EPIC-18-warp-prism-black-obsidian-visual-direction-reset.md`
 - Archived: seeds → `.archive/planning-seeds-epic18-2026-08-22/`
 
 ## Notes
@@ -1426,7 +1426,7 @@ dart run test/boundaries/boundary_test.dart
 
 > **Date**: 2026-07-18  
 > **Agent**: gt-flutter-expert (builders subagent; parent agentID=builders)  
-> **Lane**: tasks remain in `docs/tasks/02-doing/` (no git / no promote)
+> **Lane**: tasks remain in `.project/tasks/02-doing/` (no git / no promote)
 
 ## Summary
 
@@ -1490,7 +1490,7 @@ dart run test/boundaries/boundary_test.dart → 7/7 PASS
 
 ## Lane
 
-Tasks remain in `docs/tasks/02-doing/` (no promote / no git).
+Tasks remain in `.project/tasks/02-doing/` (no promote / no git).
 
 ## Reports
 
@@ -1731,7 +1731,7 @@ verification: scoped analyze/format/tests + package analyze + 7/7 boundaries
   - **§2.3**: Confirmed Data Table / Command Palette marked **delivered by 1112/1113** (not “not implemented”).
   - **Melos exits**: Re-ran `melos run analyze` → **SUCCESS** (`--no-fatal-infos`); annotated package-scoped test gate honestly in task Completion Evidence.
 - Gallery registry hygiene: `design_system_gallery_test.dart` section count **22 → 23** (9 EPIC-15 incl. optional-polish).
-- Refreshed task Completion Evidence; **left in `docs/tasks/02-doing/`** (no self-promote).
+- Refreshed task Completion Evidence; **left in `.project/tasks/02-doing/`** (no self-promote).
 
 ### Validation
 - Scoped operational suites: **+183 All tests passed**
@@ -1793,7 +1793,7 @@ four-export barrel (Prism aliases + gallery with DSGallery\* hidden).
 - `docs/design/public-barrel-audit.md` — full live rewrite
 - `docs/changelog/1302-public-barrel-audit.md` — this entry
 - Task file evidence refresh + lane → `03-review/`
-- Archived stale review collision under `.archive/docs/tasks/03-review/`
+- Archived stale review collision under `.archive/.project/tasks/03-review/`
 
 ## Verification
 
@@ -1859,7 +1859,7 @@ New suites vs 40-universe: `production_router_test`, `map_graph_builder_edges_te
 ## Files
 
 - Updated: `docs/reports/observatory-failure-baseline.md`
-- Updated: `docs/tasks/02-doing/1401-warp-prism-observatory-failure-baseline-inventory.md`
+- Updated: `.project/tasks/02-doing/1401-warp-prism-observatory-failure-baseline-inventory.md`
 - Created: this changelog note
 
 ## Notes
@@ -1894,7 +1894,7 @@ state section. No Flutter application source was modified.
 ## Files
 
 - Updated: `docs/reports/warp-prism-task-namespace-renumbering-map.md`
-- Updated: `docs/tasks/02-doing/1070-warp-prism-task-namespace-integrity-verification.md`
+- Updated: `.project/tasks/02-doing/1070-warp-prism-task-namespace-integrity-verification.md`
 - Created: this changelog note
 
 ## Notes
@@ -2188,7 +2188,7 @@ found the manifest frozen at 129 Prism symbols while source held 262+.
 ## Summary
 
 Independent re-review scored all 16 tasks **100/100** after live gates.
-Tasks moved to `docs/tasks/04-completed/`. Full reports under
+Tasks moved to `.project/tasks/04-completed/`. Full reports under
 `docs/reports/review-wave-2026-07-18/task-XXXX-path100-rereview.md`.
 
 ## Path-to-100 patches applied this review
@@ -2227,7 +2227,7 @@ Tasks moved to `docs/tasks/04-completed/`. Full reports under
 
 **Date**: 2026-07-18  
 **Agent**: PATH-TO-100 builder (parent agentID=builders)  
-**Lane**: tasks remain in `docs/tasks/03-review/`
+**Lane**: tasks remain in `.project/tasks/03-review/`
 
 ## Summary
 
@@ -2301,7 +2301,7 @@ dart format --set-exit-if-changed (residual files) → FORMAT_EXIT=0
 
 **Date**: 2026-07-18  
 **Agent**: builders (path-to-100)  
-**Lane**: remain in `docs/tasks/03-review/`
+**Lane**: remain in `.project/tasks/03-review/`
 
 ## 0310 — Backbone dual-surface retirement
 

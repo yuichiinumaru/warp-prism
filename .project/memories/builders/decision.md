@@ -2,7 +2,7 @@
 type: index
 index_of: decision
 auto_generated: true
-last_rebuilt: 2026-09-10T11:49:48
+last_rebuilt: 2026-09-21T17:32:38
 ---
 
 # ⚖️ Decision Index

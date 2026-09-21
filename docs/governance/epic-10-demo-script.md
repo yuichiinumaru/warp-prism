@@ -46,7 +46,7 @@ Counts are **filesystem inventory** of `apps/observatory/assets/mock_workspace/`
 | Agents | 9 | `.agents/agents/*.md` |
 | Skill families (top-level dirs + `SKILL.md`) | 13 | `.agents/skills/` |
 | Workflow files | 11 | `.agents/workflows/` |
-| Task markdown files | 22 | `docs/tasks/**` (lanes 00–04) |
+| Task markdown files | 22 | `.project/tasks/**` (lanes 00–04) |
 | Changelog files | 36 | `docs/changelog/` |
 
 Runtime UI may show different totals after parsing, edge inference, and filtering — prefer on-screen metrics during a live demo.

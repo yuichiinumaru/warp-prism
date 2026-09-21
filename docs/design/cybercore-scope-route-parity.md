@@ -360,8 +360,8 @@ First-wave read models to inventory (from Task 1102 data deps — not full backe
 | Component inventory | `docs/design/component-inventory.md` (2026-07-09 rewrite) | Full control-surface columns |
 | Pilot surface matrix | `docs/design/cybercore-pilot-surface-matrix.md` (2026-07-09 rewrite) | Pilots A/B/C |
 | Operational state vocabulary | `docs/design/operational-state-vocabulary.md` (2026-07-09 rewrite) | State IDs + maps |
-| Task 1102 | `docs/tasks/02-doing/1102-warp-prism-control-surface-inventory.md` | Dependency; **Blocked** screenshots |
-| EPIC-11 | `docs/tasks/00-planning/EPIC-11-warp-prism-cybercore-frontend.md` | Scope guardrails |
+| Task 1102 | `.project/tasks/02-doing/1102-warp-prism-control-surface-inventory.md` | Dependency; **Blocked** screenshots |
+| EPIC-11 | `.project/tasks/00-planning/EPIC-11-warp-prism-cybercore-frontend.md` | Scope guardrails |
 | Backend features (secondary) | `docs/reference/cybercore-backend-features/` | Entity vocabulary for 1109 |
 | Flutter mirror (secondary) | `apps/cybercore/lib/app/router.dart` | Downstream drift only |
 | AGENTS.md | `AGENTS.md` | Read-only / mock-first constraints |

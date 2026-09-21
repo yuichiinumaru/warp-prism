@@ -102,14 +102,14 @@ Each workflow `.md` file must have YAML frontmatter with at minimum:
 Distributed across 5 lanes:
 
 ```
-docs/tasks/00-planning/   — planning tasks from RF8
-docs/tasks/01-open/       — open/backlog tasks
-docs/tasks/02-doing/      — active in-progress tasks
-docs/tasks/03-review/     — review-stage tasks
-docs/tasks/04-completed/  — done tasks with evidence
+.project/tasks/00-planning/   — planning tasks from RF8
+.project/tasks/01-open/       — open/backlog tasks
+.project/tasks/02-doing/      — active in-progress tasks
+.project/tasks/03-review/     — review-stage tasks
+.project/tasks/04-completed/  — done tasks with evidence
 ```
 
-Location: `apps/observatory/assets/mock_workspace/docs/tasks/<lane>/<task-file>.md`
+Location: `apps/observatory/assets/mock_workspace/.project/tasks/<lane>/<task-file>.md`
 
 Each task `.md` must have YAML frontmatter with at minimum:
 - `id`, `title`, `status`, `priority`, `owner`, `created`, `updated`, `skills` (list), `workflows` (list), `depends_on` (list), `proof_state`, `review_score`

@@ -155,7 +155,7 @@ Parent-canonical reusable surfaces (skills, agents, agent definitions) are symli
 
 ### 6.2 Task Namespace
 
-Warp Prism owns `docs/tasks/` across five canonical kanban lanes (`00-planning/`, `01-open/`, `02-doing/`, `03-review/`, `04-completed/`). Lifecycle is determined strictly by lane directory.
+Warp Prism owns `.project/tasks/` across five canonical kanban lanes (`00-planning/`, `01-open/`, `02-doing/`, `03-review/`, `04-completed/`). Lifecycle is determined strictly by lane directory.
 
 ### 6.3 Monorepo Package Topology
 
@@ -176,8 +176,8 @@ Warp Prism owns `docs/tasks/` across five canonical kanban lanes (`00-planning/`
 | Source | Relevance |
 |--------|-----------|
 | `AGENTS.md` §1 | Scoped constitution defining v2 scope, contracts, and boundaries |
-| `docs/tasks/00-planning/EPIC-19-warp-prism-v2-foundation.md` | Planning epic for Warp Prism v2 foundation |
-| `Task 1810` (task ledger, lane-neutral reference — see `docs/tasks/tasklist.md` for current location) | Task 1810 specification and exit conditions |
+| `.project/tasks/00-planning/EPIC-19-warp-prism-v2-foundation.md` | Planning epic for Warp Prism v2 foundation |
+| `Task 1810` (task ledger, lane-neutral reference — see `.project/tasks/tasklist.md` for current location) | Task 1810 specification and exit conditions |
 | `docs/design/black-obsidian-visual-contract.md` | Live visual contract specification |
 | `docs/governance/promotion-state-model.md` | Task promotion and gate lifecycle model |
 | `docs/prompt.txt` | Original product contract for the ASW Observatory |

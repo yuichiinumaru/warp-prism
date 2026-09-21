@@ -118,7 +118,7 @@ O prompt exigia .md com YAML frontmatter; os agentes/skills/workflows implementa
 
 agent
 
-O prompt exigia pelo menos 20 tasks espalhadas em 5 lanes; o repo tem uma fila única com 6 tasks em um arquivo mock_workspace/.agents/tasks/queue.md, e não os diretórios docs/tasks/00-planning etc. 
+O prompt exigia pelo menos 20 tasks espalhadas em 5 lanes; o repo tem uma fila única com 6 tasks em um arquivo mock_workspace/.agents/tasks/queue.md, e não os diretórios .project/tasks/00-planning etc. 
 
 queue
 

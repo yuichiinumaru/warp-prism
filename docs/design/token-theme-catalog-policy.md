@@ -625,7 +625,7 @@ governed loop, fixes will be applied locally in the app, creating ADS drift.
 
 | Step | Actor | Action |
 |------|-------|--------|
-| **Discovery** | App developer | Identifies a bug in `warp_prism_ui` or a missing component. Creates a task in `docs/tasks/00-planning/` describing the issue with reproduction steps and the affected consumer app. |
+| **Discovery** | App developer | Identifies a bug in `warp_prism_ui` or a missing component. Creates a task in `.project/tasks/00-planning/` describing the issue with reproduction steps and the affected consumer app. |
 | **Triage** | Task Architect | Classifies as **bug fix** (existing component broken) or **new component** (missing ADS surface). Assigns to `warp_prism_ui` task range. |
 | **Fix/Create** | Builder | Fixes the bug or creates the new component inside `warp_prism_ui`. Applies all promotion gates (catalog case, tests, semantics, state matrix). |
 | **Cross-app validation** | CI | `melos run validate` ensures the fix doesn't break other consumers. |
@@ -703,7 +703,7 @@ If Widgetbook is adopted:
 | Task 0014 (completed) | Token contract and inventory — canonical naming, Theme bridge gap identified. |
 | Task 0017 (completed) | Gallery route bootstrap — proves the DS gallery exists and renders. |
 | Task 0018 (completed) | Accessibility focus baseline — focus rings, keyboard activation, WCAG contrast rules for DSChip, DSFilterChipGroup, DSSidebar, DSTopbarAction, DSSearchBar, DSAssetCard. Source for §7.4 contrast requirements. |
-| `docs/tasks/00-planning/1100-...epic.md` | Requires catalog case + widget test + semantics test + CyberCore mapping for promotion. |
+| `.project/tasks/00-planning/1100-...epic.md` | Requires catalog case + widget test + semantics test + CyberCore mapping for promotion. |
 
 ---
 

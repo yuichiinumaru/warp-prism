@@ -2,7 +2,7 @@
 
 > **Authority**: Canonical reference for which validation gates each task type
 > must pass before promotion.
-> **Scope**: All executable tasks under `docs/tasks/`.
+> **Scope**: All executable tasks under `.project/tasks/`.
 > **Created**: 2026-06-09
 > **Task origin**: Task 1203
 > **Depends on**: Task 1201 (failure baseline), Task 1202 (promotion state model)
@@ -460,7 +460,7 @@ All required gates passed → task is Ready For Review.
   (Task 1201)
 - **Promotion state model**: `docs/governance/promotion-state-model.md`
   (Task 1202)
-- **Task template**: `docs/tasks/000-template.md` (includes `Review State` field)
+- **Task template**: `.project/tasks/000-template.md` (includes `Review State` field)
 - **Task governance**: `.agents/rules/task-governance.md`
 - **Melos scripts**: `pubspec.yaml` (root, `melos.scripts` section)
 - **Boundary test harness**: `melos run test-boundaries` (root `pubspec.yaml`)

@@ -860,7 +860,7 @@ JSON
   "agent_id": "...",
   "agent_type": "builder-engineer",
   "cwd": "/workspace/project",
-  "task_ref": "docs/tasks/02-doing/1234-...",
+  "task_ref": ".project/tasks/02-doing/1234-...",
   "transcript_path": "...",
   "last_assistant_message": "...",
   "pass_number": 1,

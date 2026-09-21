@@ -147,7 +147,7 @@ Mock workspace files follow `docs/mock-workspace-corpus-contract.md`:
 - **Agents**: `assets/mock_workspace/.agents/agents/<name>.md`
 - **Skills**: `assets/mock_workspace/.agents/skills/<name>/SKILL.md`
 - **Workflows**: `assets/mock_workspace/.agents/workflows/<name>.md`
-- **Tasks**: `assets/mock_workspace/docs/tasks/<lane>/<file>.md`
+- **Tasks**: `assets/mock_workspace/.project/tasks/<lane>/<file>.md`
 - **Changelog**: `assets/mock_workspace/docs/changelog/<file>.md`
 
 All mock files use `.md` extension with YAML frontmatter delimited by `---`.
@@ -170,9 +170,9 @@ Historical YAML-only mocks are archived under `archive/mock_workspace/`.
 
 | Source | Relevance |
 |--------|-----------|
-| `docs/tasks/00-planning/1100-...epic.md` | Defines `Prism*` naming and `warp_prism_*` package names |
-| `docs/tasks/00-planning/EPIC-11-...cybercore-frontend.md` | Defines `warp_prism_cybercore` pilot |
-| `docs/tasks/00-planning/ROADMAP-...md` | Local governance naming conventions |
+| `.project/tasks/00-planning/1100-...epic.md` | Defines `Prism*` naming and `warp_prism_*` package names |
+| `.project/tasks/00-planning/EPIC-11-...cybercore-frontend.md` | Defines `warp_prism_cybercore` pilot |
+| `.project/tasks/00-planning/ROADMAP-...md` | Local governance naming conventions |
 | Task 8220 (historical, superseded) | Original Voidframe naming |
 | Task 8230 (historical, superseded) | Voidframe-era CyberCore pilot |
 | `docs/mock-workspace-corpus-contract.md` | Mock data file naming |

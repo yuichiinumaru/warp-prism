@@ -34,7 +34,7 @@ The first proof is the Design System Gallery — the ADS must exist and be
 demonstrable before any product screen is built.
 
 **Source evidence**: `docs/prompt.txt` (product contract), `docs/research.md`
-(research synthesis), `docs/tasks/00-planning/ROADMAP-...md` (local roadmap).
+(research synthesis), `.project/tasks/00-planning/ROADMAP-...md` (local roadmap).
 
 ---
 
@@ -101,8 +101,8 @@ gated behind the monorepo scaffold.
 | CyberCore pilot mirror and expansion gate | Two pilot surfaces pass catalog + widget test + ADS compatibility | Task 1111, EPIC-11 |
 | Critical ADS gap resolution | Data table, command palette, log viewer resolved or deferred | Tasks 1112–1118, EPIC-11 |
 
-**Source evidence**: `docs/tasks/00-planning/1100-...epic.md` (story breakdown,
-candidate tasks), `docs/tasks/00-planning/EPIC-00` through `EPIC-11`.
+**Source evidence**: `.project/tasks/00-planning/1100-...epic.md` (story breakdown,
+candidate tasks), `.project/tasks/00-planning/EPIC-00` through `EPIC-11`.
 
 ---
 
@@ -111,7 +111,7 @@ candidate tasks), `docs/tasks/00-planning/EPIC-00` through `EPIC-11`.
 | Artifact | Location | Purpose |
 |----------|----------|---------|
 | **Design docs** | `docs/design/` | Charter, naming policy, this RF8 plan, future specs |
-| **Task ledger** | `docs/tasks/` | Five-lane governed work execution |
+| **Task ledger** | `.project/tasks/` | Five-lane governed work execution |
 | **Changelog** | `docs/changelog/` | Append-only change ledger |
 | **Reports** | `docs/reports/` | Audits, gap analyses, sweeps |
 | **Mock corpus** | `assets/mock_workspace/` | Markdown/frontmatter ASW data |
@@ -122,7 +122,7 @@ candidate tasks), `docs/tasks/00-planning/EPIC-00` through `EPIC-11`.
 | **State matrices** | Component-level docs (planned) | Behaviour state vocabulary per component |
 
 **Source evidence**: `AGENTS.md` §2 (parent/child boundary),
-`docs/tasks/00-planning/ROADMAP-...md` (governance decisions).
+`.project/tasks/00-planning/ROADMAP-...md` (governance decisions).
 
 ---
 
@@ -195,7 +195,7 @@ requirements), `docs/research.md` (visibility frontend sections).
 have documented residual failures. After EPIC-00, zero-error is the gate.
 
 **Source evidence**: `docs/prompt.txt` (acceptance criteria, delivery order),
-`docs/tasks/00-planning/EPIC-00-...foundation-compile-gate.md`.
+`.project/tasks/00-planning/EPIC-00-...foundation-compile-gate.md`.
 
 ---
 
@@ -246,8 +246,8 @@ are met, with particular emphasis on:
   what is risky, and how assets connect.
 
 **Source evidence**: `docs/prompt.txt` (acceptance criteria),
-`docs/tasks/00-planning/1100-...epic.md` (validation/promotion criteria),
-`docs/tasks/00-planning/EPIC-11-...cybercore-frontend.md` (completion criteria).
+`.project/tasks/00-planning/1100-...epic.md` (validation/promotion criteria),
+`.project/tasks/00-planning/EPIC-11-...cybercore-frontend.md` (completion criteria).
 
 ---
 
@@ -301,8 +301,8 @@ prerequisite that produces the docs other tasks cite.
 | `docs/draft.md` | V0 codebase diagnostic, gap report, recovery order |
 | `docs/mock-workspace-corpus-contract.md` | Mock data schema and migration contract |
 | `AGENTS.md` | Product constraints, governance, protected files |
-| `docs/tasks/00-planning/1100-...epic.md` | Epic breakdown, candidate tasks, guardrails |
-| `docs/tasks/00-planning/EPIC-00` through `EPIC-11` | Local epic planning — source of truth for scope |
-| `docs/tasks/00-planning/ROADMAP-...md` | Active roadmap, RF8 framing, epic ordering |
+| `.project/tasks/00-planning/1100-...epic.md` | Epic breakdown, candidate tasks, guardrails |
+| `.project/tasks/00-planning/EPIC-00` through `EPIC-11` | Local epic planning — source of truth for scope |
+| `.project/tasks/00-planning/ROADMAP-...md` | Active roadmap, RF8 framing, epic ordering |
 | Task 8210, 8220, 8230, 8240 (historical) | Provenance evidence for Voidframe-era planning |
 | Task 0583, 0590 (completed) | CyberCore admin design-system baseline |

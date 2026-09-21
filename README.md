@@ -180,6 +180,6 @@ See `docs/mock-workspace-corpus-contract.md` for the full corpus specification.
 - `docs/design/naming.md` — naming policy (`Prism*` prefix, package names, Voidframe supersession)
 - `docs/architecture/warp-prism-melos-monorepo-architecture.md` — monorepo architecture decision record
 - `docs/mock-workspace-corpus-contract.md` — mock workspace corpus migration contract
-- `docs/tasks/` — task governance (5-lane board)
+- `.project/tasks/` — task governance (5-lane board)
 - `docs/reports/` — audit and analysis reports
 - `docs/changelog/` — local changelog

@@ -2,7 +2,7 @@
 
 > **Authority**: Canonical governance reference for pre-existing failure handling.
 > **Source rule**: `.agents/rules/pre-existing-failure-policy.md` (builder source rule)
-> **Scope**: All executable tasks under `docs/tasks/`.
+> **Scope**: All executable tasks under `.project/tasks/`.
 > **Created**: 2026-06-09
 > **Task origin**: Task 1206
 > **Supersedes**: All prior uses of "pre-existing" as unclassified promotion bypass.

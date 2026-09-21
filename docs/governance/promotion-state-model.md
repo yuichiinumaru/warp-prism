@@ -2,7 +2,7 @@
 
 > **Authority**: Canonical governance reference for task promotion lifecycle.
 > **Source rule**: `.agents/rules/promotion-state-model.md`
-> **Scope**: All executable tasks under `docs/tasks/`.
+> **Scope**: All executable tasks under `.project/tasks/`.
 > **Created**: 2026-06-09
 > **Task origin**: Task 1202
 
@@ -207,15 +207,15 @@ include Task 1101 as the current `Open` lane mismatch example.
 
 ### Task 0001 — Mock Workspace Contract Baseline (pre-existing lane-state defect)
 
-- **Current lane**: `docs/tasks/03-review/0001-warp-prism-mock-workspace-contract-baseline.md`
+- **Current lane**: `.project/tasks/03-review/0001-warp-prism-mock-workspace-contract-baseline.md`
 - **Current status marker**: `[x]` Done (legacy marker); **Review State**: `Builder Done`
 - **Promotion state**: **Builder Done**
-- **Evidence**: `test -f docs/tasks/03-review/0001-warp-prism-mock-workspace-contract-baseline.md` passes; `test ! -e docs/tasks/02-doing/0001-warp-prism-mock-workspace-contract-baseline.md` passes; `rg -n "Review State" docs/tasks/03-review/0001-warp-prism-mock-workspace-contract-baseline.md` reports `Builder Done`.
+- **Evidence**: `test -f .project/tasks/03-review/0001-warp-prism-mock-workspace-contract-baseline.md` passes; `test ! -e .project/tasks/02-doing/0001-warp-prism-mock-workspace-contract-baseline.md` passes; `rg -n "Review State" .project/tasks/03-review/0001-warp-prism-mock-workspace-contract-baseline.md` reports `Builder Done`.
 - **Rationale**: This governance task is already in `03-review/` but remains marked `Builder Done`, which violates the lane move rule that tasks in `03-review/` must be at least `Ready For Review`. This is documented as a separate pre-existing governance defect, not as a `02-doing/` example.
 
 ### Task 0010 — Foundation Audit Analyzer Baseline
 
-- **Current lane**: `docs/tasks/02-doing/0010-warp-prism-foundation-audit-analyzer-baseline.md`
+- **Current lane**: `.project/tasks/02-doing/0010-warp-prism-foundation-audit-analyzer-baseline.md`
 - **Current status**: `[x]` Done
 - **Promotion state**: **Blocked**
 - **Rationale**: This verification task is in `02-doing/` with completion
@@ -225,7 +225,7 @@ include Task 1101 as the current `Open` lane mismatch example.
 
 ### Task 0011 — Bootstrap Main Router Shell
 
-- **Current lane**: `docs/tasks/02-doing/0011-warp-prism-bootstrap-main-router-shell.md`
+- **Current lane**: `.project/tasks/02-doing/0011-warp-prism-bootstrap-main-router-shell.md`
 - **Current status**: `[x]` Done
 - **Promotion state**: **Builder Done**
 - **Rationale**: This feature task created `main.dart`, `app.dart`, and
@@ -235,7 +235,7 @@ include Task 1101 as the current `Open` lane mismatch example.
 
 ### Task 0312 — Read-Only Mock Workspace Repository
 
-- **Current lane**: `docs/tasks/02-doing/0312-warp-prism-read-only-mock-workspace-repository.md`
+- **Current lane**: `.project/tasks/02-doing/0312-warp-prism-read-only-mock-workspace-repository.md`
 - **Current status**: `[x]` Completed
 - **Promotion state**: **Builder Done**
 - **Rationale**: This data-layer feature created the repository interface
@@ -246,7 +246,7 @@ include Task 1101 as the current `Open` lane mismatch example.
 
 ### Task 0510 — Map Workspace Scaffold
 
-- **Current lane**: `docs/tasks/02-doing/0510-warp-prism-map-workspace-scaffold.md`
+- **Current lane**: `.project/tasks/02-doing/0510-warp-prism-map-workspace-scaffold.md`
 - **Current status**: `[x]` Done
 - **Promotion state**: **Builder Done**
 - **Rationale**: This feature task created the Map route scaffold and
@@ -256,7 +256,7 @@ include Task 1101 as the current `Open` lane mismatch example.
 
 ### Task 1101 — Charter And Naming Convergence
 
-- **Current lane**: `docs/tasks/02-doing/1101-warp-prism-charter-and-naming-convergence.md`
+- **Current lane**: `.project/tasks/02-doing/1101-warp-prism-charter-and-naming-convergence.md`
 - **Current status**: `[ ]` Open
 - **Promotion state**: **Open**
 - **Rationale**: This task is in `02-doing/` but its header still says
@@ -266,7 +266,7 @@ include Task 1101 as the current `Open` lane mismatch example.
 
 ### Task 1205 — Boundary Test Harness
 
-- **Current lane**: `docs/tasks/03-review/1205-warp-prism-boundary-test-harness.md`
+- **Current lane**: `.project/tasks/03-review/1205-warp-prism-boundary-test-harness.md`
 - **Current status**: `[x]` Ready For Review
 - **Promotion state**: **Ready For Review**
 - **Rationale**: This task is in `03-review/` and its header says
@@ -275,7 +275,7 @@ include Task 1101 as the current `Open` lane mismatch example.
 
 ### Task 1201 — Test Failure Baseline Inventory
 
-- **Current lane**: `docs/tasks/03-review/1201-warp-prism-test-failure-baseline-inventory.md`
+- **Current lane**: `.project/tasks/03-review/1201-warp-prism-test-failure-baseline-inventory.md`
 - **Current status**: `[x]` Ready For Review
 - **Promotion state**: **Ready For Review**
 - **Rationale**: This governance task is in `03-review/` and its header says
@@ -303,7 +303,7 @@ include Task 1101 as the current `Open` lane mismatch example.
    `Builder Done`) is allowed when a reviewer discovers an issue.
 5. **Review packets are required for `Ready For Review`.** Without a review
    packet, a task stays in `Builder Done`. Builders must fill the canonical
-   template at `docs/tasks/review-packet-template.md` (workflow:
+   template at `.project/tasks/review-packet-template.md` (workflow:
    `.agents/workflows/generate-review-packet.md`) before claiming
    `Ready For Review`.
 6. **Lane moves are state-gated.** A task cannot move to `03-review/` unless it
@@ -318,8 +318,8 @@ include Task 1101 as the current `Open` lane mismatch example.
 
 - **Source rule**: `.agents/rules/promotion-state-model.md`
 - **Pre-existing failure policy**: `.agents/rules/pre-existing-failure-policy.md` (builder source rule), `docs/governance/pre-existing-failure-policy.md` (canonical policy)
-- **Task template**: `docs/tasks/000-template.md` (includes `Review State` field)
-- **Review packet template**: `docs/tasks/review-packet-template.md` (canonical format — Task 1207)
+- **Task template**: `.project/tasks/000-template.md` (includes `Review State` field)
+- **Review packet template**: `.project/tasks/review-packet-template.md` (canonical format — Task 1207)
 - **Review packet workflow**: `.agents/workflows/generate-review-packet.md` (Task 1207)
 - **Task governance**: `.agents/rules/task-governance.md`
 - **Definition of Done**: `.agents/rules/definition-of-done.md`

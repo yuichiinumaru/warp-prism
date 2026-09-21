@@ -59,7 +59,7 @@ Child-local surfaces are owned by Warp Prism:
 | `.agents/rules/`      | Warp Prism rules                    |
 | `.agents/workflows/`  | Warp Prism rituals                  |
 | `.memories/_by_lane/` | Local role continuity               |
-| `docs/tasks/`         | Local task namespace                |
+| `.project/tasks/`         | Local task namespace                |
 | `.changelog/`         | Canonical child changelog ledger    |
 | `docs/reports/`       | Local audits, reports, and evidence |
 
@@ -70,22 +70,22 @@ change through Ganthritor harness governance rather than creating a local fork.
 
 ## 3. Task Governance
 
-Warp Prism owns a local `docs/tasks/` namespace. It does not inherit parent task
+Warp Prism owns a local `.project/tasks/` namespace. It does not inherit parent task
 ranges. Executable task identity is `Task NNNN` inside Warp Prism only.
 
-* `docs/tasks/00-planning/` contains planning artifacts and may also contain
+* `.project/tasks/00-planning/` contains planning artifacts and may also contain
   fully materialized numbered Tasks that are intentionally HOLD/not-ready
   because a dependency, external gate, or promotion condition is unmet.
-* `docs/tasks/01-open/` contains only template-complete numbered Tasks that are
+* `.project/tasks/01-open/` contains only template-complete numbered Tasks that are
   executable **now**.
-* `docs/tasks/02-doing/` contains work with one active executor.
-* `docs/tasks/03-review/` contains implementation awaiting independent review.
-* `docs/tasks/04-completed/` contains independently accepted work.
+* `.project/tasks/02-doing/` contains work with one active executor.
+* `.project/tasks/03-review/` contains implementation awaiting independent review.
+* `.project/tasks/04-completed/` contains independently accepted work.
 
 A numbered Task in `00-planning/` retains task identity but is not executable
 until the proper governance owner promotes it to `01-open/`.
 
-Executable tasks must follow `docs/tasks/000-template.md`, be at least 50 lines,
+Executable tasks must follow `.project/tasks/000-template.md`, be at least 50 lines,
 include checkbox subtasks, include a `Where` table, and include validation
 commands.
 

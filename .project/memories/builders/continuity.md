@@ -2,7 +2,7 @@
 type: index
 index_of: continuity
 auto_generated: true
-last_rebuilt: 2026-09-10T11:49:48
+last_rebuilt: 2026-09-21T17:32:38
 ---
 
 # 🔄 Continuity Index
@@ -10,10 +10,11 @@ last_rebuilt: 2026-09-10T11:49:48
 > Session handoffs, state snapshots, and focus tracking
 >
 > **Auto-generated** by `rebuild-index.py`. Do not edit manually.
-> Total entries: 83
+> Total entries: 84
 
 | Date | Title | File |
 |:-----|:------|:-----|
+| 2026-09-21 | Session 2026-09-21: EPIC-26 ivisa catalog SEALED + path migration | [continuity-260921173238-session-2026-09-21-epic-26-ivisa-catalog-sealed--path-migrat.md](continuity-260921173238-session-2026-09-21-epic-26-ivisa-catalog-sealed--path-migrat.md) |
 | 2026-09-10 | Wave 1833-1838 closed: all remediations independently accepted and promoted | [continuity-260910114948-wave-1833-1838-closed-all-remediations-independently-accepte.md](continuity-260910114948-wave-1833-1838-closed-all-remediations-independently-accepte.md) |
 | 2026-08-24 | drain-100pct-2026-08-24 | [continuity-260824053501-drain-100pct-2026-08-24.md](continuity-260824053501-drain-100pct-2026-08-24.md) |
 | 2026-08-24 | full-drain-2026-08-24 | [continuity-260824033057-full-drain-2026-08-24.md](continuity-260824033057-full-drain-2026-08-24.md) |

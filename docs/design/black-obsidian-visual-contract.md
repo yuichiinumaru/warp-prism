@@ -1,7 +1,7 @@
 # Warp Prism — Black Obsidian Visual Contract
 
 > **Status**: Active Visual Governance Contract
-> **Author**: Task 1800 (`docs/tasks/02-doing/1800-warp-prism-black-obsidian-visual-contract.md`)
+> **Author**: Task 1800 (`.project/tasks/02-doing/1800-warp-prism-black-obsidian-visual-contract.md`)
 > **Date**: 2026-08-22
 > **Origin**: Product Owner visual direction reset (2026-08-22) + EPIC-18 planning wave
 > **Blocks**: Task 1801, Task 1802, Task 1803, Task 1804, Task 1805, Task 1806, and all component visual work
@@ -177,8 +177,8 @@ Widget build(BuildContext context) {
 | Affected Specification | Section / Clause | Superseded Statement | Replacement Contract & Owner |
 | --- | --- | --- | --- |
 | `docs/design/token-theme-catalog-policy.md` (Task 1105) | §2.2, §2.3 | Sky-cyan (`#00D4FF`) as primary accent and sky-cyan/violet/gold as default Observatory palette | Superseded by Black Obsidian (`#030506`) + bounded blue accent ladder (`#2F81FF`). Owned and updated by **Task 1801**. |
-| `docs/tasks/00-planning/EPIC-17-warp-prism-ads-form-primitives-gap.md` | Line 20 | "`DSCyberCoreTealSkin` accent (`#00FFCC`) for active/checked states" | Superseded by `accentBlue` for default form primitives; teal remains opt-in via ThemeExtension. Annotated by **Task 1800**. |
-| `docs/tasks/03-review/1616-warp-prism-optional-cybercore-teal-theme-extension-skin.md` | §Test Requirements | Default sky-cyan non-rebrand tests | Regression guard tests updated by **Task 1801** to assert black obsidian + blue accent contract while preserving `DSCyberCoreTealSkin` opt-in extension. |
+| `.project/tasks/00-planning/EPIC-17-warp-prism-ads-form-primitives-gap.md` | Line 20 | "`DSCyberCoreTealSkin` accent (`#00FFCC`) for active/checked states" | Superseded by `accentBlue` for default form primitives; teal remains opt-in via ThemeExtension. Annotated by **Task 1800**. |
+| `.project/tasks/03-review/1616-warp-prism-optional-cybercore-teal-theme-extension-skin.md` | §Test Requirements | Default sky-cyan non-rebrand tests | Regression guard tests updated by **Task 1801** to assert black obsidian + blue accent contract while preserving `DSCyberCoreTealSkin` opt-in extension. |
 
 ---
 
