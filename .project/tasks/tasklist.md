@@ -74,6 +74,7 @@
 |------|-------|------|--------|------|
 | EPIC | 24 — Warp Prism Scaffolding & Extensibility Policy | `misc` |  | `docs/tasks/00-planning/EPIC-24-warp-prism-scaffolding-extensibility-policy.md` |
 | EPIC | 25 — Warp Prism Rewrite Resolver Strategy (Research-Only / Deferred) | `misc` |  | `docs/tasks/00-planning/EPIC-25-warp-prism-rewrite-resolver-strategy.md` |
+| EPIC | 26 — Warp Prism ADS: Ivisa Foundry Capability Harvest (Future Flutter Catalog) | `misc` |  | `.project/tasks/00-planning/EPIC-26-warp-prism-ads-ivisa-foundry-future-capability-catalog.md` |
 | PLAN | — 03-Review Lane Drain (36 parked tasks) | `misc` |  | `docs/tasks/00-planning/PLAN-03-review-drain.md` |
 
 ## Completed (P0)
