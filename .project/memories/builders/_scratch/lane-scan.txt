@@ -1,0 +1,550 @@
+=== 0903 ===
+# Task 0903: Warp-Prism Skill And Task Detail Variants
+
+> **Status**: `[x]` Done
+> **Review State**: Blocked — Flutter SDK not installed; validation commands cannot execute
+> **Priority**: 🟡 P1
+> **Type**: `feature`
+> **Origin**: `warp-prism/docs/tasks/00-planning/EPIC-09-warp-prism-universal-asset-detail.md`, `warp-prism/docs/prompt.txt`, `warp-prism/docs/research.md`
+> **Blocks**: Prompt-critical skill and task detail parity for Map and Operate surfaces.
+> **Depends on**: Task 0902.
+
+> [!IMPORTANT]
+> Task identity is lane-neutral. Use `Task 0903` plus optional slug for dependencies,
+--- review/rejection ledger tail ---
+
+=== 0904 ===
+# Task 0904: Warp-Prism Agent Workflow Changelog Detail Variants
+
+> **Status**: `[x]` Done
+> **Review State**: Blocked — Flutter SDK not installed; validation commands cannot execute
+> **Priority**: 🟡 P1
+> **Type**: `feature`
+> **Origin**: `warp-prism/docs/tasks/00-planning/EPIC-09-warp-prism-universal-asset-detail.md`, `warp-prism/docs/prompt.txt`, `warp-prism/docs/research.md`
+> **Blocks**: Universal inspector parity for agent/workflow/history/governance assets and graceful support of secondary kinds.
+> **Depends on**: Task 0902.
+
+> [!IMPORTANT]
+> Task identity is lane-neutral. Use `Task 0904` plus optional slug for dependencies,
+--- review/rejection ledger tail ---
+
+=== 0905 ===
+# Task 0905: Warp-Prism Responsive Detail Shell Integration
+
+> **Status**: `[x]` Done
+> **Review State**: Blocked — Flutter SDK not installed; validation commands cannot execute
+> **Priority**: 🟡 P1
+> **Type**: `feature`
+> **Origin**: `warp-prism/docs/tasks/00-planning/EPIC-09-warp-prism-universal-asset-detail.md`, `warp-prism/docs/prompt.txt`, `warp-prism/docs/research.md`
+> **Blocks**: Final EPIC 09 acceptance across desktop split-pane, overlay drawer, and narrow full-screen detail behavior.
+> **Depends on**: Task 0901, Task 0903, and Task 0904.
+
+> [!IMPORTANT]
+> Task identity is lane-neutral. Use `Task 0905` plus optional slug for dependencies,
+--- review/rejection ledger tail ---
+
+=== 1000 ===
+# Task 1000: Warp-Prism Polish Baseline Audit
+
+> **Status**: `[x]` Done
+> **Review State**: Builder Done — docs/governance deliverable complete
+> **Priority**: 🔴 P0
+> **Type**: `verification`
+> **Origin**: EPIC 10 (`warp-prism/docs/tasks/00-planning/EPIC-10-warp-prism-polish-accessibility-demo-coherence.md`) plus `warp-prism/docs/prompt.txt`, `warp-prism/docs/research.md`, and `warp-prism/docs/draft.md`
+> **Blocks**: Task 1010, Task 1020, Task 1030, Task 1040, Task 1050, Task 1060
+> **Depends on**: None
+
+> [!IMPORTANT]
+> Task identity is lane-neutral. Use `Task 1000` plus optional slug for dependencies,
+--- review/rejection ledger tail ---
+
+=== 1020 ===
+# Task 1020: Warp-Prism Responsive Shell and Detail Pass
+
+> **Status**: `[x]` Done
+> **Review State**: Blocked — Flutter SDK not installed; validation commands cannot execute
+> **Priority**: 🔴 P0
+> **Type**: `feature`
+> **Origin**: EPIC 10 candidate story "Responsive shell and detail behavior pass" plus `warp-prism/docs/prompt.txt` responsive layout requirement
+> **Blocks**: Task 1060
+> **Depends on**: Task 1000
+
+> [!IMPORTANT]
+> Task identity is lane-neutral. Use `Task 1020` plus optional slug for dependencies,
+--- review/rejection ledger tail ---
+
+=== 1030 ===
+# Task 1030: Warp-Prism Empty, Loading, and Error State Coherence
+
+> **Status**: `[x]` Done
+> **Review State**: Blocked — Flutter SDK not installed; validation commands cannot execute
+> **Priority**: 🟡 P1
+> **Type**: `feature`
+> **Origin**: EPIC 10 candidate story "Empty/loading/error state pass" plus prompt requirements for clear status handling
+> **Blocks**: Task 1060
+> **Depends on**: Task 1000
+
+> [!IMPORTANT]
+> Task identity is lane-neutral. Use `Task 1030` plus optional slug for dependencies,
+--- review/rejection ledger tail ---
+
+=== 1040 ===
+# Task 1040: Warp-Prism Glass Performance Budget Pass
+
+> **Status**: `[x]` Done
+> **Review State**: Blocked — Flutter SDK not installed; validation commands cannot execute
+> **Priority**: 🟡 P1
+> **Type**: `remediation`
+> **Origin**: EPIC 10 candidate story "Performance/glass effect pass" plus `warp-prism/docs/research.md` sparse glass guidance
+> **Blocks**: Task 1060
+> **Depends on**: Task 1000
+
+> [!IMPORTANT]
+> Task identity is lane-neutral. Use `Task 1040` plus optional slug for dependencies,
+--- review/rejection ledger tail ---
+
+=== 1050 ===
+# Task 1050: Warp-Prism Storytelling and Demo Narrative Pass
+
+> **Status**: `[x]` Done (subtasks complete; validation blocked by missing Flutter SDK)
+> **Review State**: Blocked — Flutter SDK not installed; validation commands cannot execute
+> **Priority**: 🟡 P1
+> **Type**: `feature`
+> **Origin**: EPIC 10 candidate story "Data storytelling and demo narrative pass" plus `warp-prism/docs/research.md` storytelling guidance
+> **Blocks**: Task 1060
+> **Depends on**: Task 1000
+
+> [!IMPORTANT]
+> Task identity is lane-neutral. Use `Task 1050` plus optional slug for dependencies,
+--- review/rejection ledger tail ---
+
+=== 1060 ===
+# Task 1060: Warp-Prism EPIC 10 Acceptance Audit
+
+> **Status**: `[x]` Done
+> **Review State**: Builder Done — docs/governance deliverable complete
+> **Priority**: 🔴 P0
+> **Type**: `verification`
+> **Origin**: EPIC 10 candidate story "Final acceptance criteria audit"
+> **Blocks**: None
+> **Depends on**: Task 1010, Task 1020, Task 1030, Task 1040, Task 1050
+
+> [!IMPORTANT]
+> Task identity is lane-neutral. Use `Task 1060` plus optional slug for dependencies,
+--- review/rejection ledger tail ---
+117:- **Verdict**: CONDITIONAL PASS — All design-system criteria met. Runtime validation blocked by missing Flutter SDK. App shell/pages out of EPIC 10 scope.
+
+=== 1070 ===
+# Task 1070: Warp-Prism Task Namespace Integrity Verification
+
+> **Status**: `[x]` Done
+> **Review State**: Blocked — Flutter SDK not installed; validation commands cannot execute
+> **Priority**: 🟡 P1
+> **Type**: `governance`
+> **Origin**: reviewer task-governance audit of `warp-prism/docs/tasks/01-open/` executable identity drift
+> **Blocks**: promotion of new Warp Prism task waves that introduce additional task-number namespaces
+> **Depends on**: None
+
+> [!IMPORTANT]
+> Task identity is lane-neutral. Use `Task 1070` plus optional slug for dependencies,
+--- review/rejection ledger tail ---
+
+=== 1102 ===
+# Task 1102: Warp Prism Control Surface Inventory
+
+> **Status**: `[x]` Done (in 02-doing — not moved to 03-review per instructions)
+> **Review State**: Builder Done — docs/governance deliverable complete
+> **Priority**: 🔴 P0
+> **Type**: `verification`
+> **Origin**: Task 1100 Warp Prism epic
+> **Blocks**: Task 1103 (superseded), Task 1104, Task 1105, Task 1106, Task 1108
+> **Depends on**: Task 1101
+> **Evidence**: local EPIC planning, mock workspace corpus in `assets/mock_workspace/`
+
+---
+--- review/rejection ledger tail ---
+
+=== 1104 ===
+# Task 1104: Warp Prism Melos Monorepo Architecture Plan
+
+> **Status**: `[ ]` Open
+> **Review State**: Builder Done — status marker inconsistent with evidence; lane mismatch
+> **Priority**: 🔴 P0
+> **Type**: `architecture` | `governance`
+> **Origin**: User clarified ADS reuse/versioning/CI requirements and approved Warp Prism as a parent monorepo with ADS, catalog, and frontend apps as child projects.
+> **Blocks**: Task 1103 (superseded), Task 1105, Task 1106, Task 1107, Task 1110
+> **Depends on**: Task 1101, Task 1102
+
+> [!IMPORTANT]
+> Task identity is lane-neutral. Use `Task 1104` plus optional slug for dependencies, blockers, review ledgers, reports, and architecture references. Lanes such as `02-doing` and `03-review` are mutable status, not identity.
+--- review/rejection ledger tail ---
+138:**Score**: 82/100 — Good
+139:**Verdict**: REJECTED → moved back to `02-doing`
+144:**Path to 100**: refresh the task header to `Ready For Review`, rerun/document declared validation commands, classify any unrelated changelog validator failure with exact evidence, include dependency status for Tasks 1101/1102, and move back to `03-review/` only after the promotion-state gate is satisfied.
+
+=== 1105 ===
+# Task 1105: Warp Prism Token Theme Catalog Policy
+
+> **Status**: `[x]` Done — awaiting review
+> **Review State**: Builder Done — status marker inconsistent with evidence; lane mismatch
+> **Priority**: 🔴 P0
+> **Type**: `architecture` | `design-system`
+> **Origin**: Task 1100 candidate Task 1104 plus user requirement for reusable ADS with Storybook/Widgetbook-style catalog.
+> **Blocks**: Task 1106, Task 1107, Task 1111
+> **Depends on**: Task 1104
+
+> [!IMPORTANT]
+> Task identity is lane-neutral. Use `Task 1105` plus optional slug for dependencies, blockers, review ledgers, reports, and architecture references.
+--- review/rejection ledger tail ---
+
+=== 1106 ===
+# Task 1106: Warp Prism Operational Component MVP
+
+> **Status**: `[x]` In review
+> **Review State**: Package Gate Failed — implementation complete; pre-existing gallery compilation errors block full package gate
+> **Priority**: 🟡 P1
+> **Type**: `feature` | `design-system`
+> **Origin**: Task 1100 candidate Task 1105 and Task 1102 CyberCore control-surface inventory.
+> **Blocks**: Task 1110, Task 1111
+> **Depends on**: Task 1104, Task 1105, Task 1107
+
+> [!IMPORTANT]
+> Task identity is lane-neutral. Use `Task 1106` plus optional slug for dependencies, blockers, review ledgers, reports, and architecture references.
+--- review/rejection ledger tail ---
+
+=== 1107 ===
+# Task 1107: Warp Prism Melos Monorepo Migration
+
+> **Status**: `[x]` Completed
+> **Review State**: Package Gate Failed — monorepo migration implemented; Melos/Flutter gate blocked
+> **Priority**: 🔴 P0
+> **Type**: `feature` | `remediation`
+> **Origin**: Task 1104 architecture plan.
+> **Blocks**: Task 1106, Task 1110
+> **Depends on**: Task 1104, local Flutter SDK availability
+
+> [!IMPORTANT]
+> Task identity is lane-neutral. Use `Task 1107` plus optional slug for dependencies, blockers, review ledgers, reports, and architecture references.
+--- review/rejection ledger tail ---
+
+=== 1108 ===
+# Task 1108: Warp Prism CyberCore Frontend Scope And Route Parity Matrix
+
+> **Status**: `[x]` Completed
+> **Review State**: Builder Done — status marker inconsistent with evidence; lane mismatch
+> **Priority**: 🔴 P0
+> **Type**: `architecture` | `verification`
+> **Origin**: EPIC-11 Warp Prism Cybernetics Core Frontend.
+> **Blocks**: Task 1109, Task 1110, Task 1111
+> **Depends on**: Task 1102, EPIC-11
+
+> [!IMPORTANT]
+> Task identity is lane-neutral. Use `Task 1108` plus optional slug for dependencies, blockers, review ledgers, reports, and architecture references.
+--- review/rejection ledger tail ---
+
+=== 1109 ===
+# Task 1109: Warp Prism CyberCore API Data Contract Inventory
+
+> **Status**: `[ ]` Open
+> **Review State**: Builder Done — status marker inconsistent with evidence; lane mismatch
+> **Priority**: 🔴 P0
+> **Type**: `architecture` | `verification`
+> **Origin**: EPIC-11 and Task 1108 route parity matrix.
+> **Blocks**: Task 1110, Task 1111
+> **Depends on**: Task 1108
+
+> [!IMPORTANT]
+> Task identity is lane-neutral. Use `Task 1109` plus optional slug for dependencies, blockers, review ledgers, reports, and architecture references.
+--- review/rejection ledger tail ---
+
+=== 1110 ===
+# Task 1110: Warp Prism CyberCore Fixture Backed App Shell MVP
+
+> **Status**: `[ ]` Open
+> **Review State**: Builder Done — status marker inconsistent with evidence; lane mismatch
+> **Priority**: 🟡 P1
+> **Type**: `feature`
+> **Origin**: EPIC-11 and CyberCore frontend implementation path.
+> **Blocks**: Task 1111
+> **Depends on**: Task 1106, Task 1107, Task 1108, Task 1109
+
+> [!IMPORTANT]
+> Task identity is lane-neutral. Use `Task 1110` plus optional slug for dependencies, blockers, review ledgers, reports, and architecture references.
+--- review/rejection ledger tail ---
+
+=== 1111 ===
+# Task 1111: Warp Prism CyberCore Pilot Mirror And Expansion Gate
+
+> **Status**: `[ ]` Open
+> **Review State**: Builder Done — status marker inconsistent with evidence; lane mismatch
+> **Priority**: 🔴 P0
+> **Type**: `verification` | `governance`
+> **Origin**: EPIC-11 — promotion gate after CyberCore pilot shell
+> **Blocks**: CyberCore expansion, live API authorization, companion app decision
+> **Depends on**: Task 1106, Task 1107, Task 1108, Task 1109, Task 1110
+
+> [!IMPORTANT]
+> Task identity is lane-neutral. Use `Task 1111` plus optional slug for dependencies, blockers, review ledgers, reports, and architecture references.
+--- review/rejection ledger tail ---
+
+=== 1112 ===
+# Task 1112: Warp Prism Data Table Component
+
+> **Status**: `[x]` Complete
+> **Review State**: Package Gate Failed — implementation complete; pre-existing gallery compilation errors block full package gate
+> **Priority**: 🔴 P0
+> **Type**: `feature` | `design-system`
+> **Origin**: EPIC-11 gap analysis (CRITICAL GAP-C1)
+> **Blocks**: Task 1123, CyberCore list screens
+> **Depends on**: Task 1105, Task 1107
+>
+> **⛔ Hard gate**: Component promotion requires Task 1102 output. No component
+> may be promoted to `packages/warp_prism_ui` without a real CyberCore surface
+--- review/rejection ledger tail ---
+
+=== 1113 ===
+# Task 1113: Warp Prism Command Palette
+
+> **Status**: `[x]` Complete — awaiting review
+> **Review State**: Package Gate Failed — implementation complete; pre-existing gallery compilation errors block full package gate
+> **Priority**: 🔴 P0
+> **Type**: `feature` | `design-system`
+> **Origin**: EPIC-11 gap analysis (CRITICAL GAP-C2)
+> **Blocks**: CyberCore navigation
+> **Depends on**: Task 1105, Task 1107
+>
+> **⛔ Hard gate**: Component promotion requires Task 1102 output. No component
+> may be promoted to `packages/warp_prism_ui` without a real CyberCore surface
+--- review/rejection ledger tail ---
+
+=== 1114 ===
+# Task 1114: Warp Prism Log Viewer Component
+
+> **Status**: `[x]` Complete — awaiting review
+> **Review State**: Package Gate Failed — implementation complete; pre-existing gallery compilation errors block full package gate
+> **Priority**: 🔴 P0
+> **Type**: `feature` | `design-system`
+> **Origin**: EPIC-11 gap analysis (CRITICAL GAP-C3)
+> **Blocks**: CyberCore operational surfaces
+> **Depends on**: Task 1105, Task 1107
+>
+> **⛔ Hard gate**: Component promotion requires Task 1102 output. No component
+> may be promoted to `packages/warp_prism_ui` without a real CyberCore surface
+--- review/rejection ledger tail ---
+
+=== 1115 ===
+# Task 1115: Warp Prism Loading Skeleton And Error Boundary
+
+> **Status**: `[x]` Done (awaiting review)
+> **Review State**: Package Gate Failed — implementation complete; pre-existing gallery compilation errors block full package gate
+> **Priority**: 🟡 P1
+> **Type**: `feature` | `design-system`
+> **Origin**: EPIC-11 gap analysis (IMPORTANT GAP-I2 + GAP-I6)
+> **Blocks**: CyberCore screens, Task 1123 (virtual scroll integration)
+> **Depends on**: Task 1105, Task 1107
+>
+> **⛔ Hard gate**: Component promotion requires Task 1102 output. No component
+> may be promoted to `packages/warp_prism_ui` without a real CyberCore surface
+--- review/rejection ledger tail ---
+
+=== 1116 ===
+# Task 1116: Warp Prism Notification Toast System
+
+> **Status**: `[/]` In Progress
+> **Review State**: Package Gate Failed — implementation complete; pre-existing gallery compilation errors block full package gate
+> **Priority**: 🟡 P1
+> **Type**: `feature` | `design-system`
+> **Origin**: EPIC-11 gap analysis (IMPORTANT GAP-I3)
+> **Blocks**: CyberCore mutation screens (future), any screen requiring user feedback
+> **Depends on**: Task 1105, Task 1107
+>
+> **⛔ Hard gate**: Component promotion requires Task 1102 output. No component
+> may be promoted to `packages/warp_prism_ui` without a real CyberCore surface
+--- review/rejection ledger tail ---
+
+=== 1117 ===
+# Task 1117: Warp Prism Graph Visualization Refactor — Model/Layout/Painter Split
+
+> **Status**: `[x]` Complete (pending review)
+> **Review State**: Package Gate Failed — implementation complete; pre-existing gallery compilation errors block full package gate
+> **Priority**: 🟡 P1
+> **Type**: `feature` | `design-system`
+> **Origin**: EPIC-11 gap analysis (IMPORTANT GAP-I1) — phase 1 of 2: refactor-only, no new features.
+> **Blocks**: Task 1117b (hierarchical + DAG layouts), Task 1117c (graph UX layer), Task 1117d (graph accessibility)
+> **Depends on**: Task 1105, Task 1107, Task 0512
+>
+> **⛔ Hard gate**: Component promotion requires Task 1102 output. No component
+> may be promoted to `packages/warp_prism_ui` without a real CyberCore surface
+--- review/rejection ledger tail ---
+
+=== 1119 ===
+# Task 1119: Warp Prism Health Dashboard Components
+
+> **Status**: `[~]` In Progress (completion evidence filled)
+> **Review State**: Package Gate Failed — implementation complete; pre-existing gallery compilation errors block full package gate
+> **Priority**: 🟡 P1
+> **Type**: `feature` | `design-system`
+> **Origin**: EPIC-11 gap analysis (IMPORTANT GAP-I4)
+> **Blocks**: CyberCore system health screens
+> **Depends on**: Task 1105, Task 1107, Task 1118
+>
+> **⛔ Hard gate**: Component promotion requires Task 1102 output. No component
+> may be promoted to `packages/warp_prism_ui` without a real CyberCore surface
+--- review/rejection ledger tail ---
+
+=== 1120 ===
+# Task 1120: Warp Prism Drag And Drop Task Board
+
+> **Status**: `[x]` Complete
+> **Review State**: Package Gate Failed — implementation complete; pre-existing gallery compilation errors block full package gate
+> **Priority**: 🟡 P1
+> **Type**: `feature` | `design-system`
+> **Origin**: EPIC-11 gap analysis (IMPORTANT GAP-I7)
+> **Blocks**: Operate workspace interactivity
+> **Depends on**: Task 1105, Task 1107
+>
+> **⛔ Hard gate**: Component promotion requires Task 1102 output. No component
+> may be promoted to `packages/warp_prism_ui` without a real CyberCore surface
+--- review/rejection ledger tail ---
+
+=== 1121 ===
+# Task 1121: Warp Prism Code Block And Markdown Renderer
+
+> **Status**: `[x]` Implementation Complete — Pending Review
+> **Review State**: Package Gate Failed — implementation complete; pre-existing gallery compilation errors block full package gate
+> **Priority**: 🔵 P2
+> **Type**: `feature` | `design-system`
+> **Origin**: EPIC-11 gap analysis (NICE-TO-HAVE GAP-N1 + GAP-N5)
+> **Blocks**: CyberCore content display
+> **Depends on**: Task 1105, Task 1107
+>
+> **⛔ Hard gate**: Component promotion requires Task 1102 output. No component
+> may be promoted to `packages/warp_prism_ui` without a real CyberCore surface
+--- review/rejection ledger tail ---
+
+=== 1122 ===
+# Task 1122: Warp Prism Tab Bar And Split Pane
+
+> **Status**: `[x]` Complete (awaiting review)
+> **Review State**: Package Gate Failed — implementation complete; pre-existing gallery compilation errors block full package gate
+> **Priority**: 🔵 P2
+> **Type**: `feature` | `design-system`
+> **Origin**: EPIC-11 gap analysis (NICE-TO-HAVE GAP-N2 + GAP-N3)
+> **Blocks**: CyberCore multi-view workspaces
+> **Depends on**: Task 1105, Task 1107
+>
+> **⛔ Hard gate**: Component promotion requires Task 1102 output. No component
+> may be promoted to `packages/warp_prism_ui` without a real CyberCore surface
+--- review/rejection ledger tail ---
+
+=== 1123 ===
+# Task 1123: Warp Prism Virtual Scroll Optimization
+
+> **Status**: `[x]` Complete — ready for review
+> **Review State**: Package Gate Failed — implementation complete; pre-existing gallery compilation errors block full package gate
+> **Priority**: 🔵 P2
+> **Type**: `feature` | `performance`
+> **Origin**: EPIC-11 gap analysis (NICE-TO-HAVE GAP-N4)
+> **Blocks**: MCP server registry scale (1400+ rows)
+> **Depends on**: Task 1105, Task 1107, Task 1112
+>
+> **⛔ Hard gate**: Component promotion requires Task 1102 output. No component
+> may be promoted to `packages/warp_prism_ui` without a real CyberCore surface
+--- review/rejection ledger tail ---
+
+=== 1306 ===
+# Task 1306: Golden Baseline MVP
+
+> **Status**: `[/]` Package Gate Failed
+> **Review State**: Package Gate Failed — full golden directory has 11 failures and Task 1304 dependency remains rejected
+> **Priority**: 🟡 P1
+> **Type**: `testing`
+> **Origin**: EPIC-13, stabilization wave, zero golden tests despite policy requiring them.
+> **Blocks**: Future ADS component promotion
+> **Depends on**: 1303 (contract reconciliation), 1304 (gallery compiles)
+
+> [!IMPORTANT]
+> Task identity is lane-neutral. Use `Task 1306` plus optional slug for
+--- review/rejection ledger tail ---
+189:**Score**: 100/100 — Perfect
+190:**Verdict**: APPROVED → moved to 03-review
+196:**Path to 100**: n/a — score is 100/100 for Task 1306; package-wide analyzer/test blockers are documented external failures owned by other cleanup tasks.
+201:**Score**: 54/100 — Debt
+202:**Verdict**: REJECTED → moved back to `02-doing`
+206:**Path-to-100**: Resolve/approve Task 1304 or governably remove the dependency; inspect the generated badge master/test/diff images and fix unintended visual regression or explicitly approve/regenerate intended baselines; rerun the exact full golden gate to 54/54; refresh task evidence/state.
+
+=== 1309 ===
+# Task 1309: State Vocabulary Surface Reconciliation
+
+> **Status**: `[ ]` Open
+> **Review State**: Doing — EPIC-13 stabilization task with filled evidence; status marker is stale
+> **Priority**: 🟡 P1
+> **Type**: `remediation`
+> **Origin**: EPIC-13, stabilization wave, DSStateSurface expanded from 3 to 7
+>   states, breaking state_surface_test and related tests.
+> **Blocks**: 1307 (accessibility), future component promotion
+> **Depends on**: 1303 (contract reconciliation)
+
+> [!IMPORTANT]
+--- review/rejection ledger tail ---
+
+=== 1405 ===
+# Task 1405: Detail Variant and Responsive Shell Reconciliation
+
+> **Status**: `[ ]` Open
+> **Review State**: Package Gate Failed — detail reconciliation evidence filled; observatory package gate not green
+> **Priority**: 🟡 P1
+> **Type**: `remediation`
+> **Origin**: EPIC-14, stabilization wave, failures in `extended_detail_variants_test`,
+>   `skill_task_detail_widgets_test`, `responsive_detail_integration_test`.
+> **Blocks**: 1406
+> **Depends on**: 1404 (view-models must be correct first)
+
+> [!IMPORTANT]
+--- review/rejection ledger tail ---
+
+=== 1406 ===
+# Task 1406: History and Operate Feature Flow Reconciliation
+
+> **Status**: `[ ]` Open
+> **Review State**: Open — unstarted task; lane mismatch (should be in 01-open/)
+> **Priority**: 🟡 P1
+> **Type**: `remediation`
+> **Origin**: EPIC-14, stabilization wave, failures in `history_story_modes_test`
+>   and `operate_task_detail_inspector_test`.
+> **Blocks**: 1407
+> **Depends on**: 1404 (view-models), 1405 (detail views)
+
+> [!IMPORTANT]
+--- review/rejection ledger tail ---
+
+=== 1407 ===
+# Task 1407: Legacy Test Retirement or Rewrite Audit
+
+> **Status**: `[ ]` Open
+> **Review State**: Open — unstarted task; lane mismatch (should be in 01-open/)
+> **Priority**: 🟡 P1
+> **Type**: `governance`
+> **Origin**: EPIC-14, stabilization wave, some tests may be testing outdated
+>   architecture rather than current behavior.
+> **Blocks**: Final Observatory gate green status
+> **Depends on**: 1403, 1404, 1405, 1406 (all reconciliations should be done first)
+
+> [!IMPORTANT]
+--- review/rejection ledger tail ---
+
+=== 1408 ===
+# Task 1408: Observatory Package Imports Cleanup
+
+> **Status**: `[x]` Done
+> **Review State**: Package Gate Failed — observatory pre-existing failures remain; import cleanup evidence filled
+> **Priority**: 🟡 P1
+> **Type**: `housekeeping`
+> **Origin**: EPIC-14, stabilization wave, ~29 fragile relative imports in Observatory.
+> **Blocks**: None (quality improvement, not gate blocker)
+> **Depends on**: 1403 (parsers must be working before touching imports)
+
+> [!IMPORTANT]
+> Task identity is lane-neutral. Use `Task 1408` plus optional slug for
+--- review/rejection ledger tail ---
+

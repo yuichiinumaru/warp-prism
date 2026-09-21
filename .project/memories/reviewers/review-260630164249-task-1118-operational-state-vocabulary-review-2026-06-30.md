@@ -1,0 +1,11 @@
+---
+type: review
+title: "task-1118-operational-state-vocabulary-review-2026-06-30"
+agent: reviewers
+created: 2026-06-30T16:42:49
+date: 2026-06-30
+---
+
+# task-1118-operational-state-vocabulary-review-2026-06-30
+
+Task 1118 independent Flutter/Dart review. Score: 94/100 — Elite, approved to remain in docs/tasks/03-review because focused Task 1118 implementation is correct and the remaining package gate failures are live but unrelated/pre-existing to the operational state vocabulary scope. Evidence: flutter analyze --no-pub from packages/warp_prism_ui FAILS package-wide with 880 issues (unresolved organism/test symbols in unrelated tests such as test/organisms/organisms_layout_test.dart and virtual scroll/tab bar tests); focused analyzer for lib/src/tokens/ds_operational_state.dart, ds_colors.dart, tokens.dart, ds_status_dot.dart, ds_badge.dart, and test/tokens/ds_operational_state_test.dart PASS; focused flutter test --no-pub test/tokens/ds_operational_state_test.dart PASS 84/84; non-mutating dart format check PASS 0 changed; full flutter test --no-pub FAILS 659 passed / 12 failures, including glass_budget_test.dart unresolved DSGlassPanel symbols, unrelated to Task 1118 touched files. Axiom table: Analyzer Integrity PARTIAL due package-wide gate red but focused task analyzer clean; Lifecycle Safety PASS with 1 AnimationController in DSStatusDot/_AnimatedDotState and 1 matching dispose; Dependency Direction PASS tokens/atoms/gallery only; UI Accessibility PASS for task scope because DSStatusDot.operational uses state.semanticLabel and DSBadge.operational wraps Semantics with count-aware labels; Proof Reality PARTIAL because focused proof is real but package-wide tests fail pre-existing unrelated; Release Security PASS no secrets or print/debugPrint in Task 1118 touched implementation. Findings: LOW only — package-wide analyzer/test gate remains red and must not be represented as promoted package proof, but current task header line 4 correctly says Ready For Review with pre-existing unrelated package failures documented and Task 1118 focused checks pass. Path to 100: resolve or baseline the unrelated package-wide analyzer/test failures under the existing failure-baseline policy; optionally add a task-specific review ledger entry if the review wave wants in-file lineage for this approval.
