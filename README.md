@@ -5,6 +5,7 @@
 ![Rust](https://img.shields.io/badge/Rust-000000?logo=rust&logoColor=white)
 ![Melos](https://img.shields.io/badge/Melos-7-FF6F00)
 ![Linux](https://img.shields.io/badge/Linux-FCC624?logo=linux&logoColor=black)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 **Compositional design + integration system for Flutter applications** — a Melos
 monorepo containing a reusable Flutter Atomic Design System (`warp_prism_ui`),
@@ -219,6 +220,12 @@ See `docs/mock-workspace-corpus-contract.md` for the full corpus specification.
 governance), `rust`, and `flutter-rust-integration` — committed here so the
 project carries its own agent praxis. Upstream remains `.agents/skills/`;
 re-vendor on purpose, never drift by accident.
+
+## License
+
+Warp Prism is [MIT](./LICENSE)-licensed. Use it, fork it, learn from it, ship it
+in commercial products — all I ask is that you keep the copyright notice and
+give credit to the original author ([Yuichi Inumaru](https://github.com/yuichiinumaru)).
 
 ---
 
