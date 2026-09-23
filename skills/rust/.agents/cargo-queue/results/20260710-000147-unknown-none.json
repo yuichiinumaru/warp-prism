@@ -1,0 +1,8 @@
+{
+  "request_id": "20260710-000147-unknown-none",
+  "success": false,
+  "exit_code": 101,
+  "command": "test",
+  "args": "--test context_collapse_test -- --nocapture",
+  "duration_seconds": 0
+}

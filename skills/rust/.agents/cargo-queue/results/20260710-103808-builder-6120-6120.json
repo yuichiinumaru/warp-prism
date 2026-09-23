@@ -1,0 +1,8 @@
+{
+  "request_id": "20260710-103808-builder-6120-6120",
+  "success": false,
+  "exit_code": 101,
+  "command": "test",
+  "args": "--lib phase_gate -- --nocapture",
+  "duration_seconds": 0
+}

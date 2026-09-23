@@ -1,0 +1,8 @@
+{
+  "request_id": "20260710-195716-builders-7476",
+  "success": false,
+  "exit_code": 101,
+  "command": "check",
+  "args": "--lib --no-default-features --features core-languages",
+  "duration_seconds": 0
+}

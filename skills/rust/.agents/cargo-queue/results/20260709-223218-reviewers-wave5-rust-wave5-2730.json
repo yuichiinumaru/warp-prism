@@ -1,0 +1,8 @@
+{
+  "request_id": "20260709-223218-reviewers-wave5-rust-wave5-2730",
+  "success": false,
+  "exit_code": 101,
+  "command": "check",
+  "args": "--lib",
+  "duration_seconds": 0
+}

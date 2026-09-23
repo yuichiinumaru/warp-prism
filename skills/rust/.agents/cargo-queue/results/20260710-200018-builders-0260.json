@@ -1,0 +1,8 @@
+{
+  "request_id": "20260710-200018-builders-0260",
+  "success": false,
+  "exit_code": 101,
+  "command": "test",
+  "args": "--test hybrid_search_test --lib graph_rag -- --nocapture",
+  "duration_seconds": 0
+}

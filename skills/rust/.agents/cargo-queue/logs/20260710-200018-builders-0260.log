@@ -1,0 +1,16 @@
+=== Cargo Queue Request ===
+Request ID: 20260710-200018-builders-0260
+Agent: builders
+Task: 0260
+Command: cargo test --test hybrid_search_test --lib graph_rag -- --nocapture
+Started: 2026-07-10T20:00:18-03:00
+
+
+=== Cargo Output ===
+error: could not find `Cargo.toml` in `/home/sephiroth/working/ganthritor/.agents/skills/rust-harness` or any parent directory
+
+=== Cargo Queue Complete ===
+Finished: 2026-07-10T20:00:18-03:00
+Duration: 0s
+Exit Code: 101
+Status: failure

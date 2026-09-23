@@ -1,0 +1,8 @@
+{
+  "request_id": "20260709-221125-reviewers-wave4-int-2340",
+  "success": false,
+  "exit_code": 101,
+  "command": "test",
+  "args": "--lib live_daemon -- --nocapture",
+  "duration_seconds": 0
+}

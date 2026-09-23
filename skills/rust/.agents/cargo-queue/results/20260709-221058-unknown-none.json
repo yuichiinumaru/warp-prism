@@ -1,0 +1,8 @@
+{
+  "request_id": "20260709-221058-unknown-none",
+  "success": false,
+  "exit_code": 101,
+  "command": "test",
+  "args": "--lib speculative_branch -- --nocapture",
+  "duration_seconds": 0
+}

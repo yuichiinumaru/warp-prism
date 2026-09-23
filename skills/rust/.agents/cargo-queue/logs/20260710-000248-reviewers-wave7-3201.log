@@ -1,0 +1,16 @@
+=== Cargo Queue Request ===
+Request ID: 20260710-000248-reviewers-wave7-3201
+Agent: reviewers
+Task: wave7-3201
+Command: cargo test cognitive_engine --lib
+Started: 2026-07-10T00:02:48-03:00
+
+
+=== Cargo Output ===
+error: could not find `Cargo.toml` in `/home/sephiroth/working/ganthritor/.agents/skills/rust-harness` or any parent directory
+
+=== Cargo Queue Complete ===
+Finished: 2026-07-10T00:02:48-03:00
+Duration: 0s
+Exit Code: 101
+Status: failure

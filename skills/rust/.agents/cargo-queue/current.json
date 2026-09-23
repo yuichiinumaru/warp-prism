@@ -1,0 +1,12 @@
+{
+  "request_id": "20260710-200018-builders-0260",
+  "agent": "builders",
+  "task_id": "0260",
+  "command": "test",
+  "args": "--test hybrid_search_test --lib graph_rag -- --nocapture",
+  "started_at": "2026-07-10T20:00:18-03:00",
+  "finished_at": "2026-07-10T20:00:18-03:00",
+  "duration_seconds": 0,
+  "status": "failure",
+  "exit_code": 101
+}

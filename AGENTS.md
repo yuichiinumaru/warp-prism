@@ -53,15 +53,15 @@ Parent-canonical reusable surfaces are symlinked from the Ganthritor root:
 
 Child-local surfaces are owned by Warp Prism:
 
-| Child path            | Purpose                             |
-| --------------------- | ----------------------------------- |
-| `AGENTS.md`           | This local constitution             |
-| `.agents/rules/`      | Warp Prism rules                    |
-| `.agents/workflows/`  | Warp Prism rituals                  |
-| `.memories/_by_lane/` | Local role continuity               |
-| `.project/tasks/`         | Local task namespace                |
-| `.changelog/`         | Canonical child changelog ledger    |
-| `docs/reports/`       | Local audits, reports, and evidence |
+| Child path                  | Purpose                             |
+| --------------------------- | ----------------------------------- |
+| `AGENTS.md`                 | This local constitution             |
+| `.agents/rules/`            | Warp Prism rules                    |
+| `.agents/workflows/`        | Warp Prism rituals                  |
+| `.project/memories/<lane>/` | Local role continuity               |
+| `.project/tasks/`           | Local task namespace                |
+| `.project/changelog/`       | Canonical child changelog ledger    |
+| `.project/reports/`         | Local audits, reports, and evidence |
 
 Do not copy parent skills or agents into the child project.
 
@@ -503,14 +503,14 @@ Task explicitly needs historical provenance.
 
 ## 9. Changelog and Continuity
 
-For local Warp Prism-only changes, add entries under `.changelog/` via the
+For local Warp Prism-only changes, add entries under `.project/changelog/` via the
 manage-changelog engine.
 
 For parent-significant harness changes, also use the parent Ganthritor changelog
 engine.
 
 Use `agent-wiki` / `agentlog` for durable role continuity under
-`.memories/_by_lane/<lane>/`.
+`.project/memories/<lane>/`.
 
 Continuity should record:
 
@@ -882,14 +882,14 @@ For a single task, builders and reviewers persist their iterations in one
 additive file each:
 
 ```text
-docs/reports/builders/<task>-<slug>-builder-report.md   (newest entry on top)
-docs/reports/reviewers/<task>-<slug>-review-loop.md    (newest entry on top;
+.project/reports/builders/<task>-<slug>-builder-report.md   (newest entry on top)
+.project/reports/reviewers/<task>-<slug>-review-loop.md    (newest entry on top;
                                                         still-open findings at
                                                         top, resolved at end)
 ```
 
 Prior entries are never overwritten. One-shot historical reports under
-`docs/reports/builders/` and `docs/reports/review/` remain valid evidence.
+`.project/reports/builders/` and `.project/reports/reviewers/` remain valid evidence.
 
 ### 16.4 Fresh-Subagent Onboarding
 

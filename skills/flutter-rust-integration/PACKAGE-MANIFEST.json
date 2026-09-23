@@ -1,0 +1,24 @@
+{
+  "package": "flutter-rust-integration",
+  "maturity": "candidate",
+  "install_root": ".agents/skills/flutter-rust-integration/",
+  "subskills": [
+    "design-boundary",
+    "govern-lifecycle",
+    "implement-frb",
+    "route-data-plane",
+    "verify-boundary"
+  ],
+  "workflows": [
+    "sk-flutter-rust-add-capability",
+    "sk-flutter-rust-prove-vertical-slice"
+  ],
+  "scripts": [
+    "validate_boundary_imports.py",
+    "audit_frb_codegen.py",
+    "collect_bridge_evidence.py"
+  ],
+  "eval_count": 8,
+  "optional_rust_upgrade_included": true,
+  "validation_status": "PASS"
+}

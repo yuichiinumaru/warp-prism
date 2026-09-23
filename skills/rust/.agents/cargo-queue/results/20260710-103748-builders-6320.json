@@ -1,0 +1,8 @@
+{
+  "request_id": "20260710-103748-builders-6320",
+  "success": false,
+  "exit_code": 101,
+  "command": "test",
+  "args": "--test skill_md_test -- --nocapture",
+  "duration_seconds": 0
+}

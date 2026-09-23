@@ -1,0 +1,8 @@
+{
+  "request_id": "20260710-195730-builders-2521",
+  "success": false,
+  "exit_code": 101,
+  "command": "check",
+  "args": "--lib",
+  "duration_seconds": 0
+}

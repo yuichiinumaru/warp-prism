@@ -1,0 +1,16 @@
+=== Cargo Queue Request ===
+Request ID: 20260709-221058-unknown-none
+Agent: unknown
+Task: none
+Command: cargo test --lib speculative_branch -- --nocapture
+Started: 2026-07-09T22:10:58-03:00
+
+
+=== Cargo Output ===
+error: could not find `Cargo.toml` in `/home/sephiroth/working/ganthritor/.agents/skills/rust-harness` or any parent directory
+
+=== Cargo Queue Complete ===
+Finished: 2026-07-09T22:10:58-03:00
+Duration: 0s
+Exit Code: 101
+Status: failure

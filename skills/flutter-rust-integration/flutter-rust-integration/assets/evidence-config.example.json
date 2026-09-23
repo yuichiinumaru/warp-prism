@@ -1,0 +1,27 @@
+{
+  "checks": [
+    {
+      "name": "rust-core-tests",
+      "scope": "RUST_SEMANTICS",
+      "argv": [
+        "cargo",
+        "test",
+        "-p",
+        "example_core"
+      ],
+      "cwd": ".",
+      "timeout": 300
+    },
+    {
+      "name": "dart-adapter-tests",
+      "scope": "DART_ADAPTER",
+      "argv": [
+        "flutter",
+        "test",
+        "packages/example_adapter/test"
+      ],
+      "cwd": ".",
+      "timeout": 300
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "request_id": "20260710-000248-reviewers-wave7-3201",
+  "success": false,
+  "exit_code": 101,
+  "command": "test",
+  "args": "cognitive_engine --lib",
+  "duration_seconds": 0
+}

@@ -1,0 +1,16 @@
+{
+  "dart_ui_roots": [
+    "apps/example/lib",
+    "packages/example_ui/lib"
+  ],
+  "rust_domain_roots": [
+    "crates/example_core"
+  ],
+  "dart_forbidden_patterns": [
+    "package:flutter_rust_bridge/",
+    "\\bfrb_generated\\b"
+  ],
+  "rust_forbidden_patterns": [
+    "\\bflutter_rust_bridge\\b"
+  ]
+}

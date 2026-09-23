@@ -1,0 +1,81 @@
+{
+  "skill": "flutter-rust-integration",
+  "maturity": "candidate",
+  "protocol": {
+    "treatment": "fresh session with this skill root + routed subskill(s)",
+    "control": "same model/config, generic Flutter + Rust skills only",
+    "require_comparable_runtime": true,
+    "independent_grader": true
+  },
+  "fixtures": [
+    {
+      "id": "FRI-01",
+      "prompt_file": "fixtures/FRI-01-widget-imports-generated.md",
+      "expected": [
+        "transport leakage",
+        "adapter",
+        "do not let Widget import generated FRB directly"
+      ]
+    },
+    {
+      "id": "FRI-02",
+      "prompt_file": "fixtures/FRI-02-json-escape-hatch.md",
+      "expected": [
+        "typed projection ladder",
+        "bridge DTO or handle before JSON",
+        "inspect boundary model"
+      ]
+    },
+    {
+      "id": "FRI-03",
+      "prompt_file": "fixtures/FRI-03-small-control-payload.md",
+      "expected": [
+        "small control-plane crossing is reasonable",
+        "do not overreact with native data plane"
+      ]
+    },
+    {
+      "id": "FRI-04",
+      "prompt_file": "fixtures/FRI-04-heavy-frame-stream.md",
+      "expected": [
+        "data plane",
+        "native surface/handle or measured alternative",
+        "avoid giant Dart copies"
+      ]
+    },
+    {
+      "id": "FRI-05",
+      "prompt_file": "fixtures/FRI-05-cancellation-lie.md",
+      "expected": [
+        "request != native cancellation",
+        "prove Rust task stopped",
+        "terminal/cleanup state"
+      ]
+    },
+    {
+      "id": "FRI-06",
+      "prompt_file": "fixtures/FRI-06-rust-core-imports-frb.md",
+      "expected": [
+        "transport leakage",
+        "Rust bridge adapter",
+        "semantic core should remain transport-independent"
+      ]
+    },
+    {
+      "id": "FRI-07",
+      "prompt_file": "fixtures/FRI-07-tests-green-no-native.md",
+      "expected": [
+        "adapter/unit tests do not prove native crossing",
+        "require native oracle"
+      ]
+    },
+    {
+      "id": "FRI-08",
+      "prompt_file": "fixtures/FRI-08-version-mismatch.md",
+      "expected": [
+        "route version/lock/codegen governance to dependency",
+        "do not own upgrade policy here"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,198 @@
+# Token domain×role annotation + phased lint (see ui-ux SUBSKILL.md "Token Domain × Role Contract").
+# Enforcement is PHASED: spec now, enforce later. No phase is active before the architect integration boundary passes.
+#
+# PROVENANCE (2026-09-23): merged from
+# `.agents/skills/frontend-quality/sub-skills/atomic-token/references/token-role-annotation.spec.yaml`
+# into the flutter harness (`flutter/sub-skills/ui-ux/`), Flutter-adapted, per operator authorization
+# (frontend-quality atomic cluster → flutter; frontend-quality retained as web/TS owner until its
+# planned retirement). Adopted: full annotation model + lint ladder. Modified: phase-1 lint home
+# path (frontend-quality/scripts → flutter/scripts). Rejected for this copy: nothing (spec is
+# framework-agnostic; project-specific mechanics stay with the consumer repo per project_specific_boundary).
+model_boundary:
+  one_token_model: true
+  statement: >-
+    Domain and role are annotation axes over the EXISTING token model.
+    Tier says what a token IS; domain says what physical dimension it
+    expresses; role says its semantic usage within that domain. None of
+    the three replaces tier, unit, allowed-values, or dark/light mapping
+    fields.
+
+domain_axis:
+  type: open-enum
+  seeded_values: [color, shape, spacing, typography, elevation, motion, layout]
+  extension_rule: >-
+    Consumer design systems may declare additional domains; the set is
+    deliberately not frozen (a complete taxonomy is not required now).
+    Unknown-domain entries with a declared role set are valid once the
+    system declares the set.
+
+role_sets:
+  color:
+    roles: [structural, interactive, semantic, data]
+    status: validated (research-backed; the original four-role taxonomy survives HERE)
+    definitions:
+      structural: >-
+        Color that carries geometry/structure meaning — surfaces,
+        containers, dividers: color whose change alters perceived
+        structure. Layout-driving color belongs to domain layout/spacing,
+        not to a color token.
+      interactive: >-
+        State/affordance color — hover, focus, pressed, disabled,
+        press feedback.
+      semantic: >-
+        Status/meaning color — success-warning-error, enabled-disabled,
+        required-optional.
+      data: >-
+        Visualization/category color — series colors, category palettes,
+        heat scales.
+  shape:
+    roles: [container, control, decorative]
+    status: illustrative_optional (NOT required; evidence-justified per design system)
+  motion:
+    roles: [feedback, transition, attention]
+    status: illustrative_optional (NOT required; evidence-justified per design system)
+  note: >-
+    Only the color role set is normative. Illustrative sets show the
+    extension pattern; consumer repos own their per-domain role sets.
+    Do not freeze role taxonomies for domains without local evidence.
+
+scope:
+  dynamic_entries: MUST declare domain + role (semantic aliases and component tokens that components resolve at runtime)
+  primitives: >-
+    MAY declare domain+role; not required (open question 3 in the wave report).
+
+annotation_shape:
+  required_fields:
+    domain:
+      type: enum
+      values_ref: domain_axis.seeded_values
+      constraint: exactly one primary domain per dynamic entry
+    role:
+      type: enum
+      values_ref: role set declared for the entry's domain
+      constraint: exactly one primary role, validated against the entry's domain set
+  optional_fields:
+    secondary_roles:
+      type: list-of-enum
+      constraint: every secondary must be mechanically justified
+    justification:
+      type: string
+      required_if: secondary_roles non-empty
+      bar: >-
+        must name the mechanical coupling (e.g. focus ring color also
+        carries enabled-disabled meaning), not designer preference
+    values:
+      type: mode-mapping
+      note: existing tier field; unchanged by domain/role annotation
+  example: |
+    tokens:
+      button.primary.background:
+        domain: color                    # required — physical dimension
+        role: interactive                # required — from color role set
+        secondary_roles: [semantic]      # optional, each mechanically justified
+        justification: focus ring on this surface also signals enabled state
+        values:
+          light: "#1976D2"
+          dark: "#90CAF9"
+
+smell_rules:
+  cross_domain_role: >-
+    role drawn from another domain's set (e.g. a shape token tagged
+    `interactive`, a color token tagged `container`) is a smell; lint
+    flags for adjudication, never auto-FAIL.
+  color_structural_with_state_values: >-
+    color/structural entry carrying state-color values is a smell,
+    not an automatic error; lint flags it for adjudication.
+
+lint_checks:
+  - id: L1-no-domain
+    check: dynamic entry without domain
+    verdict: error
+    phase: phase-1
+  - id: L1-no-role
+    check: dynamic entry without role
+    verdict: error
+    phase: phase-1
+  - id: L1-role-not-in-domain-set
+    check: role value outside the declared set for the entry's domain
+    verdict: error
+    phase: phase-1
+  - id: L2-interactive-drives-layout
+    check: color/interactive-role entry carrying width/height/padding/margin/constraint values
+    verdict: flag
+    phase: phase-1
+    note: >-
+      Addendum A wording is "flag" (structural misuse adjudication), not
+      hard reject; the THEME-01 rule still says MUST NOT — normative
+      strength lives in the rule, enforcement severity in the lint phase.
+  - id: L2-color-structural-encodes-state-color
+    check: color/structural-role entry carrying state-color values
+    verdict: flag
+    phase: phase-1
+    note: mirror-image misuse class of L2-interactive-drives-layout; same adjudication path.
+  - id: L3-layout-affecting-change-no-host-smoke
+    check: >-
+      change to an entry whose domain is layout/spacing/elevation/shape,
+      or whose color-role is structural, without real-host-composition
+      smoke evidence attached
+    verdict: error
+    phase: phase-2
+  - id: L4-unjustified-secondary
+    check: secondary_roles present without justification
+    verdict: error
+    phase: phase-1
+    note: direct reflection of the THEME-01 rule's justification clause.
+  - id: L4-justification-quality
+    check: justification fails the mechanical-coupling bar
+    verdict: flag
+    phase: phase-2-corpus
+    note: >-
+      requires a justification-quality corpus first; reserved, not enforced
+      in any declared phase until the corpus exists.
+
+phasing:
+  phase-0-at-integration:
+    - annotation schema spec (this file) as review doctrine
+    - manual PR review of annotations on change (review expectation, no CI gate)
+    - layout-affecting-change-needs-host-smoke as a review expectation, not a CI gate
+  phase-1-later:
+    - lint implementation under .agents/skills/flutter/scripts/ (rule 75 applies then)
+    - enforce L1 and L2 verdicts
+  phase-2-later:
+    - L3 evidence-attachment check (CI)
+    - L4 justification-quality corpus
+  note: >-
+    no phase is active before the architect integration boundary passes;
+    phases describe the spec's own escalation ladder, not current enforced
+    capability (rule 73 section 15: no placeholder advertising unsupported
+    enforcement).
+
+project_specific_boundary: >-
+  Domain extension beyond the seeded set, per-domain role sets beyond
+  color, exact-one-primary constraint mechanics, and annotation shape are
+  universal skill doctrine. Where tokens physically live, YAML vs
+  code-defined tokens, viewport sets, shell list, route list, and host-smoke
+  mechanics are PROJECT-SPECIFIC and owned by the consumer repo (flutter
+  wave consumer-graph-gate.spec.md section 4 placeholder rules).
+
+rejection_register:
+  giant-detached-theme-schema: >-
+    REJECTED (Decision section C.9). This spec annotates the existing token
+    model; it adds no second token system.
+  four-independent-theme-systems: >-
+    REJECTED (Decision item 5 overlap note). One token model, annotation
+    axes; domains and roles classify, they do not multiply.
+  single-enum-collapse: >-
+    REJECTED and SUPERSEDED (AMEND-1). The original universal
+    role_enum: [structural, interactive, semantic, data] over every token
+    dimension mixed dimension with role — structural as
+    geometry/elevation/shape/layout was an axis collision, exactly the
+    artificial single-enum the mission forbade. The four-role taxonomy
+    survives only as the COLOR-domain role set; other domains own their
+    own evidence-justified sets.
+  per-role-skills: >-
+    REJECTED. Domains and roles are classification axes in one contract,
+    not capability domains deserving separate skills.
+  storybook-matrix-duplication: >-
+    REJECTED. Storybook gets a pointer, not a copied verification matrix
+    (storybook-pointer.proposal.diff.md, same tmp directory).

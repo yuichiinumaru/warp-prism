@@ -1,0 +1,8 @@
+{
+  "request_id": "20260710-195930-builders-0250",
+  "success": false,
+  "exit_code": 101,
+  "command": "test",
+  "args": "--test entity_extraction_test -- --nocapture",
+  "duration_seconds": 1
+}
