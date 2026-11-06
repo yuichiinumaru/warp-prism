@@ -1,7 +1,7 @@
 # Promotion State Model — Warp Prism Governance
 
 > **Authority**: Canonical governance reference for task promotion lifecycle.
-> **Source rule**: `.agents/rules/promotion-state-model.md`
+> **Source rule**: `.opencode/rules/promotion-state-model.md`
 > **Scope**: All executable tasks under `.project/tasks/`.
 > **Created**: 2026-06-09
 > **Task origin**: Task 1202
@@ -170,7 +170,7 @@ the issue before re-gating.
 | Async/flaky | Timer, overlay, or lifecycle fragility | Yes, until deterministic |
 | Semantics drift | Labels, roles, or accessibility expectations stale | Yes, if interactive component |
 | Missing fixture | Test data absent or malformed | Yes, if parser/test depends on it |
-| Pre-existing (unrelated) | Failure existed before, task did not touch the area. See `docs/governance/pre-existing-failure-policy.md` and `.agents/rules/pre-existing-failure-policy.md`. | No, but must be classified |
+| Pre-existing (unrelated) | Failure existed before, task did not touch the area. See `docs/governance/pre-existing-failure-policy.md` and `.opencode/rules/pre-existing-failure-policy.md`. | No, but must be classified |
 
 ---
 
@@ -290,7 +290,7 @@ include Task 1101 as the current `Open` lane mismatch example.
 1. **Never mark a task `Promoted` if the package gate is red.** Package-level
    `flutter test` passing is a minimum requirement for promotion.
 2. **`pre-existing failure` is not a promotion bypass.** Pre-existing failures
-   must be classified per the failure taxonomy, `.agents/rules/pre-existing-failure-policy.md`
+   must be classified per the failure taxonomy, `.opencode/rules/pre-existing-failure-policy.md`
    (builder source rule), and `docs/governance/pre-existing-failure-policy.md`
    (canonical policy). A task touching an area with related pre-existing failures
    cannot be promoted until those failures are resolved or explicitly justified
@@ -304,7 +304,7 @@ include Task 1101 as the current `Open` lane mismatch example.
 5. **Review packets are required for `Ready For Review`.** Without a review
    packet, a task stays in `Builder Done`. Builders must fill the canonical
    template at `.project/tasks/review-packet-template.md` (workflow:
-   `.agents/workflows/generate-review-packet.md`) before claiming
+   `.opencode/workflows/generate-review-packet.md`) before claiming
    `Ready For Review`.
 6. **Lane moves are state-gated.** A task cannot move to `03-review/` unless it
    is in `Ready For Review` state. It cannot move to `04-completed/` unless it
@@ -316,12 +316,12 @@ include Task 1101 as the current `Open` lane mismatch example.
 
 ## 7. References
 
-- **Source rule**: `.agents/rules/promotion-state-model.md`
-- **Pre-existing failure policy**: `.agents/rules/pre-existing-failure-policy.md` (builder source rule), `docs/governance/pre-existing-failure-policy.md` (canonical policy)
+- **Source rule**: `.opencode/rules/promotion-state-model.md`
+- **Pre-existing failure policy**: `.opencode/rules/pre-existing-failure-policy.md` (builder source rule), `docs/governance/pre-existing-failure-policy.md` (canonical policy)
 - **Task template**: `.project/tasks/000-template.md` (includes `Review State` field)
 - **Review packet template**: `.project/tasks/review-packet-template.md` (canonical format — Task 1207)
-- **Review packet workflow**: `.agents/workflows/generate-review-packet.md` (Task 1207)
-- **Task governance**: `.agents/rules/task-governance.md`
-- **Definition of Done**: `.agents/rules/definition-of-done.md`
+- **Review packet workflow**: `.opencode/workflows/generate-review-packet.md` (Task 1207)
+- **Task governance**: `.opencode/rules/task-governance.md`
+- **Definition of Done**: `.opencode/rules/definition-of-done.md`
 - **EPIC-12 tasks**: 1201 (failure inventory), 1202 (this model), 1203 (gate
   matrix), 1206 (failure classification), 1207 (review packets)

@@ -15,10 +15,10 @@ class WarpPrismCyberCoreApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // CyberCore opt-in OmniRoute teal skin (Task 1616) installed on
+    // CyberCore opt-in Nerazim Teal skin (Task 1616) installed on
     // ThemeData only via applyToTheme, preserving the tooling-only
     // registry boundary.
-    final theme = const PrismCyberCoreTealSkin.omniRoute().applyToTheme(
+    final theme = const PrismNerazimTealSkin.nerazimTeal().applyToTheme(
       PrismTheme.dark(),
     );
     return MaterialApp.router(

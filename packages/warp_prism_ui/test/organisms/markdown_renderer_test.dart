@@ -106,7 +106,9 @@ void main() {
     testWidgets('renders inline code', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(body: PrismMarkdownRenderer(data: 'Use `const` keyword')),
+          home: Scaffold(
+            body: PrismMarkdownRenderer(data: 'Use `const` keyword'),
+          ),
         ),
       );
 
@@ -167,10 +169,7 @@ void main() {
         ),
       );
 
-      expect(
-        find.bySemanticsLabel('Fenced code block: dart'),
-        findsOneWidget,
-      );
+      expect(find.bySemanticsLabel('Fenced code block: dart'), findsOneWidget);
     });
 
     testWidgets('fenced code without language uses generic Semantics label', (
@@ -243,7 +242,9 @@ void main() {
     testWidgets('renders blockquote text', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(body: PrismMarkdownRenderer(data: '> This is a quote')),
+          home: Scaffold(
+            body: PrismMarkdownRenderer(data: '> This is a quote'),
+          ),
         ),
       );
 
@@ -340,7 +341,9 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: PrismMarkdownRenderer(data: 'Just a simple paragraph of text.'),
+            body: PrismMarkdownRenderer(
+              data: 'Just a simple paragraph of text.',
+            ),
           ),
         ),
       );

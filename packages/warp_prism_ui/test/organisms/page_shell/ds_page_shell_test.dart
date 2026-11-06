@@ -15,11 +15,7 @@ void main() {
   }) {
     return MaterialApp(
       home: Scaffold(
-        body: SizedBox(
-          width: width,
-          height: height,
-          child: child,
-        ),
+        body: SizedBox(width: width, height: height, child: child),
       ),
     );
   }
@@ -134,47 +130,44 @@ void main() {
       expect(tester.takeException(), isNull);
     });
 
-    testWidgets(
-      'long title uses ellipsis overflow policy (maxLines: 1)',
-      (tester) async {
-        // Overflow policy: title is single-line with TextOverflow.ellipsis.
-        // Documented here so reviewers can verify the contract without
-        // relying on pixel goldens for Task 1602.
-        const longTitle =
-            'This is an extremely long page title that must not wrap '
-            'and must ellipsize within the available header width instead '
-            'of overflowing the layout bounds of the page shell header';
+    testWidgets('long title uses ellipsis overflow policy (maxLines: 1)', (
+      tester,
+    ) async {
+      // Overflow policy: title is single-line with TextOverflow.ellipsis.
+      // Documented here so reviewers can verify the contract without
+      // relying on pixel goldens for Task 1602.
+      const longTitle =
+          'This is an extremely long page title that must not wrap '
+          'and must ellipsize within the available header width instead '
+          'of overflowing the layout bounds of the page shell header';
 
-        await tester.pumpWidget(
-          harness(
-            width: 320,
-            child: const PrismPageShell(
-              title: longTitle,
-              actions: [
-                SizedBox(width: 80, child: Text('Action')),
-              ],
-              child: Text('body'),
-            ),
+      await tester.pumpWidget(
+        harness(
+          width: 320,
+          child: const PrismPageShell(
+            title: longTitle,
+            actions: [SizedBox(width: 80, child: Text('Action'))],
+            child: Text('body'),
           ),
-        );
+        ),
+      );
 
-        // Title text is present in the tree.
-        expect(find.text(longTitle), findsOneWidget);
+      // Title text is present in the tree.
+      expect(find.text(longTitle), findsOneWidget);
 
-        // The rendered DSText / Text uses ellipsis + single line.
-        final textWidget = tester.widget<Text>(
-          find.descendant(
-            of: find.byType(PrismPageShell),
-            matching: find.text(longTitle),
-          ),
-        );
-        expect(textWidget.maxLines, 1);
-        expect(textWidget.overflow, TextOverflow.ellipsis);
+      // The rendered DSText / Text uses ellipsis + single line.
+      final textWidget = tester.widget<Text>(
+        find.descendant(
+          of: find.byType(PrismPageShell),
+          matching: find.text(longTitle),
+        ),
+      );
+      expect(textWidget.maxLines, 1);
+      expect(textWidget.overflow, TextOverflow.ellipsis);
 
-        // No layout overflow exceptions.
-        expect(tester.takeException(), isNull);
-      },
-    );
+      // No layout overflow exceptions.
+      expect(tester.takeException(), isNull);
+    });
 
     testWidgets('exposes page header semantics region for title', (
       tester,

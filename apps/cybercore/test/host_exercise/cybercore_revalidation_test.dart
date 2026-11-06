@@ -3,9 +3,9 @@
 // Runs the required Task 1838 coverage: SMOKE + CRAWL at the canonical
 // desktop viewport AND the compact viewport (the Task 1833 F6 divergence
 // surface — compact bottom-nav selection must resolve teal from the
-// installed theme), all under the production cybercore-teal recipe.
+// installed theme), all under the production nerazim-teal recipe.
 // Every run persists its trace JSON under
-// docs/reports/host-exercise/traces/.
+// .project/reports/host-exercise/traces/.
 //
 // The teal recipe is CyberCore's production install (applied inside
 // WarpPrismCyberCoreApp.build); the runner records it as the trace's
@@ -39,7 +39,7 @@ Future<void> _persist(
 
 void main() {
   testWidgets(
-    '1838: cybercore SMOKE @ desktop-1280x800 (cybercore-teal) is error-free',
+    '1838: cybercore SMOKE @ desktop-1280x800 (nerazim-teal) is error-free',
     (tester) async {
       final oracle = ExerciseErrorCollector()..install();
       addTearDown(oracle.uninstall);
@@ -55,7 +55,7 @@ void main() {
         isEmpty,
         reason: 'SMOKE @ desktop must be error-free: ${trace.errors.join('\n')}',
       );
-      expect(trace.themeRecipe, 'cybercore-teal');
+      expect(trace.themeRecipe, 'nerazim-teal');
       await _persist(
         tester,
         trace,
@@ -65,7 +65,7 @@ void main() {
   );
 
   testWidgets(
-    '1838: cybercore CRAWL @ desktop-1280x800 (cybercore-teal) is error-free',
+    '1838: cybercore CRAWL @ desktop-1280x800 (nerazim-teal) is error-free',
     (tester) async {
       final oracle = ExerciseErrorCollector()..install();
       addTearDown(oracle.uninstall);
@@ -84,7 +84,7 @@ void main() {
         isEmpty,
         reason: 'CRAWL @ desktop must be error-free: ${trace.errors.join('\n')}',
       );
-      expect(trace.themeRecipe, 'cybercore-teal');
+      expect(trace.themeRecipe, 'nerazim-teal');
       await _persist(
         tester,
         trace,
@@ -94,7 +94,7 @@ void main() {
   );
 
   testWidgets(
-    '1838: cybercore SMOKE @ compact-500x900 (cybercore-teal) is error-free',
+    '1838: cybercore SMOKE @ compact-500x900 (nerazim-teal) is error-free',
     (tester) async {
       final oracle = ExerciseErrorCollector()..install();
       addTearDown(oracle.uninstall);
@@ -119,7 +119,7 @@ void main() {
             'SMOKE @ compact-500x900 (F6 divergence surface) must be error-free: '
             '${trace.errors.join('\n')}',
       );
-      expect(trace.themeRecipe, 'cybercore-teal');
+      expect(trace.themeRecipe, 'nerazim-teal');
       await _persist(
         tester,
         trace,
@@ -129,7 +129,7 @@ void main() {
   );
 
   testWidgets(
-    '1838: cybercore SMOKE @ compact-390x844 (cybercore-teal) is error-free',
+    '1838: cybercore SMOKE @ compact-390x844 (nerazim-teal) is error-free',
     (tester) async {
       final oracle = ExerciseErrorCollector()..install();
       addTearDown(oracle.uninstall);
@@ -150,7 +150,7 @@ void main() {
             'SMOKE @ compact (F6 divergence surface) must be error-free: '
             '${trace.errors.join('\n')}',
       );
-      expect(trace.themeRecipe, 'cybercore-teal');
+      expect(trace.themeRecipe, 'nerazim-teal');
       await _persist(
         tester,
         trace,

@@ -32,8 +32,14 @@ void main() {
       expect(skin.accentDim, equals(const Color(0xFF4F0878)));
       expect(skin.borderGlow, equals(const Color(0xFF9911E5)));
       expect(PrismTalonPurpleSkin.corePurple, equals(const Color(0xFF9911E5)));
-      expect(PrismTalonPurpleSkin.corePurpleMuted, equals(const Color(0xFF770CB3)));
-      expect(PrismTalonPurpleSkin.corePurpleDim, equals(const Color(0xFF4F0878)));
+      expect(
+        PrismTalonPurpleSkin.corePurpleMuted,
+        equals(const Color(0xFF770CB3)),
+      );
+      expect(
+        PrismTalonPurpleSkin.corePurpleDim,
+        equals(const Color(0xFF4F0878)),
+      );
     });
 
     test('distinctness assertions against protected tokens', () {
@@ -69,7 +75,10 @@ void main() {
       final theme = const PrismTalonPurpleSkin.talonPurple().applyToTheme(base);
 
       expect(theme.colorScheme.primary, equals(const Color(0xFF9911E5)));
-      expect(theme.colorScheme.primaryContainer, equals(const Color(0xFF4F0878)));
+      expect(
+        theme.colorScheme.primaryContainer,
+        equals(const Color(0xFF4F0878)),
+      );
       expect(theme.colorScheme.inversePrimary, equals(const Color(0xFF770CB3)));
       expect(theme.extension<PrismTalonPurpleSkin>(), isNotNull);
       expect(

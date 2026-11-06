@@ -29,7 +29,7 @@ void main() {
       'khalai-blue',
       'taldarim-red',
       'talon-purple',
-      'cybercore-teal',
+      'nerazim-teal',
       'khalai-blue',
     ];
 

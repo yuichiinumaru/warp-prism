@@ -3,6 +3,7 @@
 /// Task 1117: Verifies that the refactored DSGraphCanvas maintains
 /// backward compatibility with the original API surface.
 library;
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:warp_prism_ui/src/organisms/ds_graph_canvas.dart';
@@ -54,9 +55,7 @@ void main() {
     });
 
     testWidgets('graph nodes expose Semantics button labels', (tester) async {
-      final nodes = [
-        GraphNode(id: 'a', label: 'Alpha', type: 'agent'),
-      ];
+      final nodes = [GraphNode(id: 'a', label: 'Alpha', type: 'agent')];
       const edges = <GraphEdge>[];
 
       await tester.pumpWidget(
@@ -238,8 +237,9 @@ void main() {
         // Flutter test default surface is 800x600 (MediaQuery used by GraphCanvas).
         const mediaW = 800.0;
         const mediaH = 600.0;
-        final positioned =
-            tester.widgetList<Positioned>(find.byType(Positioned)).toList();
+        final positioned = tester
+            .widgetList<Positioned>(find.byType(Positioned))
+            .toList();
         expect(positioned, hasLength(2));
 
         const expectedALeft = 120 + mediaW / 2 - 30;
@@ -251,12 +251,16 @@ void main() {
             actual != null && (actual - expected).abs() < 0.5;
 
         expect(
-          positioned.any((p) => near(p.left, expectedALeft) && near(p.top, expectedATop)),
+          positioned.any(
+            (p) => near(p.left, expectedALeft) && near(p.top, expectedATop),
+          ),
           isTrue,
           reason: 'Node A should be placed from spy offset (120, 40)',
         );
         expect(
-          positioned.any((p) => near(p.left, expectedBLeft) && near(p.top, expectedBTop)),
+          positioned.any(
+            (p) => near(p.left, expectedBLeft) && near(p.top, expectedBTop),
+          ),
           isTrue,
           reason: 'Node B should be placed from spy offset (-80, -60)',
         );

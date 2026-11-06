@@ -78,7 +78,7 @@ EPIC-16 organism registration completeness is **Task 1613**, not this demo.
 - **Mouse / trackpad**: Scroll the main list; use **Section index** chips to jump.
 - **Keyboard**: Tab into section chips and activate with Enter/Space (chip focus targets).
 - **Do not** demo live network, OmniRoute teal rebrand, MapLibre, Recharts, or Widgetbook.
-- Palette stays **obsidian + cyan/violet/gold** accents — CyberCore teal skin is optional Task 1616 only.
+- Palette stays **obsidian + cyan/violet/gold** accents — Nerazim teal skin is optional Task 1616 only.
 
 ---
 

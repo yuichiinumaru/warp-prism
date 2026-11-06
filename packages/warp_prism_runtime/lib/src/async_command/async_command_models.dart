@@ -2,7 +2,7 @@ import 'package:meta/meta.dart';
 
 /// Lifecycle status of an asynchronous command execution.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 enum AsyncCommandStatus {
   /// Command is initialized and ready for execution.
@@ -26,7 +26,7 @@ enum AsyncCommandStatus {
 /// Enables callers to signal cancellation requests and allows command handlers
 /// to cooperatively abort work.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 class CancellationToken {
   bool _isCancelled = false;
@@ -80,7 +80,7 @@ class CancellationToken {
 
 /// Exception thrown when an operation is cancelled via [CancellationToken].
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 @immutable
 class CommandCancellationException implements Exception {
@@ -97,7 +97,7 @@ class CommandCancellationException implements Exception {
 
 /// Base sealed class representing a typed command execution failure.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 sealed class CommandError {
   /// Human-readable error message.
@@ -114,7 +114,7 @@ sealed class CommandError {
 
 /// Execution error produced by the command logic or handler.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 @immutable
 class CommandExecutionError extends CommandError {
@@ -156,7 +156,7 @@ class CommandExecutionError extends CommandError {
 
 /// Validation error produced when command parameters fail preconditions.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 @immutable
 class CommandValidationError extends CommandError {
@@ -201,7 +201,7 @@ class CommandValidationError extends CommandError {
 
 /// Timeout error produced when a command exceeds its maximum allowed duration.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 @immutable
 class CommandTimeoutError extends CommandError {
@@ -238,7 +238,7 @@ class CommandTimeoutError extends CommandError {
 
 /// Transport or bridge error produced when communicating with a native or remote backend.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 @immutable
 class CommandTransportError extends CommandError {
@@ -275,7 +275,7 @@ class CommandTransportError extends CommandError {
 
 /// Generic fallback error for unspecified command failures.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 @immutable
 class CommandGenericError extends CommandError {
@@ -311,7 +311,7 @@ class CommandGenericError extends CommandError {
 
 /// Sealed result returned by [AsyncCommand.execute].
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 sealed class CommandResult<TResult> {
   /// Execution duration measured from invocation to result resolution.
@@ -328,7 +328,7 @@ sealed class CommandResult<TResult> {
 
 /// Successful command execution result carrying typed value [value].
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 @immutable
 class CommandSuccess<TResult> extends CommandResult<TResult> {
@@ -371,7 +371,7 @@ class CommandSuccess<TResult> extends CommandResult<TResult> {
 
 /// Failed command execution result carrying typed [error].
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 @immutable
 class CommandFailure<TResult> extends CommandResult<TResult> {
@@ -414,7 +414,7 @@ class CommandFailure<TResult> extends CommandResult<TResult> {
 
 /// Cancelled command execution result.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 @immutable
 class CommandCancelled<TResult> extends CommandResult<TResult> {

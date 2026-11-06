@@ -208,10 +208,7 @@ class _DSTopbarActionState extends State<DSTopbarAction> {
                   color: bgColor,
                   borderRadius: BorderRadius.circular(DSRadii.md),
                   border: _isFocused
-                      ? Border.all(
-                          color: DSColors.focusRing,
-                          width: 2,
-                        )
+                      ? Border.all(color: DSColors.focusRing, width: 2)
                       : null,
                 ),
                 child: Stack(

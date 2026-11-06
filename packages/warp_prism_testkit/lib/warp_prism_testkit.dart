@@ -6,8 +6,9 @@
 /// - Contract Suites: [verifyEventStreamContract], [verifyHealthSourceContract],
 ///   [verifyGraphSourceContract], [verifyAsyncCommandContract]
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 library warp_prism_testkit;
 
 export 'src/contract_tests/contract_tests.dart';
 export 'src/fakes/fakes.dart';
+export 'src/junk/junk_sweep.dart';

@@ -3,13 +3,13 @@ import 'inspection_state.dart';
 
 /// Callback signature for inspection session changes.
 ///
-/// Lifecycle: PROVEN (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: PROVEN (see `.project/architecture/layer-contracts.md`).
 typedef InspectionListener<T extends Object> =
     void Function(InspectionPayload<T>? currentSession);
 
 /// Observable controller for managing inspection lifecycle sessions.
 ///
-/// Lifecycle: PROVEN (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: PROVEN (see `.project/architecture/layer-contracts.md`).
 class InspectionNotifier<T extends Object> {
   InspectionPayload<T>? _session;
   final List<InspectionListener<T>> _listeners = [];

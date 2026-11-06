@@ -7,7 +7,7 @@ import 'package:warp_prism_runtime/warp_prism_runtime.dart';
 /// typed success payloads, structured errors, and execution metrics
 /// for direct consumption by loading indicators, buttons, and state surfaces.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 @immutable
 class AsyncCommandBindingState<TResult> {

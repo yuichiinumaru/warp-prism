@@ -12,7 +12,7 @@
 /// - [HealthSourceBinding]: Reactive view-model projection of runtime [HealthSource]
 ///   for [PrismProviderHealthMatrix] surfaces.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 library warp_prism_bindings;
 
 export 'src/async_command_binding/async_command_binding.dart';

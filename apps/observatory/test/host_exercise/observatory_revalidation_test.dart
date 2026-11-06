@@ -5,7 +5,7 @@
 // (narrow-800x600 — exercises the collapsed-sidebar shell path; compact
 // 390x844 is additionally covered by observatory_exercise_test.dart).
 // Every run persists its trace JSON under
-// docs/reports/host-exercise/traces/.
+// .project/reports/host-exercise/traces/.
 //
 // Observatory hardwires PrismTheme.dark() (Khalai Blue) by product
 // decision (Task 1833); no recipe ladder applies to this host.

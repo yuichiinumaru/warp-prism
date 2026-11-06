@@ -4,7 +4,7 @@ import 'inspection_intent.dart';
 
 /// Lifecycle phases of an inspection session.
 ///
-/// Lifecycle: PROVEN (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: PROVEN (see `.project/architecture/layer-contracts.md`).
 enum InspectionLifecycle {
   /// Inspection intent has been proposed or hovered, not yet committed.
   proposed,
@@ -14,11 +14,19 @@ enum InspectionLifecycle {
 
   /// Inspection has been dismissed or closed.
   dismissed,
+
+  /// Inspection session exists but its lifecycle position cannot yet be
+  /// determined (Task 1869, EXPERIMENTAL).
+  ///
+  /// Fail-closed: never counts as active, proposed, or dismissed.
+  /// Reachable only by direct construction (e.g. restored persistence
+  /// without status); no trigger manufactures it from a settled position.
+  unknown,
 }
 
 /// Triggers that advance an inspection session through its lifecycle.
 ///
-/// Lifecycle: PROVEN (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: PROVEN (see `.project/architecture/layer-contracts.md`).
 enum InspectionTrigger {
   /// Propose an inspection target (e.g. hover preview).
   propose,
@@ -35,7 +43,7 @@ enum InspectionTrigger {
 
 /// Canonical transition table for inspection lifecycles.
 ///
-/// Lifecycle: PROVEN (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: PROVEN (see `.project/architecture/layer-contracts.md`).
 const inspectionTransitionTable =
     InteractionTransitionTable<InspectionLifecycle, InspectionTrigger>(
       allowedTriggers: {
@@ -52,6 +60,13 @@ const inspectionTransitionTable =
         InspectionLifecycle.dismissed: {
           InspectionTrigger.propose,
           InspectionTrigger.activate,
+        },
+        // Unknown holds no position: it may resolve outward through the
+        // normal triggers, but nothing transitions into it.
+        InspectionLifecycle.unknown: {
+          InspectionTrigger.propose,
+          InspectionTrigger.activate,
+          InspectionTrigger.dismiss,
         },
       },
       targetStates: {
@@ -71,12 +86,18 @@ const inspectionTransitionTable =
             InspectionLifecycle.proposed,
         (InspectionLifecycle.dismissed, InspectionTrigger.activate):
             InspectionLifecycle.active,
+        (InspectionLifecycle.unknown, InspectionTrigger.propose):
+            InspectionLifecycle.proposed,
+        (InspectionLifecycle.unknown, InspectionTrigger.activate):
+            InspectionLifecycle.active,
+        (InspectionLifecycle.unknown, InspectionTrigger.dismiss):
+            InspectionLifecycle.dismissed,
       },
     );
 
 /// Immutable payload describing an inspection session at a point in time.
 ///
-/// Lifecycle: PROVEN (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: PROVEN (see `.project/architecture/layer-contracts.md`).
 @immutable
 class InspectionPayload<T extends Object> {
   /// The underlying inspection intent.
@@ -106,6 +127,12 @@ class InspectionPayload<T extends Object> {
 
   /// True if inspection has been dismissed.
   bool get isDismissed => status == InspectionLifecycle.dismissed;
+
+  /// True if the inspection lifecycle position is withheld (Task 1869).
+  ///
+  /// Fail-closed: an unknown payload is never active, proposed, or
+  /// dismissed, so observers must not treat it as enabled or settled.
+  bool get isUnknown => status == InspectionLifecycle.unknown;
 
   /// The target being inspected.
   T get target => intent.target;

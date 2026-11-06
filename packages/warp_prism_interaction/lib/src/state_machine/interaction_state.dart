@@ -1,6 +1,6 @@
 /// Standard interaction states across Warp Prism interactive primitives.
 ///
-/// Lifecycle: PROVEN (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: PROVEN (see `.project/architecture/layer-contracts.md`).
 enum InteractionState {
   /// Surface is inactive and waiting for input.
   idle,
@@ -23,7 +23,7 @@ enum InteractionState {
 
 /// Transition rule table enforcing permitted state transitions.
 ///
-/// Lifecycle: PROVEN (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: PROVEN (see `.project/architecture/layer-contracts.md`).
 class InteractionTransitionTable<S, T> {
   /// Map of allowed triggers for each source state.
   final Map<S, Set<T>> allowedTriggers;
@@ -72,7 +72,7 @@ class InteractionTransitionTable<S, T> {
 
 /// Finite state machine for interaction lifecycles with change notifications.
 ///
-/// Lifecycle: PROVEN (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: PROVEN (see `.project/architecture/layer-contracts.md`).
 class InteractionStateMachine<S, T> {
   final InteractionTransitionTable<S, T> table;
   S _currentState;

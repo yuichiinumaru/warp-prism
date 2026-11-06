@@ -7,7 +7,7 @@ import 'package:warp_prism_runtime/warp_prism_runtime.dart';
 /// Enables manual snapshot configuration, cell mutations, state simulation,
 /// and reactive change broadcasting.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 class FakeHealthSource implements HealthSource {
   HealthSnapshot _snapshot;

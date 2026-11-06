@@ -239,13 +239,11 @@ class _DSLogViewerState extends State<DSLogViewer> {
                               horizontal: DSSpacing.sm,
                             ),
                             decoration: BoxDecoration(
-                              color:
-                                  DSColors.accentBlue.withValues(alpha: 0.15),
-                              borderRadius: BorderRadius.circular(DSRadii.chip),
-                              border: Border.all(
-                                color:
-                                    DSColors.focusRing,
+                              color: DSColors.accentBlue.withValues(
+                                alpha: 0.15,
                               ),
+                              borderRadius: BorderRadius.circular(DSRadii.chip),
+                              border: Border.all(color: DSColors.focusRing),
                             ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,

@@ -119,9 +119,10 @@ import 'organisms/media_detail_overlay/ds_media_detail_overlay.dart';
 import 'organisms/breadcrumbs/ds_breadcrumbs.dart';
 import 'tokens/ds_breakpoints.dart';
 import 'tokens/ds_colors.dart';
-import 'tokens/ds_cybercore_teal_skin.dart';
+import 'tokens/ds_nerazim_teal_skin.dart';
 import 'tokens/ds_taldarim_red_skin.dart';
 import 'tokens/ds_talon_purple_skin.dart';
+import 'tokens/ds_tempest_token_map.dart';
 import 'tokens/ds_motion.dart';
 import 'tokens/ds_operational_state.dart';
 import 'tokens/ds_radii.dart';
@@ -179,7 +180,7 @@ extension PrismOperationalStateUI on PrismOperationalState {
 ///
 /// **Observatory default** primary action accent is [PrismColors.accentBlue]
 /// (`#2F81FF`, Task 1800 Black Obsidian contract). Cyan (`#00D4FF`) remains a retained data accent.
-/// Do not treat CyberCore teal as a global rebrand — use [PrismCyberCoreTealSkin] when a product app opts into OmniRoute mono-teal.
+/// Do not treat Nerazim Teal as a global rebrand — use [PrismNerazimTealSkin] when a product app opts into OmniRoute mono-teal.
 typedef PrismColors = DSColors;
 
 /// Public alias for [DSTheme].
@@ -187,27 +188,27 @@ typedef PrismColors = DSColors;
 /// Provides static access to canonical [PrismTheme.dark()] for Black Obsidian theme composition.
 typedef PrismTheme = DSTheme;
 
-/// Public alias for [DSCyberCoreTealSkin].
+/// Public alias for [DSNerazimTealSkin].
 ///
-/// **Opt-in** CyberCore ThemeExtension skin (OmniRoute `#00FFCC` core teal).
+/// **Opt-in** Nerazim Teal ThemeExtension skin (OmniRoute `#00FFCC` core teal).
 /// Observatory must not require this extension. Install via
-/// [PrismCyberCoreTealSkin.applyToTheme] or `ThemeData.extensions`.
+/// [PrismNerazimTealSkin.applyToTheme] or `ThemeData.extensions`.
 ///
 /// ```dart
-/// theme: const PrismCyberCoreTealSkin.omniRoute().applyToTheme(
+/// theme: const PrismNerazimTealSkin.nerazimTeal().applyToTheme(
 ///   ThemeData.dark().copyWith(
 ///     scaffoldBackgroundColor: PrismColors.obsidianDeep,
 ///   ),
 /// ),
-/// // Later: PrismCyberCoreTealSkin.of(context).accent
+/// // Later: PrismNerazimTealSkin.of(context).accent
 /// ```
-typedef PrismCyberCoreTealSkin = DSCyberCoreTealSkin;
+typedef PrismNerazimTealSkin = DSNerazimTealSkin;
 
 /// Public alias for [DSTaldarimRedSkin].
 ///
 /// **Opt-in** Taldarim Red ThemeExtension skin (Protoss lore: Tal'darim `#E51A4C` crimson energy).
 /// Observatory default primary action accent is Khalai Blue (`#2F81FF`).
-/// Counterpart brand labels: **Khalai Blue** (`accentBlue`), **Nerazim Green/Teal** (cyan/green data), **Purifier Gold** (`accentGold`).
+/// Counterpart brand labels: **Khalai Blue** (`accentBlue`), **Nerazim Teal** (cyan/green data), **Purifier Gold** (`accentGold`).
 /// Install via [PrismTaldarimRedSkin.applyToTheme] or [PrismTheme.taldarimRed()].
 typedef PrismTaldarimRedSkin = DSTaldarimRedSkin;
 
@@ -215,7 +216,7 @@ typedef PrismTaldarimRedSkin = DSTaldarimRedSkin;
 ///
 /// **Opt-in** Talon Purple ThemeExtension skin (Protoss lore: Talon faction `#9911E5` violet/crimson-purple energy).
 /// Observatory default primary action accent is Khalai Blue (`#2F81FF`).
-/// Counterpart brand labels: **Khalai Blue** (`accentBlue`), **Nerazim Green/Teal** (cyan/green data), **Purifier Gold** (`accentGold`).
+/// Counterpart brand labels: **Khalai Blue** (`accentBlue`), **Nerazim Teal** (cyan/green data), **Purifier Gold** (`accentGold`).
 /// Install via [PrismTalonPurpleSkin.applyToTheme] or [PrismTheme.talonPurple()].
 typedef PrismTalonPurpleSkin = DSTalonPurpleSkin;
 
@@ -1415,3 +1416,14 @@ typedef PrismBreadcrumbs = DSBreadcrumbs;
 
 /// Public alias for [DSBreadcrumbItem].
 typedef PrismBreadcrumbItem = DSBreadcrumbItem;
+
+// =============================================================================
+// TEMPEST CONVERGENCE — Task 1882 (wiring, not a visual primitive)
+// =============================================================================
+
+/// Public alias for [DSTempestTokenMap].
+///
+/// Tempest `AppTheme`/`AppColors` → Prism disposition ledger + dark-surface
+/// resolver (Task 1882 convergence wiring). Stem/domain colours stay injected
+/// via [DSTempestTokenMap.resolveDark] parameters; Prism never owns them.
+typedef PrismTempestTokenMap = DSTempestTokenMap;

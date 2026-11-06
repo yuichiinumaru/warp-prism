@@ -3,7 +3,7 @@ use flutter_rust_bridge::frb;
 use tokio::sync::broadcast;
 use crate::frb_generated::StreamSink;
 use warp_bridge_core::command::{
-    execute_command_pure, CommandRegistry, CommandRequest, CommandResult,
+    execute_command_pure, CommandRegistry, CommandRequest,
 };
 use warp_bridge_core::events::{Event as CoreEvent, EventSeverity as CoreEventSeverity};
 use warp_bridge_core::graph::{
@@ -43,7 +43,50 @@ pub fn count_stream(sink: StreamSink<i32>, n: i32) {
 // 2. Command API
 // ==========================================
 
-static COMMAND_REGISTRY: LazyLock<CommandRegistry> = LazyLock::new(CommandRegistry::new);
+pub(crate) static COMMAND_REGISTRY: LazyLock<CommandRegistry> =
+    LazyLock::new(CommandRegistry::new);
+
+/// Unregisters a command from [COMMAND_REGISTRY] on drop.
+///
+/// Guarantees the registration is released on **every** exit path, not just the
+/// happy path:
+///
+/// * normal return after the blocking task completes;
+/// * the `JoinError` fallback (a panic inside the blocking task);
+/// * an early return introduced by future edits;
+/// * **future cancellation** — if the Dart side drops the `execute_command`
+///   future (or the FRB channel closes) before the post-`await` code runs, the
+///   guard is still dropped and the entry is removed.
+///
+/// Holding the guard in a `let` binding means no explicit `unregister` call
+/// site exists to be skipped by a future edit.
+///
+/// Deliberately private: not `pub`, therefore invisible to `flutter_rust_bridge`
+/// code generation, so the generated Dart bindings are unaffected.
+struct CommandRegistrationGuard {
+    command_id: String,
+    token: Option<warp_bridge_core::command::CancellationToken>,
+}
+
+impl CommandRegistrationGuard {
+    fn new(command_id: impl Into<String>, token: warp_bridge_core::command::CancellationToken) -> Self {
+        Self {
+            command_id: command_id.into(),
+            token: Some(token),
+        }
+    }
+}
+
+impl Drop for CommandRegistrationGuard {
+    fn drop(&mut self) {
+        // Identity-checked removal (F4): a late-finishing execution must not
+        // evict a *different* execution's registration that happens to share
+        // the id.
+        if let Some(token) = self.token.take() {
+            COMMAND_REGISTRY.unregister_if(&self.command_id, &token);
+        }
+    }
+}
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct FrbCommandRequest {
@@ -59,6 +102,12 @@ pub struct FrbCommandResult {
     pub timestamp_millis: i64,
     pub value: Option<String>,
     pub error_message: Option<String>,
+    /// Stable discriminator for the failure taxonomy (`execution`, `validation`,
+    /// `timeout`, `transport`, `duplicate`, `generic`).
+    ///
+    /// Lets Dart discriminate on a typed field instead of matching message text,
+    /// so a panic/transport fault is never mistaken for a cancellation.
+    pub error_kind: Option<String>,
     pub is_cancelled: bool,
 }
 
@@ -68,7 +117,31 @@ pub fn cancel_command(command_id: String) -> bool {
 }
 
 pub async fn execute_command(req: FrbCommandRequest) -> FrbCommandResult {
-    let token = COMMAND_REGISTRY.register(&req.id);
+    // F4: registration is identity-checked. A duplicate id is refused outright
+    // rather than silently replacing the incumbent's active token, so
+    // `cancel_command(id)` and later cleanup can never be redirected onto an
+    // unrelated in-flight command.
+    let token = match COMMAND_REGISTRY.register(&req.id) {
+        Ok(token) => token,
+        Err(warp_bridge_core::command::RegisterError::Duplicate { command_id }) => {
+            // Nothing ran. Report a typed duplicate fault, never a cancellation.
+            return FrbCommandResult {
+                duration_ms: 0,
+                timestamp_millis: warp_bridge_core::now_millis(),
+                value: None,
+                error_message: Some(format!(
+                    "command id already registered by an active execution: {command_id}"
+                )),
+                error_kind: Some("duplicate".to_string()),
+                is_cancelled: false,
+            };
+        }
+    };
+
+    // Acquire the cleanup guard immediately after registration so the entry is
+    // released on every exit path, including a dropped/cancelled future.
+    // See `CommandRegistrationGuard`.
+    let _registry_guard = CommandRegistrationGuard::new(&req.id, token.clone());
     let core_req = CommandRequest {
         id: req.id.clone(),
         command_type: req.command_type,
@@ -76,27 +149,50 @@ pub async fn execute_command(req: FrbCommandRequest) -> FrbCommandResult {
         timeout_ms: req.timeout_ms,
     };
 
-    let res = tokio::task::spawn_blocking(move || {
+    // F5: a `JoinError` means the blocking task **panicked** or was aborted.
+    // That is an internal/transport fault, NOT a cancellation — cancellation is
+    // an intentional, cooperative outcome. Reporting it as `cancelled` would
+    // make a crash indistinguishable from a user abort.
+    let res = match tokio::task::spawn_blocking(move || {
         execute_command_pure(&core_req, Some(&token))
     })
     .await
-    .unwrap_or_else(|_| CommandResult::cancelled(0, 1_725_148_800_000_i64));
+    {
+        Ok(res) => res,
+        Err(join_err) => {
+            let detail = if join_err.is_panic() {
+                "blocking task panicked"
+            } else {
+                "blocking task was aborted before completion"
+            };
+            return FrbCommandResult {
+                duration_ms: 0,
+                timestamp_millis: warp_bridge_core::now_millis(),
+                value: None,
+                error_message: Some(format!("{detail}: {join_err}")),
+                error_kind: Some("transport".to_string()),
+                is_cancelled: false,
+            };
+        }
+    };
 
-    COMMAND_REGISTRY.unregister(&req.id);
+    // NOTE: no explicit `unregister` here by design — `_registry_guard` performs
+    // it on drop. See `CommandRegistrationGuard` for why the post-await call was
+    // not sufficient (it leaked when the future was dropped before resuming).
 
-    let error_message = res.error.map(|e| match e {
-        warp_bridge_core::command::CommandError::Execution { message, .. } => message,
-        warp_bridge_core::command::CommandError::Validation { message, .. } => message,
-        warp_bridge_core::command::CommandError::Timeout { message, .. } => message,
-        warp_bridge_core::command::CommandError::Transport { message } => message,
-        warp_bridge_core::command::CommandError::Generic { message } => message,
-    });
+    // Preserve the taxonomy: the Dart side discriminates on `error_kind`, never
+    // on message text.
+    let (error_message, error_kind) = match res.error {
+        Some(err) => (Some(err.message().to_string()), Some(err.kind().to_string())),
+        None => (None, None),
+    };
 
     FrbCommandResult {
         duration_ms: res.duration_ms,
         timestamp_millis: res.timestamp_millis,
         value: res.value,
         error_message,
+        error_kind,
         is_cancelled: res.is_cancelled,
     }
 }
@@ -184,7 +280,7 @@ pub fn create_event(
 
 pub fn stream_events(sink: StreamSink<FrbEvent>, count: i32, prefix: String) {
     std::thread::spawn(move || {
-        let now = 1_725_148_800_000_i64;
+        let now = warp_bridge_core::now_millis();
         for i in 1..=count {
             std::thread::sleep(std::time::Duration::from_millis(5));
             let evt = FrbEvent {
@@ -282,7 +378,7 @@ impl SharedHealthStore {
                 CoreHealthState::Healthy,
             ),
         ];
-        let snap = CoreHealthSnapshot::new(1_725_148_800_000_i64, cells).with_freshness_ttl(5000);
+        let snap = CoreHealthSnapshot::new(warp_bridge_core::now_millis(), cells).with_freshness_ttl(5000);
         Self {
             state: Mutex::new(snap),
             sender,
@@ -290,7 +386,7 @@ impl SharedHealthStore {
     }
 
     fn to_snapshot(&self) -> FrbHealthSnapshot {
-        let state = self.state.lock().unwrap();
+        let state = self.state.lock().unwrap_or_else(|e| e.into_inner());
         FrbHealthSnapshot {
             timestamp_millis: state.timestamp_millis,
             cells: state
@@ -314,7 +410,7 @@ impl SharedHealthStore {
 
     fn update_cell(&self, cell: CoreHealthCell) -> FrbHealthSnapshot {
         let snap = {
-            let mut state = self.state.lock().unwrap();
+            let mut state = self.state.lock().unwrap_or_else(|e| e.into_inner());
             let mut cells = state.cells.clone();
             let mut matched = false;
             for existing in &mut cells {
@@ -340,7 +436,7 @@ impl SharedHealthStore {
 
     fn set_snapshot(&self, snapshot: CoreHealthSnapshot) -> FrbHealthSnapshot {
         {
-            let mut state = self.state.lock().unwrap();
+            let mut state = self.state.lock().unwrap_or_else(|e| e.into_inner());
             *state = snapshot.clone();
         }
         let _ = self.sender.send(snapshot);
@@ -349,7 +445,7 @@ impl SharedHealthStore {
 
     fn set_cells(&self, cells: Vec<CoreHealthCell>) -> FrbHealthSnapshot {
         let snap = {
-            let mut state = self.state.lock().unwrap();
+            let mut state = self.state.lock().unwrap_or_else(|e| e.into_inner());
             let mut new_snap = CoreHealthSnapshot::new(state.timestamp_millis, cells);
             if let Some(ttl) = state.freshness_ttl_ms {
                 new_snap = new_snap.with_freshness_ttl(ttl);
@@ -712,8 +808,8 @@ impl SharedGraphStore {
     }
 
     fn to_snapshot(&self) -> FrbGraphSnapshot {
-        let state = self.state.lock().unwrap();
-        state.to_snapshot(1_725_148_800_000_i64).into()
+        let state = self.state.lock().unwrap_or_else(|e| e.into_inner());
+        state.to_snapshot(warp_bridge_core::now_millis()).into()
     }
 }
 
@@ -726,7 +822,7 @@ pub fn get_sample_graph_snapshot() -> FrbGraphSnapshot {
 pub fn apply_graph_node_add(node: FrbGraphNode) -> FrbGraphSnapshot {
     let core_node: CoreGraphNode = node.into();
     {
-        let mut state = SHARED_GRAPH.state.lock().unwrap();
+        let mut state = SHARED_GRAPH.state.lock().unwrap_or_else(|e| e.into_inner());
         state.apply_update(CoreGraphUpdate::NodeAdded(core_node.clone()));
     }
     let _ = SHARED_GRAPH
@@ -738,7 +834,7 @@ pub fn apply_graph_node_add(node: FrbGraphNode) -> FrbGraphSnapshot {
 pub fn apply_graph_node_update(node: FrbGraphNode) -> FrbGraphSnapshot {
     let core_node: CoreGraphNode = node.into();
     let previous_node = {
-        let mut state = SHARED_GRAPH.state.lock().unwrap();
+        let mut state = SHARED_GRAPH.state.lock().unwrap_or_else(|e| e.into_inner());
         let prev = state.to_snapshot(0).get_node(&core_node.id).cloned();
         state.apply_update(CoreGraphUpdate::NodeUpdated {
             node: core_node.clone(),
@@ -755,7 +851,7 @@ pub fn apply_graph_node_update(node: FrbGraphNode) -> FrbGraphSnapshot {
 
 pub fn apply_graph_node_remove(node_id: String) -> FrbGraphSnapshot {
     let removed_node = {
-        let mut state = SHARED_GRAPH.state.lock().unwrap();
+        let mut state = SHARED_GRAPH.state.lock().unwrap_or_else(|e| e.into_inner());
         let prev = state.to_snapshot(0).get_node(&node_id).cloned();
         state.apply_update(CoreGraphUpdate::NodeRemoved {
             node_id: node_id.clone(),
@@ -773,7 +869,7 @@ pub fn apply_graph_node_remove(node_id: String) -> FrbGraphSnapshot {
 pub fn apply_graph_edge_add(edge: FrbGraphEdge) -> FrbGraphSnapshot {
     let core_edge: CoreGraphEdge = edge.into();
     {
-        let mut state = SHARED_GRAPH.state.lock().unwrap();
+        let mut state = SHARED_GRAPH.state.lock().unwrap_or_else(|e| e.into_inner());
         state.apply_update(CoreGraphUpdate::EdgeAdded(core_edge.clone()));
     }
     let _ = SHARED_GRAPH
@@ -785,7 +881,7 @@ pub fn apply_graph_edge_add(edge: FrbGraphEdge) -> FrbGraphSnapshot {
 pub fn apply_graph_edge_update(edge: FrbGraphEdge) -> FrbGraphSnapshot {
     let core_edge: CoreGraphEdge = edge.into();
     let previous_edge = {
-        let mut state = SHARED_GRAPH.state.lock().unwrap();
+        let mut state = SHARED_GRAPH.state.lock().unwrap_or_else(|e| e.into_inner());
         let prev = state.to_snapshot(0).get_edge(&core_edge.id).cloned();
         state.apply_update(CoreGraphUpdate::EdgeUpdated {
             edge: core_edge.clone(),
@@ -802,7 +898,7 @@ pub fn apply_graph_edge_update(edge: FrbGraphEdge) -> FrbGraphSnapshot {
 
 pub fn apply_graph_edge_remove(edge_id: String) -> FrbGraphSnapshot {
     let removed_edge = {
-        let mut state = SHARED_GRAPH.state.lock().unwrap();
+        let mut state = SHARED_GRAPH.state.lock().unwrap_or_else(|e| e.into_inner());
         let prev = state.to_snapshot(0).get_edge(&edge_id).cloned();
         state.apply_update(CoreGraphUpdate::EdgeRemoved {
             edge_id: edge_id.clone(),
@@ -820,7 +916,7 @@ pub fn apply_graph_edge_remove(edge_id: String) -> FrbGraphSnapshot {
 pub fn apply_graph_reset(snapshot: FrbGraphSnapshot) -> FrbGraphSnapshot {
     let core_snapshot: CoreGraphSnapshot = snapshot.into();
     {
-        let mut state = SHARED_GRAPH.state.lock().unwrap();
+        let mut state = SHARED_GRAPH.state.lock().unwrap_or_else(|e| e.into_inner());
         state.apply_update(CoreGraphUpdate::GraphReset(core_snapshot.clone()));
     }
     let _ = SHARED_GRAPH

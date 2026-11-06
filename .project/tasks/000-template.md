@@ -1,148 +1,64 @@
-# Task Template — Warp Prism
+# Task Template
 
-> **Required**: Every executable Warp Prism task in `01-open/` or later lanes
-> must use this template or preserve all required sections. Minimum length: 50
-> lines.
->
-> **Lane semantics (reconciled with AGENTS.md §3.1, 2026-09-01)**:
-> `00-planning/` may contain BOTH planning artifacts (EPIC/PLAN/CANDIDATE/etc.)
-> AND numbered/materialized Tasks intentionally HOLD/not-ready — a dependency,
-> external gate, or promotion condition is unmet. `01-open/` means
-> **executable NOW**: every hard dependency satisfied, no known blocker, scope
-> and non-goals explicit, architecture dispositioned, writeset identifiable,
-> validation commands known. A numbered Task keeps its identity when moving
-> between lanes; the lane is the only readiness source.
->
-> **Milestone Alignment**: every numbered/materialized Task must carry a
-> `## Milestone Alignment` section (Target milestone / Capability-Gate advanced
-> / Strategic why / Consequence if absent — see the `docs/tasks/AGENTS.md`
-> shared baseline and `docs/milestones.md`).
+This is a selectable authoring aid, not a required section layout. Use it only
+when durable execution context is needed. Follow `.project/tasks/AGENTS.md` and
+the effective root; omit inapplicable sections and instructional placeholders.
+The local installation is `.project/tasks/000-template.md`.
 
----
+## Concise form
 
-# Task NNNN: [Descriptive Task Name]
-
-> **Lane-derived status**: The containing task directory is the sole source of lifecycle/readiness status (`00-planning/`, `01-open/`, `02-doing/`, `03-review/`, or `04-completed/`). Do not add a task-level `Status` field; record richer state in the body or Review Trail.
-> **Review State**: `Open` | `Doing` | `Builder Done` | `Package Gate Failed` | `Consumer Gate Failed` | `Ready For Review` | `Review Approved` | `Promoted` | `Superseded` | `Blocked` — see `docs/governance/promotion-state-model.md`
->
-> Review State describes the review/progress sub-state; it does not replace or duplicate the containing lane.
-> **Priority**: 🔴 P0 | 🟡 P1 | 🟢 P2 | ⚪ P3
-> **Type**: `feature` | `remediation` | `verification` | `testing` | `governance` | `housekeeping` | `ux-polish`
-> **Origin**: [prompt/research/draft/report/user request/task audit]
-> **Blocks**: [Task NNNN or N/A]
-> **Depends on**: [Task NNNN or N/A]
-
-> [!IMPORTANT]
-> Task identity is lane-neutral. Use `Task NNNN` plus optional slug for
-> dependencies, blockers, review ledgers, reports, and architecture references.
-> Lanes such as `02-doing` and `03-review` are mutable status, not identity.
-
----
-
-## Milestone Alignment
-
-- **Target milestone**: [milestone ID in `docs/milestones.md`]
-- **Capability / Gate advanced**: [gate or capability this task advances]
-- **Strategic why**: [why this is necessary now for the milestone]
-- **Consequence if absent**: [what breaks or stays unverified without it]
-
----
-
-## Objective
-
-[Describe the concrete outcome. A new agent should know exactly what success
-looks like after reading this section.]
-
-## Background Context
-
-### What already exists
-
-- [List current files, fixtures, UI surfaces, or docs.]
-
-### What is missing or broken
-
-- [List concrete gaps with paths whenever possible.]
-
----
-
-## Test Requirements
-
-- [Measurable requirement 1.]
-- [Measurable requirement 2.]
-- [Measurable requirement 3.]
-
----
-
-## Exit Conditions
-
-- [ ] [Binary artifact condition.]
-- [ ] [Relevant Flutter/Dart validation command passes.]
-- [ ] [Relevant fixture/docs validation command passes.]
-- [ ] Local changelog entry added under `docs/changelog/`.
-- [ ] Completion Evidence is filled before review handoff.
-
----
-
-## Details
-
-### What
-
-Subtasks:
-
-- [ ] **Read existing code before modifying**: [List files to read.]
-- [ ] [Atomic subtask with observable result.]
-- [ ] [Atomic subtask with observable result.]
-- [ ] **Simplicity pass**: remove unnecessary complexity introduced by this task.
-- [ ] **Regression verification**: run the validation commands listed below.
-
-### Where
-
-| File | Purpose |
-| --- | --- |
-| `path/to/file.dart` | Read / Modify / Create — why |
-| `path/to/test.dart` | Read / Modify / Create — why |
-
-### How
-
-1. [Step 1.]
-2. [Step 2.]
-3. [Step 3.]
-
-### Why
-
-[Explain why this task is necessary and what breaks if it is not done.]
-
----
-
-## Anti-Hallucination Guardrails
-
-> [!CAUTION]
-> Do not mark this task complete without running the validation commands and
-> filling Completion Evidence.
-
-> [!IMPORTANT]
-> Preserve Warp Prism read-only mock-observatory semantics unless this task
-> explicitly changes the product contract.
-
----
-
-## Validation Commands
-
-```bash
-flutter analyze
-flutter test
+```markdown
+# Task NNNN: Concrete outcome
+Change only the named subject within the referenced grant; success is the stated observable behavior, verified by the relevant check.
 ```
 
-If Flutter tooling is unavailable in the execution environment, record the exact
-tooling failure and do not claim those checks passed.
+Necessary meaning is identity, authorized outcome, bounded scope/constraints and
+checkable success with appropriate proof. Existing references may supply it;
+headings or length cannot establish sufficiency.
 
----
+## Expand only when the meaning is consequential
 
-## Completion Evidence
+```markdown
+# Task NNNN: Concrete outcome
 
-- **Files created/modified**: [list]
-- **Tests or validation commands**: [commands and PASS/FAIL]
-- **Local changelog entry**: [path]
-- **Agent-wiki / docs institutionalization**: [path or N/A]
-- **Executor**: [agent]
-- **Completion date**: [YYYY-MM-DD]
+## Outcome and boundaries
+Describe/reference the authorized outcome, subject, allowed effects, constraints
+and non-goals needed by the next actor.
+
+## Success and verification
+State/reference actual obligations, checks, evidence and any required assurance.
+Record results and limits in their existing owner when obtained.
+
+## Context / reliance (conditional)
+Identify the exact premise needed by each consequential next action: contract for
+construction, relevant behavior for integration, combined evidence plus authority
+for publication. Do not wait for a whole upstream Task unless its whole outcome
+is the premise.
+
+## Milestone relationship (conditional)
+Reference the real active milestone only when the Task materially advances,
+blocks or verifies it; record the useful relationship without invented alignment.
+
+## Work / responsibility (conditional)
+Bound meaningful subtasks and effects where coordination needs them. Read current
+sources before mutation; no mandatory first-checkbox representation.
+
+## Evidence / assessment (conditional)
+Bind actual results, relevant subject/premises and limitations. Independent review
+is recorded only where required; directory, score and checkbox are not proof.
+
+## Amendment / journal references (conditional)
+Preserve material contract changes, authority and affected evidence/reliance.
+Use existing journal/revision history when needed, without duplicating it here.
+```
+
+Priority/Type, risk, rationale, Story/Epic links, tables, Where/How, checkbox lists,
+named review sections and journal/revision layouts remain optional authoring aids.
+Don't emit empty headings, boilerplate N/A, an initial empty amendment, fabricated
+milestones or fixed journal paths. Existing selected encodings keep their actual
+obligations; historical content is not rewritten.
+
+Directories `00-planning` through `04-completed` are administrative projections.
+Completion is actual obligations satisfied with appropriate evidence/assurance,
+not placement. This template grants no movement, acceptance, VCS or publication
+rights and imposes no mandatory Expert, Reviewer or 100/100 pipeline.

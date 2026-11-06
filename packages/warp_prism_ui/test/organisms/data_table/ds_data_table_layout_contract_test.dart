@@ -5,7 +5,12 @@ import 'package:warp_prism_ui/warp_prism_ui.dart';
 void main() {
   const sampleColumns = <PrismDataColumn>[
     PrismDataColumn(id: 'name', label: 'Name', sortable: true),
-    PrismDataColumn(id: 'provider', label: 'Provider', sortable: true, width: 140),
+    PrismDataColumn(
+      id: 'provider',
+      label: 'Provider',
+      sortable: true,
+      width: 140,
+    ),
     PrismDataColumn(id: 'status', label: 'Status', width: 120),
   ];
 
@@ -157,35 +162,34 @@ void main() {
       },
     );
 
-    testWidgets(
-      'holds under h=50 constraint at 1280x800 capture viewport',
-      (tester) async {
-        setupStrictOverflowFailure(tester);
-        tester.view.physicalSize = const Size(1280, 800);
-        tester.view.devicePixelRatio = 1.0;
-        addTearDown(tester.view.resetPhysicalSize);
-        addTearDown(tester.view.resetDevicePixelRatio);
+    testWidgets('holds under h=50 constraint at 1280x800 capture viewport', (
+      tester,
+    ) async {
+      setupStrictOverflowFailure(tester);
+      tester.view.physicalSize = const Size(1280, 800);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
 
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: SizedBox(
-                width: 958,
-                height: 50,
-                child: PrismDataTable(
-                  columns: sampleColumns,
-                  rows: sampleRows,
-                  showPagination: false,
-                ),
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SizedBox(
+              width: 958,
+              height: 50,
+              child: PrismDataTable(
+                columns: sampleColumns,
+                rows: sampleRows,
+                showPagination: false,
               ),
             ),
           ),
-        );
-        await tester.pump();
+        ),
+      );
+      await tester.pump();
 
-        expect(find.byType(PrismDataTable), findsOneWidget);
-      },
-    );
+      expect(find.byType(PrismDataTable), findsOneWidget);
+    });
 
     testWidgets(
       'holds under h=50 constraint at 1920x1080 desktop viewport class',

@@ -48,11 +48,11 @@ class ExerciseTraceWriter {
     }
   }
 
-  /// Resolves the repository root by walking up to `docs/reports`.
+  /// Resolves the repository root by walking up to `.project/reports`.
   static Directory repositoryRoot() {
     var directory = Directory.current;
     while (directory.parent.path != directory.path) {
-      if (Directory('${directory.path}/docs/reports').existsSync()) {
+      if (Directory('${directory.path}/.project/reports').existsSync()) {
         return directory;
       }
       directory = directory.parent;
@@ -72,7 +72,7 @@ class ExerciseTraceWriter {
   }) async {
     final root = repositoryRoot();
     final directory = Directory(
-      '${root.path}/docs/reports/host-exercise/traces',
+      '${root.path}/.project/reports/host-exercise/traces',
     );
     await directory.create(recursive: true);
     final name =
@@ -101,7 +101,7 @@ class ExerciseTraceWriter {
   static String traceArtifactPath(ExerciseTrace trace, {String? fileName}) {
     final root = repositoryRoot();
     final directory = Directory(
-      '${root.path}/docs/reports/host-exercise/traces',
+      '${root.path}/.project/reports/host-exercise/traces',
     );
     final name =
         fileName ??

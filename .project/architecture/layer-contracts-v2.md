@@ -1,8 +1,52 @@
 # Warp Prism v2 — Layer Contracts & Boundary Law
 
-> **Status**: Active architecture specification & boundary law
+> ## ⚠️ SUPERSEDED (2026-09-28) — RETAINED AS HISTORICAL EVIDENCE ONLY
+>
+> **This is no longer a semantic owner of the layer-contract law.** The
+> canonical matrix is **[`layer-contracts.md`](layer-contracts.md)** in this
+> same directory. Where this document and `layer-contracts.md` disagree,
+> `layer-contracts.md` governs.
+>
+> **Why it was orphaned**: the 2026-09-27 epoch reset authored a new
+> `docs/architecture/layer-contracts.md` without diffing it against this
+> document, leaving two live owners of the same normative law. The reset's
+> path (`docs/architecture/`) was then closed by the operator decision of
+> 2026-09-28, and both files now live side by side here. Only one may own the
+> law; this one is retired.
+>
+> **Citations elsewhere in this directory that point at `layer-contracts-v2`
+> are historical provenance, not current authority** — e.g.
+> `runtime-consumer-audit.md` cites `layer-contracts-v2 §3.2`, `§2`, `§4.3`.
+> Those citations are preserved verbatim and are not rewritten; they record
+> what the law said when the audit was written.
+>
+> ### What this document uniquely held that `layer-contracts.md` dropped
+>
+> | Attribute | v2 (here) | v3 (`layer-contracts.md`) |
+> |---|---|---|
+> | Per-check **enforcement status** (`ENFORCED NOW` vs `PHASED`) | present, 17 rows | **dropped — flattened** |
+> | Per-check **provenance** (which Task added each check) | present | dropped except one parenthetical |
+> | Declared check count | 17 | 16 |
+> | Actual checks in `boundary_test.dart` | — | **15** |
+>
+> The lost status column is a real semantic regression: it is what told a reader
+> which law was an **active hard gate** versus merely **specified**. Recovering
+> it is open work, not a claim this document makes.
+>
+> ### Known drift recorded here, not repaired here
+>
+> `layer-contracts.md` §10 item 16 ("`bindings` never imports FRB generated
+> surfaces") is **not implemented** in `boundary_test.dart` — the harness
+> registers 15 checks, not 16. The reset's own §10 preamble requires a row with
+> no mechanical check to be marked as documentation-only; that marking was
+> omitted. Corrected in `layer-contracts.md` on 2026-09-28.
+
+> **Status**: SUPERSEDED — historical evidence only (was: Active architecture
+> specification & boundary law)
 > **Author**: Task 1811 — Layer Boundaries + Dependency Law + Boundary Harness v2
 > **Date**: 2026-09-01
+> **Superseded by**: `.project/architecture/layer-contracts.md` (2026-09-27,
+> rehomed 2026-09-28)
 > **Milestone Alignment**: M01 — Warp Prism v2: L1 Integration-Capable
 > **Depends on**: Task 1810 (Charter v2 ADR), Task 1812 (Package Topology)
 > **Blocks**: Task 1818 (Runtime Consumer Audit), Task 1822 (FRB Spike)

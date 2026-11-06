@@ -13,7 +13,7 @@ Pure Dart backend-agnostic runtime contracts for Warp Prism.
 
 ## Presentation-Purge Law (Task 1818 Requirements Floor)
 
-This package strictly enforces the **Presentation-Purge Law** established in `docs/architecture/runtime-consumer-audit.md` and `docs/architecture/layer-contracts-v2.md`:
+This package strictly enforces the **Presentation-Purge Law** established in `.project/architecture/runtime-consumer-audit.md` and `.project/architecture/layer-contracts.md`:
 
 1. **EventStream**: Zero auto-scroll, follow-tail, viewport tracking, pause-on-scroll, or UI filter states (owned by widget/IDS).
 2. **HealthSource**: Zero polling intervals, retry policies, refresh-on-focus mechanics (owned by composition/app), or interactive cell selection / tap callbacks (`onCellSelected` is owned by `warp_prism_ui` / `warp_prism_interaction`).
@@ -23,7 +23,7 @@ This package strictly enforces the **Presentation-Purge Law** established in `do
 
 ## Lifecycle Status
 
-All public contracts and data models in this package are currently tagged **`EXPERIMENTAL`** per `docs/architecture/layer-contracts-v2.md` §3.2.
+All public contracts and data models in this package are currently tagged **`EXPERIMENTAL`** per `.project/architecture/layer-contracts.md` §9.
 
 ## Implementation & Downstream Usage
 

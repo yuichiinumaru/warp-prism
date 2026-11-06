@@ -988,9 +988,7 @@ class _ConsoleHeader extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: DSColors.accentBlue.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(DSRadii.chip),
-                          border: Border.all(
-                            color: DSColors.focusRing,
-                          ),
+                          border: Border.all(color: DSColors.focusRing),
                         ),
                         child: DSText.labelSmall(
                           'Latest',

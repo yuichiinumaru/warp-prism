@@ -2,7 +2,7 @@ import 'package:meta/meta.dart';
 
 /// Severity level associated with a runtime event or log emission.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 enum EventSeverity {
   /// Standard process output stream.
@@ -29,7 +29,7 @@ enum EventSeverity {
 /// Declares buffer behavior when consumers cannot process events as fast
 /// as they are produced.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 enum BackpressureStrategy {
   /// Unbounded buffering without dropping.
@@ -47,7 +47,7 @@ enum BackpressureStrategy {
 
 /// Backpressure policy specification for an [EventStream].
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 @immutable
 class EventStreamBackpressurePolicy {
@@ -99,7 +99,7 @@ class EventStreamBackpressurePolicy {
 /// telemetry pulses, trace items). They carry semantic identification and
 /// ordering metadata, strictly free of viewport or presentation flags.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 @immutable
 class RuntimeEvent<T> {

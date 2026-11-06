@@ -223,7 +223,11 @@ void main() {
     testWidgets('shows pagination controls by default', (tester) async {
       await tester.pumpWidget(
         wrap(
-          PrismDataTable(columns: sampleColumns, rows: sampleRows(), pageSize: 10),
+          PrismDataTable(
+            columns: sampleColumns,
+            rows: sampleRows(),
+            pageSize: 10,
+          ),
         ),
       );
 
@@ -373,7 +377,10 @@ void main() {
       final rows = [
         const PrismDataRow(
           id: '1',
-          cells: {'name': 'Test Entity', 'state': PrismOperationalState.running},
+          cells: {
+            'name': 'Test Entity',
+            'state': PrismOperationalState.running,
+          },
         ),
       ];
 
@@ -843,10 +850,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(
-        find.bySemanticsLabel(RegExp(r'Sort by Name')),
-        findsOneWidget,
-      );
+      expect(find.bySemanticsLabel(RegExp(r'Sort by Name')), findsOneWidget);
     });
   });
 

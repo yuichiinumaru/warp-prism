@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:warp_prism_ui/warp_prism_ui.dart';
 
+import 'gallery_test_oracle.dart';
+
 /// Task 0017 / Task 1304 / Task 1613: Design System Gallery
 ///
 /// Widget tests proving that the gallery page renders and demonstrates
@@ -75,12 +77,17 @@ void main() {
 
       // 10 base layers + 9 EPIC-15 families (Task 1519 incl. optional-polish)
       // + 4 EPIC-16 families (Task 1613) + 1 Theme Editor (Task 1807)
+      // + 1 job banner EXPERIMENTAL (Task 1858)
+      // + 1 meter/fader EXPERIMENTAL (Task 1861)
+      // + 1 composer EXPERIMENTAL (Task 1866)
+      // + 1 numeric field EXPERIMENTAL (Task 1881)
+      // + 1 session & panels EXPERIMENTAL (Task 1883)
       expect(
         dsGallerySectionTitles.length,
-        24,
+        29,
         reason:
-            'Registry must expose 24 gallery sections '
-            '(10 base + 9 EPIC-15 + 4 EPIC-16 + 1 Theme Editor)',
+            'Registry must expose 29 gallery sections '
+            '(10 base + 9 EPIC-15 + 4 EPIC-16 + 1 Theme Editor + 1 banner 1858 + 1 meter 1861 + 1 composer 1866 + 1 numeric 1881 + 1 session 1883)',
       );
 
       for (final title in dsGallerySectionTitles) {
@@ -101,8 +108,8 @@ void main() {
 
       _suppressGalleryDemoNoise();
 
-      // Keep count aligned with dsGallerySections (operational-states + EPIC-15/16 families + Theme Editor).
-      expect(dsGallerySections.length, 24);
+      // Keep count aligned with dsGallerySections (operational-states + EPIC-15/16 families + Theme Editor + banner 1858 + meter 1861 + composer 1866 + numeric 1881 + session 1883).
+      expect(dsGallerySections.length, 29);
 
       for (final section in dsGallerySections) {
         await tester.pumpWidget(
@@ -128,7 +135,10 @@ void main() {
         ids.toSet().length,
         reason: 'Section IDs must be unique',
       );
-      expect(ids.length, 24);
+      // 26 pre-composer sections + 1 composer EXPERIMENTAL (Task 1866) + 1 numeric EXPERIMENTAL (Task 1881) + 1 session & panels EXPERIMENTAL (Task 1883).
+      // (Pre-existing drift: this assertion read 25 after Task 1861 added
+      // the 26th section; corrected to the actual count here.)
+      expect(ids.length, 29);
     });
 
     testWidgets('EPIC-15 family section IDs are registered', (tester) async {
@@ -535,26 +545,18 @@ void main() {
   });
 }
 
-/// Ignores known gallery demo noise so registration/render proofs stay green.
+/// Narrowed gallery noise suppressor (Task 1843).
 ///
-/// Filters:
-/// - layout overflow from dense fixture demos (pre-existing EPIC-15 surfaces)
-/// - ListTile Material ancestor warnings from glass [DecoratedBox] hosts
-void _suppressGalleryDemoNoise() {
-  final originalOnError = FlutterError.onError;
-  FlutterError.onError = (details) {
-    final msg = details.exceptionAsString();
-    if (msg.contains('overflow') ||
-        msg.contains('RenderFlex') ||
-        msg.contains('A RenderFlex overflowed') ||
-        msg.contains('ListTile background color') ||
-        msg.contains('ink splashes may be invisible')) {
-      return;
-    }
-    originalOnError?.call(details);
-  };
-  addTearDown(() => FlutterError.onError = originalOnError);
-}
+/// Delegates to the shared, independently tested oracle in
+/// `gallery_test_oracle.dart` so the mask policy has exactly one owner and the
+/// regression test can assert against the very function installed here.
+///
+/// Before Task 1843 this also swallowed anything containing `overflow`,
+/// `RenderFlex`, or `A RenderFlex overflowed`, which left the gallery suite
+/// unable to fail on the layout-error class the gallery exists to prove absent.
+/// Measured at the time: the old filter set suppressed **zero** messages across
+/// the 22-test gallery suite, so it was inert — but latent, and now closed.
+void _suppressGalleryDemoNoise() => installGalleryBenignHintSuppressor();
 
 /// Scrolls the main gallery [ListView] until [text] is visible on screen.
 ///
@@ -566,7 +568,9 @@ void _suppressGalleryDemoNoise() {
 Future<void> _findByScrolling(
   WidgetTester tester,
   String text, {
-  int maxScrolls = 100,
+  // Scroll budget grows with the registry: 27 sections (Task 1866 added the
+  // composer entry) need headroom beyond the original 100-fling budget.
+  int maxScrolls = 140,
 }) async {
   // Use the Scaffold body as the scrollable — the gallery's ListView
   // is nested inside it.

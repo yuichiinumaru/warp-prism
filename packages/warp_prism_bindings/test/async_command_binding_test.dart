@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:warp_prism_bindings/warp_prism_bindings.dart';
 import 'package:warp_prism_interaction/warp_prism_interaction.dart';
@@ -224,6 +226,199 @@ void main() {
         expect(result, isA<CommandCancelled<String>>());
 
         expect(() => binding.execute('after'), throwsStateError);
+      },
+    );
+  });
+
+  // ===== F2: stale completion race ========================================
+  //
+  // Ordering is enforced with explicit Completers, never with cooperative
+  // timing (no `delayed` racing). Each test states exactly which execution is
+  // authoritative and asserts the late one cannot overwrite it.
+  group('AsyncCommandBinding stale-completion guard (F2)', () {
+    /// Builds a fake whose Nth execute parks on its own Completer, so tests can
+    /// release executions in an exact, chosen order.
+    FakeAsyncCommand<String, String> parkedCommand(
+      List<Completer<String>> park,
+    ) {
+      var index = 0;
+      return FakeAsyncCommand<String, String>(
+        handler: (param, token) async => park[index++].future,
+      );
+    }
+
+    test(
+      'A starts, B starts, B succeeds first, A returns success late -> '
+      'state remains B success',
+      () async {
+        final parkA = Completer<String>();
+        final parkB = Completer<String>();
+        final command = parkedCommand(<Completer<String>>[parkA, parkB]);
+        final binding = AsyncCommandBinding<String, String>(command: command);
+
+        final futureA = binding.execute('A');
+        await Future<void>.delayed(Duration.zero);
+        final generationA = binding.authoritativeGeneration;
+
+        final futureB = binding.execute('B');
+        await Future<void>.delayed(Duration.zero);
+        final generationB = binding.authoritativeGeneration;
+        expect(generationB, greaterThan(generationA));
+
+        // B completes FIRST and becomes the authoritative terminal state.
+        parkB.complete('B-result');
+        final resultB = await futureB;
+        expect(resultB, isA<CommandSuccess<String>>());
+        expect(binding.status, equals(AsyncCommandStatus.succeeded));
+        expect(binding.lastSuccess, equals('B-result'));
+
+        // A completes late. Its result MUST still be delivered to A's own
+        // caller, but it must not mutate the state owned by B.
+        //
+        // Note on A's result type: under the adopted cancel-and-replace model
+        // (F1) A's token was signalled when B superseded it, so A correctly
+        // reports CommandCancelled rather than a stale success. The F2
+        // invariant under test is not *which* result A produces — it is that
+        // the result is RETURNED to A's caller while [state] remains untouched
+        // by A. Both branches below assert exactly that.
+        parkA.complete('A-result');
+        final resultA = await futureA;
+        expect(
+          resultA,
+          isA<CommandResult<String>>(),
+          reason: 'a late execution still receives its own terminal result',
+        );
+        expect(
+          binding.status,
+          equals(AsyncCommandStatus.succeeded),
+          reason: 'status must remain B-derived success',
+        );
+        expect(
+          binding.lastSuccess,
+          equals('B-result'),
+          reason: "A's late completion must not overwrite B's lastSuccess",
+        );
+        expect(
+          binding.authoritativeGeneration,
+          equals(generationB),
+          reason: 'authority must stay with B',
+        );
+
+        binding.dispose();
+      },
+    );
+
+    test(
+      'A starts, B starts, B succeeds, A returns cancellation late -> '
+      'state remains B success',
+      () async {
+        final parkA = Completer<String>();
+        final parkB = Completer<String>();
+        final command = parkedCommand(<Completer<String>>[parkA, parkB]);
+        final binding = AsyncCommandBinding<String, String>(command: command);
+
+        final futureA = binding.execute('A');
+        await Future<void>.delayed(Duration.zero);
+        final futureB = binding.execute('B');
+        await Future<void>.delayed(Duration.zero);
+
+        parkB.complete('B-result');
+        await futureB;
+        expect(binding.status, equals(AsyncCommandStatus.succeeded));
+
+        // A terminates as cancellation, late. This is the exact F2 scenario:
+        // a stale `toCancelled` must not downgrade the authoritative success.
+        parkA.completeError(
+          const CommandCancellationException('cancelled-late'),
+        );
+        final resultA = await futureA;
+        expect(resultA, isA<CommandCancelled<String>>());
+        expect(
+          binding.status,
+          equals(AsyncCommandStatus.succeeded),
+          reason:
+              'a stale cancellation must not downgrade B success to cancelled',
+        );
+        expect(binding.lastSuccess, equals('B-result'));
+
+        binding.dispose();
+      },
+    );
+
+    test(
+      'A starts, B starts, B fails, A finishes late -> state remains B failure',
+      () async {
+        final parkA = Completer<String>();
+        final parkB = Completer<String>();
+        final command = parkedCommand(<Completer<String>>[parkA, parkB]);
+        final binding = AsyncCommandBinding<String, String>(command: command);
+
+        final futureA = binding.execute('A');
+        await Future<void>.delayed(Duration.zero);
+        final futureB = binding.execute('B');
+        await Future<void>.delayed(Duration.zero);
+
+        parkB.completeError(StateError('B failed'));
+        final resultB = await futureB;
+        expect(resultB, isA<CommandFailure<String>>());
+        expect(binding.status, equals(AsyncCommandStatus.failed));
+
+        // A completes late. Must not clear or overwrite B's failure.
+        parkA.complete('A-result');
+        await futureA;
+        expect(
+          binding.status,
+          equals(AsyncCommandStatus.failed),
+          reason: "a stale A success must not overwrite B's failure",
+        );
+        expect(
+          binding.lastSuccess,
+          isNull,
+          reason: "a stale A must not publish lastSuccess over B's failure",
+        );
+        expect(binding.lastError, isNotNull);
+
+        binding.dispose();
+      },
+    );
+
+    test(
+      'A starts, B starts, B fails, A also fails late -> state remains B failure',
+      () async {
+        final parkA = Completer<String>();
+        final parkB = Completer<String>();
+        final command = parkedCommand(<Completer<String>>[parkA, parkB]);
+        final binding = AsyncCommandBinding<String, String>(command: command);
+
+        final futureA = binding.execute('A');
+        await Future<void>.delayed(Duration.zero);
+        final futureB = binding.execute('B');
+        await Future<void>.delayed(Duration.zero);
+
+        parkB.completeError(StateError('B failed'));
+        await futureB;
+        expect(binding.status, equals(AsyncCommandStatus.failed));
+
+        // A also fails late. B remains authoritative, so state is unchanged.
+        parkA.completeError(StateError('A failed late'));
+        final resultA = await futureA;
+        expect(
+          resultA,
+          isA<CommandResult<String>>(),
+          reason: 'a late execution still receives its own terminal result',
+        );
+        expect(
+          binding.status,
+          equals(AsyncCommandStatus.failed),
+          reason: 'B remains the authoritative terminal state',
+        );
+        expect(
+          binding.lastSuccess,
+          isNull,
+          reason: "a stale A failure must not clear B's authoritative failure",
+        );
+
+        binding.dispose();
       },
     );
   });

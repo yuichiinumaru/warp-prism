@@ -1,8 +1,8 @@
 # Changelog: unspecified
 
-> **Note**: Auto-generated view for project `unspecified` from `.changelog/` entries.
+> **Note**: Auto-generated view for project `unspecified` from `.project/changelog/` entries.
 > **Do NOT edit manually** - use the changelog skill/subcommands.
-> **Last rebuilt**: 2026-09-08 18:09:23 UTC
+> **Last rebuilt**: 2026-10-15 21:33:42 UTC
 
 ---
 

@@ -32,7 +32,10 @@ void main() {
       expect(skin.accentDim, equals(const Color(0xFF7A0A26)));
       expect(skin.borderGlow, equals(const Color(0xFFE51A4C)));
       expect(PrismTaldarimRedSkin.coreRed, equals(const Color(0xFFE51A4C)));
-      expect(PrismTaldarimRedSkin.coreRedMuted, equals(const Color(0xFFB8103A)));
+      expect(
+        PrismTaldarimRedSkin.coreRedMuted,
+        equals(const Color(0xFFB8103A)),
+      );
       expect(PrismTaldarimRedSkin.coreRedDim, equals(const Color(0xFF7A0A26)));
     });
 
@@ -69,7 +72,10 @@ void main() {
       final theme = const PrismTaldarimRedSkin.taldarimRed().applyToTheme(base);
 
       expect(theme.colorScheme.primary, equals(const Color(0xFFE51A4C)));
-      expect(theme.colorScheme.primaryContainer, equals(const Color(0xFF7A0A26)));
+      expect(
+        theme.colorScheme.primaryContainer,
+        equals(const Color(0xFF7A0A26)),
+      );
       expect(theme.colorScheme.inversePrimary, equals(const Color(0xFFB8103A)));
       expect(theme.extension<PrismTaldarimRedSkin>(), isNotNull);
       expect(

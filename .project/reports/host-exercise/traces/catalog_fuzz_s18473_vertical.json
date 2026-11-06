@@ -1,0 +1,81 @@
+{
+  "seed": 18473,
+  "host": "catalog",
+  "mode": "fuzz",
+  "initial_route": "gallery",
+  "viewport": {
+    "name": "desktop-1280x800",
+    "width": 1280.0,
+    "height": 800.0,
+    "device_pixel_ratio": 1.0
+  },
+  "theme_recipe": "khalai-blue",
+  "action_budget": 8,
+  "actions": [
+    {
+      "index": 0,
+      "target": "key:catalog-nav-gallery",
+      "action": "tap",
+      "route_before": "gallery",
+      "route_after": "gallery",
+      "state_marker": "candidates=26 pick=1"
+    },
+    {
+      "index": 1,
+      "target": "sem:Theme Editor",
+      "action": "tap",
+      "route_before": "gallery",
+      "route_after": "gallery",
+      "state_marker": "candidates=26 pick=20"
+    },
+    {
+      "index": 2,
+      "target": "key:catalog-nav-gallery",
+      "action": "tap",
+      "route_before": "gallery",
+      "route_after": "gallery",
+      "state_marker": "candidates=35 pick=1"
+    },
+    {
+      "index": 3,
+      "target": "sem:Molecules",
+      "action": "tap",
+      "route_before": "gallery",
+      "route_after": "gallery",
+      "state_marker": "candidates=35 pick=21"
+    },
+    {
+      "index": 4,
+      "target": "sem:Apply Nerazim Teal preset",
+      "action": "tap",
+      "route_before": "gallery",
+      "route_after": "gallery",
+      "state_marker": "candidates=10 pick=4"
+    },
+    {
+      "index": 5,
+      "target": "sem:Large",
+      "action": "skip-unreachable",
+      "route_before": "gallery",
+      "route_after": "gallery",
+      "state_marker": "candidates=32 pick=17"
+    },
+    {
+      "index": 6,
+      "target": "key:copy-hex-accentBlueMuted",
+      "action": "tap",
+      "route_before": "gallery",
+      "route_after": "gallery",
+      "state_marker": "candidates=32 pick=3"
+    },
+    {
+      "index": 7,
+      "target": "sem:Section 2: Security & Permissions",
+      "action": "skip-unreachable",
+      "route_before": "gallery",
+      "route_after": "gallery",
+      "state_marker": "candidates=47 pick=39"
+    }
+  ],
+  "errors": []
+}

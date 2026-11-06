@@ -11,7 +11,7 @@ import 'prism_token_registry.dart';
 ///
 /// Lore brand naming convention:
 /// - **Khalai Blue**: default primary action accent (`accentBlue = #2F81FF`)
-/// - **Nerazim Green/Teal**: retained cyan/green data category accents
+/// - **Nerazim Teal**: retained cyan/green data category accents
 /// - **Purifier Gold**: gold energy accent (`accentGold = #FFB800`)
 /// - **Taldarim Red**: crimson energy accent (`#E51A4C` family)
 /// - **Talon Purple**: violet/crimson-purple energy accent (`#9911E5` family)
@@ -123,9 +123,7 @@ class DSTalonPurpleSkin extends ThemeExtension<DSTalonPurpleSkin>
           borderSide: BorderSide(color: accent, width: 1.5),
         ),
       ),
-      chipTheme: withExtension.chipTheme.copyWith(
-        selectedColor: accentDim,
-      ),
+      chipTheme: withExtension.chipTheme.copyWith(selectedColor: accentDim),
     );
   }
 
@@ -159,10 +157,7 @@ class DSTalonPurpleSkin extends ThemeExtension<DSTalonPurpleSkin>
   }
 
   @override
-  DSTalonPurpleSkin lerp(
-    ThemeExtension<DSTalonPurpleSkin>? other,
-    double t,
-  ) {
+  DSTalonPurpleSkin lerp(ThemeExtension<DSTalonPurpleSkin>? other, double t) {
     if (other is! DSTalonPurpleSkin) {
       return this;
     }

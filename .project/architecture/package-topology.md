@@ -71,6 +71,19 @@ Dependencies flow strictly inward toward pure contracts. No cyclic dependencies 
 7. `testkit` → {`runtime`, `interaction`}: Testkit verifies contract implementations.
 8. **Isolation Invariant**: NOTHING may import `warp_prism_adapter_frb` except consumer applications.
 9. **UI Purity Invariant**: `warp_prism_ui` **MUST NOT** import `interaction`, `runtime`, `bindings`, `adapter_frb`, or FRB.
+   **Dev-only carve-out (aligned 2026-10-11, rem-0004)**: the `interaction` clause
+   above is a *production* ban only. Current law (`layer-contracts.md` §1 row 1:
+   `warp_prism_ui` MAY "depend on `warp_prism_interaction`" and MUST "consume only
+   its own tokens/theme + `warp_prism_interaction` in dev"; see also §2 note
+   "`warp_prism_ui` need not depend on `warp_prism_interaction` in production. It
+   currently does so only as a dev dependency") permits interaction as a
+   **dev-only** dependency. The code already does exactly that:
+   `packages/warp_prism_ui/pubspec.yaml` declares `warp_prism_interaction` under
+   `dev_dependencies` (not `dependencies`), and `warp_prism_ui`'s banned list still
+   holds in full — `runtime`, `bindings`, `adapter_frb`, and FRB remain prohibited
+   in every dependency scope. An implementer reading rule 9 in its earlier
+   blanket form would have removed a sanctioned arrangement; the carve-out above
+   preserves the original rule text verbatim alongside the correction.
 
 ---
 

@@ -114,11 +114,11 @@ O pubspec.yaml declara assets em assets/mock_workspace/..., mas os mocks que enc
 
 pubspec
 
-O prompt exigia .md com YAML frontmatter; os agentes/skills/workflows implementados são .yaml puro, sem frontmatter. Exemplo: mock_workspace/.agents/orchestrator/agent.yaml. 
+O prompt exigia .md com YAML frontmatter; os agentes/skills/workflows implementados são .yaml puro, sem frontmatter. Exemplo: mock_workspace/.opencode/orchestrator/agent.yaml. 
 
 agent
 
-O prompt exigia pelo menos 20 tasks espalhadas em 5 lanes; o repo tem uma fila única com 6 tasks em um arquivo mock_workspace/.agents/tasks/queue.md, e não os diretórios .project/tasks/00-planning etc. 
+O prompt exigia pelo menos 20 tasks espalhadas em 5 lanes; o repo tem uma fila única com 6 tasks em um arquivo mock_workspace/.opencode/tasks/queue.md, e não os diretórios .project/tasks/00-planning etc. 
 
 queue
 
@@ -234,7 +234,7 @@ Mock workspace real
 
 Remover ou arquivar o mock atual em YAML.
 
-Criar o corpus exatamente no padrão do prompt: assets/mock_workspace/.agents/... e assets/mock_workspace/docs/....
+Criar o corpus exatamente no padrão do prompt: assets/mock_workspace/.opencode/... e assets/mock_workspace/docs/....
 
 Criar frontmatter válido em todos os .md.
 

@@ -13,7 +13,7 @@ import 'package:warp_prism_ui/warp_prism_ui.dart';
 /// [PrismGraphNode.isDragging], [PrismGraphNode.isHovered], [PrismGraphNode.isSelected]).
 /// Each projection produced by `GraphSourceBinding.viewModel` is a discrete snapshot instance.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 class GraphViewModel {
   /// All positioned renderable nodes in the graph.

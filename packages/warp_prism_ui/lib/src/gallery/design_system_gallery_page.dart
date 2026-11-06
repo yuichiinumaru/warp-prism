@@ -36,9 +36,8 @@ class _DesignSystemGalleryPageState extends State<DesignSystemGalleryPage> {
   /// One [GlobalKey] per registry section for [Scrollable.ensureVisible] jumps.
   late final List<GlobalKey> _sectionKeys = List<GlobalKey>.generate(
     dsGallerySections.length,
-    (index) => GlobalKey(
-      debugLabel: 'gallery-section-${dsGallerySections[index].id}',
-    ),
+    (index) =>
+        GlobalKey(debugLabel: 'gallery-section-${dsGallerySections[index].id}'),
   );
 
   @override
@@ -72,10 +71,7 @@ class _DesignSystemGalleryPageState extends State<DesignSystemGalleryPage> {
       final position = _scrollController.position;
       if (position.pixels >= position.maxScrollExtent) return;
 
-      final next = (position.pixels + 640).clamp(
-        0.0,
-        position.maxScrollExtent,
-      );
+      final next = (position.pixels + 640).clamp(0.0, position.maxScrollExtent);
       _scrollController.jumpTo(next);
       await SchedulerBinding.instance.endOfFrame;
     }

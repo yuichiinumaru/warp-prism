@@ -1,8 +1,817 @@
 # Changelog: warp-prism
 
-> **Note**: Auto-generated view for project `warp-prism` from `.changelog/` entries.
+> **Note**: Auto-generated view for project `warp-prism` from `.project/changelog/` entries.
 > **Do NOT edit manually** - use the changelog skill/subcommands.
-> **Last rebuilt**: 2026-09-08 18:09:23 UTC
+> **Last rebuilt**: 2026-10-15 21:33:42 UTC
+
+---
+
+# Task wp-component-absorption: Separate consumer coverage and donor inspiration into a Warp Prism adaptation workflow
+
+## Summary
+
+Scoped workflow activated after independent review; owner-generated projections are current. Global harness duplicate/scanner debt and automated shared-symlink reference-validation limits remain recorded residuals, not a global PASS.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] Same dedicated architecture reviewer session ses_edbfcec4dffeX44ZMBOaLDsRWR: Round 2 technical PASS and conditional scoped MAY-ACTIVATE; MF1-MF5 closed; all material conclusions re-attested through workspace-local routes.
+- [x] Final harness_catalog rebuild + validate: generated_status=current, drift_count=0, same 8 pre-existing duplicate errors; no new unit-attributable errors. Live discovery finds exact wp-component-absorption path.
+- [x] Both source status fields inspected as active; shared-mount storage is not interpreted as generic product scope.
+- [x] source_validate shared workflow input BLOCKED by containment; narrowed product-doc scan FAIL/exit 1 on shared/corpus links, explicit placeholder and pre-existing policy references. No bypass or fabricated clean validation.
+- [x] Verification/review/release evidence: .project/reports/architects/component-absorption-workflow-verification-2026-10-15.md; shared harness-evolution candidate + activation entries; parent session registry updated.
+
+---
+
+# Task rem-0005: host_exercise dead exports cleanup
+
+## Summary
+
+Removed three zero-reference exports from warp_prism_host_exercise (ExerciseMode, kExerciseThemeRecipes, kExerciseSmokeViewport) after execution-time rg re-verification; all three host adapters verified byte-identical to baseline
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] dart analyze packages/warp_prism_host_exercise exit 0 - No issues found
+- [x] flutter test packages/warp_prism_host_exercise exit 0 - 10/10 pass
+- [x] dart analyze apps/catalog apps/observatory apps/cybercore exit 0 - 124 issues, byte-identical to pre-change baseline
+- [x] grep /host_exercise/ on apps analyze output: zero hits before and after
+- [x] flutter test apps/catalog/test/host_exercise/ exit 0 - 9/9
+- [x] flutter test apps/observatory/test/host_exercise/ exit 0 - 8/8
+- [x] flutter test apps/cybercore/test/host_exercise/ exit 0 - 8/8
+
+---
+
+# Task rem-0004-architecture-doc-drift-corrections: remediation-executed
+
+## Summary
+
+Four architecture docs corrected for drift: inverted ui<->bindings dependency arrow (layer-contracts.md §2), over-strict interaction ban (package-topology.md:93), nine superseded layer-contracts-v2 citations (runtime-consumer-audit.md), and two resolved UNKNOWN rows plus stale adoption row (cross-consumer-gap-matrix.md). MISSION.md protected: read-only, evidence recorded in task file. All corrections annotate history rather than deleting it.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] Re-read layer-contracts.md §2 immediately before editing (rem-0001 drift guard; §10 16-row table intact)
+- [x] Finding 1 verified against six pubspecs: ui declares no bindings dep; bindings deps on ui+interaction+runtime
+- [x] Finding 2 verified: warp_prism_ui/pubspec.yaml lists warp_prism_interaction under dev_dependencies only (lines 14-19)
+- [x] Finding 3 verified: 9 of 9 layer-contracts-v2 citation sites in runtime-consumer-audit.md repointed or annotated (rg)
+- [x] Finding 4 evidence: parent-verified 2026-10-10 resolutions carried by .project/reports/architects/future-capability-program-inventory-2026-10-10.md §0.1/§2
+- [x] No source/test/config touched; no lane moves; MISSION.md unmodified
+- [x] OUT-OF-WRITESET SIDE EFFECT (disclosed): the changelog engine's `closeout` action internally rebuilt root CHANGELOG.md + CHANGELOG-FULL.md + .project/changelog/index.md + .project/changelog/views/*.md. `action=build` was NOT invoked. The engine archived the prior root CHANGELOG.md to .archive/changelog/CHANGELOG-before-rebuild-20261011-154708.md, so the change is recoverable; root-file review is recommended.
+
+---
+
+# Task rem-0001: Boundary harness row-16 enforcement + domain regex + §10 status column
+
+## Summary
+
+Closed three mechanical law-vs-harness gaps in one coherent unit (source: Inv-1
+findings Gaps 1, 2, 5):
+
+1. **Row 16 is now enforced.** `boundary_test.dart` gained check #16,
+   `warp_prism_bindings does not import FRB generated surfaces`
+   (`_checkBindingsNoFrbGenerated`), mirroring check #15's scan logic scoped to
+   `packages/warp_prism_bindings/lib`. The bindings projection seam can no
+   longer silently import `src/rust/` or `frb_generated` surfaces.
+2. **Domain regex extended.** Check #14's regex now includes `Warpblade` and
+   `Tempest`, matching the MUST-NOT law text (`layer-contracts.md` §4.6) that
+   already names them. Zero live hits — latent gap closed, no behavior change
+   on current source.
+3. **§10 reconciled.** The 16-row check list is now a table with a per-row
+   enforcement-status column (all `ENFORCED`); the row-16 `DOCUMENTATION ONLY`
+   marker is gone and the 2026-09-28 drift note records the column's recovery.
+
+## Changes
+
+| File | Change |
+| --- | --- |
+| `packages/warp_prism_ui/test/boundaries/boundary_test.dart` | +`BoundaryCheck` #16 in registry; +`_checkBindingsNoFrbGenerated()`; domain regex `(Ganthritor\|Cersei\|OmniRoute\|CyberCore)` → `(...\|Warpblade\|Tempest)` |
+| `.project/architecture/layer-contracts.md` (§10 only) | numbered list → 16-row table with `Status` column; row-16 marker removed; drift note updated with recovery record |
+| `.project/changelog/20261011-043721-rem-0001-boundary-harness-row16-regex-status-builder-engineer.md` | this entry |
+
+No pre-existing check was weakened; no other harness behavior changed
+(simplicity pass verified line-by-line against the pre-edit state).
+
+## Verification
+
+| Command | Exit | Result |
+| --- | --- | --- |
+| `dart packages/warp_prism_ui/test/boundaries/boundary_test.dart` (pre-edit baseline) | 0 | 15/15 PASS |
+| same (fixture in place) | 1 | 13/16 PASS — checks #14/#15/#16 each flag the probe fixture (detection proven) |
+| same (post-revert, final) | 0 | **16/16 PASS, 0 FAIL, 0 violations** |
+| `dart format --output=none --set-exit-if-changed <file>` | 0 | 0 changed |
+| `dart analyze <file>` | 0 | No issues found |
+
+Fixture proof: a temporary probe file in `packages/warp_prism_bindings/lib`
+carrying an `frb_generated` import and a `Warpblade` token was detected by
+checks #14, #15 and #16 in the same run, then deleted in the same change. Bindings
+lib restored to `src/` + `warp_prism_bindings.dart` only.
+
+Contention: none — no tool-lock errors encountered; retry protocol not needed.
+
+Independent acceptance: pending (executor is not the reviewer).
+
+---
+
+# Task rem-0003-adapter-barrel-lifecycle-doc: remediation-promoted
+
+## Summary
+
+rem-0003 reviewed PASS, promoted to completed
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] reviewer PASS 96/100 ses_ed6b7af4bffeNeNMY2sRAiTKmk
+- [x] diff 1 insertion 0 deletions
+
+---
+
+# Task rem-0002-runtime-purity-bare-tokens: remediation-promoted
+
+## Summary
+
+rem-0002 reviewed PASS, promoted to completed
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] reviewer PASS 88/100 ses_ed6b7af4bffeNeNMY2sRAiTKmk
+- [x] suite 3/3 exit 0
+
+---
+
+# Task rem-0001-boundary-harness-row16-regex-status: remediation-promoted
+
+## Summary
+
+rem-0001 reviewed PASS, promoted to completed
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] reviewer PASS 92/100 ses_ed6b7af4bffeNeNMY2sRAiTKmk
+- [x] harness 16/16 exit 0
+
+---
+
+# Task rem-0003-adapter-barrel-lifecycle-doc: remediation-executed
+
+## Summary
+
+rem-0003 barrel lifecycle doc added
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] grep Lifecycle barrel >=1 hit
+- [x] git diff addition-only, 1 file
+
+---
+
+# rem-0002: Runtime purity test — bare presentation-token scan
+
+## Summary
+
+`packages/warp_prism_runtime/test/purity_test.dart` could only prove the
+absence of `package:flutter` / `dart:ui` **imports**. A contract that named a
+Flutter presentation concept directly — `final Offset position;` with no import
+at all — passed silently. MUST-NOT 3 bans the *concept*, so the test must scan
+the concept, not its import.
+
+The purity suite now carries a third test that scans
+`\b(Offset|Widget|BuildContext|Color)\b` over **comment-stripped**
+runtime source, closing Inv-1 Gap 3.
+
+## Changes
+
+| File | Change |
+| --- | --- |
+| `packages/warp_prism_runtime/test/purity_test.dart` | Added `_stripComments` helper (mirror of the `boundary_isolation_test.dart` precedent) and a third test: bare presentation tokens over comment-stripped source |
+
+Both edits are purely additive (`+70/−0`, 104 → 174 lines): every pre-existing
+line is preserved byte-for-byte.
+
+Implementation notes:
+
+- **No new scanner invented.** The `_stripComments` helper is a verbatim mirror
+  of `packages/warp_prism_bindings/test/boundary_isolation_test.dart:33–40`:
+  block comments removed wholesale, then every line whose *trimmed* content
+  starts with `//` dropped. Trimming is what makes `///` doc-comments count —
+  without it, doc-comment `Offset` mentions would trip the scan.
+- **Existing patterns untouched.** The import scan and the
+  presentation/polling pattern list are byte-identical to before; only a new
+  test group member was appended. No existing behavior changed.
+- **Deliberate asymmetry documented in code.** Trailing comments are left in
+  place. This is the conservative direction for a ban: an inline
+  `int brightness = 3; // tint Color near here` yields a loud false positive on
+  a later scan rather than a silent miss, and it avoids mangling string
+  literals that legitimately contain `//`. The precursor precedent accepted the
+  same trade-off.
+- Violation reporting names the matched token, not just the file, so a future
+  red is diagnosable from the failure message alone.
+
+## Verification
+
+| Command | Exit | Result |
+| --- | --- | --- |
+| `dart test packages/warp_prism_runtime/test/purity_test.dart` (baseline, pre-change) | 0 | **PASS 2/2** |
+| `dart test packages/warp_prism_runtime/test/purity_test.dart` (extended, current source) | 0 | **PASS 3/3** |
+| `dart test packages/warp_prism_runtime/test/purity_test.dart` (fixture-proof Phase A, bare `Offset`) | 1 | **PASS — detection proven** |
+| `dart test packages/warp_prism_runtime/test/purity_test.dart` (fixture-proof Phase B, doc-comment mentions only) | 0 | **PASS — no false positive** |
+| `dart analyze packages/warp_prism_runtime` | 0 | **PASS — "No issues found!"** |
+
+### Fixture-proof (both directions, then reverted)
+
+A temporary synthetic fixture was written into the scanned tree
+(`packages/warp_prism_runtime/lib/src/rem_0002_fixture_proof.dart`) and run
+twice, distinguishing the two directions a naive scan conflates:
+
+- **Phase A — bare token**: a `final Offset position;` field with no Flutter
+  import. Test failed exactly as required:
+  `lib/src/rem_0002_fixture_proof.dart matched RegExp: pattern=\b(Offset|Widget|BuildContext|Color)\b flags= near "Offset"`.
+  This is the hole the task describes, now genuinely detected.
+- **Phase B — doc-comment mention only**: the same file with the bare token
+  replaced by a plain `double` field, keeping the doc-comment mentions
+  (`position: Offset`, `Widget identity`, `BuildContext access`,
+  `Color palette`). Test stayed green, proving comment-stripping suppresses
+  documented examples rather than scanning prose.
+
+### False-positive check on current source
+
+The two live `Offset` occurrences in `warp_prism_runtime/lib` are both
+doc-comment prose
+(`graph_source_contract.dart:11` and `graph_source_models.dart:26`, each
+`` (`position: Offset`) ``) and are pre-existing — this task did not create
+them. Both are suppressed by the strip step, so the scan reports zero
+violations on unchanged source.
+
+### Fixture reverted — not weakened
+
+The fixture is **not** part of the change. `rm` is denied by workspace policy,
+so it was removed through the canonical archive mechanism per root
+`AGENTS.md` §6 rather than via an alias:
+
+```text
+archive: packages/warp_prism_runtime/lib/src/rem_0002_fixture_proof.dart
+     -> .archive/packages/warp_prism_runtime/lib/src/rem_0002_fixture_proof.dart
+```
+
+The live scanned tree is clean: `grep -r "rem_0002|fixture_proof|FixtureProof"
+packages/warp_prism_runtime` returns zero matches. The archived copy sits
+outside `lib/`, so the scan cannot see it, and the fixture never edits a real
+contract file.
+
+## Contention
+
+No tool-lock contention was observed. The shared `.dart_tool/` lock was free for
+every run recorded above; no retry was needed and no BLOCKED-on-resource state
+was reached.
+
+## Note for the parent
+
+This change affects only `packages/warp_prism_runtime` test code. No consumer
+app, package, or shared artifact is touched, so `affected_consumers` is NONE by
+construction — the scan reads runtime package-local source and cannot alter any
+consumer's composition. Per `AGENTS.md` §3.5 the executor provides no
+acceptance verdict for this work; independent review is the next gate.
+
+`packages/warp_prism_bindings/test/boundary_isolation_test.dart` was read as
+the strip precedent and **not** modified.
+
+The auto-generated projection `.project/changelog/index.md` was **not**
+rebuilt: the engine's `build` action writes root-level `CHANGELOG.md` and
+`CHANGELOG-FULL.md`, which fall outside this task's authorized writeset. The
+ledger itself is registered — `project_changelog validate` reports
+`Changelog valid: issues=0 entries=341`, including this entry — so the
+projection can be refreshed safely by a later owner.
+
+---
+
+# Task PLAN-warp-prism-future-capability-program: future-program-plan-created
+
+## Summary
+
+Phase 2 program doc: 5 EPICs A-E, 9 stories, task index, DAG
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] Phase 1 inventory REVIEWED-PASS ses_edbfcec4dffeX44ZMBOaLDsRWR
+
+---
+
+# Task HOLD-warp-prism-review-lifecycle-spec: future-task-held
+
+## Summary
+
+HOLD review-lifecycle spec
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] Phase 1 inventory REVIEWED-PASS ses_edbfcec4dffeX44ZMBOaLDsRWR
+
+---
+
+# Task HOLD-warp-prism-registry-harvest-verify-loop: future-task-held
+
+## Summary
+
+HOLD harvest-verify loop design
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] Phase 1 inventory REVIEWED-PASS ses_edbfcec4dffeX44ZMBOaLDsRWR
+
+---
+
+# Task HOLD-warp-prism-job-progress-spec: future-task-held
+
+## Summary
+
+HOLD job-progress spec
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] Phase 1 inventory REVIEWED-PASS ses_edbfcec4dffeX44ZMBOaLDsRWR
+
+---
+
+# Task HOLD-warp-prism-host-proof-protocol: future-task-held
+
+## Summary
+
+HOLD spec task for host-composition proof protocol
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] Phase 1 inventory REVIEWED-PASS ses_edbfcec4dffeX44ZMBOaLDsRWR
+
+---
+
+# Task HOLD-warp-prism-health-badge-axis-spec: future-task-held
+
+## Summary
+
+HOLD health-badge axis spec
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] Phase 1 inventory REVIEWED-PASS ses_edbfcec4dffeX44ZMBOaLDsRWR
+
+---
+
+# Task HOLD-warp-prism-diff-viewer-spec: future-task-held
+
+## Summary
+
+HOLD diff-viewer spec
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] Phase 1 inventory REVIEWED-PASS ses_edbfcec4dffeX44ZMBOaLDsRWR
+
+---
+
+# Task HOLD-warp-prism-data-plane-contract-spec: future-task-held
+
+## Summary
+
+HOLD data-plane contract spec
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] Phase 1 inventory REVIEWED-PASS ses_edbfcec4dffeX44ZMBOaLDsRWR
+
+---
+
+# Task HOLD-warp-prism-component-registry-schema: future-task-held
+
+## Summary
+
+HOLD registry schema design
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] Phase 1 inventory REVIEWED-PASS ses_edbfcec4dffeX44ZMBOaLDsRWR
+
+---
+
+# Task HOLD-warp-prism-bridge-surface-request: future-task-held
+
+## Summary
+
+HOLD bridge-surface request package
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] Phase 1 inventory REVIEWED-PASS ses_edbfcec4dffeX44ZMBOaLDsRWR
+
+---
+
+# Task 1839: theme-brand-normalization
+
+## Summary
+
+Independent review Entries 1-4 returned FAIL (45/48/48/48). The blocking wire-ID finding was cleared by Task 1842, which migrated the serialized cybercore-teal recipe ID to nerazim-teal; the formatter finding was resolved for the task surface and the residual package-wide drift moved to Task 1846. Entry 5 returned PASS 91/100 confidence 0.93 with zero Critical or Serious findings open.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] grep -rn 'cybercore-teal' packages/ apps/ --include='*.dart' : 0 matches
+- [x] dart analyze x4 (warp_prism_ui, warp_prism_host_exercise, apps/catalog, apps/cybercore) : exit 0, zero errors
+- [x] apps/catalog flutter test --no-pub : +23 All tests passed
+- [x] apps/cybercore flutter test --no-pub : +27 All tests passed
+- [x] dart run packages/warp_prism_ui/test/boundaries/boundary_test.dart --repo-root . : 15/15 PASS, 0 violations
+- [x] dart format on all 8 task-touched files : 0 changed
+- [x] Independent reviewer ses_f1ee307e8ffeS6nJ0qEurVbnDe Entry 5 : PASS 91/100 confidence 0.93
+
+---
+
+# Task 1842: ThemeMatrix wire-ID migration (cybercore-teal -> nerazim-teal)
+
+## Summary
+
+Completed the serialized theme-recipe wire-ID migration that Task 1839
+deliberately deferred. The Dart const had already been renamed to `nerazimTeal`
+in Task 1839; this task moves the **serialized `id` string** and all of its
+consumers in one atomic change. String-only change: **no behavior, no visual,
+and no contract-signature change.** `ExerciseThemeRecipe.toJson` / `fromJson`
+are untouched and keep the same `{id, label}` shape.
+
+Full census match: the task's binding census (**5 tracked files, 14 lines**) was
+verified against disk before editing and matched exactly.
+
+## Changes
+
+| File | Lines | Change |
+| --- | --- | --- |
+| `packages/warp_prism_host_exercise/lib/src/models/theme_matrix.dart` | 28–37 | `id:` → `'nerazim-teal'`; obsolete Task 1839 "id preserved" note replaced with a migration record |
+| `apps/catalog/test/host_exercise/catalog_host.dart` | 86 | `case 'nerazim-teal':` |
+| `apps/catalog/test/host_exercise/catalog_theme_matrix_test.dart` | 32 | recipe ladder entry |
+| `apps/cybercore/test/host_exercise/cybercore_host.dart` | 31 | `themeRecipeId` default param |
+| `apps/cybercore/test/host_exercise/cybercore_revalidation_test.dart` | 6, 42, 58, 68, 87, 97, 122, 132, 153 | 1 comment + 4 test descriptions + 4 `expect(trace.themeRecipe, …)` assertions |
+
+Used the hyphenated `nerazim-teal`, matching the `khalai-blue` sibling ID in the
+same files.
+
+### Deprecated-alias decision
+
+The task's Security section suggested leaving DEPRECATION comments on the old ID.
+Not applicable to this execution: step 1 chose the **update-all-consumers-at-once**
+option, so no old-ID consumer survives to deprecate. A deprecated alias would have
+been a second canonical home for the wire ID. An accurate migration record (old
+value's origin, deferral in 1839, completion in 1842, frozen-evidence carve-out)
+was written instead.
+
+## Verification
+
+| Command | Exit | Result |
+| --- | --- | --- |
+| `grep -rn "cybercore-teal" packages/ apps/ --include=*.dart` | 1 (no output) | **PASS — 0 occurrences** |
+| `packages/warp_prism_host_exercise` `dart analyze` | **0** | **PASS — "No issues found!"** |
+| `packages/warp_prism_host_exercise` `flutter test --no-pub` | **0** | **PASS 10/10** |
+| `apps/catalog` `flutter analyze` | **0** | **PASS — "No issues found!"** |
+| `apps/catalog` `flutter test --no-pub` | **0** | **PASS 23/23** |
+| `apps/cybercore` `flutter analyze` | **0** | **PASS — "No issues found!"** |
+| `apps/cybercore` `flutter test --no-pub` | **0** | **PASS 27/27** |
+
+### Trace-integrity proof
+
+The live regenerated traces now record the new ID, proving the rename propagates
+end-to-end through config → runner → trace → assertion (not just a string edit):
+
+```text
+live .project/reports/host-exercise/traces/   →  4 × "nerazim-teal", 4 × "khalai-blue"
+frozen .project/reports/architects/traces/    →  4 × "cybercore-teal", 7 × "khalai-blue"  (untouched)
+```
+
+`expect(trace.themeRecipe, 'nerazim-teal')` passes in all four revalidation
+tests, so the runner genuinely recorded the new value.
+
+### Frozen evidence preserved
+
+The 4 `.project/reports/architects/traces/*.json` captures still embed the old
+literal and were **not** touched (mtimes remain `2026-09-08`). Independently
+re-verified the task's premise: `grep -rn "architects/traces" --include=*.dart
+--include=*.rs` returns **0 code references**, so they are cited-only and never
+loaded. The live trace writer targets
+`.project/reports/host-exercise/traces/`, a different directory.
+
+## Note for the parent
+
+The 4 CyberCore + 4 Catalog `PathNotFoundException` host-harness failures
+reported as pre-existing in the Task 1839 backlog had **self-resolved** by the
+time this task started — they were environment-state failures (missing trace
+artifacts), not code defects. All three targets now have a fully green baseline
+and pass with the migration applied. That backlog item can be closed.
+
+Separately, `apps/catalog/test/host_exercise/catalog_theme_matrix_test.dart`
+lines 5–8 still carry the stale prose "CyberCore / Teal" **split across two
+lines**, which evades the literal grep. It is outside the binding 14-line census
+and was left untouched; it is reported for a scoping decision.
+
+---
+
+# Task 1840: catalog-statusticker-overflow-listtile-warnings
+
+## Summary
+
+Both reported defects were reproduced verbatim and attributed to their owning
+gallery section, then classified and fixed at the correct layer.
+
+The committed gallery suite calls `_suppressGalleryDemoNoise()`
+(`test/gallery/design_system_gallery_test.dart:539-557`), which filters exactly
+these two message classes, so a green suite proved nothing. Reproduction used a
+throwaway harness that swept `dsGallerySections`, pumped each builder in a
+`SingleChildScrollView`, and captured `FlutterError.onError` **per section**.
+
+Verbatim reproduction (before):
+
+```
+A RenderFlex overflowed by 16 pixels on the bottom.
+ListTile background color or ink splashes may be invisible.  (x3)
+```
+
+Attribution:
+
+```
+1840|section=epic15-stage-chrome|A RenderFlex overflowed by 16 pixels on the bottom.
+1840|section=epic15-stage-relations|ListTile background color or ink splashes may be invisible.
+1840|section=epic15-stage-relations|ListTile background color or ink splashes may be invisible.
+1840|section=epic15-stage-relations|ListTile background color or ink splashes may be invisible.
+```
+
+## Changes
+
+- **`design_system_gallery_sections.dart:3059` (defect 1 — demo sizing).**
+  `SizedBox(height: 120, width: 640, child: _StatusTickerDemo())` → `SizedBox(width: 640, …)`.
+  The hard box was authored to the demo's *content* height (120) while omitting
+  the demo's own `EdgeInsets.all(8)` padding, leaving the `Column` 104px for
+  120px of content. The demo has only fixed-height children, so it now sizes
+  intrinsically and renders at its natural 120px — the height originally
+  intended. Nothing is clipped, and the defect class is removed rather than
+  re-tuned to a new magic number.
+- **`design_system_gallery_sections.dart:6205` (defect 2 — demo host
+  composition).** The layer-registry `ListView` gained its own
+  `Material(type: MaterialType.transparency)` so `SwitchListTile.adaptive` paints
+  its background and ink splashes on a Material at the right layer, instead of
+  on the distant Scaffold Material occluded by the enclosing coloured glass
+  `DecoratedBox`. Glass appearance is unchanged.
+- **Not modified:** `packages/warp_prism_ui/lib/src/organisms/status_ticker/ds_status_ticker.dart`.
+  `DSStatusTicker` self-bounds via `SizedBox(height: widget.height)` and honours
+  its documented contract (default 48 = WCAG min target); no widget-layer defect
+  was proven.
+
+## Verification
+
+- [x] Unsuppressed per-section sweep at 1400x2400: 4 errors before → **0 after**
+- [x] Sibling sweep, all 24 registry sections at the default catalog viewport
+      `1280x800`: `epic15-stage-chrome` and `epic15-stage-relations` clean
+- [x] Content integrity after fix: 2 tickers render at 622x36 (the requested
+      `height: 36`, unclipped), both captions present, all 3 layer labels and 3
+      switch tiles present, 0 errors
+- [x] `dart format --set-exit-if-changed` on the touched file: exit 0 (0 changed)
+- [x] `dart analyze` (`packages/warp_prism_ui`): exit 0 — 212 issues, all `info`
+- [x] `flutter test --no-pub` (`packages/warp_prism_ui`): `+1703 -63` — **identical
+      to the pre-change A/B baseline**, i.e. zero regressions. The 63 failures are
+      pre-existing (golden/environment) and unrelated.
+- [x] `flutter analyze` (`apps/catalog`): `No issues found!` exit 0
+- [x] `flutter test --no-pub` (`apps/catalog`): 4 failures, all proven pre-existing
+      by A/B revert (identical counts before/after). All 4 are
+      `PathNotFoundException` in `_persist` — `apps/catalog/docs/` does not exist,
+      so trace artifacts cannot be written to the pre-relocation
+      `docs/reports/host-exercise/traces/` path. Unrelated to this task.
+- [x] `dart run packages/warp_prism_ui/test/boundaries/boundary_test.dart --repo-root .`:
+      15/15 PASS exit 0
+- [ ] **Host proof NOT run** — `flutter run -d linux` requires a display/GPU host
+      and is operator-side. Headless `flutter_tester` evidence stands in; the
+      operator should confirm at the default viewport.
+
+## Sibling finding (reported, deliberately NOT fixed — out of writeset)
+
+`health-dashboard` section: `A RenderFlex overflowed by 7.3 pixels on the bottom.`
+
+- Widget: `Column`, `mainAxisSize: min`, `BoxConstraints(w=204.0, h=124.7)`
+- Location: `packages/warp_prism_ui/lib/src/molecules/ds_health_card.dart:82:14`
+- Only reproduces at the default catalog viewport `1280x800`; clean at 1400x2400
+- Cause: `DSHealthCard` in a molecule file, outside Task 1840's writeset.
+  Route as follow-up work; do not fix here.
+
+---
+
+# Task 1841: doc-comment-layer-contracts-path-sweep
+
+## Summary
+
+Independent re-review PASS (92/100, high confidence). During review the canonical home moved docs/architecture -> .project/architecture by operator decision (path-economy); orchestrator repointed 117 lib/ doc-comments + 7 README refs + 4 additional stale architecture refs and fixed lifecycle anchors §3.2 -> §9. Reviewer verified comment-only sampling across 8 files, zero stale strings, and all gates.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] rg 'layer-contracts-v2' packages/*/lib packages/*/README.md packages/*/test apps/*/lib apps/*/test (excluding build/.dart_tool): 0 matches
+- [x] rg 'docs/architecture/' packages/*/lib packages/*/README.md packages/*/test apps/*/lib apps/*/test: 0 matches
+- [x] dart analyze: warp_prism_interaction, warp_prism_runtime, warp_prism_testkit, warp_prism_bindings, warp_prism_adapter_frb all 'No issues found!' exit 0
+- [x] dart run packages/warp_prism_ui/test/boundaries/boundary_test.dart --repo-root . : 15/15 PASS exit 0
+- [x] Independent reviewer ses_f1ee307e8ffeS6nJ0qEurVbnDe re-review verdict PASS (92/100) after remediation of its Serious findings
+
+---
+
+# Task 1839: Theme Brand Normalization (Nerazim Teal / Purifier Gold)
+
+## Summary
+
+Normalized the teal skin brand and gold preset label to the canonical vocabulary
+mandated by `AGENTS.md` §7.0. **Identifiers, labels, comments, and docs only** —
+no hex value, no theme behavior, no visual change. The `AGENTS.md` §7.0
+temporary section is now removable by governance once the residual out-of-scope
+sites (listed below) are cleared and independent review passes.
+
+## Changes
+
+### Renamed files (originals archived to `.archive/`, reversible)
+
+| Old | New |
+| --- | --- |
+| `packages/warp_prism_ui/lib/src/tokens/ds_cybercore_teal_skin.dart` | `.../ds_nerazim_teal_skin.dart` |
+| `packages/warp_prism_ui/test/tokens/ds_cybercore_teal_skin_test.dart` | `.../ds_nerazim_teal_skin_test.dart` |
+| `docs/design/cybercore-teal-theme-extension-skin.md` | `docs/design/nerazim-teal-theme-extension-skin.md` |
+
+### Renamed identifiers
+
+- `DSCyberCoreTealSkin` → `DSNerazimTealSkin`
+- `PrismCyberCoreTealSkin` → `PrismNerazimTealSkin`
+- factory `.omniRoute()` → `.nerazimTeal()`
+  (recorded per task: the `omniRoute` anchor was itself a stale product anchor;
+  every call site changes anyway, so it was renamed once.)
+- catalog enum `CatalogThemeVariant.cybercoreTeal` → `.nerazimTeal`
+- test probe key `'cybercore-teal-accent-probe'` → `'nerazim-teal-accent-probe'`
+
+### Renamed labels / comments / docs
+
+- `'CyberCore Teal (#00FFCC)'` → `'Nerazim Teal (#00FFCC)'` (catalog dropdown)
+- `'CyberCore Teal'` → `'Nerazim Teal'` (theme editor preset chip)
+- `'Protoss Gold'` → `'Purifier Gold'` (theme editor preset chip)
+- `Nerazim Green/Teal` → `Nerazim Teal` (4 docstring sites:
+  `prism_aliases.dart` ×2, `ds_taldarim_red_skin.dart`, `ds_talon_purple_skin.dart`)
+- barrel export + import paths in `tokens.dart` and `prism_aliases.dart`
+- `docs/design/public-barrel-audit.md` alias row
+- `docs/design/black-obsidian-visual-contract.md` — 3 live brand-label mentions
+  updated; the 2 historical-quote rows in the Supersession Map were deliberately
+  left verbatim and annotated with a Task 1839 note (rewriting a verbatim quote
+  of a superseded task artifact would falsify the record)
+
+### Explicitly NOT changed (verified)
+
+- **No hex value changed.** Teal `#00FFCC` / `#00B894` / `#007A66` proven
+  byte-identical against the archived original. Talon Purple
+  (`#9911E5`/`#770CB3`/`#4F0878`), Taldarim Red
+  (`#E51A4C`/`#B8103A`/`#7A0A26`), and Khalai Blue (`#2F81FF`) untouched.
+- `AGENTS.md`, `MISSION.md`, `README.md`, `pubspec.yaml` — not touched.
+- `.archive/`, `.project/tasks/04-completed/`, `.project/tasks/03-review/` —
+  not rewritten (0 files modified).
+- No golden refresh (Task 1800 freeze respected).
+
+## Verification
+
+| Check | Result |
+| --- | --- |
+| `dart format --set-exit-if-changed` (my 5 authored/edited files) | **PASS** exit 0 |
+| `dart format --set-exit-if-changed lib/ test/` (package-wide) | exit 1 — **pre-existing** baseline drift, 57 files dirty incl. files this task never touched |
+| `dart analyze` (warp_prism_ui) | exit 3 — 10 errors, **all in 3 out-of-scope test files**; 0 errors in in-scope files; remaining 212 are pre-existing `info` lints |
+| `flutter test test/tokens/ds_nerazim_teal_skin_test.dart` | **PASS** 15/15, exit 0 |
+| canonical sibling skin tests (taldarim/talon) | **PASS**, exit 0 |
+| `boundary_test.dart --repo-root .` | **PASS** 15/15, exit 0 |
+| `apps/cybercore` `flutter analyze` | **PASS** exit 0 |
+| `flutter test --no-pub` (warp_prism_ui, full) | exit 1 — 70 failures: 3 compile breaks from out-of-scope files + golden drift documented as expected under the Task 1800/1805 freeze |
+| `apps/catalog` `flutter analyze` / `flutter test` | exit 1 / exit 1 — 2 errors, both in out-of-scope `test/host_exercise/catalog_host.dart` |
+| `apps/cybercore` `flutter test` | exit 1 — 4 failures, **pre-existing** `PathNotFoundException` in the Task 1838 host-exercise harness; 0 references to any renamed symbol |
+| Zero-hit sweep over in-scope live paths | **0 stale hits** |
+
+### Out-of-`Where`-table stale-brand sites (reported, NOT edited — scope discipline)
+
+These break compilation and must be cleared by an authorized follow-up:
+
+- `packages/warp_prism_ui/lib/src/tokens/prism_token_registry.dart` (1 — docstring)
+- `packages/warp_prism_ui/test/atoms/switch/ds_switch_test.dart` (1)
+- `packages/warp_prism_ui/test/organisms/theme_editor/prism_theme_editor_test.dart` (2 — asserts `find.text('CyberCore Teal')`)
+- `packages/warp_prism_ui/test/theme/prism_theme_test.dart` (3)
+- `packages/warp_prism_ui/test/theme/theme_role_accent_propagation_test.dart` (11)
+- `packages/warp_prism_host_exercise/lib/src/models/theme_matrix.dart` (2)
+- `apps/catalog/test/host_exercise/catalog_host.dart` (2)
+- `docs/governance/catalog-showability-2026-07-10.md` (1)
+
+**Not edited, by design:** `AGENTS.md` §7.0 (the law must name the variants it
+forbids; removed by governance after review), `.project/tasks/01-open/1839-*`
+(the task itself), `.project/tasks/03-review/1806-*` (out of bounds),
+`docs/design/black-obsidian-visual-contract.md` lines 180–181 (annotated
+historical quotes).
+
+---
+
+# Epoch Reset Part 1: Reconcile, Declutter, Inventory, Plan (unsealed)
+
+## Summary
+
+Executed the user-authorized bounded architecture/governance reset up to the
+persistence gate. Seven parallel read-only investigators inventoried Warp Prism
+ADS, IDS/runtime/bindings/FRB/Rust, Warpblade, Tempest, Sentry, Hyperion, and
+the historical corpus. Independent review returned AMEND 88/100 (F1–F9); all
+mechanical findings remediated except F7, which is materialized as Task 1841.
+A first review pass (BLOCKED 42/100) was set aside after citation audit proved
+fabricated line references.
+
+## Changes
+
+- Archived 36 planning artifacts → `.archive/` + `.project/archive/epoch-reset-manifest.md`.
+- `MISSION.md`: rewritten (348 lines; L0–L3 + Rewrite Factory superseded in §11).
+- `AGENTS.md`: amended (consumer family, §7.0 temporary brand law per owner order, §8 onboard, §10.1 program target, §15 stop conditions, fixed broken rule/session paths).
+- `README.md`: rewritten as arrival page.
+- `docs/architecture/layer-contracts.md`: created (normative matrix + 16-check harness list).
+- `docs/bridge/README.md`: created (harvest loop + classification vocabulary).
+- `docs/reports/2026-09-27-cross-consumer-gap-matrix.md`: created (28-row matrix, 5 harvest candidates, conflicting-semantics section).
+- `docs/design/charter.md`: refreshed to v2.1 (consumer family, real topology).
+- `.agents/workflows/wp-warp-prism-onboarding.md`: repaired stale MISSION sections, layer-contracts path, tasklist path, report/session paths.
+- `.project/tasks/tasklist.md`: regenerated (Open 3, Review 4, Planning 2, Completed 191).
+- Tasks materialized in `01-open/`: 1839 (brand rename), 1840 (StatusTicker overflow + ListTile warnings, from operator live run), 1841 (doc-comment path sweep).
+- Session ledger updated with 12 epoch-reset sessions.
+
+## Validation
+
+- Light verification pass by grep: zero dead planning paths in tasklist (EPIC-18 row is live), zero stale `docs/reports/1805` paths, zero archived-EPIC citations in current-authority docs, all manifest section pointers resolve, all onboarding/AGENTS referenced paths exist.
+- Flutter/Dart test suites NOT run in this pass (governance-only mutations + provider-blocked builders).
+
+## Open blockers
+
+1. **Persistence**: `seal_checkpoint inspect` → BLOCKED (`blob-size`: ~899 MiB blob swept via the retargeted `references` symlink, a pre-existing worktree change from 2026-09-23 outside this pass's authority). Nothing sealed. Operator action required.
+2. **Builders**: Tasks 1839/1840 sessions failed 3× on provider errors. Operator CLI fallback required (see reset report).
+3. **Human gates (unchanged)**: Task 1805 visual sign-off; Task 1816 follows it.
 
 ---
 

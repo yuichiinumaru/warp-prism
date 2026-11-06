@@ -28,7 +28,7 @@ HostExerciseConfig cybercoreExerciseConfig({
   int seed = 0,
   int actionBudget = 12,
   ExerciseViewport viewport = ExerciseViewport.desktop1280x800,
-  String themeRecipeId = 'cybercore-teal',
+  String themeRecipeId = 'nerazim-teal',
 }) {
   return HostExerciseConfig(
     host: 'cybercore',

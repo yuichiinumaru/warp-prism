@@ -289,10 +289,7 @@ class DSTimingWaterfall extends StatelessWidget {
       ),
       child: Row(
         children: [
-          DSIcon.small(
-            Icons.bar_chart_outlined,
-            color: DSColors.accentBlue,
-          ),
+          DSIcon.small(Icons.bar_chart_outlined, color: DSColors.accentBlue),
           const SizedBox(width: DSSpacing.sm),
           Expanded(
             child: DSText.labelLarge(title, color: DSColors.textPrimary),

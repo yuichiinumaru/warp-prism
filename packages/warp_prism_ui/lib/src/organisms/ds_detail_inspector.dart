@@ -310,10 +310,7 @@ class _DSLinkRowState extends State<DSLinkRow> {
                 color: DSColors.obsidianElevated,
                 borderRadius: BorderRadius.circular(DSRadii.sm),
                 border: _isFocused
-                    ? Border.all(
-                        color: DSColors.focusRing,
-                        width: 2,
-                      )
+                    ? Border.all(color: DSColors.focusRing, width: 2)
                     : null,
               ),
               child: Row(

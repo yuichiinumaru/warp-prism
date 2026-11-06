@@ -3,9 +3,10 @@
 > **Status**: Active audit (evidence input for Task 1819 contract design)
 > **Author**: Task 1818 — Runtime Consumer Source Audit
 > **Date**: 2026-09-01
-> **Depends on**: Task 1811 (`layer-contracts-v2.md`), Task 1812 (`package-topology.md`)
+> **Depends on**: Task 1811 (`layer-contracts-v2.md`, now SUPERSEDED — historical evidence only), Task 1812 (`package-topology.md`)
 > **Blocks**: Task 1819 (experimental runtime contracts)
-> **Method**: full read of the 4 candidate organism families + sweep of `apps/{observatory,cybercore,catalog}/lib`. Every claim carries `file:line` evidence. All 4 contracts start **EXPERIMENTAL** (lifecycle law, layer-contracts-v2 §3.2).
+> **Method**: full read of the 4 candidate organism families + sweep of `apps/{observatory,cybercore,catalog}/lib`. Every claim carries `file:line` evidence. All 4 contracts start **EXPERIMENTAL** (lifecycle law, `layer-contracts-v2.md` §3.2 → **current owner: `layer-contracts.md` §9 Contract Lifecycle**).
+> **Law baseline updated 2026-10-11 (rem-0004)**: this audit was written against `layer-contracts-v2.md`, which self-declared SUPERSEDED on 2026-09-28 in favour of [`layer-contracts.md`](layer-contracts.md). Every v2 law citation below is preserved verbatim and annotated with the current owner, which is what a reader should decide from today. Substantive findings are unchanged — the repointed law says the same thing (see each note). Mapping used: v2 §2 matrix → §1 Layer Matrix; v2 §3.2 lifecycle tags → §9 Contract Lifecycle; v2 §4.3 model ownership → §7 Model Separation; v2 §5 harness matrix → §10 Mechanically Enforced Checks.
 
 ---
 
@@ -65,7 +66,7 @@
 3. **AsyncCommand owns** execute / result / error / cancellation **ONLY**. Retry policy → **composition layer**.
 4. **GraphSource owns** semantic identity / relations / payload **ONLY**. Position, physics, pan/zoom, selection → **ui/binding**.
 
-These match the runtime-row MUST-NOT law (`layer-contracts-v2.md` §2: "MUST NOT contain presentation policy (e.g. auto-scroll, follow-tail, retry timers)") and the rejected-idea ledger (source-reality review §G: "auto-scroll/follow-tail/viewport in EventStream — REJECTED, never; wrong layer by definition").
+These match the runtime-row MUST-NOT law (`layer-contracts-v2.md` §2: "MUST NOT contain presentation policy (e.g. auto-scroll, follow-tail, retry timers)" — **current owner: `layer-contracts.md` §1 `warp_prism_runtime` MUST NOT row: "contain presentation policy (auto-scroll, follow-tail, poll-every-X, retry policy, viewport)"**; v2 citation preserved as historical provenance) and the rejected-idea ledger (source-reality review §G: "auto-scroll/follow-tail/viewport in EventStream — REJECTED, never; wrong layer by definition").
 
 ---
 
@@ -75,7 +76,7 @@ The mixing point is `position: Offset` on otherwise-semantic node classes (`grap
 
 **The split already exists in observatory**: `WorkspaceAsset`/`WorkspaceEdge` are Offset-free semantic models (`workspace_graph.dart:88-131`, `:197-215`), and both projections (`map_graph_projection.dart:99-111`, `workspace_graph_panel.dart:28-47`, `workspace_snapshot_provider.dart:209-234`) strip layout before reaching the canvas; positions are then owned exclusively by `GraphCanvas` internals (`:122`, `:161-191`). `DSWorkflowNode.toGraphNode` (:238-247) is the in-package bridge that re-injects position at the composition boundary — the correct pattern.
 
-**Task 1819 boundary**: `warp_prism_runtime` DTOs own id, kind, label, status, typed directed edges, adjacency, metadata payload; they **MUST NOT carry** `Offset`, velocity, physics flags, or selection state (Model Ownership Rule, layer-contracts-v2 §4.3; package-topology §5). Open mapping decision: three divergent kind vocabularies exist today — `GraphNode.type` strings (`graph_model.dart:61`), `DSWorkflowNodeKind` (:20-50, with `graphType` adapter :117-128), observatory `AssetKind` (`workspace_graph.dart:17-27`, projected via `kind.name` `map_graph_projection.dart:103`) — plus 3 edge vocabularies (`GraphEdge.edgeType`, `DSWorkflowEdgeKind`, `EdgeKind` :32-53).
+**Task 1819 boundary**: `warp_prism_runtime` DTOs own id, kind, label, status, typed directed edges, adjacency, metadata payload; they **MUST NOT carry** `Offset`, velocity, physics flags, or selection state (Model Ownership Rule, layer-contracts-v2 §4.3 — **current owner: `layer-contracts.md` §7 Model Separation**, which states "Rust MUST NOT return `Offset` as domain. The binding owns the mapper (`graph_layout_strategy.dart` is the current owner)"; see also §4 Global MUST-NOT 3 — v2 citation preserved as historical provenance; package-topology §5). Open mapping decision: three divergent kind vocabularies exist today — `GraphNode.type` strings (`graph_model.dart:61`), `DSWorkflowNodeKind` (:20-50, with `graphType` adapter :117-128), observatory `AssetKind` (`workspace_graph.dart:17-27`, projected via `kind.name` `map_graph_projection.dart:103`) — plus 3 edge vocabularies (`GraphEdge.edgeType`, `DSWorkflowEdgeKind`, `EdgeKind` :32-53).
 
 ## 4. Command-State Census Across Apps
 
@@ -100,13 +101,13 @@ ProviderHealthMatrix is stateless today; a `HealthSource` contract would project
 | **GraphSource** | stable node id, node kind, label, status, typed directed edges with kind, adjacency queries (:193, :200), metadata payload | position/Offset, velocity, physics, pan/zoom, selection, hover | incremental updates (today full rebuild per `didUpdateWidget` :209-230), kind vocabulary mapping, edge-id scheme |
 | **AsyncCommand** | execute, loading, typed error, result, manual re-execute | retry policy, auto-invoke, progress UI | cancellation hook (0 consumers), empty-as-distinct-result-state |
 
-All four remain single-domain or zero-consumer today — none qualifies as PROVEN (needs ≥2 distinct consumers or domains, layer-contracts-v2 §3.2); experimental lifecycle applies to each.
+All four remain single-domain or zero-consumer today — none qualifies as PROVEN (needs ≥2 distinct consumers or domains, layer-contracts-v2 §3.2 — **current owner: `layer-contracts.md` §9 lifecycle table**, whose `PROVEN` row requires "≥2 distinct consumers **or** ≥2 distinct domains + fake + suite PASS"); experimental lifecycle applies to each.
 
 ### 6.1 Requirement Dispositions & Layer Reconciliations
 
-- **`HealthSource.onCellSelected` Disposition**: Reconciled as **COMPOSITION-OWNED / INTERACTION-OWNED** per the Presentation-Purge Law (`layer-contracts-v2.md` §2 and §4.3). While §6 table records `onCellSelected` as an organism-level consumer callback on `DSProviderHealthMatrix` (:185), cell selection, focus states, and interactive gesture handling are strictly prohibited from backend-agnostic runtime contracts in `warp_prism_runtime`. The `HealthSource` contract exposes pure semantic health cells, aggregated states, snapshots, and freshness metadata; selection dispatch is owned by the UI presentation and interaction layers (`warp_prism_ui`, `warp_prism_interaction`, `warp_prism_bindings`).
-- **EventStream stable identity → PAYLOAD-OWNED** (`RuntimeEvent.id`; generic `T` unconstrained by design per `layer-contracts-v2.md` §2). `EventStream<T>` remains generic so `T` may be any type without forcing an identity base class constraint (`T extends Identifiable`). When stable event identity, severity channel, timestamp, source, or run-group correlation is needed, consumers use the identity-bearing reference model `RuntimeEvent<T>` (which carries `id`, timestamp, severity, source, and runGroupId).
-- **EventStream growth notification → DELIVERY-OWNED** (subscription delivery is the notification; `currentEvents` = retained snapshot per `layer-contracts-v2.md` §2). Stream delivery across `stream` and `subscribe` directly delivers every appended event to active subscribers in FIFO order, acting as the formal growth notification mechanism; `currentEvents` provides the retained snapshot buffer. No separate growth event channel exists because it would duplicate stream delivery.
+- **`HealthSource.onCellSelected` Disposition**: Reconciled as **COMPOSITION-OWNED / INTERACTION-OWNED** per the Presentation-Purge Law (`layer-contracts-v2.md` §2 and §4.3 — **current owner: `layer-contracts.md` §1 (`warp_prism_runtime` MUST NOT "contain presentation policy (auto-scroll, follow-tail, poll-every-X, retry policy, viewport)") and §7 Model Separation**; v2 citation preserved as historical provenance). While §6 table records `onCellSelected` as an organism-level consumer callback on `DSProviderHealthMatrix` (:185), cell selection, focus states, and interactive gesture handling are strictly prohibited from backend-agnostic runtime contracts in `warp_prism_runtime`. The `HealthSource` contract exposes pure semantic health cells, aggregated states, snapshots, and freshness metadata; selection dispatch is owned by the UI presentation and interaction layers (`warp_prism_ui`, `warp_prism_interaction`, `warp_prism_bindings`).
+- **EventStream stable identity → PAYLOAD-OWNED** (`RuntimeEvent.id`; generic `T` unconstrained by design per `layer-contracts-v2.md` §2 — **current owner: `layer-contracts.md` §1 (`warp_prism_runtime` MUST stay pure Dart + backend-agnostic) and §5 Domain Leakage Rule's generic-vocabulary requirement**; v2 citation preserved as historical provenance). `EventStream<T>` remains generic so `T` may be any type without forcing an identity base class constraint (`T extends Identifiable`). When stable event identity, severity channel, timestamp, source, or run-group correlation is needed, consumers use the identity-bearing reference model `RuntimeEvent<T>` (which carries `id`, timestamp, severity, source, and runGroupId).
+- **EventStream growth notification → DELIVERY-OWNED** (subscription delivery is the notification; `currentEvents` = retained snapshot per `layer-contracts-v2.md` §2 — **current owner: `layer-contracts.md` §1 (`warp_prism_runtime` "own lifecycle/error/cancellation vocabulary") and §5 Domain Leakage Rule**; v2 citation preserved as historical provenance). Stream delivery across `stream` and `subscribe` directly delivers every appended event to active subscribers in FIFO order, acting as the formal growth notification mechanism; `currentEvents` provides the retained snapshot buffer. No separate growth event channel exists because it would duplicate stream delivery.
 
 ---
 
@@ -127,7 +128,7 @@ cd packages/warp_prism_ui && dart run test/boundaries/boundary_test.dart --repo-
 `dart run test/boundaries/boundary_test.dart --repo-root ../..` was executed from
 `packages/warp_prism_ui` as a read-only confirmation that the audit introduced no
 boundary violations (Check 1: CyberCore zero `DS*` refs; Check 2: no `src/` imports in
-apps; Checks 3-7 per `layer-contracts-v2.md` §5). Exact output recorded in Task 1818
+apps; Checks 3-7 per `layer-contracts-v2.md` §5 — **current owner: `layer-contracts.md` §10 Mechanically Enforced Checks**, the 16-row status table reconciled against the harness on 2026-10-11; v2 citation preserved as historical provenance). Exact output recorded in Task 1818
 completion evidence. This task wrote only `docs/architecture/runtime-consumer-audit.md`
 — zero source files were modified, so the harness result is unchanged by this task
 by construction.
@@ -138,7 +139,7 @@ by construction.
 **Observatory (14)**: `workspace_providers.dart`, `workspace_snapshot_provider.dart`, `workspace_load_state.dart`, `workspace_graph.dart` (model), `workspace_graph.dart` (result), `map_graph_projection.dart`, `map_graph_mode.dart`, `map_graph_panel.dart`, `workspace_graph_panel.dart`, `map_workspace_provider.dart`, `map_workspace_page.dart`, `map_workspace_state.dart`, `operate_workspace_view_model.dart`, `overview_page.dart`, `asset_detail_controller.dart`, `workspace_snapshot_page.dart`.
 **CyberCore (10)**: `live_logs_page.dart`, `providers_page.dart`, `provider_detail_page.dart`, `provider_new_page.dart`, `mcp_servers_page.dart`, `mcp_server_detail_page.dart`, `mcp_inspector_page.dart`, `fixture_loader.dart`, `provider_connection.dart`, `mcp_server.dart`, `live_log_entry.dart`.
 **Catalog (1)**: `main.dart`.
-**Docs/harness (5)**: `layer-contracts-v2.md`, `package-topology.md`, `interaction-inventory.md`, source-reality review 2026-08-31, gallery sections + boundary harness (`boundary_test.dart`).
+**Docs/harness (5)**: `layer-contracts-v2.md` (historical law baseline; superseded by `layer-contracts.md` 2026-09-28), `package-topology.md`, `interaction-inventory.md`, source-reality review 2026-08-31, gallery sections + boundary harness (`boundary_test.dart`).
 
 ## 9. Limitations
 

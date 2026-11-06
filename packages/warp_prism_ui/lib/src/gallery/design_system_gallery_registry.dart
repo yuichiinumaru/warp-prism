@@ -213,6 +213,39 @@ const dsGallerySections = <DSGallerySectionSpec>[
         'PrismThemeEditor organism · Token override registry & bake-back code exporter',
     builder: DSGallerySections.buildThemeEditorSection,
   ),
+  DSGallerySectionSpec(
+    id: 'banner-1858-job-banner',
+    title: 'Job Banner (EXPERIMENTAL)',
+    subtitle: 'DSJobBanner staged progress · cancel with reason · receipt slot',
+    builder: DSGallerySections.buildBanner1858JobBannerSection,
+  ),
+  DSGallerySectionSpec(
+    id: 'meter-1861-meter-fader',
+    title: 'Meter + Fader (EXPERIMENTAL)',
+    subtitle: 'DSMeter zone bands · peak-hold · DSFaderStrip · DSCanvasHost',
+    builder: DSGallerySections.buildMeter1861MeterFaderSection,
+  ),
+  DSGallerySectionSpec(
+    id: 'composer-1866-composer',
+    title: 'Composer (EXPERIMENTAL)',
+    subtitle:
+        'DSComposer autogrow · @mentions · emoji · format · attachment lifecycle · parked drafts',
+    builder: DSGallerySections.buildComposer1866ComposerSection,
+  ),
+  DSGallerySectionSpec(
+    id: 'numeric-1881-numeric-field',
+    title: 'Numeric Field (EXPERIMENTAL)',
+    subtitle: 'DSNumericField Set|Scrub commits · quantum · Lead-as-name',
+    builder: DSGallerySections.buildNumeric1881NumericFieldSection,
+  ),
+  DSGallerySectionSpec(
+    id: 'session-1883-panels',
+    title: 'Session & Panels (EXPERIMENTAL)',
+    subtitle:
+        'Task 1883 convergence: sessions, event stream, project/media, '
+        'Tempest screens, drop zone',
+    builder: DSGallerySections.buildSession1883PanelsSection,
+  ),
 ];
 
 /// Returns all registered section IDs.

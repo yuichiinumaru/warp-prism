@@ -4,7 +4,7 @@ import 'package:warp_prism_runtime/warp_prism_runtime.dart';
 import 'rust/api.dart' as frb_api;
 
 /// FRB native-backed implementation of [GraphSource].
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 class FrbGraphSource implements GraphSource<String, String> {
   final int? maxEvents;

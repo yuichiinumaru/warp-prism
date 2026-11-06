@@ -102,8 +102,7 @@ class DSPageShell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bodyPadding =
-        contentPadding ?? const EdgeInsets.all(DSSpacing.lg);
+    final bodyPadding = contentPadding ?? const EdgeInsets.all(DSSpacing.lg);
     final hasActions = actions != null && actions!.isNotEmpty;
 
     return Semantics(
@@ -185,9 +184,7 @@ class _PageHeader extends StatelessWidget {
           horizontal: DSSpacing.lg,
           vertical: DSSpacing.md,
         ),
-        decoration: BoxDecoration(
-          color: DSColors.obsidianBase,
-        ),
+        decoration: BoxDecoration(color: DSColors.obsidianBase),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

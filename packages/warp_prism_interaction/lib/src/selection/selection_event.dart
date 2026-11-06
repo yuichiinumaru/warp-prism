@@ -4,7 +4,7 @@ import 'selection_state.dart';
 
 /// Event payload emitted whenever a selection changes.
 ///
-/// Lifecycle: PROVEN (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: PROVEN (see `.project/architecture/layer-contracts.md`).
 @immutable
 class SelectionChangeEvent<T extends Object> {
   /// The selection state prior to the change.

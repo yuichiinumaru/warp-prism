@@ -311,11 +311,11 @@ O pubspec.yaml declara assets em assets/mock_workspace/..., mas os mocks que enc
 
 pubspec
 
-O prompt exigia .md com YAML frontmatter; os agentes/skills/workflows implementados são .yaml puro, sem frontmatter. Exemplo: mock_workspace/.agents/orchestrator/agent.yaml. 
+O prompt exigia .md com YAML frontmatter; os agentes/skills/workflows implementados são .yaml puro, sem frontmatter. Exemplo: mock_workspace/.opencode/orchestrator/agent.yaml. 
 
 agent
 
-O prompt exigia pelo menos 20 tasks espalhadas em 5 lanes; o repo tem uma fila única com 6 tasks em um arquivo mock_workspace/.agents/tasks/queue.md, e não os diretórios docs/tasks/00-planning etc. 
+O prompt exigia pelo menos 20 tasks espalhadas em 5 lanes; o repo tem uma fila única com 6 tasks em um arquivo mock_workspace/.opencode/tasks/queue.md, e não os diretórios docs/tasks/00-planning etc. 
 
 queue
 
@@ -431,7 +431,7 @@ Mock workspace real
 
 Remover ou arquivar o mock atual em YAML.
 
-Criar o corpus exatamente no padrão do prompt: assets/mock_workspace/.agents/... e assets/mock_workspace/docs/....
+Criar o corpus exatamente no padrão do prompt: assets/mock_workspace/.opencode/... e assets/mock_workspace/docs/....
 
 Criar frontmatter válido em todos os .md.
 
@@ -516,7 +516,7 @@ gt-task-architect.md
 gt-wave-orchestrator.md
 ```
 
-Location: `assets/mock_workspace/.agents/agents/<name>.md`
+Location: `assets/mock_workspace/.opencode/agents/<name>.md`
 
 Each agent `.md` file must have YAML frontmatter with at minimum:
 - `name`, `model` (provider/name), `mode`, `description`, `skills` (list), `workflows` (list)
@@ -541,7 +541,7 @@ remediation-harness/
 agent-cli-delegation/
 ```
 
-Location: `assets/mock_workspace/.agents/skills/<skill-name>/SKILL.md`
+Location: `assets/mock_workspace/.opencode/skills/<skill-name>/SKILL.md`
 
 Each SKILL.md must have YAML frontmatter with at minimum:
 - `name`, `description`, `triggers` (list), `sub_skills` (list), `canonicality`, `tags` (list)
@@ -567,7 +567,7 @@ gt-verify-task-completion.md
 gt-research-orchestration.md
 ```
 
-Location: `assets/mock_workspace/.agents/workflows/<name>.md`
+Location: `assets/mock_workspace/.opencode/workflows/<name>.md`
 
 Each workflow `.md` file must have YAML frontmatter with at minimum:
 - `name`, `description`, `uses_skills` (list), `kind`
@@ -616,19 +616,19 @@ The existing `mock_workspace/` tree is archived, never deleted.
 
 | Legacy source | Action     | Target destination | Rationale |
 |---------------|------------|-------------------|-----------|
-| `.agents/orchestrator/agent.yaml` | archive | `archive/mock_workspace/.agents/orchestrator/` | Name/format mismatch; prompt requires different agents in .md with frontmatter |
-| `.agents/coder/agent.yaml` | archive | `archive/mock_workspace/.agents/coder/` | Not in required agent list |
-| `.agents/planner/agent.yaml` | archive | `archive/mock_workspace/.agents/planner/` | Not in required agent list |
-| `.agents/researcher/agent.yaml` | archive | `archive/mock_workspace/.agents/researcher/` | Not in required agent list |
-| `.agents/reviewer/agent.yaml` | archive | `archive/mock_workspace/.agents/reviewer/` | Not in required agent list |
-| `.agents/skills/code-review/skill.yaml` | archive | `archive/mock_workspace/.agents/skills/code-review/` | Name/format mismatch; prompt requires different skills in SKILL.md with frontmatter |
-| `.agents/skills/planning/skill.yaml` | archive | `archive/mock_workspace/.agents/skills/planning/` | Not in required skill list |
-| `.agents/skills/synthesis/skill.yaml` | archive | `archive/mock_workspace/.agents/skills/synthesis/` | Not in required skill list |
-| `.agents/skills/test-generation/skill.yaml` | archive | `archive/mock_workspace/.agents/skills/test-generation/` | Not in required skill list |
-| `.agents/workflows/code-implementation/workflow.yaml` | archive | `archive/mock_workspace/.agents/workflows/code-implementation/` | Name/format mismatch; prompt requires different workflows in .md with frontmatter |
-| `.agents/workflows/complex-task-pipeline/workflow.yaml` | archive | `archive/mock_workspace/.agents/workflows/complex-task-pipeline/` | Not in required workflow list |
-| `.agents/workflows/review-cycle/workflow.yaml` | archive | `archive/mock_workspace/.agents/workflows/review-cycle/` | Not in required workflow list |
-| `.agents/tasks/queue.md` | archive | `archive/mock_workspace/.agents/tasks/queue.md` | Single queue file; prompt requires 20 tasks distributed across 5 lane directories |
+| `.opencode/orchestrator/agent.yaml` | archive | `archive/mock_workspace/.opencode/orchestrator/` | Name/format mismatch; prompt requires different agents in .md with frontmatter |
+| `.opencode/coder/agent.yaml` | archive | `archive/mock_workspace/.opencode/coder/` | Not in required agent list |
+| `.opencode/planner/agent.yaml` | archive | `archive/mock_workspace/.opencode/planner/` | Not in required agent list |
+| `.opencode/researcher/agent.yaml` | archive | `archive/mock_workspace/.opencode/researcher/` | Not in required agent list |
+| `.opencode/reviewer/agent.yaml` | archive | `archive/mock_workspace/.opencode/reviewer/` | Not in required agent list |
+| `.opencode/skills/code-review/skill.yaml` | archive | `archive/mock_workspace/.opencode/skills/code-review/` | Name/format mismatch; prompt requires different skills in SKILL.md with frontmatter |
+| `.opencode/skills/planning/skill.yaml` | archive | `archive/mock_workspace/.opencode/skills/planning/` | Not in required skill list |
+| `.opencode/skills/synthesis/skill.yaml` | archive | `archive/mock_workspace/.opencode/skills/synthesis/` | Not in required skill list |
+| `.opencode/skills/test-generation/skill.yaml` | archive | `archive/mock_workspace/.opencode/skills/test-generation/` | Not in required skill list |
+| `.opencode/workflows/code-implementation/workflow.yaml` | archive | `archive/mock_workspace/.opencode/workflows/code-implementation/` | Name/format mismatch; prompt requires different workflows in .md with frontmatter |
+| `.opencode/workflows/complex-task-pipeline/workflow.yaml` | archive | `archive/mock_workspace/.opencode/workflows/complex-task-pipeline/` | Not in required workflow list |
+| `.opencode/workflows/review-cycle/workflow.yaml` | archive | `archive/mock_workspace/.opencode/workflows/review-cycle/` | Not in required workflow list |
+| `.opencode/tasks/queue.md` | archive | `archive/mock_workspace/.opencode/tasks/queue.md` | Single queue file; prompt requires 20 tasks distributed across 5 lane directories |
 | `docs/changelog/2025-04-10-planner-release.md` | archive | `archive/mock_workspace/docs/changelog/` | No YAML frontmatter; prompt requires frontmatter schema |
 | `docs/changelog/2025-05-15-researcher-update.md` | archive | `archive/mock_workspace/docs/changelog/` | No YAML frontmatter |
 | `docs/changelog/2025-05-20-security-audit.md` | archive | `archive/mock_workspace/docs/changelog/` | No YAML frontmatter |
@@ -708,7 +708,7 @@ The existing `mock_workspace/` tree is archived, never deleted.
 ```
 assets/mock_workspace/
   manifest.yaml              ← this file
-  .agents/
+  .opencode/
     agents/
       architect-orchestrator.md
       builder-orchestrator.md
@@ -794,10 +794,10 @@ The app should show two connected domains:
 
 ### A. Harness visibility
 
-Read mocked `.agents/` data:
+Read mocked `.opencode/` data:
 
 ```text
-.agents/
+.opencode/
   agents/
   skills/
   workflows/
@@ -898,7 +898,7 @@ Create realistic mock files in the project, preferably under:
 
 ```text
 assets/mock_workspace/
-  .agents/
+  .opencode/
     agents/
     skills/
     workflows/
@@ -1475,7 +1475,7 @@ The prototype is complete only if:
 1. A reusable Flutter Atomic Design System exists.
 2. All feature screens use the design system.
 3. There is a Design System Gallery route.
-4. Mock `.agents/` and `docs/` workspace files exist.
+4. Mock `.opencode/` and `docs/` workspace files exist.
 5. Mock markdown files use valid YAML frontmatter.
 6. App loads and visualizes mocked agents, skills, workflows, tasks, and changelog entries.
 7. The app has Map, Operate, History, Governance, and Asset Detail surfaces.
@@ -1496,7 +1496,7 @@ Create tokens, atoms, molecules, organisms, templates, and Design System Gallery
 
 ### Phase 2 — Mock Workspace
 
-Create the mock `.agents/` and `docs/` markdown file corpus with valid frontmatter.
+Create the mock `.opencode/` and `docs/` markdown file corpus with valid frontmatter.
 
 ### Phase 3 — Data Layer
 
@@ -1544,7 +1544,7 @@ FILE: research.md
 
 ## Executive synthesis
 
-Your current harness already behaves less like a loose `.agents/` folder and more like a governed operating system for agentic work. The imported corpus exposes generated indexes for **38 skills**, **42 agents**, and **43 workflows**, and the updated skills corpus includes a large hierarchical surface with super-skills, sub-skills, skill-local workflows, domain-skills, and interaction-skills. At that scale, a simple file browser or static markdown list will underperform; what you need is a **workspace observatory** that can show hierarchy, cross-references, provenance, and change over time in one place. fileciteturn0file7 fileciteturn0file5 fileciteturn0file6
+Your current harness already behaves less like a loose `.opencode/` folder and more like a governed operating system for agentic work. The imported corpus exposes generated indexes for **38 skills**, **42 agents**, and **43 workflows**, and the updated skills corpus includes a large hierarchical surface with super-skills, sub-skills, skill-local workflows, domain-skills, and interaction-skills. At that scale, a simple file browser or static markdown list will underperform; what you need is a **workspace observatory** that can show hierarchy, cross-references, provenance, and change over time in one place. fileciteturn0file7 fileciteturn0file5 fileciteturn0file6
 
 The most important design conclusion from `harness-architecture` is that skills are not flat documentation assets. The harness uses a **Lobe Gateway** pattern in which a super-skill root acts as an index, while execution knowledge lives in sub-skills and skill-local workflows. It also enforces a stronger governance layer than a normal docs system: ASW scorecards gate new assets, workflows are supposed to live in the narrowest canonical home, and harness-management is explicitly audit-first and read-only by default. That means the frontend should not merely “list files”; it should expose **asset class**, **hierarchy**, **canonical home**, **routing intent**, and **governance status**. fileciteturn0file7
 
@@ -1556,7 +1556,7 @@ My recommendation is to build **one desktop-first Flutter application** that con
 
 The frontend should be designed around the rules your skills already encode, not around generic “project management app” assumptions.
 
-First, `harness-architecture` treats the harness as a governed system, not as “a pile of ad-hoc Markdown.” It explicitly says new skills and workflows should pass an ASW scorecard gate, that super-skills use a root index plus sub-skills, that workflow placement should prefer the owning super-skill over global `.agents/workflows/`, and that child-vs-parent drift should be audited and classified rather than auto-rewritten. `harness-management` also distinguishes parent-canonical assets, child-local overlays, promotion candidates, conflicts, and convergence status. That directly implies the UI needs provenance chips like **parent-canonical**, **child-local**, **promotion candidate**, **conflict**, **same-key-different**, and **workflow-promote-to-skill**, not just tags like “file type.” fileciteturn0file7
+First, `harness-architecture` treats the harness as a governed system, not as “a pile of ad-hoc Markdown.” It explicitly says new skills and workflows should pass an ASW scorecard gate, that super-skills use a root index plus sub-skills, that workflow placement should prefer the owning super-skill over global `.opencode/workflows/`, and that child-vs-parent drift should be audited and classified rather than auto-rewritten. `harness-management` also distinguishes parent-canonical assets, child-local overlays, promotion candidates, conflicts, and convergence status. That directly implies the UI needs provenance chips like **parent-canonical**, **child-local**, **promotion candidate**, **conflict**, **same-key-different**, and **workflow-promote-to-skill**, not just tags like “file type.” fileciteturn0file7
 
 Second, `project-management` bakes in a very specific execution worldview. It states that recurring operational patterns should become workflows; RF8 is the upstream planning contract for complex work; task creation should enforce anti-collision numbering and reproducibility-by-design; task references should be lane-neutral; and tasklist/changelog are canonical-via-engine, not manually maintained ledgers. In other words, your task system is less a kanban board and more a **governed evidence pipeline**. The frontend should therefore emphasize **proof**, **dependencies**, **verification commands**, **expected outputs**, **current lane**, **historical lane-at-time**, and **which orchestrator is allowed to publish**. fileciteturn0file7
 
@@ -1660,7 +1660,7 @@ That model matches your actual workspace much better than separate “docs viewe
 
 From a workflow point of view, I would release it in three phases.
 
-The **first phase** should be read-only and local. It scans `.agents/agents`, `.agents/skills`, `.agents/workflows`, `docs/tasks`, and `docs/changelog`, builds a normalized index, and exposes search, graph, filters, and storytelling views. No mutation. No write-back. No accidental governance bypass. That is the safest and fastest path to usefulness. fileciteturn0file7
+The **first phase** should be read-only and local. It scans `.opencode/agents`, `.opencode/skills`, `.opencode/workflows`, `docs/tasks`, and `docs/changelog`, builds a normalized index, and exposes search, graph, filters, and storytelling views. No mutation. No write-back. No accidental governance bypass. That is the safest and fastest path to usefulness. fileciteturn0file7
 
 The **second phase** should add guided overlays and analyst features: bookmarks, personal notes, “spotlight tours,” saved graph layouts, and diagnostic views like “orphan workflows,” “skills with no agent affinity,” “tasks referencing stale lane paths,” or “assets with heavy incoming reference load.” Research on dashboard tours and embedded annotations suggests these kinds of guided interpretation layers improve how people navigate complex dashboards and relate findings to one another. citeturn19academia1turn19academia2
 
@@ -1967,7 +1967,7 @@ scope: data-layer, workspace-snapshot
 ## What changed
 - Created `lib/data/models/workspace_snapshot.dart` — typed aggregate holding agents, skills, workflows, tasks (by lane), changelog entries, and scan metadata
 - Created `lib/data/sources/workspace_source.dart` — abstract `WorkspaceSource` interface with `load(String rootPath)` contract
-- Created `lib/data/sources/preset_local_workspace_source.dart` — filesystem scanner using `dart:io` that enumerates `.agents/` and `docs/` directories
+- Created `lib/data/sources/preset_local_workspace_source.dart` — filesystem scanner using `dart:io` that enumerates `.opencode/` and `docs/` directories
 - Created `lib/data/sources/sources.dart` — barrel export for sources layer
 - Created `lib/features/workspace_snapshot/workspace_snapshot_provider.dart` — Riverpod AsyncNotifierProvider loading snapshot from configurable root path
 - Created `lib/features/workspace_snapshot/workspace_snapshot_page.dart` — main surface composing DS primitives (metric tiles, asset cards, task cards, topbar, state surfaces)
@@ -2891,12 +2891,12 @@ title: governance-bootstrap
 Bootstrapped child-local governance for Warp Prism:
 
 - added local `AGENTS.md`;
-- added `.agents/rules/project-boundaries.md`;
-- added `.agents/rules/task-governance.md`;
-- added `.agents/workflows/onboard.md`;
+- added `.opencode/rules/project-boundaries.md`;
+- added `.opencode/rules/task-governance.md`;
+- added `.opencode/workflows/onboard.md`;
 - added `docs/tasks/000-template.md`;
 - added local changelog ledger notes;
-- created parent-canonical symlinks for `.agents/skills`, `.agents/agents`, and
+- created parent-canonical symlinks for `.opencode/skills`, `.opencode/agents`, and
   `.codex/agents`.
 
 Parent-significant reusable agent/workflow changes are tracked in the parent
@@ -2934,7 +2934,7 @@ Dependencies:
 - Task 0019 depends on Task 0011 (bootstrap) and Task 0017 (DS Gallery).
 - Task 0020 depends on Task 0019.
 
-Source inspiration: `.agents/user/warp-prism2.txt` research section and
+Source inspiration: `.opencode/user/warp-prism2.txt` research section and
 user request for immediate workspace utility.
 
 
@@ -2985,7 +2985,7 @@ DSStoryPanel(
       text: '38 skills across 13 families',
       detail: '12 super-skills, 26 sub-skills',
       value: '38',
-      evidence: 'assets/mock_workspace/.agents/skills/',
+      evidence: 'assets/mock_workspace/.opencode/skills/',
       riskLevel: InsightRiskLevel.none,
       connection: 'harness-architecture governs all skill families',
     ),
@@ -2993,7 +2993,7 @@ DSStoryPanel(
       text: '9 specialized agents with distinct roles',
       detail: '3 orchestrators, 6 domain specialists',
       value: '9',
-      evidence: 'assets/mock_workspace/.agents/agents/',
+      evidence: 'assets/mock_workspace/.opencode/agents/',
       riskLevel: InsightRiskLevel.none,
       connection: 'agents → skills via uses edges',
     ),
@@ -3001,7 +3001,7 @@ DSStoryPanel(
       text: '42 workflows across review, build, and governance',
       detail: 'global workflows + skill-local workflows',
       value: '42',
-      evidence: 'assets/mock_workspace/.agents/workflows/',
+      evidence: 'assets/mock_workspace/.opencode/workflows/',
       riskLevel: InsightRiskLevel.low,
       connection: 'workflows → skills via dependsOn edges',
     ),
@@ -8198,8 +8198,8 @@ FILE: reports/execution-wave-plan.md
 
 | ID | Nome | Prioridade | Tipo | Depende de | Domínio |
 |----|------|------------|------|------------|---------|
-| 0002 | Agent And Workflow Markdown Fixtures | 🔴 P0 | feature | 0001 | assets/mock_workspace/.agents/ |
-| 0003 | Skill Hierarchy Markdown Fixtures | 🔴 P0 | feature | 0001 | assets/mock_workspace/.agents/skills/ |
+| 0002 | Agent And Workflow Markdown Fixtures | 🔴 P0 | feature | 0001 | assets/mock_workspace/.opencode/ |
+| 0003 | Skill Hierarchy Markdown Fixtures | 🔴 P0 | feature | 0001 | assets/mock_workspace/.opencode/skills/ |
 | 0011 | Bootstrap Main Router Shell | 🔴 P0 | feature | 0010 | lib/main.dart, lib/app/ |
 | 0012 | Design System API Normalization | 🔴 P0 | remediation | 0010 | lib/design_system/ |
 | 0014 | DS Token Contract and Inventory | 🔴 P0 | feature | 0010, 0012 | lib/design_system/tokens/ |
@@ -9080,7 +9080,7 @@ FILE: reports/warp-prism-governance-bootstrap-20260606.md
 ## Classification
 
 Case: `nursery-no-governance` with existing product docs, task lanes, reports,
-and 55 executable open task specs, but no local `.agents/` harness and no local
+and 55 executable open task specs, but no local `.opencode/` harness and no local
 task template or changelog folder.
 
 ## Created Child-Local Surfaces
@@ -9088,10 +9088,10 @@ task template or changelog folder.
 | Surface | Purpose |
 | --- | --- |
 | `AGENTS.md` | Local child constitution for Warp Prism agents. |
-| `.agents/rules/project-boundaries.md` | Product and workspace boundaries. |
-| `.agents/rules/task-governance.md` | Local task namespace and lane rules. |
-| `.agents/workflows/onboard.md` | Local onboarding ritual. |
-| `.agents/profiles/` | Local role continuity namespace for child-root sessions. |
+| `.opencode/rules/project-boundaries.md` | Product and workspace boundaries. |
+| `.opencode/rules/task-governance.md` | Local task namespace and lane rules. |
+| `.opencode/workflows/onboard.md` | Local onboarding ritual. |
+| `.opencode/profiles/` | Local role continuity namespace for child-root sessions. |
 | `docs/tasks/000-template.md` | Local executable task template. |
 | `docs/changelog/` | Simple child-local changelog ledger. |
 
@@ -9099,8 +9099,8 @@ task template or changelog folder.
 
 | Child path | Target |
 | --- | --- |
-| `.agents/skills` | `../../.agents/skills` |
-| `.agents/agents` | `../../.agents/agents` |
+| `.opencode/skills` | `../../.opencode/skills` |
+| `.opencode/agents` | `../../.opencode/agents` |
 | `.codex/agents` | `../../.codex/agents` |
 
 Reusable skills and agent definitions remain parent-canonical. Child divergence
@@ -9128,7 +9128,7 @@ Follow `docs/reports/warp-prism-task-gap-overlap-audit.md`:
 
 ## Verification Notes
 
-- Target `.agents/` path was absent before bootstrap.
+- Target `.opencode/` path was absent before bootstrap.
 - Parent-canonical symlink targets existed in the Ganthritor root.
 - Child-local task lanes already existed.
 
@@ -9212,7 +9212,7 @@ Open-lane task inventory:
 | Atomic Design System before product screens | `0014`-`0018`, plus `1010` | Covered; `0017` corrected to avoid owning bootstrap while preserving gallery-first proof. |
 | Ultradark obsidian glass with restrained accents | `0014`, `0015`, `0016`, `1010`, `1040` | Covered; performance budget explicitly separated in `1040`. |
 | Readable contrast, keyboard navigation, visible focus states | `0018`, `1010`, `1020`, `1060` | Covered. |
-| Mock `.agents/` agents, skills, workflows | `0001`, `0002`, `0003`, `0006`, parser tasks `0311`-`0313` | Covered. |
+| Mock `.opencode/` agents, skills, workflows | `0001`, `0002`, `0003`, `0006`, parser tasks `0311`-`0313` | Covered. |
 | Mock `docs/tasks` five-lane corpus | `0004`, `0006`, `0610` | Covered. |
 | Mock `docs/changelog` corpus with 12+ entries | `0005`, `0710`, `0711` | Covered after `0710` changed to enrichment rather than duplicate creation. |
 | Normalized graphable asset model | `0310`, `0313`, `0902` | Covered. |
@@ -9787,7 +9787,7 @@ Create the realistic markdown/frontmatter mock Agent System Workspace required b
 
 ## Source Evidence
 
-- `prompt.txt` requires mocked `.agents/` and `docs/` files as real `.md` files with valid YAML frontmatter.
+- `prompt.txt` requires mocked `.opencode/` and `docs/` files as real `.md` files with valid YAML frontmatter.
 - `prompt.txt` specifies minimum counts: 9 agents, 13 super-skills, 11 workflows, 20 tasks across 5 lanes, 12 changelog entries.
 - `draft.md` reports current mocks are `.yaml`-style and located under `mock_workspace/`, while `pubspec.yaml` expects `assets/mock_workspace/`.
 
@@ -10419,7 +10419,7 @@ FILE: tasks/00-planning/ROADMAP-warp-prism-asw-observatory.md
 
 ## Product Goal
 
-Build a read-only Flutter desktop-first observability console for an Agent System Workspace. The app should visualize mocked `.agents/` and `docs/` assets as one graph-backed system spanning agents, skills, workflows, tasks, changelog entries, governance diagnostics, and historical evidence.
+Build a read-only Flutter desktop-first observability console for an Agent System Workspace. The app should visualize mocked `.opencode/` and `docs/` assets as one graph-backed system spanning agents, skills, workflows, tasks, changelog entries, governance diagnostics, and historical evidence.
 
 ## Local Governance Decisions
 
@@ -10448,7 +10448,7 @@ Build a read-only Flutter desktop-first observability console for an Agent Syste
 ## RF8 Framing
 
 - **Goal**: Make governed agentic workspace structure understandable at a glance.
-- **Domain**: Read-only ASW Observatory over mocked `.agents/` and `docs/` assets.
+- **Domain**: Read-only ASW Observatory over mocked `.opencode/` and `docs/` assets.
 - **Feature**: Roadmap is decomposed into foundational, data, shell, screen, and polish epics.
 - **Representation**: Atomic design system plus Design System Gallery; graph/story surfaces act as cognitive interfaces.
 - **Specs**: `WorkspaceAsset`, `WorkspaceEdge`, `AssetKind`, `EdgeKind`, and `Canonicality` backbone.
@@ -10514,8 +10514,8 @@ Create the first Warp Prism documentation set that establishes project identity,
 - [ ] `warp-prism/docs/design/rf8-plan.md` exists and covers Goal through Eval stages.
 - [ ] The documents cite Task 8210, Task 8220, Task 8230, Task 8240, Task 0583, and Task 0590.
 - [ ] `test -f warp-prism/docs/design/charter.md && test -f warp-prism/docs/design/naming.md && test -f warp-prism/docs/design/rf8-plan.md` passes.
-- [ ] `python3 .agents/skills/indexing-skills/scripts/index_rebuild.py .agents --validate` passes or any unrelated failure is documented.
-- [ ] `bash .agents/skills/project-management/sub-skills/manage-changelog/scripts/rebuild.sh validate` passes.
+- [ ] `python3 .opencode/skills/indexing-skills/scripts/index_rebuild.py .agents --validate` passes or any unrelated failure is documented.
+- [ ] `bash .opencode/skills/project-management/sub-skills/manage-changelog/scripts/rebuild.sh validate` passes.
 - [ ] Changelog entry is added through the changelog engine.
 
 ---
@@ -10637,7 +10637,7 @@ Create an evidence-backed Warp Prism inventory of Cybernetics Core UI surfaces, 
 - [ ] Inventory cites current CC component/source paths and screenshot report evidence.
 - [ ] If `/tmp/opencode/cc-ui-screenshots-round2/*.md` is unavailable, the task remains blocked/open and does not invent inventory data.
 - [ ] No new Dart/Flutter package files are created.
-- [ ] `bash .agents/skills/project-management/sub-skills/manage-changelog/scripts/rebuild.sh validate` passes.
+- [ ] `bash .opencode/skills/project-management/sub-skills/manage-changelog/scripts/rebuild.sh validate` passes.
 - [ ] Changelog entry is added through the changelog engine.
 
 ---
@@ -10663,8 +10663,8 @@ Subtasks:
 | `warp-prism/docs/design/component-inventory.md` | Create evidence-backed inventory. |
 | `warp-prism/docs/design/operational-state-vocabulary.md` | Create state vocabulary. |
 | `warp-prism/docs/design/cybercore-pilot-surface-matrix.md` | Create pilot surface matrix. |
-| `assets/mock_workspace/.agents/agents/` | Read mock agents for inventory. |
-| `assets/mock_workspace/.agents/skills/` | Read mock skills for inventory. |
+| `assets/mock_workspace/.opencode/agents/` | Read mock agents for inventory. |
+| `assets/mock_workspace/.opencode/skills/` | Read mock skills for inventory. |
 | `assets/mock_workspace/docs/tasks/` | Read mock tasks for operational state reference. |
 | `docs/tasks/01-open/1101-warp-prism-charter-and-naming-convergence.md` | Read prerequisite task. |
 | `warp-prism/docs/design/charter.md` | Read prerequisite charter output. |
@@ -10783,7 +10783,7 @@ Verify local Flutter/Dart tooling and create the minimal Warp Prism child-projec
 - [ ] From `warp-prism/apps/warp_prism_catalog/`, `flutter analyze` passes.
 - [ ] From `warp-prism/apps/warp_prism_catalog/`, `flutter test` passes.
 - [ ] Widgetbook decision is documented as immediate, deferred, or not chosen for MVP.
-- [ ] `bash .agents/skills/project-management/sub-skills/manage-changelog/scripts/rebuild.sh validate` passes.
+- [ ] `bash .opencode/skills/project-management/sub-skills/manage-changelog/scripts/rebuild.sh validate` passes.
 - [ ] Changelog entry is added through the changelog engine.
 
 ---
@@ -10976,7 +10976,7 @@ Warp Prism needs reusable ADS components and multiple frontend consumers without
 
 ```bash
 test -f docs/architecture/warp-prism-melos-monorepo-architecture.md
-bash ../.agents/skills/project-management/sub-skills/manage-changelog/scripts/rebuild.sh validate
+bash ../.opencode/skills/project-management/sub-skills/manage-changelog/scripts/rebuild.sh validate
 ```
 
 ---
@@ -11103,7 +11103,7 @@ Without a promotion policy, reusable components will drift into whichever app ne
 
 ```bash
 test -f docs/design/token-theme-catalog-policy.md
-bash ../.agents/skills/project-management/sub-skills/manage-changelog/scripts/rebuild.sh validate
+bash ../.opencode/skills/project-management/sub-skills/manage-changelog/scripts/rebuild.sh validate
 ```
 
 ---
@@ -11504,7 +11504,7 @@ A new frontend without route parity and scope decision can become an unbounded r
 ```bash
 test -f docs/design/cybercore-frontend-scope.md
 test -f docs/design/cybercore-route-parity-matrix.md
-bash ../.agents/skills/project-management/sub-skills/manage-changelog/scripts/rebuild.sh validate
+bash ../.opencode/skills/project-management/sub-skills/manage-changelog/scripts/rebuild.sh validate
 ```
 
 ---
@@ -11633,7 +11633,7 @@ Without an API/data contract inventory, a CyberCore Flutter MVP would either dep
 ```bash
 test -f docs/design/cybercore-api-contract-inventory.md
 test -f docs/design/cybercore-fixture-schema.md
-bash ../.agents/skills/project-management/sub-skills/manage-changelog/scripts/rebuild.sh validate
+bash ../.opencode/skills/project-management/sub-skills/manage-changelog/scripts/rebuild.sh validate
 ```
 
 ---
@@ -13685,7 +13685,7 @@ Define the exact migration contract for replacing `warp-prism/mock_workspace/` Y
 ### What
 
 Subtasks:
-- [x] **Ler codigo existente**: `warp-prism/docs/prompt.txt`, `warp-prism/docs/draft.md`, `warp-prism/pubspec.yaml`, `warp-prism/mock_workspace/.agents/orchestrator/agent.yaml`, `warp-prism/mock_workspace/.agents/tasks/queue.md`, `warp-prism/mock_workspace/docs/changelog/2025-06-01-coder-update.md`, `warp-prism/lib/data/parsers/workspace_parser.dart`, `warp-prism/lib/data/models/models.dart`
+- [x] **Ler codigo existente**: `warp-prism/docs/prompt.txt`, `warp-prism/docs/draft.md`, `warp-prism/pubspec.yaml`, `warp-prism/mock_workspace/.opencode/orchestrator/agent.yaml`, `warp-prism/mock_workspace/.opencode/tasks/queue.md`, `warp-prism/mock_workspace/docs/changelog/2025-06-01-coder-update.md`, `warp-prism/lib/data/parsers/workspace_parser.dart`, `warp-prism/lib/data/models/models.dart`
 - [x] Criar o contrato humano do corpus com contagens, listas obrigatorias, relacoes entre assets e regras de arquivamento do legado.
 - [x] Criar o manifesto estruturado do corpus em `assets/mock_workspace/manifest.yaml` para servir como referencia unica das tasks seguintes.
 - [x] Mapear o corpus legado atual para `archive`, `replace` ou `supersede`, preservando a regra de nunca deletar.
@@ -13701,8 +13701,8 @@ Subtasks:
 | `warp-prism/docs/prompt.txt` | Ler - contrato fonte do corpus mock |
 | `warp-prism/docs/draft.md` | Ler - gap report atual do projeto |
 | `warp-prism/pubspec.yaml` | Ler - declaracao de assets ja existente |
-| `warp-prism/mock_workspace/.agents/orchestrator/agent.yaml` | Ler - exemplo do formato legado em YAML |
-| `warp-prism/mock_workspace/.agents/tasks/queue.md` | Ler - exemplo do modelo legado de tasks |
+| `warp-prism/mock_workspace/.opencode/orchestrator/agent.yaml` | Ler - exemplo do formato legado em YAML |
+| `warp-prism/mock_workspace/.opencode/tasks/queue.md` | Ler - exemplo do modelo legado de tasks |
 | `warp-prism/mock_workspace/docs/changelog/2025-06-01-coder-update.md` | Ler - exemplo do changelog legado sem frontmatter |
 | `warp-prism/lib/data/parsers/workspace_parser.dart` | Ler - parser atual baseado em YAML |
 | `warp-prism/lib/data/models/models.dart` | Ler - backbone atual do dominio |
@@ -13772,13 +13772,13 @@ FILE: tasks/02-doing/0002-warp-prism-agent-and-workflow-markdown-fixtures.md
 
 ## Objective
 
-Create the markdown-frontmatter mock agent set and global workflow set required by the prompt under `warp-prism/assets/mock_workspace/.agents/`, replacing the current underspecified YAML corpus with graphable `.md` assets that future parsers can ingest directly.
+Create the markdown-frontmatter mock agent set and global workflow set required by the prompt under `warp-prism/assets/mock_workspace/.opencode/`, replacing the current underspecified YAML corpus with graphable `.md` assets that future parsers can ingest directly.
 
 ## Background Context
 
 ### O que já existe:
-- `warp-prism/mock_workspace/.agents/orchestrator/agent.yaml` and sibling files provide a legacy structure with 5 agents.
-- `warp-prism/mock_workspace/.agents/workflows/` contains only 3 YAML workflows in nested directories.
+- `warp-prism/mock_workspace/.opencode/orchestrator/agent.yaml` and sibling files provide a legacy structure with 5 agents.
+- `warp-prism/mock_workspace/.opencode/workflows/` contains only 3 YAML workflows in nested directories.
 - `warp-prism/docs/prompt.txt` requires 9 specific mock agents and 11 specific global workflows with YAML frontmatter in markdown files.
 - `warp-prism/assets/mock_workspace/manifest.yaml` from Task 0001 is the authoritative list and count source for this wave.
 
@@ -13792,8 +13792,8 @@ Create the markdown-frontmatter mock agent set and global workflow set required 
 
 ## Test Requirements
 
-- DEVE criar exatamente 9 arquivos de agentes markdown exigidos pelo prompt em `assets/mock_workspace/.agents/agents/`.
-- DEVE criar exatamente 11 arquivos de workflows globais markdown exigidos pelo prompt em `assets/mock_workspace/.agents/workflows/`.
+- DEVE criar exatamente 9 arquivos de agentes markdown exigidos pelo prompt em `assets/mock_workspace/.opencode/agents/`.
+- DEVE criar exatamente 11 arquivos de workflows globais markdown exigidos pelo prompt em `assets/mock_workspace/.opencode/workflows/`.
 - DEVE garantir que cada agente tenha frontmatter valido com `name`, `model`, `description`, `skills`, e `workflows`.
 - DEVE garantir que cada workflow tenha frontmatter valido com `name`, `description`, `uses_skills`, e `kind`.
 - DEVE garantir que os corpos markdown contem relacoes legiveis para skills, tasks, governanca ou prova operacional.
@@ -13802,12 +13802,12 @@ Create the markdown-frontmatter mock agent set and global workflow set required 
 
 ## Exit Conditions (GDD/TDD)
 
-- [ ] Os 9 agentes obrigatorios existem como `.md` em `warp-prism/assets/mock_workspace/.agents/agents/`.
-- [ ] Os 11 workflows obrigatorios existem como `.md` em `warp-prism/assets/mock_workspace/.agents/workflows/`.
+- [ ] Os 9 agentes obrigatorios existem como `.md` em `warp-prism/assets/mock_workspace/.opencode/agents/`.
+- [ ] Os 11 workflows obrigatorios existem como `.md` em `warp-prism/assets/mock_workspace/.opencode/workflows/`.
 - [ ] Cada arquivo criado possui delimitadores de frontmatter `---` e um corpo markdown nao vazio.
 - [ ] Os agentes referenciam skills e workflows que existem no manifesto aprovado em Task 0001.
-- [ ] Comando de validacao principal do componente passa sem erros: `rg --files warp-prism/assets/mock_workspace/.agents/agents warp-prism/assets/mock_workspace/.agents/workflows`
-- [ ] Testes relevantes passam com 0 falhas: `rg -n "^name:|^model:|^workflows:|^uses_skills:|^kind:" warp-prism/assets/mock_workspace/.agents/agents/*.md warp-prism/assets/mock_workspace/.agents/workflows/*.md`
+- [ ] Comando de validacao principal do componente passa sem erros: `rg --files warp-prism/assets/mock_workspace/.opencode/agents warp-prism/assets/mock_workspace/.opencode/workflows`
+- [ ] Testes relevantes passam com 0 falhas: `rg -n "^name:|^model:|^workflows:|^uses_skills:|^kind:" warp-prism/assets/mock_workspace/.opencode/agents/*.md warp-prism/assets/mock_workspace/.opencode/workflows/*.md`
 - [ ] Entrada de changelog adicionada via engine em `docs/changelog/`
 
 ---
@@ -13817,7 +13817,7 @@ Create the markdown-frontmatter mock agent set and global workflow set required 
 ### What
 
 Subtasks:
-- [x] **Ler codigo existente**: `warp-prism/docs/prompt.txt`, `warp-prism/assets/mock_workspace/manifest.yaml`, `warp-prism/mock_workspace/.agents/orchestrator/agent.yaml`, `warp-prism/mock_workspace/.agents/planner/agent.yaml`, `warp-prism/mock_workspace/.agents/reviewer/agent.yaml`, `warp-prism/mock_workspace/.agents/workflows/code-implementation/workflow.yaml`, `warp-prism/lib/data/parsers/workspace_parser.dart`
+- [x] **Ler codigo existente**: `warp-prism/docs/prompt.txt`, `warp-prism/assets/mock_workspace/manifest.yaml`, `warp-prism/mock_workspace/.opencode/orchestrator/agent.yaml`, `warp-prism/mock_workspace/.opencode/planner/agent.yaml`, `warp-prism/mock_workspace/.opencode/reviewer/agent.yaml`, `warp-prism/mock_workspace/.opencode/workflows/code-implementation/workflow.yaml`, `warp-prism/lib/data/parsers/workspace_parser.dart`
 - [ ] Criar os 9 agentes obrigatorios como markdown com frontmatter e secoes de corpo que descrevem papel, gatilhos, dependencias e surfaces relacionadas.
 - [ ] Criar os 11 workflows globais como markdown com frontmatter e secoes de corpo que descrevem passos, skills usadas e artefatos produzidos.
 - [ ] Conectar agentes e workflows por referencias cruzadas consistentes com o manifesto e com o corpus de skills da Task 0003.
@@ -13832,13 +13832,13 @@ Subtasks:
 |---------|-----------|
 | `warp-prism/docs/prompt.txt` | Ler - lista obrigatoria de agentes e workflows |
 | `warp-prism/assets/mock_workspace/manifest.yaml` | Ler - contagens e nomes aprovados |
-| `warp-prism/mock_workspace/.agents/orchestrator/agent.yaml` | Ler - referencia do corpus legado |
-| `warp-prism/mock_workspace/.agents/planner/agent.yaml` | Ler - referencia do corpus legado |
-| `warp-prism/mock_workspace/.agents/reviewer/agent.yaml` | Ler - referencia do corpus legado |
-| `warp-prism/mock_workspace/.agents/workflows/code-implementation/workflow.yaml` | Ler - referencia do workflow legado |
+| `warp-prism/mock_workspace/.opencode/orchestrator/agent.yaml` | Ler - referencia do corpus legado |
+| `warp-prism/mock_workspace/.opencode/planner/agent.yaml` | Ler - referencia do corpus legado |
+| `warp-prism/mock_workspace/.opencode/reviewer/agent.yaml` | Ler - referencia do corpus legado |
+| `warp-prism/mock_workspace/.opencode/workflows/code-implementation/workflow.yaml` | Ler - referencia do workflow legado |
 | `warp-prism/lib/data/parsers/workspace_parser.dart` | Ler - shape atual para evitar inventar campos impossiveis |
-| `warp-prism/assets/mock_workspace/.agents/agents/*.md` | Criar - corpus de agentes markdown-frontmatter |
-| `warp-prism/assets/mock_workspace/.agents/workflows/*.md` | Criar - corpus de workflows globais markdown-frontmatter |
+| `warp-prism/assets/mock_workspace/.opencode/agents/*.md` | Criar - corpus de agentes markdown-frontmatter |
+| `warp-prism/assets/mock_workspace/.opencode/workflows/*.md` | Criar - corpus de workflows globais markdown-frontmatter |
 
 ### How
 
@@ -13866,26 +13866,26 @@ The app's harness visibility screens depend on agent and workflow assets being r
 ## 📋 Completion Evidence (preenchido pelo agente executor)
 
 - **Arquivos criados/modificados**:
-  - assets/mock_workspace/.agents/agents/architect-orchestrator.md
-  - assets/mock_workspace/.agents/agents/builder-orchestrator.md
-  - assets/mock_workspace/.agents/agents/reviewer-orchestrator.md
-  - assets/mock_workspace/.agents/agents/gt-harness-architect.md
-  - assets/mock_workspace/.agents/agents/gt-code-quality-reviewer.md
-  - assets/mock_workspace/.agents/agents/gt-security-reviewer.md
-  - assets/mock_workspace/.agents/agents/gt-external-intelligence-analyst.md
-  - assets/mock_workspace/.agents/agents/gt-task-architect.md
-  - assets/mock_workspace/.agents/agents/gt-wave-orchestrator.md
-  - assets/mock_workspace/.agents/workflows/gt-ganthritor-onboard.md
-  - assets/mock_workspace/.agents/workflows/architect-orchestration.md
-  - assets/mock_workspace/.agents/workflows/builder-orchestration.md
-  - assets/mock_workspace/.agents/workflows/reviewer-orchestration.md
-  - assets/mock_workspace/.agents/workflows/gt-create-tasks.md
-  - assets/mock_workspace/.agents/workflows/plan-evidence-to-tasks.md
-  - assets/mock_workspace/.agents/workflows/audit-tasks.md
-  - assets/mock_workspace/.agents/workflows/gt-harness-architecture.md
-  - assets/mock_workspace/.agents/workflows/gt-code-review.md
-  - assets/mock_workspace/.agents/workflows/gt-verify-task-completion.md
-  - assets/mock_workspace/.agents/workflows/gt-research-orchestration.md
+  - assets/mock_workspace/.opencode/agents/architect-orchestrator.md
+  - assets/mock_workspace/.opencode/agents/builder-orchestrator.md
+  - assets/mock_workspace/.opencode/agents/reviewer-orchestrator.md
+  - assets/mock_workspace/.opencode/agents/gt-harness-architect.md
+  - assets/mock_workspace/.opencode/agents/gt-code-quality-reviewer.md
+  - assets/mock_workspace/.opencode/agents/gt-security-reviewer.md
+  - assets/mock_workspace/.opencode/agents/gt-external-intelligence-analyst.md
+  - assets/mock_workspace/.opencode/agents/gt-task-architect.md
+  - assets/mock_workspace/.opencode/agents/gt-wave-orchestrator.md
+  - assets/mock_workspace/.opencode/workflows/gt-ganthritor-onboard.md
+  - assets/mock_workspace/.opencode/workflows/architect-orchestration.md
+  - assets/mock_workspace/.opencode/workflows/builder-orchestration.md
+  - assets/mock_workspace/.opencode/workflows/reviewer-orchestration.md
+  - assets/mock_workspace/.opencode/workflows/gt-create-tasks.md
+  - assets/mock_workspace/.opencode/workflows/plan-evidence-to-tasks.md
+  - assets/mock_workspace/.opencode/workflows/audit-tasks.md
+  - assets/mock_workspace/.opencode/workflows/gt-harness-architecture.md
+  - assets/mock_workspace/.opencode/workflows/gt-code-review.md
+  - assets/mock_workspace/.opencode/workflows/gt-verify-task-completion.md
+  - assets/mock_workspace/.opencode/workflows/gt-research-orchestration.md
 - **Testes que verificam o trabalho**: rg frontmatter validation, file count check
 - **Resultado dos comandos de validacao**: PASS — 9 agents, 11 workflows, all frontmatter fields present
 - **Entrada no CHANGELOG**: N/A (Task 0002 scope is fixture creation only; changelog corpus is separate task)
@@ -13917,12 +13917,12 @@ FILE: tasks/02-doing/0003-warp-prism-skill-hierarchy-markdown-fixtures.md
 
 ## Objective
 
-Create the required super-skill hierarchy under `warp-prism/assets/mock_workspace/.agents/skills/` with markdown `SKILL.md` files plus realistic `sub-skills/`, `workflows/`, `references/`, and `scripts/` surfaces so the mock workspace demonstrates the same layered relationships expected by the ASW Observatory prompt.
+Create the required super-skill hierarchy under `warp-prism/assets/mock_workspace/.opencode/skills/` with markdown `SKILL.md` files plus realistic `sub-skills/`, `workflows/`, `references/`, and `scripts/` surfaces so the mock workspace demonstrates the same layered relationships expected by the ASW Observatory prompt.
 
 ## Background Context
 
 ### O que já existe:
-- `warp-prism/mock_workspace/.agents/skills/` contains only 4 legacy YAML skills with no super-skill directory hierarchy.
+- `warp-prism/mock_workspace/.opencode/skills/` contains only 4 legacy YAML skills with no super-skill directory hierarchy.
 - `warp-prism/docs/prompt.txt` requires at least 13 mocked skills and explicitly says each super-skill should expose `SKILL.md`, `sub-skills/`, `workflows/`, `references/`, and `scripts/`.
 - Task 0001 defines the approved names, counts, and relation contract.
 
@@ -13936,7 +13936,7 @@ Create the required super-skill hierarchy under `warp-prism/assets/mock_workspac
 
 ## Test Requirements
 
-- DEVE criar as 13 super-skills exigidas pelo prompt sob `assets/mock_workspace/.agents/skills/`.
+- DEVE criar as 13 super-skills exigidas pelo prompt sob `assets/mock_workspace/.opencode/skills/`.
 - DEVE garantir que cada skill tenha um `SKILL.md` com frontmatter valido contendo pelo menos `name`, `description`, `triggers`, `sub_skills`, `canonicality`, e `tags`.
 - DEVE garantir que cada skill tenha conteudo real em `sub-skills/`, `workflows/`, `references/`, e `scripts/`, mesmo que enxuto.
 - DEVE criar referencias cruzadas coerentes entre skills, agentes e workflows globais do corpus mock.
@@ -13946,12 +13946,12 @@ Create the required super-skill hierarchy under `warp-prism/assets/mock_workspac
 
 ## Exit Conditions (GDD/TDD)
 
-- [ ] As 13 super-skills obrigatorias existem sob `warp-prism/assets/mock_workspace/.agents/skills/`.
+- [ ] As 13 super-skills obrigatorias existem sob `warp-prism/assets/mock_workspace/.opencode/skills/`.
 - [ ] Cada super-skill contem `SKILL.md`, `sub-skills/`, `workflows/`, `references/`, e `scripts/`.
 - [ ] Cada `SKILL.md` possui frontmatter YAML valido e corpo markdown nao vazio.
 - [ ] Os nomes e relacoes de skills batem com o manifesto aprovado em Task 0001 e com os agentes/workflows criados em Task 0002.
-- [ ] Comando de validacao principal do componente passa sem erros: `rg --files warp-prism/assets/mock_workspace/.agents/skills`
-- [ ] Testes relevantes passam com 0 falhas: `rg -n "^name:|^triggers:|^sub_skills:|^canonicality:" warp-prism/assets/mock_workspace/.agents/skills/**/SKILL.md`
+- [ ] Comando de validacao principal do componente passa sem erros: `rg --files warp-prism/assets/mock_workspace/.opencode/skills`
+- [ ] Testes relevantes passam com 0 falhas: `rg -n "^name:|^triggers:|^sub_skills:|^canonicality:" warp-prism/assets/mock_workspace/.opencode/skills/**/SKILL.md`
 - [ ] Entrada de changelog adicionada via engine em `docs/changelog/`
 
 ---
@@ -13961,7 +13961,7 @@ Create the required super-skill hierarchy under `warp-prism/assets/mock_workspac
 ### What
 
 Subtasks:
-- [x] **Ler codigo existente**: `warp-prism/docs/prompt.txt`, `warp-prism/assets/mock_workspace/manifest.yaml`, `warp-prism/mock_workspace/.agents/skills/planning/skill.yaml`, `warp-prism/mock_workspace/.agents/skills/code-review/skill.yaml`, `warp-prism/lib/data/parsers/workspace_parser.dart`, `warp-prism/docs/tasks/01-open/0002-warp-prism-agent-and-workflow-markdown-fixtures.md`
+- [x] **Ler codigo existente**: `warp-prism/docs/prompt.txt`, `warp-prism/assets/mock_workspace/manifest.yaml`, `warp-prism/mock_workspace/.opencode/skills/planning/skill.yaml`, `warp-prism/mock_workspace/.opencode/skills/code-review/skill.yaml`, `warp-prism/lib/data/parsers/workspace_parser.dart`, `warp-prism/docs/tasks/01-open/0002-warp-prism-agent-and-workflow-markdown-fixtures.md`
 - [ ] Criar as 13 pastas de super-skill com `SKILL.md` e pelo menos um artefato representativo em cada subpasta obrigatoria.
 - [ ] Escrever frontmatter e corpo de cada `SKILL.md` de modo que o parser futuro consiga extrair gatilhos, sub-skills, tags e canonicalidade.
 - [ ] Ligar o corpus de skills aos agentes e workflows globais ja planejados, evitando nomes desancorados do restante do mock workspace.
@@ -13976,15 +13976,15 @@ Subtasks:
 |---------|-----------|
 | `warp-prism/docs/prompt.txt` | Ler - contrato das skills mock |
 | `warp-prism/assets/mock_workspace/manifest.yaml` | Ler - nomes e contagens aprovados |
-| `warp-prism/mock_workspace/.agents/skills/planning/skill.yaml` | Ler - exemplo legado de skill |
-| `warp-prism/mock_workspace/.agents/skills/code-review/skill.yaml` | Ler - exemplo legado de skill |
+| `warp-prism/mock_workspace/.opencode/skills/planning/skill.yaml` | Ler - exemplo legado de skill |
+| `warp-prism/mock_workspace/.opencode/skills/code-review/skill.yaml` | Ler - exemplo legado de skill |
 | `warp-prism/lib/data/parsers/workspace_parser.dart` | Ler - shape atual de parsing |
 | `warp-prism/docs/tasks/01-open/0002-warp-prism-agent-and-workflow-markdown-fixtures.md` | Ler - dependencias cruzadas com agentes/workflows |
-| `warp-prism/assets/mock_workspace/.agents/skills/**/SKILL.md` | Criar - definicoes markdown das super-skills |
-| `warp-prism/assets/mock_workspace/.agents/skills/**/sub-skills/*` | Criar - superficie de sub-skills |
-| `warp-prism/assets/mock_workspace/.agents/skills/**/workflows/*` | Criar - workflows locais de skills |
-| `warp-prism/assets/mock_workspace/.agents/skills/**/references/*` | Criar - referencias anexas |
-| `warp-prism/assets/mock_workspace/.agents/skills/**/scripts/*` | Criar - scripts anexos |
+| `warp-prism/assets/mock_workspace/.opencode/skills/**/SKILL.md` | Criar - definicoes markdown das super-skills |
+| `warp-prism/assets/mock_workspace/.opencode/skills/**/sub-skills/*` | Criar - superficie de sub-skills |
+| `warp-prism/assets/mock_workspace/.opencode/skills/**/workflows/*` | Criar - workflows locais de skills |
+| `warp-prism/assets/mock_workspace/.opencode/skills/**/references/*` | Criar - referencias anexas |
+| `warp-prism/assets/mock_workspace/.opencode/skills/**/scripts/*` | Criar - scripts anexos |
 
 ### How
 
@@ -14012,19 +14012,19 @@ The mock workspace is supposed to demonstrate hierarchy, canonicality, and attac
 ## 📋 Completion Evidence (preenchido pelo agente executor)
 
 - **Arquivos criados/modificados**:
-  - assets/mock_workspace/.agents/skills/harness-architecture/SKILL.md + sub-skills/ + workflows/ + references/ + scripts/
-  - assets/mock_workspace/.agents/skills/project-management/SKILL.md + sub-skills/ + workflows/ + references/ + scripts/
-  - assets/mock_workspace/.agents/skills/development-methodologies/SKILL.md + sub-skills/ + workflows/ + references/ + scripts/
-  - assets/mock_workspace/.agents/skills/code-quality-harness/SKILL.md + sub-skills/ + workflows/ + references/ + scripts/
-  - assets/mock_workspace/.agents/skills/coding-execution-harness/SKILL.md + sub-skills/ + workflows/ + references/ + scripts/
-  - assets/mock_workspace/.agents/skills/agent-wiki/SKILL.md + sub-skills/ + workflows/ + references/ + scripts/
-  - assets/mock_workspace/.agents/skills/indexing-skills/SKILL.md + sub-skills/ + workflows/ + references/ + scripts/
-  - assets/mock_workspace/.agents/skills/external-intelligence/SKILL.md + sub-skills/ + workflows/ + references/ + scripts/
-  - assets/mock_workspace/.agents/skills/frontend-quality-harness/SKILL.md + sub-skills/ + workflows/ + references/ + scripts/
-  - assets/mock_workspace/.agents/skills/design-system-harness/SKILL.md + sub-skills/ + workflows/ + references/ + scripts/
-  - assets/mock_workspace/.agents/skills/browser-harness/SKILL.md + sub-skills/ + workflows/ + references/ + scripts/
-  - assets/mock_workspace/.agents/skills/remediation-harness/SKILL.md + sub-skills/ + workflows/ + references/ + scripts/
-  - assets/mock_workspace/.agents/skills/agent-cli-delegation/SKILL.md + sub-skills/ + workflows/ + references/ + scripts/
+  - assets/mock_workspace/.opencode/skills/harness-architecture/SKILL.md + sub-skills/ + workflows/ + references/ + scripts/
+  - assets/mock_workspace/.opencode/skills/project-management/SKILL.md + sub-skills/ + workflows/ + references/ + scripts/
+  - assets/mock_workspace/.opencode/skills/development-methodologies/SKILL.md + sub-skills/ + workflows/ + references/ + scripts/
+  - assets/mock_workspace/.opencode/skills/code-quality-harness/SKILL.md + sub-skills/ + workflows/ + references/ + scripts/
+  - assets/mock_workspace/.opencode/skills/coding-execution-harness/SKILL.md + sub-skills/ + workflows/ + references/ + scripts/
+  - assets/mock_workspace/.opencode/skills/agent-wiki/SKILL.md + sub-skills/ + workflows/ + references/ + scripts/
+  - assets/mock_workspace/.opencode/skills/indexing-skills/SKILL.md + sub-skills/ + workflows/ + references/ + scripts/
+  - assets/mock_workspace/.opencode/skills/external-intelligence/SKILL.md + sub-skills/ + workflows/ + references/ + scripts/
+  - assets/mock_workspace/.opencode/skills/frontend-quality-harness/SKILL.md + sub-skills/ + workflows/ + references/ + scripts/
+  - assets/mock_workspace/.opencode/skills/design-system-harness/SKILL.md + sub-skills/ + workflows/ + references/ + scripts/
+  - assets/mock_workspace/.opencode/skills/browser-harness/SKILL.md + sub-skills/ + workflows/ + references/ + scripts/
+  - assets/mock_workspace/.opencode/skills/remediation-harness/SKILL.md + sub-skills/ + workflows/ + references/ + scripts/
+  - assets/mock_workspace/.opencode/skills/agent-cli-delegation/SKILL.md + sub-skills/ + workflows/ + references/ + scripts/
   (13 SKILL.md + 13 sub-skill files + 13 workflow files + 13 reference files + 13 script files = 65 files total)
 - **Testes que verificam o trabalho**: rg frontmatter validation, file count, sub-surface check
 - **Resultado dos comandos de validacao**: PASS — 13 skills, all SKILL.md with name/triggers/sub_skills/canonicality, all 4 sub-surfaces populated
@@ -14062,7 +14062,7 @@ Create the mock task corpus under `warp-prism/assets/mock_workspace/docs/tasks/`
 ## Background Context
 
 ### O que já existe:
-- `warp-prism/mock_workspace/.agents/tasks/queue.md` contains only 6 legacy tasks in a single queue file.
+- `warp-prism/mock_workspace/.opencode/tasks/queue.md` contains only 6 legacy tasks in a single queue file.
 - `warp-prism/docs/prompt.txt` requires at least 20 mock tasks across `00-planning/` through `04-completed/`.
 - Task 0002 and Task 0003 define the agent, workflow, and skill identifiers that task frontmatter should reference.
 
@@ -14116,7 +14116,7 @@ Subtasks:
 |---------|-----------|
 | `warp-prism/docs/prompt.txt` | Ler - contrato das tasks mock |
 | `warp-prism/assets/mock_workspace/manifest.yaml` | Ler - contagens e distribuicao aprovadas |
-| `warp-prism/mock_workspace/.agents/tasks/queue.md` | Ler - referencia do formato legado |
+| `warp-prism/mock_workspace/.opencode/tasks/queue.md` | Ler - referencia do formato legado |
 | `warp-prism/docs/tasks/01-open/0002-warp-prism-agent-and-workflow-markdown-fixtures.md` | Ler - IDs de owners e workflows |
 | `warp-prism/docs/tasks/01-open/0003-warp-prism-skill-hierarchy-markdown-fixtures.md` | Ler - IDs de skills |
 | `warp-prism/assets/mock_workspace/docs/tasks/00-planning/*.md` | Criar - tasks mock em planejamento |
@@ -15697,7 +15697,7 @@ FILE: tasks/02-doing/0019-warp-prism-preset-workspace-snapshot-starter.md
 > **Status**: `[x]` Completed
 > **Priority**: 🔴 P0
 > **Type**: `feature`
-> **Origin**: `.agents/user/warp-prism2.txt` research + user request for immediate workspace visibility utility
+> **Origin**: `.opencode/user/warp-prism2.txt` research + user request for immediate workspace visibility utility
 > **Blocks**: Task 0020
 > **Depends on**: Task 0011, Task 0017
 
@@ -15735,7 +15735,7 @@ beautiful read-only dashboard of everything in that workspace.
   `lib/app/router.dart`.
 - Task 0017 creates the Design System Gallery route.
 - `warp-prism/docs/research.md` recommends Phase 1 be "read-only and local:
-  scan `.agents/agents`, `.agents/skills`, `.agents/workflows`, `docs/tasks`,
+  scan `.opencode/agents`, `.opencode/skills`, `.opencode/workflows`, `docs/tasks`,
   `docs/changelog`, build a normalized index, expose search/graph/filters."
 - `warp-prism/docs/prompt.txt` defines the Overview surface with totals for
   agents, skills, sub-skills, workflows, tasks by lane, changelog entries,
@@ -15748,7 +15748,7 @@ beautiful read-only dashboard of everything in that workspace.
   a live local preset path.
 - The mock corpus under `assets/mock_workspace/` is the only data source; there
   is no way to point the app at the real Ganthritor workspace.
-- No filesystem-scanning service exists for `.agents/` directories.
+- No filesystem-scanning service exists for `.opencode/` directories.
 - The Overview metrics from Task 0412 require EPIC-03 data layer; this task
   provides an immediate lightweight alternative using direct filesystem scan.
 
@@ -15759,8 +15759,8 @@ beautiful read-only dashboard of everything in that workspace.
 - The route MUST read from a configurable workspace root via `--dart-define` or
   equivalent runtime configuration, defaulting to `..` (parent directory) when
   running from `warp-prism/`.
-- The scanner MUST detect `.agents/agents/*.md`, `.agents/skills/*/SKILL.md`,
-  `.agents/workflows/*.md`, and `docs/tasks/**/*.md` without following
+- The scanner MUST detect `.opencode/agents/*.md`, `.opencode/skills/*/SKILL.md`,
+  `.opencode/workflows/*.md`, and `docs/tasks/**/*.md` without following
   symlinks into parent-canonical surfaces unless explicitly configured.
 - The scanner MUST parse YAML frontmatter when present and gracefully handle
   files without frontmatter.
@@ -15812,9 +15812,9 @@ Subtasks:
   aggregate model.
 - [ ] Implement `PresetLocalWorkspaceSource` that scans a root path using
   `dart:io` `Directory`/`File` operations:
-  - enumerate `.agents/agents/*.md`
-  - enumerate `.agents/skills/*/SKILL.md` and detect sub-skills/workflows
-  - enumerate `.agents/workflows/*.md`
+  - enumerate `.opencode/agents/*.md`
+  - enumerate `.opencode/skills/*/SKILL.md` and detect sub-skills/workflows
+  - enumerate `.opencode/workflows/*.md`
   - enumerate `docs/tasks/{00-planning,01-open,02-doing,03-review,04-completed}/*.md`
   - enumerate `docs/changelog/*.md`
   - parse frontmatter from each file
@@ -15876,7 +15876,7 @@ Subtasks:
 5. Compose the page from DS primitives: metric tiles for counts, asset cards
    for lists, lane columns for tasks, status indicators for scan state.
 6. Keep the page read-only and mutation-free.
-7. Test with a temporary fixture directory containing sample `.agents/` and
+7. Test with a temporary fixture directory containing sample `.opencode/` and
    `docs/` structures.
 
 ### Why
@@ -15895,8 +15895,8 @@ universal detail views.
 
 > [!CAUTION]
 > DO NOT follow symlinks recursively or resolve parent-canonical surfaces
-> unless the scanner is explicitly configured to do so. If `.agents/skills` is
-> a symlink to `../../.agents/skills`, the scanner should detect it as a
+> unless the scanner is explicitly configured to do so. If `.opencode/skills` is
+> a symlink to `../../.opencode/skills`, the scanner should detect it as a
 > symlink and report provenance, not silently merge parent data.
 
 > [!IMPORTANT]
@@ -15958,7 +15958,7 @@ FILE: tasks/02-doing/0020-warp-prism-enhanced-workspace-snapshot-search-detail-g
 > **Status**: `[x]` Done
 > **Priority**: 🟡 P1
 > **Type**: `feature`
-> **Origin**: `.agents/user/warp-prism2.txt` research + user request for
+> **Origin**: `.opencode/user/warp-prism2.txt` research + user request for
 > immediate workspace visibility utility
 > **Blocks**: Task 0412 (may supersede or inform Overview metrics)
 > **Depends on**: Task 0019
@@ -16449,9 +16449,9 @@ Warp-Prism is supposed to visualize real mock workspace files, not synthetic in-
 -   Created: `lib/data/parsers/workspace_markdown_parser.dart` — Asset-specific markdown parser targeting backbone contract. Parses agents, skills, sub-skills, workflows, tasks, changelog into WorkspaceAsset with TaskMetadata and ChangelogMetadata embedded
 -   Created: `lib/data/parsers/parsers.dart` — Barrel export isolating legacy WorkspaceParser and promoting FrontmatterParser + WorkspaceMarkdownParser as canonical
 -   Created: `test/data/parsers/workspace_markdown_parser_test.dart` — 9 test groups, 35+ tests covering: FrontmatterParser happy-path + errors, agent/skill/workflow/task/changelog parsing, kind inference, canonicality parsing, edge inference, ParseException handling
--   Created: `test/fixtures/mock_workspace/.agents/agents/architect-orchestrator.md` — Agent fixture with skills, workflows, tags, canonicality
--   Created: `test/fixtures/mock_workspace/.agents/skills/harness-architecture/SKILL.md` — Skill fixture with triggers, sub-skills, canonicality
--   Created: `test/fixtures/mock_workspace/.agents/workflows/gt-code-review.md` — Workflow fixture with uses_skills, kind
+-   Created: `test/fixtures/mock_workspace/.opencode/agents/architect-orchestrator.md` — Agent fixture with skills, workflows, tags, canonicality
+-   Created: `test/fixtures/mock_workspace/.opencode/skills/harness-architecture/SKILL.md` — Skill fixture with triggers, sub-skills, canonicality
+-   Created: `test/fixtures/mock_workspace/.opencode/workflows/gt-code-review.md` — Workflow fixture with uses_skills, kind
 -   Created: `test/fixtures/mock_workspace/docs/tasks/02-doing/7521-build-asw-parser.md` — Task fixture with full frontmatter and body sections (Goal, Exit Conditions, Verification Commands, Completion Evidence)
 -   Created: `test/fixtures/mock_workspace/docs/changelog/2026-06-05-7521-asw-parser.md` — Changelog fixture with type, impact, skills, Why/Changed/Evidence body sections
 -   Created: `test/fixtures/mock_workspace/malformed/no_frontmatter.md` — Error fixture: document without frontmatter delimiters
@@ -16486,7 +16486,7 @@ FILE: tasks/02-doing/0312-warp-prism-read-only-mock-workspace-repository.md
 
 ## Objective
 
-Create the read-only repository layer that loads the mock workspace corpus from `assets/mock_workspace/`, parses it through the canonical markdown parser, and exposes typed asset collections to the rest of the app without any runtime file mutation. This task is only complete when one repository interface can load the mocked `.agents/` and `docs/` corpus and return deterministic success, empty, and failure states suitable for UI and graph services.
+Create the read-only repository layer that loads the mock workspace corpus from `assets/mock_workspace/`, parses it through the canonical markdown parser, and exposes typed asset collections to the rest of the app without any runtime file mutation. This task is only complete when one repository interface can load the mocked `.opencode/` and `docs/` corpus and return deterministic success, empty, and failure states suitable for UI and graph services.
 
 ## Background Context
 
@@ -16629,7 +16629,7 @@ Build the graph normalization layer that turns the repository snapshot into one 
 - Graph normalization DEVE emit one canonical graph object containing typed assets plus typed edges.
 - Edge inference DEVE cover at least containment, routes-to, depends-on, references, changed-by/proves, and uses relationships when the source metadata supports them.
 - The graph builder DEVE preserve source path and canonicality metadata needed by Governance and detail surfaces.
-- Graph tests DEVE assert representative links spanning `.agents/`, tasks, and changelog assets.
+- Graph tests DEVE assert representative links spanning `.opencode/`, tasks, and changelog assets.
 
 ---
 
@@ -17155,7 +17155,7 @@ Implement the actual product shell frame around the router by composing the exis
 - [ ] From `warp-prism/`, `dart format --set-exit-if-changed lib test` passes. — **BLOCKED: Flutter SDK not installed**
 - [ ] From `warp-prism/`, `flutter analyze` passes or reaches an explicitly documented residual state tied only to pre-existing unrelated issues. — **BLOCKED: Flutter SDK not installed**
 - [ ] From `warp-prism/`, `flutter test test/app/shell_responsive_layout_test.dart` passes. — **BLOCKED: Flutter SDK not installed**
-- [ ] `bash .agents/skills/project-management/sub-skills/manage-changelog/scripts/rebuild.sh validate` passes. — **BLOCKED: Flutter SDK not installed**
+- [ ] `bash .opencode/skills/project-management/sub-skills/manage-changelog/scripts/rebuild.sh validate` passes. — **BLOCKED: Flutter SDK not installed**
 - [x] Changelog entry is added through the changelog engine.
 
 ---
@@ -17291,7 +17291,7 @@ Build the Overview surface as the first real product page inside the shell, incl
 - [ ] From `warp-prism/`, `dart format --set-exit-if-changed lib test` passes. — **BLOCKED: Flutter SDK not installed**
 - [ ] From `warp-prism/`, `flutter analyze` passes or reaches an explicitly documented residual state tied only to pre-existing unrelated issues. — **BLOCKED: Flutter SDK not installed**
 - [ ] From `warp-prism/`, `flutter test test/features/overview` passes. — **BLOCKED: Flutter SDK not installed**
-- [ ] `bash .agents/skills/project-management/sub-skills/manage-changelog/scripts/rebuild.sh validate` passes. — **BLOCKED: Flutter SDK not installed**
+- [ ] `bash .opencode/skills/project-management/sub-skills/manage-changelog/scripts/rebuild.sh validate` passes. — **BLOCKED: Flutter SDK not installed**
 - [x] Changelog entry is added through the changelog engine.
 
 ---
@@ -17430,7 +17430,7 @@ Harden the EPIC-04 shell by implementing shell-level loading, error, and empty s
 - [ ] From `warp-prism/`, `dart format --set-exit-if-changed lib test` passes. — **BLOCKED: Flutter SDK not installed**
 - [ ] From `warp-prism/`, `flutter analyze` passes or reaches an explicitly documented residual state tied only to pre-existing unrelated issues. — **BLOCKED: Flutter SDK not installed**
 - [ ] From `warp-prism/`, `flutter test test/app test/features/overview` passes with the new fallback/state coverage included. — **BLOCKED: Flutter SDK not installed**
-- [ ] `bash .agents/skills/project-management/sub-skills/manage-changelog/scripts/rebuild.sh validate` passes. — **BLOCKED: Flutter SDK not installed**
+- [ ] `bash .opencode/skills/project-management/sub-skills/manage-changelog/scripts/rebuild.sh validate` passes. — **BLOCKED: Flutter SDK not installed**
 - [x] Changelog entry is added through the changelog engine.
 
 ---
@@ -18202,7 +18202,7 @@ FILE: tasks/02-doing/0610-warp-prism-operate-task-projection-contract.md
 
 ## Objective
 
-Define the Operate-specific read model that converts markdown task files from the five canonical lanes into a single projection contract consumable by the Execution Ledger. Completion means the repo has a parser-tested task projection that exposes lane, owner, proof state, review score, dependencies, blockers, linked skills/workflows, validation commands, evidence summary, and markdown sections without relying on the legacy `mock_workspace/.agents/tasks/queue.md` format.
+Define the Operate-specific read model that converts markdown task files from the five canonical lanes into a single projection contract consumable by the Execution Ledger. Completion means the repo has a parser-tested task projection that exposes lane, owner, proof state, review score, dependencies, blockers, linked skills/workflows, validation commands, evidence summary, and markdown sections without relying on the legacy `mock_workspace/.opencode/tasks/queue.md` format.
 
 ## Background Context
 
@@ -18214,7 +18214,7 @@ Define the Operate-specific read model that converts markdown task files from th
 ### O que está faltando / quebrado:
 - The current data layer has no parser for markdown task files in `docs/tasks/{00-planning..04-completed}`.
 - The current task model does not expose verification commands, evidence rows, blockers, or related skill/workflow IDs required by EPIC 06.
-- The only mocked task surface found in the repo is `warp-prism/mock_workspace/.agents/tasks/queue.md`, which does not match the prompt or the planned five-lane corpus.
+- The only mocked task surface found in the repo is `warp-prism/mock_workspace/.opencode/tasks/queue.md`, which does not match the prompt or the planned five-lane corpus.
 
 ---
 
@@ -18230,7 +18230,7 @@ Define the Operate-specific read model that converts markdown task files from th
 ## Exit Conditions (GDD/TDD)
 
 - [ ] O modelo de dados do Operate define uma projeção estruturada para task card, lane grouping, validation commands, and completion evidence.
-- [ ] O parser reconhece task markdown/frontmatter/body sections do corpus `assets/mock_workspace/docs/tasks/` e não depende mais do formato `mock_workspace/.agents/tasks/queue.md` para o Operate.
+- [ ] O parser reconhece task markdown/frontmatter/body sections do corpus `assets/mock_workspace/docs/tasks/` e não depende mais do formato `mock_workspace/.opencode/tasks/queue.md` para o Operate.
 - [ ] `flutter test test/data/parsers/workspace_task_projection_parser_test.dart` passa com fixtures cobrindo cinco lanes e metadata de proof/review/dependency.
 - [ ] `flutter analyze` passa sem erros para os arquivos alterados pelo novo contrato.
 - [ ] Testes relevantes passam com 0 falhas.
@@ -18283,7 +18283,7 @@ EPIC 06 cannot be implemented safely on top of the current queue-file mock becau
 ## ⛔ Anti-Hallucination Guardrails
 
 > [!CAUTION]
-> DO NOT keep `mock_workspace/.agents/tasks/queue.md` as the silent source of truth for the Operate surface. EPIC 06 is explicitly scoped to the canonical `docs/tasks/` lane tree.
+> DO NOT keep `mock_workspace/.opencode/tasks/queue.md` as the silent source of truth for the Operate surface. EPIC 06 is explicitly scoped to the canonical `docs/tasks/` lane tree.
 
 > [!IMPORTANT]
 > Read every file in `Where` before writing, and treat fixture gaps from EPIC 02 as a blocker to completion rather than inventing fake metadata rules.
@@ -18695,7 +18695,7 @@ Enrich and verify the EPIC-02 changelog corpus from Task 0005 for History-specif
 ### O que ja existe:
 - Task 0005 owns creation of the base 12+ changelog markdown corpus under `assets/mock_workspace/docs/changelog/`.
 - `warp-prism/mock_workspace/docs/changelog/*.md` contains 5 legacy example changelog entries that Task 0005 may migrate into the base corpus.
-- `warp-prism/mock_workspace/.agents/tasks/queue.md` contains a single queue file instead of lane-distributed task fixtures.
+- `warp-prism/mock_workspace/.opencode/tasks/queue.md` contains a single queue file instead of lane-distributed task fixtures.
 - `warp-prism/pubspec.yaml` already declares `assets/mock_workspace/...` as the canonical asset tree for the app.
 
 ### O que esta faltando / quebrado:
@@ -18730,7 +18730,7 @@ Enrich and verify the EPIC-02 changelog corpus from Task 0005 for History-specif
 ### What
 
 Subtasks:
-- [x] **Ler codigo existente**: Task 0005, Task 0004, `warp-prism/pubspec.yaml`, `warp-prism/mock_workspace/docs/changelog/*.md`, `warp-prism/mock_workspace/.agents/tasks/queue.md`, `warp-prism/docs/research.md`, `warp-prism/docs/draft.md`.
+- [x] **Ler codigo existente**: Task 0005, Task 0004, `warp-prism/pubspec.yaml`, `warp-prism/mock_workspace/docs/changelog/*.md`, `warp-prism/mock_workspace/.opencode/tasks/queue.md`, `warp-prism/docs/research.md`, `warp-prism/docs/draft.md`.
 - [ ] Auditar a arvore canonica `assets/mock_workspace/docs/changelog/` criada pela Task 0005 e enriquecer somente os campos/historias necessarios para History.
 - [ ] Verificar fixtures minimos de tasks por lane em `assets/mock_workspace/docs/tasks/{00-planning,01-open,02-doing,03-review,04-completed}/` criados pela Task 0004 para suportar links de historico e story mode.
 - [ ] Garantir que cada changelog entry referencia ids reais de task, skill e/ou workflow presentes no mock workspace.
@@ -18746,7 +18746,7 @@ Subtasks:
 | `warp-prism/docs/tasks/01-open/0005-warp-prism-changelog-markdown-corpus.md` | Ler - task dona do corpus base de changelog |
 | `warp-prism/docs/tasks/01-open/0004-warp-prism-task-lane-markdown-corpus.md` | Ler - task dona dos fixtures base de lanes |
 | `warp-prism/mock_workspace/docs/changelog/*.md` | Ler para migrar o corpus legado e preservar os exemplos uteis |
-| `warp-prism/mock_workspace/.agents/tasks/queue.md` | Ler para extrair temas, ids e narrativas reaproveitaveis |
+| `warp-prism/mock_workspace/.opencode/tasks/queue.md` | Ler para extrair temas, ids e narrativas reaproveitaveis |
 | `warp-prism/assets/mock_workspace/docs/changelog/*.md` | Ler/Modificar - enriquecer corpus canonico de changelog para o History surface |
 | `warp-prism/assets/mock_workspace/docs/tasks/00-planning/*.md` | Ler/Modificar se necessario - fixtures de planejamento ligados ao historico |
 | `warp-prism/assets/mock_workspace/docs/tasks/01-open/*.md` | Ler/Modificar se necessario - fixtures abertas ligadas ao historico |
@@ -21300,8 +21300,8 @@ Subtasks:
 | `warp-prism/docs/tasks/00-planning/EPIC-04-warp-prism-product-shell-overview.md` | Ler - EPIC 04 namespace intent (`0410+`) |
 | `warp-prism/docs/tasks/00-planning/EPIC-05-warp-prism-map-surface.md` | Ler - EPIC 05 namespace intent (`0510+`) |
 | `warp-prism/docs/tasks/00-planning/EPIC-06-warp-prism-operate-surface.md` | Ler - EPIC 06 namespace intent (`0610+`) |
-| `.agents/rules/task-numbering.md` | Ler - parent numbering governance |
-| `.agents/rules/task-reference-policy.md` | Ler - lane-neutral reference governance |
+| `.opencode/rules/task-numbering.md` | Ler - parent numbering governance |
+| `.opencode/rules/task-reference-policy.md` | Ler - lane-neutral reference governance |
 | `warp-prism/docs/tasks/01-open/*.md` | Ler/Modificar se necessario - audit target for open executable task specs |
 | `warp-prism/docs/reports/warp-prism-task-namespace-integrity-audit.md` | Criar opcionalmente - durable namespace audit ledger if evidence should outlive this task |
 

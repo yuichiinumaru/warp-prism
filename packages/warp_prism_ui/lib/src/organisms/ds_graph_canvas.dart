@@ -105,6 +105,13 @@ class GraphEdge {
 ///
 /// All original parameters are preserved. New features are available via
 /// the `graph/` sub-barrel.
+///
+/// Caller-supplied kinds (Task 1884, HOLD branch): node [type] and edge
+/// [edgeType] are open caller vocabularies — Prism core defines no fixed
+/// verb set (boundary B14). Hosts project their domain kinds through
+/// [nodeColorResolver]/[nodeIconResolver]; the defaults preserve the legacy
+/// design-system mapping. Real-DAG host proof is deferred (no observed
+/// consumer DAG surface); see Task 1884 HOLD record.
 class DSGraphCanvas extends StatefulWidget {
   final List<GraphNode> nodes;
   final List<GraphEdge> edges;
@@ -113,6 +120,14 @@ class DSGraphCanvas extends StatefulWidget {
   final void Function(GraphNode, Offset)? onNodeDragEnd;
   final bool enablePhysics;
   final double nodeSpacing;
+
+  /// Caller-supplied color projection for node [type] values.
+  /// Defaults to the design-system mapping ([graph.defaultNodeColor]).
+  final Color Function(String type)? nodeColorResolver;
+
+  /// Caller-supplied icon projection for node [type] values.
+  /// Defaults to the design-system mapping ([graph.defaultNodeIcon]).
+  final IconData Function(String type)? nodeIconResolver;
 
   const DSGraphCanvas({
     super.key,
@@ -123,6 +138,8 @@ class DSGraphCanvas extends StatefulWidget {
     this.onNodeDragEnd,
     this.enablePhysics = true,
     this.nodeSpacing = 150.0,
+    this.nodeColorResolver,
+    this.nodeIconResolver,
   });
 
   @override
@@ -182,6 +199,10 @@ class _DSGraphCanvasState extends State<DSGraphCanvas> {
       layoutEngine: graph.ForceDirectedLayout(
         config: graph.ForceDirectedConfig(nodeSpacing: widget.nodeSpacing),
       ),
+      // Caller-supplied kind projection (Task 1884): null preserves the
+      // design-system defaults inside GraphCanvas.
+      nodeColorResolver: widget.nodeColorResolver,
+      nodeIconResolver: widget.nodeIconResolver,
       onNodeTap: widget.onNodeTap != null
           ? (modelNode) {
               final legacy = _findLegacyNode(modelNode.id.value);

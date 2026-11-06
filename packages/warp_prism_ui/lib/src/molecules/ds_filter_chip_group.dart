@@ -130,9 +130,7 @@ class _FilterChipState extends State<_FilterChip> {
                     color: bgColor,
                     borderRadius: BorderRadius.circular(DSRadii.chip),
                     border: Border.all(
-                      color: _isFocused
-                          ? DSColors.focusRing
-                          : borderColor,
+                      color: _isFocused ? DSColors.focusRing : borderColor,
                       width: _isFocused ? 2 : 1,
                     ),
                   ),

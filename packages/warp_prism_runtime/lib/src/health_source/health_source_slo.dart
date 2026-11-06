@@ -5,7 +5,7 @@ import 'package:meta/meta.dart';
 /// Declares target responsiveness bounds for on-demand snapshot queries
 /// and reactive state change broadcasts.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 @immutable
 class HealthSourceSlo {

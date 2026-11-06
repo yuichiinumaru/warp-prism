@@ -73,7 +73,7 @@ Classification key:
 | `PrismOperationalStateUI` | extension | on `DSOperationalState` | Production |
 | `PrismColors` | typedef | `DSColors` | Production |
 | `PrismTheme` | typedef | `DSTheme` | Production |
-| `PrismCyberCoreTealSkin` | typedef | `DSCyberCoreTealSkin` | Production |
+| `PrismNerazimTealSkin` | typedef | `DSNerazimTealSkin` | Production |
 | `PrismTaldarimRedSkin` | typedef | `DSTaldarimRedSkin` | Production |
 | `PrismTalonPurpleSkin` | typedef | `DSTalonPurpleSkin` | Production |
 | `PrismSpacing` | typedef | `DSSpacing` | Production |

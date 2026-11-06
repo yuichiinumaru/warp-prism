@@ -4,7 +4,7 @@ import 'selection_state.dart';
 
 /// Callback signature for selection event listeners.
 ///
-/// Lifecycle: PROVEN (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: PROVEN (see `.project/architecture/layer-contracts.md`).
 typedef SelectionListener<T extends Object> =
     void Function(SelectionChangeEvent<T> event);
 
@@ -13,7 +13,7 @@ typedef SelectionListener<T extends Object> =
 /// Pure Dart notifier that manages selection state transitions and
 /// publishes [SelectionChangeEvent]s to registered listeners.
 ///
-/// Lifecycle: PROVEN (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: PROVEN (see `.project/architecture/layer-contracts.md`).
 class SelectionNotifier<T extends Object> {
   SelectionState<T> _state;
 

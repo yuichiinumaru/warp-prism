@@ -5,7 +5,7 @@ import 'package:meta/meta.dart';
 /// Declares target performance metrics for graph node/edge lookups and
 /// reactive topological update broadcasts.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 @immutable
 class GraphSourceSlo {

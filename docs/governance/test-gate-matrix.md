@@ -328,7 +328,7 @@ the most restrictive gate set (union of all applicable rows).
 ### Source
 
 The failure baseline is documented in
-`docs/reports/warp-prism-test-failure-baseline.md` (Task 1201).
+`.project/architecture/warp-prism-test-failure-baseline.md` (Task 1201).
 
 ### Current Baseline Snapshot (2026-06-09)
 
@@ -456,12 +456,12 @@ All required gates passed → task is Ready For Review.
 
 ## 9. References
 
-- **Failure baseline**: `docs/reports/warp-prism-test-failure-baseline.md`
+- **Failure baseline**: `.project/architecture/warp-prism-test-failure-baseline.md`
   (Task 1201)
 - **Promotion state model**: `docs/governance/promotion-state-model.md`
   (Task 1202)
 - **Task template**: `.project/tasks/000-template.md` (includes `Review State` field)
-- **Task governance**: `.agents/rules/task-governance.md`
+- **Task governance**: `.opencode/rules/task-governance.md`
 - **Melos scripts**: `pubspec.yaml` (root, `melos.scripts` section)
 - **Boundary test harness**: `melos run test-boundaries` (root `pubspec.yaml`)
 - **Review packets**: planned in Task 1207

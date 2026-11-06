@@ -84,7 +84,7 @@ void main() {
     });
 
     testWidgets('Feature story panels resolve teal (#00FFCC) from theme', (tester) async {
-      final theme = const PrismCyberCoreTealSkin.omniRoute().applyToTheme(
+      final theme = const PrismNerazimTealSkin.nerazimTeal().applyToTheme(
         PrismTheme.dark(),
       );
 

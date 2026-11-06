@@ -19,11 +19,11 @@ In-memory test doubles (fakes) and reusable contract compliance verification tes
 
 ## Presentation-Purge Law
 
-In compliance with the architecture floor defined in `docs/architecture/runtime-consumer-audit.md` and `docs/architecture/layer-contracts-v2.md`, this package contains strictly zero Flutter UI dependencies, no presentation coordinate models (`Offset`), and no UI polling/retry policies.
+In compliance with the architecture floor defined in `.project/architecture/runtime-consumer-audit.md` and `.project/architecture/layer-contracts.md`, this package contains strictly zero Flutter UI dependencies, no presentation coordinate models (`Offset`), and no UI polling/retry policies.
 
 ## Lifecycle Status
 
-All fakes and contract test suites in this package are currently tagged **`EXPERIMENTAL`** per `docs/architecture/layer-contracts-v2.md` §3.2.
+All fakes and contract test suites in this package are currently tagged **`EXPERIMENTAL`** per `.project/architecture/layer-contracts.md` §9.
 
 ## Downstream Usage in Task 1824
 

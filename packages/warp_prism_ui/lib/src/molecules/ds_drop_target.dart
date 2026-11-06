@@ -132,10 +132,7 @@ class _DSDropTargetState extends State<DSDropTarget> {
                       color: DSColors.accentBlue,
                       borderRadius: BorderRadius.circular(1),
                       boxShadow: [
-                        BoxShadow(
-                          color: DSColors.focusRing,
-                          blurRadius: 4,
-                        ),
+                        BoxShadow(color: DSColors.focusRing, blurRadius: 4),
                       ],
                     ),
                   ),

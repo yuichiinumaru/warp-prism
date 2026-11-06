@@ -39,7 +39,7 @@ gt-task-architect.md
 gt-wave-orchestrator.md
 ```
 
-Location: `apps/observatory/assets/mock_workspace/.agents/agents/<name>.md`
+Location: `apps/observatory/assets/mock_workspace/.opencode/agents/<name>.md`
 
 Each agent `.md` file must have YAML frontmatter with at minimum:
 - `name`, `model` (provider/name), `mode`, `description`, `skills` (list), `workflows` (list)
@@ -64,7 +64,7 @@ remediation-harness/
 agent-cli-delegation/
 ```
 
-Location: `apps/observatory/assets/mock_workspace/.agents/skills/<skill-name>/SKILL.md`
+Location: `apps/observatory/assets/mock_workspace/.opencode/skills/<skill-name>/SKILL.md`
 
 Each SKILL.md must have YAML frontmatter with at minimum:
 - `name`, `description`, `triggers` (list), `sub_skills` (list), `canonicality`, `tags` (list)
@@ -90,7 +90,7 @@ gt-verify-task-completion.md
 gt-research-orchestration.md
 ```
 
-Location: `apps/observatory/assets/mock_workspace/.agents/workflows/<name>.md`
+Location: `apps/observatory/assets/mock_workspace/.opencode/workflows/<name>.md`
 
 Each workflow `.md` file must have YAML frontmatter with at minimum:
 - `name`, `description`, `uses_skills` (list), `kind`
@@ -139,19 +139,19 @@ The existing `mock_workspace/` tree is archived, never deleted.
 
 | Legacy source | Action     | Target destination | Rationale |
 |---------------|------------|-------------------|-----------|
-| `.agents/orchestrator/agent.yaml` | archive | `.archive/mock_workspace/.agents/orchestrator/` | Name/format mismatch; prompt requires different agents in .md with frontmatter |
-| `.agents/coder/agent.yaml` | archive | `.archive/mock_workspace/.agents/coder/` | Not in required agent list |
-| `.agents/planner/agent.yaml` | archive | `.archive/mock_workspace/.agents/planner/` | Not in required agent list |
-| `.agents/researcher/agent.yaml` | archive | `.archive/mock_workspace/.agents/researcher/` | Not in required agent list |
-| `.agents/reviewer/agent.yaml` | archive | `.archive/mock_workspace/.agents/reviewer/` | Not in required agent list |
-| `.agents/skills/code-review/skill.yaml` | archive | `.archive/mock_workspace/.agents/skills/code-review/` | Name/format mismatch; prompt requires different skills in SKILL.md with frontmatter |
-| `.agents/skills/planning/skill.yaml` | archive | `.archive/mock_workspace/.agents/skills/planning/` | Not in required skill list |
-| `.agents/skills/synthesis/skill.yaml` | archive | `.archive/mock_workspace/.agents/skills/synthesis/` | Not in required skill list |
-| `.agents/skills/test-generation/skill.yaml` | archive | `.archive/mock_workspace/.agents/skills/test-generation/` | Not in required skill list |
-| `.agents/workflows/code-implementation/workflow.yaml` | archive | `.archive/mock_workspace/.agents/workflows/code-implementation/` | Name/format mismatch; prompt requires different workflows in .md with frontmatter |
-| `.agents/workflows/complex-task-pipeline/workflow.yaml` | archive | `.archive/mock_workspace/.agents/workflows/complex-task-pipeline/` | Not in required workflow list |
-| `.agents/workflows/review-cycle/workflow.yaml` | archive | `.archive/mock_workspace/.agents/workflows/review-cycle/` | Not in required workflow list |
-| `.agents/tasks/queue.md` | archive | `.archive/mock_workspace/.agents/tasks/queue.md` | Single queue file; prompt requires 20 tasks distributed across 5 lane directories |
+| `.opencode/orchestrator/agent.yaml` | archive | `.archive/mock_workspace/.opencode/orchestrator/` | Name/format mismatch; prompt requires different agents in .md with frontmatter |
+| `.opencode/coder/agent.yaml` | archive | `.archive/mock_workspace/.opencode/coder/` | Not in required agent list |
+| `.opencode/planner/agent.yaml` | archive | `.archive/mock_workspace/.opencode/planner/` | Not in required agent list |
+| `.opencode/researcher/agent.yaml` | archive | `.archive/mock_workspace/.opencode/researcher/` | Not in required agent list |
+| `.opencode/reviewer/agent.yaml` | archive | `.archive/mock_workspace/.opencode/reviewer/` | Not in required agent list |
+| `.opencode/skills/code-review/skill.yaml` | archive | `.archive/mock_workspace/.opencode/skills/code-review/` | Name/format mismatch; prompt requires different skills in SKILL.md with frontmatter |
+| `.opencode/skills/planning/skill.yaml` | archive | `.archive/mock_workspace/.opencode/skills/planning/` | Not in required skill list |
+| `.opencode/skills/synthesis/skill.yaml` | archive | `.archive/mock_workspace/.opencode/skills/synthesis/` | Not in required skill list |
+| `.opencode/skills/test-generation/skill.yaml` | archive | `.archive/mock_workspace/.opencode/skills/test-generation/` | Not in required skill list |
+| `.opencode/workflows/code-implementation/workflow.yaml` | archive | `.archive/mock_workspace/.opencode/workflows/code-implementation/` | Name/format mismatch; prompt requires different workflows in .md with frontmatter |
+| `.opencode/workflows/complex-task-pipeline/workflow.yaml` | archive | `.archive/mock_workspace/.opencode/workflows/complex-task-pipeline/` | Not in required workflow list |
+| `.opencode/workflows/review-cycle/workflow.yaml` | archive | `.archive/mock_workspace/.opencode/workflows/review-cycle/` | Not in required workflow list |
+| `.opencode/tasks/queue.md` | archive | `.archive/mock_workspace/.opencode/tasks/queue.md` | Single queue file; prompt requires 20 tasks distributed across 5 lane directories |
 | `docs/changelog/2025-04-10-planner-release.md` | archive | `.archive/mock_workspace/docs/changelog/` | No YAML frontmatter; prompt requires frontmatter schema |
 | `docs/changelog/2025-05-15-researcher-update.md` | archive | `.archive/mock_workspace/docs/changelog/` | No YAML frontmatter |
 | `docs/changelog/2025-05-20-security-audit.md` | archive | `.archive/mock_workspace/docs/changelog/` | No YAML frontmatter |
@@ -231,7 +231,7 @@ The existing `mock_workspace/` tree is archived, never deleted.
 ```
 apps/observatory/assets/mock_workspace/
   manifest.yaml              ← this file
-  .agents/
+  .opencode/
     agents/
       architect-orchestrator.md
       builder-orchestrator.md

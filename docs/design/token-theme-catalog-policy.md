@@ -3,7 +3,7 @@
 > **Status**: Active policy
 > **Author**: Task 1105 — Warp Prism Token Theme Catalog Policy
 > **Date**: 2026-06-08
-> **Depends on**: Task 1101 (charter/naming — **Promoted** `04-completed/`); Task 1104 architecture artifact `docs/architecture/warp-prism-melos-monorepo-architecture.md` (task lane `03-review/` Ready For Review as of 2026-07-09, not yet Promoted); Task 1102 **source docs** `docs/design/operational-state-vocabulary.md` + `docs/design/component-inventory.md` (task still `02-doing/` / blocked on screenshots — not a gate on this policy's API accuracy)
+> **Depends on**: Task 1101 (charter/naming — **Promoted** `04-completed/`); Task 1104 architecture artifact `.project/architecture/warp-prism-melos-monorepo-architecture.md` (task lane `03-review/` Ready For Review as of 2026-07-09, not yet Promoted); Task 1102 **source docs** `docs/design/operational-state-vocabulary.md` + `docs/design/component-inventory.md` (task still `02-doing/` / blocked on screenshots — not a gate on this policy's API accuracy)
 > **Blocks**: Task 1106 (component migration), Task 1107 (Melos migration), Task 1111 (expansion gate)
 > **Public API authority**: Live `packages/warp_prism_ui` barrel + `prism_aliases.dart` (per-class `Prism*` typedefs). No `PrismTokens`.
 
@@ -24,6 +24,13 @@ single source of truth for:
 - Operational state matrix requirements
 - Gallery-to-catalog evolution path
 - ADS upgrade loop when consumer apps discover bugs or missing components
+
+For consumer coverage or external donor inspiration, use the Warp Prism-only
+[`wp-component-absorption`](../../.opencode/workflows/wp-component-absorption.md)
+workflow (subject to its lifecycle metadata) and
+[component adaptation reference](component-adaptation.md). They separate research,
+local selection and design from construction; they do not replace this policy's
+token/catalog proof or the current mission/layer promotion requirements.
 
 ---
 
@@ -693,8 +700,9 @@ If Widgetbook is adopted:
 | `docs/design/charter.md` (Task 1101) | Project scope, non-goals, first proof target (ADS Gallery). |
 | `docs/design/naming.md` (Task 1101) | Prism* prefix policy, DS* legacy classification, Voidframe supersession. |
 | `docs/design/operational-state-vocabulary.md` (Task 1102 **source doc**; task lane may lag) | 15 operational states, color/icon/behavioral contracts, state transition diagrams, composite state matrix. Live code: `PrismOperationalState` + `PrismColors.status*`. |
-| `docs/design/component-inventory.md` (Task 1102 **source doc**; task lane may lag) | Component inventory and classification baseline; live counts may exceed historical inventory — re-verify against `prism_aliases.dart` when promoting components. |
-| `docs/architecture/warp-prism-melos-monorepo-architecture.md` (Task 1104 artifact; task in `03-review/`) | Melos monorepo decision, package boundaries, path dependency policy, Widgetbook vs custom catalog decision (§11), migration sequence. |
+| `docs/design/component-catalog.md` | Current human-readable inventory of shared ADS widgets, reconciled against live source, barrels, aliases, and gallery registration. |
+| `docs/design/component-inventory.md` (Task 1102 source doc) | Historical CyberCore control-surface inventory; not the current Warp Prism ADS component catalog. |
+| `.project/architecture/warp-prism-melos-monorepo-architecture.md` (Task 1104 artifact; task in `03-review/`) | Melos monorepo decision, package boundaries, path dependency policy, Widgetbook vs custom catalog decision (§11), migration sequence. |
 | `packages/warp_prism_ui/lib/src/tokens/` | Live token implementation: `DSColors`, `DSTypography`, `DSSpacing`, `DSRadii`, `DSShadows`, `DSMotion`, `DSSemantics`, `DSBreakpoints`, `DSOperationalState` (historical root `lib/design_system/tokens/` path is obsolete post-Melos). |
 | `packages/warp_prism_ui/lib/src/prism_aliases.dart` | Live public `Prism*` typedef surface (token + component aliases). **No `PrismTokens`.** |
 | `packages/warp_prism_ui/lib/warp_prism_ui.dart` | Public barrel: exports `prism_aliases.dart` + gallery pages; hides `DS*` gallery implementation names. |

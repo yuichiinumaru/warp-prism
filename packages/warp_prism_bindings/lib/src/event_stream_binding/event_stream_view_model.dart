@@ -4,7 +4,7 @@ import 'package:warp_prism_ui/warp_prism_ui.dart';
 
 /// Operational lifecycle status of an [EventStreamBinding].
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 enum EventStreamBindingStatus {
   /// Actively receiving and processing incoming stream events.
@@ -28,7 +28,7 @@ enum EventStreamBindingStatus {
 /// **PURGE LAW**: This is an advisory view-model state for widgets,
 /// not an internal timer or scrolling engine.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 enum EventStreamFollowState {
   /// Consumer UI is attached and following stream tail.
@@ -43,7 +43,7 @@ enum EventStreamFollowState {
 
 /// Utility mappers projecting runtime events to UI presentation models.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 class EventStreamMappers {
   const EventStreamMappers._();

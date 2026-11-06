@@ -152,7 +152,10 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
-            body: PrismCodeBlock(source: 'line1\nline2', showLineNumbers: false),
+            body: PrismCodeBlock(
+              source: 'line1\nline2',
+              showLineNumbers: false,
+            ),
           ),
         ),
       );

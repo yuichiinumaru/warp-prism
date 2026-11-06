@@ -54,9 +54,7 @@ Widget _contractMinimalWrapper(Widget child) {
         ],
         child: Overlay(
           initialEntries: [
-            OverlayEntry(
-              builder: (context) => SizedBox.expand(child: child),
-            ),
+            OverlayEntry(builder: (context) => SizedBox.expand(child: child)),
           ],
         ),
       ),
@@ -80,10 +78,7 @@ Widget _materialPrerequisiteWrapper(Widget child) {
           initialEntries: [
             OverlayEntry(
               builder: (context) => SizedBox.expand(
-                child: Material(
-                  type: MaterialType.transparency,
-                  child: child,
-                ),
+                child: Material(type: MaterialType.transparency, child: child),
               ),
             ),
           ],
@@ -101,92 +96,99 @@ void main() {
     // SECTION 1: Latent Organisms Fixed per 1831 Canon (Proven SELF_SUFFICIENT)
     // =========================================================================
     group('Latent Organisms Fixed per 1831 Canon (Proven SELF_SUFFICIENT)', () {
-      testWidgets('PrismFilterWorkbench mounts without Material/Scaffold ancestor', (tester) async {
-        await tester.pumpWidget(
-          _contractMinimalWrapper(
-            PrismFilterWorkbench(
-              sections: const [],
-              onChanged: (_) {},
+      testWidgets(
+        'PrismFilterWorkbench mounts without Material/Scaffold ancestor',
+        (tester) async {
+          await tester.pumpWidget(
+            _contractMinimalWrapper(
+              PrismFilterWorkbench(sections: const [], onChanged: (_) {}),
             ),
-          ),
-        );
-        expect(tester.takeException(), isNull);
-        expect(find.byType(PrismFilterWorkbench), findsOneWidget);
-      });
+          );
+          expect(tester.takeException(), isNull);
+          expect(find.byType(PrismFilterWorkbench), findsOneWidget);
+        },
+      );
 
-      testWidgets('PrismFilterWorkbench with text criterion mounts without Material/Scaffold ancestor', (tester) async {
-        await tester.pumpWidget(
-          _contractMinimalWrapper(
-            PrismFilterWorkbench(
-              sections: const [
-                PrismFilterSection(
-                  id: 'text-sec',
-                  title: 'Search Criteria',
-                  criteria: [
-                    PrismFilterCriterion(
-                      id: 'query',
-                      label: 'Query Filter',
-                      kind: PrismFilterCriterionKind.text,
-                      placeholder: 'Type query...',
-                    ),
-                  ],
-                ),
-              ],
-              initialValues: const {'query': 'initial query'},
-              onChanged: (_) {},
+      testWidgets(
+        'PrismFilterWorkbench with text criterion mounts without Material/Scaffold ancestor',
+        (tester) async {
+          await tester.pumpWidget(
+            _contractMinimalWrapper(
+              PrismFilterWorkbench(
+                sections: const [
+                  PrismFilterSection(
+                    id: 'text-sec',
+                    title: 'Search Criteria',
+                    criteria: [
+                      PrismFilterCriterion(
+                        id: 'query',
+                        label: 'Query Filter',
+                        kind: PrismFilterCriterionKind.text,
+                        placeholder: 'Type query...',
+                      ),
+                    ],
+                  ),
+                ],
+                initialValues: const {'query': 'initial query'},
+                onChanged: (_) {},
+              ),
             ),
-          ),
-        );
-        expect(tester.takeException(), isNull);
-        expect(find.byType(PrismFilterWorkbench), findsOneWidget);
-        expect(find.byType(TextField), findsOneWidget);
-      });
+          );
+          expect(tester.takeException(), isNull);
+          expect(find.byType(PrismFilterWorkbench), findsOneWidget);
+          expect(find.byType(TextField), findsOneWidget);
+        },
+      );
 
-      testWidgets('PrismAiAnalystPanel mounts without Material/Scaffold ancestor', (tester) async {
-        final controller = PrismAiAnalystController();
-        addTearDown(controller.dispose);
+      testWidgets(
+        'PrismAiAnalystPanel mounts without Material/Scaffold ancestor',
+        (tester) async {
+          final controller = PrismAiAnalystController();
+          addTearDown(controller.dispose);
 
-        await tester.pumpWidget(
-          _contractMinimalWrapper(
-            PrismAiAnalystPanel(controller: controller),
-          ),
-        );
-        expect(tester.takeException(), isNull);
-        expect(find.byType(PrismAiAnalystPanel), findsOneWidget);
-        expect(find.byType(TextField), findsOneWidget);
-      });
-
-      testWidgets('PrismTerminalWorkspace mounts without Material/Scaffold ancestor', (tester) async {
-        final controller = PrismTerminalWorkspaceController(
-          panes: const [
-            PrismTerminalPane(
-              id: 'p1',
-              title: 'Terminal 1',
+          await tester.pumpWidget(
+            _contractMinimalWrapper(
+              PrismAiAnalystPanel(controller: controller),
             ),
-          ],
-        );
-        addTearDown(controller.dispose);
+          );
+          expect(tester.takeException(), isNull);
+          expect(find.byType(PrismAiAnalystPanel), findsOneWidget);
+          expect(find.byType(TextField), findsOneWidget);
+        },
+      );
 
-        await tester.pumpWidget(
-          _contractMinimalWrapper(
-            PrismTerminalWorkspace(controller: controller),
-          ),
-        );
-        expect(tester.takeException(), isNull);
-        expect(find.byType(PrismTerminalWorkspace), findsOneWidget);
-        expect(find.byType(TextField), findsOneWidget);
-      });
+      testWidgets(
+        'PrismTerminalWorkspace mounts without Material/Scaffold ancestor',
+        (tester) async {
+          final controller = PrismTerminalWorkspaceController(
+            panes: const [PrismTerminalPane(id: 'p1', title: 'Terminal 1')],
+          );
+          addTearDown(controller.dispose);
 
-      testWidgets('PrismSearchBar (Task 1831 canon) mounts without Material/Scaffold ancestor', (tester) async {
-        await tester.pumpWidget(
-          _contractMinimalWrapper(
-            const PrismSearchBar(placeholder: 'Search canon...'),
-          ),
-        );
-        expect(tester.takeException(), isNull);
-        expect(find.byType(PrismSearchBar), findsOneWidget);
-        expect(find.byType(TextField), findsOneWidget);
-      });
+          await tester.pumpWidget(
+            _contractMinimalWrapper(
+              PrismTerminalWorkspace(controller: controller),
+            ),
+          );
+          expect(tester.takeException(), isNull);
+          expect(find.byType(PrismTerminalWorkspace), findsOneWidget);
+          expect(find.byType(TextField), findsOneWidget);
+        },
+      );
+
+      testWidgets(
+        'PrismSearchBar (Task 1831 canon) mounts without Material/Scaffold ancestor',
+        (tester) async {
+          await tester.pumpWidget(
+            _contractMinimalWrapper(
+              const PrismSearchBar(placeholder: 'Search canon...'),
+            ),
+          );
+          expect(tester.takeException(), isNull);
+          expect(find.byType(PrismSearchBar), findsOneWidget);
+          expect(find.byType(TextField), findsOneWidget);
+        },
+      );
     });
 
     // =========================================================================
@@ -244,17 +246,21 @@ void main() {
         ),
         WidgetAncestrySpec(
           name: 'PrismGlassPanel',
-          builder: () => const PrismGlassPanel(child: SizedBox(width: 50, height: 50)),
+          builder: () =>
+              const PrismGlassPanel(child: SizedBox(width: 50, height: 50)),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
           name: 'PrismGlassPanelSimple',
-          builder: () => const PrismGlassPanelSimple(child: SizedBox(width: 50, height: 50)),
+          builder: () => const PrismGlassPanelSimple(
+            child: SizedBox(width: 50, height: 50),
+          ),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
           name: 'PrismGlowBorder',
-          builder: () => const PrismGlowBorder(child: SizedBox(width: 50, height: 50)),
+          builder: () =>
+              const PrismGlowBorder(child: SizedBox(width: 50, height: 50)),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
@@ -281,7 +287,8 @@ void main() {
           name: 'PrismTextField',
           builder: () => const PrismTextField(label: 'Text Field'),
           expectedClassification: AncestryClassification.declaredPrerequisite,
-          declaredPrerequisiteRationale: 'Requires Material ancestor for underlying Flutter TextField atom',
+          declaredPrerequisiteRationale:
+              'Requires Material ancestor for underlying Flutter TextField atom',
           prerequisiteWrapper: _materialPrerequisiteWrapper,
         ),
 
@@ -293,22 +300,30 @@ void main() {
         ),
         WidgetAncestrySpec(
           name: 'PrismMetricTileCompact',
-          builder: () => const PrismMetricTileCompact(label: 'Metric', value: '100'),
+          builder: () =>
+              const PrismMetricTileCompact(label: 'Metric', value: '100'),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
           name: 'PrismInteractiveSurface',
-          builder: () => const PrismInteractiveSurface(semanticLabel: 'Surface', child: SizedBox(width: 50, height: 50)),
+          builder: () => const PrismInteractiveSurface(
+            semanticLabel: 'Surface',
+            child: SizedBox(width: 50, height: 50),
+          ),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
           name: 'PrismStateSurface',
-          builder: () => const PrismStateSurface(stateType: PrismStateType.empty, title: 'Empty'),
+          builder: () => const PrismStateSurface(
+            stateType: PrismStateType.empty,
+            title: 'Empty',
+          ),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
           name: 'PrismTaskCard',
-          builder: () => const PrismTaskCard(id: 1, title: 'Task', lane: 'doing'),
+          builder: () =>
+              const PrismTaskCard(id: 1, title: 'Task', lane: 'doing'),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
@@ -323,27 +338,36 @@ void main() {
         ),
         WidgetAncestrySpec(
           name: 'PrismFilterChipGroup',
-          builder: () => const PrismFilterChipGroup(options: [PrismFilterOption(value: '1', label: 'Opt')], selected: {'1'}),
+          builder: () => const PrismFilterChipGroup(
+            options: [PrismFilterOption(value: '1', label: 'Opt')],
+            selected: {'1'},
+          ),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
           name: 'PrismEvidenceRow',
-          builder: () => const PrismEvidenceRow(label: 'Evidence', state: PrismEvidenceState.verified),
+          builder: () => const PrismEvidenceRow(
+            label: 'Evidence',
+            state: PrismEvidenceState.verified,
+          ),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
           name: 'PrismEvidenceIndicator',
-          builder: () => const PrismEvidenceIndicator(state: PrismEvidenceState.verified),
+          builder: () =>
+              const PrismEvidenceIndicator(state: PrismEvidenceState.verified),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
           name: 'PrismProvenancePill',
-          builder: () => const PrismProvenancePill(canonicality: 'parentcanonical'),
+          builder: () =>
+              const PrismProvenancePill(canonicality: 'parentcanonical'),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
           name: 'PrismTimelineMarker',
-          builder: () => const PrismTimelineMarker(date: '2026-09-06', title: 'Marker'),
+          builder: () =>
+              const PrismTimelineMarker(date: '2026-09-06', title: 'Marker'),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
@@ -353,14 +377,16 @@ void main() {
         ),
         WidgetAncestrySpec(
           name: 'PrismDialog',
-          builder: () => const PrismDialog(title: 'Dialog', content: SizedBox()),
+          builder: () =>
+              const PrismDialog(title: 'Dialog', content: SizedBox()),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
           name: 'PrismColorField',
           builder: () => const PrismColorField(label: 'Color'),
           expectedClassification: AncestryClassification.declaredPrerequisite,
-          declaredPrerequisiteRationale: 'Composes PrismTextField, requires Material ancestor',
+          declaredPrerequisiteRationale:
+              'Composes PrismTextField, requires Material ancestor',
           prerequisiteWrapper: _materialPrerequisiteWrapper,
         ),
         WidgetAncestrySpec(
@@ -374,7 +400,11 @@ void main() {
         ),
         WidgetAncestrySpec(
           name: 'PrismDropTarget',
-          builder: () => const PrismDropTarget(laneId: 'todo', taskCount: 0, child: SizedBox(width: 50, height: 50)),
+          builder: () => const PrismDropTarget(
+            laneId: 'todo',
+            taskCount: 0,
+            child: SizedBox(width: 50, height: 50),
+          ),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
@@ -404,12 +434,19 @@ void main() {
         ),
         WidgetAncestrySpec(
           name: 'PrismToast',
-          builder: () => PrismToast(entry: PrismToastEntry(id: '1', severity: PrismToastSeverity.info, title: 'Toast')),
+          builder: () => PrismToast(
+            entry: PrismToastEntry(
+              id: '1',
+              severity: PrismToastSeverity.info,
+              title: 'Toast',
+            ),
+          ),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
           name: 'PrismToastManager',
-          builder: () => const PrismToastManager(child: SizedBox(width: 50, height: 50)),
+          builder: () =>
+              const PrismToastManager(child: SizedBox(width: 50, height: 50)),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
@@ -419,7 +456,10 @@ void main() {
         ),
         WidgetAncestrySpec(
           name: 'PrismHealthCard',
-          builder: () => const PrismHealthCard(serviceName: 'svc', operationalState: PrismOperationalState.running),
+          builder: () => const PrismHealthCard(
+            serviceName: 'svc',
+            operationalState: PrismOperationalState.running,
+          ),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
 
@@ -434,19 +474,24 @@ void main() {
         ),
         WidgetAncestrySpec(
           name: 'PrismFilterWorkbench',
-          builder: () => PrismFilterWorkbench(sections: const [], onChanged: (_) {}),
+          builder: () =>
+              PrismFilterWorkbench(sections: const [], onChanged: (_) {}),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
           name: 'PrismAiAnalystPanel',
-          builder: () => PrismAiAnalystPanel(controller: trackController(PrismAiAnalystController())),
+          builder: () => PrismAiAnalystPanel(
+            controller: trackController(PrismAiAnalystController()),
+          ),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
           name: 'PrismTerminalWorkspace',
           builder: () => PrismTerminalWorkspace(
             controller: trackController(
-              PrismTerminalWorkspaceController(panes: const [PrismTerminalPane(id: '1', title: 'T1')]),
+              PrismTerminalWorkspaceController(
+                panes: const [PrismTerminalPane(id: '1', title: 'T1')],
+              ),
             ),
           ),
           expectedClassification: AncestryClassification.selfSufficient,
@@ -458,12 +503,15 @@ void main() {
         ),
         WidgetAncestrySpec(
           name: 'PrismLaneBoard',
-          builder: () => const PrismLaneBoard(lanes: [PrismLane(id: 'todo', label: 'To Do', tasks: [])]),
+          builder: () => const PrismLaneBoard(
+            lanes: [PrismLane(id: 'todo', label: 'To Do', tasks: [])],
+          ),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
           name: 'PrismPageShell',
-          builder: () => const PrismPageShell(title: 'Shell', child: SizedBox()),
+          builder: () =>
+              const PrismPageShell(title: 'Shell', child: SizedBox()),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
@@ -488,7 +536,9 @@ void main() {
         ),
         WidgetAncestrySpec(
           name: 'PrismToolCallCard',
-          builder: () => const PrismToolCallCard(data: PrismToolCallData(id: '1', toolName: 'tool')),
+          builder: () => const PrismToolCallCard(
+            data: PrismToolCallData(id: '1', toolName: 'tool'),
+          ),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
@@ -503,7 +553,9 @@ void main() {
         ),
         WidgetAncestrySpec(
           name: 'PrismMcpCapabilityInspector',
-          builder: () => const PrismMcpCapabilityInspector(capabilities: PrismMcpCapabilities()),
+          builder: () => const PrismMcpCapabilityInspector(
+            capabilities: PrismMcpCapabilities(),
+          ),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
@@ -529,7 +581,11 @@ void main() {
         WidgetAncestrySpec(
           name: 'PrismWorkspaceShareCard',
           builder: () => const PrismWorkspaceShareCard(
-            summary: PrismWorkspaceShareSummary(workspaceId: '1', workspaceName: 'W1', shareUrl: 'url'),
+            summary: PrismWorkspaceShareSummary(
+              workspaceId: '1',
+              workspaceName: 'W1',
+              shareUrl: 'url',
+            ),
           ),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
@@ -585,7 +641,8 @@ void main() {
         ),
         WidgetAncestrySpec(
           name: 'PrismOsintWorkbench',
-          builder: () => PrismOsintWorkbench(tools: PrismOsintFixtures.minimalTools()),
+          builder: () =>
+              PrismOsintWorkbench(tools: PrismOsintFixtures.minimalTools()),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
@@ -600,7 +657,8 @@ void main() {
         ),
         WidgetAncestrySpec(
           name: 'PrismConnectorPanel',
-          builder: () => const PrismConnectorPanel(title: 'Connectors', child: SizedBox()),
+          builder: () =>
+              const PrismConnectorPanel(title: 'Connectors', child: SizedBox()),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
@@ -610,7 +668,9 @@ void main() {
         ),
         WidgetAncestrySpec(
           name: 'PrismAgentShellPanel',
-          builder: () => PrismAgentShellPanel(controller: trackController(PrismAgentShellPanelController())),
+          builder: () => PrismAgentShellPanel(
+            controller: trackController(PrismAgentShellPanelController()),
+          ),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
@@ -620,7 +680,8 @@ void main() {
         ),
         WidgetAncestrySpec(
           name: 'PrismStatusCell',
-          builder: () => const PrismStatusCell(state: PrismOperationalState.running),
+          builder: () =>
+              const PrismStatusCell(state: PrismOperationalState.running),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
@@ -650,12 +711,17 @@ void main() {
         ),
         WidgetAncestrySpec(
           name: 'PrismShellResponsive',
-          builder: () => const PrismShellResponsive(sidebar: SizedBox(), collapsedSidebar: SizedBox(), content: SizedBox()),
+          builder: () => const PrismShellResponsive(
+            sidebar: SizedBox(),
+            collapsedSidebar: SizedBox(),
+            content: SizedBox(),
+          ),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
           name: 'PrismShell',
-          builder: () => const PrismShell(sidebar: SizedBox(), content: SizedBox()),
+          builder: () =>
+              const PrismShell(sidebar: SizedBox(), content: SizedBox()),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
@@ -685,19 +751,29 @@ void main() {
         ),
         WidgetAncestrySpec(
           name: 'PrismVirtualList',
-          builder: () => PrismVirtualList(itemCount: 1, itemBuilder: (_, __) => const SizedBox()),
+          builder: () => PrismVirtualList(
+            itemCount: 1,
+            itemBuilder: (_, __) => const SizedBox(),
+          ),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
           name: 'PrismVirtualGrid',
-          builder: () => PrismVirtualGrid(itemCount: 1, itemBuilder: (_, __) => const SizedBox()),
+          builder: () => PrismVirtualGrid(
+            itemCount: 1,
+            itemBuilder: (_, __) => const SizedBox(),
+          ),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
           name: 'PrismTabBar',
           builder: () => PrismTabBar(
             controller: trackController(
-              PrismTabController(tabs: const [PrismTab(id: '1', label: 'T1', content: _dummyBuilder)]),
+              PrismTabController(
+                tabs: const [
+                  PrismTab(id: '1', label: 'T1', content: _dummyBuilder),
+                ],
+              ),
             ),
           ),
           expectedClassification: AncestryClassification.selfSufficient,
@@ -706,21 +782,27 @@ void main() {
           name: 'PrismTabView',
           builder: () => PrismTabView(
             controller: trackController(
-              PrismTabController(tabs: const [PrismTab(id: '1', label: 'T1', content: _dummyBuilder)]),
+              PrismTabController(
+                tabs: const [
+                  PrismTab(id: '1', label: 'T1', content: _dummyBuilder),
+                ],
+              ),
             ),
           ),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
           name: 'PrismSplitPane',
-          builder: () => const PrismSplitPane(leading: SizedBox(), trailing: SizedBox()),
+          builder: () =>
+              const PrismSplitPane(leading: SizedBox(), trailing: SizedBox()),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
           name: 'PrismCodeBlock',
           builder: () => const PrismCodeBlock(source: 'code'),
           expectedClassification: AncestryClassification.declaredPrerequisite,
-          declaredPrerequisiteRationale: 'Header copy button uses InkWell, requires Material ancestor for ink splashes',
+          declaredPrerequisiteRationale:
+              'Header copy button uses InkWell, requires Material ancestor for ink splashes',
           prerequisiteWrapper: _materialPrerequisiteWrapper,
         ),
         WidgetAncestrySpec(
@@ -735,7 +817,15 @@ void main() {
         ),
         WidgetAncestrySpec(
           name: 'PrismLogEntryWidget',
-          builder: () => PrismLogEntryWidget(entry: PrismLogEntry(id: '1', timestamp: DateTime(2026), severity: PrismLogSeverity.info, source: 's', message: 'm')),
+          builder: () => PrismLogEntryWidget(
+            entry: PrismLogEntry(
+              id: '1',
+              timestamp: DateTime(2026),
+              severity: PrismLogSeverity.info,
+              source: 's',
+              message: 'm',
+            ),
+          ),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
@@ -745,7 +835,11 @@ void main() {
         ),
         WidgetAncestrySpec(
           name: 'PrismDetailInspector',
-          builder: () => const PrismDetailInspector(title: 'Detail', kind: 'asset', sections: []),
+          builder: () => const PrismDetailInspector(
+            title: 'Detail',
+            kind: 'asset',
+            sections: [],
+          ),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
@@ -765,7 +859,12 @@ void main() {
         ),
         WidgetAncestrySpec(
           name: 'PrismEntityRelationCard',
-          builder: () => const PrismEntityRelationCard(title: 'Entity', type: 'Node', nodes: [], edges: []),
+          builder: () => const PrismEntityRelationCard(
+            title: 'Entity',
+            type: 'Node',
+            nodes: [],
+            edges: [],
+          ),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
@@ -805,24 +904,34 @@ void main() {
         ),
         WidgetAncestrySpec(
           name: 'PrismTablePagination',
-          builder: () => PrismTablePagination(currentPage: 0, totalRows: 10, pageSize: 10, onPageChanged: (_) {}, onPageSizeChanged: (_) {}),
+          builder: () => PrismTablePagination(
+            currentPage: 0,
+            totalRows: 10,
+            pageSize: 10,
+            onPageChanged: (_) {},
+            onPageSizeChanged: (_) {},
+          ),
           expectedClassification: AncestryClassification.declaredPrerequisite,
-          declaredPrerequisiteRationale: 'Navigation buttons use IconButton/InkResponse, requires Material ancestor for ink splashes',
+          declaredPrerequisiteRationale:
+              'Navigation buttons use IconButton/InkResponse, requires Material ancestor for ink splashes',
           prerequisiteWrapper: _materialPrerequisiteWrapper,
         ),
         WidgetAncestrySpec(
           name: 'PrismCommandPaletteShortcut',
-          builder: () => const PrismCommandPaletteShortcut(commands: [], child: SizedBox()),
+          builder: () => const PrismCommandPaletteShortcut(
+            commands: [],
+            child: SizedBox(),
+          ),
           expectedClassification: AncestryClassification.selfSufficient,
         ),
         WidgetAncestrySpec(
           name: 'PrismThemeEditor',
           builder: () => const PrismThemeEditor(),
           expectedClassification: AncestryClassification.declaredPrerequisite,
-          declaredPrerequisiteRationale: 'Tooling organism composing multiple PrismTextField inputs and InkWell chips, requires Material ancestor and bounded height',
-          prerequisiteWrapper: (child) => _materialPrerequisiteWrapper(
-            SizedBox(height: 600, child: child),
-          ),
+          declaredPrerequisiteRationale:
+              'Tooling organism composing multiple PrismTextField inputs and InkWell chips, requires Material ancestor and bounded height',
+          prerequisiteWrapper: (child) =>
+              _materialPrerequisiteWrapper(SizedBox(height: 600, child: child)),
         ),
         WidgetAncestrySpec(
           name: 'DesignSystemGalleryPage',
@@ -832,50 +941,64 @@ void main() {
       ];
 
       for (final spec in allWidgetSpecs) {
-        testWidgets('${spec.name} matches expected classification (${spec.expectedClassification.name})', (tester) async {
-          addTearDown(() {
-            for (final c in specControllers) {
-              c.dispose();
+        testWidgets(
+          '${spec.name} matches expected classification (${spec.expectedClassification.name})',
+          (tester) async {
+            addTearDown(() {
+              for (final c in specControllers) {
+                c.dispose();
+              }
+              specControllers.clear();
+            });
+
+            if (spec.expectedClassification ==
+                AncestryClassification.selfSufficient) {
+              await tester.pumpWidget(_contractMinimalWrapper(spec.builder()));
+              final exception = tester.takeException();
+              expect(
+                exception,
+                isNull,
+                reason:
+                    '${spec.name} threw under contract-minimal wrapper without declaring prerequisite: $exception',
+              );
+            } else if (spec.expectedClassification ==
+                AncestryClassification.declaredPrerequisite) {
+              // Under contract-minimal without prerequisite, it throws missing Material assertion
+              final caughtErrors = <FlutterErrorDetails>[];
+              final originalOnError = FlutterError.onError;
+              FlutterError.onError = (details) {
+                caughtErrors.add(details);
+              };
+
+              await tester.pumpWidget(_contractMinimalWrapper(spec.builder()));
+              FlutterError.onError = originalOnError;
+              tester
+                  .takeException(); // clear any pending exception from binding
+
+              expect(
+                caughtErrors.any(
+                  (d) => d.exceptionAsString().contains(
+                    'No Material widget found',
+                  ),
+                ),
+                isTrue,
+                reason:
+                    '${spec.name} was classified as declaredPrerequisite but did not throw missing Material assertion',
+              );
+
+              // Under wrapper with declared prerequisite, it succeeds
+              final wrapper =
+                  spec.prerequisiteWrapper ?? _materialPrerequisiteWrapper;
+              await tester.pumpWidget(wrapper(spec.builder()));
+              expect(
+                tester.takeException(),
+                isNull,
+                reason:
+                    '${spec.name} failed even with declared prerequisite: ${spec.declaredPrerequisiteRationale}',
+              );
             }
-            specControllers.clear();
-          });
-
-          if (spec.expectedClassification == AncestryClassification.selfSufficient) {
-            await tester.pumpWidget(_contractMinimalWrapper(spec.builder()));
-            final exception = tester.takeException();
-            expect(
-              exception,
-              isNull,
-              reason: '${spec.name} threw under contract-minimal wrapper without declaring prerequisite: $exception',
-            );
-          } else if (spec.expectedClassification == AncestryClassification.declaredPrerequisite) {
-            // Under contract-minimal without prerequisite, it throws missing Material assertion
-            final caughtErrors = <FlutterErrorDetails>[];
-            final originalOnError = FlutterError.onError;
-            FlutterError.onError = (details) {
-              caughtErrors.add(details);
-            };
-
-            await tester.pumpWidget(_contractMinimalWrapper(spec.builder()));
-            FlutterError.onError = originalOnError;
-            tester.takeException(); // clear any pending exception from binding
-
-            expect(
-              caughtErrors.any((d) => d.exceptionAsString().contains('No Material widget found')),
-              isTrue,
-              reason: '${spec.name} was classified as declaredPrerequisite but did not throw missing Material assertion',
-            );
-
-            // Under wrapper with declared prerequisite, it succeeds
-            final wrapper = spec.prerequisiteWrapper ?? _materialPrerequisiteWrapper;
-            await tester.pumpWidget(wrapper(spec.builder()));
-            expect(
-              tester.takeException(),
-              isNull,
-              reason: '${spec.name} failed even with declared prerequisite: ${spec.declaredPrerequisiteRationale}',
-            );
-          }
-        });
+          },
+        );
       }
     });
   });

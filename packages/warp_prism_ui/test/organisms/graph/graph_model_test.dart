@@ -3,6 +3,7 @@
 /// Task 1117: Tests GraphModel construction, queries, typed IDs,
 /// and pure-data immutability.
 library;
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:warp_prism_ui/src/organisms/graph/graph_model.dart';
 

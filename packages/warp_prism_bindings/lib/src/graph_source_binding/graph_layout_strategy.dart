@@ -7,7 +7,7 @@ import 'package:meta/meta.dart';
 /// **PURGE LAW**: This is a simple deterministic coordinate calculator,
 /// strictly avoiding physics engines, iterative force simulations, or ticker loops.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 abstract interface class GraphLayoutStrategy {
   /// Computes deterministic [Offset] coordinates for nodes keyed by their string IDs.
@@ -27,7 +27,7 @@ abstract interface class GraphLayoutStrategy {
 
 /// Circular layout strategy placing nodes equidistant around a circle.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 class CircleGraphLayoutStrategy implements GraphLayoutStrategy {
   /// Radius of the placement circle in logical pixels.
@@ -88,7 +88,7 @@ class CircleGraphLayoutStrategy implements GraphLayoutStrategy {
 
 /// Grid layout strategy placing nodes in regular columns and rows.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 class GridGraphLayoutStrategy implements GraphLayoutStrategy {
   /// Number of columns in the grid.

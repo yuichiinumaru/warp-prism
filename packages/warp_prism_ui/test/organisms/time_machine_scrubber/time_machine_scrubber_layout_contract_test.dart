@@ -64,7 +64,10 @@ void main() {
         await tester.pump();
 
         expect(find.byType(PrismTimeMachineScrubber), findsOneWidget);
-        expect(find.byKey(PrismTimeMachineScrubber.histogramKey), findsOneWidget);
+        expect(
+          find.byKey(PrismTimeMachineScrubber.histogramKey),
+          findsOneWidget,
+        );
         expect(find.text('Activity density (fixture)'), findsOneWidget);
       },
     );
@@ -91,8 +94,9 @@ void main() {
                           child: PrismTimeMachineScrubber(
                             title: 'Activity density (fixture)',
                             buckets: fixtureBuckets(),
-                            initialPlayhead:
-                                domainStart.add(const Duration(hours: 12)),
+                            initialPlayhead: domainStart.add(
+                              const Duration(hours: 12),
+                            ),
                           ),
                         ),
                         const SizedBox(height: PrismSpacing.xs),
@@ -114,31 +118,30 @@ void main() {
       },
     );
 
-    testWidgets(
-      'renders without overflow when title is null and height=119',
-      (tester) async {
-        setupStrictOverflowFailure(tester);
+    testWidgets('renders without overflow when title is null and height=119', (
+      tester,
+    ) async {
+      setupStrictOverflowFailure(tester);
 
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: SizedBox(
-                width: 640,
-                height: 119,
-                child: PrismTimeMachineScrubber(
-                  title: null,
-                  buckets: fixtureBuckets(),
-                  initialPlayhead: domainStart.add(const Duration(hours: 12)),
-                ),
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SizedBox(
+              width: 640,
+              height: 119,
+              child: PrismTimeMachineScrubber(
+                title: null,
+                buckets: fixtureBuckets(),
+                initialPlayhead: domainStart.add(const Duration(hours: 12)),
               ),
             ),
           ),
-        );
-        await tester.pump();
+        ),
+      );
+      await tester.pump();
 
-        expect(find.byType(PrismTimeMachineScrubber), findsOneWidget);
-      },
-    );
+      expect(find.byType(PrismTimeMachineScrubber), findsOneWidget);
+    });
 
     testWidgets(
       'renders without overflow when buckets are empty and height=119',
@@ -165,65 +168,59 @@ void main() {
       },
     );
 
-    testWidgets(
-      'holds at 1280x800 capture viewport',
-      (tester) async {
-        setupStrictOverflowFailure(tester);
-        tester.view.physicalSize = const Size(1280, 800);
-        tester.view.devicePixelRatio = 1.0;
-        addTearDown(tester.view.resetPhysicalSize);
-        addTearDown(tester.view.resetDevicePixelRatio);
+    testWidgets('holds at 1280x800 capture viewport', (tester) async {
+      setupStrictOverflowFailure(tester);
+      tester.view.physicalSize = const Size(1280, 800);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
 
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: SizedBox(
-                width: 640,
-                height: 119,
-                child: PrismTimeMachineScrubber(
-                  title: 'Capture Viewport 1280x800',
-                  buckets: fixtureBuckets(),
-                  initialPlayhead: domainStart.add(const Duration(hours: 12)),
-                ),
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SizedBox(
+              width: 640,
+              height: 119,
+              child: PrismTimeMachineScrubber(
+                title: 'Capture Viewport 1280x800',
+                buckets: fixtureBuckets(),
+                initialPlayhead: domainStart.add(const Duration(hours: 12)),
               ),
             ),
           ),
-        );
-        await tester.pump();
+        ),
+      );
+      await tester.pump();
 
-        expect(find.byType(PrismTimeMachineScrubber), findsOneWidget);
-      },
-    );
+      expect(find.byType(PrismTimeMachineScrubber), findsOneWidget);
+    });
 
-    testWidgets(
-      'holds at 1920x1080 desktop viewport class',
-      (tester) async {
-        setupStrictOverflowFailure(tester);
-        tester.view.physicalSize = const Size(1920, 1080);
-        tester.view.devicePixelRatio = 1.0;
-        addTearDown(tester.view.resetPhysicalSize);
-        addTearDown(tester.view.resetDevicePixelRatio);
+    testWidgets('holds at 1920x1080 desktop viewport class', (tester) async {
+      setupStrictOverflowFailure(tester);
+      tester.view.physicalSize = const Size(1920, 1080);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
 
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: SizedBox(
-                width: 800,
-                height: 119,
-                child: PrismTimeMachineScrubber(
-                  title: 'Desktop Class 1920x1080',
-                  buckets: fixtureBuckets(),
-                  initialPlayhead: domainStart.add(const Duration(hours: 12)),
-                ),
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SizedBox(
+              width: 800,
+              height: 119,
+              child: PrismTimeMachineScrubber(
+                title: 'Desktop Class 1920x1080',
+                buckets: fixtureBuckets(),
+                initialPlayhead: domainStart.add(const Duration(hours: 12)),
               ),
             ),
           ),
-        );
-        await tester.pump();
+        ),
+      );
+      await tester.pump();
 
-        expect(find.byType(PrismTimeMachineScrubber), findsOneWidget);
-      },
-    );
+      expect(find.byType(PrismTimeMachineScrubber), findsOneWidget);
+    });
 
     testWidgets(
       'handles extreme constraint h=60 with scrollable fallback without throwing RenderFlex error',
@@ -311,19 +308,23 @@ void main() {
 
           if (h == 119.0) {
             // Assert at least 4px of slack at h=119
-            final columnFinder = find.descendant(
-              of: find.byType(PrismTimeMachineScrubber),
-              matching: find.byType(Column),
-            ).first;
+            final columnFinder = find
+                .descendant(
+                  of: find.byType(PrismTimeMachineScrubber),
+                  matching: find.byType(Column),
+                )
+                .first;
             final columnSize = tester.getSize(columnFinder);
             // In compact mode, panel padding is DSSpacing.sm (8px each side = 16px total)
             const panelVerticalPadding = 16.0;
-            final totalRenderedHeight = columnSize.height + panelVerticalPadding;
+            final totalRenderedHeight =
+                columnSize.height + panelVerticalPadding;
             final slack = 119.0 - totalRenderedHeight;
             expect(
               slack,
               greaterThanOrEqualTo(4.0),
-              reason: 'Rendered slack at h=119 must be >= 4px, but was $slack '
+              reason:
+                  'Rendered slack at h=119 must be >= 4px, but was $slack '
                   '(rendered content: $totalRenderedHeight px)',
             );
           }
@@ -353,7 +354,9 @@ void main() {
                     child: PrismTimeMachineScrubber(
                       title: 'Activity density (scaled)',
                       buckets: fixtureBuckets(),
-                      initialPlayhead: domainStart.add(const Duration(hours: 12)),
+                      initialPlayhead: domainStart.add(
+                        const Duration(hours: 12),
+                      ),
                     ),
                   ),
                 ),

@@ -9,6 +9,16 @@ import 'package:flutter/material.dart';
 import '../tokens/tokens.dart';
 import '../atoms/atoms.dart';
 import '../molecules/molecules.dart';
+import '../molecules/ds_drop_zone_card.dart';
+import '../molecules/ds_job_banner.dart';
+import '../atoms/ds_canvas_host.dart';
+import '../atoms/ds_meter.dart';
+import '../molecules/ds_fader_strip.dart';
+import '../organisms/composer/ds_composer.dart';
+import '../organisms/composer/ds_composer_model.dart';
+import '../organisms/session_panel/ds_session_panel_compositions.dart';
+import '../tokens/ds_action_authority.dart';
+import '../atoms/numeric_field/ds_numeric_field.dart';
 import '../organisms/organisms.dart';
 
 /// Section builders for the Design System Gallery.
@@ -3056,7 +3066,12 @@ abstract class DSGallerySections {
             color: DSColors.textTertiary,
           ),
           SizedBox(height: DSSpacing.sm),
-          SizedBox(height: 120, width: 640, child: _StatusTickerDemo()),
+          // Intrinsic height (no hard box): the demo self-sizes to its two
+          // fixed-height tickers + captions (120px). A previous hard
+          // `height: 120` omitted the demo's own 8px padding, leaving the
+          // Column 104px for 120px of content — a 16px bottom RenderFlex
+          // overflow. Task 1840. See _StatusTickerDemo below.
+          SizedBox(width: 640, child: _StatusTickerDemo()),
           SizedBox(height: DSSpacing.lg),
 
           // Stage chrome pack (Task 1509) — Watchlist + Coord bar + Map legend
@@ -3970,7 +3985,892 @@ abstract class DSGallerySections {
       ),
     );
   }
+
+  // ---------------------------------------------------------------------------
+  // BANNER 1858 — JOB BANNER (EXPERIMENTAL)
+  // ---------------------------------------------------------------------------
+  /// Staged job banner catalog (Task 1858, F-10 — EXPERIMENTAL).
+  ///
+  /// Additive proof-lab entry for `DSJobBanner`: staged progress, cancel
+  /// with reason, and the deterministic terminal receipt slot. Receipt bytes
+  /// below are consumer fixtures; Prism owns only the slot chrome.
+  static Widget buildBanner1858JobBannerSection() {
+    return _SectionCard(
+      title: 'Job Banner (EXPERIMENTAL)',
+      subtitle:
+          'DSJobBanner · staged progress · cancel with reason · receipt slot',
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const DSText.bodySmall(
+            'Receipt bytes below are consumer fixtures — Prism owns the '
+            'slot chrome, never the bytes. Withheld determination renders '
+            'neutral and is excluded from golden capture.',
+            color: DSColors.textTertiary,
+          ),
+          const SizedBox(height: DSSpacing.lg),
+          const DSText.labelLarge(
+            'Running (fixed stages + cancel)',
+            color: DSColors.textSecondary,
+          ),
+          const SizedBox(height: DSSpacing.sm),
+          SizedBox(
+            width: 560,
+            child: DSJobBanner(
+              title: 'Separate vocals',
+              subtitle: 'Session 7 · take 3',
+              phase: DSJobBannerPhase.running,
+              progress: 0.5,
+              stages: const [
+                DSJobStage(
+                  label: 'Preparing',
+                  progress: 1.0,
+                  state: DSJobStageState.done,
+                ),
+                DSJobStage(
+                  label: 'Separating vocals',
+                  progress: 0.5,
+                  state: DSJobStageState.active,
+                ),
+                DSJobStage(label: 'Exporting'),
+              ],
+              elapsedLabel: '00:42',
+              cancellable: true,
+              cancelReason: 'Separation takes too long',
+              onCancel: () {},
+            ),
+          ),
+          const SizedBox(height: DSSpacing.lg),
+          const DSText.labelLarge(
+            'Succeeded (terminal receipt slot)',
+            color: DSColors.textSecondary,
+          ),
+          const SizedBox(height: DSSpacing.sm),
+          const SizedBox(
+            width: 560,
+            child: DSJobBanner(
+              title: 'Export take',
+              phase: DSJobBannerPhase.succeeded,
+              progress: 1.0,
+              receipt: Text('DEST out/take-03.wav (consumer fixture)'),
+            ),
+          ),
+          const SizedBox(height: DSSpacing.lg),
+          const DSText.labelLarge(
+            'Failed (caller reason)',
+            color: DSColors.textSecondary,
+          ),
+          const SizedBox(height: DSSpacing.sm),
+          const SizedBox(
+            width: 560,
+            child: DSJobBanner(
+              title: 'Export take',
+              phase: DSJobBannerPhase.failed,
+              progress: 0.75,
+              failureDetail: 'Render error at chunk 3',
+            ),
+          ),
+          const SizedBox(height: DSSpacing.lg),
+          const DSText.labelLarge(
+            'Cancelled (operator reason)',
+            color: DSColors.textSecondary,
+          ),
+          const SizedBox(height: DSSpacing.sm),
+          const SizedBox(
+            width: 560,
+            child: DSJobBanner(
+              title: 'Export take',
+              phase: DSJobBannerPhase.cancelled,
+              progress: 0.25,
+            ),
+          ),
+          const SizedBox(height: DSSpacing.lg),
+          const DSText.labelLarge(
+            'Withheld determination (fail-closed)',
+            color: DSColors.textSecondary,
+          ),
+          const SizedBox(height: DSSpacing.sm),
+          const SizedBox(
+            width: 560,
+            child: DSJobBanner(
+              title: 'Sync status',
+              phase: DSJobBannerPhase.unknown,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  // METER 1861 — METER + FADER STRIP + CANVAS HOST (EXPERIMENTAL)
+  // ---------------------------------------------------------------------------
+  /// Meter/fader catalog (Task 1861, F-13 — EXPERIMENTAL).
+  ///
+  /// Additive proof-lab entry for `DSMeter` (injected scale + zone
+  /// thresholds + peak-hold marker), `DSFaderStrip` (meter + fader + label +
+  /// dB readout slot), and `DSCanvasHost` (fixed viewport, bounded data,
+  /// a11y numeric fallback). All values below are fixed caller fixtures;
+  /// calibration stays caller-side and goldens never capture animation.
+  static Widget buildMeter1861MeterFaderSection() {
+    final scale = dsMeterReferenceScale();
+    return _SectionCard(
+      title: 'Meter + Fader (EXPERIMENTAL)',
+      subtitle:
+          'DSMeter · zone bands · peak-hold · DSFaderStrip · DSCanvasHost',
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const DSText.bodySmall(
+            'Scale, zones, and readout text are injected caller fixtures — '
+            'Prism owns geometry, never calibration. Peak-hold arrives '
+            'injected and static; nothing here animates.',
+            color: DSColors.textTertiary,
+          ),
+          const SizedBox(height: DSSpacing.lg),
+          const DSText.labelLarge(
+            'Nominal fill (fixed value)',
+            color: DSColors.textSecondary,
+          ),
+          const SizedBox(height: DSSpacing.sm),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              DSMeter(scale: scale, value: -12.0),
+              const SizedBox(width: DSSpacing.md),
+              DSMeter(scale: scale, value: -3.0, peakValue: -1.5),
+              const SizedBox(width: DSSpacing.md),
+              DSMeter(scale: scale, value: 0.0),
+            ],
+          ),
+          const SizedBox(height: DSSpacing.lg),
+          const DSText.labelLarge(
+            'Channel strips (meter + fader + readout slot)',
+            color: DSColors.textSecondary,
+          ),
+          const SizedBox(height: DSSpacing.sm),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              DSFaderStrip(
+                scale: scale,
+                meterValue: -12.0,
+                peakValue: -9.0,
+                faderValue: 0.75,
+                label: 'Vox',
+                onFaderChanged: (_) {},
+                formatFader: (normalized) =>
+                    '${(normalized * 3.5).toStringAsFixed(1)} dB',
+                dbReadout: const Text('-12.0 dB'),
+              ),
+              const SizedBox(width: DSSpacing.md),
+              DSFaderStrip(
+                scale: scale,
+                meterValue: -3.0,
+                peakValue: -1.0,
+                faderValue: 0.9,
+                label: 'Master',
+                onFaderChanged: (_) {},
+                formatFader: (normalized) =>
+                    '${(normalized * 3.5).toStringAsFixed(1)} dB',
+                dbReadout: const Text('-3.0 dB'),
+              ),
+            ],
+          ),
+          const SizedBox(height: DSSpacing.lg),
+          const DSText.labelLarge(
+            'Canvas host placeholder (fixed viewport + numeric fallback)',
+            color: DSColors.textSecondary,
+          ),
+          const SizedBox(height: DSSpacing.sm),
+          DSCanvasHost(
+            spec: const DSCanvasHostSpec(viewportSize: Size(320, 48)),
+            painter: _Meter1861BusPainter(),
+            semanticLabel: 'Master bus canvas',
+            semanticValue: '-3.0 dB',
+            placeholder: true,
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  // COMPOSER 1866 — MESSAGE COMPOSER ORGANISM (EXPERIMENTAL)
+  // ---------------------------------------------------------------------------
+  /// Composer catalog (Task 1866, F-18 — EXPERIMENTAL).
+  ///
+  /// Additive proof-lab entry for `DSComposer` (autogrow input,
+  /// @mention suggestions from injected descriptors, emoji strip, format
+  /// bar, attachment lifecycle chips, in-memory parked-draft restore).
+  /// All drafts below are fixed caller fixtures; uploads arrive injected
+  /// and static. Anchors (Warpblade comments, Tempest annotations,
+  /// Command-center operator notes) are forthcoming — no host proof is
+  /// claimed here. Drafts are in-memory only.
+  static Widget buildComposer1866ComposerSection() {
+    return _SectionCard(
+      title: 'Composer (EXPERIMENTAL)',
+      subtitle:
+          'DSComposer · autogrow · @mentions · emoji · format · '
+          'attachment lifecycle · parked drafts',
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const DSText.bodySmall(
+            'Drafts below seed fixed in-memory fixtures — Prism owns the '
+            'lifecycle slot chrome, never the bytes, and never persists. '
+            'Anchors are forthcoming product surfaces; no host proof is '
+            'claimed. Upload progress arrives injected and static; '
+            'nothing here animates.',
+            color: DSColors.textTertiary,
+          ),
+          const SizedBox(height: DSSpacing.lg),
+          const DSText.labelLarge(
+            'Empty composer (send disabled)',
+            color: DSColors.textSecondary,
+          ),
+          const SizedBox(height: DSSpacing.sm),
+          const SizedBox(
+            width: 560,
+            child: DSComposer(
+              mentionCandidates: [
+                DSComposerMention(
+                  id: 'member-ada',
+                  displayLabel: 'ada',
+                  detail: '@ada · ops',
+                ),
+              ],
+              emojiOptions: ['👍', '🎯'],
+              onAttachRequested: null,
+            ),
+          ),
+          const SizedBox(height: DSSpacing.lg),
+          const DSText.labelLarge(
+            'Seeded draft (restored text + ready attachment)',
+            color: DSColors.textSecondary,
+          ),
+          const SizedBox(height: DSSpacing.sm),
+          SizedBox(
+            width: 560,
+            child: DSComposer(
+              store: _composer1866SeedStore(
+                'gallery-composer-1866-draft',
+                const DSComposerDraft(
+                  text: 'Reviewing take 04 with @ada',
+                  caretOffset: 8,
+                  attachments: [
+                    DSComposerAttachment(
+                      id: 'att-ready-1',
+                      label: 'notes.md',
+                      state: DSComposerAttachmentState.ready,
+                    ),
+                  ],
+                ),
+              ),
+              draftKey: 'gallery-composer-1866-draft',
+              mentionCandidates: DSComposerFake.referenceMentions(),
+              emojiOptions: DSComposerFake.referenceEmojis(),
+            ),
+          ),
+          const SizedBox(height: DSSpacing.lg),
+          const DSText.labelLarge(
+            'Uploading attachment (fixed 50 percent)',
+            color: DSColors.textSecondary,
+          ),
+          const SizedBox(height: DSSpacing.sm),
+          SizedBox(
+            width: 560,
+            child: DSComposer(
+              store: _composer1866SeedStore(
+                'gallery-composer-1866-uploading',
+                const DSComposerDraft(
+                  text: 'Uploading stems',
+                  attachments: [
+                    DSComposerAttachment(
+                      id: 'att-up-1',
+                      label: 'stems-04.zip',
+                      state: DSComposerAttachmentState.uploading,
+                      progress: 0.5,
+                    ),
+                  ],
+                ),
+              ),
+              draftKey: 'gallery-composer-1866-uploading',
+              mentionCandidates: DSComposerFake.referenceMentions(),
+            ),
+          ),
+          const SizedBox(height: DSSpacing.lg),
+          const DSText.labelLarge(
+            'Failed attachment (fail-closed error summary)',
+            color: DSColors.textSecondary,
+          ),
+          const SizedBox(height: DSSpacing.sm),
+          SizedBox(
+            width: 560,
+            child: DSComposer(
+              store: _composer1866SeedStore(
+                'gallery-composer-1866-failed',
+                const DSComposerDraft(
+                  text: 'Upload failed',
+                  attachments: [
+                    DSComposerAttachment(
+                      id: 'att-fail-1',
+                      label: 'render-04.mp4',
+                      state: DSComposerAttachmentState.failed,
+                      errorDetail: 'Chunk 3 rejected by the ingest gate',
+                    ),
+                  ],
+                ),
+              ),
+              draftKey: 'gallery-composer-1866-failed',
+              mentionCandidates: DSComposerFake.referenceMentions(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  // NUMERIC 1881 — NUMERIC FIELD (EXPERIMENTAL)
+  // ---------------------------------------------------------------------------
+  /// Numeric-field catalog (Task 1881, F-14 — EXPERIMENTAL).
+  ///
+  /// Additive proof-lab entry for `DSNumericField` (typed `Set|Scrub`
+  /// commits, injected parse/format/quantum, modifier-rate scrub, Lead-as-
+  /// name). All values below are fixed caller fixtures; domain math stays
+  /// caller-side and nothing here animates.
+  static Widget buildNumeric1881NumericFieldSection() {
+    return _SectionCard(
+      title: 'Numeric Field (EXPERIMENTAL)',
+      subtitle: 'DSNumericField · Set|Scrub commits · quantum · Lead-as-name',
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const DSText.bodySmall(
+            'Parse, format, and quantum are injected caller fixtures — '
+            'Prism owns the commit typing and scrub mechanics, never domain '
+            'math. Drag a lead label to scrub; release keeps the value.',
+            color: DSColors.textTertiary,
+          ),
+          const SizedBox(height: DSSpacing.lg),
+          const DSText.labelLarge(
+            'Typed commits (fixed values)',
+            color: DSColors.textSecondary,
+          ),
+          const SizedBox(height: DSSpacing.sm),
+          DSNumericField(
+            lead: const DSNumericLeadText('W'),
+            value: 40.0,
+            onCommit: (_) {},
+          ),
+          const SizedBox(height: DSSpacing.md),
+          DSNumericField(
+            lead: const DSNumericLeadText('Opacity'),
+            value: 0.7,
+            step: 0.01,
+            percentUnit: true,
+            onCommit: (_) {},
+          ),
+          const SizedBox(height: DSSpacing.md),
+          DSNumericField(
+            lead: const DSNumericLeadNamed('Rotation'),
+            value: null,
+            onCommit: (_) {},
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  // SESSION 1883 — SESSION / PANEL CONVERGENCE (EXPERIMENTAL)
+  // ---------------------------------------------------------------------------
+  /// Session/panel convergence catalog (Task 1883, F-16 — EXPERIMENTAL).
+  ///
+  /// Additive proof-lab entry composing existing vocabulary only: sessions
+  /// onto [DSDataTable], event stream onto [DSLogViewer]/[DSTimeline]/
+  /// [DSExecutionConsole], project/media onto [DSPropertyRow] + mono,
+  /// Tempest screens onto search/filter/asset/status/metric/state/select/
+  /// accordion, drop zone onto [DSDropTarget] + [DSAssetCard], verification
+  /// badges onto [DSStatusDot]/[DSBadge]. All values below are fixed caller
+  /// fixtures; probe metadata and credentials never cross this seam.
+  static Widget buildSession1883PanelsSection() {
+    return _SectionCard(
+      title: 'Session & Panels (EXPERIMENTAL)',
+      subtitle:
+          'Task 1883 convergence: sessions, event stream, project/media, '
+          'Tempest screens, drop zone',
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const DSText.bodySmall(
+            'Every surface below composes existing Prism atoms, molecules, '
+            'and organisms — no new primitive. Fixtures are fixed and '
+            'caller-side; nothing here animates on a loop.',
+            color: DSColors.textTertiary,
+          ),
+          const SizedBox(height: DSSpacing.lg),
+          const DSText.labelLarge(
+            'Session list (DSDataTable + F-01-gated rows)',
+            color: DSColors.textSecondary,
+          ),
+          const SizedBox(height: DSSpacing.sm),
+          SizedBox(
+            height: 560,
+            child: DSSessionListView(
+              sessions: _session1883Sessions,
+              onOpenSession: (_) {},
+              onActionRefused: (_, _) {},
+            ),
+          ),
+          const SizedBox(height: DSSpacing.lg),
+          const DSText.labelLarge(
+            'Session detail (DSDetailInspector + mono)',
+            color: DSColors.textSecondary,
+          ),
+          const SizedBox(height: DSSpacing.sm),
+          SizedBox(
+            height: 420,
+            child: DSSessionDetailView(
+              session: _session1883Sessions[0],
+              properties: const <String, String>{
+                'Host': 'command-center',
+                'Route': '/sessions/alpha',
+              },
+              monoProperties: const <String, String>{
+                'Stream key': 'sess_alpha_01',
+              },
+            ),
+          ),
+          const SizedBox(height: DSSpacing.lg),
+          const DSText.labelLarge(
+            'Event stream (log + timeline + console)',
+            color: DSColors.textSecondary,
+          ),
+          const SizedBox(height: DSSpacing.sm),
+          SizedBox(
+            height: 1060,
+            child: DSEventStreamView(
+              logEntries: _session1883LogEntries,
+              timelineEntries: _session1883TimelineEntries,
+              consoleLines: _session1883ConsoleLines,
+              consoleGroups: _session1883ConsoleGroups,
+            ),
+          ),
+          const SizedBox(height: DSSpacing.lg),
+          const DSText.labelLarge(
+            'Project panel (DSPropertyRow + mono)',
+            color: DSColors.textSecondary,
+          ),
+          const SizedBox(height: DSSpacing.sm),
+          const SizedBox(
+            height: 420,
+            child: DSProjectPanelView(
+              title: 'Nightly render',
+              properties: {'Owner': 'ops', 'Environment': 'staging'},
+              monoProperties: {'Project ID': 'proj_nightly_04'},
+              state: DSOperationalState.healthy,
+              verified: true,
+            ),
+          ),
+          const SizedBox(height: DSSpacing.lg),
+          const DSText.labelLarge(
+            'Media panel (DSAssetCard + rows + badge)',
+            color: DSColors.textSecondary,
+          ),
+          const SizedBox(height: DSSpacing.sm),
+          const DSMediaPanelView(
+            assetName: 'Take 04 master',
+            assetKind: 'audio',
+            description: 'Stereo mixdown reference',
+            tags: ['stems', 'mix'],
+            properties: {'Duration': '3:42', 'Sample rate': '48 kHz'},
+            verificationState: DSOperationalState.approved,
+          ),
+          const SizedBox(height: DSSpacing.lg),
+          const DSText.labelLarge(
+            'Tempest Library (search + chips + asset grid)',
+            color: DSColors.textSecondary,
+          ),
+          const SizedBox(height: DSSpacing.sm),
+          DSTempestLibraryView(
+            items: _session1883LibraryItems,
+            onSelected: (_) {},
+          ),
+          const SizedBox(height: DSSpacing.lg),
+          const DSText.labelLarge(
+            'Tempest Models (metrics + provider matrix)',
+            color: DSColors.textSecondary,
+          ),
+          const SizedBox(height: DSSpacing.sm),
+          DSTempestModelsView(
+            metrics: _session1883ModelMetrics,
+            providers: _session1883Providers,
+          ),
+          const SizedBox(height: DSSpacing.lg),
+          const DSText.labelLarge(
+            'Tempest Providers (matrix + status grid)',
+            color: DSColors.textSecondary,
+          ),
+          const SizedBox(height: DSSpacing.sm),
+          DSTempestProvidersView(
+            providers: _session1883Providers,
+            services: _session1883Services,
+          ),
+          const SizedBox(height: DSSpacing.lg),
+          const DSText.labelLarge(
+            'Tempest Settings (select + accordion)',
+            color: DSColors.textSecondary,
+          ),
+          const SizedBox(height: DSSpacing.sm),
+          DSTempestSettingsView(
+            profileOptions: const [
+              DSSelectItem(value: 'studio', label: 'Studio'),
+              DSSelectItem(value: 'live', label: 'Live room'),
+            ],
+            profileValue: 'studio',
+            onProfileChanged: (_) {},
+            sections: _session1883SettingsSections,
+          ),
+          const SizedBox(height: DSSpacing.lg),
+          const DSText.labelLarge(
+            'Tempest Separate (chips + virtual stem list)',
+            color: DSColors.textSecondary,
+          ),
+          const SizedBox(height: DSSpacing.sm),
+          DSTempestSeparateView(
+            stems: _session1883LibraryItems,
+            onSelected: (_) {},
+          ),
+          const SizedBox(height: DSSpacing.lg),
+          const DSText.labelLarge(
+            'Tempest Create (search + template + gated create)',
+            color: DSColors.textSecondary,
+          ),
+          const SizedBox(height: DSSpacing.sm),
+          DSTempestCreateView(
+            templateOptions: const [
+              DSSelectItem(value: 'song', label: 'Song'),
+              DSSelectItem(value: 'loop', label: 'Loop pack'),
+            ],
+            templateValue: 'song',
+            onTemplateChanged: (_) {},
+            sections: _session1883SettingsSections,
+            onSearchChanged: (_) {},
+            onCreate: () {},
+          ),
+          const SizedBox(height: DSSpacing.lg),
+          const DSText.labelLarge(
+            'Drop zone (DSDropTarget + DSAssetCard)',
+            color: DSColors.textSecondary,
+          ),
+          const SizedBox(height: DSSpacing.sm),
+          SizedBox(
+            height: 420,
+            child: DSDropZoneCard(
+              metadata: const DSDropZoneMetadata(
+                label: 'Inbox',
+                kind: 'lane',
+                description: 'Untriaged session cards',
+                tags: ['triage'],
+                emptyHint: 'Drag a session card here',
+              ),
+              laneId: 'inbox',
+              taskCount: 2,
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: const [
+                  DSAssetCard(name: 'Session alpha', kind: 'session'),
+                  SizedBox(height: DSSpacing.sm),
+                  DSAssetCard(name: 'Session beta', kind: 'session'),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: DSSpacing.lg),
+          const DSText.labelLarge(
+            'Drop zone empty state',
+            color: DSColors.textSecondary,
+          ),
+          const SizedBox(height: DSSpacing.sm),
+          const SizedBox(
+            height: 300,
+            child: DSDropZoneCard(
+              metadata: DSDropZoneMetadata(
+                label: 'Archive',
+                kind: 'lane',
+                emptyHint: 'Drag a session card here',
+              ),
+              laneId: 'archive',
+              taskCount: 0,
+              isEmpty: true,
+              child: SizedBox.shrink(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
+
+/// Fixed session fixtures for the Task 1883 gallery section.
+///
+/// F-01 authority mix: allow, constrain-with-reason, deny-with-reason.
+/// No `running`/`exposed` states (animated dots would never settle).
+List<DSSessionRecord> get _session1883Sessions => const [
+  DSSessionRecord(
+    id: 'sess_alpha_01',
+    title: 'Session alpha',
+    state: DSOperationalState.approved,
+    updatedLabel: '12:04:31',
+    verified: true,
+  ),
+  DSSessionRecord(
+    id: 'sess_beta_02',
+    title: 'Session beta',
+    state: DSOperationalState.pending,
+    updatedLabel: '12:03:10',
+    authority: DSActionAuthority.constrain,
+    authorityReason: 'Read-only replica: edits queue for review',
+  ),
+  DSSessionRecord(
+    id: 'sess_gamma_03',
+    title: 'Session gamma',
+    state: DSOperationalState.degraded,
+    updatedLabel: '11:58:44',
+    authority: DSActionAuthority.deny,
+    authorityReason: 'Locked by another operator',
+  ),
+  DSSessionRecord(
+    id: 'sess_delta_04',
+    title: 'Session delta',
+    state: DSOperationalState.healthy,
+    updatedLabel: '11:51:02',
+    verified: true,
+  ),
+];
+
+/// Fixed log fixtures (UTC wall labels arrive pre-formatted; no clock here).
+List<DSLogEntry> get _session1883LogEntries => [
+  DSLogEntry(
+    id: 'log-1',
+    timestamp: DateTime.utc(2026, 10, 1, 12, 0, 0),
+    severity: DSLogSeverity.info,
+    source: 'session-host',
+    message: 'Session alpha opened',
+  ),
+  DSLogEntry(
+    id: 'log-2',
+    timestamp: DateTime.utc(2026, 10, 1, 12, 1, 12),
+    severity: DSLogSeverity.warning,
+    source: 'probe',
+    message: 'Replica lag above threshold',
+    detail: '{"lagMs": 420}',
+  ),
+  DSLogEntry(
+    id: 'log-3',
+    timestamp: DateTime.utc(2026, 10, 1, 12, 2, 30),
+    severity: DSLogSeverity.error,
+    source: 'ingest',
+    message: 'Chunk 3 rejected by the ingest gate',
+  ),
+];
+
+/// Fixed timeline fixtures.
+List<DSTimelineEntry> get _session1883TimelineEntries =>
+    const <DSTimelineEntry>[
+      DSTimelineEntry(
+        id: 'tl-1',
+        date: '2026-10-01',
+        title: 'Session alpha opened',
+        project: 'command-center',
+        taskId: '1883',
+      ),
+      DSTimelineEntry(
+        id: 'tl-2',
+        date: '2026-10-01',
+        title: 'Replica lag noted',
+        type: 'warning',
+        project: 'command-center',
+      ),
+    ];
+
+/// Fixed console fixtures (display text only — never executed).
+List<DSExecutionLine> get _session1883ConsoleLines => const <DSExecutionLine>[
+  DSExecutionLine(
+    id: 'line-1',
+    message: 'run started: nightly-render',
+    level: DSExecutionLineLevel.system,
+    runGroupId: 'run-1',
+  ),
+  DSExecutionLine(
+    id: 'line-2',
+    message: 'chunk 1/3 accepted',
+    level: DSExecutionLineLevel.stdout,
+    runGroupId: 'run-1',
+  ),
+  DSExecutionLine(
+    id: 'line-3',
+    message: 'chunk 3 rejected by the ingest gate',
+    level: DSExecutionLineLevel.stderr,
+    runGroupId: 'run-1',
+  ),
+];
+
+/// Fixed console run-group fixtures.
+List<DSExecutionRunGroup> get _session1883ConsoleGroups =>
+    const <DSExecutionRunGroup>[
+      DSExecutionRunGroup(
+        id: 'run-1',
+        label: 'Run #12 · nightly-render',
+        status: DSExecutionRunStatus.failed,
+      ),
+    ];
+
+/// Fixed library fixtures (descriptions short, tags ≤2 for grid cells).
+List<DSTempestLibraryItem> get _session1883LibraryItems =>
+    const <DSTempestLibraryItem>[
+      DSTempestLibraryItem(
+        id: 'lib-vocals',
+        name: 'Night vocals',
+        kind: 'stem',
+        description: 'Lead vocal bus',
+        tags: ['vox'],
+        filterValue: 'stem',
+      ),
+      DSTempestLibraryItem(
+        id: 'lib-drums',
+        name: 'Break 92',
+        kind: 'loop',
+        description: '92 BPM break',
+        tags: ['drums'],
+        filterValue: 'loop',
+      ),
+      DSTempestLibraryItem(
+        id: 'lib-bass',
+        name: 'Sub movement',
+        kind: 'oneshot',
+        description: 'Sub drop',
+        tags: ['bass'],
+        filterValue: 'oneshot',
+      ),
+      DSTempestLibraryItem(
+        id: 'lib-keys',
+        name: 'Keys bed',
+        kind: 'stem',
+        description: 'Rhodes bed',
+        tags: ['keys'],
+        filterValue: 'stem',
+      ),
+    ];
+
+/// Fixed model-metric fixtures (no error health: animated dots excluded).
+List<DSTempestModelMetric> get _session1883ModelMetrics =>
+    const <DSTempestModelMetric>[
+      DSTempestModelMetric(
+        label: 'Loaded models',
+        value: '6',
+        trend: DSTrend.up,
+        health: DSMetricTileHealth.healthy,
+      ),
+      DSTempestModelMetric(
+        label: 'Degraded',
+        value: '1',
+        trend: DSTrend.flat,
+        health: DSMetricTileHealth.degraded,
+      ),
+    ];
+
+/// Fixed provider-matrix fixtures (fixture cells only — no live pings).
+List<DSProviderHealthProvider> get _session1883Providers =>
+    const <DSProviderHealthProvider>[
+      DSProviderHealthProvider(
+        id: 'openai',
+        label: 'OpenAI',
+        cells: [
+          DSProviderHealthCell(
+            id: 'openai-main',
+            providerId: 'openai',
+            providerLabel: 'OpenAI',
+            dimensionId: 'main',
+            dimensionLabel: 'main-prod',
+            operationalState: DSOperationalState.healthy,
+            meta: 'fixture',
+          ),
+          DSProviderHealthCell(
+            id: 'openai-eu',
+            providerId: 'openai',
+            providerLabel: 'OpenAI',
+            dimensionId: 'eu',
+            dimensionLabel: 'eu-shadow',
+            operationalState: DSOperationalState.degraded,
+            meta: 'fixture',
+          ),
+        ],
+      ),
+      DSProviderHealthProvider(
+        id: 'local',
+        label: 'Local',
+        cells: [
+          DSProviderHealthCell(
+            id: 'local-main',
+            providerId: 'local',
+            providerLabel: 'Local',
+            dimensionId: 'main',
+            dimensionLabel: 'main-prod',
+            operationalState: DSOperationalState.unverified,
+            meta: 'fixture',
+          ),
+        ],
+      ),
+    ];
+
+/// Fixed flat service states (no `running`: health cards pulse on running).
+List<DSHealthCardData> get _session1883Services => const <DSHealthCardData>[
+  DSHealthCardData(
+    serviceName: 'ingest',
+    operationalState: DSOperationalState.healthy,
+  ),
+  DSHealthCardData(
+    serviceName: 'replica',
+    operationalState: DSOperationalState.degraded,
+  ),
+  DSHealthCardData(
+    serviceName: 'render',
+    operationalState: DSOperationalState.disabled,
+  ),
+];
+
+/// Fixed settings accordion sections.
+List<DSAccordionItem> get _session1883SettingsSections => [
+  DSAccordionItem(
+    id: 'audio',
+    title: 'Audio',
+    subtitle: 'Device and monitoring',
+    icon: Icons.graphic_eq_outlined,
+    content: const Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        DSPropertyRow(label: 'Device', value: 'Built-in output'),
+        DSPropertyRow(label: 'Buffer', value: '256 frames'),
+      ],
+    ),
+  ),
+  DSAccordionItem(
+    id: 'sync',
+    title: 'Sync',
+    subtitle: 'Catalog and lane sync',
+    icon: Icons.sync_outlined,
+    content: const Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        DSPropertyRow(label: 'Mode', value: 'Manual'),
+        DSPropertyRow(label: 'Last sync', value: '12:00:00'),
+      ],
+    ),
+  ),
+];
 
 // =============================================================================
 // PRIVATE HELPERS
@@ -4014,10 +4914,37 @@ class _SwatchDef {
   const _SwatchDef(this.label, this.color);
 }
 
+/// Fixed in-memory seed for a composer-1866 gallery entry.
+///
+/// Parks [draft] under [key] so the gallery composer restores it on mount
+/// through the normal restore path. Caller fixtures only; never persisted.
+DSComposerDraftStore _composer1866SeedStore(String key, DSComposerDraft draft) {
+  final store = DSComposerDraftStore();
+  store.parkDraft(key, draft);
+  return store;
+}
+
 class _ScaleDef {
   final String label;
   final double value;
   const _ScaleDef(this.label, this.value);
+}
+
+/// Placeholder painter for the meter-1861 canvas-host gallery entry.
+///
+/// Only used with `placeholder: true` (never painted); present so the host
+/// slot is fully constructed in the gallery.
+class _Meter1861BusPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    canvas.drawRect(
+      Offset.zero & size,
+      Paint()..color = DSColors.obsidianElevated,
+    );
+  }
+
+  @override
+  bool shouldRepaint(_Meter1861BusPainter oldDelegate) => false;
 }
 
 class _StatusSample extends StatelessWidget {
@@ -6199,23 +7126,31 @@ class _MapCanvasStageDemoState extends State<_MapCanvasStageDemo> {
                     ),
                     const SizedBox(height: DSSpacing.sm),
                     Expanded(
-                      child: ListView(
-                        children: [
-                          for (final layer in _controller.layers)
-                            SwitchListTile.adaptive(
-                              dense: true,
-                              contentPadding: EdgeInsets.zero,
-                              title: DSText.labelSmall(
-                                layer.label,
-                                color: DSColors.textSecondary,
+                      // Own Material so SwitchListTile paints its background
+                      // and ink splashes here instead of on the Scaffold
+                      // Material, which the enclosing coloured glass
+                      // DecoratedBox would otherwise occlude (3x "ink
+                      // splashes may be invisible"). Task 1840.
+                      child: Material(
+                        type: MaterialType.transparency,
+                        child: ListView(
+                          children: [
+                            for (final layer in _controller.layers)
+                              SwitchListTile.adaptive(
+                                dense: true,
+                                contentPadding: EdgeInsets.zero,
+                                title: DSText.labelSmall(
+                                  layer.label,
+                                  color: DSColors.textSecondary,
+                                ),
+                                value: layer.visible,
+                                activeThumbColor:
+                                    layer.color ?? DSColors.accentCyan,
+                                onChanged: (v) =>
+                                    _controller.setLayerVisibility(layer.id, v),
                               ),
-                              value: layer.visible,
-                              activeThumbColor:
-                                  layer.color ?? DSColors.accentCyan,
-                              onChanged: (v) =>
-                                  _controller.setLayerVisibility(layer.id, v),
-                            ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ],

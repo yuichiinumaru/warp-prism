@@ -19,7 +19,7 @@ import 'event_stream_view_model.dart';
 /// **PURGE LAW**: This binding contains strictly zero widget rendering,
 /// layout offsets, or auto-scrolling ticker loops.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 class EventStreamBinding<T> extends ChangeNotifier {
   /// The underlying runtime event stream source.

@@ -49,30 +49,31 @@ void main() {
   }
 
   group('Task 1832 — Fixed-Height Layout Contract Regressions', () {
-    testWidgets('DSTimeMachineScrubber renders without RenderFlex overflow under h=119', (
-      tester,
-    ) async {
-      setupStrictOverflowFailure(tester);
+    testWidgets(
+      'DSTimeMachineScrubber renders without RenderFlex overflow under h=119',
+      (tester) async {
+        setupStrictOverflowFailure(tester);
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: SizedBox(
-              width: 640,
-              height: 119,
-              child: DSTimeMachineScrubber(
-                title: 'Activity density (fixture)',
-                buckets: fixtureBuckets(),
-                initialPlayhead: domainStart.add(const Duration(hours: 12)),
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: SizedBox(
+                width: 640,
+                height: 119,
+                child: DSTimeMachineScrubber(
+                  title: 'Activity density (fixture)',
+                  buckets: fixtureBuckets(),
+                  initialPlayhead: domainStart.add(const Duration(hours: 12)),
+                ),
               ),
             ),
           ),
-        ),
-      );
-      await tester.pump();
+        );
+        await tester.pump();
 
-      expect(find.byType(DSTimeMachineScrubber), findsOneWidget);
-    });
+        expect(find.byType(DSTimeMachineScrubber), findsOneWidget);
+      },
+    );
 
     testWidgets(
       'DSDataTable renders without RenderFlex overflow under BoxConstraints(w=958, h=50)',
@@ -88,7 +89,11 @@ void main() {
                 child: DSDataTable(
                   columns: [
                     DSDataColumn(id: 'name', label: 'Name', sortable: true),
-                    DSDataColumn(id: 'provider', label: 'Provider', sortable: true),
+                    DSDataColumn(
+                      id: 'provider',
+                      label: 'Provider',
+                      sortable: true,
+                    ),
                     DSDataColumn(id: 'status', label: 'Status'),
                   ],
                   rows: [

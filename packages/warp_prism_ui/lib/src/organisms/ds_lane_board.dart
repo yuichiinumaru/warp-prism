@@ -65,8 +65,7 @@ class DSLaneBoard extends StatelessWidget {
                       lane: lanes[i],
                       laneIndex: i,
                       previousLaneId: i > 0 ? lanes[i - 1].id : null,
-                      nextLaneId:
-                          i < lanes.length - 1 ? lanes[i + 1].id : null,
+                      nextLaneId: i < lanes.length - 1 ? lanes[i + 1].id : null,
                       selectedTaskId: selectedTaskId,
                       onTaskTap: onTaskTap,
                       onReorder: onReorder,

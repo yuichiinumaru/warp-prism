@@ -64,9 +64,7 @@ void main() {
       ) async {
         await tester.pumpWidget(
           const MaterialApp(
-            home: Scaffold(
-              body: PrismGlassPanelSimple(child: Text('simple')),
-            ),
+            home: Scaffold(body: PrismGlassPanelSimple(child: Text('simple'))),
           ),
         );
 
@@ -137,30 +135,31 @@ void main() {
     });
 
     group('Toast stack stays blur-free (multi-instance budget)', () {
-      testWidgets('PrismToast uses PrismGlassPanelSimple without BackdropFilter', (
-        tester,
-      ) async {
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: PrismToast(
-                entry: PrismToastEntry(
-                  id: 'budget-toast',
-                  severity: PrismToastSeverity.info,
-                  title: 'Budget toast',
-                  message: 'No blur on stackable overlays',
-                  duration: Duration.zero,
+      testWidgets(
+        'PrismToast uses PrismGlassPanelSimple without BackdropFilter',
+        (tester) async {
+          await tester.pumpWidget(
+            MaterialApp(
+              home: Scaffold(
+                body: PrismToast(
+                  entry: PrismToastEntry(
+                    id: 'budget-toast',
+                    severity: PrismToastSeverity.info,
+                    title: 'Budget toast',
+                    message: 'No blur on stackable overlays',
+                    duration: Duration.zero,
+                  ),
                 ),
               ),
             ),
-          ),
-        );
+          );
 
-        expect(find.byType(PrismToast), findsOneWidget);
-        expect(find.byType(PrismGlassPanelSimple), findsOneWidget);
-        expect(find.byType(PrismGlassPanel), findsNothing);
-        expect(find.byType(BackdropFilter), findsNothing);
-      });
+          expect(find.byType(PrismToast), findsOneWidget);
+          expect(find.byType(PrismGlassPanelSimple), findsOneWidget);
+          expect(find.byType(PrismGlassPanel), findsNothing);
+          expect(find.byType(BackdropFilter), findsNothing);
+        },
+      );
 
       testWidgets(
         'multiple PrismToast instances do not introduce BackdropFilter',
@@ -227,32 +226,31 @@ void main() {
         },
       );
 
-      testWidgets(
-        'PrismCommandPalette uses exactly one modal BackdropFilter',
-        (tester) async {
-          await tester.pumpWidget(
-            MaterialApp(
-              home: Scaffold(
-                body: PrismCommandPalette(
-                  commands: const [
-                    PrismCommand(
-                      id: 'nav-home',
-                      label: 'Go home',
-                      category: PrismCommandCategory.navigate,
-                    ),
-                  ],
-                  onClose: () {},
-                ),
+      testWidgets('PrismCommandPalette uses exactly one modal BackdropFilter', (
+        tester,
+      ) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: PrismCommandPalette(
+                commands: const [
+                  PrismCommand(
+                    id: 'nav-home',
+                    label: 'Go home',
+                    category: PrismCommandCategory.navigate,
+                  ),
+                ],
+                onClose: () {},
               ),
             ),
-          );
-          // Auto-focus post-frame callback.
-          await tester.pump();
+          ),
+        );
+        // Auto-focus post-frame callback.
+        await tester.pump();
 
-          expect(find.byType(PrismCommandPalette), findsOneWidget);
-          expect(find.byType(BackdropFilter), findsOneWidget);
-        },
-      );
+        expect(find.byType(PrismCommandPalette), findsOneWidget);
+        expect(find.byType(BackdropFilter), findsOneWidget);
+      });
     });
 
     group('Budget surface allow-list', () {

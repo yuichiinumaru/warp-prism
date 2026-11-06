@@ -15,7 +15,7 @@ enum CatalogThemeVariant {
   khalaiBlue('Khalai Blue (#2F81FF)'),
   taldarimRed('Taldarim Red (#E51A4C)'),
   talonPurple('Talon Purple (#9911E5)'),
-  cybercoreTeal('CyberCore Teal (#00FFCC)');
+  nerazimTeal('Nerazim Teal (#00FFCC)');
 
   final String label;
   const CatalogThemeVariant(this.label);
@@ -91,8 +91,8 @@ class _WarpPrismCatalogAppState extends State<WarpPrismCatalogApp> {
                 theme = PrismTheme.taldarimRed();
               case CatalogThemeVariant.talonPurple:
                 theme = PrismTheme.talonPurple();
-              case CatalogThemeVariant.cybercoreTeal:
-                theme = const PrismCyberCoreTealSkin.omniRoute().applyToTheme(
+              case CatalogThemeVariant.nerazimTeal:
+                theme = const PrismNerazimTealSkin.nerazimTeal().applyToTheme(
                   PrismTheme.dark(),
                 );
               case CatalogThemeVariant.khalaiBlue:
@@ -238,9 +238,9 @@ class _WarpPrismCatalogAppState extends State<WarpPrismCatalogApp> {
                 PrismTokenRegistry.instance.applySkin(
                   const PrismTalonPurpleSkin.talonPurple(),
                 );
-              case CatalogThemeVariant.cybercoreTeal:
+              case CatalogThemeVariant.nerazimTeal:
                 PrismTokenRegistry.instance.applySkin(
-                  const PrismCyberCoreTealSkin.omniRoute(),
+                  const PrismNerazimTealSkin.nerazimTeal(),
                 );
               case CatalogThemeVariant.khalaiBlue:
                 PrismTokenRegistry.instance.reset();

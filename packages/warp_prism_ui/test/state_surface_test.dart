@@ -1,8 +1,8 @@
 // State Surface Regression Test
 // Task 1030 / Task 1309: Validates the shared DSStateSurface contract
 //
-// These tests verify that all seven DSStateType values (empty, loading,
-// error, disabled, stale, degraded, excluded) are distinct, actionable,
+// These tests verify that all eight DSStateType values (empty, loading,
+// error, disabled, stale, degraded, excluded, unknown) are distinct, actionable,
 // and well-structured. They test the widget contract without requiring a
 // running app.
 
@@ -27,9 +27,12 @@ Widget wrapInApp(Widget child) {
 void main() {
   group('DSStateSurface Contract', () {
     group('DSStateType enum', () {
-      test('has exactly seven distinct states (3 data + 4 operational)', () {
-        expect(DSStateType.values.length, equals(7));
-      });
+      test(
+        'has exactly eight distinct states (3 data + 4 operational + unknown)',
+        () {
+          expect(DSStateType.values.length, equals(8));
+        },
+      );
 
       test('defines empty, loading, and error', () {
         expect(DSStateType.values, contains(DSStateType.empty));
@@ -42,6 +45,11 @@ void main() {
         expect(DSStateType.values, contains(DSStateType.stale));
         expect(DSStateType.values, contains(DSStateType.degraded));
         expect(DSStateType.values, contains(DSStateType.excluded));
+      });
+
+      test('defines unknown as the fail-closed indeterminate state', () {
+        expect(DSStateType.values, contains(DSStateType.unknown));
+        expect(DSStateType.unknown.isIndeterminate, isTrue);
       });
     });
 
@@ -133,8 +141,9 @@ void main() {
             DSStateType.stale,
             DSStateType.degraded,
             DSStateType.excluded,
+            DSStateType.unknown,
           };
-          expect(types.length, equals(7));
+          expect(types.length, equals(8));
         },
       );
     });
@@ -150,6 +159,7 @@ void main() {
         DSStateType.stale: 'Stale: needs refresh',
         DSStateType.degraded: 'Degraded: reduced quality',
         DSStateType.excluded: 'Excluded: outside scope',
+        DSStateType.unknown: 'Unknown: state not yet determined',
       };
 
       for (final entry in expectedLabels.entries) {
@@ -312,7 +322,7 @@ void main() {
         expect(find.byIcon(Icons.remove_circle_outline), findsOneWidget);
       });
 
-      testWidgets('all 7 constructors render distinct titles', (tester) async {
+      testWidgets('all 8 constructors render distinct titles', (tester) async {
         final constructors = <String, DSStateType>{
           'Empty': DSStateType.empty,
           'Loading': DSStateType.loading,
@@ -321,6 +331,7 @@ void main() {
           'Stale': DSStateType.stale,
           'Degraded': DSStateType.degraded,
           'Excluded': DSStateType.excluded,
+          'Unknown': DSStateType.unknown,
         };
 
         for (final entry in constructors.entries) {

@@ -453,15 +453,15 @@ class _DSTimeMachineScrubberState extends State<DSTimeMachineScrubber> {
                 ? (math.max(48.0, textScaler.scale(16.0)) + spacing)
                 : 0.0;
 
-            final isActuallyEmpty = _isEmpty &&
-                widget.minTime == null &&
-                widget.maxTime == null;
+            final isActuallyEmpty =
+                _isEmpty && widget.minTime == null && widget.maxTime == null;
 
             final minContentFloor = isActuallyEmpty
                 ? (isCompact ? 16.0 : widget.histogramHeight)
                 : (isCompact ? 16.0 : 32.0);
 
-            final minRequiredHeight = panelVerticalPadding +
+            final minRequiredHeight =
+                panelVerticalPadding +
                 titleHeight +
                 transportHeight +
                 minContentFloor;

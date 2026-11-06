@@ -15,10 +15,27 @@ import 'async_command_view_model.dart';
 /// - Cooperative cancellation management via [CancellationToken].
 /// - Deterministic resource cleanup on [dispose].
 ///
+/// ## Concurrency model: single-flight, cancel-and-replace (F1/F2)
+///
+/// Mirrors the runtime [AsyncCommand] contract. [execute] while an execution is
+/// active cancels that execution and becomes authoritative. See [AsyncCommand]
+/// for the contract-level rationale.
+///
+/// ## Stale-completion guard (F2)
+///
+/// A cancelled execution may still finish — late, and out of order. Only the
+/// **authoritative** execution (the most recently started one) may mutate the
+/// presentation [_state]. A superseded execution that completes afterwards
+/// still receives and returns its own result to its own caller, but it must not
+/// overwrite the state owned by the newer execution.
+///
+/// Concretely, with A then B: if B completes first and A returns success,
+/// cancellation, or failure late, [_state] must still reflect B.
+///
 /// **PURGE LAW**: This binding contains strictly zero retry loops,
 /// exponential backoff timers, or dialog/toast UI presentation code.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 class AsyncCommandBinding<TParam, TResult> extends ChangeNotifier {
   /// The underlying runtime async command implementation.
@@ -29,6 +46,11 @@ class AsyncCommandBinding<TParam, TResult> extends ChangeNotifier {
   CancellationToken? _activeCancellationToken;
   StreamSubscription<AsyncCommandStatus>? _statusSubscription;
   bool _isDisposed = false;
+
+  /// Monotonic execution identity (F2). Only the execution whose generation
+  /// equals [_authoritativeGeneration] may mutate [_state].
+  int _executionCounter = 0;
+  int _authoritativeGeneration = 0;
 
   final StreamController<AsyncCommandBindingState<TResult>>
   _stateStreamController =
@@ -45,6 +67,15 @@ class AsyncCommandBinding<TParam, TResult> extends ChangeNotifier {
       );
     }
   }
+
+  /// Whether [generation] is still the authoritative execution.
+  bool _isAuthoritative(int generation) =>
+      generation == _authoritativeGeneration;
+
+  /// Generation of the execution currently allowed to mutate [_state].
+  ///
+  /// Exposed so tests can assert which execution owns presentation state.
+  int get authoritativeGeneration => _authoritativeGeneration;
 
   void _handleStatusChange(AsyncCommandStatus status) {
     if (_isDisposed) return;
@@ -69,7 +100,11 @@ class AsyncCommandBinding<TParam, TResult> extends ChangeNotifier {
 
   /// Executes the command with the provided [param].
   ///
-  /// If an execution is already running, its cancellation token is signalled.
+  /// If an execution is already running, it is cancelled and replaced: this
+  /// call becomes the sole authoritative execution (F1).
+  ///
+  /// Only the authoritative execution mutates [state] (F2). A superseded
+  /// execution still returns its own result to its own caller.
   Future<CommandResult<TResult>> execute(
     TParam param, {
     CancellationToken? cancellationToken,
@@ -78,12 +113,17 @@ class AsyncCommandBinding<TParam, TResult> extends ChangeNotifier {
       throw StateError('Cannot execute on a disposed AsyncCommandBinding.');
     }
 
+    // F1: cancel-and-replace. Signal the incumbent, then supersede it.
     if (_state.isRunning) {
       _activeCancellationToken?.cancel('Re-executed with new input');
     }
 
     final token = cancellationToken ?? CancellationToken();
     _activeCancellationToken = token;
+
+    // F2: claim execution identity BEFORE awaiting anything.
+    final generation = ++_executionCounter;
+    _authoritativeGeneration = generation;
 
     _state = _state.toRunning();
     _notifyAndDispatch();
@@ -92,16 +132,21 @@ class AsyncCommandBinding<TParam, TResult> extends ChangeNotifier {
       final result = await command.execute(param, cancellationToken: token);
       if (_isDisposed) return result;
 
-      switch (result) {
-        case CommandSuccess<TResult>():
-          _state = _state.toSuccess(result);
-        case CommandFailure<TResult>():
-          _state = _state.toFailure(result);
-        case CommandCancelled<TResult>():
-          _state = _state.toCancelled(result);
-      }
+      // F2: only the authoritative execution may mutate shared presentation
+      // state. A late completion from a superseded execution is still RETURNED
+      // to its caller, but must not overwrite the newer execution's state.
+      if (_isAuthoritative(generation)) {
+        switch (result) {
+          case CommandSuccess<TResult>():
+            _state = _state.toSuccess(result);
+          case CommandFailure<TResult>():
+            _state = _state.toFailure(result);
+          case CommandCancelled<TResult>():
+            _state = _state.toCancelled(result);
+        }
 
-      _notifyAndDispatch();
+        _notifyAndDispatch();
+      }
       return result;
     } catch (e, st) {
       if (_isDisposed) rethrow;
@@ -115,10 +160,13 @@ class AsyncCommandBinding<TParam, TResult> extends ChangeNotifier {
         duration: Duration.zero,
         timestamp: DateTime.now(),
       );
-      _state = _state.toFailure(failure);
-      _notifyAndDispatch();
+      if (_isAuthoritative(generation)) {
+        _state = _state.toFailure(failure);
+        _notifyAndDispatch();
+      }
       return failure;
     } finally {
+      // Only clear the active token if it is still the one we installed.
       if (identical(_activeCancellationToken, token)) {
         _activeCancellationToken = null;
       }

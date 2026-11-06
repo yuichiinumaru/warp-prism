@@ -36,7 +36,7 @@ Exact accent values are PROVISIONAL pending live visual convergence via the Task
 | **Primary Accent Muted** | `accentBlueMuted` | `#1D64D8` | Secondary action chrome, muted focus edges. |
 | **Primary Accent Dim** | `accentBlueDim` | `#114299` | Subtle background tint for selected items (opacity ≤ 15%). |
 | **Focus Ring** | `focusRing` | `#2F81FF` (50% opacity) | High-contrast keyboard focus indicator (2px outline). |
-| **CyberCore Teal (Opt-In)** | `coreTeal` | `#00FFCC` | Scoped via `DSCyberCoreTealSkin` ThemeExtension ONLY; never global default. |
+| **Nerazim Teal (Opt-In)** | `coreTeal` | `#00FFCC` | Scoped via `DSNerazimTealSkin` ThemeExtension ONLY; never global default. |
 | **Semantic Success** | `statusSuccess` | `#10B981` | Green — strictly reserved for healthy, approved, passed states. |
 | **Semantic Warning** | `statusWarning` | `#F59E0B` | Amber — strictly reserved for degraded, running, warning states. |
 | **Semantic Error** | `statusError` | `#EF4444` | Red — strictly reserved for failed, rejected, error, blocked states. |
@@ -79,7 +79,7 @@ Reviewers and automated gates MUST fail any pull request or task output that vio
 - [ ] **Catalog Bare ThemeData.dark()**: `apps/catalog/lib/main.dart` using unconfigured `ThemeData.dark()` without canonical theme wiring. *(FAIL if present)*
 - [ ] **Hardcoded Raw Color Hexes**: Raw `Color(0x...)` or `RGBO` literals hardcoded in component implementations outside token definitions. *(FAIL if present)*
 - [ ] **CI Golden Refresh Without Approval**: Regenerating golden snapshots solely to fix CI failures prior to Task 1805 human visual approval. *(FAIL if present)*
-- [ ] **Global CyberCore Teal Rebrand**: Applying `#00FFCC` teal as the default Observatory scaffold background or structural surface. *(FAIL if present)*
+- [ ] **Global Nerazim Teal Rebrand**: Applying `#00FFCC` teal as the default Observatory scaffold background or structural surface. *(FAIL if present)*
 - [ ] **Rainbow Chrome Decoration**: Decorative multi-accent borders (violet, gold, pink, orange, green) on structural UI elements without data-mapping justification. *(FAIL if present)*
 
 ---
@@ -178,7 +178,23 @@ Widget build(BuildContext context) {
 | --- | --- | --- | --- |
 | `docs/design/token-theme-catalog-policy.md` (Task 1105) | §2.2, §2.3 | Sky-cyan (`#00D4FF`) as primary accent and sky-cyan/violet/gold as default Observatory palette | Superseded by Black Obsidian (`#030506`) + bounded blue accent ladder (`#2F81FF`). Owned and updated by **Task 1801**. |
 | `.project/tasks/00-planning/EPIC-17-warp-prism-ads-form-primitives-gap.md` | Line 20 | "`DSCyberCoreTealSkin` accent (`#00FFCC`) for active/checked states" | Superseded by `accentBlue` for default form primitives; teal remains opt-in via ThemeExtension. Annotated by **Task 1800**. |
-| `.project/tasks/03-review/1616-warp-prism-optional-cybercore-teal-theme-extension-skin.md` | §Test Requirements | Default sky-cyan non-rebrand tests | Regression guard tests updated by **Task 1801** to assert black obsidian + blue accent contract while preserving `DSCyberCoreTealSkin` opt-in extension. |
+| `.project/tasks/04-completed/1616-warp-prism-optional-cybercore-teal-theme-extension-skin.md` | §Test Requirements | Default sky-cyan non-rebrand tests | Regression guard tests updated by **Task 1801** to assert black obsidian + blue accent contract while preserving `DSCyberCoreTealSkin` opt-in extension. |
+
+> **Task 1839 annotation**: the two rows above are **verbatim quotes of superseded
+> task artifacts** and are deliberately **not** rewritten. The teal skin brand was
+> normalized to **Nerazim Teal** in Task 1839: the class is now
+> `DSNerazimTealSkin` / `PrismNerazimTealSkin`, its factory is `.nerazimTeal()`,
+> and its design note is `docs/design/nerazim-teal-theme-extension-skin.md`. The
+> old task filename and the quoted old identifier are prior-work record, not a
+> live brand reference. Hex (`#00FFCC`), opt-in-only scope, and the
+> non-rebrand guard are unchanged.
+>
+> **Note on row 3**: the Superseded Statement column for Task 1616 is a summary,
+> not an exact quotation. The task-level wording reads *"Widget or unit test:
+> extension resolves teal; default theme without extension remains unchanged"*
+> (and related constraints). The row abstracts that requirement. Keep the row,
+> but do not cite it as a verbatim quote — it is a faithful summary of the test
+> requirements contract.
 
 ---
 
@@ -197,7 +213,7 @@ Between the landing of Task 1801 (token migration) and the completion of Task 18
 Child `AGENTS.md` §5 requires:
 > "ultradark obsidian glass, restrained hacker/protoss accents, and desktop-first clarity"
 
-**Interpretation**: Black obsidian structural backgrounds (`#030506` family) fully satisfy the "ultradark obsidian glass" requirement. Blue accents (`#2F81FF`) and scoped CyberCore teal (`#00FFCC`) provide restrained energy accents without flooding the canvas. **No constitutional edit to child `AGENTS.md` is required.**
+**Interpretation**: Black obsidian structural backgrounds (`#030506` family) fully satisfy the "ultradark obsidian glass" requirement. Blue accents (`#2F81FF`) and scoped Nerazim Teal (`#00FFCC`) provide restrained energy accents without flooding the canvas. **No constitutional edit to child `AGENTS.md` is required.**
 
 ---
 

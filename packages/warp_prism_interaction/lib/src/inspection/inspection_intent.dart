@@ -5,7 +5,7 @@ import 'package:meta/meta.dart';
 /// Encapsulates the target identifier, domain category, trigger reason,
 /// and contextual metadata without binding to concrete UI rendering.
 ///
-/// Lifecycle: PROVEN (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: PROVEN (see `.project/architecture/layer-contracts.md`).
 @immutable
 class InspectionIntent<T extends Object> {
   /// The target object or identifier to inspect.

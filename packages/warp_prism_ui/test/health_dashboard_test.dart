@@ -696,10 +696,7 @@ void main() {
               body: SizedBox(
                 width: 800,
                 height: 600,
-                child: DSStatusGrid(
-                  items: many,
-                  embedInScrollView: false,
-                ),
+                child: DSStatusGrid(items: many, embedInScrollView: false),
               ),
             ),
           ),
@@ -721,10 +718,7 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: SingleChildScrollView(
-              child: DSStatusGrid(
-                items: testItems,
-                embedInScrollView: true,
-              ),
+              child: DSStatusGrid(items: testItems, embedInScrollView: true),
             ),
           ),
         );

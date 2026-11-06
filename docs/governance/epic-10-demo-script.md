@@ -43,9 +43,9 @@ Counts are **filesystem inventory** of `apps/observatory/assets/mock_workspace/`
 
 | Kind | Count | Evidence |
 |------|------:|----------|
-| Agents | 9 | `.agents/agents/*.md` |
-| Skill families (top-level dirs + `SKILL.md`) | 13 | `.agents/skills/` |
-| Workflow files | 11 | `.agents/workflows/` |
+| Agents | 9 | `.opencode/agents/*.md` |
+| Skill families (top-level dirs + `SKILL.md`) | 13 | `.opencode/skills/` |
+| Workflow files | 11 | `.opencode/workflows/` |
 | Task markdown files | 22 | `.project/tasks/**` (lanes 00–04) |
 | Changelog files | 36 | `docs/changelog/` |
 
@@ -98,7 +98,7 @@ The demo answers five questions in shell order (plus Overview as optional cold o
 
 **Demo talk track**:
 1. Open **Agents** — show 9 mock agents (fixture inventory).
-2. Open **Skills** — 13 skill families under mock `.agents/skills/`.
+2. Open **Skills** — 13 skill families under mock `.opencode/skills/`.
 3. Open **Workflows** — 11 workflow files.
 4. Select an asset — inspector / selection controller shows detail.
 5. Switch to **Graph** to set up Beat 5 (connections).
@@ -116,9 +116,9 @@ PrismStoryPanel(
   insights: [
     PrismStoryNarrativeInsight(
       text: '9 specialized agents in the mock corpus',
-      detail: 'Orchestrators + domain specialists under .agents/agents/',
+      detail: 'Orchestrators + domain specialists under .opencode/agents/',
       value: '9',
-      evidence: 'apps/observatory/assets/mock_workspace/.agents/agents/',
+      evidence: 'apps/observatory/assets/mock_workspace/.opencode/agents/',
       riskLevel: PrismInsightRiskLevel.none,
       connection: 'agents → skills via EdgeKind.uses / references',
     ),
@@ -126,7 +126,7 @@ PrismStoryPanel(
       text: '13 skill families (top-level mock skills)',
       detail: 'Each family ships SKILL.md; subskills may expand the graph',
       value: '13',
-      evidence: 'apps/observatory/assets/mock_workspace/.agents/skills/',
+      evidence: 'apps/observatory/assets/mock_workspace/.opencode/skills/',
       riskLevel: PrismInsightRiskLevel.none,
       connection: 'skills → workflows via EdgeKind.contains / dependsOn',
     ),
@@ -134,7 +134,7 @@ PrismStoryPanel(
       text: '11 workflow files in the mock harness',
       detail: 'Parsed into workflow assets on the Map catalog',
       value: '11',
-      evidence: 'apps/observatory/assets/mock_workspace/.agents/workflows/',
+      evidence: 'apps/observatory/assets/mock_workspace/.opencode/workflows/',
       riskLevel: PrismInsightRiskLevel.low,
       connection: 'workflows participate in dependsOn / uses edges',
     ),

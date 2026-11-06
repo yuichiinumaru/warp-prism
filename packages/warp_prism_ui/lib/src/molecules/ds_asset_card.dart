@@ -89,9 +89,10 @@ class DSAssetCard extends StatelessWidget {
             ],
           ),
 
-          // Description
+          // Description (compact gap: fixed grid cells such as 212x119.8
+          // have no spare vertical budget; see Task 1889).
           if (description != null) ...[
-            const SizedBox(height: DSSpacing.sm),
+            const SizedBox(height: DSSpacing.xs),
             DSText.bodySmall(
               description!,
               color: DSColors.textSecondary,
@@ -100,9 +101,9 @@ class DSAssetCard extends StatelessWidget {
             ),
           ],
 
-          // Footer
+          // Footer (compact gap matches description gap above).
           if ((tags != null && tags!.isNotEmpty) || edgeCount != null) ...[
-            const SizedBox(height: DSSpacing.sm),
+            const SizedBox(height: DSSpacing.xs),
             Row(
               children: [
                 if (tags != null && tags!.isNotEmpty)

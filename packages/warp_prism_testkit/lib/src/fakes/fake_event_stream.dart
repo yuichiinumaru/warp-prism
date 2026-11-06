@@ -7,7 +7,7 @@ import 'package:warp_prism_runtime/warp_prism_runtime.dart';
 /// Provides programmatic emission controls, subscription tracking,
 /// buffer inspection, and configurable backpressure policy handling.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 class FakeEventStream<T> implements MutableEventStream<T> {
   @override

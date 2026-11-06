@@ -83,10 +83,10 @@ Future<void> applyCatalogThemeRecipe(
       PrismTokenRegistry.instance.applySkin(
         const PrismTalonPurpleSkin.talonPurple(),
       );
-    case 'cybercore-teal':
-      catalogThemeVariant.value = CatalogThemeVariant.cybercoreTeal;
+    case 'nerazim-teal':
+      catalogThemeVariant.value = CatalogThemeVariant.nerazimTeal;
       PrismTokenRegistry.instance.applySkin(
-        const PrismCyberCoreTealSkin.omniRoute(),
+        const PrismNerazimTealSkin.nerazimTeal(),
       );
     default:
       catalogThemeVariant.value = CatalogThemeVariant.khalaiBlue;

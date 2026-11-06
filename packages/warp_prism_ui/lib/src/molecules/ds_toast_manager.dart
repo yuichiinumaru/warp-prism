@@ -66,6 +66,35 @@ import 'ds_toast.dart';
 /// //      DSToastManager.of(context).replaceAll(entries);
 /// //    });
 /// ```
+/// Removal cause for a toast leaving the manager stack (Task 1867 policy).
+///
+/// The manager hands every removed entry back through [DSToastManager.onHandBack]
+/// with one of these reasons; [DSToastManager.onCloseDismissed] fires only for
+/// [closed] — never for expiry, eviction, action, or clear.
+enum PrismToastRemovalReason {
+  /// Explicit close: close-button tap or programmatic `dismiss(id)`.
+  closed,
+
+  /// Action-button tap with `dismissOnAction: true`.
+  actioned,
+
+  /// Auto-dismiss timer fired (non-sticky entry only).
+  expired,
+
+  /// Cap (`maxVisible`) eviction of the oldest entry.
+  evicted,
+
+  /// `clear()` removed the whole stack.
+  cleared,
+}
+
+/// Hand-back callback for removed toasts (Task 1867 policy).
+///
+/// Receives every entry the manager drops, with its [PrismToastRemovalReason].
+/// Telemetry, re-queue, and undo surfaces consume this — never the close path.
+typedef PrismToastHandBack =
+    void Function(DSToastEntry entry, PrismToastRemovalReason reason);
+
 class DSToastManager extends StatefulWidget {
   /// The child widget that the toast overlay sits above.
   final Widget child;
@@ -73,6 +102,8 @@ class DSToastManager extends StatefulWidget {
   /// Maximum number of toasts shown simultaneously.
   ///
   /// Older toasts beyond this limit are dismissed. Defaults to 5.
+  /// Evicted entries are handed back via [onHandBack] with
+  /// [PrismToastRemovalReason.evicted] — the cap never drops silently.
   final int maxVisible;
 
   /// Vertical gap between stacked toasts.
@@ -80,6 +111,20 @@ class DSToastManager extends StatefulWidget {
 
   /// Inset from screen edges.
   final EdgeInsetsGeometry inset;
+
+  /// Hand-back for every removed entry (evicted/expired/actioned/cleared/closed).
+  ///
+  /// Sticky entries (`duration == Duration.zero`) never expire, so they only
+  /// arrive here via close, action, eviction, or clear.
+  final PrismToastHandBack? onHandBack;
+
+  /// Close-only dismiss callback (Task 1867 policy).
+  ///
+  /// Fires exactly when the user closes a toast (close-button tap) or the
+  /// host dismisses it programmatically via `dismiss(id)` — and never on
+  /// timer expiry, cap eviction, action tap, or `clear()`. Auto-dismiss is
+  /// not a dismissal decision; it is an expiry.
+  final void Function(DSToastEntry entry)? onCloseDismissed;
 
   const DSToastManager({
     super.key,
@@ -90,6 +135,8 @@ class DSToastManager extends StatefulWidget {
       right: DSSpacing.xl,
       bottom: DSSpacing.xl,
     ),
+    this.onHandBack,
+    this.onCloseDismissed,
   });
 
   /// Returns the nearest [DSToastManagerState] from the widget tree.
@@ -136,10 +183,14 @@ class DSToastManagerState extends State<DSToastManager> {
   ///
   /// If a toast with the same [entry.id] already exists, it is replaced.
   /// If the stack exceeds [DSToastManager.maxVisible], the oldest toast
-  /// is dismissed.
+  /// is evicted and handed back with [PrismToastRemovalReason.evicted].
+  /// Entries with `duration == Duration.zero` are sticky: they never start
+  /// an auto-dismiss timer and persist until closed, actioned, evicted, or
+  /// cleared.
   void show(DSToastEntry entry) {
     if (!mounted) return;
 
+    final evicted = <DSToastEntry>[];
     setState(() {
       // Replace if same id exists.
       final existingIdx = _entries.indexWhere((e) => e.entry.id == entry.id);
@@ -153,9 +204,16 @@ class DSToastManagerState extends State<DSToastManager> {
       // Enforce max visible limit.
       while (_entries.length > widget.maxVisible) {
         _entries.first.timer?.cancel();
+        evicted.add(_entries.first.entry);
         _entries.removeAt(0);
       }
     });
+
+    // Hand back cap-evicted entries outside setState (policy: cap never
+    // drops silently, and eviction is not a close — no onCloseDismissed).
+    for (final removed in evicted) {
+      widget.onHandBack?.call(removed, PrismToastRemovalReason.evicted);
+    }
 
     // Force the overlay entry to rebuild so the new/replaced toast renders.
     _overlayEntry?.markNeedsBuild();
@@ -167,15 +225,20 @@ class DSToastManagerState extends State<DSToastManager> {
     _ensureOverlay();
   }
 
-  /// Dismisses the toast with the given [id].
+  /// Explicit close: close-button tap or programmatic dismiss.
+  ///
+  /// This is the ONLY path that fires [DSToastManager.onCloseDismissed].
+  /// Timer expiry, cap eviction, and [clear] hand back without it.
   void dismiss(String id) {
     if (!mounted) return;
 
     final idx = _entries.indexWhere((e) => e.entry.id == id);
     if (idx < 0) return;
 
+    final closed = _entries[idx].entry;
     _entries[idx].timer?.cancel();
     _entries[idx].removing = true;
+    widget.onCloseDismissed?.call(closed);
 
     // Animate out, then remove.
     setState(() {});
@@ -192,6 +255,7 @@ class DSToastManagerState extends State<DSToastManager> {
           _overlayEntry?.markNeedsBuild();
         }
       });
+      widget.onHandBack?.call(closed, PrismToastRemovalReason.closed);
       // Overlay rebuild can drop MouseRegion enter/exit pairing. Re-sync
       // timers from the authoritative [_hoveredIds] set after structural change.
       _resyncHoverTimers();
@@ -215,14 +279,21 @@ class DSToastManagerState extends State<DSToastManager> {
   }
 
   /// Dismisses all active toasts.
+  ///
+  /// Every removed entry is handed back with [PrismToastRemovalReason.cleared];
+  /// clear is never a close, so [DSToastManager.onCloseDismissed] does not fire.
   void clear() {
     if (!mounted) return;
 
     _cancelAllTimers();
     _removeOverlay();
+    final removed = [for (final managed in _entries) managed.entry];
     setState(() {
       _entries.clear();
     });
+    for (final entry in removed) {
+      widget.onHandBack?.call(entry, PrismToastRemovalReason.cleared);
+    }
   }
 
   @override
@@ -233,6 +304,8 @@ class DSToastManagerState extends State<DSToastManager> {
   // === INTERNALS ===
 
   void _startTimer(DSToastEntry entry) {
+    // Sticky entries never auto-dismiss: Duration.zero means persist until
+    // the user or host removes the toast.
     if (entry.duration == Duration.zero) return;
 
     final idx = _entries.indexWhere((e) => e.entry.id == entry.id);
@@ -254,7 +327,26 @@ class DSToastManagerState extends State<DSToastManager> {
         _entries[currentIdx].paused = true;
         return;
       }
-      dismiss(entryId);
+      // Expiry is not a close: remove silently with an expired hand-back.
+      final expired = _entries[currentIdx].entry;
+      _entries[currentIdx].timer?.cancel();
+      _entries[currentIdx].removing = true;
+      setState(() {});
+      _overlayEntry?.markNeedsBuild();
+      Future.delayed(DSMotion.slow, () {
+        if (!mounted) return;
+        setState(() {
+          _entries.removeWhere((e) => e.entry.id == entryId);
+          _hoveredIds.remove(entryId);
+          if (_entries.isEmpty) {
+            _removeOverlay();
+          } else {
+            _overlayEntry?.markNeedsBuild();
+          }
+        });
+        widget.onHandBack?.call(expired, PrismToastRemovalReason.expired);
+        _resyncHoverTimers();
+      });
     });
   }
 
@@ -352,6 +444,36 @@ class DSToastManagerState extends State<DSToastManager> {
     );
   }
 
+  /// Action-tap removal: hands back with [PrismToastRemovalReason.actioned].
+  ///
+  /// Never fires [DSToastManager.onCloseDismissed] — an action is not a close.
+  void _removeAfterAction(DSToastEntry entry) {
+    if (!mounted) return;
+
+    final idx = _entries.indexWhere((e) => e.entry.id == entry.id);
+    if (idx < 0) return;
+
+    _entries[idx].timer?.cancel();
+    _entries[idx].removing = true;
+
+    setState(() {});
+    _overlayEntry?.markNeedsBuild();
+    Future.delayed(DSMotion.slow, () {
+      if (!mounted) return;
+      setState(() {
+        _entries.removeWhere((e) => e.entry.id == entry.id);
+        _hoveredIds.remove(entry.id);
+        if (_entries.isEmpty) {
+          _removeOverlay();
+        } else {
+          _overlayEntry?.markNeedsBuild();
+        }
+      });
+      widget.onHandBack?.call(entry, PrismToastRemovalReason.actioned);
+      _resyncHoverTimers();
+    });
+  }
+
   Widget _buildAnimatedToast(_ManagedToastEntry managed) {
     final isRemoving = managed.removing;
     final entry = managed.entry;
@@ -374,10 +496,10 @@ class DSToastManagerState extends State<DSToastManager> {
             onAction: entry.actionLabel == null
                 ? null
                 : () {
-                    // Prefer entry-owned action; fall back to dismiss-only.
+                    // Prefer entry-owned action; action tap is not a close.
                     entry.onAction?.call();
                     if (entry.dismissOnAction) {
-                      dismiss(entry.id);
+                      _removeAfterAction(entry);
                     }
                   },
           ),

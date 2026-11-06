@@ -39,7 +39,7 @@ void main() {
       expect(find.text('Export Snippet'), findsOneWidget);
       expect(find.text('Reset Defaults'), findsOneWidget);
       expect(find.text('Obsidian Blue'), findsOneWidget);
-      expect(find.text('CyberCore Teal'), findsOneWidget);
+      expect(find.text('Nerazim Teal'), findsOneWidget);
       expect(find.text('ACCENT & FOCUS'), findsOneWidget);
 
       await tester.dragUntilVisible(
@@ -53,7 +53,7 @@ void main() {
     testWidgets('applying preset chip updates registry colors', (tester) async {
       await tester.pumpWidget(buildHarness());
 
-      await tester.tap(find.text('CyberCore Teal'));
+      await tester.tap(find.text('Nerazim Teal'));
       await tester.pump();
 
       expect(

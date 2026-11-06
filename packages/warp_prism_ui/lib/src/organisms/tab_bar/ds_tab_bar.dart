@@ -302,9 +302,7 @@ class _TabHeaderState extends State<_TabHeader> {
         : (_isHovered ? DSColors.obsidianHover : DSColors.transparent);
     final textColor = isActive ? activeAccent : DSColors.textSecondary;
     final iconColor = isActive ? activeAccent : DSColors.textTertiary;
-    final borderColor = isActive
-        ? focusRing
-        : DSColors.transparent;
+    final borderColor = isActive ? focusRing : DSColors.transparent;
 
     Widget tabWidget = Semantics(
       label: 'Tab: ${widget.tab.label}',
@@ -373,9 +371,7 @@ class _TabHeaderState extends State<_TabHeader> {
                     const SizedBox(width: DSSpacing.xs),
                     DSBadge.count(
                       widget.tab.badgeCount!,
-                      color: isActive
-                          ? activeAccent
-                          : DSColors.accentViolet,
+                      color: isActive ? activeAccent : DSColors.accentViolet,
                       size: DSBadgeSize.small,
                     ),
                   ],
@@ -398,10 +394,7 @@ class _TabHeaderState extends State<_TabHeader> {
                       width: 0,
                       height: 0,
                       decoration: BoxDecoration(
-                        border: Border.all(
-                          color: focusRing,
-                          width: 2,
-                        ),
+                        border: Border.all(color: focusRing, width: 2),
                       ),
                     ),
                 ],
@@ -416,12 +409,7 @@ class _TabHeaderState extends State<_TabHeader> {
     if (_isFocused) {
       tabWidget = Container(
         decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              color: focusRing,
-              width: 2,
-            ),
-          ),
+          border: Border(bottom: BorderSide(color: focusRing, width: 2)),
         ),
         child: tabWidget,
       );

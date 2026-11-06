@@ -116,7 +116,7 @@ void main() {
 
   group('FrbEventStream Contract Adapter', () {
     test('emits, buffers, and subscribes events', () async {
-      final eventStream = FrbEventStream();
+      final eventStream = FrbLocalEventStream();
       final received = <RuntimeEvent<String>>[];
 
       final sub = eventStream.subscribe(
@@ -143,8 +143,13 @@ void main() {
       await eventStream.close();
     });
 
-    test('pipes events from native stream', () async {
-      final eventStream = FrbEventStream();
+    test('FrbNativeEventStream is fed by the native substrate at construction', () async {
+      // WP-003: the native variant wires the FRB source in its constructor, so
+      // no explicit pipe call is required to receive native events.
+      final eventStream = FrbNativeEventStream(
+        nativeEventCount: 3,
+        nativeEventPrefix: 'pipe-evt',
+      );
       final received = <RuntimeEvent<String>>[];
 
       final sub = eventStream.subscribe(
@@ -153,20 +158,14 @@ void main() {
         },
       );
 
-      final nativeSub = eventStream.pipeFromNativeStream(
-        count: 3,
-        prefix: 'pipe-evt',
-      );
-
       // Wait for 3 events
-      await Future.delayed(const Duration(milliseconds: 60));
+      await Future.delayed(const Duration(milliseconds: 80));
 
       expect(received.length, equals(3));
       expect(received[0].payload, equals('pipe-evt-1'));
       expect(received[1].payload, equals('pipe-evt-2'));
       expect(received[2].payload, equals('pipe-evt-3'));
 
-      await nativeSub.cancel();
       await sub.cancel();
       await eventStream.close();
     });

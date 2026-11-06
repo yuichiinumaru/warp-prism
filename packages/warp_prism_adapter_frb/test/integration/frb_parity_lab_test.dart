@@ -101,31 +101,31 @@ void main() {
       );
     });
 
-    group('2.2 FrbEventStream Compliance Suite (Live Rust Adapter)', () {
+    group('2.2 FrbLocalEventStream Compliance Suite (Live Rust Adapter)', () {
       verifyEventStreamContract<RuntimeEvent<String>>(
-        createStream: ({policy}) => FrbEventStream(
+        createStream: ({policy}) => FrbLocalEventStream(
           backpressurePolicy:
               policy ?? const EventStreamBackpressurePolicy.unbounded(),
         ),
         emitEvent: (stream, event) =>
-            (stream as FrbEventStream).emit(event),
+            (stream as FrbLocalEventStream).emit(event),
         emitError: (stream, error, [st]) =>
-            (stream as FrbEventStream).emitError(error, st),
-        emitDone: (stream) => (stream as FrbEventStream).complete(),
+            (stream as FrbLocalEventStream).emitError(error, st),
+        emitDone: (stream) => (stream as FrbLocalEventStream).complete(),
         createSampleEvent: (index) => RuntimeEvent<String>(
           id: 'evt_$index',
           timestamp: DateTime.now(),
           payload: 'payload_$index',
         ),
-        description: 'FrbEventStream Contract Compliance',
+        description: 'FrbLocalEventStream Contract Compliance',
       );
     });
 
-    test('2.3 EventStream Behavioral Parity: Fake vs FrbEventStream Side-by-Side', () async {
+    test('2.3 EventStream Behavioral Parity: Fake vs FrbLocalEventStream Side-by-Side', () async {
       final fake = FakeEventStream<RuntimeEvent<String>>(
         backpressurePolicy: const EventStreamBackpressurePolicy.dropOldest(3),
       );
-      final live = FrbEventStream(
+      final live = FrbLocalEventStream(
         backpressurePolicy: const EventStreamBackpressurePolicy.dropOldest(3),
       );
 

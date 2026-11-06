@@ -8,7 +8,7 @@ import 'package:warp_prism_runtime/warp_prism_runtime.dart';
 /// Verifies snapshot querying, freshness metadata, cell filtering helpers,
 /// aggregate state calculations, and reactive watch stream updates.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 void verifyHealthSourceContract({
   required HealthSource Function() createSource,

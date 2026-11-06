@@ -24,7 +24,7 @@ Following the recorded user approval and sign-off on Task 1805 (Screenshot Visua
 
 ### What already exists
 
-- `docs/reports/1805-visual-acceptance-gate-report.md` — visual acceptance gate report (marked PENDING-USER sign-off).
+- `.project/reports/1805-visual-acceptance-gate-report.md` — visual acceptance gate report (marked PENDING-USER sign-off).
 - `docs/design/black-obsidian-visual-contract.md` — live visual contract canon.
 - 13 golden test suites in `packages/warp_prism_ui/test/goldens/` frozen under Task 1800/1805 interim golden freeze policy.
 - Screenshot integration capture test suites in `apps/catalog`, `apps/observatory`, and `apps/cybercore`.
@@ -37,7 +37,7 @@ Following the recorded user approval and sign-off on Task 1805 (Screenshot Visua
 
 ## Subtasks
 
-- [ ] **Read before modifying**: `docs/reports/1805-visual-acceptance-gate-report.md`, `docs/design/black-obsidian-visual-contract.md`, `packages/warp_prism_ui/test/goldens/`.
+- [ ] **Read before modifying**: `.project/reports/1805-visual-acceptance-gate-report.md`, `docs/design/black-obsidian-visual-contract.md`, `packages/warp_prism_ui/test/goldens/`.
 - [ ] **Verify human sign-off**: confirm explicit human/product-owner approval on Task 1805 is recorded before proceeding. If sign-off is missing, STOP (external human blocker).
 - [ ] **Regenerate goldens**: run `flutter test test/goldens/ --update-goldens` in `packages/warp_prism_ui`.
 - [ ] **Verify golden suite passes**: ensure all golden test suites pass cleanly with 0 failures against the updated baselines.
@@ -60,7 +60,7 @@ cd apps/catalog && flutter test --no-pub
 |---|---|
 | `docs/design/visual-baseline-v2.md` | Create — canonical visual baseline v2 record |
 | `packages/warp_prism_ui/test/goldens/` | Regenerate — updated golden files |
-| `docs/reports/1805-visual-acceptance-gate-report.md` | Update — record final approved status |
+| `.project/reports/1805-visual-acceptance-gate-report.md` | Update — record final approved status |
 
 ## Exit Conditions
 

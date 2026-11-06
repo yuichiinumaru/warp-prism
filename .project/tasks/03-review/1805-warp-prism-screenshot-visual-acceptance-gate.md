@@ -51,7 +51,7 @@ screenshot linked.
       organism + one form primitive.
 - [ ] Human-approved target artifact committed and linked (user sign-off recorded) — `PENDING-USER`.
 - [ ] Reviewer report with before/after comparison and explicit pass/fail per the
-      checklist below (`docs/reports/1805-visual-acceptance-gate-report.md`) — interim infrastructure report exists; final before/after review is `PENDING-USER`.
+      checklist below (`.project/reports/1805-visual-acceptance-gate-report.md`) — interim infrastructure report exists; final before/after review is `PENDING-USER`.
 - [x] Golden `_inApp` wrappers all consuming the canonical factory.
 - [ ] Goldens refreshed ONCE after approval; golden tests pass post-refresh — `PENDING-USER` (Golden freeze lifts at user sign-off).
 - [ ] Rejected visual output preserved (never overwritten silently) — `PENDING-USER`; current candidate PNGs exist, but no rejected output has been supplied.
@@ -160,7 +160,7 @@ failure and do not claim those checks passed.
   - `apps/catalog/integration_test/visual_acceptance_capture_test.dart` (created)
   - `apps/observatory/integration_test/observatory_visual_capture_test.dart` (created)
   - `apps/cybercore/integration_test/cybercore_visual_capture_test.dart` (created)
-  - `docs/reports/1805-visual-acceptance-gate-report.md` (created)
+  - `1805-visual-acceptance-gate-report.md` (created; lives at `.project/reports/` after the repo path migration)
   - `.changelog/20260823-140000-1805-warp-prism-screenshot-visual-acceptance-gate-builders.md` (created)
 - **Tests or validation commands**:
   - `cd packages/warp_prism_ui && dart analyze` (PASS: 0 errors; 217 existing infos)
@@ -174,7 +174,7 @@ failure and do not claim those checks passed.
   - `dart run packages/warp_prism_ui/test/boundaries/boundary_test.dart --repo-root .` (PASS: 7/7)
   - `cd packages/warp_prism_ui && flutter test test/goldens/ --concurrency=1 --no-pub` (FAIL: 59 failures against frozen legacy baselines; expected while PENDING-USER)
 - **Local changelog entry**: `.changelog/20260823-140000-1805-warp-prism-screenshot-visual-acceptance-gate-builders.md`
-- **Agent-wiki / docs institutionalization**: `docs/reports/1805-visual-acceptance-gate-report.md`
+- **Agent-wiki / docs institutionalization**: `1805-visual-acceptance-gate-report.md` (lives at `.project/reports/` after the repo path migration)
 - **Executor**: gt-builders-engineer-flutter
 - **Completion date**: 2026-08-24 (reconciled)
 - **Human approval**: `PENDING-USER` — no user visual convergence/sign-off recorded; no golden refresh authorized.

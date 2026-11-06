@@ -42,10 +42,10 @@ The app should show two connected domains:
 
 ### A. Harness visibility
 
-Read mocked `.agents/` data:
+Read mocked `.opencode/` data:
 
 ```text
-.agents/
+.opencode/
   agents/
   skills/
   workflows/
@@ -146,7 +146,7 @@ Create realistic mock files in the project, preferably under:
 
 ```text
 assets/mock_workspace/
-  .agents/
+  .opencode/
     agents/
     skills/
     workflows/
@@ -723,7 +723,7 @@ The prototype is complete only if:
 1. A reusable Flutter Atomic Design System exists.
 2. All feature screens use the design system.
 3. There is a Design System Gallery route.
-4. Mock `.agents/` and `docs/` workspace files exist.
+4. Mock `.opencode/` and `docs/` workspace files exist.
 5. Mock markdown files use valid YAML frontmatter.
 6. App loads and visualizes mocked agents, skills, workflows, tasks, and changelog entries.
 7. The app has Map, Operate, History, Governance, and Asset Detail surfaces.
@@ -744,7 +744,7 @@ Create tokens, atoms, molecules, organisms, templates, and Design System Gallery
 
 ### Phase 2 — Mock Workspace
 
-Create the mock `.agents/` and `docs/` markdown file corpus with valid frontmatter.
+Create the mock `.opencode/` and `docs/` markdown file corpus with valid frontmatter.
 
 ### Phase 3 — Data Layer
 

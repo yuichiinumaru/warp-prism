@@ -4,7 +4,7 @@ import 'package:meta/meta.dart';
 ///
 /// Declares target dispatch and cancellation latency bounds for asynchronous command invocations.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 @immutable
 class AsyncCommandSlo {

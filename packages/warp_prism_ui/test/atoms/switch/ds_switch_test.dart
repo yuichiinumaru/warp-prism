@@ -225,9 +225,9 @@ void main() {
     );
 
     testWidgets(
-      'CyberCore skin accent overrides active track color when present',
+      'Nerazim Teal skin accent overrides active track color when present',
       (WidgetTester tester) async {
-        const tealSkin = DSCyberCoreTealSkin.omniRoute();
+        const tealSkin = DSNerazimTealSkin.nerazimTeal();
 
         await tester.pumpWidget(
           MaterialApp(

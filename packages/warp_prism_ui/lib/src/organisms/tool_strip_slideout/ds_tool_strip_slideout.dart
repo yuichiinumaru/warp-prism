@@ -26,13 +26,26 @@ class DSToolStripItem {
   /// Optional tooltip; defaults to [label] when null.
   final String? tooltip;
 
+  /// Disabled reason propagated from IDS eligibility (Task 1870, F-03).
+  ///
+  /// Null ⇒ the tool opens its panel normally. Non-null ⇒ the strip button
+  /// renders disabled-with-reason (never hidden): the reason is appended to
+  /// the tooltip, announced to assistive technology, and taps are ignored
+  /// (no panel, no [DSToolStripSlideout.onActiveToolChanged]).
+  /// Presentation-only: IDS owns the eligibility outcome.
+  final String? disabledReason;
+
   const DSToolStripItem({
     required this.id,
     required this.icon,
     required this.label,
     required this.builder,
     this.tooltip,
+    this.disabledReason,
   });
+
+  /// True when the tool may open ([disabledReason] == null).
+  bool get isEnabled => disabledReason == null;
 }
 
 /// ASW Observatory Organism — Tool Strip Slideout
@@ -164,6 +177,9 @@ class _DSToolStripSlideoutState extends State<DSToolStripSlideout> {
   }
 
   void _onToolTapped(DSToolStripItem tool) {
+    // Disabled-with-reason tools never open (denied ≠ hidden): the button
+    // stays visible with its reason; taps are ignored.
+    if (!tool.isEnabled) return;
     final current = _effectiveActiveId;
     if (current == tool.id) {
       // Re-tap active tool → collapse to strip-only.
@@ -351,13 +367,18 @@ class _ToolStripButtonState extends State<_ToolStripButton> {
   @override
   Widget build(BuildContext context) {
     final selected = widget.selected;
-    final highlight = selected || _hovered || _focused;
-    final bg = selected
+    final enabled = widget.tool.isEnabled;
+    final highlight = (selected || _hovered || _focused) && enabled;
+    final bg = !enabled
+        ? Colors.transparent
+        : selected
         ? DSColors.obsidianActive
         : highlight
         ? DSColors.obsidianHover
         : Colors.transparent;
-    final iconColor = selected
+    final iconColor = !enabled
+        ? DSColors.textDisabled
+        : selected
         ? DSColors.accentBlue
         : highlight
         ? DSColors.textPrimary
@@ -372,21 +393,31 @@ class _ToolStripButtonState extends State<_ToolStripButton> {
       widget.tool.label,
       selected: selected,
     );
+    final disabledReason = widget.tool.disabledReason;
+    final semanticLabel =
+        !enabled && disabledReason != null && disabledReason.isNotEmpty
+        ? '$label. Disabled: $disabledReason'
+        : label;
+    final tooltip =
+        !enabled && disabledReason != null && disabledReason.isNotEmpty
+        ? '${widget.tool.tooltip ?? widget.tool.label} — $disabledReason'
+        : (widget.tool.tooltip ?? widget.tool.label);
 
     return Semantics(
       key: DSToolStripSlideout.toolButtonKey(widget.tool.id),
       button: true,
-      enabled: true,
+      enabled: enabled,
       selected: selected,
-      label: label,
+      label: semanticLabel,
       excludeSemantics: true,
       child: Tooltip(
-        message: widget.tool.tooltip ?? widget.tool.label,
+        message: tooltip,
         waitDuration: const Duration(milliseconds: 400),
         child: Focus(
           focusNode: _focusNode,
           onFocusChange: (focused) => setState(() => _focused = focused),
           onKeyEvent: (node, event) {
+            if (!enabled) return KeyEventResult.ignored;
             if (event is KeyDownEvent &&
                 (event.logicalKey == LogicalKeyboardKey.enter ||
                     event.logicalKey == LogicalKeyboardKey.space)) {
@@ -400,7 +431,7 @@ class _ToolStripButtonState extends State<_ToolStripButton> {
             onExit: (_) => setState(() => _hovered = false),
             cursor: SystemMouseCursors.click,
             child: GestureDetector(
-              onTap: widget.onTap,
+              onTap: enabled ? widget.onTap : null,
               behavior: HitTestBehavior.opaque,
               child: AnimatedContainer(
                 duration: DSMotion.fast,
@@ -488,9 +519,7 @@ class _IconHitTargetState extends State<_IconHitTarget> {
                 color: highlight ? DSColors.obsidianHover : Colors.transparent,
                 borderRadius: BorderRadius.circular(DSRadii.sm),
                 border: Border.all(
-                  color: _focused
-                      ? DSColors.focusRing
-                      : Colors.transparent,
+                  color: _focused ? DSColors.focusRing : Colors.transparent,
                 ),
               ),
               alignment: Alignment.center,

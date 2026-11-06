@@ -4,7 +4,7 @@
 // desktop viewport, plus SMOKE at a second representative viewport
 // (laptop-1366x768 — wide-1920x1080 smoke is already covered by
 // catalog_theme_matrix_test.dart). Every run persists its trace JSON
-// under docs/reports/host-exercise/traces/ (naming follows the
+// under .project/reports/host-exercise/traces/ (naming follows the
 // trace_writer.dart convention: <host>_<mode>_s<seed>_<tag>.json).
 //
 // Theme-recipe switch propagation for this host is proven by the

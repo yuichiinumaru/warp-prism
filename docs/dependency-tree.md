@@ -120,7 +120,7 @@ drive the first stabilization wave:
 
 Current available failure report:
 
-- `docs/reports/warp-prism-test-failure-baseline.md`
+- `.project/architecture/warp-prism-test-failure-baseline.md`
 
 It records:
 
@@ -161,7 +161,7 @@ Caveats:
 
 | Item | Drift |
 | --- | --- |
-| `1201` | Task expects `docs/reports/warp-prism-failure-baseline-inventory.md`; current report is `docs/reports/warp-prism-test-failure-baseline.md`; task still says `[ ] Open`. |
+| `1201` | Task expects `docs/reports/warp-prism-failure-baseline-inventory.md`; current report is `.project/architecture/warp-prism-test-failure-baseline.md`; task still says `[ ] Open`. |
 | `1203` | Backlog snapshot previously called evidence template-only; task should be re-read before promotion. |
 | `1308` | Marked `Ready For Review` but still in `02-doing/`; should receive independent review/promotion decision. |
 | `1401` | Header has `[x] Builder Done` but Review State says Open/lane mismatch; Completion Evidence is filled. |
@@ -177,7 +177,7 @@ Purpose: align task state, current reports, and lane truth before broad remediat
 
 Immediate actions:
 
-1. Reconcile `1201` with `docs/reports/warp-prism-test-failure-baseline.md`.
+1. Reconcile `1201` with `.project/architecture/warp-prism-test-failure-baseline.md`.
 2. Confirm `1202`, `1203`, `1204`, `1208` evidence freshness.
 3. Send `1308` to independent review/promotion decision.
 4. Treat old "Flutter SDK not installed" claims as stale unless current commands reproduce them.
@@ -212,7 +212,7 @@ Practical current-state interpretation:
 
 Purpose: make `packages/warp_prism_ui` trustworthy.
 
-Failure evidence from `docs/reports/warp-prism-test-failure-baseline.md` maps to:
+Failure evidence from `.project/architecture/warp-prism-test-failure-baseline.md` maps to:
 
 | Failure area | Count | Correct task |
 | --- | ---: | --- |
@@ -304,7 +304,7 @@ These are builder/governance repair tasks, not product feature expansion:
 
 | Task | Action | Reason |
 | --- | --- | --- |
-| `1201` | Reconcile task status/evidence with `docs/reports/warp-prism-test-failure-baseline.md` | Establishes current failure truth. |
+| `1201` | Reconcile task status/evidence with `.project/architecture/warp-prism-test-failure-baseline.md` | Establishes current failure truth. |
 | `1202` | Verify promotion state model evidence | Defines lifecycle states used by all later promotions. |
 | `1203` | Verify/complete gate matrix evidence | Prevents promotion without gate criteria. |
 | `1204` | Verify Melos script normalization | Defines runnable validation commands. |

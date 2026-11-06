@@ -144,9 +144,9 @@ internal to the consuming app.
 
 Mock workspace files follow `docs/mock-workspace-corpus-contract.md`:
 
-- **Agents**: `assets/mock_workspace/.agents/agents/<name>.md`
-- **Skills**: `assets/mock_workspace/.agents/skills/<name>/SKILL.md`
-- **Workflows**: `assets/mock_workspace/.agents/workflows/<name>.md`
+- **Agents**: `assets/mock_workspace/.opencode/agents/<name>.md`
+- **Skills**: `assets/mock_workspace/.opencode/skills/<name>/SKILL.md`
+- **Workflows**: `assets/mock_workspace/.opencode/workflows/<name>.md`
 - **Tasks**: `assets/mock_workspace/.project/tasks/<lane>/<file>.md`
 - **Changelog**: `assets/mock_workspace/docs/changelog/<file>.md`
 

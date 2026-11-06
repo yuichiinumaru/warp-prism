@@ -1,7 +1,7 @@
 # Warp Prism Bindings (`warp_prism_bindings`)
 
 > **Role**: Thin projection layer connecting UI presentation (`warp_prism_ui`), interaction semantics (`warp_prism_interaction`), and runtime contracts (`warp_prism_runtime`).
-> **Lifecycle**: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+> **Lifecycle**: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 
 ---
 
@@ -16,7 +16,7 @@
 
 ## 2. Layer Contract & Dependency Law
 
-Per `docs/architecture/layer-contracts-v2.md`:
+Per `.project/architecture/layer-contracts.md`:
 
 | Rule | Enforcement |
 |---|---|

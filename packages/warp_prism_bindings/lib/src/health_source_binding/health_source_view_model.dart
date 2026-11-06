@@ -5,7 +5,7 @@ import 'package:warp_prism_ui/warp_prism_ui.dart';
 
 /// Operational lifecycle status of a [HealthSourceBinding].
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 enum HealthSourceBindingStatus {
   /// Uninitialized, waiting for initial snapshot evaluation.
@@ -33,7 +33,7 @@ enum HealthSourceBindingStatus {
 /// **PURGE LAW**: This view model contains strictly zero timer objects,
 /// polling tickers, or network loops.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 @immutable
 class HealthSourceViewModel {
@@ -227,7 +227,7 @@ class HealthSourceViewModel {
 
 /// Utility mappers projecting runtime health objects to UI presentation models.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 class HealthSourceMappers {
   const HealthSourceMappers._();
@@ -255,7 +255,9 @@ class HealthSourceMappers {
   }
 
   /// Maps a presentation [PrismOperationalState] to a semantic [HealthState].
-  static HealthState operationalStateToHealthState(PrismOperationalState state) {
+  static HealthState operationalStateToHealthState(
+    PrismOperationalState state,
+  ) {
     switch (state) {
       case PrismOperationalState.healthy:
       case PrismOperationalState.approved:

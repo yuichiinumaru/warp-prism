@@ -3,7 +3,7 @@ import 'input_modifiers.dart';
 
 /// Interaction gesture kind for pointer inputs.
 ///
-/// Lifecycle: PROVEN (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: PROVEN (see `.project/architecture/layer-contracts.md`).
 enum PointerIntentKind {
   hover,
   press,
@@ -16,17 +16,17 @@ enum PointerIntentKind {
 
 /// Physical pointer button identification.
 ///
-/// Lifecycle: PROVEN (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: PROVEN (see `.project/architecture/layer-contracts.md`).
 enum PointerButton { primary, secondary, tertiary, none }
 
 /// Keyboard event action category.
 ///
-/// Lifecycle: PROVEN (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: PROVEN (see `.project/architecture/layer-contracts.md`).
 enum KeyboardAction { press, release, shortcut }
 
 /// Accessibility semantics intent action.
 ///
-/// Lifecycle: PROVEN (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: PROVEN (see `.project/architecture/layer-contracts.md`).
 enum A11yAction { activate, focus, dismiss, scroll, custom }
 
 /// Root sealed contract for normalized input intents.
@@ -34,7 +34,7 @@ enum A11yAction { activate, focus, dismiss, scroll, custom }
 /// Converts platform and device input streams into standardized semantic
 /// intent representations without importing framework UI classes.
 ///
-/// Lifecycle: PROVEN (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: PROVEN (see `.project/architecture/layer-contracts.md`).
 @immutable
 sealed class InputIntent {
   /// Optional target identifier associated with the input.
@@ -48,7 +48,7 @@ sealed class InputIntent {
 
 /// Normalized pointer interaction intent.
 ///
-/// Lifecycle: PROVEN (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: PROVEN (see `.project/architecture/layer-contracts.md`).
 @immutable
 class PointerIntent extends InputIntent {
   /// Category of pointer event.
@@ -98,7 +98,7 @@ class PointerIntent extends InputIntent {
 
 /// Normalized keyboard input intent.
 ///
-/// Lifecycle: PROVEN (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: PROVEN (see `.project/architecture/layer-contracts.md`).
 @immutable
 class KeyboardIntent extends InputIntent {
   /// Key action classification.
@@ -143,7 +143,7 @@ class KeyboardIntent extends InputIntent {
 
 /// Normalized accessibility / screen-reader input intent.
 ///
-/// Lifecycle: PROVEN (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: PROVEN (see `.project/architecture/layer-contracts.md`).
 @immutable
 class A11yIntent extends InputIntent {
   /// The semantic accessibility action requested.

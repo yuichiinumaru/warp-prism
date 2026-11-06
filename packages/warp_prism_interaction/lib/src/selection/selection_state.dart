@@ -6,7 +6,7 @@ import 'selection_mode.dart';
 /// Subsumes single-selection, multi-selection, anchor tracking,
 /// and primary selection semantics across Warp Prism components.
 ///
-/// Lifecycle: PROVEN (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: PROVEN (see `.project/architecture/layer-contracts.md`).
 @immutable
 class SelectionState<T extends Object> {
   /// The set of currently selected items.

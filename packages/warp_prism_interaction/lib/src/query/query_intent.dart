@@ -5,7 +5,7 @@ import 'package:meta/meta.dart';
 /// Encapsulates raw search text, structured filter attributes, sorting/pagination
 /// parameters, and an optional query correlation token.
 ///
-/// Lifecycle: PROVEN (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: PROVEN (see `.project/architecture/layer-contracts.md`).
 @immutable
 class QueryIntent {
   /// The raw text query string entered by the user or provided by a preset.

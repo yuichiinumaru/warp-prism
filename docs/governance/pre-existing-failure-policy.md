@@ -1,11 +1,38 @@
 # Pre-existing Failure Classification Policy
 
 > **Authority**: Canonical governance reference for pre-existing failure handling.
-> **Source rule**: `.agents/rules/pre-existing-failure-policy.md` (builder source rule)
+> **Source rule**: **NONE — open governance defect.** This file previously declared
+> `.opencode/rules/pre-existing-failure-policy.md` as its source rule. That file
+> does not exist. The policy therefore has no canonical source rule and exists
+> only as this child-local copy. The same false claim applies to
+> `promotion-state-model.md`. Repairing it requires creating a rule under
+> `.opencode/`, which is symlinked to the parent Ganthritor harness — a
+> family-wide governance mutation requiring `harness-architecture` and
+> independent constitutional review (`AGENTS.md` §13). Until then, this file is
+> the de-facto canonical text.
 > **Scope**: All executable tasks under `.project/tasks/`.
 > **Created**: 2026-06-09
 > **Task origin**: Task 1206
 > **Supersedes**: All prior uses of "pre-existing" as unclassified promotion bypass.
+>
+> ### Canonical baseline path
+>
+> The failure baseline referenced throughout this policy has ONE canonical
+> home:
+>
+> ```
+> .project/architecture/warp-prism-test-failure-baseline.md
+> ```
+>
+> This path is canonical by `MISSION.md` §12 (current-authority home) and is
+> the path every consumer in this repository already references. The artifact
+> was relocated to `.project/reports/` by commit `69446e6` without migrating
+> its consumers — a half-migration — and was restored on 2026-09-28.
+>
+> **Validity warning**: that capture is dated 2026-06-09 and is a HISTORICAL
+> record. It is NOT a valid pre-change baseline under §7.2. A task needing a
+> current baseline MUST capture its own before its first edit. See §0 of the
+> baseline for the observed drift and the unrunnable Melos commands.
 
 This policy defines when a test failure is pre-existing, how to classify it,
 and what that classification means for task promotion. It exists because
@@ -81,7 +108,7 @@ documented explanation of what external dependency prevents the fix.
 **Does not block promotion of THIS task**, subject to two obligations:
 
 1. The failure must be classified in the baseline inventory
-   (`docs/reports/warp-prism-test-failure-baseline.md`) or its successor.
+   (`.project/architecture/warp-prism-test-failure-baseline.md`) or its successor.
 2. The task's completion evidence must cite the failure count and confirm zero
    regressions introduced by the task.
 
@@ -95,7 +122,7 @@ documented explanation of what external dependency prevents the fix.
 |---------------|--------------|---------------|
 | **Baseline comparison** | Run `flutter test` before and after task changes. Compare failure lists. Failures present in both runs are pre-existing. | Always (this is the primary evidence). |
 | **Git blame / git log** | `git log --oneline <failing-file>` to confirm the failure predates the task's commits. | When baseline comparison is ambiguous (e.g., flaky tests, intermittent failures). |
-| **Baseline inventory** | Cross-reference with `docs/reports/warp-prism-test-failure-baseline.md`. If the failure is listed there, it is pre-existing. | Always (secondary confirmation). |
+| **Baseline inventory** | Cross-reference with `.project/architecture/warp-prism-test-failure-baseline.md`. If the failure is listed there, it is pre-existing. | Always (secondary confirmation). |
 | **File scope audit** | List all files modified by the task. Compare against the failing test's import chain. No overlap = unrelated. | When classifying as unrelated vs related. |
 
 ### 4.2 Completion evidence template for pre-existing claims
@@ -115,7 +142,7 @@ Completion Evidence section:
 
 ## 5. Current Baseline Reference
 
-As of 2026-06-09, the test failure baseline (`docs/reports/warp-prism-test-failure-baseline.md`)
+As of 2026-06-09, the test failure baseline (`.project/architecture/warp-prism-test-failure-baseline.md`)
 records:
 
 | Classification | Count | Package | Origin |
@@ -186,19 +213,19 @@ This policy adds:
 - The anti-gaming rules (what "must be classified" prevents).
 
 The promotion state model references this policy for pre-existing failure
-handling in both `.agents/rules/promotion-state-model.md` and
+handling in both `.opencode/rules/promotion-state-model.md` and
 `docs/governance/promotion-state-model.md`.
 
 ---
 
 ## 9. References
 
-- **Failure baseline**: `docs/reports/warp-prism-test-failure-baseline.md`
+- **Failure baseline**: `.project/architecture/warp-prism-test-failure-baseline.md`
   (Task 1201)
 - **Promotion state model**: `docs/governance/promotion-state-model.md`
   (Task 1202)
-- **Source rule**: `.agents/rules/pre-existing-failure-policy.md`
-- **Builder promotion state model**: `.agents/rules/promotion-state-model.md`
+- **Source rule**: `.opencode/rules/pre-existing-failure-policy.md`
+- **Builder promotion state model**: `.opencode/rules/promotion-state-model.md`
 - **Failure taxonomy**: Promotion state model §3 (Failure Taxonomy table)
 - **EPIC-14 tasks**: 1401-1408 (Observatory pre-existing failure remediation)
 - **Wave 4 regression owners**: Tasks 1303, 1304, 1307, 1309

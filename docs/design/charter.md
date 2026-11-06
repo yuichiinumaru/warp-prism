@@ -1,9 +1,10 @@
-# Warp Prism — Child-Project Charter (v2)
+# Warp Prism — Child-Project Charter (v2.1)
 
 > **Status**: Active charter
-> **Version**: 2.0.0
-> **Authors**: Task 1101 (v1 baseline), Task 1810 / EPIC-19 (v2 mission & architecture)
-> **Date**: 2026-09-01 (v2 amendment)
+> **Version**: 2.1.0
+> **Authors**: Task 1101 (v1 baseline), Task 1810 / EPIC-19 (v2 mission & architecture),
+> epoch reset 2026-09-27 (consumer family + topology actualization)
+> **Date**: 2026-09-27 (v2.1 amendment)
 > **Parent**: Ganthritor monorepo
 
 ---
@@ -35,7 +36,7 @@ Warp Prism lives under `warp-prism/` in the Ganthritor repository. It inherits r
 | **Project name** | Warp Prism |
 | **System role** | Compositional Flutter design + integration system (ADS + IDS + Runtime Contracts) |
 | **Technology** | Flutter (desktop-first & cross-platform) + Rust golden path |
-| **First consumers** | ASW Observatory (`apps/observatory`), Catalog Gallery (`packages/warp_prism_catalog`), CyberCore Pilot (`apps/cybercore`) |
+| **First consumers** | Intended consumer family: Warpblade, Tempest, Hyperion, Sentry (see `MISSION.md` §3). Catalog (`apps/catalog`) + host-exercise harness are owned proof laboratories. Observatory / CyberCore are not product destinations — classified on evidence, never by assumption. |
 | **Integration model** | Backend-agnostic runtime contracts; Rust integration via replaceable FRB adapter |
 | **Backend policy** | Application backends remain product-local; Warp Prism defines standardized UI↔backend interfaces |
 | **Write policy** | Fixture-backed and contract-gated; live mutations only through explicit runtime contracts |
@@ -52,11 +53,19 @@ Warp Prism lives under `warp-prism/` in the Ganthritor repository. It inherits r
 - **Interaction Design System (IDS)**: Reusable interaction semantics, focus/keyboard traversal patterns, multi-select, and viewport interaction models.
 - **Backend-Agnostic Runtime Contracts**: Core contract abstractions (`EventStream`, `AsyncCommand`, `HealthSource`, `GraphSource`) defining how Flutter UI communicates with backends without coupling to specific implementations.
 - **Rust Integration Golden Path**: Replaceable `flutter_rust_bridge` (FRB) adapter bridging Dart runtime contracts to high-performance native Rust services.
-- **Consumer Applications**:
-  - **ASW Observatory (`apps/observatory`)**: Desktop-first Flutter console visualizing workspace graph, operations, history, and governance.
-  - **Design System Catalog (`packages/warp_prism_catalog`)**: Interactive component gallery proving ADS/IDS fitness.
-  - **Cybernetics Core Pilot (`apps/cybercore`)**: Fixture-backed Flutter mirror of CyberCore admin surfaces validating real-world domain suitability.
-- **Design, Architecture, and Governance Documentation**: Charters, layer matrices, topology definitions, and ADRs under `docs/design/`, `docs/architecture/`, and `docs/governance/`.
+- **Consumer Applications**: Warp Prism does not host product frontends. The
+  intended consumer family is Warpblade, Tempest, Hyperion, and Sentry
+  (see `MISSION.md` §3 and `docs/bridge/README.md`). A missing Warp Prism
+  primitive never blocks a consumer — consumers implement locally, Warp Prism
+  harvests what recurs.
+  - **Design System Catalog (`apps/catalog`)**: Owned proof laboratory —
+    interactive component gallery proving ADS/IDS fitness, plus the connected
+    bridge lab proving the runtime/FRB path.
+  - **Historical in-tree apps (`apps/observatory`, `apps/cybercore`)**: Not
+    product destinations. Classified by current function (proof surface,
+    fixture/demo, legacy compatibility surface, still-valid consumer, or
+    retirement candidate) on evidence.
+- **Design, Architecture, and Governance Documentation**: Charters, layer matrices, topology definitions, and ADRs under `docs/design/`, `.project/architecture/`, and `docs/governance/`.
 
 ### 3.2 Out of Scope (Non-Goals)
 
@@ -66,8 +75,8 @@ Warp Prism lives under `warp-prism/` in the Ganthritor repository. It inherits r
 | **Ontological Rust coupling in UI/Core** | FRB and Rust are replaceable adapters. Generic Warp Prism contracts and `warp_prism_ui` must never depend directly on Rust or FFI. |
 | **SQLite or client-side durable state** | Warp Prism core does not embed local SQLite databases. Durable state architecture belongs in product-specific backends per Ganthritor policy. |
 | **Tamagui / Ivisa code porting** | Historical Ivisa/Tamagui archaeology (Task 8240) is reference-only. Component state matrices are harvested; TSX code is not ported. |
-| **Hyperion-first development** | Hyperion is a future consumer. Initial proof targets remain the ADS catalog, Observatory, and CyberCore pilot. |
-| **Full Cybernetics Core Flutter migration** | The CyberCore target is a fixture-backed pilot mirror (EPIC-11), not a destructive replacement of the existing Next.js frontend. |
+| **Building consumer frontends inside Warp Prism** | Warp Prism is a library + proof-laboratory project. Product frontends live in product repositories; Warp Prism harvests what recurs. |
+| **Full product frontend migration into this repo** | No product frontend is migrated into Warp Prism. Historical in-tree apps are classified on evidence (proof / fixture / legacy / consumer / retirement candidate). |
 | **Generic SaaS pastel styling** | Visual identity remains ultradark obsidian glass with restrained hacker/protoss accents. |
 
 ### 3.3 Supersession and Preservation Invariants
@@ -162,12 +171,16 @@ Warp Prism owns `.project/tasks/` across five canonical kanban lanes (`00-planni
 | Member Path | Role | Layer / Constraint |
 |-------------|------|-------------------|
 | `packages/warp_prism_ui` | Reusable Flutter ADS | Presentation-only. Zero FRB/runtime/backend dependencies. |
-| `packages/warp_prism_catalog` | ADS / IDS Component Gallery | Interactive catalog and visual verification surface. |
-| `apps/observatory` | ASW Observatory App | Desktop-first operational console consumer. |
-| `apps/cybercore` | CyberCore Pilot App | Fixture-backed admin mirror validating domain fitness. |
-| *Planned IDS package* | Interaction Design System | Reusable interaction semantics and gesture models. |
-| *Planned Runtime package* | Runtime Contracts | Backend-agnostic UI↔runtime interfaces. |
-| *Planned Bridge crates/pkgs* | Rust / FRB Golden Path | Replaceable native bridge adapters (`rust/warp_bridge_*`). |
+| `packages/warp_prism_interaction` | Interaction Design System | Reusable user-intent semantics. Pure Dart. |
+| `packages/warp_prism_runtime` | Runtime Contracts | Backend-agnostic UI↔runtime interfaces. Pure Dart. |
+| `packages/warp_prism_bindings` | Thin projections | Contracts → Prism presentation. No backend logic. |
+| `packages/warp_prism_testkit` | Fakes + conformance suites | One fake + one suite per contract. |
+| `packages/warp_prism_adapter_frb` | FRB adapter | The ONLY Dart package importing `flutter_rust_bridge`. |
+| `packages/warp_prism_host_exercise` | Host-exercise harness | Smoke/crawl/fuzz proof runner. |
+| `rust/warp_bridge_core` | Rust domain core | Transport-independent. Zero transport deps. |
+| `rust/warp_bridge_frb` | Rust FRB projection | Transport layer (FRB + tokio). |
+| `apps/catalog` | Owned proof laboratory | Gallery + connected bridge lab. |
+| `apps/observatory`, `apps/cybercore` | Historical in-tree apps | Pending evidence-gated classification — not product destinations. |
 
 ---
 
@@ -176,7 +189,7 @@ Warp Prism owns `.project/tasks/` across five canonical kanban lanes (`00-planni
 | Source | Relevance |
 |--------|-----------|
 | `AGENTS.md` §1 | Scoped constitution defining v2 scope, contracts, and boundaries |
-| `.project/tasks/00-planning/EPIC-19-warp-prism-v2-foundation.md` | Planning epic for Warp Prism v2 foundation |
+| `.project/archive/epoch-reset-manifest.md` | Per-artifact disposition of the pre-reset planning corpus (EPIC-00..26, roadmaps, story packets) + harvested invariants |
 | `Task 1810` (task ledger, lane-neutral reference — see `.project/tasks/tasklist.md` for current location) | Task 1810 specification and exit conditions |
 | `docs/design/black-obsidian-visual-contract.md` | Live visual contract specification |
 | `docs/governance/promotion-state-model.md` | Task promotion and gate lifecycle model |

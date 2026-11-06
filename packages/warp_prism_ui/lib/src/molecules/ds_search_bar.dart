@@ -69,9 +69,7 @@ class _DSSearchBarState extends State<DSSearchBar> {
 
   @override
   Widget build(BuildContext context) {
-    final borderColor = _isFocused
-        ? DSColors.focusRing
-        : DSColors.borderSubtle;
+    final borderColor = _isFocused ? DSColors.focusRing : DSColors.borderSubtle;
 
     return Material(
       type: MaterialType.transparency,

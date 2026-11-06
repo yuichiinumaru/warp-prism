@@ -980,14 +980,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   FrbCommandResult dco_decode_frb_command_result(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 5)
-      throw Exception('unexpected arr length: expect 5 but see ${arr.length}');
+    if (arr.length != 6)
+      throw Exception('unexpected arr length: expect 6 but see ${arr.length}');
     return FrbCommandResult(
       durationMs: dco_decode_u_64(arr[0]),
       timestampMillis: dco_decode_i_64(arr[1]),
       value: dco_decode_opt_String(arr[2]),
       errorMessage: dco_decode_opt_String(arr[3]),
-      isCancelled: dco_decode_bool(arr[4]),
+      errorKind: dco_decode_opt_String(arr[4]),
+      isCancelled: dco_decode_bool(arr[5]),
     );
   }
 
@@ -1341,12 +1342,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_timestampMillis = sse_decode_i_64(deserializer);
     var var_value = sse_decode_opt_String(deserializer);
     var var_errorMessage = sse_decode_opt_String(deserializer);
+    var var_errorKind = sse_decode_opt_String(deserializer);
     var var_isCancelled = sse_decode_bool(deserializer);
     return FrbCommandResult(
       durationMs: var_durationMs,
       timestampMillis: var_timestampMillis,
       value: var_value,
       errorMessage: var_errorMessage,
+      errorKind: var_errorKind,
       isCancelled: var_isCancelled,
     );
   }

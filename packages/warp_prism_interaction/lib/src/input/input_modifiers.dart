@@ -2,7 +2,7 @@ import 'package:meta/meta.dart';
 
 /// Immutable record of active keyboard modifier keys.
 ///
-/// Lifecycle: PROVEN (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: PROVEN (see `.project/architecture/layer-contracts.md`).
 @immutable
 class InputModifiers {
   /// Shift modifier state.

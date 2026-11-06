@@ -871,7 +871,9 @@ class _TextCriterionFieldState extends State<_TextCriterionField> {
             controller: _controller,
             focusNode: _focusNode,
             onChanged: widget.onChanged,
-            style: DSTypography.bodyMedium.copyWith(color: DSColors.textPrimary),
+            style: DSTypography.bodyMedium.copyWith(
+              color: DSColors.textPrimary,
+            ),
             cursorColor: DSColors.accentBlue,
             decoration: InputDecoration(
               isDense: true,

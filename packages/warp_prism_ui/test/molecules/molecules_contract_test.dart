@@ -735,9 +735,10 @@ void main() {
     });
 
     test(
-      'DSStateType has empty, loading, error, disabled, stale, degraded, excluded',
+      'DSStateType has empty, loading, error, disabled, stale, degraded, excluded, unknown',
       () {
-        expect(DSStateType.values.length, 7);
+        expect(DSStateType.values.length, 8);
+        expect(DSStateType.values, contains(DSStateType.unknown));
       },
     );
   });

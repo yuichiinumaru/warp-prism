@@ -13,9 +13,7 @@ abstract final class DSTheme {
   /// Every M3 [ColorScheme] slot is explicitly mapped to obsidian and accent
   /// tokens so framework default blue-grey chrome never leaks into inputs,
   /// menus, dialogs, cards, or tooltips.
-  static ThemeData dark({
-    List<ThemeExtension<dynamic>>? extensions,
-  }) {
+  static ThemeData dark({List<ThemeExtension<dynamic>>? extensions}) {
     final colorScheme = ColorScheme.dark(
       primary: DSColors.accentBlue,
       onPrimary: DSColors.white,
@@ -61,21 +59,41 @@ abstract final class DSTheme {
     );
 
     final textTheme = TextTheme(
-      displayLarge: DSTypography.displayLarge.copyWith(color: DSColors.textPrimary),
-      displayMedium: DSTypography.displayMedium.copyWith(color: DSColors.textPrimary),
-      displaySmall: DSTypography.displaySmall.copyWith(color: DSColors.textPrimary),
-      headlineLarge: DSTypography.headingLarge.copyWith(color: DSColors.textPrimary),
-      headlineMedium: DSTypography.headingMedium.copyWith(color: DSColors.textPrimary),
-      headlineSmall: DSTypography.headingSmall.copyWith(color: DSColors.textPrimary),
-      titleLarge: DSTypography.headingMedium.copyWith(color: DSColors.textPrimary),
-      titleMedium: DSTypography.headingSmall.copyWith(color: DSColors.textPrimary),
+      displayLarge: DSTypography.displayLarge.copyWith(
+        color: DSColors.textPrimary,
+      ),
+      displayMedium: DSTypography.displayMedium.copyWith(
+        color: DSColors.textPrimary,
+      ),
+      displaySmall: DSTypography.displaySmall.copyWith(
+        color: DSColors.textPrimary,
+      ),
+      headlineLarge: DSTypography.headingLarge.copyWith(
+        color: DSColors.textPrimary,
+      ),
+      headlineMedium: DSTypography.headingMedium.copyWith(
+        color: DSColors.textPrimary,
+      ),
+      headlineSmall: DSTypography.headingSmall.copyWith(
+        color: DSColors.textPrimary,
+      ),
+      titleLarge: DSTypography.headingMedium.copyWith(
+        color: DSColors.textPrimary,
+      ),
+      titleMedium: DSTypography.headingSmall.copyWith(
+        color: DSColors.textPrimary,
+      ),
       titleSmall: DSTypography.labelLarge.copyWith(color: DSColors.textPrimary),
       bodyLarge: DSTypography.bodyLarge.copyWith(color: DSColors.textPrimary),
       bodyMedium: DSTypography.bodyMedium.copyWith(color: DSColors.textPrimary),
       bodySmall: DSTypography.bodySmall.copyWith(color: DSColors.textSecondary),
       labelLarge: DSTypography.labelLarge.copyWith(color: DSColors.textPrimary),
-      labelMedium: DSTypography.labelMedium.copyWith(color: DSColors.textSecondary),
-      labelSmall: DSTypography.labelSmall.copyWith(color: DSColors.textSecondary),
+      labelMedium: DSTypography.labelMedium.copyWith(
+        color: DSColors.textSecondary,
+      ),
+      labelSmall: DSTypography.labelSmall.copyWith(
+        color: DSColors.textSecondary,
+      ),
     );
 
     return ThemeData(
@@ -94,8 +112,12 @@ abstract final class DSTheme {
           borderRadius: BorderRadius.circular(DSRadii.lg),
           side: BorderSide(color: DSColors.borderDefault),
         ),
-        titleTextStyle: DSTypography.headingMedium.copyWith(color: DSColors.textPrimary),
-        contentTextStyle: DSTypography.bodyMedium.copyWith(color: DSColors.textPrimary),
+        titleTextStyle: DSTypography.headingMedium.copyWith(
+          color: DSColors.textPrimary,
+        ),
+        contentTextStyle: DSTypography.bodyMedium.copyWith(
+          color: DSColors.textPrimary,
+        ),
       ),
       cardTheme: CardThemeData(
         color: DSColors.obsidianElevated,
@@ -112,13 +134,19 @@ abstract final class DSTheme {
           borderRadius: BorderRadius.circular(DSRadii.md),
           side: BorderSide(color: DSColors.borderDefault),
         ),
-        textStyle: DSTypography.bodyMedium.copyWith(color: DSColors.textPrimary),
+        textStyle: DSTypography.bodyMedium.copyWith(
+          color: DSColors.textPrimary,
+        ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: DSColors.obsidianElevated,
-        hintStyle: DSTypography.bodyMedium.copyWith(color: DSColors.textSecondary),
-        labelStyle: DSTypography.bodyMedium.copyWith(color: DSColors.textSecondary),
+        hintStyle: DSTypography.bodyMedium.copyWith(
+          color: DSColors.textSecondary,
+        ),
+        labelStyle: DSTypography.bodyMedium.copyWith(
+          color: DSColors.textSecondary,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(DSRadii.md),
           borderSide: BorderSide(color: DSColors.borderDefault),
@@ -142,8 +170,12 @@ abstract final class DSTheme {
         disabledColor: DSColors.obsidianElevated,
         surfaceTintColor: Colors.transparent,
         side: BorderSide(color: DSColors.borderDefault),
-        labelStyle: DSTypography.labelMedium.copyWith(color: DSColors.textPrimary),
-        secondaryLabelStyle: DSTypography.labelMedium.copyWith(color: DSColors.textSecondary),
+        labelStyle: DSTypography.labelMedium.copyWith(
+          color: DSColors.textPrimary,
+        ),
+        secondaryLabelStyle: DSTypography.labelMedium.copyWith(
+          color: DSColors.textSecondary,
+        ),
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(DSRadii.sm),
@@ -166,7 +198,9 @@ abstract final class DSTheme {
         backgroundColor: DSColors.obsidianDeep,
         surfaceTintColor: Colors.transparent,
         foregroundColor: DSColors.textPrimary,
-        titleTextStyle: DSTypography.headingMedium.copyWith(color: DSColors.textPrimary),
+        titleTextStyle: DSTypography.headingMedium.copyWith(
+          color: DSColors.textPrimary,
+        ),
       ),
     );
   }
@@ -176,9 +210,7 @@ abstract final class DSTheme {
   /// Reuses the Black Obsidian background structure (#030506 family) and remaps
   /// primary action accent slots to Taldarim Red crimson energy (#E51A4C family).
   /// Protoss brand label: Taldarim Red (counterpart to Khalai Blue default).
-  static ThemeData taldarimRed({
-    List<ThemeExtension<dynamic>>? extensions,
-  }) {
+  static ThemeData taldarimRed({List<ThemeExtension<dynamic>>? extensions}) {
     const skin = DSTaldarimRedSkin.taldarimRed();
     return skin.applyToTheme(dark(extensions: extensions));
   }
@@ -188,9 +220,7 @@ abstract final class DSTheme {
   /// Reuses the Black Obsidian background structure (#030506 family) and remaps
   /// primary action accent slots to Talon Purple violet/crimson-purple energy (#9911E5 family).
   /// Protoss brand label: Talon Purple (counterpart to Khalai Blue default).
-  static ThemeData talonPurple({
-    List<ThemeExtension<dynamic>>? extensions,
-  }) {
+  static ThemeData talonPurple({List<ThemeExtension<dynamic>>? extensions}) {
     const skin = DSTalonPurpleSkin.talonPurple();
     return skin.applyToTheme(dark(extensions: extensions));
   }

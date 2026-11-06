@@ -8,7 +8,7 @@ import 'package:warp_prism_runtime/warp_prism_runtime.dart';
 /// Verifies snapshot retrieval, structural adjacency queries, incremental
 /// node/edge update streams, and whole-graph reset events.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 void verifyGraphSourceContract<TNodePayload, TEdgePayload>({
   required GraphSource<TNodePayload, TEdgePayload> Function() createSource,
@@ -172,7 +172,10 @@ void verifyGraphSourceContract<TNodePayload, TEdgePayload>({
             updateEdge(source, updatedEdge);
             await Future<void>.delayed(const Duration(milliseconds: 10));
 
-            expect(updates.last, isA<EdgeUpdated<TNodePayload, TEdgePayload>>());
+            expect(
+              updates.last,
+              isA<EdgeUpdated<TNodePayload, TEdgePayload>>(),
+            );
             final edgeUpdated =
                 updates.last as EdgeUpdated<TNodePayload, TEdgePayload>;
             expect(edgeUpdated.edge.id, equals('e1'));

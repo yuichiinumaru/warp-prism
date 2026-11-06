@@ -7,7 +7,16 @@ import 'package:warp_prism_runtime/warp_prism_runtime.dart';
 /// Supports configurable responses, simulated execution delays, custom handlers,
 /// invocation tracking, and cooperative cancellation checking.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// ## Concurrency model (F1)
+///
+/// **Single-flight, cancel-and-replace.** A second [execute] while one is
+/// active signals the incumbent's [CancellationToken] and becomes the sole
+/// authoritative execution. Status reflects the authoritative execution only;
+/// a superseded execution that finishes late cannot overwrite it. Each caller
+/// still receives its own terminal result. See [AsyncCommand] for the
+/// contract-level rationale.
+///
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 class FakeAsyncCommand<TParam, TResult>
     implements AsyncCommand<TParam, TResult> {
@@ -24,6 +33,12 @@ class FakeAsyncCommand<TParam, TResult>
   TParam? _lastParam;
   final List<TParam> _callHistory = [];
   bool _isClosed = false;
+
+  /// Monotonic execution identity. Only the execution whose generation equals
+  /// [_authoritativeGeneration] may mutate shared status (F1/F2).
+  int _executionCounter = 0;
+  int _authoritativeGeneration = 0;
+  CancellationToken? _activeToken;
 
   /// Creates a [FakeAsyncCommand] with optional initial result or custom handler.
   FakeAsyncCommand({
@@ -56,6 +71,14 @@ class FakeAsyncCommand<TParam, TResult>
   /// Ordered list of all parameter payloads supplied to [execute].
   List<TParam> get callHistory => List.unmodifiable(_callHistory);
 
+  /// Generation of the execution currently allowed to mutate status.
+  ///
+  /// Exposed so tests can assert that a superseded execution lost authority.
+  int get authoritativeGeneration => _authoritativeGeneration;
+
+  /// Whether an execution is currently in flight.
+  bool get isExecuting => _status == AsyncCommandStatus.running;
+
   /// Configures a static result value returned on subsequent executions.
   void setResult(TResult result) {
     _configuredResult = result;
@@ -80,7 +103,13 @@ class FakeAsyncCommand<TParam, TResult>
     _handler = handler;
   }
 
-  void _updateStatus(AsyncCommandStatus newStatus) {
+  /// Whether [generation] is still the authoritative execution.
+  bool _isAuthoritative(int generation) =>
+      generation == _authoritativeGeneration;
+
+  /// Applies a status transition only if [generation] is still authoritative.
+  void _updateStatus(AsyncCommandStatus newStatus, int generation) {
+    if (!_isAuthoritative(generation)) return;
     if (_status == newStatus) return;
     _status = newStatus;
     _statusController.add(newStatus);
@@ -102,52 +131,57 @@ class FakeAsyncCommand<TParam, TResult>
     _lastParam = param;
     _callHistory.add(param);
 
-    final stopwatch = Stopwatch()..start();
-    _updateStatus(AsyncCommandStatus.running);
+    // F1: cancel-and-replace. The incumbent is signalled, then superseded.
+    final generation = ++_executionCounter;
+    _activeToken?.cancel('Replaced by a newer execution');
+    final token = cancellationToken ?? CancellationToken();
+    _activeToken = token;
+    _authoritativeGeneration = generation;
 
-    if (cancellationToken != null && cancellationToken.isCancelled) {
+    final stopwatch = Stopwatch()..start();
+    _updateStatus(AsyncCommandStatus.running, generation);
+
+    if (token.isCancelled) {
       _cancellationCount++;
-      _updateStatus(AsyncCommandStatus.cancelled);
+      _updateStatus(AsyncCommandStatus.cancelled, generation);
+      _releaseIfCurrent(generation, token);
       stopwatch.stop();
       return CommandCancelled<TResult>(
-        reason: cancellationToken.cancellationReason,
+        reason: token.cancellationReason,
         duration: stopwatch.elapsed,
         timestamp: DateTime.now(),
       );
     }
 
     if (_simulatedDelay > Duration.zero) {
-      if (cancellationToken != null) {
-        final completer = Completer<void>();
-        void listener(String? reason) {
-          if (!completer.isCompleted) {
-            completer.complete();
-          }
+      final completer = Completer<void>();
+      void listener(String? reason) {
+        if (!completer.isCompleted) {
+          completer.complete();
         }
+      }
 
-        cancellationToken.attachListener(listener);
-        final timer = Timer(_simulatedDelay, () {
-          if (!completer.isCompleted) {
-            completer.complete();
-          }
-        });
-
-        await completer.future;
-        timer.cancel();
-        cancellationToken.detachListener(listener);
-
-        if (cancellationToken.isCancelled) {
-          _cancellationCount++;
-          _updateStatus(AsyncCommandStatus.cancelled);
-          stopwatch.stop();
-          return CommandCancelled<TResult>(
-            reason: cancellationToken.cancellationReason,
-            duration: stopwatch.elapsed,
-            timestamp: DateTime.now(),
-          );
+      token.attachListener(listener);
+      final timer = Timer(_simulatedDelay, () {
+        if (!completer.isCompleted) {
+          completer.complete();
         }
-      } else {
-        await Future<void>.delayed(_simulatedDelay);
+      });
+
+      await completer.future;
+      timer.cancel();
+      token.detachListener(listener);
+
+      if (token.isCancelled) {
+        _cancellationCount++;
+        _updateStatus(AsyncCommandStatus.cancelled, generation);
+        _releaseIfCurrent(generation, token);
+        stopwatch.stop();
+        return CommandCancelled<TResult>(
+          reason: token.cancellationReason,
+          duration: stopwatch.elapsed,
+          timestamp: DateTime.now(),
+        );
       }
     }
 
@@ -155,9 +189,10 @@ class FakeAsyncCommand<TParam, TResult>
       TResult resultValue;
 
       if (_handler != null) {
-        resultValue = await _handler!(param, cancellationToken);
+        resultValue = await _handler!(param, token);
       } else if (_configuredError != null) {
-        _updateStatus(AsyncCommandStatus.failed);
+        _updateStatus(AsyncCommandStatus.failed, generation);
+        _releaseIfCurrent(generation, token);
         stopwatch.stop();
         return CommandFailure<TResult>(
           error: _configuredError!,
@@ -172,18 +207,20 @@ class FakeAsyncCommand<TParam, TResult>
         );
       }
 
-      if (cancellationToken != null && cancellationToken.isCancelled) {
+      if (token.isCancelled) {
         _cancellationCount++;
-        _updateStatus(AsyncCommandStatus.cancelled);
+        _updateStatus(AsyncCommandStatus.cancelled, generation);
+        _releaseIfCurrent(generation, token);
         stopwatch.stop();
         return CommandCancelled<TResult>(
-          reason: cancellationToken.cancellationReason,
+          reason: token.cancellationReason,
           duration: stopwatch.elapsed,
           timestamp: DateTime.now(),
         );
       }
 
-      _updateStatus(AsyncCommandStatus.succeeded);
+      _updateStatus(AsyncCommandStatus.succeeded, generation);
+      _releaseIfCurrent(generation, token);
       stopwatch.stop();
       return CommandSuccess<TResult>(
         value: resultValue,
@@ -192,7 +229,8 @@ class FakeAsyncCommand<TParam, TResult>
       );
     } on CommandCancellationException catch (e) {
       _cancellationCount++;
-      _updateStatus(AsyncCommandStatus.cancelled);
+      _updateStatus(AsyncCommandStatus.cancelled, generation);
+      _releaseIfCurrent(generation, token);
       stopwatch.stop();
       return CommandCancelled<TResult>(
         reason: e.reason,
@@ -200,18 +238,20 @@ class FakeAsyncCommand<TParam, TResult>
         timestamp: DateTime.now(),
       );
     } catch (e, st) {
-      if (cancellationToken != null && cancellationToken.isCancelled) {
+      if (token.isCancelled) {
         _cancellationCount++;
-        _updateStatus(AsyncCommandStatus.cancelled);
+        _updateStatus(AsyncCommandStatus.cancelled, generation);
+        _releaseIfCurrent(generation, token);
         stopwatch.stop();
         return CommandCancelled<TResult>(
-          reason: cancellationToken.cancellationReason,
+          reason: token.cancellationReason,
           duration: stopwatch.elapsed,
           timestamp: DateTime.now(),
         );
       }
 
-      _updateStatus(AsyncCommandStatus.failed);
+      _updateStatus(AsyncCommandStatus.failed, generation);
+      _releaseIfCurrent(generation, token);
       stopwatch.stop();
       return CommandFailure<TResult>(
         error: CommandGenericError(
@@ -225,13 +265,22 @@ class FakeAsyncCommand<TParam, TResult>
     }
   }
 
+  /// Clears the active token only when [generation] still owns it (F2).
+  void _releaseIfCurrent(int generation, CancellationToken token) {
+    if (_isAuthoritative(generation) && identical(_activeToken, token)) {
+      _activeToken = null;
+    }
+  }
+
   /// Resets invocation history and status to idle.
   void reset() {
     _callCount = 0;
     _cancellationCount = 0;
     _lastParam = null;
     _callHistory.clear();
-    _updateStatus(AsyncCommandStatus.idle);
+    _activeToken = null;
+    _authoritativeGeneration = ++_executionCounter;
+    _updateStatus(AsyncCommandStatus.idle, _authoritativeGeneration);
   }
 
   @override

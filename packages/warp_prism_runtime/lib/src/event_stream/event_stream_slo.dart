@@ -6,7 +6,7 @@ import 'package:meta/meta.dart';
 /// where emissions are delivered to listeners in the exact sequence they
 /// were produced.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 enum EventOrderingGuarantee {
   /// Strict append-only chronological ordering (oldest to newest).
@@ -18,7 +18,7 @@ enum EventOrderingGuarantee {
 /// Declares runtime performance and ordering expectations as pure contract
 /// data without speculative low-level optimization machinery.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 @immutable
 class EventStreamSlo {

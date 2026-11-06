@@ -27,6 +27,8 @@ import '../atoms/atoms.dart';
 /// )
 /// DSStateSurface.disabled(title: 'Feature not available')
 /// DSStateSurface.stale(title: 'Data outdated', subtitle: 'Refresh to see latest')
+/// // Indeterminate (Task 1869, EXPERIMENTAL — fail-closed, never success):
+/// DSStateSurface.unknown(title: 'Sync status unclear')
 /// ```
 class DSStateSurface extends StatelessWidget {
   /// The type of state being rendered.
@@ -158,6 +160,106 @@ class DSStateSurface extends StatelessWidget {
     this.compact = false,
   }) : stateType = DSStateType.excluded;
 
+  /// Convenience constructor for the unknown state (Task 1869, EXPERIMENTAL).
+  ///
+  /// Use when the state of a region cannot yet be determined — neither
+  /// success, failure, nor any other determinate state is honest.
+  /// Fail-closed: no affirmative action label by default, neutral token
+  /// color, no progress animation, live-region announcement.
+  const DSStateSurface.unknown({
+    super.key,
+    this.icon,
+    required this.title,
+    this.subtitle,
+    this.actionLabel,
+    this.onAction,
+    this.accentColor,
+    this.compact = false,
+  }) : stateType = DSStateType.unknown;
+
+  /// Convergence constructor for CC `LoadingPane` donors (Task 1876, F-09).
+  ///
+  /// EXPERIMENTAL: full-width loading placeholder rendered through the
+  /// loading mode. Excluded from golden capture (loading states are
+  /// indeterminate-in-time, never frozen).
+  const DSStateSurface.loadingPane({
+    super.key,
+    this.icon,
+    this.title = 'Loading...',
+    this.subtitle,
+    this.actionLabel,
+    this.onAction,
+    this.accentColor,
+    this.compact = false,
+  }) : stateType = DSStateType.loading;
+
+  /// Convergence constructor for CC `LoadingRow` donors (Task 1876, F-09).
+  ///
+  /// EXPERIMENTAL: compact inline loading row rendered through the loading
+  /// mode. Excluded from golden capture.
+  const DSStateSurface.loadingRow({
+    super.key,
+    this.icon,
+    this.title = 'Loading...',
+    this.subtitle,
+    this.actionLabel,
+    this.onAction,
+    this.accentColor,
+    this.compact = true,
+  }) : stateType = DSStateType.loading;
+
+  /// Convergence constructor for Warpblade inline errors (Task 1876, F-09).
+  ///
+  /// EXPERIMENTAL: compact error surface for inline failure chrome.
+  /// Sanitized copy only — callers must never pass exception strings,
+  /// stack traces, or daemon internals as [title]/[subtitle].
+  const DSStateSurface.inlineError({
+    super.key,
+    this.icon,
+    required this.title,
+    this.subtitle,
+    this.actionLabel = 'Retry',
+    this.onAction,
+    this.accentColor,
+    this.compact = true,
+  }) : stateType = DSStateType.error;
+
+  /// Convergence constructor for the bootstrap failure case (Task 1876,
+  /// F-09).
+  ///
+  /// EXPERIMENTAL: fail-closed startup failure rendered through the error
+  /// mode with sanitized defaults. No affirmative action unless [onAction]
+  /// is provided. Prefer [DSStartupFailureView] (in
+  /// `ds_startup_failure_view.dart`) when the underlying cause object is at
+  /// hand — it accepts the cause without ever rendering it.
+  const DSStateSurface.startupFailure({
+    super.key,
+    this.icon,
+    this.title = 'Startup failed',
+    this.subtitle =
+        'The workspace could not start. Check the connection and try again.',
+    this.actionLabel = 'Retry',
+    this.onAction,
+    this.accentColor,
+    this.compact = false,
+  }) : stateType = DSStateType.error;
+
+  /// Convergence constructor for the bootstrap loading case (Task 1876,
+  /// F-09).
+  ///
+  /// EXPERIMENTAL: initial bootstrap loading state rendered through the
+  /// loading mode. Excluded from golden capture.
+  const DSStateSurface.bootstrapLoading({
+    super.key,
+    this.icon,
+    this.title = 'Starting…',
+    this.subtitle,
+    this.actionLabel,
+    this.onAction,
+    this.accentColor,
+    this.compact = false,
+  }) : stateType = DSStateType.loading;
+
   @override
   Widget build(BuildContext context) {
     final effectiveColor = accentColor ?? _defaultColor;
@@ -170,6 +272,9 @@ class DSStateSurface extends StatelessWidget {
     return Semantics(
       container: true,
       label: _semanticLabel,
+      // Indeterminate states announce on appearance so assistive
+      // technology surfaces the lack of determination (Task 1869).
+      liveRegion: stateType.isIndeterminate,
       child: Center(
         child: Padding(
           padding: EdgeInsets.all(compact ? DSSpacing.md : DSSpacing.lg),
@@ -248,6 +353,8 @@ class DSStateSurface extends StatelessWidget {
         return 'Degraded: reduced quality';
       case DSStateType.excluded:
         return 'Excluded: outside scope';
+      case DSStateType.unknown:
+        return 'Unknown: state not yet determined, no action taken';
     }
   }
 
@@ -267,6 +374,8 @@ class DSStateSurface extends StatelessWidget {
         return DSColors.statusDegraded;
       case DSStateType.excluded:
         return DSColors.statusExcluded;
+      case DSStateType.unknown:
+        return DSColors.statusUnknown;
     }
   }
 
@@ -286,6 +395,8 @@ class DSStateSurface extends StatelessWidget {
         return Icons.warning_amber;
       case DSStateType.excluded:
         return Icons.remove_circle_outline;
+      case DSStateType.unknown:
+        return Icons.help_outline;
     }
   }
 }
@@ -312,6 +423,28 @@ enum DSStateType {
 
   /// Content was filtered out or excluded by governance rules.
   excluded,
+
+  /// State cannot yet be determined (Task 1869, EXPERIMENTAL).
+  ///
+  /// Fail-closed: never renders as success, enabled, or verified.
+  /// Neutral token color, no animation, no affirmative action by default.
+  unknown,
+}
+
+/// Honest-unknown helpers for [DSStateType] (Task 1869, F-02).
+///
+/// Centralizes the fail-closed rule: [isIndeterminate] states must never
+/// be presented through success, enabled, or verified affordances, and
+/// are excluded from golden capture.
+extension DSStateTypeHonestUnknown on DSStateType {
+  /// States whose determination is withheld (currently only [unknown]).
+  static const indeterminateValues = <DSStateType>{DSStateType.unknown};
+
+  /// True when this state withholds determination.
+  bool get isIndeterminate => this == DSStateType.unknown;
+
+  /// True when this state carries a determination.
+  bool get isDeterminate => !isIndeterminate;
 }
 
 class _StateActionButton extends StatelessWidget {

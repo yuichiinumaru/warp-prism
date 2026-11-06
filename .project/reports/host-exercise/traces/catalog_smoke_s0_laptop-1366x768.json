@@ -1,0 +1,33 @@
+{
+  "seed": 0,
+  "host": "catalog",
+  "mode": "smoke",
+  "initial_route": "gallery",
+  "viewport": {
+    "name": "laptop-1366x768",
+    "width": 1366.0,
+    "height": 768.0,
+    "device_pixel_ratio": 1.0
+  },
+  "theme_recipe": "khalai-blue",
+  "action_budget": 2,
+  "actions": [
+    {
+      "index": 0,
+      "target": "key:catalog-nav-connected-lab",
+      "action": "tap",
+      "route_before": "gallery",
+      "route_after": "connected-lab",
+      "state_marker": "candidates=26"
+    },
+    {
+      "index": 1,
+      "target": "key:catalog-nav-gallery",
+      "action": "tap",
+      "route_before": "connected-lab",
+      "route_after": "gallery",
+      "state_marker": "candidates=4"
+    }
+  ],
+  "errors": []
+}

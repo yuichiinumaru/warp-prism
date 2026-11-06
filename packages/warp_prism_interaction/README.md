@@ -2,7 +2,7 @@
 
 > **Status**: EXPERIMENTAL (candidate Interaction Design System kernel)
 > **Layer**: IDS (pure Dart interaction semantics)
-> **Charter / Governance**: `docs/architecture/layer-contracts-v2.md` · `docs/architecture/package-topology.md`
+> **Charter / Governance**: `.project/architecture/layer-contracts.md` · `.project/architecture/package-topology.md`
 
 ## Overview
 
@@ -10,7 +10,7 @@
 
 ## Admitted Scope (Recurrence-Proven)
 
-Per empirical interaction inventory (`docs/architecture/interaction-inventory.md` §2, §7):
+Per empirical interaction inventory (`.project/architecture/interaction-inventory.md` §2, §7):
 
 - **Selection model** (`lib/src/selection/`): Immutable `SelectionState<T>` (single / multiple / none), `SelectionChangeEvent<T>`, anchor tracking, and `SelectionNotifier<T>` bus. Subsumes local, controlled, and controller-driven selection patterns.
 - **Inspection model** (`lib/src/inspection/`): `InspectionIntent<T>`, `InspectionPayload<T>`, `InspectionLifecycle` (`proposed`, `active`, `dismissed`), and `InspectionNotifier<T>`.

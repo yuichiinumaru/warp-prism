@@ -897,12 +897,14 @@ impl SseDecode for crate::api::FrbCommandResult {
         let mut var_timestampMillis = <i64>::sse_decode(deserializer);
         let mut var_value = <Option<String>>::sse_decode(deserializer);
         let mut var_errorMessage = <Option<String>>::sse_decode(deserializer);
+        let mut var_errorKind = <Option<String>>::sse_decode(deserializer);
         let mut var_isCancelled = <bool>::sse_decode(deserializer);
         return crate::api::FrbCommandResult {
             duration_ms: var_durationMs,
             timestamp_millis: var_timestampMillis,
             value: var_value,
             error_message: var_errorMessage,
+            error_kind: var_errorKind,
             is_cancelled: var_isCancelled,
         };
     }
@@ -1309,6 +1311,7 @@ impl flutter_rust_bridge::IntoDart for crate::api::FrbCommandResult {
             self.timestamp_millis.into_into_dart().into_dart(),
             self.value.into_into_dart().into_dart(),
             self.error_message.into_into_dart().into_dart(),
+            self.error_kind.into_into_dart().into_dart(),
             self.is_cancelled.into_into_dart().into_dart(),
         ]
         .into_dart()
@@ -1598,6 +1601,7 @@ impl SseEncode for crate::api::FrbCommandResult {
         <i64>::sse_encode(self.timestamp_millis, serializer);
         <Option<String>>::sse_encode(self.value, serializer);
         <Option<String>>::sse_encode(self.error_message, serializer);
+        <Option<String>>::sse_encode(self.error_kind, serializer);
         <bool>::sse_encode(self.is_cancelled, serializer);
     }
 }

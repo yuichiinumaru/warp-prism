@@ -140,10 +140,7 @@ class _DSWorkspaceShareCardState extends State<DSWorkspaceShareCard> {
               // Header
               Row(
                 children: [
-                  DSIcon(
-                    Icons.share_outlined,
-                    color: DSColors.accentBlue,
-                  ),
+                  DSIcon(Icons.share_outlined, color: DSColors.accentBlue),
                   const SizedBox(width: DSSpacing.sm),
                   Expanded(
                     child: DSText.bodyMedium(

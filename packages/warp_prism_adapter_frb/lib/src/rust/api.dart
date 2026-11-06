@@ -129,6 +129,7 @@ class FrbCommandResult {
   final PlatformInt64 timestampMillis;
   final String? value;
   final String? errorMessage;
+  final String? errorKind;
   final bool isCancelled;
 
   const FrbCommandResult({
@@ -136,6 +137,7 @@ class FrbCommandResult {
     required this.timestampMillis,
     this.value,
     this.errorMessage,
+    this.errorKind,
     required this.isCancelled,
   });
 
@@ -145,6 +147,7 @@ class FrbCommandResult {
       timestampMillis.hashCode ^
       value.hashCode ^
       errorMessage.hashCode ^
+      (errorKind?.hashCode ?? 0) ^
       isCancelled.hashCode;
 
   @override
@@ -156,6 +159,7 @@ class FrbCommandResult {
           timestampMillis == other.timestampMillis &&
           value == other.value &&
           errorMessage == other.errorMessage &&
+          errorKind == other.errorKind &&
           isCancelled == other.isCancelled;
 }
 

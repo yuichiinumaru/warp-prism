@@ -3,6 +3,7 @@
 /// Task 1117: Tests that ForceDirectedLayout produces stable positions
 /// within canvas bounds for a 10-node, 15-edge graph in <100ms.
 library;
+
 import 'dart:ui';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:warp_prism_ui/src/organisms/graph/graph_model.dart';
@@ -140,11 +141,7 @@ void main() {
       const canvasSize = Size(800, 600);
       const singleModel = GraphModel(
         nodes: [
-          GraphNode(
-            id: GraphNodeId('solo'),
-            label: 'Solo',
-            type: 'agent',
-          ),
+          GraphNode(id: GraphNodeId('solo'), label: 'Solo', type: 'agent'),
         ],
         edges: [],
       );
@@ -196,16 +193,8 @@ void main() {
       // pulls them together. Same distance under large spacing → no pull.
       final model = GraphModel(
         nodes: [
-          const GraphNode(
-            id: GraphNodeId('a'),
-            label: 'A',
-            type: 'agent',
-          ),
-          const GraphNode(
-            id: GraphNodeId('b'),
-            label: 'B',
-            type: 'skill',
-          ),
+          const GraphNode(id: GraphNodeId('a'), label: 'A', type: 'agent'),
+          const GraphNode(id: GraphNodeId('b'), label: 'B', type: 'skill'),
         ],
         edges: [GraphEdge.create(sourceId: 'a', targetId: 'b')],
       );

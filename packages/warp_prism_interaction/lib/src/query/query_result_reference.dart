@@ -5,7 +5,7 @@ import 'package:meta/meta.dart';
 /// Encapsulates result identity, item count, data origin/provenance,
 /// and optional in-memory item references without prescribing UI layout.
 ///
-/// Lifecycle: PROVEN (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: PROVEN (see `.project/architecture/layer-contracts.md`).
 @immutable
 class QueryResultReference<T extends Object> {
   /// Opaque correlation token identifying this result set.

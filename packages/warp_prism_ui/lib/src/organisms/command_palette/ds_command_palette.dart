@@ -50,6 +50,16 @@ class DSCommand {
   /// Keyboard shortcut hint displayed in the item (e.g., "Ctrl+N").
   final String? shortcut;
 
+  /// Disabled reason propagated from IDS eligibility (Task 1870, F-03).
+  ///
+  /// Null ⇒ the command dispatches normally. Non-null ⇒ the item renders
+  /// disabled-with-reason (never hidden, never dispatching): the reason is
+  /// shown beneath the label and announced to assistive technology, and
+  /// activation routes to [DSCommandPalette.onDisabledCommand] instead of
+  /// [onExecute]. Presentation-only: IDS owns the eligibility outcome; this
+  /// field only carries its rendered reason.
+  final String? disabledReason;
+
   const DSCommand({
     required this.id,
     required this.label,
@@ -59,7 +69,11 @@ class DSCommand {
     this.onExecute,
     this.route,
     this.shortcut,
+    this.disabledReason,
   });
+
+  /// True when the command may dispatch ([disabledReason] == null).
+  bool get isEnabled => disabledReason == null;
 }
 
 // =============================================================================
@@ -86,6 +100,13 @@ class DSCommandPalette extends StatefulWidget {
   /// Called when a command is executed. Receives the selected command.
   final ValueChanged<DSCommand>? onExecute;
 
+  /// Called when a disabled-with-reason command is activated (tap or Enter).
+  ///
+  /// Receives the refused command; its [DSCommand.disabledReason] explains
+  /// why dispatch was refused. A disabled activation never invokes
+  /// [onExecute] nor the command's own [DSCommand.onExecute].
+  final ValueChanged<DSCommand>? onDisabledCommand;
+
   /// Called when the palette should close (Escape or backdrop tap).
   final VoidCallback? onClose;
 
@@ -99,6 +120,7 @@ class DSCommandPalette extends StatefulWidget {
     super.key,
     required this.commands,
     this.onExecute,
+    this.onDisabledCommand,
     this.onClose,
     this.initialQuery,
     this.placeholder = 'Type a command...',
@@ -202,6 +224,10 @@ class _DSCommandPaletteState extends State<DSCommandPalette> {
   }
 
   void _executeCommand(DSCommand cmd) {
+    if (!cmd.isEnabled) {
+      widget.onDisabledCommand?.call(cmd);
+      return;
+    }
     widget.onExecute?.call(cmd);
     cmd.onExecute?.call();
     widget.onClose?.call();
@@ -502,9 +528,7 @@ class _CatChip extends StatelessWidget {
     final bg = isActive
         ? DSColors.accentBlue.withValues(alpha: 0.15)
         : DSColors.transparent;
-    final border = isActive
-        ? DSColors.focusRing
-        : DSColors.borderSubtle;
+    final border = isActive ? DSColors.focusRing : DSColors.borderSubtle;
     final fg = isActive ? DSColors.accentBlue : DSColors.textTertiary;
 
     return Semantics(
@@ -677,17 +701,27 @@ class _CommandItem extends StatelessWidget {
     final bg = isSelected
         ? DSColors.accentBlue.withValues(alpha: 0.08)
         : DSColors.transparent;
-    final borderColor = isSelected
-        ? DSColors.focusRing
-        : DSColors.transparent;
-    final iconColor = isSelected ? DSColors.accentBlue : DSColors.textSecondary;
+    final borderColor = isSelected ? DSColors.focusRing : DSColors.transparent;
+    final enabled = command.isEnabled;
+    final iconColor = enabled
+        ? (isSelected ? DSColors.accentBlue : DSColors.textSecondary)
+        : DSColors.textDisabled;
+
+    final semanticLabel = StringBuffer(command.label);
+    final description = command.description;
+    if (description != null && description.isNotEmpty) {
+      semanticLabel.write('. $description');
+    }
+    final disabledReason = command.disabledReason;
+    if (!enabled && disabledReason != null && disabledReason.isNotEmpty) {
+      semanticLabel.write('. Disabled: $disabledReason');
+    }
 
     return Semantics(
       button: true,
+      enabled: enabled,
       selected: isSelected,
-      label: command.description == null
-          ? command.label
-          : '${command.label}. ${command.description}',
+      label: semanticLabel.toString(),
       child: Material(
         color: DSColors.transparent,
         child: InkWell(
@@ -716,16 +750,18 @@ class _CommandItem extends StatelessWidget {
                   // Icon
                   DSIcon(command.icon, color: iconColor, size: 18),
                   const SizedBox(width: DSSpacing.md),
-                  // Label + description
+                  // Label + description + disabled reason
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         DSText.labelLarge(
                           command.label,
-                          color: isSelected
-                              ? DSColors.textPrimary
-                              : DSColors.textSecondary,
+                          color: enabled
+                              ? (isSelected
+                                    ? DSColors.textPrimary
+                                    : DSColors.textSecondary)
+                              : DSColors.textDisabled,
                         ),
                         if (command.description != null) ...[
                           const SizedBox(height: 1),
@@ -733,6 +769,19 @@ class _CommandItem extends StatelessWidget {
                             command.description!,
                             color: DSColors.textTertiary,
                             maxLines: 1,
+                          ),
+                        ],
+                        // Disabled-reason propagation: visible reason line,
+                        // never hidden. Presentation only — no visual restyle
+                        // beyond this line (Task 1870).
+                        if (!enabled &&
+                            disabledReason != null &&
+                            disabledReason.isNotEmpty) ...[
+                          const SizedBox(height: 1),
+                          DSText.bodySmall(
+                            disabledReason,
+                            color: DSColors.textDisabled,
+                            maxLines: 2,
                           ),
                         ],
                       ],
@@ -850,6 +899,7 @@ Future<void> showDSCommandPalette(
   BuildContext context, {
   required List<DSCommand> commands,
   ValueChanged<DSCommand>? onExecute,
+  ValueChanged<DSCommand>? onDisabledCommand,
   String? initialQuery,
   String placeholder = 'Type a command...',
 }) {
@@ -857,6 +907,7 @@ Future<void> showDSCommandPalette(
     _CommandPaletteRoute(
       commands: commands,
       onExecute: onExecute,
+      onDisabledCommand: onDisabledCommand,
       initialQuery: initialQuery,
       placeholder: placeholder,
     ),
@@ -866,12 +917,14 @@ Future<void> showDSCommandPalette(
 class _CommandPaletteRoute extends PageRouteBuilder<void> {
   final List<DSCommand> commands;
   final ValueChanged<DSCommand>? onExecute;
+  final ValueChanged<DSCommand>? onDisabledCommand;
   final String? initialQuery;
   final String placeholder;
 
   _CommandPaletteRoute({
     required this.commands,
     this.onExecute,
+    this.onDisabledCommand,
     this.initialQuery,
     this.placeholder = 'Type a command...',
   }) : super(
@@ -884,6 +937,7 @@ class _CommandPaletteRoute extends PageRouteBuilder<void> {
            return DSCommandPalette(
              commands: commands,
              onExecute: onExecute,
+             onDisabledCommand: onDisabledCommand,
              onClose: () => Navigator.of(context).pop(),
              initialQuery: initialQuery,
              placeholder: placeholder,
@@ -940,7 +994,9 @@ class DSCommandPaletteShortcut extends StatefulWidget {
 
 class _DSCommandPaletteShortcutState extends State<DSCommandPaletteShortcut> {
   bool _isOpen = false;
-  final FocusNode _focusNode = FocusNode(debugLabel: 'DSCommandPaletteShortcut');
+  final FocusNode _focusNode = FocusNode(
+    debugLabel: 'DSCommandPaletteShortcut',
+  );
 
   @override
   void dispose() {

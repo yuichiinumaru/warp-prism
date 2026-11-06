@@ -224,7 +224,9 @@ void main() {
         ...tester.widgetList<AnimatedContainer>(find.byType(AnimatedContainer)),
       ];
       bool foundFocusRing = false;
-      final expectedColor = DSTheme.focusRingOf(tester.element(find.byType(DSButton)));
+      final expectedColor = DSTheme.focusRingOf(
+        tester.element(find.byType(DSButton)),
+      );
       for (final c in containers) {
         final dec = c is Container
             ? c.decoration

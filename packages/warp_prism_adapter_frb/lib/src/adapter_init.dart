@@ -4,7 +4,7 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'rust/frb_generated.dart';
 
 /// Helper to initialize the native Flutter Rust Bridge library.
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 abstract final class WarpBridge {
   static bool _initialized = false;

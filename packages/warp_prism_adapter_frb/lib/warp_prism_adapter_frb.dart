@@ -1,3 +1,4 @@
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 library warp_prism_adapter_frb;
 
 export 'src/adapter_init.dart';

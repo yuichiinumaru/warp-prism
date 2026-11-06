@@ -10,7 +10,7 @@ import 'health_source_models.dart';
 /// **PURGE LAW**: This contract contains strictly zero polling mechanisms,
 /// repetition policies, or UI focus refresh triggers.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 abstract interface class HealthSource {
   /// Evaluates and returns an immediate point-in-time [HealthSnapshot].

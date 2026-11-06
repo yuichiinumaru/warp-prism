@@ -6,7 +6,7 @@ import 'package:meta/meta.dart';
 /// Applications and adapters may define custom namespaced constants
 /// (e.g. `service.daemon`, `pipeline.step`, `workspace.asset`, `data.table`).
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 typedef GraphNodeKind = String;
 
@@ -16,7 +16,7 @@ typedef GraphNodeKind = String;
 /// Applications and adapters may define custom namespaced constants
 /// (e.g. `depends_on`, `data_flow`, `parent_child`, `communicates_with`).
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 typedef GraphEdgeKind = String;
 
@@ -25,7 +25,7 @@ typedef GraphEdgeKind = String;
 /// **PURGE LAW**: This model contains strictly zero spatial coordinates
 /// (`position: Offset`), layout bounds, rendering styles, or selection flags.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 @immutable
 class GraphNode<T> {
@@ -100,7 +100,7 @@ class GraphNode<T> {
 /// **PURGE LAW**: This model contains strictly zero routing points,
 /// spline controls, canvas coordinates, or visual styling attributes.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 @immutable
 class GraphEdge<T> {
@@ -174,7 +174,7 @@ class GraphEdge<T> {
 ///
 /// Houses indexed nodes, edges, and provides fast adjacency lookup helpers.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 @immutable
 class GraphSnapshot<TNodePayload, TEdgePayload> {
@@ -263,7 +263,7 @@ class GraphSnapshot<TNodePayload, TEdgePayload> {
 
 /// Base sealed class representing an incremental or whole-graph update event.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 sealed class GraphUpdate<TNodePayload, TEdgePayload> {
   const GraphUpdate();
@@ -271,7 +271,7 @@ sealed class GraphUpdate<TNodePayload, TEdgePayload> {
 
 /// Update event signaling a new node was added to the graph.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 @immutable
 class NodeAdded<TNodePayload, TEdgePayload>
@@ -298,7 +298,7 @@ class NodeAdded<TNodePayload, TEdgePayload>
 
 /// Update event signaling an existing node was modified.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 @immutable
 class NodeUpdated<TNodePayload, TEdgePayload>
@@ -329,7 +329,7 @@ class NodeUpdated<TNodePayload, TEdgePayload>
 
 /// Update event signaling a node was removed from the graph.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 @immutable
 class NodeRemoved<TNodePayload, TEdgePayload>
@@ -360,7 +360,7 @@ class NodeRemoved<TNodePayload, TEdgePayload>
 
 /// Update event signaling a new edge was added to the graph.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 @immutable
 class EdgeAdded<TNodePayload, TEdgePayload>
@@ -387,7 +387,7 @@ class EdgeAdded<TNodePayload, TEdgePayload>
 
 /// Update event signaling an existing edge was modified.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 @immutable
 class EdgeUpdated<TNodePayload, TEdgePayload>
@@ -418,7 +418,7 @@ class EdgeUpdated<TNodePayload, TEdgePayload>
 
 /// Update event signaling an edge was removed from the graph.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 @immutable
 class EdgeRemoved<TNodePayload, TEdgePayload>
@@ -449,7 +449,7 @@ class EdgeRemoved<TNodePayload, TEdgePayload>
 
 /// Update event signaling the entire graph was reset or replaced with a new snapshot.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 @immutable
 class GraphReset<TNodePayload, TEdgePayload>

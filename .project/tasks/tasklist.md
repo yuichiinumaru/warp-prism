@@ -1,10 +1,61 @@
 # Ganthritor Unified Task List
 
-> **Auto-generated**: do not edit manually. Use `project-development/sub-skills/tasklist-sync`.
-> **Source**: individual task files in the task lane directories under `docs/tasks`
-> **Last rebuilt**: 2026-09-08 18:09:26 UTC
+> **Auto-generated**: do not edit manually. Use `project_tasks(action="sync")`.
+> **Source**: individual task files in the task lane directories under `.project/tasks`
+> **Last rebuilt**: 2026-11-01 05:40:57 UTC
 
 ---
+
+## Open (P0 Critical)
+
+| Task | Title | Type | Blocks | Path |
+|------|-------|------|--------|------|
+| 1847 | Reconcile recurrence-gate language in governance docs to the full-coverage mandate | `misc` |  | `.project/tasks/01-open/1847-warp-prism-mandate-recurrence-language-docs-reconciliation.md` |
+| 1868 | Capability-gated action + authority outcome (F-01) | `misc` |  | `.project/tasks/01-open/1868-warp-prism-capability-gated-action-authority.md` |
+| 1871 | Decision-review surface + bounded repair (F-04) | `misc` |  | `.project/tasks/01-open/1871-warp-prism-decision-review-bounded-repair.md` |
+| 1872 | Provenance family + sealed mode + lineage strip (F-05) | `misc` |  | `.project/tasks/01-open/1872-warp-prism-provenance-witness-lineage.md` |
+| 1881 | PrismNumericField atom EXPERIMENTAL with Set\|Scrub commit typing | `misc` |  | `.project/tasks/01-open/1881-warp-prism-numeric-field-experimental.md` |
+
+## Open (P1 High)
+
+| Task | Title | Type | Blocks | Path |
+|------|-------|------|--------|------|
+| 1848 | Verify and reconcile the wp-component-absorption workflow with the full-coverage mandate | `misc` |  | `.project/tasks/01-open/1848-warp-prism-absorption-workflow-mandate-verification.md` |
+| 1869 | Honest-unknown + abstention vocabulary, fail-closed rendering (F-02) | `misc` |  | `.project/tasks/01-open/1869-warp-prism-honest-unknown-abstention-vocabulary.md` |
+| 1870 | Command registry + self-doc catalog + dispatch router (F-03) | `misc` |  | `.project/tasks/01-open/1870-warp-prism-command-registry-selfdoc-dispatch.md` |
+| 1873 | Shell-slot router + Draw-derived focus + sidebar section model (F-06) | `misc` |  | `.project/tasks/01-open/1873-warp-prism-shell-router-focus-sidebar.md` |
+| 1874 | Timeline chrome + IDS verbs + commit invariant (F-07) | `misc` |  | `.project/tasks/01-open/1874-warp-prism-timeline-chrome-verbs-commit.md` |
+| 1875 | Transport bar + injected formatter + timecode badges (F-08) | `misc` |  | `.project/tasks/01-open/1875-warp-prism-transport-bar-formatter-badges.md` |
+| 1876 | Startup-failure view + loading-chrome convergence (F-09) | `misc` |  | `.project/tasks/01-open/1876-warp-prism-startup-failure-loading-convergence.md` |
+| rem | 0004: Architecture-doc drift corrections | `misc` | N/A \| **Depends on**: N/A | `.project/tasks/01-open/rem-0004-architecture-doc-drift-corrections.md` |
+
+## Open (P2 Medium)
+
+| Task | Title | Type | Blocks | Path |
+|------|-------|------|--------|------|
+| 1858 | PrismJobBanner molecule with staged progress, cancel, and terminal receipt | `misc` |  | `.project/tasks/01-open/1858-warp-prism-job-banner-receipt.md` |
+| 1859 | AsyncJobExecutor identity plus terminality standard and EventStream/HealthSource bindings | `misc` |  | `.project/tasks/01-open/1859-warp-prism-async-job-executor-bindings.md` |
+| 1860 | PrismFilterBuilder organism plus PrismToolbarPanel framework | `misc` |  | `.project/tasks/01-open/1860-warp-prism-filter-builder-toolbar-panel.md` |
+| 1861 | PrismMeter atom plus PrismFaderStrip molecule and canvas-host contract | `misc` |  | `.project/tasks/01-open/1861-warp-prism-meter-fader-canvas-host.md` |
+| 1866 | PrismComposer organism EXPERIMENTAL (autogrow, mentions, attachments, drafts) | `misc` |  | `.project/tasks/01-open/1866-warp-prism-composer-experimental.md` |
+| 1867 | Harness upgrades — layer-table compaction, two-tier capture, drain/cancel, junk sweeps, toast policy | `misc` |  | `.project/tasks/01-open/1867-warp-prism-harness-upgrades-capture-nets-toast.md` |
+| 1882 | Token and shell convergence sweep onto Prism primitives | `misc` |  | `.project/tasks/01-open/1882-warp-prism-token-shell-convergence.md` |
+| 1883 | Session/panel/screen convergence onto existing Prism compositions | `misc` |  | `.project/tasks/01-open/1883-warp-prism-session-panel-convergence.md` |
+| 1884 | Graph/Health first-host proofs, DAG-gated (no host means HOLD with evidence) | `misc` |  | `.project/tasks/01-open/1884-warp-prism-graph-health-first-host-proofs.md` |
+| rem | 0005: host_exercise dead exports cleanup | `misc` | N/A \| **Depends on**: N/A — but re-check the three symbols at execution time (a worker may have wired them between investigation and execution; that flips the disposition to LIVE, and the task becomes a no-op with evidence). | `.project/tasks/01-open/rem-0005-host-exercise-dead-exports.md` |
+
+## Doing (P0 Critical)
+
+| Task | Title | Type | Blocks | Path |
+|------|-------|------|--------|------|
+| 1840 | Catalog Gallery StatusTicker Overflow + ListTile Ink Warnings | `misc` | Nothing structural. Unblocks clean host-composition evidence for | `.project/tasks/02-doing/1840-warp-prism-catalog-statusticker-overflow-listtile-warnings.md` |
+
+## Doing (P2 Medium)
+
+| Task | Title | Type | Blocks | Path |
+|------|-------|------|--------|------|
+| 1843 | Narrow gallery test-suppressor (`_suppressGalleryDemoNoise`) to per-test suppressor scope | `bugfix \| test-oracle \| review infrastructure` |  | `.project/tasks/02-doing/1843-warp-prism-test-suppressor-narrowing.md` |
+| 1846 | Clear the warp_prism_ui package-wide formatter baseline drift | `chore` |  | `.project/tasks/02-doing/1846-warp-prism-formatter-baseline-drift.md` |
 
 ## Review (P0 Critical)
 
@@ -19,63 +70,43 @@
 | Task | Title | Type | Blocks | Path |
 |------|-------|------|--------|------|
 | 1806 | Component and Gallery Visual Reconciliation | `ux-polish` | N/A (closes EPIC-18; unblocks future visual feature work) | `.project/tasks/03-review/1806-warp-prism-component-gallery-visual-reconciliation.md` |
+| 1844 | Harden the FRB adapter surface (native wiring, registry cleanup, error taxonomy) | `bugfix` | promotion of any EXPERIMENTAL adapter claim in `docs/bridge/README.md` | `.project/tasks/03-review/1844-warp-prism-adapter-frb-hardening.md` |
 
 ## Planning (P0 Critical)
 
 | Task | Title | Type | Blocks | Path |
 |------|-------|------|--------|------|
-| 1100 | Warp Prism Operational Atomic Design System Epic | `planning` | Warp Prism scaffold, Cybernetics Core frontend redesign, shared operational UI grammar | `.project/tasks/00-planning/1100-warp-prism-operational-atomic-design-system-epic.md` |
 | 1816 | Post-1805 Visual/Baseline Freeze | `misc` | Post-v2 visual baseline updates, goldens regeneration v2 | `.project/tasks/00-planning/1816-warp-prism-post-1805-visual-baseline-freeze.md` |
-| 1829 | First Real Product Pilot — OmniRoute Provider Vertical | `misc` | Pilot Harvest → L2 Rewrite-Capable gate | `.project/tasks/00-planning/1829-warp-prism-first-real-product-pilot-hold.md` |
-| EPIC | 17 — Warp Prism ADS: Form Primitives Gap | `misc` |  | `.project/tasks/00-planning/EPIC-17-warp-prism-ads-form-primitives-gap.md` |
-| EPIC | 19 — Warp Prism v2 Foundation | `misc` | EPIC-20 and EPIC-21 (both in PARALLEL after 19-gate), EPIC-22, and any FRB/Rust experiments. | `.project/tasks/00-planning/EPIC-19-warp-prism-v2-foundation.md` |
-| EPIC | 20 — Warp Prism Interaction Design System (IDS) Kernel | `misc` |  | `.project/tasks/00-planning/EPIC-20-warp-prism-ids-kernel.md` |
-| EPIC | 21 — Warp Prism Runtime Contracts (MVP) | `misc` |  | `.project/tasks/00-planning/EPIC-21-warp-prism-runtime-contracts-mvp.md` |
 
 ## Planning (P1 High)
 
 | Task | Title | Type | Blocks | Path |
 |------|-------|------|--------|------|
-| EPIC | 22 — Warp Prism Rust Golden Path (flutter_rust_bridge) + Integration Lab | `misc` |  | `.project/tasks/00-planning/EPIC-22-warp-prism-frb-golden-path-integration-lab.md` |
-| EPIC | 23 — Warp Prism Connected Catalog + Component Contract Registry | `misc` |  | `.project/tasks/00-planning/EPIC-23-warp-prism-connected-catalog-component-contract-registry.md` |
+| 1886 | Surface host + data-plane satellite seam (F-25) — HOLD | `misc` |  | `.project/tasks/00-planning/1886-warp-prism-surface-host-dataplane-seam.md` |
 
 ## Planning (P2 Medium)
 
 | Task | Title | Type | Blocks | Path |
 |------|-------|------|--------|------|
-| CANDIDATE | — Builder Wave Retrospect & Skill Upgrades (2026-07-18) | `Planning candidate (not executable) ` |  | `.project/tasks/00-planning/CANDIDATE-2026-07-18-builder-wave-retrospect-and-skill-upgrades.md` |
-| EPIC | 00 — Warp-Prism Foundation and Compile Gate | `misc` |  | `.project/tasks/00-planning/EPIC-00-warp-prism-foundation-compile-gate.md` |
-| EPIC | 01 — Warp-Prism Atomic Design System | `misc` |  | `.project/tasks/00-planning/EPIC-01-warp-prism-atomic-design-system.md` |
-| EPIC | 02 — Warp-Prism Mock Workspace Corpus | `misc` |  | `.project/tasks/00-planning/EPIC-02-warp-prism-mock-workspace-corpus.md` |
-| EPIC | 03 — Warp-Prism Data Layer and Graph Backbone | `misc` |  | `.project/tasks/00-planning/EPIC-03-warp-prism-data-layer-graph-backbone.md` |
-| EPIC | 04 — Warp-Prism Product Shell and Overview | `misc` |  | `.project/tasks/00-planning/EPIC-04-warp-prism-product-shell-overview.md` |
-| EPIC | 05 — Warp-Prism Map Surface | `misc` |  | `.project/tasks/00-planning/EPIC-05-warp-prism-map-surface.md` |
-| EPIC | 06 — Warp-Prism Operate Surface | `misc` |  | `.project/tasks/00-planning/EPIC-06-warp-prism-operate-surface.md` |
-| EPIC | 07 — Warp-Prism History Surface | `misc` |  | `.project/tasks/00-planning/EPIC-07-warp-prism-history-surface.md` |
-| EPIC | 08 — Warp-Prism Governance Surface | `misc` |  | `.project/tasks/00-planning/EPIC-08-warp-prism-governance-surface.md` |
-| EPIC | 09 — Warp-Prism Universal Asset Detail | `misc` |  | `.project/tasks/00-planning/EPIC-09-warp-prism-universal-asset-detail.md` |
-| EPIC | 10 — Warp-Prism Polish, Accessibility, and Demo Coherence | `misc` |  | `.project/tasks/00-planning/EPIC-10-warp-prism-polish-accessibility-demo-coherence.md` |
-| EPIC-11 | — Warp Prism Cybernetics Core Frontend | `misc` |  | `.project/tasks/00-planning/EPIC-11-warp-prism-cybercore-frontend.md` |
-| EPIC | 12 — Warp-Prism Test Suite Stabilization and Promotion Gates | `misc` |  | `.project/tasks/00-planning/EPIC-12-warp-prism-test-suite-stabilization-and-promotion-gates.md` |
-| EPIC | 13 — Warp-Prism ADS Public Contract and Catalog Hardening | `misc` |  | `.project/tasks/00-planning/EPIC-13-warp-prism-ads-public-contract-and-catalog-hardening.md` |
-| EPIC | 14 — Warp-Prism Observatory Legacy Contract Reconciliation | `misc` |  | `.project/tasks/00-planning/EPIC-14-warp-prism-observatory-legacy-contract-reconciliation.md` |
-| EPIC | 15 — Warp Prism ADS Organism Expansion (Reference Harvest) | `misc` |  | `.project/tasks/00-planning/EPIC-15-warp-prism-ads-organism-expansion-from-reference-harvest.md` |
-| EPIC | 16 — Warp Prism ADS: CyberCore Ops + Agent Transcript Organisms | `misc` |  | `.project/tasks/00-planning/EPIC-16-warp-prism-ads-cybercore-ops-and-agent-transcript-organisms.md` |
+| 1845 | Untrack committed Rust build output (`rust/target`) | `chore` |  | `.project/tasks/00-planning/1845-warp-prism-untrack-rust-build-artifacts.md` |
+| 1849 | Audition/compare matrix composition (F-20) — HOLD | `misc` |  | `.project/tasks/00-planning/1849-warp-prism-audition-compare-matrix-composition.md` |
+| 1850 | Descriptor-driven disclosure form pattern (F-21) | `misc` |  | `.project/tasks/00-planning/1850-warp-prism-descriptor-driven-disclosure-form.md` |
+| 1851 | Ribbon collapse-priority + tool-mode palette pattern (F-22) — HOLD | `misc` |  | `.project/tasks/00-planning/1851-warp-prism-ribbon-toolmode-palette-pattern.md` |
+| 1852 | Energy-curve editor disposition (F-23) — HOLD | `misc` |  | `.project/tasks/00-planning/1852-warp-prism-energy-curve-editor-disposition.md` |
+| 1885 | Presence overlay EXPERIMENTAL on fake room model (F-24) | `misc` |  | `.project/tasks/00-planning/1885-warp-prism-presence-overlay-experimental.md` |
+| 1887 | Sealed decision views + phase rail + epistemic lens (F-26) — HOLD | `misc` |  | `.project/tasks/00-planning/1887-warp-prism-sealed-decision-views-phase-rail.md` |
+| 1888 | Authority explainer + partial-fill remainder views (F-27) — HOLD | `misc` |  | `.project/tasks/00-planning/1888-warp-prism-authority-explainer-remainder-views.md` |
 | EPIC | 18 — Warp Prism Black Obsidian Visual Direction Reset | `misc` | New visual component work, visual golden regeneration, and promotion of visual-polish tasks that depend on the current palette. | `.project/tasks/00-planning/EPIC-18-warp-prism-black-obsidian-visual-direction-reset.md` |
-| EPIC-OR-00 | / OR-01 / OR-02 — OmniRoute Cross-Lane Planning Anchors (Parent-Repo Scope) | `misc` |  | `.project/tasks/00-planning/EPIC-OR-warp-prism-omniroute-cross-lane-anchors.md` |
-| Parent | monorepo tasks citing `warp-prism` | `misc` |  | `.project/tasks/00-planning/parent-tasks.md` |
-| PLAN | — Task 1807 Const-Migration Containment (PrismTokenRegistry blast radius) | `misc` |  | `.project/tasks/00-planning/PLAN-task1807-const-migration-containment.md` |
-| ROADMAP | — Warp-Prism ASW Observatory | `misc` |  | `.project/tasks/00-planning/ROADMAP-warp-prism-asw-observatory.md` |
-| Ads-to-Ids | Story Packet v8 — Validated Decomposition (33 Stories) | `misc` |  | `.project/tasks/00-planning/STORIES-ads-to-ids-epics-19-25.md` |
-
-## Planning (P3 Low)
-
-| Task | Title | Type | Blocks | Path |
-|------|-------|------|--------|------|
-| EPIC | 24 — Warp Prism Scaffolding & Extensibility Policy | `misc` |  | `.project/tasks/00-planning/EPIC-24-warp-prism-scaffolding-extensibility-policy.md` |
-| EPIC | 25 — Warp Prism Rewrite Resolver Strategy (Research-Only / Deferred) | `misc` |  | `.project/tasks/00-planning/EPIC-25-warp-prism-rewrite-resolver-strategy.md` |
-| EPIC | 26 — Warp Prism ADS: Ivisa Foundry Capability Harvest (Future Flutter Catalog) | `misc` |  | `.project/tasks/00-planning/EPIC-26-warp-prism-ads-ivisa-foundry-future-capability-catalog.md` |
-| PLAN | — 03-Review Lane Drain (36 parked tasks) | `misc` |  | `.project/tasks/00-planning/PLAN-03-review-drain.md` |
+| HOLD-warp-prism-bridge-surface-request | (EPIC-A S2) | `governance` |  | `.project/tasks/00-planning/HOLD-warp-prism-bridge-surface-request.md` |
+| HOLD-warp-prism-component-registry-schema | (EPIC-B S1) | `feature` |  | `.project/tasks/00-planning/HOLD-warp-prism-component-registry-schema.md` |
+| HOLD-warp-prism-data-plane-contract-spec | (EPIC-E S1) | `feature` |  | `.project/tasks/00-planning/HOLD-warp-prism-data-plane-contract-spec.md` |
+| HOLD-warp-prism-diff-viewer-spec | (EPIC-C S2) | `feature` |  | `.project/tasks/00-planning/HOLD-warp-prism-diff-viewer-spec.md` |
+| HOLD-warp-prism-health-badge-axis-spec | (EPIC-D S2) | `feature` |  | `.project/tasks/00-planning/HOLD-warp-prism-health-badge-axis-spec.md` |
+| HOLD-warp-prism-host-proof-protocol | (EPIC-A S1) | `governance` |  | `.project/tasks/00-planning/HOLD-warp-prism-host-proof-protocol.md` |
+| HOLD-warp-prism-job-progress-spec | (EPIC-D S1) | `feature` |  | `.project/tasks/00-planning/HOLD-warp-prism-job-progress-spec.md` |
+| HOLD-warp-prism-registry-harvest-verify-loop | (EPIC-B S2) | `feature` |  | `.project/tasks/00-planning/HOLD-warp-prism-registry-harvest-verify-loop.md` |
+| HOLD-warp-prism-review-lifecycle-spec | (EPIC-C S1) | `feature` |  | `.project/tasks/00-planning/HOLD-warp-prism-review-lifecycle-spec.md` |
+| PLAN | — Warp Prism Future Capability Program (Phase 2 materialization) | `misc` |  | `.project/tasks/00-planning/PLAN-warp-prism-future-capability-program.md` |
 
 ## Completed (P0)
 
@@ -177,6 +208,7 @@
 | 1832 | Responsive Layout Contract — Fixed-Height Overflow in Shared Organisms | `remediation` | Task 1805 (fresh trustworthy visual packet requires technically correct hosts) | `.project/tasks/04-completed/1832-warp-prism-responsive-layout-contract-overflow.md` |
 | 1833 | Theme-Role and Accent Propagation — Interactive Recipe Consistency | `remediation` | Task 1805 (criteria 3/5/9/11 cannot be judged until propagation is consistent) | `.project/tasks/04-completed/1833-warp-prism-theme-role-accent-propagation.md` |
 | 1838 | Real-Host Composition Revalidation Evidence — 1805 Criteria 3/5/9/11 | `verification` | Task 1805 criteria 3/5/11 re-judgment (owner human gate follows this evidence) | `.project/tasks/04-completed/1838-warp-prism-real-host-revalidation-evidence.md` |
+| 1839 | Theme Brand Normalization (Nerazim Teal / Purifier Gold) | `misc` | Removal of `AGENTS.md` §7.0 (temporary section) | `.project/tasks/04-completed/1839-warp-prism-theme-brand-normalization.md` |
 
 ## Completed (P1)
 
@@ -269,6 +301,8 @@
 | 1835 | Package-Wide Material Ancestry Meta-Test | `testing` | N/A | `.project/tasks/04-completed/1835-warp-prism-material-ancestry-meta-test.md` |
 | 1836 | Layout-Band Completion — Scrubber/Table Falsified Bands + Trap Hygiene | `remediation` | Task 1805 criterion 10 (density) re-judgment on those bands | `.project/tasks/04-completed/1836-warp-prism-layout-band-completion.md` |
 | 1837 | Golden Suite Tagging — Make `--exclude-tags=golden` Effective | `testing` | N/A (unblocks the documented full-suite validation command for every future task) | `.project/tasks/04-completed/1837-warp-prism-golden-suite-tagging.md` |
+| 1841 | Doc-Comment Sweep — layer-contracts-v2.md References | `misc` | Nothing. | `.project/tasks/04-completed/1841-warp-prism-doc-comment-layer-contracts-path-sweep.md` |
+| rem | 0001: Boundary harness row-16 enforcement + domain regex + §10 status column | `misc` | N/A \| **Depends on**: N/A (writeset disjoint from 02-doing 1840/1843/1846; validation may contend on test-resource lock — see contention note) | `.project/tasks/04-completed/rem-0001-boundary-harness-row16-regex-status.md` |
 
 ## Completed (P2)
 
@@ -280,6 +314,8 @@
 | 1123 | Warp Prism Virtual Scroll Optimization | `feature` | MCP server registry scale (1400+ rows) | `.project/tasks/04-completed/1123-warp-prism-virtual-scroll-optimization.md` |
 | 1522 | Optional Keyboard Cheatsheet + Scale Bar + Risk Toast Variant | `feature` | N/A (optional Wave I; if completed, refresh Task 1519 matrix) | `.project/tasks/04-completed/1522-warp-prism-optional-keyboard-scale-risk-toast.md` |
 | 1523 | Optional Media Detail Overlay | `feature` | N/A (optional Wave I; if completed, refresh Task 1519 matrix) | `.project/tasks/04-completed/1523-warp-prism-optional-media-detail-overlay.md` |
+| 1842 | ThemeMatrix wire-ID migration (cybercore-teal -> nerazim-teal) | `remplacement \| migration \| host-exercise-evidence` |  | `.project/tasks/04-completed/1842-warp-prism-theme-matrix-wire-id-migration.md` |
+| rem | 0002: Runtime purity test — bare presentation-token scan | `misc` | N/A \| **Depends on**: N/A (different file from rem-0001; test-resource contention protocol shared — see note) | `.project/tasks/04-completed/rem-0002-runtime-purity-bare-tokens.md` |
 
 ## Completed (P3)
 
@@ -287,16 +323,17 @@
 |------|-------|------|--------|------|
 | 1616 | Optional CyberCore Teal ThemeExtension Skin | `ux-polish` | N/A | `.project/tasks/04-completed/1616-warp-prism-optional-cybercore-teal-theme-extension-skin.md` |
 | 1809 | Warp Prism Taldarim Red and Talon Purple Accent Themes | `feature` | N/A | `.project/tasks/04-completed/1809-warp-prism-taldarim-red-talon-purple-themes.md` |
+| rem | 0003: adapter_frb barrel lifecycle declaration (D2) | `misc` | N/A \| **Depends on**: N/A (doc-comment only; zero test contention — grep validation) | `.project/tasks/04-completed/rem-0003-adapter-barrel-lifecycle-doc.md` |
 
 ---
 
 ## Summary
 
-- **Total tasks**: 231
-- **Open**: 0
-- **Doing**: 0
-- **Review**: 4
-- **Planning**: 36
-- **Completed**: 191
+- **Total tasks**: 249
+- **Open**: 23
+- **Doing**: 3
+- **Review**: 5
+- **Planning**: 21
+- **Completed**: 197
 
-**Generated by**: project-development/tasklist-sync
+**Generated by**: project_tasks

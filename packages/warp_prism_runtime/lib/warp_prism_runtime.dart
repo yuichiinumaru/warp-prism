@@ -7,7 +7,7 @@
 /// - [GraphSource]: Pure semantic topological graph models and update streams.
 /// - [AsyncCommand]: Structured asynchronous request/response execution lifecycle.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 library warp_prism_runtime;
 
 export 'src/async_command/async_command.dart';

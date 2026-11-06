@@ -24,7 +24,7 @@ PLANNED -> ACTIVE -> RC_READY -> RELEASED
 | `ACTIVE` | Work actively underway on the milestone's task spine and functional verification gates. | One active release milestone per project at any given time. |
 | `RC_READY` | Implementation cutoff reached; candidate identity frozen; all mandatory functional gates demonstrably pass against the exact frozen candidate. | **RC_READY is NEVER release authorization by itself.** It is the prerequisite state for independent release-readiness review. |
 | `BLOCKED` | A critical gate failure, security flaw, data-integrity issue, or unresolved dependency halts progress. | Requires classified remediation or explicit scope reconciliation by the architect and operator. |
-| `RELEASED` | Milestone has achieved formal operator authorization and independent reviewer-owned publication/governance gates (`.agents/rules/90-governance-activation-and-release.md`). | Immutable historical record; never amended except for explicitly labeled errata. |
+| `RELEASED` | Milestone has achieved formal operator authorization and independent reviewer-owned publication/governance gates (`.opencode/rules/90-governance-activation-and-release.md`). | Immutable historical record; never amended except for explicitly labeled errata. |
 
 ### Hard Governance Boundaries
 

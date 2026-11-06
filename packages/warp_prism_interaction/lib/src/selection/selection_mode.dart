@@ -1,6 +1,6 @@
 /// Selection mode constraint for interactive selections.
 ///
-/// Lifecycle: PROVEN (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: PROVEN (see `.project/architecture/layer-contracts.md`).
 enum SelectionMode {
   /// At most one item can be selected at a time.
   single,
@@ -14,7 +14,7 @@ enum SelectionMode {
 
 /// Provenance or origin of a selection change.
 ///
-/// Lifecycle: PROVEN (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: PROVEN (see `.project/architecture/layer-contracts.md`).
 enum SelectionSource {
   /// Direct user pointer/touch interaction.
   user,

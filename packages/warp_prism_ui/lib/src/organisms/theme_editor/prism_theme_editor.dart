@@ -324,7 +324,7 @@ class _PrismThemeEditorState extends State<PrismThemeEditor> {
                         },
                       ),
                       _PresetChip(
-                        label: 'CyberCore Teal',
+                        label: 'Nerazim Teal',
                         color: const Color(0xFF00FFCC),
                         onTap: () {
                           _registry.setColor(
@@ -346,7 +346,7 @@ class _PrismThemeEditorState extends State<PrismThemeEditor> {
                         },
                       ),
                       _PresetChip(
-                        label: 'Protoss Gold',
+                        label: 'Purifier Gold',
                         color: const Color(0xFFFFB800),
                         onTap: () {
                           _registry.setColor(

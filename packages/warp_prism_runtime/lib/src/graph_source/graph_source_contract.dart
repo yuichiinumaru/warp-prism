@@ -10,7 +10,7 @@ import 'graph_source_models.dart';
 /// **PURGE LAW**: This contract contains strictly zero layout offsets
 /// (`position: Offset`), physics engines, drag states, or pan/zoom scales.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 abstract interface class GraphSource<TNodePayload, TEdgePayload> {
   /// Evaluates and returns the current complete [GraphSnapshot].

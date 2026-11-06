@@ -183,6 +183,13 @@ abstract class DSColors {
   /// Unverified — muted neutral (alias of statusPending)
   static const Color statusUnverified = textTertiary; // #8888A0
 
+  /// Unknown/indeterminate — muted neutral (alias of statusPending).
+  ///
+  /// Task 1869 (EXPERIMENTAL): fail-closed rendering for withheld
+  /// determination. No new hex — deliberately not success, warning,
+  /// error, or action-blue. Non-animated by contract.
+  static const Color statusUnknown = textTertiary; // #8888A0
+
   /// Exposed — error red
   static const Color statusExposed = statusError; // #EF4444
 

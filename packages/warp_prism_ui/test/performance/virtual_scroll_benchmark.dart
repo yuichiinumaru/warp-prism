@@ -107,7 +107,9 @@ void main() {
 
       debugPrint('=== PrismVirtualList 10K Fixed — Virtualization SLA ===');
       debugPrint('  Total items:     $itemCount');
-      debugPrint('  Items built:     $buildCount (SLA: < $kViewportBuildBudget)');
+      debugPrint(
+        '  Items built:     $buildCount (SLA: < $kViewportBuildBudget)',
+      );
       debugPrint('  Build time:      ${buildTimeMs}ms (harness wall-clock)');
       debugPrint('  Config:          highCache (48px extent, 500px cache)');
       debugPrint('  Note:            No 16ms/60fps claim in flutter_test');
@@ -264,117 +266,116 @@ void main() {
   // GROUP: fixed itemExtent advantage vs variable-extent builder
   // ---------------------------------------------------------------------------
   group('fixed itemExtent advantage', () {
-    testWidgets(
-      'fixed extent lands exact index; both stay O(viewport) on build',
-      (tester) async {
-        const itemCount = 10000;
-        var fixedBuildCount = 0;
-        var variableBuildCount = 0;
-        final fixedController = ScrollController();
-        final variableController = ScrollController();
+    testWidgets('fixed extent lands exact index; both stay O(viewport) on build', (
+      tester,
+    ) async {
+      const itemCount = 10000;
+      var fixedBuildCount = 0;
+      var variableBuildCount = 0;
+      final fixedController = ScrollController();
+      final variableController = ScrollController();
 
-        // Fixed-extent list.
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: SizedBox(
-                width: 800,
-                height: 600,
-                child: PrismVirtualList(
-                  // Distinct key so later variable list is a fresh Element tree.
-                  // Without this, Scrollable reuses the prior scroll offset and
-                  // variable-extent layout measures every child up to that offset
-                  // (~9000 builds) — a test harness artifact, not product cost.
-                  key: const ValueKey('fixed-extent-list'),
-                  itemCount: itemCount,
-                  scrollController: fixedController,
-                  config: const PrismVirtualScrollConfig(
-                    itemExtent: 48,
-                    cacheExtent: 250,
-                  ),
-                  itemBuilder: (context, index) {
-                    fixedBuildCount++;
-                    return SizedBox(height: 48, child: Text('Fixed $index'));
-                  },
+      // Fixed-extent list.
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SizedBox(
+              width: 800,
+              height: 600,
+              child: PrismVirtualList(
+                // Distinct key so later variable list is a fresh Element tree.
+                // Without this, Scrollable reuses the prior scroll offset and
+                // variable-extent layout measures every child up to that offset
+                // (~9000 builds) — a test harness artifact, not product cost.
+                key: const ValueKey('fixed-extent-list'),
+                itemCount: itemCount,
+                scrollController: fixedController,
+                config: const PrismVirtualScrollConfig(
+                  itemExtent: 48,
+                  cacheExtent: 250,
                 ),
+                itemBuilder: (context, index) {
+                  fixedBuildCount++;
+                  return SizedBox(height: 48, child: Text('Fixed $index'));
+                },
               ),
             ),
           ),
-        );
+        ),
+      );
 
-        expect(fixedBuildCount, lessThan(kViewportBuildBudget));
-        expect(fixedBuildCount, lessThan(itemCount));
+      expect(fixedBuildCount, lessThan(kViewportBuildBudget));
+      expect(fixedBuildCount, lessThan(itemCount));
 
-        // Exact O(1) jump with fixed extent.
-        fixedBuildCount = 0;
-        const targetIndex = 9000;
-        fixedController.jumpTo(targetIndex * 48.0);
-        await tester.pump();
+      // Exact O(1) jump with fixed extent.
+      fixedBuildCount = 0;
+      const targetIndex = 9000;
+      fixedController.jumpTo(targetIndex * 48.0);
+      await tester.pump();
 
-        expect(
-          fixedBuildCount,
-          lessThan(kViewportBuildBudget),
-          reason: 'Fixed-extent jumpTo must stay viewport-bounded',
-        );
-        expect(
-          find.text('Fixed $targetIndex'),
-          findsOneWidget,
-          reason: 'Fixed itemExtent enables exact index landing via O(1) math',
-        );
+      expect(
+        fixedBuildCount,
+        lessThan(kViewportBuildBudget),
+        reason: 'Fixed-extent jumpTo must stay viewport-bounded',
+      );
+      expect(
+        find.text('Fixed $targetIndex'),
+        findsOneWidget,
+        reason: 'Fixed itemExtent enables exact index landing via O(1) math',
+      );
 
-        // Reset tree so residual ScrollPosition is not adopted by the next list.
-        await tester.pumpWidget(const SizedBox.shrink());
-        fixedController.dispose();
+      // Reset tree so residual ScrollPosition is not adopted by the next list.
+      await tester.pumpWidget(const SizedBox.shrink());
+      fixedController.dispose();
 
-        // Variable-extent list still virtualizes on a **fresh** initial build.
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: SizedBox(
-                width: 800,
-                height: 600,
-                child: PrismVirtualList(
-                  key: const ValueKey('variable-extent-list'),
-                  itemCount: itemCount,
-                  scrollController: variableController,
-                  config: PrismVirtualScrollConfig.variable,
-                  itemBuilder: (context, index) {
-                    variableBuildCount++;
-                    return SizedBox(
-                      height: 40.0 + (index % 3) * 8.0,
-                      child: Text('Var $index'),
-                    );
-                  },
-                ),
+      // Variable-extent list still virtualizes on a **fresh** initial build.
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SizedBox(
+              width: 800,
+              height: 600,
+              child: PrismVirtualList(
+                key: const ValueKey('variable-extent-list'),
+                itemCount: itemCount,
+                scrollController: variableController,
+                config: PrismVirtualScrollConfig.variable,
+                itemBuilder: (context, index) {
+                  variableBuildCount++;
+                  return SizedBox(
+                    height: 40.0 + (index % 3) * 8.0,
+                    child: Text('Var $index'),
+                  );
+                },
               ),
             ),
           ),
-        );
+        ),
+      );
 
-        expect(variableBuildCount, lessThan(itemCount));
-        expect(
-          variableBuildCount,
-          lessThan(kViewportBuildBudget),
-          reason: 'Variable-extent builder still virtualizes visible window',
-        );
+      expect(variableBuildCount, lessThan(itemCount));
+      expect(
+        variableBuildCount,
+        lessThan(kViewportBuildBudget),
+        reason: 'Variable-extent builder still virtualizes visible window',
+      );
 
-        debugPrint('=== Fixed vs Variable Comparison ===');
-        debugPrint(
-          '  Fixed post-jump builds: $fixedBuildCount (exact index $targetIndex)',
-        );
-        debugPrint(
-          '  Variable initial builds: $variableBuildCount (still virtualized)',
-        );
-        debugPrint(
-          '  Advantage: fixed itemExtent = exact O(1) jumpTo + stable extent',
-        );
-        debugPrint(
-          '  Note: variable lists lack O(1) jump; deep scroll needs measure-from-start',
-        );
+      debugPrint('=== Fixed vs Variable Comparison ===');
+      debugPrint(
+        '  Fixed post-jump builds: $fixedBuildCount (exact index $targetIndex)',
+      );
+      debugPrint(
+        '  Variable initial builds: $variableBuildCount (still virtualized)',
+      );
+      debugPrint(
+        '  Advantage: fixed itemExtent = exact O(1) jumpTo + stable extent',
+      );
+      debugPrint(
+        '  Note: variable lists lack O(1) jump; deep scroll needs measure-from-start',
+      );
 
-        variableController.dispose();
-      },
-    );
+      variableController.dispose();
+    });
   });
 
   // ---------------------------------------------------------------------------
@@ -418,8 +419,7 @@ void main() {
       expect(
         buildCount,
         lessThan(kViewportBuildBudget),
-        reason:
-            '5K grid must stay O(viewport+cache); built $buildCount',
+        reason: '5K grid must stay O(viewport+cache); built $buildCount',
       );
       expect(
         buildTimeMs,

@@ -452,7 +452,8 @@ void main() {
       final scrollable = tester.widget<Scrollable>(scrollables.first);
       final position = scrollable.controller?.position;
       // Prefer controller position when present; fall back to primary scroll.
-      final maxExtent = position?.maxScrollExtent ??
+      final maxExtent =
+          position?.maxScrollExtent ??
           tester
               .state<ScrollableState>(scrollables.first)
               .position

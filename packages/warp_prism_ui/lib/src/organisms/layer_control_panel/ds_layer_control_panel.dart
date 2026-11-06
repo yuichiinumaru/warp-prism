@@ -810,9 +810,7 @@ class _GroupHeaderState extends State<_GroupHeader> {
                 color: highlight ? DSColors.obsidianHover : Colors.transparent,
                 borderRadius: BorderRadius.circular(DSRadii.sm),
                 border: Border.all(
-                  color: _focused
-                      ? DSColors.focusRing
-                      : Colors.transparent,
+                  color: _focused ? DSColors.focusRing : Colors.transparent,
                 ),
               ),
               child: Row(

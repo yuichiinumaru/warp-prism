@@ -507,9 +507,15 @@ void main() {
   group('PrismCommandCategory enum', () {
     test('has navigate, run, recent values', () {
       expect(PrismCommandCategory.values.length, 3);
-      expect(PrismCommandCategory.values, contains(PrismCommandCategory.navigate));
+      expect(
+        PrismCommandCategory.values,
+        contains(PrismCommandCategory.navigate),
+      );
       expect(PrismCommandCategory.values, contains(PrismCommandCategory.run));
-      expect(PrismCommandCategory.values, contains(PrismCommandCategory.recent));
+      expect(
+        PrismCommandCategory.values,
+        contains(PrismCommandCategory.recent),
+      );
     });
   });
 
@@ -539,9 +545,7 @@ void main() {
         home: Scaffold(
           body: PrismCommandPaletteShortcut(
             commands: commands,
-            child: const Center(
-              child: Text('App body'),
-            ),
+            child: const Center(child: Text('App body')),
           ),
         ),
       ),
@@ -624,32 +628,31 @@ void main() {
       },
     );
 
-    testWidgets(
-      'after Escape close, Ctrl+K reopens (mounted clears _isOpen)',
-      (tester) async {
-        final commands = [
-          const PrismCommand(
-            id: 'go-home',
-            label: 'Go Home',
-            icon: Icons.home,
-            category: PrismCommandCategory.navigate,
-          ),
-        ];
+    testWidgets('after Escape close, Ctrl+K reopens (mounted clears _isOpen)', (
+      tester,
+    ) async {
+      final commands = [
+        const PrismCommand(
+          id: 'go-home',
+          label: 'Go Home',
+          icon: Icons.home,
+          category: PrismCommandCategory.navigate,
+        ),
+      ];
 
-        await pumpShortcutApp(tester, commands: commands);
-        await sendModK(tester);
-        expect(find.text('Go Home'), findsOneWidget);
+      await pumpShortcutApp(tester, commands: commands);
+      await sendModK(tester);
+      expect(find.text('Go Home'), findsOneWidget);
 
-        await tester.sendKeyDownEvent(LogicalKeyboardKey.escape);
-        await tester.sendKeyUpEvent(LogicalKeyboardKey.escape);
-        await tester.pumpAndSettle();
-        expect(find.text('Go Home'), findsNothing);
-        expect(find.text('App body'), findsOneWidget);
+      await tester.sendKeyDownEvent(LogicalKeyboardKey.escape);
+      await tester.sendKeyUpEvent(LogicalKeyboardKey.escape);
+      await tester.pumpAndSettle();
+      expect(find.text('Go Home'), findsNothing);
+      expect(find.text('App body'), findsOneWidget);
 
-        await sendModK(tester);
-        expect(find.text('Go Home'), findsOneWidget);
-      },
-    );
+      await sendModK(tester);
+      expect(find.text('Go Home'), findsOneWidget);
+    });
 
     testWidgets('category chips expose button semantics', (tester) async {
       await tester.pumpWidget(
@@ -703,9 +706,7 @@ void main() {
     });
 
     testWidgets('footer shows result count', (tester) async {
-      await tester.pumpWidget(
-        buildApp(commands: sampleCommands()),
-      );
+      await tester.pumpWidget(buildApp(commands: sampleCommands()));
       await tester.pumpAndSettle();
 
       // Sample set has 6 commands.

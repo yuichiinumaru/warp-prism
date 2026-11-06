@@ -368,8 +368,8 @@ void main() {
   // DSStateType enum — expanded
   // ===========================================================================
   group('DSStateType enum', () {
-    test('has 7 values (3 data + 4 operational)', () {
-      expect(DSStateType.values.length, 7);
+    test('has 8 values (3 data + 4 operational + unknown)', () {
+      expect(DSStateType.values.length, 8);
     });
 
     test('includes data states', () {
@@ -383,6 +383,11 @@ void main() {
       expect(DSStateType.stale, isNotNull);
       expect(DSStateType.degraded, isNotNull);
       expect(DSStateType.excluded, isNotNull);
+    });
+
+    test('includes fail-closed unknown', () {
+      expect(DSStateType.unknown, isNotNull);
+      expect(DSStateType.unknown.isIndeterminate, isTrue);
     });
   });
 
@@ -579,26 +584,32 @@ void main() {
         ),
       );
       expect(find.text('#1401'), findsOneWidget);
-      expect(find.text('Observatory Failure Baseline Inventory'), findsOneWidget);
+      expect(
+        find.text('Observatory Failure Baseline Inventory'),
+        findsOneWidget,
+      );
     });
 
-    testWidgets('renders proofState status dot for complete, partial, missing', (tester) async {
-      for (final proof in ['complete', 'partial', 'missing']) {
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: DSTaskCard(
-                id: 100,
-                title: 'Task Title',
-                lane: 'doing',
-                proofState: proof,
+    testWidgets(
+      'renders proofState status dot for complete, partial, missing',
+      (tester) async {
+        for (final proof in ['complete', 'partial', 'missing']) {
+          await tester.pumpWidget(
+            MaterialApp(
+              home: Scaffold(
+                body: DSTaskCard(
+                  id: 100,
+                  title: 'Task Title',
+                  lane: 'doing',
+                  proofState: proof,
+                ),
               ),
             ),
-          ),
-        );
-        expect(find.byType(DSStatusDot), findsOneWidget);
-      }
-    });
+          );
+          expect(find.byType(DSStatusDot), findsOneWidget);
+        }
+      },
+    );
 
     testWidgets('onTap callback fires when tapped', (tester) async {
       var tapped = false;
@@ -623,32 +634,37 @@ void main() {
   // Operational MVP Edge Conditions (Long Text, High Text Scale, Narrow Viewport)
   // ===========================================================================
   group('Operational MVP edge conditions', () {
-    testWidgets('DSMetricTile renders under 180px narrow viewport and long text', (tester) async {
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: SizedBox(
-              width: 180,
-              child: DSMetricTile(
-                label: 'Very Long Metric Label That Should Truncate Safely',
-                value: '99,999,999',
-                health: DSMetricTileHealth.degraded,
+    testWidgets(
+      'DSMetricTile renders under 180px narrow viewport and long text',
+      (tester) async {
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(
+              body: SizedBox(
+                width: 180,
+                child: DSMetricTile(
+                  label: 'Very Long Metric Label That Should Truncate Safely',
+                  value: '99,999,999',
+                  health: DSMetricTileHealth.degraded,
+                ),
               ),
             ),
           ),
-        ),
-      );
-      expect(find.text('Degraded'), findsOneWidget);
-      expect(find.text('99,999,999'), findsOneWidget);
-    });
+        );
+        expect(find.text('Degraded'), findsOneWidget);
+        expect(find.text('99,999,999'), findsOneWidget);
+      },
+    );
 
-    testWidgets('DSMetricTile renders under 2.0x high text scale', (tester) async {
+    testWidgets('DSMetricTile renders under 2.0x high text scale', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           builder: (context, child) => MediaQuery(
-            data: MediaQuery.of(context).copyWith(
-              textScaler: const TextScaler.linear(2.0),
-            ),
+            data: MediaQuery.of(
+              context,
+            ).copyWith(textScaler: const TextScaler.linear(2.0)),
             child: child!,
           ),
           home: const Scaffold(
@@ -664,7 +680,9 @@ void main() {
       expect(find.text('100%'), findsOneWidget);
     });
 
-    testWidgets('DSTaskCard renders under 200px narrow viewport and long text', (tester) async {
+    testWidgets('DSTaskCard renders under 200px narrow viewport and long text', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
@@ -672,7 +690,8 @@ void main() {
               width: 200,
               child: DSTaskCard(
                 id: 9999,
-                title: 'Extremely Long Task Title Designed to Test Multi-Line Wrapping and Text Overflow Behavior Across Narrow Columns',
+                title:
+                    'Extremely Long Task Title Designed to Test Multi-Line Wrapping and Text Overflow Behavior Across Narrow Columns',
                 lane: 'doing',
                 priority: 'P0',
                 owner: 'builders-long-agent-name',
@@ -688,13 +707,15 @@ void main() {
       expect(find.text('P0'), findsOneWidget);
     });
 
-    testWidgets('DSTaskCard renders under 2.0x high text scale', (tester) async {
+    testWidgets('DSTaskCard renders under 2.0x high text scale', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           builder: (context, child) => MediaQuery(
-            data: MediaQuery.of(context).copyWith(
-              textScaler: const TextScaler.linear(2.0),
-            ),
+            data: MediaQuery.of(
+              context,
+            ).copyWith(textScaler: const TextScaler.linear(2.0)),
             child: child!,
           ),
           home: const Scaffold(

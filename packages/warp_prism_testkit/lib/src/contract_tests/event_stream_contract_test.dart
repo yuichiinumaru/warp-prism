@@ -11,7 +11,7 @@ import 'package:warp_prism_runtime/warp_prism_runtime.dart';
 ///
 /// Can be executed against in-memory fakes and production native bridge adapters.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 void verifyEventStreamContract<T>({
   required EventStream<T> Function({EventStreamBackpressurePolicy? policy})
@@ -71,7 +71,10 @@ void verifyEventStreamContract<T>({
           final received = <T>[];
           final sub = targetStream.subscribe(onData: received.add);
 
-          final batchEvents = List.generate(4, (i) => createSampleEvent(i + 10));
+          final batchEvents = List.generate(
+            4,
+            (i) => createSampleEvent(i + 10),
+          );
 
           if (targetStream is EventStreamSink<T>) {
             (targetStream as EventStreamSink<T>).emitBatch(batchEvents);
@@ -171,7 +174,10 @@ void verifyEventStreamContract<T>({
           if (received.isNotEmpty && received.first is RuntimeEvent) {
             final ids = received.map((e) => (e as RuntimeEvent).id).toList();
             expect(ids.toSet().length, equals(n));
-            expect(ids, equals(events.map((e) => (e as RuntimeEvent).id).toList()));
+            expect(
+              ids,
+              equals(events.map((e) => (e as RuntimeEvent).id).toList()),
+            );
           }
 
           await sub.cancel();
@@ -199,7 +205,9 @@ void verifyEventStreamContract<T>({
             expect(received, equals([e1, e2, e3]));
             expect(mutable.currentEvents, equals([e1, e2, e3]));
 
-            if (e1 is RuntimeEvent && e2 is RuntimeEvent && e3 is RuntimeEvent) {
+            if (e1 is RuntimeEvent &&
+                e2 is RuntimeEvent &&
+                e3 is RuntimeEvent) {
               final deliveredEvents = received.cast<RuntimeEvent>();
               final ids = deliveredEvents.map((e) => e.id).toList();
               expect(ids, equals([e1.id, e2.id, e3.id]));

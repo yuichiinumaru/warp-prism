@@ -41,7 +41,7 @@ demonstrable before any product screen is built.
 ### 2.2 Domain
 
 The domain is **read-only Agent System Workspace observability** over mock
-`.agents/` and `docs/` assets normalized into a graph model.
+`.opencode/` and `docs/` assets normalized into a graph model.
 
 | Domain Concept | Description | EPIC |
 |----------------|-------------|------|

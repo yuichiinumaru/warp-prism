@@ -153,7 +153,7 @@ curl -o AGENTS.md https://raw.githubusercontent.com/leonardomso/rust-skills/mast
 <summary><b>Amp</b></summary>
 
 ```bash
-git clone https://github.com/leonardomso/rust-skills.git .agents/skills/rust-skills
+git clone https://github.com/leonardomso/rust-skills.git .opencode/skills/rust-skills
 ```
 </details>
 

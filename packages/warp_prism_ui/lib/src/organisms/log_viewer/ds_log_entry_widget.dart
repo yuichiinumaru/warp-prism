@@ -121,8 +121,10 @@ class _LogRow extends StatelessWidget {
 
                   // Source badge
                   Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 6,
+                      vertical: 1,
+                    ),
                     decoration: BoxDecoration(
                       color: DSColors.obsidianElevated,
                       borderRadius: BorderRadius.circular(DSRadii.chip),

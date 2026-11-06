@@ -1,18 +1,5 @@
 import 'package:meta/meta.dart';
 
-/// Execution mode for the harness.
-enum ExerciseMode {
-  /// Cheap deterministic canonical paths (known routes + representative
-  /// interactions + strict error capture).
-  smoke,
-
-  /// Deterministic bounded sequential exploration over SAFE actions.
-  crawl,
-
-  /// Seeded reproducible random walk over the same SAFE action model.
-  fuzz,
-}
-
 /// One performed step in a trace.
 @immutable
 class ExerciseStep {

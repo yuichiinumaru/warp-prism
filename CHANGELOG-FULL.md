@@ -1,8 +1,817 @@
 # Changelog - Full History
 
-> **Note**: Auto-generated from individual entries in `.changelog/`.
+> **Note**: Auto-generated from individual entries in `.project/changelog/`.
 > **Do NOT edit manually** - use the changelog skill/subcommands.
-> **Last rebuilt**: 2026-09-08 18:09:23 UTC
+> **Last rebuilt**: 2026-10-15 21:33:42 UTC
+
+---
+
+# Task wp-component-absorption: Separate consumer coverage and donor inspiration into a Warp Prism adaptation workflow
+
+## Summary
+
+Scoped workflow activated after independent review; owner-generated projections are current. Global harness duplicate/scanner debt and automated shared-symlink reference-validation limits remain recorded residuals, not a global PASS.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] Same dedicated architecture reviewer session ses_edbfcec4dffeX44ZMBOaLDsRWR: Round 2 technical PASS and conditional scoped MAY-ACTIVATE; MF1-MF5 closed; all material conclusions re-attested through workspace-local routes.
+- [x] Final harness_catalog rebuild + validate: generated_status=current, drift_count=0, same 8 pre-existing duplicate errors; no new unit-attributable errors. Live discovery finds exact wp-component-absorption path.
+- [x] Both source status fields inspected as active; shared-mount storage is not interpreted as generic product scope.
+- [x] source_validate shared workflow input BLOCKED by containment; narrowed product-doc scan FAIL/exit 1 on shared/corpus links, explicit placeholder and pre-existing policy references. No bypass or fabricated clean validation.
+- [x] Verification/review/release evidence: .project/reports/architects/component-absorption-workflow-verification-2026-10-15.md; shared harness-evolution candidate + activation entries; parent session registry updated.
+
+---
+
+# Task rem-0005: host_exercise dead exports cleanup
+
+## Summary
+
+Removed three zero-reference exports from warp_prism_host_exercise (ExerciseMode, kExerciseThemeRecipes, kExerciseSmokeViewport) after execution-time rg re-verification; all three host adapters verified byte-identical to baseline
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] dart analyze packages/warp_prism_host_exercise exit 0 - No issues found
+- [x] flutter test packages/warp_prism_host_exercise exit 0 - 10/10 pass
+- [x] dart analyze apps/catalog apps/observatory apps/cybercore exit 0 - 124 issues, byte-identical to pre-change baseline
+- [x] grep /host_exercise/ on apps analyze output: zero hits before and after
+- [x] flutter test apps/catalog/test/host_exercise/ exit 0 - 9/9
+- [x] flutter test apps/observatory/test/host_exercise/ exit 0 - 8/8
+- [x] flutter test apps/cybercore/test/host_exercise/ exit 0 - 8/8
+
+---
+
+# Task rem-0004-architecture-doc-drift-corrections: remediation-executed
+
+## Summary
+
+Four architecture docs corrected for drift: inverted ui<->bindings dependency arrow (layer-contracts.md §2), over-strict interaction ban (package-topology.md:93), nine superseded layer-contracts-v2 citations (runtime-consumer-audit.md), and two resolved UNKNOWN rows plus stale adoption row (cross-consumer-gap-matrix.md). MISSION.md protected: read-only, evidence recorded in task file. All corrections annotate history rather than deleting it.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] Re-read layer-contracts.md §2 immediately before editing (rem-0001 drift guard; §10 16-row table intact)
+- [x] Finding 1 verified against six pubspecs: ui declares no bindings dep; bindings deps on ui+interaction+runtime
+- [x] Finding 2 verified: warp_prism_ui/pubspec.yaml lists warp_prism_interaction under dev_dependencies only (lines 14-19)
+- [x] Finding 3 verified: 9 of 9 layer-contracts-v2 citation sites in runtime-consumer-audit.md repointed or annotated (rg)
+- [x] Finding 4 evidence: parent-verified 2026-10-10 resolutions carried by .project/reports/architects/future-capability-program-inventory-2026-10-10.md §0.1/§2
+- [x] No source/test/config touched; no lane moves; MISSION.md unmodified
+- [x] OUT-OF-WRITESET SIDE EFFECT (disclosed): the changelog engine's `closeout` action internally rebuilt root CHANGELOG.md + CHANGELOG-FULL.md + .project/changelog/index.md + .project/changelog/views/*.md. `action=build` was NOT invoked. The engine archived the prior root CHANGELOG.md to .archive/changelog/CHANGELOG-before-rebuild-20261011-154708.md, so the change is recoverable; root-file review is recommended.
+
+---
+
+# Task rem-0001: Boundary harness row-16 enforcement + domain regex + §10 status column
+
+## Summary
+
+Closed three mechanical law-vs-harness gaps in one coherent unit (source: Inv-1
+findings Gaps 1, 2, 5):
+
+1. **Row 16 is now enforced.** `boundary_test.dart` gained check #16,
+   `warp_prism_bindings does not import FRB generated surfaces`
+   (`_checkBindingsNoFrbGenerated`), mirroring check #15's scan logic scoped to
+   `packages/warp_prism_bindings/lib`. The bindings projection seam can no
+   longer silently import `src/rust/` or `frb_generated` surfaces.
+2. **Domain regex extended.** Check #14's regex now includes `Warpblade` and
+   `Tempest`, matching the MUST-NOT law text (`layer-contracts.md` §4.6) that
+   already names them. Zero live hits — latent gap closed, no behavior change
+   on current source.
+3. **§10 reconciled.** The 16-row check list is now a table with a per-row
+   enforcement-status column (all `ENFORCED`); the row-16 `DOCUMENTATION ONLY`
+   marker is gone and the 2026-09-28 drift note records the column's recovery.
+
+## Changes
+
+| File | Change |
+| --- | --- |
+| `packages/warp_prism_ui/test/boundaries/boundary_test.dart` | +`BoundaryCheck` #16 in registry; +`_checkBindingsNoFrbGenerated()`; domain regex `(Ganthritor\|Cersei\|OmniRoute\|CyberCore)` → `(...\|Warpblade\|Tempest)` |
+| `.project/architecture/layer-contracts.md` (§10 only) | numbered list → 16-row table with `Status` column; row-16 marker removed; drift note updated with recovery record |
+| `.project/changelog/20261011-043721-rem-0001-boundary-harness-row16-regex-status-builder-engineer.md` | this entry |
+
+No pre-existing check was weakened; no other harness behavior changed
+(simplicity pass verified line-by-line against the pre-edit state).
+
+## Verification
+
+| Command | Exit | Result |
+| --- | --- | --- |
+| `dart packages/warp_prism_ui/test/boundaries/boundary_test.dart` (pre-edit baseline) | 0 | 15/15 PASS |
+| same (fixture in place) | 1 | 13/16 PASS — checks #14/#15/#16 each flag the probe fixture (detection proven) |
+| same (post-revert, final) | 0 | **16/16 PASS, 0 FAIL, 0 violations** |
+| `dart format --output=none --set-exit-if-changed <file>` | 0 | 0 changed |
+| `dart analyze <file>` | 0 | No issues found |
+
+Fixture proof: a temporary probe file in `packages/warp_prism_bindings/lib`
+carrying an `frb_generated` import and a `Warpblade` token was detected by
+checks #14, #15 and #16 in the same run, then deleted in the same change. Bindings
+lib restored to `src/` + `warp_prism_bindings.dart` only.
+
+Contention: none — no tool-lock errors encountered; retry protocol not needed.
+
+Independent acceptance: pending (executor is not the reviewer).
+
+---
+
+# Task rem-0003-adapter-barrel-lifecycle-doc: remediation-promoted
+
+## Summary
+
+rem-0003 reviewed PASS, promoted to completed
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] reviewer PASS 96/100 ses_ed6b7af4bffeNeNMY2sRAiTKmk
+- [x] diff 1 insertion 0 deletions
+
+---
+
+# Task rem-0002-runtime-purity-bare-tokens: remediation-promoted
+
+## Summary
+
+rem-0002 reviewed PASS, promoted to completed
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] reviewer PASS 88/100 ses_ed6b7af4bffeNeNMY2sRAiTKmk
+- [x] suite 3/3 exit 0
+
+---
+
+# Task rem-0001-boundary-harness-row16-regex-status: remediation-promoted
+
+## Summary
+
+rem-0001 reviewed PASS, promoted to completed
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] reviewer PASS 92/100 ses_ed6b7af4bffeNeNMY2sRAiTKmk
+- [x] harness 16/16 exit 0
+
+---
+
+# Task rem-0003-adapter-barrel-lifecycle-doc: remediation-executed
+
+## Summary
+
+rem-0003 barrel lifecycle doc added
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] grep Lifecycle barrel >=1 hit
+- [x] git diff addition-only, 1 file
+
+---
+
+# rem-0002: Runtime purity test — bare presentation-token scan
+
+## Summary
+
+`packages/warp_prism_runtime/test/purity_test.dart` could only prove the
+absence of `package:flutter` / `dart:ui` **imports**. A contract that named a
+Flutter presentation concept directly — `final Offset position;` with no import
+at all — passed silently. MUST-NOT 3 bans the *concept*, so the test must scan
+the concept, not its import.
+
+The purity suite now carries a third test that scans
+`\b(Offset|Widget|BuildContext|Color)\b` over **comment-stripped**
+runtime source, closing Inv-1 Gap 3.
+
+## Changes
+
+| File | Change |
+| --- | --- |
+| `packages/warp_prism_runtime/test/purity_test.dart` | Added `_stripComments` helper (mirror of the `boundary_isolation_test.dart` precedent) and a third test: bare presentation tokens over comment-stripped source |
+
+Both edits are purely additive (`+70/−0`, 104 → 174 lines): every pre-existing
+line is preserved byte-for-byte.
+
+Implementation notes:
+
+- **No new scanner invented.** The `_stripComments` helper is a verbatim mirror
+  of `packages/warp_prism_bindings/test/boundary_isolation_test.dart:33–40`:
+  block comments removed wholesale, then every line whose *trimmed* content
+  starts with `//` dropped. Trimming is what makes `///` doc-comments count —
+  without it, doc-comment `Offset` mentions would trip the scan.
+- **Existing patterns untouched.** The import scan and the
+  presentation/polling pattern list are byte-identical to before; only a new
+  test group member was appended. No existing behavior changed.
+- **Deliberate asymmetry documented in code.** Trailing comments are left in
+  place. This is the conservative direction for a ban: an inline
+  `int brightness = 3; // tint Color near here` yields a loud false positive on
+  a later scan rather than a silent miss, and it avoids mangling string
+  literals that legitimately contain `//`. The precursor precedent accepted the
+  same trade-off.
+- Violation reporting names the matched token, not just the file, so a future
+  red is diagnosable from the failure message alone.
+
+## Verification
+
+| Command | Exit | Result |
+| --- | --- | --- |
+| `dart test packages/warp_prism_runtime/test/purity_test.dart` (baseline, pre-change) | 0 | **PASS 2/2** |
+| `dart test packages/warp_prism_runtime/test/purity_test.dart` (extended, current source) | 0 | **PASS 3/3** |
+| `dart test packages/warp_prism_runtime/test/purity_test.dart` (fixture-proof Phase A, bare `Offset`) | 1 | **PASS — detection proven** |
+| `dart test packages/warp_prism_runtime/test/purity_test.dart` (fixture-proof Phase B, doc-comment mentions only) | 0 | **PASS — no false positive** |
+| `dart analyze packages/warp_prism_runtime` | 0 | **PASS — "No issues found!"** |
+
+### Fixture-proof (both directions, then reverted)
+
+A temporary synthetic fixture was written into the scanned tree
+(`packages/warp_prism_runtime/lib/src/rem_0002_fixture_proof.dart`) and run
+twice, distinguishing the two directions a naive scan conflates:
+
+- **Phase A — bare token**: a `final Offset position;` field with no Flutter
+  import. Test failed exactly as required:
+  `lib/src/rem_0002_fixture_proof.dart matched RegExp: pattern=\b(Offset|Widget|BuildContext|Color)\b flags= near "Offset"`.
+  This is the hole the task describes, now genuinely detected.
+- **Phase B — doc-comment mention only**: the same file with the bare token
+  replaced by a plain `double` field, keeping the doc-comment mentions
+  (`position: Offset`, `Widget identity`, `BuildContext access`,
+  `Color palette`). Test stayed green, proving comment-stripping suppresses
+  documented examples rather than scanning prose.
+
+### False-positive check on current source
+
+The two live `Offset` occurrences in `warp_prism_runtime/lib` are both
+doc-comment prose
+(`graph_source_contract.dart:11` and `graph_source_models.dart:26`, each
+`` (`position: Offset`) ``) and are pre-existing — this task did not create
+them. Both are suppressed by the strip step, so the scan reports zero
+violations on unchanged source.
+
+### Fixture reverted — not weakened
+
+The fixture is **not** part of the change. `rm` is denied by workspace policy,
+so it was removed through the canonical archive mechanism per root
+`AGENTS.md` §6 rather than via an alias:
+
+```text
+archive: packages/warp_prism_runtime/lib/src/rem_0002_fixture_proof.dart
+     -> .archive/packages/warp_prism_runtime/lib/src/rem_0002_fixture_proof.dart
+```
+
+The live scanned tree is clean: `grep -r "rem_0002|fixture_proof|FixtureProof"
+packages/warp_prism_runtime` returns zero matches. The archived copy sits
+outside `lib/`, so the scan cannot see it, and the fixture never edits a real
+contract file.
+
+## Contention
+
+No tool-lock contention was observed. The shared `.dart_tool/` lock was free for
+every run recorded above; no retry was needed and no BLOCKED-on-resource state
+was reached.
+
+## Note for the parent
+
+This change affects only `packages/warp_prism_runtime` test code. No consumer
+app, package, or shared artifact is touched, so `affected_consumers` is NONE by
+construction — the scan reads runtime package-local source and cannot alter any
+consumer's composition. Per `AGENTS.md` §3.5 the executor provides no
+acceptance verdict for this work; independent review is the next gate.
+
+`packages/warp_prism_bindings/test/boundary_isolation_test.dart` was read as
+the strip precedent and **not** modified.
+
+The auto-generated projection `.project/changelog/index.md` was **not**
+rebuilt: the engine's `build` action writes root-level `CHANGELOG.md` and
+`CHANGELOG-FULL.md`, which fall outside this task's authorized writeset. The
+ledger itself is registered — `project_changelog validate` reports
+`Changelog valid: issues=0 entries=341`, including this entry — so the
+projection can be refreshed safely by a later owner.
+
+---
+
+# Task PLAN-warp-prism-future-capability-program: future-program-plan-created
+
+## Summary
+
+Phase 2 program doc: 5 EPICs A-E, 9 stories, task index, DAG
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] Phase 1 inventory REVIEWED-PASS ses_edbfcec4dffeX44ZMBOaLDsRWR
+
+---
+
+# Task HOLD-warp-prism-review-lifecycle-spec: future-task-held
+
+## Summary
+
+HOLD review-lifecycle spec
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] Phase 1 inventory REVIEWED-PASS ses_edbfcec4dffeX44ZMBOaLDsRWR
+
+---
+
+# Task HOLD-warp-prism-registry-harvest-verify-loop: future-task-held
+
+## Summary
+
+HOLD harvest-verify loop design
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] Phase 1 inventory REVIEWED-PASS ses_edbfcec4dffeX44ZMBOaLDsRWR
+
+---
+
+# Task HOLD-warp-prism-job-progress-spec: future-task-held
+
+## Summary
+
+HOLD job-progress spec
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] Phase 1 inventory REVIEWED-PASS ses_edbfcec4dffeX44ZMBOaLDsRWR
+
+---
+
+# Task HOLD-warp-prism-host-proof-protocol: future-task-held
+
+## Summary
+
+HOLD spec task for host-composition proof protocol
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] Phase 1 inventory REVIEWED-PASS ses_edbfcec4dffeX44ZMBOaLDsRWR
+
+---
+
+# Task HOLD-warp-prism-health-badge-axis-spec: future-task-held
+
+## Summary
+
+HOLD health-badge axis spec
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] Phase 1 inventory REVIEWED-PASS ses_edbfcec4dffeX44ZMBOaLDsRWR
+
+---
+
+# Task HOLD-warp-prism-diff-viewer-spec: future-task-held
+
+## Summary
+
+HOLD diff-viewer spec
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] Phase 1 inventory REVIEWED-PASS ses_edbfcec4dffeX44ZMBOaLDsRWR
+
+---
+
+# Task HOLD-warp-prism-data-plane-contract-spec: future-task-held
+
+## Summary
+
+HOLD data-plane contract spec
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] Phase 1 inventory REVIEWED-PASS ses_edbfcec4dffeX44ZMBOaLDsRWR
+
+---
+
+# Task HOLD-warp-prism-component-registry-schema: future-task-held
+
+## Summary
+
+HOLD registry schema design
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] Phase 1 inventory REVIEWED-PASS ses_edbfcec4dffeX44ZMBOaLDsRWR
+
+---
+
+# Task HOLD-warp-prism-bridge-surface-request: future-task-held
+
+## Summary
+
+HOLD bridge-surface request package
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] Phase 1 inventory REVIEWED-PASS ses_edbfcec4dffeX44ZMBOaLDsRWR
+
+---
+
+# Task 1839: theme-brand-normalization
+
+## Summary
+
+Independent review Entries 1-4 returned FAIL (45/48/48/48). The blocking wire-ID finding was cleared by Task 1842, which migrated the serialized cybercore-teal recipe ID to nerazim-teal; the formatter finding was resolved for the task surface and the residual package-wide drift moved to Task 1846. Entry 5 returned PASS 91/100 confidence 0.93 with zero Critical or Serious findings open.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] grep -rn 'cybercore-teal' packages/ apps/ --include='*.dart' : 0 matches
+- [x] dart analyze x4 (warp_prism_ui, warp_prism_host_exercise, apps/catalog, apps/cybercore) : exit 0, zero errors
+- [x] apps/catalog flutter test --no-pub : +23 All tests passed
+- [x] apps/cybercore flutter test --no-pub : +27 All tests passed
+- [x] dart run packages/warp_prism_ui/test/boundaries/boundary_test.dart --repo-root . : 15/15 PASS, 0 violations
+- [x] dart format on all 8 task-touched files : 0 changed
+- [x] Independent reviewer ses_f1ee307e8ffeS6nJ0qEurVbnDe Entry 5 : PASS 91/100 confidence 0.93
+
+---
+
+# Task 1842: ThemeMatrix wire-ID migration (cybercore-teal -> nerazim-teal)
+
+## Summary
+
+Completed the serialized theme-recipe wire-ID migration that Task 1839
+deliberately deferred. The Dart const had already been renamed to `nerazimTeal`
+in Task 1839; this task moves the **serialized `id` string** and all of its
+consumers in one atomic change. String-only change: **no behavior, no visual,
+and no contract-signature change.** `ExerciseThemeRecipe.toJson` / `fromJson`
+are untouched and keep the same `{id, label}` shape.
+
+Full census match: the task's binding census (**5 tracked files, 14 lines**) was
+verified against disk before editing and matched exactly.
+
+## Changes
+
+| File | Lines | Change |
+| --- | --- | --- |
+| `packages/warp_prism_host_exercise/lib/src/models/theme_matrix.dart` | 28–37 | `id:` → `'nerazim-teal'`; obsolete Task 1839 "id preserved" note replaced with a migration record |
+| `apps/catalog/test/host_exercise/catalog_host.dart` | 86 | `case 'nerazim-teal':` |
+| `apps/catalog/test/host_exercise/catalog_theme_matrix_test.dart` | 32 | recipe ladder entry |
+| `apps/cybercore/test/host_exercise/cybercore_host.dart` | 31 | `themeRecipeId` default param |
+| `apps/cybercore/test/host_exercise/cybercore_revalidation_test.dart` | 6, 42, 58, 68, 87, 97, 122, 132, 153 | 1 comment + 4 test descriptions + 4 `expect(trace.themeRecipe, …)` assertions |
+
+Used the hyphenated `nerazim-teal`, matching the `khalai-blue` sibling ID in the
+same files.
+
+### Deprecated-alias decision
+
+The task's Security section suggested leaving DEPRECATION comments on the old ID.
+Not applicable to this execution: step 1 chose the **update-all-consumers-at-once**
+option, so no old-ID consumer survives to deprecate. A deprecated alias would have
+been a second canonical home for the wire ID. An accurate migration record (old
+value's origin, deferral in 1839, completion in 1842, frozen-evidence carve-out)
+was written instead.
+
+## Verification
+
+| Command | Exit | Result |
+| --- | --- | --- |
+| `grep -rn "cybercore-teal" packages/ apps/ --include=*.dart` | 1 (no output) | **PASS — 0 occurrences** |
+| `packages/warp_prism_host_exercise` `dart analyze` | **0** | **PASS — "No issues found!"** |
+| `packages/warp_prism_host_exercise` `flutter test --no-pub` | **0** | **PASS 10/10** |
+| `apps/catalog` `flutter analyze` | **0** | **PASS — "No issues found!"** |
+| `apps/catalog` `flutter test --no-pub` | **0** | **PASS 23/23** |
+| `apps/cybercore` `flutter analyze` | **0** | **PASS — "No issues found!"** |
+| `apps/cybercore` `flutter test --no-pub` | **0** | **PASS 27/27** |
+
+### Trace-integrity proof
+
+The live regenerated traces now record the new ID, proving the rename propagates
+end-to-end through config → runner → trace → assertion (not just a string edit):
+
+```text
+live .project/reports/host-exercise/traces/   →  4 × "nerazim-teal", 4 × "khalai-blue"
+frozen .project/reports/architects/traces/    →  4 × "cybercore-teal", 7 × "khalai-blue"  (untouched)
+```
+
+`expect(trace.themeRecipe, 'nerazim-teal')` passes in all four revalidation
+tests, so the runner genuinely recorded the new value.
+
+### Frozen evidence preserved
+
+The 4 `.project/reports/architects/traces/*.json` captures still embed the old
+literal and were **not** touched (mtimes remain `2026-09-08`). Independently
+re-verified the task's premise: `grep -rn "architects/traces" --include=*.dart
+--include=*.rs` returns **0 code references**, so they are cited-only and never
+loaded. The live trace writer targets
+`.project/reports/host-exercise/traces/`, a different directory.
+
+## Note for the parent
+
+The 4 CyberCore + 4 Catalog `PathNotFoundException` host-harness failures
+reported as pre-existing in the Task 1839 backlog had **self-resolved** by the
+time this task started — they were environment-state failures (missing trace
+artifacts), not code defects. All three targets now have a fully green baseline
+and pass with the migration applied. That backlog item can be closed.
+
+Separately, `apps/catalog/test/host_exercise/catalog_theme_matrix_test.dart`
+lines 5–8 still carry the stale prose "CyberCore / Teal" **split across two
+lines**, which evades the literal grep. It is outside the binding 14-line census
+and was left untouched; it is reported for a scoping decision.
+
+---
+
+# Task 1840: catalog-statusticker-overflow-listtile-warnings
+
+## Summary
+
+Both reported defects were reproduced verbatim and attributed to their owning
+gallery section, then classified and fixed at the correct layer.
+
+The committed gallery suite calls `_suppressGalleryDemoNoise()`
+(`test/gallery/design_system_gallery_test.dart:539-557`), which filters exactly
+these two message classes, so a green suite proved nothing. Reproduction used a
+throwaway harness that swept `dsGallerySections`, pumped each builder in a
+`SingleChildScrollView`, and captured `FlutterError.onError` **per section**.
+
+Verbatim reproduction (before):
+
+```
+A RenderFlex overflowed by 16 pixels on the bottom.
+ListTile background color or ink splashes may be invisible.  (x3)
+```
+
+Attribution:
+
+```
+1840|section=epic15-stage-chrome|A RenderFlex overflowed by 16 pixels on the bottom.
+1840|section=epic15-stage-relations|ListTile background color or ink splashes may be invisible.
+1840|section=epic15-stage-relations|ListTile background color or ink splashes may be invisible.
+1840|section=epic15-stage-relations|ListTile background color or ink splashes may be invisible.
+```
+
+## Changes
+
+- **`design_system_gallery_sections.dart:3059` (defect 1 — demo sizing).**
+  `SizedBox(height: 120, width: 640, child: _StatusTickerDemo())` → `SizedBox(width: 640, …)`.
+  The hard box was authored to the demo's *content* height (120) while omitting
+  the demo's own `EdgeInsets.all(8)` padding, leaving the `Column` 104px for
+  120px of content. The demo has only fixed-height children, so it now sizes
+  intrinsically and renders at its natural 120px — the height originally
+  intended. Nothing is clipped, and the defect class is removed rather than
+  re-tuned to a new magic number.
+- **`design_system_gallery_sections.dart:6205` (defect 2 — demo host
+  composition).** The layer-registry `ListView` gained its own
+  `Material(type: MaterialType.transparency)` so `SwitchListTile.adaptive` paints
+  its background and ink splashes on a Material at the right layer, instead of
+  on the distant Scaffold Material occluded by the enclosing coloured glass
+  `DecoratedBox`. Glass appearance is unchanged.
+- **Not modified:** `packages/warp_prism_ui/lib/src/organisms/status_ticker/ds_status_ticker.dart`.
+  `DSStatusTicker` self-bounds via `SizedBox(height: widget.height)` and honours
+  its documented contract (default 48 = WCAG min target); no widget-layer defect
+  was proven.
+
+## Verification
+
+- [x] Unsuppressed per-section sweep at 1400x2400: 4 errors before → **0 after**
+- [x] Sibling sweep, all 24 registry sections at the default catalog viewport
+      `1280x800`: `epic15-stage-chrome` and `epic15-stage-relations` clean
+- [x] Content integrity after fix: 2 tickers render at 622x36 (the requested
+      `height: 36`, unclipped), both captions present, all 3 layer labels and 3
+      switch tiles present, 0 errors
+- [x] `dart format --set-exit-if-changed` on the touched file: exit 0 (0 changed)
+- [x] `dart analyze` (`packages/warp_prism_ui`): exit 0 — 212 issues, all `info`
+- [x] `flutter test --no-pub` (`packages/warp_prism_ui`): `+1703 -63` — **identical
+      to the pre-change A/B baseline**, i.e. zero regressions. The 63 failures are
+      pre-existing (golden/environment) and unrelated.
+- [x] `flutter analyze` (`apps/catalog`): `No issues found!` exit 0
+- [x] `flutter test --no-pub` (`apps/catalog`): 4 failures, all proven pre-existing
+      by A/B revert (identical counts before/after). All 4 are
+      `PathNotFoundException` in `_persist` — `apps/catalog/docs/` does not exist,
+      so trace artifacts cannot be written to the pre-relocation
+      `docs/reports/host-exercise/traces/` path. Unrelated to this task.
+- [x] `dart run packages/warp_prism_ui/test/boundaries/boundary_test.dart --repo-root .`:
+      15/15 PASS exit 0
+- [ ] **Host proof NOT run** — `flutter run -d linux` requires a display/GPU host
+      and is operator-side. Headless `flutter_tester` evidence stands in; the
+      operator should confirm at the default viewport.
+
+## Sibling finding (reported, deliberately NOT fixed — out of writeset)
+
+`health-dashboard` section: `A RenderFlex overflowed by 7.3 pixels on the bottom.`
+
+- Widget: `Column`, `mainAxisSize: min`, `BoxConstraints(w=204.0, h=124.7)`
+- Location: `packages/warp_prism_ui/lib/src/molecules/ds_health_card.dart:82:14`
+- Only reproduces at the default catalog viewport `1280x800`; clean at 1400x2400
+- Cause: `DSHealthCard` in a molecule file, outside Task 1840's writeset.
+  Route as follow-up work; do not fix here.
+
+---
+
+# Task 1841: doc-comment-layer-contracts-path-sweep
+
+## Summary
+
+Independent re-review PASS (92/100, high confidence). During review the canonical home moved docs/architecture -> .project/architecture by operator decision (path-economy); orchestrator repointed 117 lib/ doc-comments + 7 README refs + 4 additional stale architecture refs and fixed lifecycle anchors §3.2 -> §9. Reviewer verified comment-only sampling across 8 files, zero stale strings, and all gates.
+
+## Changes
+
+- Documented task completion details.
+
+## Verification
+
+- [x] rg 'layer-contracts-v2' packages/*/lib packages/*/README.md packages/*/test apps/*/lib apps/*/test (excluding build/.dart_tool): 0 matches
+- [x] rg 'docs/architecture/' packages/*/lib packages/*/README.md packages/*/test apps/*/lib apps/*/test: 0 matches
+- [x] dart analyze: warp_prism_interaction, warp_prism_runtime, warp_prism_testkit, warp_prism_bindings, warp_prism_adapter_frb all 'No issues found!' exit 0
+- [x] dart run packages/warp_prism_ui/test/boundaries/boundary_test.dart --repo-root . : 15/15 PASS exit 0
+- [x] Independent reviewer ses_f1ee307e8ffeS6nJ0qEurVbnDe re-review verdict PASS (92/100) after remediation of its Serious findings
+
+---
+
+# Task 1839: Theme Brand Normalization (Nerazim Teal / Purifier Gold)
+
+## Summary
+
+Normalized the teal skin brand and gold preset label to the canonical vocabulary
+mandated by `AGENTS.md` §7.0. **Identifiers, labels, comments, and docs only** —
+no hex value, no theme behavior, no visual change. The `AGENTS.md` §7.0
+temporary section is now removable by governance once the residual out-of-scope
+sites (listed below) are cleared and independent review passes.
+
+## Changes
+
+### Renamed files (originals archived to `.archive/`, reversible)
+
+| Old | New |
+| --- | --- |
+| `packages/warp_prism_ui/lib/src/tokens/ds_cybercore_teal_skin.dart` | `.../ds_nerazim_teal_skin.dart` |
+| `packages/warp_prism_ui/test/tokens/ds_cybercore_teal_skin_test.dart` | `.../ds_nerazim_teal_skin_test.dart` |
+| `docs/design/cybercore-teal-theme-extension-skin.md` | `docs/design/nerazim-teal-theme-extension-skin.md` |
+
+### Renamed identifiers
+
+- `DSCyberCoreTealSkin` → `DSNerazimTealSkin`
+- `PrismCyberCoreTealSkin` → `PrismNerazimTealSkin`
+- factory `.omniRoute()` → `.nerazimTeal()`
+  (recorded per task: the `omniRoute` anchor was itself a stale product anchor;
+  every call site changes anyway, so it was renamed once.)
+- catalog enum `CatalogThemeVariant.cybercoreTeal` → `.nerazimTeal`
+- test probe key `'cybercore-teal-accent-probe'` → `'nerazim-teal-accent-probe'`
+
+### Renamed labels / comments / docs
+
+- `'CyberCore Teal (#00FFCC)'` → `'Nerazim Teal (#00FFCC)'` (catalog dropdown)
+- `'CyberCore Teal'` → `'Nerazim Teal'` (theme editor preset chip)
+- `'Protoss Gold'` → `'Purifier Gold'` (theme editor preset chip)
+- `Nerazim Green/Teal` → `Nerazim Teal` (4 docstring sites:
+  `prism_aliases.dart` ×2, `ds_taldarim_red_skin.dart`, `ds_talon_purple_skin.dart`)
+- barrel export + import paths in `tokens.dart` and `prism_aliases.dart`
+- `docs/design/public-barrel-audit.md` alias row
+- `docs/design/black-obsidian-visual-contract.md` — 3 live brand-label mentions
+  updated; the 2 historical-quote rows in the Supersession Map were deliberately
+  left verbatim and annotated with a Task 1839 note (rewriting a verbatim quote
+  of a superseded task artifact would falsify the record)
+
+### Explicitly NOT changed (verified)
+
+- **No hex value changed.** Teal `#00FFCC` / `#00B894` / `#007A66` proven
+  byte-identical against the archived original. Talon Purple
+  (`#9911E5`/`#770CB3`/`#4F0878`), Taldarim Red
+  (`#E51A4C`/`#B8103A`/`#7A0A26`), and Khalai Blue (`#2F81FF`) untouched.
+- `AGENTS.md`, `MISSION.md`, `README.md`, `pubspec.yaml` — not touched.
+- `.archive/`, `.project/tasks/04-completed/`, `.project/tasks/03-review/` —
+  not rewritten (0 files modified).
+- No golden refresh (Task 1800 freeze respected).
+
+## Verification
+
+| Check | Result |
+| --- | --- |
+| `dart format --set-exit-if-changed` (my 5 authored/edited files) | **PASS** exit 0 |
+| `dart format --set-exit-if-changed lib/ test/` (package-wide) | exit 1 — **pre-existing** baseline drift, 57 files dirty incl. files this task never touched |
+| `dart analyze` (warp_prism_ui) | exit 3 — 10 errors, **all in 3 out-of-scope test files**; 0 errors in in-scope files; remaining 212 are pre-existing `info` lints |
+| `flutter test test/tokens/ds_nerazim_teal_skin_test.dart` | **PASS** 15/15, exit 0 |
+| canonical sibling skin tests (taldarim/talon) | **PASS**, exit 0 |
+| `boundary_test.dart --repo-root .` | **PASS** 15/15, exit 0 |
+| `apps/cybercore` `flutter analyze` | **PASS** exit 0 |
+| `flutter test --no-pub` (warp_prism_ui, full) | exit 1 — 70 failures: 3 compile breaks from out-of-scope files + golden drift documented as expected under the Task 1800/1805 freeze |
+| `apps/catalog` `flutter analyze` / `flutter test` | exit 1 / exit 1 — 2 errors, both in out-of-scope `test/host_exercise/catalog_host.dart` |
+| `apps/cybercore` `flutter test` | exit 1 — 4 failures, **pre-existing** `PathNotFoundException` in the Task 1838 host-exercise harness; 0 references to any renamed symbol |
+| Zero-hit sweep over in-scope live paths | **0 stale hits** |
+
+### Out-of-`Where`-table stale-brand sites (reported, NOT edited — scope discipline)
+
+These break compilation and must be cleared by an authorized follow-up:
+
+- `packages/warp_prism_ui/lib/src/tokens/prism_token_registry.dart` (1 — docstring)
+- `packages/warp_prism_ui/test/atoms/switch/ds_switch_test.dart` (1)
+- `packages/warp_prism_ui/test/organisms/theme_editor/prism_theme_editor_test.dart` (2 — asserts `find.text('CyberCore Teal')`)
+- `packages/warp_prism_ui/test/theme/prism_theme_test.dart` (3)
+- `packages/warp_prism_ui/test/theme/theme_role_accent_propagation_test.dart` (11)
+- `packages/warp_prism_host_exercise/lib/src/models/theme_matrix.dart` (2)
+- `apps/catalog/test/host_exercise/catalog_host.dart` (2)
+- `docs/governance/catalog-showability-2026-07-10.md` (1)
+
+**Not edited, by design:** `AGENTS.md` §7.0 (the law must name the variants it
+forbids; removed by governance after review), `.project/tasks/01-open/1839-*`
+(the task itself), `.project/tasks/03-review/1806-*` (out of bounds),
+`docs/design/black-obsidian-visual-contract.md` lines 180–181 (annotated
+historical quotes).
+
+---
+
+# Epoch Reset Part 1: Reconcile, Declutter, Inventory, Plan (unsealed)
+
+## Summary
+
+Executed the user-authorized bounded architecture/governance reset up to the
+persistence gate. Seven parallel read-only investigators inventoried Warp Prism
+ADS, IDS/runtime/bindings/FRB/Rust, Warpblade, Tempest, Sentry, Hyperion, and
+the historical corpus. Independent review returned AMEND 88/100 (F1–F9); all
+mechanical findings remediated except F7, which is materialized as Task 1841.
+A first review pass (BLOCKED 42/100) was set aside after citation audit proved
+fabricated line references.
+
+## Changes
+
+- Archived 36 planning artifacts → `.archive/` + `.project/archive/epoch-reset-manifest.md`.
+- `MISSION.md`: rewritten (348 lines; L0–L3 + Rewrite Factory superseded in §11).
+- `AGENTS.md`: amended (consumer family, §7.0 temporary brand law per owner order, §8 onboard, §10.1 program target, §15 stop conditions, fixed broken rule/session paths).
+- `README.md`: rewritten as arrival page.
+- `docs/architecture/layer-contracts.md`: created (normative matrix + 16-check harness list).
+- `docs/bridge/README.md`: created (harvest loop + classification vocabulary).
+- `docs/reports/2026-09-27-cross-consumer-gap-matrix.md`: created (28-row matrix, 5 harvest candidates, conflicting-semantics section).
+- `docs/design/charter.md`: refreshed to v2.1 (consumer family, real topology).
+- `.agents/workflows/wp-warp-prism-onboarding.md`: repaired stale MISSION sections, layer-contracts path, tasklist path, report/session paths.
+- `.project/tasks/tasklist.md`: regenerated (Open 3, Review 4, Planning 2, Completed 191).
+- Tasks materialized in `01-open/`: 1839 (brand rename), 1840 (StatusTicker overflow + ListTile warnings, from operator live run), 1841 (doc-comment path sweep).
+- Session ledger updated with 12 epoch-reset sessions.
+
+## Validation
+
+- Light verification pass by grep: zero dead planning paths in tasklist (EPIC-18 row is live), zero stale `docs/reports/1805` paths, zero archived-EPIC citations in current-authority docs, all manifest section pointers resolve, all onboarding/AGENTS referenced paths exist.
+- Flutter/Dart test suites NOT run in this pass (governance-only mutations + provider-blocked builders).
+
+## Open blockers
+
+1. **Persistence**: `seal_checkpoint inspect` → BLOCKED (`blob-size`: ~899 MiB blob swept via the retargeted `references` symlink, a pre-existing worktree change from 2026-09-23 outside this pass's authority). Nothing sealed. Operator action required.
+2. **Builders**: Tasks 1839/1840 sessions failed 3× on provider errors. Operator CLI fallback required (see reset report).
+3. **Human gates (unchanged)**: Task 1805 visual sign-off; Task 1816 follows it.
 
 ---
 
@@ -639,9 +1448,9 @@ updated the task template and applicable governance rules so lifecycle/readiness
 status is derived solely from the containing task lane directory.
 
 ## Changes
-- Removed 169 task-header `Status` lines under `.project/tasks/`.
+- Removed 169 task-header `Status` lines under `docs/tasks/`.
 - Preserved five historical inline `Status` notes in Review Ledger/body prose.
-- Updated `.project/tasks/000-template.md` with explicit lane-derived status guidance.
+- Updated `docs/tasks/000-template.md` with explicit lane-derived status guidance.
 - Updated local `AGENTS.md` and lane/task artifact rules.
 - Updated parent `AGENTS.md` with the cross-project convention.
 - Updated sibling templates in `pm_lens`, `cryptosentinel-v1`, `optillm-go`,
@@ -867,8 +1676,8 @@ Created the authoritative Black Obsidian Visual Contract (`docs/design/black-obs
 ## Changes
 
 - Created `docs/design/black-obsidian-visual-contract.md` containing Rule Zero verbatim, product owner rationale, provisional palette table, typography role table, binary forbidden checklist, can/cannot composition examples, supersession map, and interim golden freeze policy.
-- Annotated `.project/tasks/00-planning/EPIC-17-warp-prism-ads-form-primitives-gap.md` with supersession pointer for active/checked states.
-- Annotated `.project/tasks/00-planning/EPIC-18-warp-prism-black-obsidian-visual-direction-reset.md` closing Task 1800 contract deliverable.
+- Annotated `docs/tasks/00-planning/EPIC-17-warp-prism-ads-form-primitives-gap.md` with supersession pointer for active/checked states.
+- Annotated `docs/tasks/00-planning/EPIC-18-warp-prism-black-obsidian-visual-direction-reset.md` closing Task 1800 contract deliverable.
 
 ## Verification
 
@@ -898,11 +1707,11 @@ accent/surface colors visually and converged values are baked back into tokens.
 
 ## Files
 
-- Created: `.project/tasks/01-open/1807-warp-prism-token-override-theme-editor.md`
-- Created: `.project/tasks/01-open/1808-warp-prism-color-field-molecule.md`
-- Modified: `.project/tasks/00-planning/EPIC-18-warp-prism-black-obsidian-visual-direction-reset.md`
+- Created: `docs/tasks/01-open/1807-warp-prism-token-override-theme-editor.md`
+- Created: `docs/tasks/01-open/1808-warp-prism-color-field-molecule.md`
+- Modified: `docs/tasks/00-planning/EPIC-18-warp-prism-black-obsidian-visual-direction-reset.md`
   (task graph + convergence loop amendment)
-- Modified: `.project/tasks/01-open/1800-warp-prism-black-obsidian-visual-contract.md`
+- Modified: `docs/tasks/01-open/1800-warp-prism-black-obsidian-visual-contract.md`
   (provisional-hexes exit conditions)
 
 ---
@@ -914,7 +1723,7 @@ accent/surface colors visually and converged values are baked back into tokens.
 Architect orchestrator validation wave (task-architect governance audit + Flutter
 expert technical audit + direct evidence verification) approved the black-obsidian
 visual direction and promoted seven expanded executable tasks from `00-planning/`
-seeds to `.project/tasks/01-open/`.
+seeds to `docs/tasks/01-open/`.
 
 ## Key decisions recorded (EPIC-18 § Architect Review Questions — CLOSED)
 
@@ -935,8 +1744,8 @@ seeds to `.project/tasks/01-open/`.
 
 ## Files
 
-- Created: `.project/tasks/01-open/180{0..6}-warp-prism-*.md` (7 files, template-compliant)
-- Modified: `.project/tasks/00-planning/EPIC-18-warp-prism-black-obsidian-visual-direction-reset.md`
+- Created: `docs/tasks/01-open/180{0..6}-warp-prism-*.md` (7 files, template-compliant)
+- Modified: `docs/tasks/00-planning/EPIC-18-warp-prism-black-obsidian-visual-direction-reset.md`
 - Archived: seeds → `.archive/planning-seeds-epic18-2026-08-22/`
 
 ## Notes
@@ -1424,7 +2233,7 @@ dart run test/boundaries/boundary_test.dart
 
 > **Date**: 2026-07-18  
 > **Agent**: gt-flutter-expert (builders subagent; parent agentID=builders)  
-> **Lane**: tasks remain in `.project/tasks/02-doing/` (no git / no promote)
+> **Lane**: tasks remain in `docs/tasks/02-doing/` (no git / no promote)
 
 ## Summary
 
@@ -1488,7 +2297,7 @@ dart run test/boundaries/boundary_test.dart → 7/7 PASS
 
 ## Lane
 
-Tasks remain in `.project/tasks/02-doing/` (no promote / no git).
+Tasks remain in `docs/tasks/02-doing/` (no promote / no git).
 
 ## Reports
 
@@ -1729,7 +2538,7 @@ verification: scoped analyze/format/tests + package analyze + 7/7 boundaries
   - **§2.3**: Confirmed Data Table / Command Palette marked **delivered by 1112/1113** (not “not implemented”).
   - **Melos exits**: Re-ran `melos run analyze` → **SUCCESS** (`--no-fatal-infos`); annotated package-scoped test gate honestly in task Completion Evidence.
 - Gallery registry hygiene: `design_system_gallery_test.dart` section count **22 → 23** (9 EPIC-15 incl. optional-polish).
-- Refreshed task Completion Evidence; **left in `.project/tasks/02-doing/`** (no self-promote).
+- Refreshed task Completion Evidence; **left in `docs/tasks/02-doing/`** (no self-promote).
 
 ### Validation
 - Scoped operational suites: **+183 All tests passed**
@@ -1791,7 +2600,7 @@ four-export barrel (Prism aliases + gallery with DSGallery\* hidden).
 - `docs/design/public-barrel-audit.md` — full live rewrite
 - `docs/changelog/1302-public-barrel-audit.md` — this entry
 - Task file evidence refresh + lane → `03-review/`
-- Archived stale review collision under `.archive/.project/tasks/03-review/`
+- Archived stale review collision under `.archive/docs/tasks/03-review/`
 
 ## Verification
 
@@ -1857,7 +2666,7 @@ New suites vs 40-universe: `production_router_test`, `map_graph_builder_edges_te
 ## Files
 
 - Updated: `docs/reports/observatory-failure-baseline.md`
-- Updated: `.project/tasks/02-doing/1401-warp-prism-observatory-failure-baseline-inventory.md`
+- Updated: `docs/tasks/02-doing/1401-warp-prism-observatory-failure-baseline-inventory.md`
 - Created: this changelog note
 
 ## Notes
@@ -1892,7 +2701,7 @@ state section. No Flutter application source was modified.
 ## Files
 
 - Updated: `docs/reports/warp-prism-task-namespace-renumbering-map.md`
-- Updated: `.project/tasks/02-doing/1070-warp-prism-task-namespace-integrity-verification.md`
+- Updated: `docs/tasks/02-doing/1070-warp-prism-task-namespace-integrity-verification.md`
 - Created: this changelog note
 
 ## Notes
@@ -2186,7 +2995,7 @@ found the manifest frozen at 129 Prism symbols while source held 262+.
 ## Summary
 
 Independent re-review scored all 16 tasks **100/100** after live gates.
-Tasks moved to `.project/tasks/04-completed/`. Full reports under
+Tasks moved to `docs/tasks/04-completed/`. Full reports under
 `docs/reports/review-wave-2026-07-18/task-XXXX-path100-rereview.md`.
 
 ## Path-to-100 patches applied this review
@@ -2225,7 +3034,7 @@ Tasks moved to `.project/tasks/04-completed/`. Full reports under
 
 **Date**: 2026-07-18  
 **Agent**: PATH-TO-100 builder (parent agentID=builders)  
-**Lane**: tasks remain in `.project/tasks/03-review/`
+**Lane**: tasks remain in `docs/tasks/03-review/`
 
 ## Summary
 
@@ -2299,7 +3108,7 @@ dart format --set-exit-if-changed (residual files) → FORMAT_EXIT=0
 
 **Date**: 2026-07-18  
 **Agent**: builders (path-to-100)  
-**Lane**: remain in `.project/tasks/03-review/`
+**Lane**: remain in `docs/tasks/03-review/`
 
 ## 0310 — Backbone dual-surface retirement
 
@@ -3668,7 +4477,7 @@ Published the builder-facing EPIC-16 organism inventory and catalog showability 
 | File | Action | Detail |
 |------|--------|--------|
 | `docs/reports/epic-16-organism-contract-brief-2026-07-10.md` | Created | Full inventory + contract brief |
-| `.project/tasks/02-doing/1600-warp-prism-epic-16-inventory-catalog-showability-brief.md` | Modified | Status/completion evidence; stay in `02-doing/` |
+| `docs/tasks/02-doing/1600-warp-prism-epic-16-inventory-catalog-showability-brief.md` | Modified | Status/completion evidence; stay in `02-doing/` |
 | `docs/changelog/20260710-204831-1600-epic-16-inventory-catalog-showability-brief-gt-flutter-engineer.md` | Created | This entry |
 
 ## Verification
@@ -3676,7 +4485,7 @@ Published the builder-facing EPIC-16 organism inventory and catalog showability 
 - [x] Brief exists at recommended path under `docs/reports/` with EPIC-16 in title
 - [x] Path existence checks for epic + harvest inputs + organisms + catalog (see task Completion Evidence)
 - [x] Open tasks 1601–1616 referenced; no numbering gaps 1600–1616
-- [x] Task remains in `.project/tasks/02-doing/` (no 03/04 move)
+- [x] Task remains in `docs/tasks/02-doing/` (no 03/04 move)
 
 ---
 
@@ -3866,11 +4675,11 @@ no Flutter widgets.
 ## Verification
 
 ```bash
-test -f .project/tasks/00-planning/EPIC-15-warp-prism-ads-organism-expansion-from-reference-harvest.md
+test -f docs/tasks/00-planning/EPIC-15-warp-prism-ads-organism-expansion-from-reference-harvest.md
 test -f docs/reports/ads-organism-harvest-unified-2026-07-10.md
 test -f docs/reports/epic-15-organism-contract-brief-2026-07-10.md
 ls packages/warp_prism_ui/lib/src/organisms/
-ls .project/tasks/01-open/15*.md | wc -l   # 23
+ls docs/tasks/01-open/15*.md | wc -l   # 23
 ```
 
 Path existence checks only (governance task; Flutter not required).
@@ -3889,7 +4698,7 @@ gt-flutter-engineer
 
 ## Summary
 
-Closed independent re-review residuals (82/100): honor `showAbsoluteTime`, 48×48 expand + Latest a11y targets with button semantics, real auto-scroll pause/resume + append proofs, and optional 10K virtualization smoke. Lane left in `.project/tasks/02-doing/` for reviewer re-pick.
+Closed independent re-review residuals (82/100): honor `showAbsoluteTime`, 48×48 expand + Latest a11y targets with button semantics, real auto-scroll pause/resume + append proofs, and optional 10K virtualization smoke. Lane left in `docs/tasks/02-doing/` for reviewer re-pick.
 
 ## Changes
 
@@ -3937,7 +4746,7 @@ Closed independent re-review residual (**83/100** Path-to-100 F2–F6):
 - **F6**: Footer wires real result count (`N results` / `1 result`).
 - Bonus: root `Material` on palette so `showDSCommandPalette` works without Scaffold.
 
-Lane left in `.project/tasks/02-doing/` for reviewer re-pick. **ready_for_reviewer: yes**.
+Lane left in `docs/tasks/02-doing/` for reviewer re-pick. **ready_for_reviewer: yes**.
 
 ## Changes
 
@@ -3963,7 +4772,7 @@ flutter test --concurrency=1 --no-pub test/organisms/command_palette_test.dart
 - Independent re-review (`gt-code-quality-reviewer`) after builders INFO currency fix.
 - Live scoped `dart analyze --format=machine` reconfirmed: observatory **53 INFO**, UI **31 INFO**, catalog **0**, cybercore **0**; all **0 ERROR / EXIT 0**.
 - Prior S=86 hold (claimed 69/75 INFO) closed against exact live inventory.
-- Task promoted `.project/tasks/02-doing/` → `.project/tasks/03-review/`.
+- Task promoted `docs/tasks/02-doing/` → `docs/tasks/03-review/`.
 
 ### Evidence
 - Report: `docs/reports/review-wave-2026-07-10/task-0010-foundation-audit-info-currency-rereview.md`
@@ -3989,7 +4798,7 @@ flutter test --concurrency=1 --no-pub test/organisms/command_palette_test.dart
 Independent path-to-100 re-review of nine EPIC-11 design-system tasks still in
 `02-doing`. Each task received one cheap scoped `flutter test` re-run (all green)
 plus source spot-check of prior reject blockers. All scored **100/100** and were
-promoted to `.project/tasks/03-review/` with Review Ledger entries.
+promoted to `docs/tasks/03-review/` with Review Ledger entries.
 
 ## Lane moves
 
@@ -4033,7 +4842,7 @@ promoted to `.project/tasks/03-review/` with Review Ledger entries.
 - Lint INFO debt remains (prefer_const_*, UI `withOpacity` deprecation).
 - Full monorepo `flutter test` green **not claimed**.
 - DS\* residual ≈ 1 doc comment; Prism\* ≈ 1219.
-- Task remains in `.project/tasks/02-doing/` (no auto-promote).
+- Task remains in `docs/tasks/02-doing/` (no auto-promote).
 
 ### Evidence
 - Machine logs: `tmp/0010-live-baseline/*.machine.txt`
@@ -4060,7 +4869,7 @@ Closed independent re-review residual (**86/100**):
 | F3 HealthCard keyboard | `DSInteractiveSurface` (Enter/Space + focus + button semantics when `onTap != null`) |
 | Path-to-100 INFO lints | Scoped analyze **No issues found** |
 
-Lane left in `.project/tasks/02-doing/` for reviewer re-pick.
+Lane left in `docs/tasks/02-doing/` for reviewer re-pick.
 
 ## Changes
 
@@ -4097,8 +4906,8 @@ dart analyze \
 ## Summary
 
 Independent `gt-code-quality-reviewer` re-review of path-to-100 ready tasks in
-`.project/tasks/02-doing/` (excluding EPIC-11 1112-1123). Promoted S=100 tasks to
-`.project/tasks/03-review/` with Review Ledger entries.
+`docs/tasks/02-doing/` (excluding EPIC-11 1112-1123). Promoted S=100 tasks to
+`docs/tasks/03-review/` with Review Ledger entries.
 
 ## Results
 
@@ -4122,7 +4931,7 @@ Independent `gt-code-quality-reviewer` re-review of path-to-100 ready tasks in
 
 Closed independent re-review residual (**72/100**): `DSErrorBoundary` dispose restore identity mismatch (F1), vacuous catch/retry tests (F3), isolation overclaim (F2), and shimmer a11y/reduced-motion gap (F5). Nested handler stack with stable static tear-offs, real throw-in-build proofs, `ExcludeSemantics`, and reduced-motion solid base are in place.
 
-Lane left in `.project/tasks/02-doing/` for reviewer re-pick.
+Lane left in `docs/tasks/02-doing/` for reviewer re-pick.
 
 ## Changes
 
@@ -4198,7 +5007,7 @@ and re-ran scoped gates.
 
 ## Lane
 
-Left in `.project/tasks/02-doing/`. **ready_for_reviewer: yes**. No git.
+Left in `docs/tasks/02-doing/`. **ready_for_reviewer: yes**. No git.
 
 ---
 
@@ -4275,7 +5084,7 @@ Closed independent re-review residual (**84/100** → path-to-100):
 - **F8**: Honest lcov — `ds_data_table.dart` **86.6%** line coverage (311/359).
 - **F9**: No `withOpacity`; scoped analyze clean.
 
-Lane left in `.project/tasks/02-doing/` for reviewer re-pick (`ready_for_reviewer: yes`).
+Lane left in `docs/tasks/02-doing/` for reviewer re-pick (`ready_for_reviewer: yes`).
 
 ## Changes
 
@@ -4312,7 +5121,7 @@ dead wiring and `DSGraphCanvas.nodeSpacing` was not forwarded. Path-to-100
 verifies live injection wiring, adds regression-proof injection tests, and
 clears production scoped analyzer INFOs (`withOpacity` → `withValues`).
 
-Lane left in `.project/tasks/02-doing/` for independent reviewer re-pick. No git.
+Lane left in `docs/tasks/02-doing/` for independent reviewer re-pick. No git.
 
 ## Changes
 
@@ -4401,7 +5210,7 @@ dart analyze --format=machine \
 
 Closed independent re-review residual (88/100): **16ms/60fps proof was not real** under `flutter_test` (live avg ~35ms, P99 ~95ms while asserts used soft harness budgets). Path-to-100 reframes acceptance to a **measured virtualization SLA** (viewport-bounded buildCount + fixed `itemExtent` O(1) jump-to-index) and removes fake 16ms product claims from benchmark, gallery, API docs, and task exit wording. Cheap virtualization tweak: `DSVirtualScrollConfig.highCache` now sets `addAutomaticKeepAlives: false`.
 
-Lane left in `.project/tasks/02-doing/` for reviewer re-pick.
+Lane left in `docs/tasks/02-doing/` for reviewer re-pick.
 
 ## Changes
 
@@ -4554,7 +5363,7 @@ NESTED=39 NESTED_MISSING_FM=0
 ```
 
 - Audit-only under 1402 (no corpus/parser mutation in this task)
-- Task ledger left in `.project/tasks/02-doing/` per fixer instructions
+- Task ledger left in `docs/tasks/02-doing/` per fixer instructions
 - No git/jj operations
 
 ---
@@ -4595,7 +5404,7 @@ JSON inventory over all `apps/observatory/test/**/*_test.dart` files.
 - Report: `docs/reports/observatory-failure-baseline.md`
 - Summary TSV: `tmp/1401-suite-summary.tsv`
 - Analyze log: `tmp/1401-analyze.out`
-- Task ledger remains in `.project/tasks/02-doing/` per fixer instructions
+- Task ledger remains in `docs/tasks/02-doing/` per fixer instructions
 
 ## Notes
 
@@ -4611,7 +5420,7 @@ JSON inventory over all `apps/observatory/test/**/*_test.dart` files.
 > **Date**: 2026-07-09
 > **Executor**: gt-flutter-engineer
 > **Scope**: `apps/observatory/lib/data/parsers|repositories|services|models`, tests, mock corpus skill-local workflows
-> **Lane**: remain in `.project/tasks/02-doing/` (ready for independent re-review)
+> **Lane**: remain in `docs/tasks/02-doing/` (ready for independent re-review)
 
 ## Summary
 
@@ -4850,7 +5659,7 @@ builders (Task 0010 path-to-100 currency fix)
   - Mid-wave 920 ERROR inventory marked **SUPERSEDED**
   - Primary class `DS*` → `Prism*` marked **CLOSED** (comment residual only)
   - Dependent-task impact for 0012/0013+ updated
-- `.project/tasks/02-doing/0010-warp-prism-foundation-audit-analyzer-baseline.md` — evidence + ledger aligned to live truth
+- `docs/tasks/02-doing/0010-warp-prism-foundation-audit-analyzer-baseline.md` — evidence + ledger aligned to live truth
 - Machine logs under `tmp/0010-live-baseline/`
 
 ### Added
@@ -4899,14 +5708,14 @@ builders (Task 0010 path-to-100 currency fix)
 
 ## Summary
 
-Independent re-review scored Task 0013 at **87/100** because the README residual table and Completion Evidence overstated `apps/observatory` as **RED residual** / 522 ERROR. Live analyzer inventory is **0 ERROR / 69 INFO** (EXIT 0). This pass rewrites residual severity language only; leaves the task in `.project/tasks/02-doing/`.
+Independent re-review scored Task 0013 at **87/100** because the README residual table and Completion Evidence overstated `apps/observatory` as **RED residual** / 522 ERROR. Live analyzer inventory is **0 ERROR / 69 INFO** (EXIT 0). This pass rewrites residual severity language only; leaves the task in `docs/tasks/02-doing/`.
 
 ## Changes
 
 | File | Action | Detail |
 |------|--------|--------|
 | `README.md` | Modified | Residual table: observatory + UI rows → **INFO lint residual** (0 ERROR); note that strict 0-issue policies may still treat INFO as issues; historical ERROR inventory superseded |
-| `.project/tasks/02-doing/0013-warp-prism-validation-baseline-readme-alignment.md` | Modified | Live re-run evidence; supersede 522 ERROR snapshot; review ledger fix entry; stay in 02-doing |
+| `docs/tasks/02-doing/0013-warp-prism-validation-baseline-readme-alignment.md` | Modified | Live re-run evidence; supersede 522 ERROR snapshot; review ledger fix entry; stay in 02-doing |
 | `docs/changelog/20260710-011421-0013-validation-baseline-residual-severity-info-not-red-builders.md` | Created | This entry |
 
 ## Verification
@@ -4917,7 +5726,7 @@ Independent re-review scored Task 0013 at **87/100** because the README residual
 - [x] `dart analyze --format=machine apps/catalog/lib` / `apps/cybercore/lib` → 0 issues
 - [x] README residual row no longer claims observatory **RED residual** / RED ERROR package gate
 - [x] Full package-green still **not claimed**
-- [x] Task remains in `.project/tasks/02-doing/` (no lane promotion)
+- [x] Task remains in `docs/tasks/02-doing/` (no lane promotion)
 
 ---
 
@@ -4963,7 +5772,7 @@ cd apps/cybercore && flutter test    # 12/12 PASS
 
 ## Lane
 
-Left in `.project/tasks/02-doing/`. `ready_for_reviewer: yes`.
+Left in `docs/tasks/02-doing/`. `ready_for_reviewer: yes`.
 
 ---
 
@@ -5002,7 +5811,7 @@ flutter test test/features/workspace_snapshot/workspace_snapshot_enhanced_test.d
 
 ## Notes
 
-- Lane remains `.project/tasks/02-doing/` per wave instruction (no auto-promote).
+- Lane remains `docs/tasks/02-doing/` per wave instruction (no auto-promote).
 - Residual risk: prerequisite Task 0019 still rejected this wave (symlink/evidence).
 
 **Author**: gt-flutter-engineer
@@ -5026,7 +5835,7 @@ out of `02-doing/`.
   - `archive_policy: All 18 legacy files move to .archive/mock_workspace/ preserving directory structure. No destructive deletion.`
   - Removed residual `warp-prism/archive/mock_workspace/` from `archive_policy`.
   - Replaced imprecise `archive_destination: .archive/` with `.archive/mock_workspace/`.
-- **.project/tasks/02-doing/0001-warp-prism-mock-workspace-contract-baseline.md** —
+- **docs/tasks/02-doing/0001-warp-prism-mock-workspace-contract-baseline.md** —
   refreshed Completion Evidence with exact live paths; set Review State to
   `Ready For Review` while remaining in lane `02-doing` (no self-promote).
   Live changelog path cited:
@@ -5039,7 +5848,7 @@ out of `02-doing/`.
 - [x] `rg -n "Parser deltas|Legacy corpus mapping|Required counts" docs/mock-workspace-corpus-contract.md` → EXIT 0
 - [x] `rg -n "warp-prism/archive/mock_workspace" apps/observatory/assets/mock_workspace/manifest.yaml docs/mock-workspace-corpus-contract.md` → 0 hits
 - [x] `test -f docs/changelog/20260607-120000-0001-2026-06-07-0001-mock-workspace-contract-architect-orchestrator.md` → LIVE_CHANGELOG_OK
-- [x] Task file remains at `.project/tasks/02-doing/0001-warp-prism-mock-workspace-contract-baseline.md` (no self-promote)
+- [x] Task file remains at `docs/tasks/02-doing/0001-warp-prism-mock-workspace-contract-baseline.md` (no self-promote)
 
 ---
 
@@ -5048,7 +5857,7 @@ out of `02-doing/`.
 ## Summary
 
 Independent re-review of Task 1110 after pilot A/B/C route realignment.
-Score **100**/100. Promoted to `.project/tasks/03-review/`.
+Score **100**/100. Promoted to `docs/tasks/03-review/`.
 
 ## Validation (reviewer re-run)
 
@@ -5065,7 +5874,7 @@ cd apps/cybercore && flutter test      # 12/12 PASS
 
 ## Lane
 
-`.project/tasks/02-doing/` → `.project/tasks/03-review/`.
+`docs/tasks/02-doing/` → `docs/tasks/03-review/`.
 
 ## Report
 
@@ -5098,7 +5907,7 @@ is not re-claimed in this batch.
 - `apps/observatory/lib/data/models/workspace_graph.dart` — removed dead
   `_listEquals` helper.
 - Task evidence refreshed in
-  `.project/tasks/02-doing/1107-warp-prism-melos-monorepo-migration.md` (batch #4).
+  `docs/tasks/02-doing/1107-warp-prism-melos-monorepo-migration.md` (batch #4).
 
 ## Verification
 
@@ -5121,8 +5930,8 @@ is not re-claimed in this batch.
 # 2026-07-09 — Quality review promote wave (1106–1123)
 
 ### Changed
-- Independent quality review of tasks still in `.project/tasks/02-doing/` among 1106–1123 (skipped 1102).
-- Promoted score-100 tasks to `.project/tasks/03-review/`: 1106, 1108, 1109, 1112, 1113, 1114, 1115, 1116, 1117, 1119, 1120, 1121, 1122, 1123.
+- Independent quality review of tasks still in `docs/tasks/02-doing/` among 1106–1123 (skipped 1102).
+- Promoted score-100 tasks to `docs/tasks/03-review/`: 1106, 1108, 1109, 1112, 1113, 1114, 1115, 1116, 1117, 1119, 1120, 1121, 1122, 1123.
 - Left in `02-doing/` with path-to-100: 1107 (melos analyze FAIL, score 78), 1110 (route drift vs 1108 pilots, score 82), 1111 (stale evaluation, score 80).
 - Ledger: `.agents/profiles/reviewers/review-260709230500-wave-1106-1123-promote.md`
 
@@ -5133,7 +5942,7 @@ is not re-claimed in this batch.
 # 2026-07-09 — Tasks 1106–1123 evidence batch (gt-flutter-engineer)
 
 ### Changed
-- Refreshed Completion Evidence on tasks in `.project/tasks/02-doing/` among 1106–1123 (excluding 1118).
+- Refreshed Completion Evidence on tasks in `docs/tasks/02-doing/` among 1106–1123 (excluding 1118).
 - Live re-validation: `flutter test packages/warp_prism_ui/test/organisms/` → **+235 All tests passed**.
 - Recorded Task 1102 inventory hard gate as **satisfied at evidence level** (Ready For Review + inventory docs present; screenshots optional/deferred).
 - Noted residual: `dart run melos run analyze` still FAIL; 7 package analyze errors remain in `test/performance/virtual_scroll_benchmark.dart`.
@@ -5165,8 +5974,8 @@ package-wide analyzer residual as EXTERNAL_BLOCKER.
 2. `ds_toast_test.dart`: new test
    `pause-on-hover keeps toast visible past duration until unhover`
    (suite **41/41**).
-3. Stale sibling `.project/tasks/04-completed/1308-...` archived to
-   `.archive/.project/tasks/04-completed/1308-warp-prism-toast-async-lifecycle-stabilization-stale-pre-timer-id-fix-20260709.md`.
+3. Stale sibling `docs/tasks/04-completed/1308-...` archived to
+   `.archive/docs/tasks/04-completed/1308-warp-prism-toast-async-lifecycle-stabilization-stale-pre-timer-id-fix-20260709.md`.
 
 ## Verification (from `packages/warp_prism_ui`)
 
@@ -5266,7 +6075,7 @@ stale package-wide **880 diagnostics (468 ERROR)**. Live re-run supersedes that.
 
 ## Files Touched
 
-- `.project/tasks/02-doing/1205-warp-prism-boundary-test-harness.md` — evidence + exit conditions
+- `docs/tasks/02-doing/1205-warp-prism-boundary-test-harness.md` — evidence + exit conditions
 - This changelog entry
 
 No harness product-code changes required this pass.
@@ -5443,7 +6252,7 @@ visual regression for the obsidian glass aesthetic.
 **Date**: 2026-07-09
 **Tasks**: 0810, 0811, 0812, 0813
 **Type**: feature / path-to-100 remediation
-**Lane**: left in `.project/tasks/02-doing/` (not promoted)
+**Lane**: left in `docs/tasks/02-doing/` (not promoted)
 
 ## Summary
 
@@ -5556,7 +6365,7 @@ Task 1110 realigned `apps/cybercore` to Task 1108 pilots A/B/C. Prior same-day 1
 
 - Rewrote `docs/design/cybercore-pilot-evaluation.md` — A/B/C **PASS** (3/3); ADS Prism* PASS; 1109 design-doc drift residual only.
 - Rewrote `docs/design/cybercore-expansion-decision.md` — **EXPAND** conditional fixture-backed deferred routes; **DENY** live API.
-- Updated Task 1111 completion evidence; **score 100**; moved to `.project/tasks/03-review/`.
+- Updated Task 1111 completion evidence; **score 100**; moved to `docs/tasks/03-review/`.
 - No Flutter/Dart code created or modified by this task.
 
 ## Verification
@@ -5660,7 +6469,7 @@ not treat root-`lib/` or blocked-SDK claims as current truth.
   (topology, Where-path remap, stack reclassification, EPIC 10 goal status delta,
   validation table); marked executive summary, historical divergence table,
   validation §8, and blockers §9 as historical where superseded.
-- **.project/tasks/02-doing/1000-warp-prism-polish-baseline-audit.md** — aligned Status /
+- **docs/tasks/02-doing/1000-warp-prism-polish-baseline-audit.md** — aligned Status /
   Review State headers, remapped Where table to monorepo hosts, cleared stale
   SDK/changelog blockers, refreshed Completion Evidence. **Lane left in `02-doing`**.
 - **This changelog note** — evidence-refresh record only (no product code).
@@ -6389,7 +7198,7 @@ mode selector + state-surface action affordances so scoped map tests pass.
 ## Promotion
 
 Self-score **100/100**. Status set to Ready For Review; task moved to
-`.project/tasks/03-review/`.
+`docs/tasks/03-review/`.
 
 ---
 
@@ -6430,7 +7239,7 @@ flutter test test/features/shell/shell_state_handler_test.dart \
 
 ## Self-score
 
-**100/100** — builder expert self-review (independent reviewers unavailable). Promoted to `.project/tasks/03-review/`.
+**100/100** — builder expert self-review (independent reviewers unavailable). Promoted to `docs/tasks/03-review/`.
 
 **Author**: builders (omniroute/builder)
 
@@ -6617,7 +7426,7 @@ and task evidence/lane/changelog were completed for review promotion.
 - `apps/observatory/lib/data/models/governance_diagnostics.dart`
 - `apps/observatory/lib/data/services/services.dart`
 - `apps/observatory/test/data/services/workspace_diagnostics_service_test.dart`
-- `.project/tasks/03-review/0314-warp-prism-derived-metrics-governance-diagnostics.md` (promoted)
+- `docs/tasks/03-review/0314-warp-prism-derived-metrics-governance-diagnostics.md` (promoted)
 
 ## Validation (scoped, OOM-safe)
 
@@ -6726,7 +7535,7 @@ path match the live Melos monorepo.
 |------|--------|--------|
 | `README.md` | Modified | Repository-local `dart run melos` workflow; live `PrismColors`/`PrismTypography`/`PrismSpacing`; corpus at `apps/observatory/assets/mock_workspace/`; no global Melos prerequisite; no fabricated `PrismTokens` / `PrismMasterDetailTemplate` |
 | `docs/changelog/20260709-151714-1126-readme-path-to-100-builders.md` | Created | This entry |
-| `.project/tasks/02-doing/1126-warp-prism-readme-monorepo-reality-alignment.md` | Modified | Path-to-100 evidence, policy classification, review ledger |
+| `docs/tasks/02-doing/1126-warp-prism-readme-monorepo-reality-alignment.md` | Modified | Path-to-100 evidence, policy classification, review ledger |
 
 ## Review findings closed
 
@@ -6757,7 +7566,7 @@ GANTHRITOR_CHANGELOG_DIR=docs/changelog .../rebuild.sh validate
 
 - `README.md`
 - `docs/changelog/20260709-151714-1126-readme-path-to-100-builders.md`
-- `.project/tasks/02-doing/1126-warp-prism-readme-monorepo-reality-alignment.md`
+- `docs/tasks/02-doing/1126-warp-prism-readme-monorepo-reality-alignment.md`
 
 ## Regression count
 
@@ -6860,7 +7669,7 @@ Surgical README Validation Baseline residual section; live scoped dart analyze +
 |------|--------|--------|
 | `README.md` | Modified | Surgical `### Validation baseline (expected residual)` under Validation; documents live residual package-gate inventory and Task 0010 report pointer |
 | `docs/changelog/20260709-122220-0013-validation-baseline-readme-alignment-path-to-100-builders.md` | Created | This entry |
-| `.project/tasks/02-doing/0013-warp-prism-validation-baseline-readme-alignment.md` | Modified | Path-to-100 evidence refresh; supersede historical SDK-missing blockers |
+| `docs/tasks/02-doing/0013-warp-prism-validation-baseline-readme-alignment.md` | Modified | Path-to-100 evidence refresh; supersede historical SDK-missing blockers |
 
 ### Context
 
@@ -6907,7 +7716,7 @@ flutter test test/data/models/workspace_graph_models_test.dart
 ## Self-score
 
 **100/100** — contract complete, tests green, analyze clean, ownership explicit,
-changelog recorded. Promoted to `.project/tasks/03-review/`.
+changelog recorded. Promoted to `docs/tasks/03-review/`.
 
 ---
 
@@ -6975,7 +7784,7 @@ Closed independent re-review residual (88/100): inventory undercount (84→85, m
 - §9.2/§11 residual: package gate is **INFO lint residual (158)**, not 🔴 ERROR-class public-barrel failures.
 - Removed stale Critical “No app main.dart” gap (`apps/*/lib/main.dart` exist).
 - Task 0014 header/Review State + Completion Evidence updated with pasted live stdout.
-- File remains under `.project/tasks/02-doing/` (no promotion this pass).
+- File remains under `docs/tasks/02-doing/` (no promotion this pass).
 
 ## Verification
 
@@ -7111,7 +7920,7 @@ Package-wide residual `DS*` compile failures in other feature surfaces remain
 ## Summary
 
 Refreshed Task 0004 after Wave-2 rejection (86/100). Live mock task corpus under
-`apps/observatory/assets/mock_workspace/.project/tasks/` was re-verified as complete
+`apps/observatory/assets/mock_workspace/docs/tasks/` was re-verified as complete
 (22 files, 5 lanes, full frontmatter/body contract, resolved owner/skill/workflow
 and dependency references). Task evidence paths were migrated off the obsolete
 root `assets/mock_workspace/` location, monorepo-aware validation was re-run, and
@@ -7119,7 +7928,7 @@ local changelog evidence was added so the task can re-enter `03-review/`.
 
 ## Changes
 
-- Confirmed live corpus at `apps/observatory/assets/mock_workspace/.project/tasks/`:
+- Confirmed live corpus at `apps/observatory/assets/mock_workspace/docs/tasks/`:
   - `00-planning/`: 3
   - `01-open/`: 5
   - `02-doing/`: 5
@@ -7146,7 +7955,7 @@ $ find apps/observatory/assets/mock_workspace/docs/tasks -name '*.md' | wc -l
 22
 
 $ for d in 00-planning 01-open 02-doing 03-review 04-completed; do
-    echo -n "$d: "; find apps/observatory/assets/mock_workspace/.project/tasks/$d -name '*.md' | wc -l
+    echo -n "$d: "; find apps/observatory/assets/mock_workspace/docs/tasks/$d -name '*.md' | wc -l
   done
 00-planning: 3
 01-open: 5
@@ -7259,7 +8068,7 @@ longer match the historical claim of 653 tests / 589 pass / 64 runtime fails.
 ## Evidence
 
 - Report: `docs/reports/observatory-failure-baseline.md`
-- Task ledger: `.project/tasks/02-doing/1401-warp-prism-observatory-failure-baseline-inventory.md`
+- Task ledger: `docs/tasks/02-doing/1401-warp-prism-observatory-failure-baseline-inventory.md`
   (promoted to `03-review/` after self-score 100/100 as inventory)
 - No production or test code modified (inventory-only remediation)
 - Historical 2026-06-09 changelog retained; this entry supersedes its live counts
@@ -7291,7 +8100,7 @@ builders (Task 0010 package-gate remediation)
   - Historical 2026-06-07 root-`lib/` snapshot marked SUPERSEDED / non-reproducible
   - Live package topology and scoped `dart analyze --format=machine` counts
   - Explicit package-RED classification
-- `.project/tasks/02-doing/0010-warp-prism-foundation-audit-analyzer-baseline.md` — exit conditions and evidence aligned to honest RED inventory
+- `docs/tasks/02-doing/0010-warp-prism-foundation-audit-analyzer-baseline.md` — exit conditions and evidence aligned to honest RED inventory
 
 ### Added
 
@@ -7364,7 +8173,7 @@ dart format --set-exit-if-changed lib/src/gallery/        # clean
 ## Outcome
 
 Gallery compile boundary is green under scoped package-local gates. Task ledger
-updated and moved to `.project/tasks/03-review/` for independent review.
+updated and moved to `docs/tasks/03-review/` for independent review.
 
 ---
 
@@ -7409,7 +8218,7 @@ task evidence for independent review.
   `.archive/mock_workspace-residual-source-20260709/` after proving it was
   byte-identical to the existing `.archive/mock_workspace/` destination
   (18 files, `diff -rq` empty). No `rm` used.
-- **.project/tasks/02-doing → 03-review Task 0006** — path-to-100 evidence refresh
+- **docs/tasks/02-doing → 03-review Task 0006** — path-to-100 evidence refresh
   for monorepo layout, archive absence/presence proofs, and corrected primary
   validation command.
 
@@ -7450,7 +8259,7 @@ Builder evidence refresh for Task 1204. Preferred docs/evidence update only; pro
 ## Changes
 
 - **Task evidence**: refreshed header to Ready For Review; appended 2026-07-09 Path-to-100 live revalidation and review-ledger entry.
-- **Lane**: promoted `.project/tasks/02-doing/1204-warp-prism-melos-test-script-normalization.md` → `.project/tasks/03-review/`.
+- **Lane**: promoted `docs/tasks/02-doing/1204-warp-prism-melos-test-script-normalization.md` → `docs/tasks/03-review/`.
 - **Not changed**: root `pubspec.yaml` (protected; already correct).
 
 ## Notes
@@ -7472,7 +8281,7 @@ task can leave `02-doing/` with a Ready For Review handoff.
 
 ## Changes
 
-- **.project/tasks/02-doing → 03-review/0012-warp-prism-design-system-api-normalization.md**
+- **docs/tasks/02-doing → 03-review/0012-warp-prism-design-system-api-normalization.md**
   - Cleared stale Review State "Flutter SDK not installed"
   - Updated Where paths to monorepo `packages/warp_prism_ui/` locations
   - Appended 2026-07-09 live completion evidence, commands, and self-score 100/100
@@ -7537,7 +8346,7 @@ and documented dependency-constraint refresh as a separate non-task follow-up.
 
 ## What Changed
 
-- `.project/tasks/02-doing/1205-warp-prism-boundary-test-harness.md`
+- `docs/tasks/02-doing/1205-warp-prism-boundary-test-harness.md`
   - Replaced stale root `dart format ... lib/ test/` command (repo-root `lib/`
     and `test/` do not exist) with task-scoped:
     `dart format --output=none --set-exit-if-changed packages/warp_prism_ui/test/boundaries/boundary_test.dart`
@@ -7575,28 +8384,28 @@ No boundary harness product code changes were required.
 Remediated Task 1207 after independent re-review rejection (score 86/100).
 The promotion state model required review packets generically but did not name
 the canonical template path, so the task exit condition and validation greps
-could not prove discoverability of `.project/tasks/review-packet-template.md`.
+could not prove discoverability of `docs/tasks/review-packet-template.md`.
 
 ## Changes
 
 - **`.agents/rules/promotion-state-model.md`** — Rule 5 now points builders to
-  `.project/tasks/review-packet-template.md` and
+  `docs/tasks/review-packet-template.md` and
   `.agents/workflows/generate-review-packet.md`. Reference list includes both.
 - **`docs/governance/promotion-state-model.md`** — Rule 5 and §7 References
   aligned with the same explicit template path.
-- **`.project/tasks/02-doing/1207-warp-prism-review-packet-generator.md`** —
+- **`docs/tasks/02-doing/1207-warp-prism-review-packet-generator.md`** —
   Strengthened Validation Commands to exact-path greps; appended 2026-07-09
   path-to-100 evidence and review ledger entry.
 
 ## Verification
 
-- `test -f .project/tasks/review-packet-template.md && echo TEMPLATE_EXISTS: OK` →
+- `test -f docs/tasks/review-packet-template.md && echo TEMPLATE_EXISTS: OK` →
   `TEMPLATE_EXISTS: OK`
-- `grep -n '.project/tasks/review-packet-template.md' .agents/rules/promotion-state-model.md` →
+- `grep -n 'docs/tasks/review-packet-template.md' .agents/rules/promotion-state-model.md` →
   matches at lines 51 and 86
-- `grep -n '.project/tasks/review-packet-template.md' docs/governance/promotion-state-model.md` →
+- `grep -n 'docs/tasks/review-packet-template.md' docs/governance/promotion-state-model.md` →
   matches at lines 306 and 322
-- `test ! -e .project/tasks/03-review/1207-warp-prism-review-packet-generator.md` →
+- `test ! -e docs/tasks/03-review/1207-warp-prism-review-packet-generator.md` →
   `NO_COLLISION: OK`
 
 ---
@@ -7640,7 +8449,7 @@ stale changelog evidence path, and Review State / lane inconsistency.
   `archive_destination: .archive/mock_workspace/` and rewritten
   `archive_policy` to name `.archive/mock_workspace/` instead of
   `warp-prism/archive/mock_workspace/`.
-- **.project/tasks/03-review/0001-warp-prism-mock-workspace-contract-baseline.md** —
+- **docs/tasks/03-review/0001-warp-prism-mock-workspace-contract-baseline.md** —
   corrected completion evidence to the live changelog entry
   `docs/changelog/20260607-120000-0001-2026-06-07-0001-mock-workspace-contract-architect-orchestrator.md`,
   set Review State to `Ready For Review`, appended 2026-07-09 path-to-100 and
@@ -7701,7 +8510,7 @@ matrices, and responsive layout.
   - `flutter test --concurrency=1 --no-pub test/widget_test.dart` → 9/9 passed.
   - `dart analyze --format=machine test/widget_test.dart` → 0 machine issues.
   - `dart format --output=none --set-exit-if-changed test/widget_test.dart` → passed after one real `dart format test/widget_test.dart` write.
-- Moved task file to `.project/tasks/03-review/1305-warp-prism-catalog-contract-expansion.md`.
+- Moved task file to `docs/tasks/03-review/1305-warp-prism-catalog-contract-expansion.md`.
 
 ---
 
@@ -7709,19 +8518,19 @@ matrices, and responsive layout.
 
 > **Date**: 2026-06-30
 > **Agent**: reviewers
-> **Scope**: `.project/tasks/03-review/`
+> **Scope**: `docs/tasks/03-review/`
 
 ## Summary
 
 Continued the reviewer-only review wave after routing guardrail correction.
 Only `*-reviewer` subagents were used. The review lane was emptied by promoting
 approved governance work and preserving rejected/colliding review copies under
-`.archive/.project/tasks/03-review/` instead of overwriting existing `02-doing/`
+`.archive/docs/tasks/03-review/` instead of overwriting existing `02-doing/`
 copies.
 
 ## Changes
 
-- Promoted Task 1203 to `.project/tasks/04-completed/` after an independent reviewer
+- Promoted Task 1203 to `docs/tasks/04-completed/` after an independent reviewer
   scored it 95/100.
 - Preserved duplicate Task 1201 review-lane copy in archive because a promoted
   `04-completed/` copy already existed.
@@ -7737,12 +8546,12 @@ copies.
 
 ## Evidence
 
-- Review lane after routing: `.project/tasks/03-review/` is empty.
-- Archive evidence: `.archive/.project/tasks/03-review/` contains preserved rejected
+- Review lane after routing: `docs/tasks/03-review/` is empty.
+- Archive evidence: `.archive/docs/tasks/03-review/` contains preserved rejected
   collision copies plus duplicate completed Task 1201 and Task 1118 review-lane
   copies.
-- Task 1203 completed path: `.project/tasks/04-completed/1203-warp-prism-test-gate-matrix-per-task-type.md`.
-- Task 1118 completed path already existed at `.project/tasks/04-completed/1118-warp-prism-operational-state-vocabulary-expansion.md`.
+- Task 1203 completed path: `docs/tasks/04-completed/1203-warp-prism-test-gate-matrix-per-task-type.md`.
+- Task 1118 completed path already existed at `docs/tasks/04-completed/1118-warp-prism-operational-state-vocabulary-expansion.md`.
 
 ---
 
@@ -7770,8 +8579,8 @@ were verified complete with all deliverables on disk, headers updated to
 
 ## Files Modified
 
-- `.project/tasks/02-doing/1401-*.md` → moved to `.project/tasks/03-review/` (header refreshed)
-- `.project/tasks/02-doing/1402-*.md` → moved to `.project/tasks/03-review/` (header refreshed)
+- `docs/tasks/02-doing/1401-*.md` → moved to `docs/tasks/03-review/` (header refreshed)
+- `docs/tasks/02-doing/1402-*.md` → moved to `docs/tasks/03-review/` (header refreshed)
 
 ## By
 builders (gt-evidence-refresher)
@@ -7918,7 +8727,7 @@ update. No code changes were made.
 
 ## Artifacts Created
 
-### Planning Artifacts (.project/tasks/00-planning/)
+### Planning Artifacts (docs/tasks/00-planning/)
 
 | File | Purpose |
 |------|---------|
@@ -7926,7 +8735,7 @@ update. No code changes were made.
 | `EPIC-13-warp-prism-ads-public-contract-and-catalog-hardening.md` | ADS stabilization epic |
 | `EPIC-14-warp-prism-observatory-legacy-contract-reconciliation.md` | Observatory reconciliation epic |
 
-### Executable Tasks (.project/tasks/01-open/)
+### Executable Tasks (docs/tasks/01-open/)
 
 | Task | Name | Epic |
 |------|------|------|
@@ -8007,8 +8816,8 @@ tasks created, four existing files corrected, one priority elevated.
 
 | Task | Name | Location | Rationale |
 |------|------|----------|-----------|
-| 1208 | Existing Task Lane Reconciliation and Review Backlog Snapshot | `.project/tasks/01-open/` | Analysis identified 79 tasks in `02-doing/` with ambiguous status. Without classifying them, the promotion state model has no impact on the existing backlog. |
-| 1126 | README Monorepo Reality Alignment | `.project/tasks/01-open/` | README describes a single-app structure with `lib/` at root. Real structure is Melos monorepo with `apps/` and `packages/`. Analysis lists this as P0 quick win. |
+| 1208 | Existing Task Lane Reconciliation and Review Backlog Snapshot | `docs/tasks/01-open/` | Analysis identified 79 tasks in `02-doing/` with ambiguous status. Without classifying them, the promotion state model has no impact on the existing backlog. |
+| 1126 | README Monorepo Reality Alignment | `docs/tasks/01-open/` | README describes a single-app structure with `lib/` at root. Real structure is Melos monorepo with `apps/` and `packages/`. Analysis lists this as P0 quick win. |
 
 ### Files Modified
 
@@ -8314,12 +9123,12 @@ summary: ">"
   replaced stale evidence paths with canonical failure baseline and gate matrix
   paths, and added task-contracted category mapping.
   - docs/reports/warp-prism-review-backlog-snapshot.md
-  - .project/tasks/02-doing/*.md (18 headers refreshed; no lane moves)
+  - docs/tasks/02-doing/*.md (18 headers refreshed; no lane moves)
   - docs/changelog/2026-06-09-task-1208-existing-task-lane-reconciliation.md
 
 ## Task 1208: Existing Task Lane Reconciliation
 
-Classified the live `.project/tasks/02-doing/` backlog (95 tasks as of
+Classified the live `docs/tasks/02-doing/` backlog (95 tasks as of
 2026-06-11) using the promotion state model from Task 1202 and the gate matrix
 from Task 1203. Added or repaired exactly one `> **Review State**:` annotation
 in each current task header. Refreshed
@@ -8352,7 +9161,7 @@ decisions without re-reading entire task files.
 
 ## Deliverables
 
-- **Template**: `.project/tasks/review-packet-template.md`
+- **Template**: `docs/tasks/review-packet-template.md`
 - **Workflow**: `.agents/workflows/generate-review-packet.md`
 - **Examples**: Converted Task 1107 (Melos migration) and Task 1201 (failure baseline) to new format
 
@@ -8376,7 +9185,7 @@ decisions without re-reading entire task files.
 - Created `docs/governance/promotion-state-model.md` — canonical governance
   document defining the 10 promotion states, transition rules, gate definitions
   (Package Gate, Consumer Gate), gate matrix, failure taxonomy, and lane mapping.
-- Updated `.project/tasks/000-template.md` — added `Review State` field referencing
+- Updated `docs/tasks/000-template.md` — added `Review State` field referencing
   the promotion state model.
 - Updated `.agents/rules/task-governance.md` — added "Promotion States" section
   with state table, gate requirements summary, lane move rules, and failure
@@ -8416,14 +9225,14 @@ Open to Promoted.
 ## 2026-06-11 Validation Evidence
 
 - `test -f docs/governance/promotion-state-model.md` → `(no output)`
-- `rg "Review State" .project/tasks/000-template.md` → `> **Review State**: \`Open\` | \`Doing\` | \`Builder Done\` | \`Package Gate Failed\` | \`Consumer Gate Failed\` | \`Ready For Review\` | \`Review Approved\` | \`Promoted\` | \`Superseded\` | \`Blocked\` — see \`docs/governance/promotion-state-model.md\``
+- `rg "Review State" docs/tasks/000-template.md` → `> **Review State**: \`Open\` | \`Doing\` | \`Builder Done\` | \`Package Gate Failed\` | \`Consumer Gate Failed\` | \`Ready For Review\` | \`Review Approved\` | \`Promoted\` | \`Superseded\` | \`Blocked\` — see \`docs/governance/promotion-state-model.md\``
 - `rg "promotion-state-model\|Promotion States\|Gate Requirements\|Lane Move Rules" .agents/rules/task-governance.md` → `Reference selectors for audits: \`promotion-state-model|Promotion States|Gate Requirements|Lane Move Rules\`.`
-- `rg "^> \*\*Review State\*\*" .project/tasks/02-doing/*.md | wc -l` → `95` (header-only count; avoids body-reference drift)
-- `test ! -e .project/tasks/02-doing/0001-warp-prism-mock-workspace-contract-baseline.md` → `(no output)`
-- `test -f .project/tasks/03-review/0001-warp-prism-mock-workspace-contract-baseline.md && rg -n "Review State" .project/tasks/03-review/0001-warp-prism-mock-workspace-contract-baseline.md` → `4:> **Review State**: Builder Done — implementation evidence missing; needs verification`
-- `test -f .project/tasks/03-review/1201-warp-prism-test-failure-baseline-inventory.md && rg -n "Review State" .project/tasks/03-review/1201-warp-prism-test-failure-baseline-inventory.md` → `4:> **Review State**: \`Ready For Review\` — inventory-only governance deliverable accepted for review; consumer/app gate remains red because \`apps/observatory/\` has 12 classified pre-existing/unrelated failures that this task inventories rather than fixes.`
-- `test -f .project/tasks/03-review/1205-warp-prism-boundary-test-harness.md && rg -n "Review State" .project/tasks/03-review/1205-warp-prism-boundary-test-harness.md` → `4:> **Review State**: \`Ready For Review\` — boundary harness implementation and canonical Melos entrypoint pass; package analyzer remains red with 467 pre-existing external-blocker issues classified in \`docs/reports/build-gate-review/1205-review.md\` via \`docs/governance/pre-existing-failure-policy.md\`.`
-- `rg -n "Review State|Status" .project/tasks/02-doing/1101-warp-prism-charter-and-naming-convergence.md` → `3:> **Status**: \`[/]\` Open\n4:> **Review State**: Open — unstarted task; lane mismatch (should be in 01-open/)`
+- `rg "^> \*\*Review State\*\*" docs/tasks/02-doing/*.md | wc -l` → `95` (header-only count; avoids body-reference drift)
+- `test ! -e docs/tasks/02-doing/0001-warp-prism-mock-workspace-contract-baseline.md` → `(no output)`
+- `test -f docs/tasks/03-review/0001-warp-prism-mock-workspace-contract-baseline.md && rg -n "Review State" docs/tasks/03-review/0001-warp-prism-mock-workspace-contract-baseline.md` → `4:> **Review State**: Builder Done — implementation evidence missing; needs verification`
+- `test -f docs/tasks/03-review/1201-warp-prism-test-failure-baseline-inventory.md && rg -n "Review State" docs/tasks/03-review/1201-warp-prism-test-failure-baseline-inventory.md` → `4:> **Review State**: \`Ready For Review\` — inventory-only governance deliverable accepted for review; consumer/app gate remains red because \`apps/observatory/\` has 12 classified pre-existing/unrelated failures that this task inventories rather than fixes.`
+- `test -f docs/tasks/03-review/1205-warp-prism-boundary-test-harness.md && rg -n "Review State" docs/tasks/03-review/1205-warp-prism-boundary-test-harness.md` → `4:> **Review State**: \`Ready For Review\` — boundary harness implementation and canonical Melos entrypoint pass; package analyzer remains red with 467 pre-existing external-blocker issues classified in \`docs/reports/build-gate-review/1205-review.md\` via \`docs/governance/pre-existing-failure-policy.md\`.`
+- `rg -n "Review State|Status" docs/tasks/02-doing/1101-warp-prism-charter-and-naming-convergence.md` → `3:> **Status**: \`[/]\` Open\n4:> **Review State**: Open — unstarted task; lane mismatch (should be in 01-open/)`
 
 ---
 
@@ -8523,7 +9332,7 @@ design system under `packages/warp_prism_ui/`.
   migration disclaimer classifying the report as historical. Removed speculative
   "expected errors" from the `flutter analyze` section. Marked analyzer/test
   sections as never-executed with non-reproducible evidence drift.
-- `.project/tasks/02-doing/0010-warp-prism-foundation-audit-analyzer-baseline.md`:
+- `docs/tasks/02-doing/0010-warp-prism-foundation-audit-analyzer-baseline.md`:
   Reclassified blocked exit conditions as HISTORICAL. Updated completion
   evidence and review ledger. Fixed stale "Flutter SDK not installed" claim.
 
@@ -8558,15 +9367,15 @@ implied stale or non-promotable tasks were promotion-ready.
 
 ## Changes
 
-- **.project/tasks/02-doing/1207-warp-prism-review-packet-generator.md** — Fixed
+- **docs/tasks/02-doing/1207-warp-prism-review-packet-generator.md** — Fixed
   header from `[/] In Progress` to `[x] Ready For Review`; ticked all 5 exit
   conditions; appended remediation review-ledger entry; updated completion
   evidence with remediation pass.
 - **.agents/workflows/generate-review-packet.md** — Fixed template path from
   `docs/governance/review-packet-template.md` to
-  `.project/tasks/review-packet-template.md`; tightened pre-existing failure wording
+  `docs/tasks/review-packet-template.md`; tightened pre-existing failure wording
   so only unrelated classified failures are non-blocking without reviewer sign-off.
-- **.project/tasks/review-packet-template.md** — Refreshed Task 1107 example with
+- **docs/tasks/review-packet-template.md** — Refreshed Task 1107 example with
   historical-snapshot callout, live state `Package Gate Failed`, live lane
   `02-doing/`, and `Do Not Promote` recommendation. Refreshed Task 1201 example
   with historical-snapshot callout, source date 2026-06-11, live state
@@ -8576,11 +9385,11 @@ implied stale or non-promotable tasks were promotion-ready.
 
 ## Verification
 
-- `test -f .project/tasks/review-packet-template.md` → `TEMPLATE_EXISTS: OK`
+- `test -f docs/tasks/review-packet-template.md` → `TEMPLATE_EXISTS: OK`
 - `grep "review packet" .agents/rules/promotion-state-model.md` → 1 match
   (line 50)
 - `grep "review-packet-template" .agents/workflows/generate-review-packet.md` →
-  1 match (line 16: correct path `.project/tasks/review-packet-template.md`)
+  1 match (line 16: correct path `docs/tasks/review-packet-template.md`)
 - 2026-06-30 builder-side reviewer spot-check: verified the live template,
   workflow reference, promotion-state-model review-packet rule, Task 1107/1201
   example lanes, and Task 1207 completion evidence after the path-to-100 patch.
@@ -8595,7 +9404,7 @@ Reviewed four builder-complete Warp Prism Flutter tasks as `omniroute/reviewer` 
 
 ## Changes
 
-- Promoted Task 1303, Task 1307, Task 1305, and Task 1204 from `.project/tasks/02-doing/` to `.project/tasks/03-review/` after fresh validation passed.
+- Promoted Task 1303, Task 1307, Task 1305, and Task 1204 from `docs/tasks/02-doing/` to `docs/tasks/03-review/` after fresh validation passed.
 - Patched `packages/warp_prism_ui/test/templates/templates_contract_test.dart` to remove an unused import.
 - Patched `packages/warp_prism_ui/test/accessibility/design_system_accessibility_test.dart` with analyzer-recommended const fixes.
 - Formatted `apps/catalog/test/widget_test.dart`.
@@ -8641,15 +9450,15 @@ Implemented DS Token contractual tests and remediated structural token analyzer 
 
 ## Changes
 
-- Created `.project/tasks/review-packet-template.md` — scannable review packet template for reviewer consumption
-- Created `.project/tasks/review-packet-1203-example.md` — example conversion from Task 1203 Completion Evidence
-- Created `.project/tasks/review-packet-1305-example.md` — example conversion from Task 1305 Completion Evidence
+- Created `docs/tasks/review-packet-template.md` — scannable review packet template for reviewer consumption
+- Created `docs/tasks/review-packet-1203-example.md` — example conversion from Task 1203 Completion Evidence
+- Created `docs/tasks/review-packet-1305-example.md` — example conversion from Task 1305 Completion Evidence
 - Modified `.agents/rules/promotion-state-model.md` — added reference to review packet template path
-- Modified `.project/tasks/02-doing/1207-warp-prism-review-packet-generator.md` — updated status, exit conditions, completion evidence
+- Modified `docs/tasks/02-doing/1207-warp-prism-review-packet-generator.md` — updated status, exit conditions, completion evidence
 
 ## Validation
 
-- `cat .project/tasks/review-packet-template.md` — PASS
+- `cat docs/tasks/review-packet-template.md` — PASS
 - `grep "review packet" .agents/rules/promotion-state-model.md` — PASS (2 matches)
 
 ---
@@ -8862,14 +9671,14 @@ Task 1202 now reaches 100/100 after four review cycles.
 - Added Task 1101 as the current `02-doing/` / `Open` lane-mismatch example.
 - Replaced the unstable body-reference `Review State` count with a stable
   header-only command:
-  - `rg "^> \\*\\*Review State\\*\\*" .project/tasks/02-doing/*.md | wc -l`
+  - `rg "^> \\*\\*Review State\\*\\*" docs/tasks/02-doing/*.md | wc -l`
   - Live output: `95`
 - Removed stale numeric remnants from the current Task 1202 evidence surfaces.
   Historical review reports still retain their original findings.
 
 ## Final validation
 
-- `rg "^> \\*\\*Review State\\*\\*" .project/tasks/02-doing/*.md | wc -l` → `95`
+- `rg "^> \\*\\*Review State\\*\\*" docs/tasks/02-doing/*.md | wc -l` → `95`
 - Task 1201 live header: `Status: [x] Ready For Review`, `Review State: Ready For Review`
 - Task 1205 live header: `Status: [x] Ready For Review`, `Review State: Ready For Review`
 - Task 1101 live header: `Status: [ ] Open`, `Review State: Open — unstarted task; lane mismatch`
@@ -9192,7 +10001,7 @@ path `docs/reports/warp-prism-test-failure-baseline.md`.
 - **Created**: `docs/governance/pre-existing-failure-policy.md` — full canonical policy with classification decision tree, promotion rules, evidence requirements, reviewer checklist, anti-gaming rules, and current baseline reference (64 Observatory pre-existing failures, 24 UI wave4-regressions).
 - **Modified**: `.agents/rules/promotion-state-model.md` — added references to the builder source rule and canonical policy in Rule 2, Failure Taxonomy table, and Reference section.
 - **Modified**: `docs/governance/promotion-state-model.md` — added matching canonical references to the builder source rule and canonical policy.
-- **Modified**: `.project/tasks/02-doing/1206-warp-prism-pre-existing-failure-classification-policy.md` — reconciled Where table, validation commands, status metadata, and completion evidence; no lane move performed.
+- **Modified**: `docs/tasks/02-doing/1206-warp-prism-pre-existing-failure-classification-policy.md` — reconciled Where table, validation commands, status metadata, and completion evidence; no lane move performed.
 
 ## Verification
 
@@ -9248,7 +10057,7 @@ cat README.md | grep -q "melos" && cat README.md | grep -q "warp_prism_ui" && ec
 
 All paths mentioned in the README verified to exist on disk:
 `apps/observatory/`, `apps/catalog/`, `apps/cybercore/`,
-`packages/warp_prism_ui/`, `.project/tasks/`, `docs/reports/`,
+`packages/warp_prism_ui/`, `docs/tasks/`, `docs/reports/`,
 `docs/architecture/`, `docs/design/`, `docs/changelog/`.
 
 ---
@@ -9337,7 +10146,7 @@ execution environment. The custom implementation:
 | `packages/warp_prism_ui/lib/src/gallery/design_system_gallery_sections.dart` | Modified — added gallery entries for code block (JSON, YAML, Dart, plain text, no-line-numbers) and markdown renderer (task description, agent profile) |
 | `packages/warp_prism_ui/test/organisms/code_block_test.dart` | Created — 22 widget/unit tests |
 | `packages/warp_prism_ui/test/organisms/markdown_renderer_test.dart` | Created — 21 widget tests |
-| `.project/tasks/02-doing/1121-warp-prism-code-block-and-markdown-renderer.md` | Moved from 01-open |
+| `docs/tasks/02-doing/1121-warp-prism-code-block-and-markdown-renderer.md` | Moved from 01-open |
 
 ## Bug fix discovered during task
 
@@ -9526,7 +10335,7 @@ aliases for all promoted components.
 - `packages/warp_prism_ui/lib/src/prism_aliases.dart` — Created
 - `packages/warp_prism_ui/lib/warp_prism_ui.dart` — Modified
 - `packages/warp_prism_ui/test/molecules/operational_components_test.dart` — Created
-- `.project/tasks/02-doing/1106-*.md` — Status update
+- `docs/tasks/02-doing/1106-*.md` — Status update
 
 ---
 
@@ -9838,7 +10647,7 @@ drag operations.
 | `packages/warp_prism_ui/lib/src/organisms/ds_lane_board.dart` | Integrated `DSDraggableCard` and `DSDropTarget`; added `onReorder` and `onMove` callbacks |
 | `packages/warp_prism_ui/lib/src/gallery/design_system_gallery_sections.dart` | Added `buildDragAndDropSection()` gallery entry with interactive `_DragDropDemo` |
 | `packages/warp_prism_ui/lib/src/gallery/design_system_gallery_page.dart` | Added drag-and-drop section to gallery page |
-| `.project/tasks/02-doing/1120-warp-prism-drag-and-drop-task-board.md` | Moved from 01-open to 02-doing; completion evidence filled |
+| `docs/tasks/02-doing/1120-warp-prism-drag-and-drop-task-board.md` | Moved from 01-open to 02-doing; completion evidence filled |
 
 ## Behavioral Notes
 
@@ -11108,7 +11917,7 @@ Hermes Agent
 
 ### Changed
 - Task 0010 status updated from Open to Done
-- Task 0010 moved from `.project/tasks/01-open/` to `.project/tasks/02-doing/` (then marked done)
+- Task 0010 moved from `docs/tasks/01-open/` to `docs/tasks/02-doing/` (then marked done)
 
 ### Fixed
 - None (read-only audit task)
@@ -11140,7 +11949,7 @@ Hermes Agent
 
 # Preset Workspace Snapshot Tasks Created
 
-Added two new executable tasks to `warp-prism/.project/tasks/01-open/`:
+Added two new executable tasks to `warp-prism/docs/tasks/01-open/`:
 
 - **Task 0019**: Preset Workspace Snapshot Starter — read-only filesystem
   scanner that reads from a configurable workspace root and displays
@@ -11206,7 +12015,7 @@ Bootstrapped child-local governance for Warp Prism:
 - added `.agents/rules/project-boundaries.md`;
 - added `.agents/rules/task-governance.md`;
 - added `.agents/workflows/onboard.md`;
-- added `.project/tasks/000-template.md`;
+- added `docs/tasks/000-template.md`;
 - added local changelog ledger notes;
 - created parent-canonical symlinks for `.agents/skills`, `.agents/agents`, and
   `.codex/agents`.

@@ -2,34 +2,59 @@
 
 > **Status**: Active child-project governance
 > **Parent**: Ganthritor `AGENTS.md`
-> **Project**: Warp Prism — compositional Flutter design + integration system
-> **Last Updated**: 2026-09-03
+> **Project**: Warp Prism — reusable Flutter ADS + IDS + runtime contracts + Rust golden path
+> **Last Updated**: 2026-09-27 (epoch reset)
+>
+> **Amended 2026-10-19**: Warp Prism is the central ADS/IDS for all Ganthritor
+> projects under a full-coverage mandate — see `MISSION.md` §3.1 and §11.4.
+> Recurrence no longer gates absorption; single-consumer UI components are
+> absorbed, not kept local by default.
 
 This file localizes Ganthritor governance for agents working inside
 `warp-prism/`. It is intentionally small: reusable skills and agent definitions
 remain parent-canonical through symlinks, while product rules, task lanes,
 reports, changelog notes, and profiles stay local to Warp Prism.
 
-The product destination, maturity ladder, and active Definition of Done are
-defined in [`MISSION.md`](./MISSION.md). Read both files before substantive
-mission-level work.
+**This file governs execution. It does not duplicate the product mission.**
+The product destination, ownership boundary, and promotion evidence are defined
+in [`MISSION.md`](./MISSION.md); the normative layer matrix is in
+[`.project/architecture/layer-contracts.md`](./.project/architecture/layer-contracts.md);
+the consumer harvest contract is in
+[`docs/bridge/README.md`](./docs/bridge/README.md). Read `MISSION.md` before
+substantive mission-level work.
+
+> **Superseded (2026-09-27 epoch reset)**: the L0–L3 maturity ladder and the
+> "Rewrite Factory" framing no longer describe this project. Do not schedule
+> from a gate flip. See `MISSION.md` §11 for the supersession record and
+> `.project/archive/epoch-reset-manifest.md` for the archived planning corpus.
 
 ## 1. Scope
 
-Warp Prism is a compositional design and integration system for Flutter
-applications. It provides:
+Warp Prism is the **reusable Flutter-side substrate shared by real products**.
+It is a library and proof-laboratory project. It is **not** a product and does
+not host or own product frontends. It provides:
 
-* Visual design system (ADS): atoms, molecules, organisms, templates, tokens.
-* Interaction design system (IDS): reusable interaction semantics.
+* Visual design system (ADS): tokens, themes, typography, atoms, molecules,
+  organisms, reusable operational visual primitives.
+* Interaction design system (IDS): reusable user-intent semantics.
 * Runtime contracts: backend-agnostic UI↔runtime semantics such as
   `EventStream`, `AsyncCommand`, `HealthSource`, and `GraphSource`.
 * A Rust integration golden path via `flutter_rust_bridge`; FRB is a
-  replaceable adapter and must never become part of the visual or runtime
+  replaceable transport and must never become part of the visual or runtime
   contract ontology.
 
-Its first consumers are the ASW Observatory, CyberCore pilot, and Catalog apps.
-Future consumers such as OmniRoute verticals and media applications validate the
-runtime-contract set against real product work.
+Its intended consumer family is **Warpblade, Tempest, Hyperion, Sentry, and
+Command-center** — and, under the full-coverage mandate (`MISSION.md` §3.1),
+every Ganthritor project is a convergence target. Warp Prism is the central
+ADS/IDS they all sync toward; it is never a product frontend home.
+Catalog and the host-exercise harness are Warp Prism-owned proof laboratories.
+Observatory, CyberCore, and any other historical app in this tree are **not**
+product destinations; classify them by current function (proof surface,
+fixture/demo, legacy compatibility surface, still-valid consumer, retirement
+candidate) on evidence, never by assumption.
+Other consumers may remain valid if current source reality proves they are still
+useful, but an old consumer does not remain a mission anchor merely because a
+historical plan named it. OmniRoute is no longer a mission anchor.
 
 Do not treat Warp Prism as the Ganthritor runtime. Application backends remain
 product-local. Warp Prism standardizes only the reusable interfaces through
@@ -47,17 +72,16 @@ Parent-canonical reusable surfaces are symlinked from the Ganthritor root:
 
 | Child path       | Authority                  |
 | ---------------- | -------------------------- |
-| `.agents/skills` | Parent `../.agents/skills` |
-| `.agents/agents` | Parent `../.agents/agents` |
-| `.codex/agents`  | Parent `../.codex/agents`  |
+| `.opencode/skills` | Parent `../.opencode/skills` |
+| `.opencode/agents` | Parent `../.opencode/agents` |
 
 Child-local surfaces are owned by Warp Prism:
 
 | Child path                  | Purpose                             |
 | --------------------------- | ----------------------------------- |
 | `AGENTS.md`                 | This local constitution             |
-| `.agents/rules/`            | Warp Prism rules                    |
-| `.agents/workflows/`        | Warp Prism rituals                  |
+| `.opencode/rules/`            | Warp Prism rules                    |
+| `.opencode/workflows/`        | Warp Prism rituals                  |
 | `.project/memories/<lane>/` | Local role continuity               |
 | `.project/tasks/`           | Local task namespace                |
 | `.project/changelog/`       | Canonical child changelog ledger    |
@@ -327,7 +351,9 @@ Builders must never:
 
 ## 5. Architecture Promotion Discipline
 
-Warp Prism grows from observed recurrence, not architectural enthusiasm.
+Warp Prism grows from real product components under the full-coverage mandate
+(`MISSION.md` §3.1), not architectural enthusiasm. Recurrence across consumers
+still informs unification priority, but never blocks absorption.
 
 A recurring pattern may move through:
 
@@ -347,7 +373,9 @@ Do not promote an abstraction because it looks elegant.
 
 Prefer evidence from at least two distinct consumers or two distinct domains
 before promotion into a stable generic Warp Prism primitive, unless a task
-records a stronger reason.
+records a stronger reason. For mandate-covered components (`MISSION.md` §3.1),
+the mandate itself is that stronger reason: recurrence no longer gates
+absorption or promotion, though it still prioritizes unification work.
 
 A concept does not require a package.
 
@@ -407,6 +435,28 @@ repeating stale mutation instructions.
 * Match Flutter/Dart project conventions already present in the repository.
 * Keep the visual direction aligned with the current canonical Warp Prism visual
   contract.
+
+### 7.0 Canonical Theme Brand Names (RETIRED 2026-10-02)
+
+> **Status**: retired. The temporary normalization law is no longer in force.
+> **Retired by**: Task 1839 acceptance (see
+> `.project/tasks/04-completed/1839-warp-prism-theme-brand-normalization.md`
+> and `.project/reports/reviewers/1839-theme-brand-normalization-review-loop.md`
+> Entry 5).
+> **Removal condition was satisfied**: the section's own condition — "a grep
+> sweep over live paths returns zero stale hits" — was met and independently
+> verified. The independent reviewer reported **zero** stale-brand occurrences
+> anywhere in `packages`, `apps`, `docs`, or `.project/architecture` outside five
+> registered historical exceptions, each of which is preserved by design:
+> the two annotated quotation rows in `docs/design/black-obsidian-visual-contract.md`
+> §6, the pre-rename `03-review/1806` planning record, the cited-only
+> `.project/reports/architects/traces/*.json` captures, task artifacts that name
+> the strings they document, and this section's own removal record.
+
+> **Canonical names remain in force as normal convention, not as temporary law**:
+> Nerazim Teal, Talon Purple, Taldarim Red, Khalai Blue. The serialized
+> host-exercise recipe IDs are hyphenated (`nerazim-teal`, `khalai-blue`) and are
+> owned by Task 1842.
 
 ### 7.1 Consumer Composition Evidence
 
@@ -486,20 +536,26 @@ hosts to prove the shared contract rather than merely the package laboratory.
 Before executing a Warp Prism task, run the local onboarding workflow:
 
 ```text
-.agents/workflows/onboard.md
+.opencode/workflows/onboard.md
 ```
 
 At minimum, read:
 
 1. this `AGENTS.md`;
-2. `.agents/rules/project-boundaries.md`;
-3. `.agents/rules/task-governance.md`;
-4. the assigned task file;
-5. canonical architecture explicitly referenced by the Task;
-6. every file listed in the Task `Where` table before editing.
+2. `MISSION.md` — product destination and ownership boundary;
+3. `.project/architecture/layer-contracts.md` — the layer law you will be judged against;
+4. `.opencode/rules/40-lane-authority-and-lifecycle.md`;
+5. `.opencode/rules/42-task-completion-and-promotion.md`;
+6. the assigned task file;
+7. canonical architecture explicitly referenced by the Task;
+8. every file listed in the Task `Where` table before editing.
+
+For consumer-facing or harvest work, also read `docs/bridge/README.md` and the
+relevant `docs/bridge/<consumer>/` surface.
 
 Do not require builders to reread the full brainstorming/history corpus unless a
-Task explicitly needs historical provenance.
+Task explicitly needs historical provenance. The pre-reset planning corpus lives
+in `.archive/` and is never required reading.
 
 ## 9. Changelog and Continuity
 
@@ -536,7 +592,10 @@ AGENTS.md
 = operating law
 
 MISSION.md
-= product destination + maturity gates
+= product destination + ownership boundary + promotion evidence
+
+.project/architecture/layer-contracts.md
+= normative layer matrix
 
 tasks
 = executable authorized units
@@ -551,32 +610,49 @@ When task/epic wording conflicts with current source reality or a newer canonica
 mission decision, reconcile through the proper architecture/task-governance
 owner rather than silently choosing whichever artifact is most convenient.
 
-### 10.1 Active Maturity Target
+### 10.1 Active Program Target
 
-The current mission target is:
+> **Superseded 2026-09-27 (epoch reset).** The former L0–L3 maturity ladder and
+> the L2 "Rewrite-Capable" / L3 "Rewrite Factory" progression are **no longer
+> the mission architecture**. See `MISSION.md` §11.1. Do not schedule from a
+> gate flip, and do not revive the ladder in a task because a historical artifact
+> still references it.
 
-```text
-L1 — Integration-Capable
-```
-
-Do not prematurely execute L3 Rewrite Factory concepts merely because they are
-described in planning artifacts.
-
-Progression is evidence-gated:
+The current program is derived from the accepted gap matrix
+(`.project/architecture/cross-consumer-gap-matrix.md`) and progresses as:
 
 ```text
-L1 Integration-Capable
-↓
-real product pilot
-↓
-pilot harvest
-↓
-L2 Rewrite-Capable
-↓
-only then evidence-derived L3 work
+source-backed consumer harvest
+  ↓
+macro-reviewed extraction (unify + improve across similar-purpose components)
+  ↓
+fake + conformance suite + host-composition proof
+  ↓
+independent review
+  ↓
+governed promotion (barrel export + API freeze)
 ```
 
-`Integration Readiness` and `Rewrite Readiness` are distinct gates.
+There is no level to reach. Progress is measured by **how much real product
+capability Warp Prism actually serves**, not by a gate name.
+
+Retained prohibitions:
+
+* **No L3-style machinery.** Do not build a rewrite/porting/resolver engine for
+  legacy products. Warp Prism harvests; it does not rewrite.
+* **No gate-flip scheduling.** A gate name is not a goal.
+* **The promotion gate is real.** ≥2 distinct consumers OR ≥2 distinct domains,
+  plus a fake, a conformance suite, a boundary check, host-composition proof,
+  and independent review — before anything reaches `STABLE` and the barrel.
+  *(Amended 2026-10-19: recurrence no longer gates mandate-covered components;
+  the evidence gates stand. See `MISSION.md` §6 and §11.4.)*
+* **Single-consumer UI is absorbed, not kept local by default.**
+  (`MISSION.md` §3.1 supersedes the former keep-local default.) Do not dress
+  domain engines or product workflows up as generic Warp Prism architecture —
+  those stay product-local per the domain leakage rule.
+
+`Integration Readiness` and `Rewrite Readiness` are distinct concerns. Neither
+is a maturity gate you may flip; both are properties of evidence.
 
 ---
 
@@ -591,7 +667,7 @@ A lane finishing is not equivalent to the mission finishing.
 
 ### 11.1 Mission Drain
 
-If the ready queue empties while the active maturity target remains incomplete:
+If the ready queue empties while the active program target remains incomplete:
 
 1. reconcile `MISSION.md` against current source/runtime evidence;
 2. inspect blocked/dependency-gated tasks;
@@ -698,7 +774,7 @@ Before parallel mutation, explicitly check shared surfaces such as:
 - component/contract registries;
 - task indexes;
 - `docs/design/charter.md`;
-- `docs/architecture/*` owner documents;
+- `.project/architecture/*` owner documents;
 - `AGENTS.md`;
 - `MISSION.md`.
 
@@ -796,17 +872,17 @@ An autonomous root mission may stop normally only when one of these is true:
 ### COMPLETE
 
 ```text
-the active MISSION.md maturity gate is satisfied
+the active MISSION.md program objective is satisfied
 AND
 required independent acceptance exists
 AND
-no material implementable work for that active gate remains
+no material implementable work for that active objective remains
 ```
 
 ### EXTERNALLY BLOCKED
 
 ```text
-the active mission gate remains incomplete
+the active program objective remains incomplete
 AND
 all remaining meaningful branches are blocked
 AND
@@ -841,7 +917,7 @@ When only one branch is blocked, continue every independent branch first.
 Every subagent session ID returned by a dispatch MUST be recorded in:
 
 ```text
-.projects/sessions/sessions.md
+.project/sessions/sessions.md
 ```
 
 immediately after the dispatch returns. That ledger is the single source of
@@ -893,6 +969,6 @@ Prior entries are never overwritten. One-shot historical reports under
 
 ### 16.4 Fresh-Subagent Onboarding
 
-Fresh subagents receive `.agents/workflows/wp-warp-prism-onboarding.md`
+Fresh subagents receive `.opencode/workflows/wp-warp-prism-onboarding.md`
 (bounded ~10-read onboarding) before their first task. Grandfathered
 deep-context sessions may be waived by explicit dispatch instruction.

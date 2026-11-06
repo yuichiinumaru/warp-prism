@@ -19,7 +19,7 @@ import 'health_source_view_model.dart';
 /// **PURGE LAW**: This binding contains strictly zero polling mechanisms,
 /// ticker loops, or auto-repetition policies.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 class HealthSourceBinding extends ChangeNotifier {
   /// The underlying runtime health source.
@@ -211,8 +211,7 @@ class HealthSourceBinding extends ChangeNotifier {
       _modelStreamController.stream;
 
   /// Reactive stream of raw [HealthSnapshot]s emitted by the source.
-  Stream<HealthSnapshot> get snapshotStream =>
-      _snapshotStreamController.stream;
+  Stream<HealthSnapshot> get snapshotStream => _snapshotStreamController.stream;
 
   @override
   void dispose() {

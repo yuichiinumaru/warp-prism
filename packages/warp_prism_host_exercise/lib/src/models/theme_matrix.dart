@@ -24,9 +24,18 @@ class ExerciseThemeRecipe {
     id: 'talon-purple',
     label: 'Talon Purple',
   );
-  static const cybercoreTeal = ExerciseThemeRecipe(
-    id: 'cybercore-teal',
-    label: 'CyberCore Teal (scoped opt-in)',
+  // Wire-ID migration (Task 1842): the serialized id moved from the legacy
+  // CyberCore-era spelling to 'nerazim-teal' together with every consumer in
+  // one atomic change, so no deprecated old-ID alias remains. The old value was a
+  // cross-package wire contract (apps/catalog + apps/cybercore host-exercise
+  // harnesses); Task 1839 intentionally deferred it, and Task 1842 completed it
+  // once the owner confirmed the surface is repo-internal and regenerated on
+  // every run. The frozen Task 1838 trace captures under
+  // .project/reports/architects/traces/ still embed the old literal by design:
+  // they are cited-only historical evidence and are never loaded by code.
+  static const nerazimTeal = ExerciseThemeRecipe(
+    id: 'nerazim-teal',
+    label: 'Nerazim Teal (scoped opt-in)',
   );
 
   Map<String, Object?> toJson() => <String, Object?>{'id': id, 'label': label};
@@ -38,11 +47,3 @@ class ExerciseThemeRecipe {
     );
   }
 }
-
-/// Default recipe exercise set (A → B → C without reconstructing route
-/// where the host supports it).
-const kExerciseThemeRecipes = <ExerciseThemeRecipe>[
-  ExerciseThemeRecipe.khalaiBlue,
-  ExerciseThemeRecipe.taldarimRed,
-  ExerciseThemeRecipe.talonPurple,
-];

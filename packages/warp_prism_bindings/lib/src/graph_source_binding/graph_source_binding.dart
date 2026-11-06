@@ -17,7 +17,7 @@ import 'graph_view_model.dart';
 ///   layout strategies (e.g. [CircleGraphLayoutStrategy], [GridGraphLayoutStrategy])
 ///   and supports user interactive repositioning ([updateNodePosition]).
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 class GraphSourceBinding<TNodePayload, TEdgePayload> extends ChangeNotifier {
   /// The underlying runtime semantic graph source.

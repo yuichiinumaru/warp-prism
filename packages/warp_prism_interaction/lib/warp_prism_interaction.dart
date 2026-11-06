@@ -7,7 +7,7 @@
 /// - State machine vocabulary & transition table validation
 /// - Normalized input contract (pointer, keyboard, a11y)
 ///
-/// Lifecycle: PROVEN (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: PROVEN (see `.project/architecture/layer-contracts.md`).
 library warp_prism_interaction;
 
 export 'src/input/input.dart';

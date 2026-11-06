@@ -4,7 +4,7 @@ import 'input_modifiers.dart';
 
 /// Pure Dart raw input description record for pointer events.
 ///
-/// Lifecycle: PROVEN (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: PROVEN (see `.project/architecture/layer-contracts.md`).
 @immutable
 class RawPointerDescriptor {
   final String kindName;
@@ -26,7 +26,7 @@ class RawPointerDescriptor {
 
 /// Pure Dart raw input description record for keyboard events.
 ///
-/// Lifecycle: PROVEN (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: PROVEN (see `.project/architecture/layer-contracts.md`).
 @immutable
 class RawKeyDescriptor {
   final String keyName;
@@ -46,7 +46,7 @@ class RawKeyDescriptor {
 
 /// Pure Dart raw input description record for accessibility events.
 ///
-/// Lifecycle: PROVEN (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: PROVEN (see `.project/architecture/layer-contracts.md`).
 @immutable
 class RawA11yDescriptor {
   final String actionName;
@@ -58,7 +58,7 @@ class RawA11yDescriptor {
 
 /// Interface contract for mapping raw input descriptions to normalized intents.
 ///
-/// Lifecycle: PROVEN (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: PROVEN (see `.project/architecture/layer-contracts.md`).
 abstract interface class InputNormalizer {
   /// Normalizes a raw pointer descriptor into a [PointerIntent].
   PointerIntent normalizePointer(RawPointerDescriptor descriptor);
@@ -72,7 +72,7 @@ abstract interface class InputNormalizer {
 
 /// Standard reference implementation of [InputNormalizer].
 ///
-/// Lifecycle: PROVEN (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: PROVEN (see `.project/architecture/layer-contracts.md`).
 class DefaultInputNormalizer implements InputNormalizer {
   const DefaultInputNormalizer();
 

@@ -36,3 +36,9 @@ pubspec.lock
 tmp/
 .changelog/
 .memories/
+
+# Session export corpus (harvest JSON blobs; sessions.md index stays tracked)
+.project/sessions/*.json
+
+# Rust build output (cargo target) — 144 MiB of artifacts, never tracked
+rust/target/

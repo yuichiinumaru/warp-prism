@@ -113,8 +113,7 @@ class _GraphCanvasState extends State<GraphCanvas>
   late GraphLayoutEngine _layoutEngine;
 
   /// Continuous physics only applies when the engine is [ForceDirectedLayout].
-  ForceDirectedLayout? get _forceLayout =>
-      _layoutEngine is ForceDirectedLayout
+  ForceDirectedLayout? get _forceLayout => _layoutEngine is ForceDirectedLayout
       ? _layoutEngine as ForceDirectedLayout
       : null;
 
@@ -165,10 +164,7 @@ class _GraphCanvasState extends State<GraphCanvas>
       (n) => n.position == Offset.zero,
     );
     if (needsLayout && widget.model.nodes.isNotEmpty) {
-      final laidOut = _layoutEngine.layout(
-        widget.model,
-        const Size(600, 400),
-      );
+      final laidOut = _layoutEngine.layout(widget.model, const Size(600, 400));
       for (final node in widget.model.nodes) {
         _positions[node.id] = laidOut[node.id] ?? Offset.zero;
         _velocities[node.id] = Offset.zero;
@@ -195,12 +191,7 @@ class _GraphCanvasState extends State<GraphCanvas>
     final force = _forceLayout;
     if (force == null) return;
 
-    force.simulateStep(
-      widget.model,
-      _positions,
-      _velocities,
-      _draggingNodes,
-    );
+    force.simulateStep(widget.model, _positions, _velocities, _draggingNodes);
 
     setState(() {});
   }

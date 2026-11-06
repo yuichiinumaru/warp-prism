@@ -88,6 +88,3 @@ const kExerciseDesktopMatrix = <ExerciseViewport>[
   ExerciseViewport.laptop1366x768,
   ExerciseViewport.narrow800x600,
 ];
-
-/// Single-viewport smoke default (cheapest deterministic gate).
-const kExerciseSmokeViewport = ExerciseViewport.desktop1280x800;

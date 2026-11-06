@@ -16,6 +16,7 @@
 library warp_prism_host_exercise;
 
 export 'src/artifacts/trace_writer.dart';
+export 'src/capture/capture_tiers.dart';
 export 'src/discovery/action_discovery.dart';
 export 'src/models/exercise_action.dart';
 export 'src/models/exercise_trace.dart';

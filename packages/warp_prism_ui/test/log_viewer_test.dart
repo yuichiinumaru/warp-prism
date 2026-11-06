@@ -69,9 +69,7 @@ class _AppendHarnessState extends State<_AppendHarness> {
     return Column(
       children: [
         TextButton(onPressed: append, child: const Text('Append')),
-        Expanded(
-          child: DSLogViewer(entries: _entries, showFilters: false),
-        ),
+        Expanded(child: DSLogViewer(entries: _entries, showFilters: false)),
       ],
     );
   }
@@ -534,9 +532,7 @@ void main() {
         tester,
       ) async {
         await tester.pumpWidget(
-          _wrap(
-            DSLogViewer(entries: _sampleEntries(), showAbsoluteTime: true),
-          ),
+          _wrap(DSLogViewer(entries: _sampleEntries(), showAbsoluteTime: true)),
         );
         await tester.pumpAndSettle();
 

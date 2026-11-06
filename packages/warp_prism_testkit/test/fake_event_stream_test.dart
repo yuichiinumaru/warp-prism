@@ -94,13 +94,16 @@ void main() {
       stream.close();
     });
 
-    test('FakeEventStream complete sets isClosed true and completes controller', () {
-      final stream = FakeEventStream<String>();
-      expect(stream.isClosed, isFalse);
-      stream.complete();
-      expect(stream.isClosed, isTrue);
-      expect(() => stream.emit('post_complete'), throwsA(isA<StateError>()));
-    });
+    test(
+      'FakeEventStream complete sets isClosed true and completes controller',
+      () {
+        final stream = FakeEventStream<String>();
+        expect(stream.isClosed, isFalse);
+        stream.complete();
+        expect(stream.isClosed, isTrue);
+        expect(() => stream.emit('post_complete'), throwsA(isA<StateError>()));
+      },
+    );
 
     test(
       'FakeEventStream pause with resumeSignal auto-resumes and tracks isPaused flag',

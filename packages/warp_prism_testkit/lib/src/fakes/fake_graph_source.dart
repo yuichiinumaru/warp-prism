@@ -7,7 +7,7 @@ import 'package:warp_prism_runtime/warp_prism_runtime.dart';
 /// Enables programmatic topological mutations (adding, updating, removing nodes and edges)
 /// and reactive broadcast of [GraphUpdate] events.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 class FakeGraphSource<TNodePayload, TEdgePayload>
     implements GraphSource<TNodePayload, TEdgePayload> {

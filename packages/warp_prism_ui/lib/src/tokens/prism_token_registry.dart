@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 /// Contract interface for accent skin theme extensions.
 ///
-/// Implemented by [DSCyberCoreTealSkin], [DSTaldarimRedSkin], and
+/// Implemented by [DSNerazimTealSkin], [DSTaldarimRedSkin], and
 /// [DSTalonPurpleSkin] to provide a unified accent recipe ladder.
 abstract interface class PrismAccentSkin {
   /// Primary energy accent color.
@@ -234,8 +234,11 @@ class PrismTokenRegistry extends ChangeNotifier {
 
   /// Formats a [Color] into a hex string `#AARRGGBB` or `#RRGGBB`.
   static String colorToHex(Color color, {bool includeAlpha = true}) {
-    final argb =
-        color.toARGB32().toRadixString(16).padLeft(8, '0').toUpperCase();
+    final argb = color
+        .toARGB32()
+        .toRadixString(16)
+        .padLeft(8, '0')
+        .toUpperCase();
     if (!includeAlpha || argb.startsWith('FF')) {
       return '#${argb.substring(2)}';
     }

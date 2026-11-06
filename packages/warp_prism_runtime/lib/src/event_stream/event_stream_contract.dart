@@ -7,7 +7,7 @@ import 'event_stream_models.dart';
 /// Enables consumers to pause, resume, or cancel event delivery with
 /// deterministic resource cleanup.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 abstract interface class EventStreamSubscription<T> {
   /// Cancels this subscription and releases associated resources.
@@ -44,13 +44,13 @@ abstract interface class EventStreamSubscription<T> {
 /// and run-group metadata). The contract does not constrain `T extends` an identity
 /// base because that would couple all consumers to one event shape.
 ///
-/// Reference: `docs/architecture/runtime-consumer-audit.md §6` and
-/// `docs/architecture/layer-contracts-v2.md`.
+/// Reference: `.project/architecture/runtime-consumer-audit.md §6` and
+/// `.project/architecture/layer-contracts.md`.
 ///
 /// **PURGE LAW**: This contract contains strictly zero presentation policy,
 /// viewport mechanics, or UI filter states.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 abstract interface class EventStream<T> {
   /// Underlying Dart [Stream] exposing emitted events.
@@ -91,7 +91,7 @@ abstract interface class EventStream<T> {
 /// - Error emission ([emitError])
 /// - Terminal stream completion ([complete])
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 abstract interface class EventStreamSink<T> {
   /// Appends a single event to the stream and buffer.
@@ -119,13 +119,13 @@ abstract interface class EventStreamSink<T> {
 /// A combined read-write event stream combining consumer-side [EventStream]
 /// and producer-side [EventStreamSink] capabilities.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 abstract interface class MutableEventStream<T>
     implements EventStream<T>, EventStreamSink<T> {}
 
 /// Alias for [MutableEventStream] representing a mutable source of events.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 typedef MutableEventSource<T> = MutableEventStream<T>;

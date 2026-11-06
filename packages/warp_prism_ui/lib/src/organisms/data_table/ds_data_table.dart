@@ -640,10 +640,7 @@ class _ColumnHeaderCell extends StatelessWidget {
     if (!column.sortable) {
       return ConstrainedBox(
         constraints: BoxConstraints(minHeight: targetDim),
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: label,
-        ),
+        child: Align(alignment: Alignment.centerLeft, child: label),
       );
     }
 
@@ -677,14 +674,22 @@ class _ColumnHeaderCell extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.arrow_drop_up,
-                      size: isUltraCompact ? 10 : isCompact ? 12 : 14,
+                      size: isUltraCompact
+                          ? 10
+                          : isCompact
+                          ? 12
+                          : 14,
                       color: isAscending
                           ? DSColors.accentBlue
                           : DSColors.textDisabled,
                     ),
                     Icon(
                       Icons.arrow_drop_down,
-                      size: isUltraCompact ? 10 : isCompact ? 12 : 14,
+                      size: isUltraCompact
+                          ? 10
+                          : isCompact
+                          ? 12
+                          : 14,
                       color: isDescending
                           ? DSColors.accentBlue
                           : DSColors.textDisabled,
@@ -919,8 +924,7 @@ class _TableSkeleton extends StatelessWidget {
           ),
           child: Row(
             children: [
-              if (selectable)
-                const SizedBox(width: kMinInteractiveDimension),
+              if (selectable) const SizedBox(width: kMinInteractiveDimension),
               for (int i = 0; i < visibleColumns.length; i++) ...[
                 if (i > 0) const SizedBox(width: DSSpacing.md),
                 _skeletonBar(80, 14),
@@ -942,8 +946,7 @@ class _TableSkeleton extends StatelessWidget {
             ),
             child: Row(
               children: [
-                if (selectable)
-                  const SizedBox(width: kMinInteractiveDimension),
+                if (selectable) const SizedBox(width: kMinInteractiveDimension),
                 for (int i = 0; i < visibleColumns.length; i++) ...[
                   if (i > 0) const SizedBox(width: DSSpacing.md),
                   _skeletonBar(visibleColumns[i].width ?? 120, 14),

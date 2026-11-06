@@ -2,7 +2,7 @@ import 'package:meta/meta.dart';
 
 /// Semantic operational health state.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 enum HealthState {
   /// The component or provider is fully operational within nominal parameters.
@@ -23,7 +23,7 @@ enum HealthState {
 /// Pure semantic data representation free of layout, table geometry,
 /// or polling timer logic.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 @immutable
 class HealthCell {
@@ -119,7 +119,7 @@ class HealthCell {
 ///
 /// Carries timestamp and freshness metadata for downstream evaluation.
 ///
-/// Lifecycle: EXPERIMENTAL (see `docs/architecture/layer-contracts-v2.md`).
+/// Lifecycle: EXPERIMENTAL (see `.project/architecture/layer-contracts.md`).
 @experimental
 @immutable
 class HealthSnapshot {

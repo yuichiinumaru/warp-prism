@@ -17,13 +17,19 @@ void main() {
     });
 
     test('defines none, low, medium, high, and critical', () {
-      expect(PrismInsightRiskLevel.values, contains(PrismInsightRiskLevel.none));
+      expect(
+        PrismInsightRiskLevel.values,
+        contains(PrismInsightRiskLevel.none),
+      );
       expect(PrismInsightRiskLevel.values, contains(PrismInsightRiskLevel.low));
       expect(
         PrismInsightRiskLevel.values,
         contains(PrismInsightRiskLevel.medium),
       );
-      expect(PrismInsightRiskLevel.values, contains(PrismInsightRiskLevel.high));
+      expect(
+        PrismInsightRiskLevel.values,
+        contains(PrismInsightRiskLevel.high),
+      );
       expect(
         PrismInsightRiskLevel.values,
         contains(PrismInsightRiskLevel.critical),
@@ -265,7 +271,10 @@ void main() {
 
       expect(find.text('Informational only'), findsOneWidget);
       expect(find.text('Evidence: README.md'), findsOneWidget);
-      expect(find.text('Connection: docs → monorepo structure'), findsOneWidget);
+      expect(
+        find.text('Connection: docs → monorepo structure'),
+        findsOneWidget,
+      );
       expect(find.text('none'), findsNothing);
     });
   });
